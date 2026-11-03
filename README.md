@@ -18,6 +18,8 @@ multiple criteria. It includes empirical illustrations and two browser tools. Ve
 
 ## Open the website
 
+Published website: <https://joonho112.github.io/postrank-explorer/>.
+
 The repository includes the built website in `docs/`. From the repository root:
 
 ```sh
