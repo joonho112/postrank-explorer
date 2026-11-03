@@ -1,0 +1,44 @@
+---
+title: "Standardised-evidence flags in a league"
+subtitle: "3.4 · a simulated league after the postrank theory book, ch. 17"
+description: "Pairwise directions and posterior risk of a thirty-unit flag report."
+---
+
+The standardised-evidence rule assigns three flags to a league of thirty units. Its reference is the mean of the
+thirty estimates, treated as fixed in the calculation. This treatment is a modelling assumption because the reference
+is itself estimated. The estimate display and relation matrix identify the directions stated between flag groups,
+including reversals of the estimate order. Posterior evaluation then gives the expected errors and risk of that
+fixed report. Changing the posterior or withholding cost changes the evaluation without changing the inputs used to
+assign the flags.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/flags-in-the-league.js"></script>
+<script>window.__prxApp = PRX["flags-in-the-league"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **League, cutoff 1.96.** The flag groups contain 6, 22 and 2 units. They state 188 of 435 pairs. Under the
+  teaching posterior, E/N is .130 and risk is .1696. The grey row bands identify units placed below another unit
+  whose estimate is smaller; the outlined matrix cells locate the same reversals.
+- **Same flags, flat prior.** The report still states 188 pairs. Error and risk are reevaluated under independent normal posteriors centred on the estimates, with SDs equal to their SEs. Changing the posterior
+  changes the evaluation without changing the rule's inputs.
+- **League, cutoff 2.576.** The stricter cutoff changes membership of the outer flag groups. The matrix changes in whole blocks:
+  all pairs between different flag groups are stated, and all pairs within a group are withheld. A withheld cell
+  does not assert equality.
+- **Same report, τ .10.** The same 188 pairs are stated. The all-withheld comparison has risk τ = .10. The cheaper baseline depends on the withholding cost even when the report does not change.
+
+::: {.callout-note appearance="simple"}
+At the first setting, 20 stated directions run against the estimates. The largest stated error is .649, so an
+average below the withholding cost does not mean that every individual direction is reliable. These are evaluations
+of a fixed report under independent normal posteriors; the flag rule does not optimize this loss and uses neither
+τ nor the posterior. The full matrix follows decreasing estimates on both axes. Arrow-key selection and tables provide the cell values and the complete list of reversals.
+:::
+
+Standalone: [flags-in-the-league](../../embed/flags-in-the-league.html), for example `?crit=1.96&prior=teaching&tau=.10`.
+
+Related applications: [Grades based on standardised evidence](evidence-flags.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).

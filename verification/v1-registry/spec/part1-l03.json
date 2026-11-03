@@ -1,0 +1,1872 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part1-l03",
+  "description": "Catalog L-03 (Ranking noisy estimates): the simulated league (SR-06) by size group, the frozen first draw (data/precomputed/league-30.json, seed 20261030) and the twenty seeded replays (seed 20261030 + r) with their exact means.",
+  "license_scope": "author",
+  "inputs": {
+    "l03.spec": {
+      "fn": "league30",
+      "args": []
+    },
+    "l03.truth.ext": {
+      "fn": "extremeCounts",
+      "args": [
+        {
+          "$input": "l03.spec",
+          "path": "theta"
+        },
+        {
+          "$input": "l03.spec",
+          "path": "group"
+        },
+        5
+      ],
+      "note": "groups among the true top 5 and bottom 5"
+    },
+    "l03.truerank": {
+      "fn": "strictOrder",
+      "args": [
+        {
+          "$input": "l03.spec",
+          "path": "theta"
+        }
+      ],
+      "note": "true rank of each unit (1 = largest true value)"
+    },
+    "l03.first.ext": {
+      "fn": "extremeCounts",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        {
+          "$input": "l03.spec",
+          "path": "group"
+        },
+        5
+      ],
+      "note": "the frozen first draw (seed 20261030): groups among the top 5 and bottom 5 by estimate"
+    },
+    "l03.first.rank": {
+      "fn": "strictOrder",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        }
+      ],
+      "note": "position of each unit by estimate in the frozen first draw"
+    },
+    "l03.replays": {
+      "fn": "leagueReplays",
+      "args": [
+        {
+          "$setting": "settings.seed.league"
+        },
+        {
+          "replays": 20,
+          "k": 5,
+          "topK": 10
+        }
+      ],
+      "note": "replays r = 1..20 of the frozen draw's seed (seed 20261030 + r): per replay the units of each size among the 10 extreme positions by estimate, the top-10 overlap with the true top 10 and the pairs ordered against the true order, and their means over the 20 replays"
+    }
+  },
+  "keys": {
+    "league.size.small": {
+      "type": "scalar",
+      "from": "l03.spec",
+      "field": "size.0",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "observations per small unit"
+    },
+    "league.size.medium": {
+      "type": "scalar",
+      "from": "l03.spec",
+      "field": "size.1",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "observations per medium unit"
+    },
+    "league.size.large": {
+      "type": "scalar",
+      "from": "l03.spec",
+      "field": "size.2",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "observations per large unit"
+    },
+    "league.se.small": {
+      "type": "scalar",
+      "from": "l03.spec",
+      "field": "se.0",
+      "format": {
+        "fn": "formatSetting"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "SE of a small unit's estimate"
+    },
+    "league.se.medium": {
+      "type": "scalar",
+      "from": "l03.spec",
+      "field": "se.1",
+      "format": {
+        "fn": "formatSetting"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "SE of a medium unit's estimate"
+    },
+    "league.se.large": {
+      "type": "scalar",
+      "from": "l03.spec",
+      "field": "se.2",
+      "format": {
+        "fn": "formatSetting"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "SE of a large unit's estimate"
+    },
+    "league.truth.top5.small": {
+      "type": "scalar",
+      "from": "l03.truth.ext",
+      "field": "top.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.truth.bottom5.small": {
+      "type": "scalar",
+      "from": "l03.truth.ext",
+      "field": "bottom.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.truth.top5.medium": {
+      "type": "scalar",
+      "from": "l03.truth.ext",
+      "field": "top.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.truth.bottom5.medium": {
+      "type": "scalar",
+      "from": "l03.truth.ext",
+      "field": "bottom.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.truth.top5.large": {
+      "type": "scalar",
+      "from": "l03.truth.ext",
+      "field": "top.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.truth.bottom5.large": {
+      "type": "scalar",
+      "from": "l03.truth.ext",
+      "field": "bottom.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.truth.ext10medium": {
+      "type": "scalar",
+      "from": "l03.truth.ext",
+      "field": "total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.ext10small": {
+      "type": "scalar",
+      "from": "l03.first.ext",
+      "field": "total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.top5.small": {
+      "type": "scalar",
+      "from": "l03.first.ext",
+      "field": "top.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.bottom5.small": {
+      "type": "scalar",
+      "from": "l03.first.ext",
+      "field": "bottom.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.ext10medium": {
+      "type": "scalar",
+      "from": "l03.first.ext",
+      "field": "total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.top5.medium": {
+      "type": "scalar",
+      "from": "l03.first.ext",
+      "field": "top.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.bottom5.medium": {
+      "type": "scalar",
+      "from": "l03.first.ext",
+      "field": "bottom.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.ext10large": {
+      "type": "scalar",
+      "from": "l03.first.ext",
+      "field": "total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.top5.large": {
+      "type": "scalar",
+      "from": "l03.first.ext",
+      "field": "top.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.bottom5.large": {
+      "type": "scalar",
+      "from": "l03.first.ext",
+      "field": "bottom.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0
+    },
+    "league.default.top10overlap": {
+      "type": "scalar",
+      "fn": "topKOverlap",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        {
+          "$input": "l03.spec",
+          "path": "theta"
+        },
+        10
+      ],
+      "field": "count",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "units of the top 10 by estimate in the true top 10, frozen first draw"
+    },
+    "league.default.U10.estpos": {
+      "type": "scalar",
+      "from": "l03.first.rank",
+      "field": "9",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "U10: position by estimate in the frozen first draw"
+    },
+    "league.default.U10.truerank": {
+      "type": "scalar",
+      "from": "l03.truerank",
+      "field": "9",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "U10: true rank"
+    },
+    "league.default.U18.estpos": {
+      "type": "scalar",
+      "from": "l03.first.rank",
+      "field": "17",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "U18: position by estimate in the frozen first draw"
+    },
+    "league.default.U18.truerank": {
+      "type": "scalar",
+      "from": "l03.truerank",
+      "field": "17",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "U18: true rank"
+    },
+    "league.default.U19.estpos": {
+      "type": "scalar",
+      "from": "l03.first.rank",
+      "field": "18",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "U19: position by estimate in the frozen first draw"
+    },
+    "league.default.U19.truerank": {
+      "type": "scalar",
+      "from": "l03.truerank",
+      "field": "18",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "U19: true rank"
+    },
+    "league.replay20.avg.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "mean.extreme.small",
+      "format": {
+        "fn": "formatDecimal",
+        "options": {
+          "digits": 2
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay01": "settings.seed.replay01",
+        "seed_replay02": "settings.seed.replay02",
+        "seed_replay03": "settings.seed.replay03",
+        "seed_replay04": "settings.seed.replay04",
+        "seed_replay05": "settings.seed.replay05",
+        "seed_replay06": "settings.seed.replay06",
+        "seed_replay07": "settings.seed.replay07",
+        "seed_replay08": "settings.seed.replay08",
+        "seed_replay09": "settings.seed.replay09",
+        "seed_replay10": "settings.seed.replay10",
+        "seed_replay11": "settings.seed.replay11",
+        "seed_replay12": "settings.seed.replay12",
+        "seed_replay13": "settings.seed.replay13",
+        "seed_replay14": "settings.seed.replay14",
+        "seed_replay15": "settings.seed.replay15",
+        "seed_replay16": "settings.seed.replay16",
+        "seed_replay17": "settings.seed.replay17",
+        "seed_replay18": "settings.seed.replay18",
+        "seed_replay19": "settings.seed.replay19",
+        "seed_replay20": "settings.seed.replay20"
+      },
+      "note": "mean of 20 integer counts, so two decimals are exact"
+    },
+    "league.replay20.avg.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "mean.extreme.medium",
+      "format": {
+        "fn": "formatDecimal",
+        "options": {
+          "digits": 2
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay01": "settings.seed.replay01",
+        "seed_replay02": "settings.seed.replay02",
+        "seed_replay03": "settings.seed.replay03",
+        "seed_replay04": "settings.seed.replay04",
+        "seed_replay05": "settings.seed.replay05",
+        "seed_replay06": "settings.seed.replay06",
+        "seed_replay07": "settings.seed.replay07",
+        "seed_replay08": "settings.seed.replay08",
+        "seed_replay09": "settings.seed.replay09",
+        "seed_replay10": "settings.seed.replay10",
+        "seed_replay11": "settings.seed.replay11",
+        "seed_replay12": "settings.seed.replay12",
+        "seed_replay13": "settings.seed.replay13",
+        "seed_replay14": "settings.seed.replay14",
+        "seed_replay15": "settings.seed.replay15",
+        "seed_replay16": "settings.seed.replay16",
+        "seed_replay17": "settings.seed.replay17",
+        "seed_replay18": "settings.seed.replay18",
+        "seed_replay19": "settings.seed.replay19",
+        "seed_replay20": "settings.seed.replay20"
+      },
+      "note": "mean of 20 integer counts, so two decimals are exact"
+    },
+    "league.replay20.avg.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "mean.extreme.large",
+      "format": {
+        "fn": "formatDecimal",
+        "options": {
+          "digits": 2
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay01": "settings.seed.replay01",
+        "seed_replay02": "settings.seed.replay02",
+        "seed_replay03": "settings.seed.replay03",
+        "seed_replay04": "settings.seed.replay04",
+        "seed_replay05": "settings.seed.replay05",
+        "seed_replay06": "settings.seed.replay06",
+        "seed_replay07": "settings.seed.replay07",
+        "seed_replay08": "settings.seed.replay08",
+        "seed_replay09": "settings.seed.replay09",
+        "seed_replay10": "settings.seed.replay10",
+        "seed_replay11": "settings.seed.replay11",
+        "seed_replay12": "settings.seed.replay12",
+        "seed_replay13": "settings.seed.replay13",
+        "seed_replay14": "settings.seed.replay14",
+        "seed_replay15": "settings.seed.replay15",
+        "seed_replay16": "settings.seed.replay16",
+        "seed_replay17": "settings.seed.replay17",
+        "seed_replay18": "settings.seed.replay18",
+        "seed_replay19": "settings.seed.replay19",
+        "seed_replay20": "settings.seed.replay20"
+      },
+      "note": "mean of 20 integer counts, so two decimals are exact"
+    },
+    "league.replay20.avg.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "mean.topOverlap",
+      "format": {
+        "fn": "formatDecimal",
+        "options": {
+          "digits": 2
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay01": "settings.seed.replay01",
+        "seed_replay02": "settings.seed.replay02",
+        "seed_replay03": "settings.seed.replay03",
+        "seed_replay04": "settings.seed.replay04",
+        "seed_replay05": "settings.seed.replay05",
+        "seed_replay06": "settings.seed.replay06",
+        "seed_replay07": "settings.seed.replay07",
+        "seed_replay08": "settings.seed.replay08",
+        "seed_replay09": "settings.seed.replay09",
+        "seed_replay10": "settings.seed.replay10",
+        "seed_replay11": "settings.seed.replay11",
+        "seed_replay12": "settings.seed.replay12",
+        "seed_replay13": "settings.seed.replay13",
+        "seed_replay14": "settings.seed.replay14",
+        "seed_replay15": "settings.seed.replay15",
+        "seed_replay16": "settings.seed.replay16",
+        "seed_replay17": "settings.seed.replay17",
+        "seed_replay18": "settings.seed.replay18",
+        "seed_replay19": "settings.seed.replay19",
+        "seed_replay20": "settings.seed.replay20"
+      },
+      "note": "mean of 20 integer counts, so two decimals are exact"
+    },
+    "league.replay20.avg.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "mean.misordered",
+      "format": {
+        "fn": "formatDecimal",
+        "options": {
+          "digits": 2
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay01": "settings.seed.replay01",
+        "seed_replay02": "settings.seed.replay02",
+        "seed_replay03": "settings.seed.replay03",
+        "seed_replay04": "settings.seed.replay04",
+        "seed_replay05": "settings.seed.replay05",
+        "seed_replay06": "settings.seed.replay06",
+        "seed_replay07": "settings.seed.replay07",
+        "seed_replay08": "settings.seed.replay08",
+        "seed_replay09": "settings.seed.replay09",
+        "seed_replay10": "settings.seed.replay10",
+        "seed_replay11": "settings.seed.replay11",
+        "seed_replay12": "settings.seed.replay12",
+        "seed_replay13": "settings.seed.replay13",
+        "seed_replay14": "settings.seed.replay14",
+        "seed_replay15": "settings.seed.replay15",
+        "seed_replay16": "settings.seed.replay16",
+        "seed_replay17": "settings.seed.replay17",
+        "seed_replay18": "settings.seed.replay18",
+        "seed_replay19": "settings.seed.replay19",
+        "seed_replay20": "settings.seed.replay20"
+      },
+      "note": "mean of 20 integer counts, so two decimals are exact"
+    },
+    "league.replay.r01.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.0.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay01"
+      },
+      "note": "replay 1: small units among the 10 extreme positions by estimate"
+    },
+    "league.replay.r01.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.0.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay01"
+      },
+      "note": "replay 1: medium units among the 10 extreme positions by estimate"
+    },
+    "league.replay.r01.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.0.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay01"
+      },
+      "note": "replay 1: large units among the 10 extreme positions by estimate"
+    },
+    "league.replay.r01.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.0.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay01"
+      },
+      "note": "replay 1: units in both the top 10 by estimate and the true top 10"
+    },
+    "league.replay.r01.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.0.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay01"
+      },
+      "note": "replay 1: pairs the estimates order against the true order"
+    },
+    "league.replay.r02.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.1.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay02"
+      }
+    },
+    "league.replay.r02.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.1.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay02"
+      }
+    },
+    "league.replay.r02.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.1.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay02"
+      }
+    },
+    "league.replay.r02.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.1.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay02"
+      }
+    },
+    "league.replay.r02.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.1.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay02"
+      }
+    },
+    "league.replay.r03.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.2.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay03"
+      }
+    },
+    "league.replay.r03.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.2.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay03"
+      }
+    },
+    "league.replay.r03.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.2.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay03"
+      }
+    },
+    "league.replay.r03.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.2.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay03"
+      }
+    },
+    "league.replay.r03.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.2.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay03"
+      }
+    },
+    "league.replay.r04.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.3.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay04"
+      }
+    },
+    "league.replay.r04.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.3.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay04"
+      }
+    },
+    "league.replay.r04.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.3.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay04"
+      }
+    },
+    "league.replay.r04.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.3.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay04"
+      }
+    },
+    "league.replay.r04.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.3.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay04"
+      }
+    },
+    "league.replay.r05.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.4.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay05"
+      }
+    },
+    "league.replay.r05.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.4.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay05"
+      }
+    },
+    "league.replay.r05.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.4.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay05"
+      }
+    },
+    "league.replay.r05.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.4.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay05"
+      }
+    },
+    "league.replay.r05.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.4.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay05"
+      }
+    },
+    "league.replay.r06.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.5.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay06"
+      }
+    },
+    "league.replay.r06.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.5.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay06"
+      }
+    },
+    "league.replay.r06.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.5.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay06"
+      }
+    },
+    "league.replay.r06.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.5.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay06"
+      }
+    },
+    "league.replay.r06.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.5.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay06"
+      }
+    },
+    "league.replay.r07.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.6.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay07"
+      }
+    },
+    "league.replay.r07.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.6.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay07"
+      }
+    },
+    "league.replay.r07.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.6.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay07"
+      }
+    },
+    "league.replay.r07.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.6.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay07"
+      }
+    },
+    "league.replay.r07.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.6.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay07"
+      }
+    },
+    "league.replay.r08.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.7.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay08"
+      }
+    },
+    "league.replay.r08.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.7.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay08"
+      }
+    },
+    "league.replay.r08.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.7.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay08"
+      }
+    },
+    "league.replay.r08.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.7.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay08"
+      }
+    },
+    "league.replay.r08.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.7.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay08"
+      }
+    },
+    "league.replay.r09.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.8.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay09"
+      }
+    },
+    "league.replay.r09.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.8.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay09"
+      }
+    },
+    "league.replay.r09.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.8.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay09"
+      }
+    },
+    "league.replay.r09.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.8.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay09"
+      }
+    },
+    "league.replay.r09.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.8.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay09"
+      }
+    },
+    "league.replay.r10.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.9.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay10"
+      }
+    },
+    "league.replay.r10.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.9.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay10"
+      }
+    },
+    "league.replay.r10.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.9.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay10"
+      }
+    },
+    "league.replay.r10.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.9.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay10"
+      }
+    },
+    "league.replay.r10.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.9.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay10"
+      }
+    },
+    "league.replay.r11.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.10.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay11"
+      }
+    },
+    "league.replay.r11.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.10.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay11"
+      }
+    },
+    "league.replay.r11.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.10.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay11"
+      }
+    },
+    "league.replay.r11.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.10.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay11"
+      }
+    },
+    "league.replay.r11.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.10.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay11"
+      }
+    },
+    "league.replay.r12.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.11.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay12"
+      }
+    },
+    "league.replay.r12.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.11.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay12"
+      }
+    },
+    "league.replay.r12.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.11.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay12"
+      }
+    },
+    "league.replay.r12.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.11.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay12"
+      }
+    },
+    "league.replay.r12.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.11.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay12"
+      }
+    },
+    "league.replay.r13.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.12.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay13"
+      }
+    },
+    "league.replay.r13.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.12.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay13"
+      }
+    },
+    "league.replay.r13.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.12.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay13"
+      }
+    },
+    "league.replay.r13.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.12.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay13"
+      }
+    },
+    "league.replay.r13.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.12.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay13"
+      }
+    },
+    "league.replay.r14.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.13.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay14"
+      }
+    },
+    "league.replay.r14.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.13.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay14"
+      }
+    },
+    "league.replay.r14.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.13.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay14"
+      }
+    },
+    "league.replay.r14.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.13.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay14"
+      }
+    },
+    "league.replay.r14.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.13.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay14"
+      }
+    },
+    "league.replay.r15.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.14.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay15"
+      }
+    },
+    "league.replay.r15.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.14.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay15"
+      }
+    },
+    "league.replay.r15.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.14.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay15"
+      }
+    },
+    "league.replay.r15.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.14.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay15"
+      }
+    },
+    "league.replay.r15.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.14.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay15"
+      }
+    },
+    "league.replay.r16.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.15.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay16"
+      }
+    },
+    "league.replay.r16.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.15.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay16"
+      }
+    },
+    "league.replay.r16.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.15.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay16"
+      }
+    },
+    "league.replay.r16.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.15.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay16"
+      }
+    },
+    "league.replay.r16.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.15.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay16"
+      }
+    },
+    "league.replay.r17.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.16.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay17"
+      }
+    },
+    "league.replay.r17.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.16.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay17"
+      }
+    },
+    "league.replay.r17.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.16.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay17"
+      }
+    },
+    "league.replay.r17.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.16.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay17"
+      }
+    },
+    "league.replay.r17.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.16.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay17"
+      }
+    },
+    "league.replay.r18.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.17.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay18"
+      }
+    },
+    "league.replay.r18.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.17.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay18"
+      }
+    },
+    "league.replay.r18.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.17.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay18"
+      }
+    },
+    "league.replay.r18.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.17.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay18"
+      }
+    },
+    "league.replay.r18.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.17.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay18"
+      }
+    },
+    "league.replay.r19.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.18.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay19"
+      }
+    },
+    "league.replay.r19.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.18.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay19"
+      }
+    },
+    "league.replay.r19.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.18.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay19"
+      }
+    },
+    "league.replay.r19.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.18.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay19"
+      }
+    },
+    "league.replay.r19.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.18.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay19"
+      }
+    },
+    "league.replay.r20.ext10small": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.19.extreme.total.small",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay20"
+      }
+    },
+    "league.replay.r20.ext10medium": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.19.extreme.total.medium",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay20"
+      }
+    },
+    "league.replay.r20.ext10large": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.19.extreme.total.large",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay20"
+      }
+    },
+    "league.replay.r20.top10overlap": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.19.topOverlap",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay20"
+      }
+    },
+    "league.replay.r20.misordered": {
+      "type": "scalar",
+      "from": "l03.replays",
+      "field": "draws.19.misordered",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "settings": {
+        "seed": "settings.seed.league",
+        "seed_replay": "settings.seed.replay20"
+      }
+    }
+  }
+}

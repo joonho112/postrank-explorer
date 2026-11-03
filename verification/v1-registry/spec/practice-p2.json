@@ -1,0 +1,21 @@
+{
+  "$schema": "../schema.json",
+  "spec": "practice-p2",
+  "description": "Practice page X-02 (pages/practice/exercises.qmd), Part 2 section: the setting that the Part 2 feedback adds (settings.pi70, the cut-off 1 - tau at tau = .30; the answer tolerances are settings.x02.* keys of practice-p1.json and settings.json) and the answers and feedback values that the Part 2 specs do not hold, each recomputed here from the same engine calls as the Part 2 pages (six sites on score A, the released error array; the theory book's three-unit law of ch. 10). Every other answer and mistake value of the Part 2 items is a key of a Part 2 spec. A typed answer must read as a decimal, so the answer of a fraction-valued quantity gets a decimal display here (x02.p2.law3.tau20.optrisk beside tb10.law3.tau20.optrisk, 11/60).",
+  "license_scope": "author",
+  "inputs": {
+    "x02.p2.six.all.tau30": {"fn":"exactOptimum","args":[{"$data":"six-sites","path":"arrays.one"},{"tau":{"$setting":"settings.tau30"},"family":{"kind":"all"}}],"note":"the exact optimum among all 4,683 reports of the six sites on score A at tau = .30 (between the change points .1884 and .3618, so the same report as at tau = .20)"},
+    "x02.p2.six.r123333.tau20": {"fn":"evaluateReport","args":[[1,2,3,3,3,3],{"$data":"six-sites","path":"arrays.one"},{"tau":{"$setting":"settings.tau20"}}],"note":"{A} > {B} > {C, D, E, F}, one of the choices of the G-03 prediction (its risk is six.A.r123333.tau20.risk in part2.json)"},
+    "x02.p2.law3": {"fn":"finiteLawPairwise","args":[[[[3],[2],[1]],[[3],[1],[2]],[[2],[3],[1]],[[1],[2],[3]]],[0.6,0.15,0.15,0.1],{"ids":["A","B","C"]}],"note":"theory book ch. 10: orders ABC 3/5, ACB 3/20, BAC 3/20, CBA 1/10 (the same input as tb10.law3 in part2.json)"},
+    "x02.p2.law3.tau20": {"fn":"exactOptimum","args":[{"$input":"x02.p2.law3"},{"tau":{"$setting":"settings.tau20"},"family":{"kind":"all"}}],"note":"the exact optimum within A_3 (13 reports) at tau = .20"}
+  },
+  "keys": {
+    "x02.p2.six.all.tau30.N": {"type":"scalar","from":"x02.p2.six.all.tau30","field":"N","format":{"fn":"formatCount"},"tolerance":0,"note":"pairs stated by the best report with no cap at tau = .30: every pair but C-D"},
+    "x02.p2.six.r123333.N": {"type":"scalar","from":"x02.p2.six.r123333.tau20","field":"N","format":{"fn":"formatCount"},"tolerance":0,"note":"pairs stated by {A} > {B} > {C, D, E, F}: A above five sites, B above four"},
+    "x02.p2.six.r123333.E": {"type":"scalar","from":"x02.p2.six.r123333.tau20","field":"Ew","format":{"fn":"formatRisk"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"expected wrong directions of the same report, given in the question"},
+    "x02.p2.six.r123333.errorTerm": {"type":"scalar","from":"x02.p2.six.r123333.tau20","field":"errorTerm","format":{"fn":"formatRisk"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"X-02 feedback value: E/M alone, the risk without the price of the withheld pairs"},
+    "x02.p2.six.r123333.whTerm": {"type":"scalar","from":"x02.p2.six.r123333.tau20","field":"withholdingTerm","format":{"fn":"formatRisk"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"X-02 feedback value: tau (M - N)/M alone, the risk without the expected wrong directions"},
+    "x02.p2.r122223.withheld": {"type":"scalar","fn":"pairCount","args":[4],"format":{"fn":"formatCount"},"tolerance":0,"note":"X-02 feedback value: the pairs inside the middle grade of {A} > {B, C, D, E} > {F}, the pairs that report withholds"},
+    "x02.p2.law3.tau20.optrisk": {"type":"scalar","from":"x02.p2.law3.tau20","field":"risk","format":{"fn":"formatRisk"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"11/60 as a decimal, the typed answer of the X-02 question on the G-04 preset finite (the same value as tb10.law3.tau20.optrisk)"}
+  }
+}

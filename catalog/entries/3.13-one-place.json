@@ -1,0 +1,124 @@
+{
+  "id": "3.13",
+  "name": "one-place",
+  "part": "3",
+  "title": "A grade is not an allocation",
+  "idea": "With a fixed number of places or a fixed threshold, posterior means, the chances of being in the top or above the threshold, and the grades can pick differently; using grades for either needs one more rule.",
+  "status": "built",
+  "from": "new concept · theory book ch. 17 (selection benchmarks; threshold classification with asymmetric costs), ch. 19 and ch. 21; picture: rules as points of expected selected value against expected overlap with the true top (in threshold mode, against expected classification loss), each with its reporting risk; the reader sets the places or the threshold, τ and the law",
+  "data": [
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 17 and 19.",
+  "presets": [
+    {
+      "id": "three",
+      "label": "Three units, reporting objective",
+      "query": "law=tb19&mode=places&tau=0.25&budget=1&report=optimal&threshold=3.5&falsePositiveCost=1&falseNegativeCost=1&positiveGrade=1&priorSd=0.15&S=2000&seed=1"
+    },
+    {
+      "id": "mean",
+      "label": "Three units, mean-value order",
+      "query": "law=tb19&mode=places&tau=0.25&budget=1&report=mean&threshold=3.5&falsePositiveCost=1&falseNegativeCost=1&positiveGrade=1&priorSd=0.15&S=2000&seed=1"
+    },
+    {
+      "id": "two25",
+      "label": "Two units, τ .25",
+      "query": "law=tb17&mode=places&tau=0.25&budget=1&report=optimal&threshold=3.5&falsePositiveCost=1&falseNegativeCost=1&positiveGrade=1&priorSd=0.15&S=2000&seed=1"
+    },
+    {
+      "id": "two40",
+      "label": "Two units, τ .40",
+      "query": "law=tb17&mode=places&tau=0.4&budget=1&report=optimal&threshold=3.5&falsePositiveCost=1&falseNegativeCost=1&positiveGrade=1&priorSd=0.15&S=2000&seed=1"
+    },
+    {
+      "id": "class-equal",
+      "label": "Equal classification costs",
+      "query": "law=tb19&mode=threshold&tau=0.25&budget=1&report=optimal&threshold=3.5&falsePositiveCost=1&falseNegativeCost=1&positiveGrade=1&priorSd=0.15&S=2000&seed=1"
+    },
+    {
+      "id": "class-asymmetric",
+      "label": "False-negative cost 3",
+      "query": "law=tb19&mode=threshold&tau=0.25&budget=1&report=optimal&threshold=3.5&falsePositiveCost=1&falseNegativeCost=3&positiveGrade=1&priorSd=0.15&S=2000&seed=1"
+    },
+    {
+      "id": "class-threshold4",
+      "label": "Threshold 4",
+      "query": "law=tb19&mode=threshold&tau=0.25&budget=1&report=optimal&threshold=4&falsePositiveCost=1&falseNegativeCost=1&positiveGrade=1&priorSd=0.15&S=2000&seed=1"
+    },
+    {
+      "id": "same-risk",
+      "label": "Equal reporting risk, different classifications",
+      "query": "law=tb19&mode=threshold&tau=0.3&budget=1&report=optimal&threshold=3.5&falsePositiveCost=1&falseNegativeCost=1&positiveGrade=2&priorSd=0.15&S=2000&seed=1"
+    },
+    {
+      "id": "league-five",
+      "label": "League, five places",
+      "query": "law=league&mode=places&tau=0.2&budget=5&report=mean&threshold=0&falsePositiveCost=1&falseNegativeCost=1&positiveGrade=1&priorSd=0.15&S=2000&seed=1"
+    },
+    {
+      "id": "league-top",
+      "label": "League, top-set order",
+      "query": "law=league&mode=places&tau=0.2&budget=5&report=top&threshold=0&falsePositiveCost=1&falseNegativeCost=1&positiveGrade=1&priorSd=0.15&S=2000&seed=1"
+    }
+  ],
+  "caption": "Supplied tie-free conditional laws; native expected value, top-set overlap and asymmetric threshold costs are evaluated separately from reporting loss.",
+  "try": [
+    {
+      "preset": "three",
+      "shows": [
+        ".1833",
+        "4.000",
+        ".700"
+      ]
+    },
+    {
+      "preset": "mean",
+      "shows": [
+        ".4667",
+        "6.000",
+        ".300"
+      ]
+    },
+    {
+      "preset": "two25",
+      "shows": [
+        "5.000",
+        ".500"
+      ]
+    },
+    {
+      "preset": "class-asymmetric",
+      "shows": [
+        "2",
+        ".700",
+        ".900"
+      ]
+    },
+    {
+      "preset": "class-threshold4",
+      "shows": [
+        "0",
+        ".300"
+      ]
+    },
+    {
+      "preset": "league-five",
+      "shows": [
+        ".558",
+        "2.733",
+        "2.825"
+      ]
+    },
+    {
+      "preset": "same-risk",
+      "shows": [
+        ".2000",
+        "3",
+        "2",
+        "1.700",
+        "1.300"
+      ]
+    }
+  ]
+}

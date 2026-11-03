@@ -1,0 +1,50 @@
+---
+title: "Grade reports as pairwise decisions"
+subtitle: "2.2 · block reading after Kline, Rose and Walters (2024), slide 56"
+description: "Pairwise statements induced by assigning units to ordered grades."
+---
+
+An ordered grade report determines a decision for every pair of units. Pairs in different grades receive a stated
+direction; pairs within a grade are withheld. A shared grade makes no assertion of equality between the true values.
+The grade labels specify order, with highest priority at the top, rather than numerical distances. Reassigning sites
+among the boxes changes the induced pairwise relation. The accompanying matrix records these changes and the totals
+of stated and withheld pairs, permitting comparison of reports with different grade sizes and orders.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/report-builder.js"></script>
+<script>window.__prxApp = PRX["report-builder"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **A, then B to E, then F.** The report states 9 of the 15 pairs and withholds 6, a share stated of .600. Every
+  comparison involving either end is stated; the middle grade withholds its internal pairs. Moving a middle site into an end grade changes the outlined matrix cells.
+- **Three grades of two sites.** The same number of grades now states 12 of the 15 pairs and withholds only 3,
+  a share of .800. Each grade withholds its own internal pair. Disclosure depends on the sizes as well as the number of grades.
+- **Four sites: 1/2/2/2.** The smaller report states 3 of the 6 pairs, a share of .500. A focused site button accepts a destination grade number. Enter selects the site, arrow keys specify a destination, and a second Enter completes the move. The dashed
+  boxes create a new grade at either end.
+- **Beyond letter order.** The report {B, D} > {C, F} > {A, E} still states 12 of the 15 pairs. Any grouping and
+  ordering can be built. The blue and orange transposed cells represent the same unordered pair: each stated pair appears in both triangles,
+  while the pair count includes it once.
+
+::: {.callout-note appearance="simple"}
+These fictional after-school sites are ordered for practice-documentation visits, with no funding consequence.
+The matrix represents the supplied report without evaluating the accuracy of its directions. Empty grades
+disappear after a move, preserving the relative order of the occupied boxes.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+postrank_evaluate(c(A=1L,B=1L,C=2L,D=2L,E=3L,F=3L), pr_tutorial$one, weights=c(score_A=1), tau=.2)$N # 12
+canonical_postrank_grade(c(A=3L,B=3L,C=7L,D=7L,E=9L,F=9L), LETTERS[1:6]) # 1 1 2 2 3 3
+```
+:::
+
+Standalone: [report builder](../../embed/report-builder.html), for example `?units=6&grades=3,1,2,1,3,2`.
+
+Related applications: [Reporting risk and withholding cost](price-of-silence.qmd),
+[Expected errors in a strict ranking](../uncertainty/ranking-claims.qmd).

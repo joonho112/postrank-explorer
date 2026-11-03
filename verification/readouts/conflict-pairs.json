@@ -1,0 +1,3694 @@
+{
+  "$schema": "./_schema.json",
+  "app": "conflict-pairs",
+  "catalog": "4.2",
+  "about": "Twelve independently authored R38 pair-cost settings: six/thirty, certain conflict, zero weights, all-action boundary, uncertain agreement, chapter19 and latent equality in both orientations. Full weighted/percriterion costs, action multiplicity and perstate costs/gamma pinned.",
+  "cases": [
+    {
+      "id": "pair-cost-six-0-2",
+      "query": "data=six&pair=A,C&w=0.5&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.3803207040077345,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.6196792959922656,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.3803207040077345,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "conflicts.count"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.0003914691089455608,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.0003914691089455608,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.9996085308910544,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.9996085308910544,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0.0003914691089455608,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.7602499389065234,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.7602499389065234,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.23975006109347666,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.23975006109347666,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-0-2",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0.23975006109347666,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-six-1-2",
+      "query": "data=six&pair=B,C&w=0.5&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.4840571142593189,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.5159428857406811,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.4840571142593189,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "conflicts.count"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.006664164390408787,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.006664164390408787,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.9933358356095913,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.9933358356095913,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0.006664164390408787,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.9614500641282291,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.9614500641282291,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.03854993587177092,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.03854993587177092,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0.03854993587177092,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-six-1-3",
+      "query": "data=six&pair=B,D&w=0.5&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.38129440319852337,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.6187055968014766,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.38129440319852337,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "conflicts.count"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.0023388674905236383,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.0023388674905236383,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.9976611325094764,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.9976611325094764,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0.0023388674905236383,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.7602499389065231,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.7602499389065231,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.23975006109347682,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.23975006109347682,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-3",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0.23975006109347682,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-thirty-0-1",
+      "query": "data=thirty&pair=site001,site002&w=0.3333333333333333&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.6347774158438311,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.36522258415616904,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.36522258415616904,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "conflicts.count"
+          },
+          "value": 397,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.7099007972183964,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.7099007972183964,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.2900992027816036,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.2900992027816036,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0.2900992027816036,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.8587437797772733,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.8587437797772733,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.14125622022272669,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.14125622022272669,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0.14125622022272669,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-2-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.2.eIJ"
+          },
+          "value": 0.33568767053582327,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-2-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.2.eIJ"
+          },
+          "value": 0.33568767053582327,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-2-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.2.eJI"
+          },
+          "value": 0.6643123294641767,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-2-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.2.eJI"
+          },
+          "value": 0.6643123294641767,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-2-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.2.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-2-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-thirty-0-1",
+            "field": "criteria.2.decision.directionalMinimum"
+          },
+          "value": 0.33568767053582327,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-ch19-b-c",
+      "query": "data=ch19&pair=B,C&w=0.6&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "conflicts.count"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "states.0.prob"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "states.0.decision.costs.iAboveJ"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "states.0.decision.costs.jAboveI"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "states.0.decision.directionalMinimum"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "states.1.prob"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "states.1.decision.costs.iAboveJ"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "states.1.decision.costs.jAboveI"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ch19-B-C",
+            "field": "states.1.decision.directionalMinimum"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-opposition-w0-5",
+      "query": "data=opposition&pair=A,B&w=0.5&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "conflicts.count"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "states.0.prob"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "states.0.decision.costs.iAboveJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "states.0.decision.costs.jAboveI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0.5",
+            "field": "states.0.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-opposition-w0",
+      "query": "data=opposition&pair=A,B&w=0&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "conflicts.count"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "states.0.prob"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "states.0.decision.costs.iAboveJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "states.0.decision.costs.jAboveI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w0",
+            "field": "states.0.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-opposition-w1",
+      "query": "data=opposition&pair=A,B&w=1&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "conflicts.count"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "states.0.prob"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "states.0.decision.costs.iAboveJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "states.0.decision.costs.jAboveI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-w1",
+            "field": "states.0.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-opposition-boundary",
+      "query": "data=opposition&pair=A,B&w=0.5&tau=0.5",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "conflicts.count"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.0.eJI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "states.0.prob"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "states.0.decision.costs.iAboveJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "states.0.decision.costs.jAboveI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-opposition-boundary",
+            "field": "states.0.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-uncertain",
+      "query": "data=uncertain&pair=A,B&w=0.5&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "conflicts.count"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "states.0.prob"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "states.0.decision.costs.iAboveJ"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "states.0.decision.costs.jAboveI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "states.0.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "states.1.prob"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "states.1.decision.costs.iAboveJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "states.1.decision.costs.jAboveI"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-uncertain",
+            "field": "states.1.decision.directionalMinimum"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-ties-0-1",
+      "query": "data=ties&pair=A,B&w=0.5&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "conflicts.count"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.0.prob"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.0.decision.costs.iAboveJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.0.decision.costs.jAboveI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.0.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.1.prob"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.1.decision.costs.iAboveJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.1.decision.costs.jAboveI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.1.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-2-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.2.prob"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-2-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.2.decision.costs.iAboveJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-2-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.2.decision.costs.jAboveI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-2-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-0-1",
+            "field": "states.2.decision.directionalMinimum"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-cost-ties-1-0",
+      "query": "data=ties&pair=B,A&w=0.5&tau=0.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "weighted.decision.costs.iAboveJ"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "weighted.decision.costs.jAboveI"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "weighted.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directional-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "weighted.decision.directionalMinimum"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "weighted.decision.best.length"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-conflicts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "conflicts.count"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.0.eIJ"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-0-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.0.eJI"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.0.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-0-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.0.decision.directionalMinimum"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eij\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pair-1-eji\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-1-min\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "criteria.1.decision.directionalMinimum"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.0.prob"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.0.decision.costs.iAboveJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.0.decision.costs.jAboveI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-0-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.0.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.1.prob"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.1.decision.costs.iAboveJ"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.1.decision.costs.jAboveI"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-1-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.1.decision.directionalMinimum"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-2-prob\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.2.prob"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-2-forward\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.2.decision.costs.iAboveJ"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-2-reverse\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.2.decision.costs.jAboveI"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-2-gamma\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-ties-1-0",
+            "field": "states.2.decision.directionalMinimum"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    }
+  ]
+}

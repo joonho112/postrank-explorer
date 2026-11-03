@@ -1,0 +1,3293 @@
+{
+  "app": "naive-thresholding",
+  "catalog": "3.10",
+  "from": "Independent base-R R29 exhaustive triple diagnostics; existing R report-risk overlap checks.",
+  "cases": [
+    {
+      "id": "race25",
+      "preset": "race25",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"naive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "statedCount"
+          },
+          "value": 1575,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"invalid\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "invalidCount"
+          },
+          "value": 32773,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"triples\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "triples"
+          },
+          "value": 147440,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"twoWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "counts.twoWithheld"
+          },
+          "value": 32773,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"statedChain\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "counts.statedChain"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directedCycle\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "counts.directedCycle"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "confidentPairs-krw-race-card-released-tau.2",
+            "field": "withheld"
+          },
+          "value": 575,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-doubtful\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "statedAbove-krw-race-card-released-tau.2",
+            "field": "count"
+          },
+          "value": 324,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"control-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "race10",
+      "preset": "race10",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"naive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.10",
+            "field": "statedCount"
+          },
+          "value": 573,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"invalid\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.10",
+            "field": "invalidCount"
+          },
+          "value": 24278,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"triples\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.10",
+            "field": "triples"
+          },
+          "value": 147440,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"twoWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.10",
+            "field": "counts.twoWithheld"
+          },
+          "value": 24278,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"statedChain\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.10",
+            "field": "counts.statedChain"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directedCycle\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.10",
+            "field": "counts.directedCycle"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"control-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.10",
+            "field": "tau"
+          },
+          "value": 0.0909090909090909,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "race50",
+      "preset": "race50",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"naive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.50",
+            "field": "statedCount"
+          },
+          "value": 2994,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"invalid\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.50",
+            "field": "invalidCount"
+          },
+          "value": 15107,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"triples\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.50",
+            "field": "triples"
+          },
+          "value": 147440,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"twoWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.50",
+            "field": "counts.twoWithheld"
+          },
+          "value": 15107,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"statedChain\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.50",
+            "field": "counts.statedChain"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directedCycle\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.50",
+            "field": "counts.directedCycle"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"control-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.50",
+            "field": "tau"
+          },
+          "value": 0.333333333333333,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "race75",
+      "preset": "race75",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"naive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.75",
+            "field": "statedCount"
+          },
+          "value": 3949,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"invalid\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.75",
+            "field": "invalidCount"
+          },
+          "value": 3108,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"triples\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.75",
+            "field": "triples"
+          },
+          "value": 147440,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"twoWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.75",
+            "field": "counts.twoWithheld"
+          },
+          "value": 3108,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"statedChain\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.75",
+            "field": "counts.statedChain"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directedCycle\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.75",
+            "field": "counts.directedCycle"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"control-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.75",
+            "field": "tau"
+          },
+          "value": 0.428571428571429,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "raceblocks",
+      "preset": "raceblocks",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"naive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "statedCount"
+          },
+          "value": 1575,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"invalid\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "invalidCount"
+          },
+          "value": 32773,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"triples\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "triples"
+          },
+          "value": 147440,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"twoWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "counts.twoWithheld"
+          },
+          "value": 32773,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"statedChain\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "counts.statedChain"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directedCycle\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "counts.directedCycle"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "confidentPairs-krw-race-card-released-tau.2",
+            "field": "withheld"
+          },
+          "value": 575,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-doubtful\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "statedAbove-krw-race-card-released-tau.2",
+            "field": "count"
+          },
+          "value": 324,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"control-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-race-lambda0.25",
+            "field": "tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "gender25",
+      "preset": "gender25",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"naive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda0.25",
+            "field": "statedCount"
+          },
+          "value": 1227,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"invalid\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda0.25",
+            "field": "invalidCount"
+          },
+          "value": 30264,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"triples\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda0.25",
+            "field": "triples"
+          },
+          "value": 147440,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"twoWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda0.25",
+            "field": "counts.twoWithheld"
+          },
+          "value": 30264,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"statedChain\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda0.25",
+            "field": "counts.statedChain"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directedCycle\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda0.25",
+            "field": "counts.directedCycle"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"control-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda0.25",
+            "field": "tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "gender100",
+      "preset": "gender100",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"naive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda1.00",
+            "field": "statedCount"
+          },
+          "value": 4656,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"invalid\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda1.00",
+            "field": "invalidCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"triples\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda1.00",
+            "field": "triples"
+          },
+          "value": 147440,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"twoWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda1.00",
+            "field": "counts.twoWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"statedChain\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda1.00",
+            "field": "counts.statedChain"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"directedCycle\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda1.00",
+            "field": "counts.directedCycle"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"control-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "threshold-krw-gender-lambda1.00",
+            "field": "tau"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "r32-race-all-firms",
+      "query": "criterion=race&lambda=.25&blocks=true",
+      "expect": [
+        {
+          "select": "[data-prx-unitcount=\"0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.0"
+          },
+          "value": 42,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.1"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.2"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.3"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.4"
+          },
+          "value": 15,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.5"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"6\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.6"
+          },
+          "value": 48,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"7\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.7"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"8\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.8"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"9\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.9"
+          },
+          "value": 44,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"10\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.10"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"11\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.11"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"12\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.12"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"13\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.13"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"14\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.14"
+          },
+          "value": 73,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"15\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.15"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"16\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.16"
+          },
+          "value": 50,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"17\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.17"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"18\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.18"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"19\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.19"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"20\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.20"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"21\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.21"
+          },
+          "value": 24,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"22\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.22"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"23\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.23"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"24\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.24"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"25\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.25"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"26\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.26"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"27\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.27"
+          },
+          "value": 44,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"28\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.28"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"29\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.29"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"30\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.30"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"31\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.31"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"32\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.32"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"33\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.33"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"34\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.34"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"35\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.35"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"36\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.36"
+          },
+          "value": 55,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"37\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.37"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"38\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.38"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"39\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.39"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"40\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.40"
+          },
+          "value": 16,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"41\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.41"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"42\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.42"
+          },
+          "value": 22,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"43\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.43"
+          },
+          "value": 43,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"44\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.44"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"45\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.45"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"46\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.46"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"47\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.47"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"48\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.48"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"49\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.49"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"50\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.50"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"51\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.51"
+          },
+          "value": 24,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"52\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.52"
+          },
+          "value": 15,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"53\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.53"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"54\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.54"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"55\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.55"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"56\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.56"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"57\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.57"
+          },
+          "value": 16,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"58\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.58"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"59\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.59"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"60\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.60"
+          },
+          "value": 50,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"61\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.61"
+          },
+          "value": 85,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"62\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.62"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"63\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.63"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"64\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.64"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"65\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.65"
+          },
+          "value": 24,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"66\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.66"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"67\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.67"
+          },
+          "value": 15,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"68\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.68"
+          },
+          "value": 23,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"69\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.69"
+          },
+          "value": 19,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"70\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.70"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"71\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.71"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"72\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.72"
+          },
+          "value": 11,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"73\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.73"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"74\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.74"
+          },
+          "value": 25,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"75\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.75"
+          },
+          "value": 30,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"76\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.76"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"77\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.77"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"78\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.78"
+          },
+          "value": 26,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"79\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.79"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"80\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.80"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"81\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.81"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"82\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.82"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"83\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.83"
+          },
+          "value": 44,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"84\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.84"
+          },
+          "value": 37,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"85\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.85"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"86\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.86"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"87\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.87"
+          },
+          "value": 42,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"88\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.88"
+          },
+          "value": 24,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"89\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.89"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"90\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.90"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"91\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.91"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"92\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.92"
+          },
+          "value": 42,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"93\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.93"
+          },
+          "value": 37,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"94\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.94"
+          },
+          "value": 49,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"95\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.95"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"96\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-race-lambda025",
+            "field": "aboveCounts.96"
+          },
+          "value": 29,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "r32-gender-all-firms",
+      "query": "criterion=gender&lambda=.25&blocks=true",
+      "expect": [
+        {
+          "select": "[data-prx-unitcount=\"0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.0"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.1"
+          },
+          "value": 37,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.2"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.3"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.4"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.5"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"6\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.6"
+          },
+          "value": 11,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"7\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.7"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"8\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.8"
+          },
+          "value": 32,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"9\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.9"
+          },
+          "value": 33,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"10\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.10"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"11\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.11"
+          },
+          "value": 31,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"12\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.12"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"13\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.13"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"14\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.14"
+          },
+          "value": 25,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"15\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.15"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"16\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.16"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"17\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.17"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"18\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.18"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"19\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.19"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"20\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.20"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"21\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.21"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"22\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.22"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"23\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.23"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"24\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.24"
+          },
+          "value": 39,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"25\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.25"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"26\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.26"
+          },
+          "value": 7,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"27\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.27"
+          },
+          "value": 7,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"28\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.28"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"29\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.29"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"30\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.30"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"31\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.31"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"32\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.32"
+          },
+          "value": 28,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"33\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.33"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"34\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.34"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"35\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.35"
+          },
+          "value": 18,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"36\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.36"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"37\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.37"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"38\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.38"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"39\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.39"
+          },
+          "value": 7,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"40\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.40"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"41\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.41"
+          },
+          "value": 40,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"42\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.42"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"43\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.43"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"44\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.44"
+          },
+          "value": 49,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"45\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.45"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"46\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.46"
+          },
+          "value": 70,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"47\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.47"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"48\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.48"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"49\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.49"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"50\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.50"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"51\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.51"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"52\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.52"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"53\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.53"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"54\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.54"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"55\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.55"
+          },
+          "value": 24,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"56\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.56"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"57\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.57"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"58\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.58"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"59\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.59"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"60\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.60"
+          },
+          "value": 40,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"61\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.61"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"62\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.62"
+          },
+          "value": 60,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"63\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.63"
+          },
+          "value": 19,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"64\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.64"
+          },
+          "value": 28,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"65\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.65"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"66\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.66"
+          },
+          "value": 5,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"67\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.67"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"68\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.68"
+          },
+          "value": 16,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"69\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.69"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"70\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.70"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"71\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.71"
+          },
+          "value": 22,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"72\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.72"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"73\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.73"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"74\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.74"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"75\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.75"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"76\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.76"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"77\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.77"
+          },
+          "value": 7,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"78\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.78"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"79\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.79"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"80\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.80"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"81\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.81"
+          },
+          "value": 7,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"82\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.82"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"83\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.83"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"84\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.84"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"85\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.85"
+          },
+          "value": 32,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"86\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.86"
+          },
+          "value": 11,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"87\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.87"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"88\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.88"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"89\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.89"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"90\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.90"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"91\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.91"
+          },
+          "value": 90,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"92\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.92"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"93\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.93"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"94\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.94"
+          },
+          "value": 96,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"95\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.95"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-unitcount=\"96\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-threshold-units",
+            "row": "threshold-units-krw-gender-lambda025",
+            "field": "aboveCounts.96"
+          },
+          "value": 15,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    }
+  ]
+}

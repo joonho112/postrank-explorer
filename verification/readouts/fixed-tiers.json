@@ -1,0 +1,553 @@
+{
+  "$schema": "./_schema.json",
+  "catalog": "3.1",
+  "about": "Full R-01 non-gate readouts, preserved from the frozen v1 registry; independent pair-count/frozen-league rows remain. All four panels, formula mtext order, G3/G4/G10/G1, outlines and clamp/update paths are exercised. Gates and verdicts were deliberately removed. New unpinned results are not used as self-generated expectations.",
+  "cases": [
+    {
+      "id": "preset-three-tiers",
+      "about": "deck preset: three tiers of 10 at tau .20, outlines off. N, E, E/N and risk of the tier report (engine registry keys of the frozen draw; no independent row exists for tiers of the league estimates); M from the base-R pairCount row; the share at the end of the share formula (numbers in formula order: 1, 2, 2, 1, 3, 10, 2, 30, 2, 1, 135, 435, then N/M); the first row of the league table against the base-R frozen draw and the league specification (U26 has the largest estimate).",
+      "preset": "three-tiers",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by three tiers",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers3.tau20.N",
+          "value": 300
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "all pairs of thirty units, M (base-R pairCount)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-30",
+            "field": "M"
+          },
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions E",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers3.tau20.E",
+          "value": 51.86392046017462,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N at three significant digits",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers3.tau20.EoverN",
+          "value": 0.17287973486724872
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "expected loss per pair (risk) at tau .20",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers3.tau20.risk",
+          "value": 0.18129636887396466
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "the withholding cost tau on the errors panel",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"allWithheld\"]",
+          "about": "the all-withheld report's risk equals tau",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-tex=\"share\"] mtext",
+          "about": "the share N/M at the end of the formula",
+          "source": "registry",
+          "ref": "r01.share.G3",
+          "value": 0.6896551724137931,
+          "index": 12
+        },
+        {
+          "select": "[data-prx-tex=\"share\"] mtext",
+          "about": "the same share against the part3 key (same quantity)",
+          "source": "registry",
+          "ref": "cf.tiers.n30.G3.share",
+          "value": 0.6896551724137931,
+          "index": 12
+        },
+        {
+          "select": "[data-prx-tex=\"divides\"] mtext",
+          "about": "G divides n: n(1 - 1/G)/(n - 1) gives the same share (last number)",
+          "source": "registry",
+          "ref": "r01.share.G3",
+          "value": 0.6896551724137931,
+          "index": 8
+        },
+        {
+          "select": ".prx-ft-league-chart tbody tr:nth-child(1) td:nth-child(3)",
+          "about": "largest estimate (U26) in the league table, base-R frozen draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.25"
+          },
+          "value": 0.237026192203164
+        },
+        {
+          "select": ".prx-ft-league-chart tbody tr:nth-child(1) td:nth-child(4)",
+          "about": "its SE (a medium unit), base-R league specification",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.25"
+          },
+          "value": 0.1
+        },
+        {
+          "select": ".prx-ft-errors [data-prx-caption=\"fixed-tiers\"]",
+          "kind": "text",
+          "about": "caption of the tier report",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "fixed tiers, not optimized"
+        },
+        {
+          "select": ".prx-caption [data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "about": "caption of the posterior",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "preset-ten-tiers",
+      "about": "ten tiers of 3 at tau .20 with the outlines on: N, E, E/N, risk (registry), the stated pairs whose error exceeds tau and the largest stated error (registry, statedAbove), the share in both formulas (share formula numbers: 1, 2, 2, 1, 10, 3, 2, 30, 2, 1, 30, 435, N/M).",
+      "preset": "ten-tiers",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by ten tiers",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers10.tau20.N",
+          "value": 405
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "the same count (same_as key)",
+          "source": "registry",
+          "ref": "r01.tiers10.N",
+          "value": 405
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions E",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers10.tau20.E",
+          "value": 89.40270202297638,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N, above tau",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers10.tau20.EoverN",
+          "value": 0.22074741240241083
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk, above the all-withheld risk tau",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers10.tau20.risk",
+          "value": 0.21931655637465836
+        },
+        {
+          "select": "[data-prx-readout=\"over\"]",
+          "about": "stated pairs whose error exceeds tau",
+          "source": "registry",
+          "ref": "r01.tiers10.tau20.over",
+          "value": 197
+        },
+        {
+          "select": "[data-prx-readout=\"maxStated\"]",
+          "about": "largest error of a stated direction",
+          "source": "registry",
+          "ref": "r01.tiers10.tau20.maxstated",
+          "value": 0.8016595628677452
+        },
+        {
+          "select": "[data-prx-tex=\"share\"] mtext",
+          "about": "the share N/M at the end of the formula",
+          "source": "registry",
+          "ref": "r01.share.G10",
+          "value": 0.9310344827586207,
+          "index": 12
+        },
+        {
+          "select": "[data-prx-tex=\"divides\"] mtext",
+          "about": "n(1 - 1/G)/(n - 1) (last number)",
+          "source": "registry",
+          "ref": "r01.share.G10",
+          "value": 0.9310344827586207,
+          "index": 8
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "the withholding cost tau on the errors panel",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"allWithheld\"]",
+          "about": "the all-withheld report's risk equals tau",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": ".prx-ft-errors .prx-ft-line",
+          "index": 0,
+          "kind": "text",
+          "about": "E/N and tau side by side: E/N above tau means risk above tau (CONTRACT 6.4 wording)",
+          "source": "literal",
+          "ref": "6.4",
+          "slots": true,
+          "value": "E/N is above τ, so at this τ the tiers' risk is above the all-withheld report's risk, τ (the risk averages E/N and τ, weighted by the shares stated and withheld). The all-withheld report has risk ⟨allWithheld⟩."
+        }
+      ]
+    },
+    {
+      "id": "preset-four-tiers",
+      "about": "four tiers at tau .20: the quantile positions give sizes 8, 7, 8, 7; N 337; E/N, E and risk (registry); share formula numbers 1, 2, 2, 1, 2, 8, 2, 2, 7, 2, 30, 2, 1, 98, 435, N/M (index 15). G = 4 does not divide 30, so the second formula is hidden.",
+      "preset": "four-tiers",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"sizes\"]",
+          "about": "tier sizes, tier 1 first",
+          "source": "registry",
+          "ref": "cf.tiers.n30.G4.sizes",
+          "value": [
+            8,
+            7,
+            8,
+            7
+          ],
+          "format": {
+            "fn": "formatSizes",
+            "options": {
+              "label": false
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by four tiers",
+          "source": "registry",
+          "ref": "cf.tiers.n30.G4.N",
+          "value": 337
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "E of four tiers",
+          "source": "registry",
+          "ref": "r01.tiers4.tau20.E",
+          "value": 61.60709236014215
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N of four tiers",
+          "source": "registry",
+          "ref": "r01.tiers4.tau20.EoverN",
+          "value": 0.18281036308647522
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of four tiers",
+          "source": "registry",
+          "ref": "r01.tiers4.tau20.risk",
+          "value": 0.18668297094285552
+        },
+        {
+          "select": "[data-prx-tex=\"share\"] mtext",
+          "about": "the share N/M at the end of the formula",
+          "source": "registry",
+          "ref": "r01.share.G4",
+          "value": 0.774712643678161,
+          "index": 15
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "all pairs of thirty units, M (base-R pairCount)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-30",
+            "field": "M"
+          },
+          "value": 435
+        }
+      ]
+    },
+    {
+      "id": "two-tiers",
+      "about": "G = 2: two tiers of 15 (share formula numbers 1, 2, 2, 1, 2, 15, 2, 30, 2, 1, 210, 435, N/M)",
+      "query": "?G=2&tau=.20&outline=0",
+      "expect": [
+        {
+          "select": "[data-prx-tex=\"share\"] mtext",
+          "about": "the share N/M at the end of the formula",
+          "source": "registry",
+          "ref": "r01.share.G2",
+          "value": 0.5172413793103449,
+          "index": 12
+        },
+        {
+          "select": "[data-prx-tex=\"share\"] mtext",
+          "about": "the same share (part3 key)",
+          "source": "registry",
+          "ref": "cf.tiers.n30.G2.share",
+          "value": 0.5172413793103449,
+          "index": 12
+        }
+      ]
+    },
+    {
+      "id": "five-tiers",
+      "about": "G = 5: five tiers of 6 (share formula numbers 1, 2, 2, 1, 5, 6, 2, 30, 2, 1, 75, 435, N/M)",
+      "query": "?G=5&tau=.20&outline=0",
+      "expect": [
+        {
+          "select": "[data-prx-tex=\"share\"] mtext",
+          "about": "the share N/M at the end of the formula",
+          "source": "registry",
+          "ref": "r01.share.G5",
+          "value": 0.8275862068965517,
+          "index": 12
+        },
+        {
+          "select": "[data-prx-tex=\"share\"] mtext",
+          "about": "the same share (part3 key)",
+          "source": "registry",
+          "ref": "cf.tiers.n30.G5.share",
+          "value": 0.8275862068965517,
+          "index": 12
+        }
+      ]
+    },
+    {
+      "id": "three-tiers-outlines",
+      "about": "three tiers with the outlines on: the stated pairs whose error exceeds tau and the largest stated error (registry statedAbove keys)",
+      "query": "?G=3&tau=.20&outline=1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"over\"]",
+          "about": "stated pairs whose error exceeds tau",
+          "source": "registry",
+          "ref": "r01.tiers3.tau20.over",
+          "value": 113
+        },
+        {
+          "select": "[data-prx-readout=\"maxStated\"]",
+          "about": "largest error of a stated direction",
+          "source": "registry",
+          "ref": "r01.tiers3.tau20.maxstated",
+          "value": 0.6388012455882287
+        },
+        {
+          "select": ".prx-ft-errors .prx-ft-line",
+          "index": 0,
+          "kind": "text",
+          "about": "E/N below tau: risk below tau",
+          "source": "literal",
+          "ref": "6.4",
+          "slots": true,
+          "value": "E/N is below τ, so at this τ the tiers' risk is below the all-withheld report's risk, τ (the risk averages E/N and τ, weighted by the shares stated and withheld). The all-withheld report has risk ⟨allWithheld⟩."
+        }
+      ]
+    },
+    {
+      "id": "one-tier",
+      "about": "G = 1 (edge): one tier withholds every pair, so N = 0, E/N is not defined and the risk equals tau",
+      "query": "?G=1&tau=.20&outline=1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the all-withheld report equals tau (the engine sums the withholding term in floating point)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2,
+          "tol": {
+            "abs": 1e-15,
+            "rel": 1e-15
+          }
+        },
+        {
+          "select": ".prx-ft-errors .prx-ft-line",
+          "index": 1,
+          "kind": "text",
+          "about": "with N = 0 no stated direction can be wrong",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "No pair is stated, so no stated direction can be wrong."
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "3.1",
+          "value": "NA: no disclosure",
+          "about": "Zero disclosure never receives a displayed error fraction of zero."
+        }
+      ]
+    },
+    {
+      "id": "clamped-high",
+      "about": "G above the slider is clamped to 30 (CONTRACT 8.1): the strict order states all M pairs; tau above the slider is clamped to .50",
+      "query": "?G=99&tau=.90&outline=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "thirty tiers of one state every pair, N = M (base-R pairCount)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-30",
+            "field": "M"
+          },
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau clamped to .50",
+          "source": "registry",
+          "ref": "settings.tau50",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "clamped-low-and-update",
+      "about": "G = 0 is clamped to 1 and tau = .01 to .02; then update() moves to ten tiers at tau .20 with the outlines on",
+      "query": "?G=0&tau=.01&outline=0",
+      "update": [
+        {
+          "G": 10,
+          "tau": 0.2,
+          "outline": true
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"over\"]",
+          "about": "after the update: stated pairs whose error exceeds tau",
+          "source": "registry",
+          "ref": "r01.tiers10.tau20.over",
+          "value": 197
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "after the update: pairs stated",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers10.tau20.N",
+          "value": 405
+        }
+      ]
+    },
+    {
+      "id": "clamped-low",
+      "about": "G = 0 is clamped to 1 and tau = .01 to .02 (CONTRACT 8.1)",
+      "query": "?G=0&tau=.01&outline=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau clamped to .02",
+          "source": "registry",
+          "ref": "settings.tau02",
+          "value": 0.02
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "one tier: the risk equals tau (the engine sums the withholding term in floating point)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "registry",
+          "ref": "settings.tau02",
+          "value": 0.02,
+          "tol": {
+            "abs": 1e-15,
+            "rel": 1e-15
+          }
+        }
+      ]
+    },
+    {
+      "id": "thirty-tiers-estimate-order",
+      "about": "CR-217: thirty tiers follow the raw estimates, not posterior means. Expected wrong count uses the frozen v1 registry; all-pair disclosure uses the independent pair-count oracle.",
+      "preset": "tiers30",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "league.default.prior15.strictest.E",
+          "value": 102.16536804460803
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-30",
+            "field": "M"
+          },
+          "value": 435
+        }
+      ]
+    }
+  ],
+  "app": "fixed-tiers"
+}

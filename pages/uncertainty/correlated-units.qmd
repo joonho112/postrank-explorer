@@ -1,0 +1,47 @@
+---
+title: "Posterior dependence and pairwise comparisons"
+subtitle: "1.9 · two jointly normal posteriors; dependence after the postrank theory book, ch. 9 and 18"
+description: "Effect of correlation on direction probabilities under a bivariate normal posterior distribution."
+---
+
+For a bivariate normal posterior distribution, the variance of A − B depends on the covariance between the two true
+values. Positive correlation reduces this variance, whereas negative correlation increases it. The shaded region
+below the equality line has posterior probability $\pi_{AB}$; the ellipse encloses .90 of the joint posterior
+probability. Correlation is varied while the marginal distributions and mean difference remain fixed. The resulting
+probability approaches or recedes from one half, without crossing it. A second specification derives the dependence
+from uncertainty about a shared prior mean.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/correlated-units.js"></script>
+<script>window.__prxApp = PRX["correlated-units"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Correlation .50.** The ellipse leans along the line: the true values move together, so their difference is less
+  uncertain: SD .200 against .283 if independent, and $\pi_{AB}$ = .841 against .760.
+- **Independent.** Correlation 0 with equal SDs draws a circle: the difference has SD .283, and $\pi_{AB}$ = .760.
+- **Correlation .95.** Strong positive dependence gives a difference with SD .063, and $\pi_{AB}$ = .999.
+- **Correlation −.95.** The ellipse lies across the line, and the difference widens to SD .395: $\pi_{AB}$ falls to
+  .694, toward one half, not past it.
+- **Shared prior mean.** Estimates .30 and .10 with SEs .20; true values spread with SD .10 around an uncertain prior
+  mean (SD .50). The model gives correlation .645, SD .126 for the difference and $\pi_{AB}$ = .624; taken
+  as independent, they would give .212 and .575. With prior-mean SD set to 0, the correlation vanishes, each posterior narrows to SD .089, and $\pi_{AB}$ stays .624.
+
+::: {.callout-note appearance="simple"}
+**Where the correlation comes from.** Given the prior mean, each posterior mean keeps the share
+$k = \text{prior SD}^2/(\text{prior SD}^2 + \text{SE}^2)$ of its estimate, independently. Both posterior variables depend on the uncertain prior mean, so their covariance is $(1 - k_A)(1 - k_B)\,v$, with $v$ the prior mean's variance given both
+estimates (theory book, ch. 18); with equal SEs the shared part cancels from the difference. postrank takes such
+posteriors as joint draws, or as normal laws averaged over the prior mean (`postrank_mixture_coefficients()`).
+:::
+
+Standalone: [embed/correlated-units.html](../../embed/correlated-units.html), for example `?corr=-.50` or
+`?preset=shared-mean&meanSd=0`.
+
+Related applications: [Pairwise posterior direction probabilities](two-units.qmd) (1.8) works the independent case;
+[Marginal summaries and joint direction probabilities](beyond-normal.qmd) (1.10) drops joint normality: there the means no longer fix
+the side of one half.

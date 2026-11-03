@@ -1,0 +1,105 @@
+{
+  "id": "5.3",
+  "name": "krw-card",
+  "part": "5",
+  "title": "KRW's race and gender cards",
+  "idea": "On KRW's cards for 97 firms, grade 1 is the end the posterior places highest, yet coherence also states doubtful directions; three on the gender card, whose end grades hold gaps of opposite sign, are more likely wrong than right.",
+  "status": "built",
+  "from": "v1 view · v1 S-02 case-krw-race, the card view with its header boxes; adds a criterion switch (race or gender, shared with 5.4 and 5.5)",
+  "data": [
+    "data/released/case-krw.json",
+    "data/released/krw-lambda-grid.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), section VI (Figure 7), section VIII (Figure 14) and slides 53–63 and 72–80. Firms as adapted in postrank 1.1.0 (pr_case_krw).",
+  "caption": "All 97 firms; exact released contact-gap pair probabilities and supplied central 90% intervals. The data describe KRW’s historical experiment, not any firm’s current conduct.",
+  "presets": [
+    {
+      "id": "card",
+      "label": "Published race card",
+      "query": "criterion=race&lambda=.25&sort=mean&reveal=0"
+    },
+    {
+      "id": "card-reveal",
+      "label": "Reveal grade 1",
+      "query": "criterion=race&lambda=.25&sort=mean&reveal=1"
+    },
+    {
+      "id": "card-estimate",
+      "label": "Sort by estimate",
+      "query": "criterion=race&lambda=.25&sort=estimate&reveal=0"
+    },
+    {
+      "id": "card-krw",
+      "label": "KRW figure order",
+      "query": "criterion=race&lambda=.25&sort=krw&reveal=0"
+    },
+    {
+      "id": "lam08",
+      "label": "λ .08: first race split",
+      "query": "criterion=race&lambda=.08&sort=mean&reveal=0"
+    },
+    {
+      "id": "lam10",
+      "label": "λ .10",
+      "query": "criterion=race&lambda=.10&sort=mean&reveal=0"
+    },
+    {
+      "id": "lam30",
+      "label": "λ .30",
+      "query": "criterion=race&lambda=.30&sort=mean&reveal=0"
+    },
+    {
+      "id": "gender",
+      "label": "Published gender card",
+      "query": "criterion=gender&lambda=.25&sort=mean&reveal=0"
+    },
+    {
+      "id": "one",
+      "label": "One grade",
+      "query": "criterion=race&lambda=.01&sort=mean&reveal=0"
+    }
+  ],
+  "try": [
+    {
+      "preset": "card",
+      "shows": [
+        "1,324",
+        ".136"
+      ]
+    },
+    {
+      "preset": "card-estimate",
+      "shows": [
+        "State Farm",
+        "69"
+      ]
+    },
+    {
+      "preset": "lam08",
+      "shows": [
+        ".07406",
+        ".07407"
+      ]
+    },
+    {
+      "preset": "gender",
+      "shows": [
+        "731",
+        "more likely wrong than right"
+      ]
+    },
+    {
+      "preset": "one",
+      "shows": [
+        "One grade",
+        "no disclosure"
+      ]
+    },
+    {
+      "preset": "card-reveal",
+      "shows": [
+        "1"
+      ]
+    }
+  ]
+}

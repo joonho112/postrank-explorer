@@ -1,0 +1,1645 @@
+{
+  "catalog": "2.10",
+  "about": "Hull view from v1: six-site family presets, cloud vertices and slopes, optimum and risk, full-height view, tau clamping, and update. Independent base-R oracle and frozen registry sources retained. Mixture/endpoint/four-unit cases move with their panels to frontier-mixtures; prediction cases removed.",
+  "cases": [
+    {
+      "id": "preset-tau20",
+      "about": "deck preset, the question's setting: the line of slope .20 touches (14, .3576)",
+      "preset": "tau20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.2",
+            "field": "N.0"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.2",
+            "field": "Ew.0"
+          },
+          "value": 0.35757634126134
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "the touched vertex's report = the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2086"
+        },
+        {
+          "select": "[data-prx-readout=\"vN-0\"]",
+          "about": "vertex 0 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "N.0"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"vE-0\"]",
+          "about": "vertex 0 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "Ew.0"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"vGrade-0\"]",
+          "about": "vertex 0 of H(m): its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"slope-1\"]",
+          "about": "slope of edge 1: the tau where the base-R tau path changes",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.0"
+          },
+          "value": 0.00118716720754279
+        },
+        {
+          "select": "[data-prx-readout=\"vN-1\"]",
+          "about": "vertex 1 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "N.1"
+          },
+          "value": 8
+        },
+        {
+          "select": "[data-prx-readout=\"vE-1\"]",
+          "about": "vertex 1 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "Ew.1"
+          },
+          "value": 0.0094973376603423
+        },
+        {
+          "select": "[data-prx-readout=\"vGrade-1\"]",
+          "about": "vertex 1 of H(m): its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "grade.1"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"slope-2\"]",
+          "about": "slope of edge 2: the tau where the base-R tau path changes",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.1"
+          },
+          "value": 0.0038193153804911
+        },
+        {
+          "select": "[data-prx-readout=\"vN-2\"]",
+          "about": "vertex 2 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "N.2"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"vE-2\"]",
+          "about": "vertex 2 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "Ew.2"
+          },
+          "value": 0.0247745991823067
+        },
+        {
+          "select": "[data-prx-readout=\"vGrade-2\"]",
+          "about": "vertex 2 of H(m): its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"slope-3\"]",
+          "about": "slope of edge 3: the tau where the base-R tau path changes",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.2"
+          },
+          "value": 0.144422183173242
+        },
+        {
+          "select": "[data-prx-readout=\"vN-3\"]",
+          "about": "vertex 3 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "N.3"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-readout=\"vE-3\"]",
+          "about": "vertex 3 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "Ew.3"
+          },
+          "value": 0.169196782355549
+        },
+        {
+          "select": "[data-prx-readout=\"vGrade-3\"]",
+          "about": "vertex 3 of H(m): its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "grade.3"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"slope-4\"]",
+          "about": "slope of edge 4: the tau where the base-R tau path changes",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.3"
+          },
+          "value": 0.188379558905791
+        },
+        {
+          "select": "[data-prx-readout=\"vN-4\"]",
+          "about": "vertex 4 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "N.4"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"vE-4\"]",
+          "about": "vertex 4 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "Ew.4"
+          },
+          "value": 0.35757634126134
+        },
+        {
+          "select": "[data-prx-readout=\"vGrade-4\"]",
+          "about": "vertex 4 of H(m): its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "grade.4"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"slope-5\"]",
+          "about": "slope of edge 5: the tau where the base-R tau path changes",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.4"
+          },
+          "value": 0.361836804915882
+        },
+        {
+          "select": "[data-prx-readout=\"vN-5\"]",
+          "about": "vertex 5 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "N.5"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"vE-5\"]",
+          "about": "vertex 5 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "Ew.5"
+          },
+          "value": 0.719413146177222
+        },
+        {
+          "select": "[data-prx-readout=\"vGrade-5\"]",
+          "about": "vertex 5 of H(m): its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "grade.5"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"familySize\"]",
+          "about": "family size in the figure heading",
+          "source": "registry",
+          "ref": "six.family.all.size",
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "the prediction's answer (registry)",
+          "source": "registry",
+          "ref": "g06.six.all.tau20.vertex.N",
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "the risk the page quotes (registry)",
+          "source": "registry",
+          "ref": "six.A.all.tau20.risk",
+          "value": 0.03717175608408931
+        },
+        {
+          "select": "[data-prx-caption=\"mixture-not-report\"]",
+          "index": 0,
+          "kind": "text",
+          "about": "the caption of the dashed segments, in the legend",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a mixture of two complete reports, not a report we can print"
+        }
+      ]
+    },
+    {
+      "id": "preset-tau40",
+      "about": "tau .40: the strict order",
+      "preset": "tau40",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.4",
+            "field": "N.0"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.4",
+            "field": "Ew.0"
+          },
+          "value": 0.719413146177222
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "the touched vertex's report = the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2086"
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "registry",
+          "source": "registry",
+          "ref": "six.A.all.tau40.N",
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "registry",
+          "source": "registry",
+          "ref": "six.A.all.tau40.E",
+          "value": 0.7194131461772217
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "registry",
+          "source": "registry",
+          "ref": "six.A.all.tau40.grades",
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "registry",
+          "source": "registry",
+          "ref": "six.A.all.tau40.risk",
+          "value": 0.04796087641181478
+        }
+      ]
+    },
+    {
+      "id": "preset-cap3",
+      "about": "at most 3 grades: the boundary stops at (12, .0248)",
+      "preset": "cap3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "the touched vertex is the last of the capped boundary (base-R lowerHull; the edge slopes .0012 and .0038 are below .20)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "N.2"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "its expected wrong directions",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "Ew.2"
+          },
+          "value": 0.0247745991823067
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "the exact optimum with at most 3 grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "its risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label with the capped family",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c_\u22643"
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "registry",
+          "source": "registry",
+          "ref": "g06.six.cap3.tau20.vertex.N",
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "registry",
+          "source": "registry",
+          "ref": "g06.six.cap3.tau20.vertex.E",
+          "value": 0.02477459918230669
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "registry",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.risk",
+          "value": 0.04165163994548712
+        },
+        {
+          "select": "[data-prx-readout=\"familySize\"]",
+          "about": "family size in the heading",
+          "source": "registry",
+          "ref": "six.family.cap3.size",
+          "value": 603
+        },
+        {
+          "select": "[data-prx-readout=\"vN-0\"]",
+          "about": "vertex 0 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "N.0"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"vE-0\"]",
+          "about": "vertex 0 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "Ew.0"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"vGrade-0\"]",
+          "about": "vertex 0 of H(m): its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"slope-1\"]",
+          "about": "slope of edge 1: the tau where the base-R tau path changes",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauTo.0"
+          },
+          "value": 0.00118716720754279
+        },
+        {
+          "select": "[data-prx-readout=\"vN-1\"]",
+          "about": "vertex 1 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "N.1"
+          },
+          "value": 8
+        },
+        {
+          "select": "[data-prx-readout=\"vE-1\"]",
+          "about": "vertex 1 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "Ew.1"
+          },
+          "value": 0.0094973376603423
+        },
+        {
+          "select": "[data-prx-readout=\"vGrade-1\"]",
+          "about": "vertex 1 of H(m): its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "grade.1"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"slope-2\"]",
+          "about": "slope of edge 2: the tau where the base-R tau path changes",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauTo.1"
+          },
+          "value": 0.0038193153804911
+        },
+        {
+          "select": "[data-prx-readout=\"vN-2\"]",
+          "about": "vertex 2 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "N.2"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"vE-2\"]",
+          "about": "vertex 2 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "Ew.2"
+          },
+          "value": 0.0247745991823067
+        },
+        {
+          "select": "[data-prx-readout=\"vGrade-2\"]",
+          "about": "vertex 2 of H(m): its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-cap3",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "all-tau05",
+      "query": "?tau=.05&family=all&view=near",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.05",
+            "field": "N.0"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.05",
+            "field": "Ew.0"
+          },
+          "value": 0.0247745991823067
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "the touched vertex's report = the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.05",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.05",
+            "field": "risk"
+          },
+          "value": 0.0116516399454871
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.05",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2086"
+        }
+      ]
+    },
+    {
+      "id": "all-tau15",
+      "query": "?tau=.15&family=all&view=near",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.15",
+            "field": "N.0"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.15",
+            "field": "Ew.0"
+          },
+          "value": 0.169196782355549
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "the touched vertex's report = the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.15",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.15",
+            "field": "risk"
+          },
+          "value": 0.0312797854903699
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.15",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2086"
+        }
+      ]
+    },
+    {
+      "id": "all-tau50",
+      "query": "?tau=.50&family=all&view=near",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.5",
+            "field": "N.0"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.5",
+            "field": "Ew.0"
+          },
+          "value": 0.719413146177222
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "the touched vertex's report = the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.50",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.50",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.50",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2086"
+        }
+      ]
+    },
+    {
+      "id": "cap3-tau10",
+      "about": "at most 3 grades at tau .10: the line still touches the last vertex of the capped boundary (base-R supportingVertex)",
+      "query": "?tau=.10&family=cap3&view=near",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "touched vertex N",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-cap3-tau.1",
+            "field": "N.0"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "touched vertex E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-cap3-tau.1",
+            "field": "Ew.0"
+          },
+          "value": 0.0247745991823067
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c_\u22643"
+        }
+      ]
+    },
+    {
+      "id": "all-height-view",
+      "about": "view of every report at full height; the read-outs do not change",
+      "query": "?tau=.20&family=all&view=all",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.2",
+            "field": "N.0"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.2",
+            "field": "Ew.0"
+          },
+          "value": 0.35757634126134
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "the touched vertex's report = the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2086"
+        }
+      ]
+    },
+    {
+      "id": "clamp-tau-low",
+      "about": "tau below the slider is clamped to .01: the tau path is at 1/1/2/2/3/3 between .0038 and .1444",
+      "query": "?tau=.001&family=all&view=near",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "vertex N = 12",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.2"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "its E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.2"
+          },
+          "value": 0.0247745991823067
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "update-tau40",
+      "about": "mounted at the deck preset, then moved to tau .40 by update()",
+      "preset": "tau20",
+      "update": [
+        {
+          "tau": 0.4
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.4",
+            "field": "N.0"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.4",
+            "field": "Ew.0"
+          },
+          "value": 0.719413146177222
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "the touched vertex's report = the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2086"
+        }
+      ]
+    },
+    {
+      "id": "preset-tau15",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.15",
+            "field": "N.0"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-six-A-all-tau.15",
+            "field": "Ew.0"
+          },
+          "value": 0.169196782355549
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "about": "the touched vertex's report = the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.15",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.15",
+            "field": "risk"
+          },
+          "value": 0.0312797854903699
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.15",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2086"
+        }
+      ],
+      "preset": "tau15"
+    },
+    {
+      "id": "edge-tie",
+      "about": "At the final hull slope both endpoint reports tie. Vertices and their expected wrong counts come from the independent oracle hull rows; the strict report has no withheld term, so its risk also agrees with the oracle optimum at tau .40.",
+      "query": "?tau=.36183680491588205&family=all&view=near",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"edgeAN\"]",
+          "about": "vertex 4 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "N.4"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"edgeAE\"]",
+          "about": "vertex 4 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "Ew.4"
+          },
+          "value": 0.35757634126134
+        },
+        {
+          "select": "[data-prx-readout=\"edgeBN\"]",
+          "about": "vertex 5 of H(m): N (base-R lowerHull)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "N.5"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"edgeBE\"]",
+          "about": "vertex 5 of H(m): E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "Ew.5"
+          },
+          "value": 0.719413146177222
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the exact optimum (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        }
+      ]
+    }
+  ],
+  "app": "frontier",
+  "from": "postrank-explorer-v1 verification/readouts/frontier.json; hull and six-site cases only"
+}

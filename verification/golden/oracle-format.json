@@ -1,0 +1,3534 @@
+{
+ "group": "oracle-format",
+ "generator": "r-export/11_format.R",
+ "uses_postrank": false,
+ "rows": [
+  {
+   "id": "formatProb-readme-.1875",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.1875
+    ]
+   },
+   "expect": {
+    "text": ".188"
+   }
+  },
+  {
+   "id": "formatProb-readme-.0625",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0625
+    ]
+   },
+   "expect": {
+    "text": ".062"
+   }
+  },
+  {
+   "id": "formatProb-readme-.0005",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0005
+    ]
+   },
+   "expect": {
+    "text": ".001"
+   }
+  },
+  {
+   "id": "formatProb-readme-1.0005",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     1.0005
+    ]
+   },
+   "expect": {
+    "text": "1.000"
+   }
+  },
+  {
+   "id": "formatProb-readme-.812",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.812
+    ]
+   },
+   "expect": {
+    "text": ".812"
+   }
+  },
+  {
+   "id": "formatProb-readme-0",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0
+    ]
+   },
+   "expect": {
+    "text": "0"
+   }
+  },
+  {
+   "id": "formatProb-readme-1",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     1
+    ]
+   },
+   "expect": {
+    "text": "1"
+   }
+  },
+  {
+   "id": "formatProb-readme-below",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0004
+    ]
+   },
+   "expect": {
+    "text": "below .001"
+   }
+  },
+  {
+   "id": "formatProb-readme-above",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.9996
+    ]
+   },
+   "expect": {
+    "text": "above .999"
+   }
+  },
+  {
+   "id": "formatProb-readme-digits4",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.99991,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": ".9999"
+   }
+  },
+  {
+   "id": "formatProb-0.188",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.188
+    ]
+   },
+   "expect": {
+    "text": ".188"
+   }
+  },
+  {
+   "id": "formatProb-0.5",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.5
+    ]
+   },
+   "expect": {
+    "text": ".500"
+   }
+  },
+  {
+   "id": "formatProb-0.0015",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0015
+    ]
+   },
+   "expect": {
+    "text": ".002"
+   }
+  },
+  {
+   "id": "formatProb-0.0025000000000000001",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0025
+    ]
+   },
+   "expect": {
+    "text": ".003"
+   }
+  },
+  {
+   "id": "formatProb-0.1245",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.1245
+    ]
+   },
+   "expect": {
+    "text": ".124"
+   }
+  },
+  {
+   "id": "formatProb-0.1255",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.1255
+    ]
+   },
+   "expect": {
+    "text": ".126"
+   }
+  },
+  {
+   "id": "formatProb-0.01",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.01
+    ]
+   },
+   "expect": {
+    "text": ".010"
+   }
+  },
+  {
+   "id": "formatProb-0.999",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.999
+    ]
+   },
+   "expect": {
+    "text": ".999"
+   }
+  },
+  {
+   "id": "formatProb-0.99950000000000006",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.9995
+    ]
+   },
+   "expect": {
+    "text": "above .999"
+   }
+  },
+  {
+   "id": "formatProb-0.00050000010000000004",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0005000001
+    ]
+   },
+   "expect": {
+    "text": ".001"
+   }
+  },
+  {
+   "id": "formatProb-1e-10",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     1e-10
+    ]
+   },
+   "expect": {
+    "text": "below .001"
+   }
+  },
+  {
+   "id": "formatProb-0.050000000000000003",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.05
+    ]
+   },
+   "expect": {
+    "text": ".050"
+   }
+  },
+  {
+   "id": "formatProb-0.33333333333333331",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.333333333333333
+    ]
+   },
+   "expect": {
+    "text": ".333"
+   }
+  },
+  {
+   "id": "formatProb-0.66666666666666663",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.666666666666667
+    ]
+   },
+   "expect": {
+    "text": ".667"
+   }
+  },
+  {
+   "id": "formatProb-0.14999999999999999-digits1",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.15,
+     {
+      "digits": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": ".1"
+   }
+  },
+  {
+   "id": "formatProb-0.25-digits1",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.25,
+     {
+      "digits": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": ".2"
+   }
+  },
+  {
+   "id": "formatProb-0.0625-digits1",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0625,
+     {
+      "digits": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": ".1"
+   }
+  },
+  {
+   "id": "formatProb-0.123456-digits1",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.123456,
+     {
+      "digits": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": ".1"
+   }
+  },
+  {
+   "id": "formatProb-4.0000000000000003e-05-digits1",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     4e-05,
+     {
+      "digits": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": "below .1"
+   }
+  },
+  {
+   "id": "formatProb-0.14999999999999999-digits2",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.15,
+     {
+      "digits": 2
+     }
+    ]
+   },
+   "expect": {
+    "text": ".15"
+   }
+  },
+  {
+   "id": "formatProb-0.25-digits2",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.25,
+     {
+      "digits": 2
+     }
+    ]
+   },
+   "expect": {
+    "text": ".25"
+   }
+  },
+  {
+   "id": "formatProb-0.0625-digits2",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0625,
+     {
+      "digits": 2
+     }
+    ]
+   },
+   "expect": {
+    "text": ".06"
+   }
+  },
+  {
+   "id": "formatProb-0.123456-digits2",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.123456,
+     {
+      "digits": 2
+     }
+    ]
+   },
+   "expect": {
+    "text": ".12"
+   }
+  },
+  {
+   "id": "formatProb-4.0000000000000003e-05-digits2",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     4e-05,
+     {
+      "digits": 2
+     }
+    ]
+   },
+   "expect": {
+    "text": "below .01"
+   }
+  },
+  {
+   "id": "formatProb-0.14999999999999999-digits4",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.15,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": ".1500"
+   }
+  },
+  {
+   "id": "formatProb-0.25-digits4",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.25,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": ".2500"
+   }
+  },
+  {
+   "id": "formatProb-0.0625-digits4",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0625,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": ".0625"
+   }
+  },
+  {
+   "id": "formatProb-0.123456-digits4",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.123456,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": ".1235"
+   }
+  },
+  {
+   "id": "formatProb-4.0000000000000003e-05-digits4",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     4e-05,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": "below .0001"
+   }
+  },
+  {
+   "id": "formatProb-0.14999999999999999-digits5",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.15,
+     {
+      "digits": 5
+     }
+    ]
+   },
+   "expect": {
+    "text": ".15000"
+   }
+  },
+  {
+   "id": "formatProb-0.25-digits5",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.25,
+     {
+      "digits": 5
+     }
+    ]
+   },
+   "expect": {
+    "text": ".25000"
+   }
+  },
+  {
+   "id": "formatProb-0.0625-digits5",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0625,
+     {
+      "digits": 5
+     }
+    ]
+   },
+   "expect": {
+    "text": ".06250"
+   }
+  },
+  {
+   "id": "formatProb-0.123456-digits5",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.123456,
+     {
+      "digits": 5
+     }
+    ]
+   },
+   "expect": {
+    "text": ".12346"
+   }
+  },
+  {
+   "id": "formatProb-4.0000000000000003e-05-digits5",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     4e-05,
+     {
+      "digits": 5
+     }
+    ]
+   },
+   "expect": {
+    "text": ".00004"
+   }
+  },
+  {
+   "id": "formatProb-0.1+0.2",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     {
+      "$sum": [0.1, 0.2]
+     }
+    ]
+   },
+   "expect": {
+    "text": ".300"
+   }
+  },
+  {
+   "id": "formatProb-symbols-below",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0004,
+     {
+      "bounds": "symbols"
+     }
+    ]
+   },
+   "expect": {
+    "text": "<.001"
+   }
+  },
+  {
+   "id": "formatProb-symbols-above",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.9996,
+     {
+      "bounds": "symbols"
+     }
+    ]
+   },
+   "expect": {
+    "text": ">.999"
+   }
+  },
+  {
+   "id": "formatProb-nobounds-below",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.0004,
+     {
+      "bounds": false
+     }
+    ]
+   },
+   "expect": {
+    "text": ".000"
+   }
+  },
+  {
+   "id": "formatProb-nobounds-above",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     0.9996,
+     {
+      "bounds": false
+     }
+    ]
+   },
+   "expect": {
+    "text": "1.000"
+   }
+  },
+  {
+   "id": "formatProb-negative-.0227",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     -0.0227
+    ]
+   },
+   "expect": {
+    "text": "−.023"
+   }
+  },
+  {
+   "id": "formatProb-null",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     null
+    ]
+   },
+   "expect": {
+    "text": "NA"
+   }
+  },
+  {
+   "id": "formatProb-NaN",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     {
+      "$num": "NaN"
+     }
+    ]
+   },
+   "expect": {
+    "text": "NA"
+   }
+  },
+  {
+   "id": "formatProb-Infinity",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     {
+      "$num": "Infinity"
+     }
+    ]
+   },
+   "expect": {
+    "text": "NA"
+   }
+  },
+  {
+   "id": "formatProb--Infinity",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     {
+      "$num": "-Infinity"
+     }
+    ]
+   },
+   "expect": {
+    "text": "NA"
+   }
+  },
+  {
+   "id": "formatProb-undefined",
+   "args": {
+    "fn": "formatProb",
+    "call": [
+     {
+      "$undef": true
+     }
+    ]
+   },
+   "expect": {
+    "text": "NA"
+   }
+  },
+  {
+   "id": "formatRisk-readme-.0417",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     0.0416516399454871
+    ]
+   },
+   "expect": {
+    "text": ".0417"
+   }
+  },
+  {
+   "id": "formatRisk-readme-.0248",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     0.0248
+    ]
+   },
+   "expect": {
+    "text": ".0248"
+   }
+  },
+  {
+   "id": "formatRisk-readme-1.8288",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     1.82881
+    ]
+   },
+   "expect": {
+    "text": "1.8288"
+   }
+  },
+  {
+   "id": "formatRisk-readme-negative",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     -0.02274
+    ]
+   },
+   "expect": {
+    "text": "−.0227"
+   }
+  },
+  {
+   "id": "formatRisk-readme-below",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     1e-05
+    ]
+   },
+   "expect": {
+    "text": "below .0001"
+   }
+  },
+  {
+   "id": "formatRisk-zero",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     0
+    ]
+   },
+   "expect": {
+    "text": "0"
+   }
+  },
+  {
+   "id": "formatRisk-0.14999999999999999",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     0.15
+    ]
+   },
+   "expect": {
+    "text": ".1500"
+   }
+  },
+  {
+   "id": "formatRisk-0.18333333333333332",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     0.183333333333333
+    ]
+   },
+   "expect": {
+    "text": ".1833"
+   }
+  },
+  {
+   "id": "formatRisk-0.063773999999999997",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     0.063774
+    ]
+   },
+   "expect": {
+    "text": ".0638"
+   }
+  },
+  {
+   "id": "formatRisk-5.0000000000000002e-05",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     5e-05
+    ]
+   },
+   "expect": {
+    "text": ".0001"
+   }
+  },
+  {
+   "id": "formatRisk-0.00014999999999999999",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     0.00015
+    ]
+   },
+   "expect": {
+    "text": ".0001"
+   }
+  },
+  {
+   "id": "formatRisk-12.345649999999999",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     12.34565
+    ]
+   },
+   "expect": {
+    "text": "12.3456"
+   }
+  },
+  {
+   "id": "formatRisk-1249.5",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     1249.5
+    ]
+   },
+   "expect": {
+    "text": "1,249.5000"
+   }
+  },
+  {
+   "id": "formatRisk-digits3-.0625",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     0.0625,
+     {
+      "digits": 3
+     }
+    ]
+   },
+   "expect": {
+    "text": ".062"
+   }
+  },
+  {
+   "id": "formatRisk-digits2-.375",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     0.375,
+     {
+      "digits": 2
+     }
+    ]
+   },
+   "expect": {
+    "text": ".38"
+   }
+  },
+  {
+   "id": "formatRisk-null",
+   "args": {
+    "fn": "formatRisk",
+    "call": [
+     null
+    ]
+   },
+   "expect": {
+    "text": "NA"
+   }
+  },
+  {
+   "id": "formatDecimal-readme-13.65",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     13.649
+    ]
+   },
+   "expect": {
+    "text": "13.65"
+   }
+  },
+  {
+   "id": "formatDecimal-readme-1249.5",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     1249.5,
+     {
+      "digits": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": "1,249.5"
+   }
+  },
+  {
+   "id": "formatDecimal-readme-2.675",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     2.675
+    ]
+   },
+   "expect": {
+    "text": "2.67"
+   }
+  },
+  {
+   "id": "formatDecimal-half",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     0.5
+    ]
+   },
+   "expect": {
+    "text": ".50"
+   }
+  },
+  {
+   "id": "formatDecimal-half-leadingZero",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     0.5,
+     {
+      "leadingZero": true
+     }
+    ]
+   },
+   "expect": {
+    "text": "0.50"
+   }
+  },
+  {
+   "id": "formatDecimal-negative-millions",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     -1234567.891
+    ]
+   },
+   "expect": {
+    "text": "−1,234,567.89"
+   }
+  },
+  {
+   "id": "formatDecimal-nogroup",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     1234.5,
+     {
+      "group": false
+     }
+    ]
+   },
+   "expect": {
+    "text": "1234.50"
+   }
+  },
+  {
+   "id": "formatDecimal-digits0",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     1234.5,
+     {
+      "digits": 0
+     }
+    ]
+   },
+   "expect": {
+    "text": "1,234"
+   }
+  },
+  {
+   "id": "formatDecimal-digits0-2.5",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     2.5,
+     {
+      "digits": 0
+     }
+    ]
+   },
+   "expect": {
+    "text": "2"
+   }
+  },
+  {
+   "id": "formatDecimal-digits3",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     0.0005,
+     {
+      "digits": 3
+     }
+    ]
+   },
+   "expect": {
+    "text": ".001"
+   }
+  },
+  {
+   "id": "formatDecimal-negative-displayed-zero",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     -0.001
+    ]
+   },
+   "expect": {
+    "text": ".00"
+   }
+  },
+  {
+   "id": "formatDecimal-big",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     28091567595.25,
+     {
+      "digits": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": "28,091,567,595.2"
+   }
+  },
+  {
+   "id": "formatDecimal-NaN",
+   "args": {
+    "fn": "formatDecimal",
+    "call": [
+     {
+      "$num": "NaN"
+     }
+    ]
+   },
+   "expect": {
+    "text": "NA"
+   }
+  },
+  {
+   "id": "formatSig-readme-.00165",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     0.00165
+    ]
+   },
+   "expect": {
+    "text": ".00165"
+   }
+  },
+  {
+   "id": "formatSig-readme-.000203",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     0.000203
+    ]
+   },
+   "expect": {
+    "text": ".000203"
+   }
+  },
+  {
+   "id": "formatSig-readme-1320",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     1318.4
+    ]
+   },
+   "expect": {
+    "text": "1,320"
+   }
+  },
+  {
+   "id": "formatSig-tie-1325",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     1325
+    ]
+   },
+   "expect": {
+    "text": "1,320"
+   }
+  },
+  {
+   "id": "formatSig-tie-1335",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     1335
+    ]
+   },
+   "expect": {
+    "text": "1,340"
+   }
+  },
+  {
+   "id": "formatSig-carry-.0009996",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     0.0009996
+    ]
+   },
+   "expect": {
+    "text": ".00100"
+   }
+  },
+  {
+   "id": "formatSig-negative",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     -0.02274
+    ]
+   },
+   "expect": {
+    "text": "−.0227"
+   }
+  },
+  {
+   "id": "formatSig-sig2",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     0.12345,
+     {
+      "sig": 2
+     }
+    ]
+   },
+   "expect": {
+    "text": ".12"
+   }
+  },
+  {
+   "id": "formatSig-sig5",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     1318.4,
+     {
+      "sig": 5
+     }
+    ]
+   },
+   "expect": {
+    "text": "1,318.4"
+   }
+  },
+  {
+   "id": "formatSig-sig1",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     0.0475,
+     {
+      "sig": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": ".05"
+   }
+  },
+  {
+   "id": "formatSig-large",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     28091567595
+    ]
+   },
+   "expect": {
+    "text": "28,100,000,000"
+   }
+  },
+  {
+   "id": "formatSig-one",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     1
+    ]
+   },
+   "expect": {
+    "text": "1.00"
+   }
+  },
+  {
+   "id": "formatSig-9.995",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     9.995
+    ]
+   },
+   "expect": {
+    "text": "9.99"
+   }
+  },
+  {
+   "id": "formatSig-99.95",
+   "args": {
+    "fn": "formatSig",
+    "call": [
+     99.95
+    ]
+   },
+   "expect": {
+    "text": "100"
+   }
+  },
+  {
+   "id": "formatSci-readme-1.39e-17",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     1.39e-17
+    ]
+   },
+   "expect": {
+    "text": "1.39e−17"
+   }
+  },
+  {
+   "id": "formatSci-readme-trim",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     1e-12,
+     {
+      "trim": true
+     }
+    ]
+   },
+   "expect": {
+    "text": "1e−12"
+   }
+  },
+  {
+   "id": "formatSci-readme-times",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     500000,
+     {
+      "style": "times",
+      "trim": true
+     }
+    ]
+   },
+   "expect": {
+    "text": "5 × 10⁵"
+   }
+  },
+  {
+   "id": "formatSci-times-sig1",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     500000,
+     {
+      "style": "times",
+      "sig": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": "5 × 10⁵"
+   }
+  },
+  {
+   "id": "formatSci-times-sig3",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     123456789,
+     {
+      "style": "times"
+     }
+    ]
+   },
+   "expect": {
+    "text": "1.23 × 10⁸"
+   }
+  },
+  {
+   "id": "formatSci-times-12",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     1500000000000,
+     {
+      "style": "times",
+      "trim": true
+     }
+    ]
+   },
+   "expect": {
+    "text": "1.5 × 10¹²"
+   }
+  },
+  {
+   "id": "formatSci-sig2",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     6.25e-05,
+     {
+      "sig": 2
+     }
+    ]
+   },
+   "expect": {
+    "text": "6.3e−5"
+   }
+  },
+  {
+   "id": "formatSci-negative",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     -3.14159e-09
+    ]
+   },
+   "expect": {
+    "text": "−3.14e−9"
+   }
+  },
+  {
+   "id": "formatSci-trim-1.50",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     1.5e-07,
+     {
+      "trim": true
+     }
+    ]
+   },
+   "expect": {
+    "text": "1.5e−7"
+   }
+  },
+  {
+   "id": "formatSci-carry",
+   "args": {
+    "fn": "formatSci",
+    "call": [
+     9.9996e-05
+    ]
+   },
+   "expect": {
+    "text": "1.00e−4"
+   }
+  },
+  {
+   "id": "formatPercent-readme-14",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.14
+    ]
+   },
+   "expect": {
+    "text": "14%"
+   }
+  },
+  {
+   "id": "formatPercent-readme-5.2",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.052,
+     {
+      "digits": 1,
+      "bounds": false
+     }
+    ]
+   },
+   "expect": {
+    "text": "5.2%"
+   }
+  },
+  {
+   "id": "formatPercent-readme-0.02",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.0002,
+     {
+      "digits": 2,
+      "bounds": false
+     }
+    ]
+   },
+   "expect": {
+    "text": "0.02%"
+   }
+  },
+  {
+   "id": "formatPercent-readme-below",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.004
+    ]
+   },
+   "expect": {
+    "text": "below 1%"
+   }
+  },
+  {
+   "id": "formatPercent-above",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.996
+    ]
+   },
+   "expect": {
+    "text": "above 99%"
+   }
+  },
+  {
+   "id": "formatPercent-zero",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0
+    ]
+   },
+   "expect": {
+    "text": "0%"
+   }
+  },
+  {
+   "id": "formatPercent-one",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     1
+    ]
+   },
+   "expect": {
+    "text": "100%"
+   }
+  },
+  {
+   "id": "formatPercent-exact-share-.015",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.015
+    ]
+   },
+   "expect": {
+    "text": "1%"
+   }
+  },
+  {
+   "id": "formatPercent-exact-share-.025",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.025
+    ]
+   },
+   "expect": {
+    "text": "3%"
+   }
+  },
+  {
+   "id": "formatPercent-.145",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.145
+    ]
+   },
+   "expect": {
+    "text": "14%"
+   }
+  },
+  {
+   "id": "formatPercent-.5",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.5
+    ]
+   },
+   "expect": {
+    "text": "50%"
+   }
+  },
+  {
+   "id": "formatPercent-.005",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.005
+    ]
+   },
+   "expect": {
+    "text": "1%"
+   }
+  },
+  {
+   "id": "formatPercent-digits1-.1234",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.1234,
+     {
+      "digits": 1,
+      "bounds": false
+     }
+    ]
+   },
+   "expect": {
+    "text": "12.3%"
+   }
+  },
+  {
+   "id": "formatPercent-digits2-.0675",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.0675,
+     {
+      "digits": 2,
+      "bounds": false
+     }
+    ]
+   },
+   "expect": {
+    "text": "6.75%"
+   }
+  },
+  {
+   "id": "formatPercent-nobounds-.004",
+   "args": {
+    "fn": "formatPercent",
+    "call": [
+     0.004,
+     {
+      "bounds": false
+     }
+    ]
+   },
+   "expect": {
+    "text": "0%"
+   }
+  },
+  {
+   "id": "formatCount-readme-4683",
+   "args": {
+    "fn": "formatCount",
+    "call": [
+     4683
+    ]
+   },
+   "expect": {
+    "text": "4,683"
+   }
+  },
+  {
+   "id": "formatCount-readme-big",
+   "args": {
+    "fn": "formatCount",
+    "call": [
+     28091567595
+    ]
+   },
+   "expect": {
+    "text": "28,091,567,595"
+   }
+  },
+  {
+   "id": "formatCount-zero",
+   "args": {
+    "fn": "formatCount",
+    "call": [
+     0
+    ]
+   },
+   "expect": {
+    "text": "0"
+   }
+  },
+  {
+   "id": "formatCount-999",
+   "args": {
+    "fn": "formatCount",
+    "call": [
+     999
+    ]
+   },
+   "expect": {
+    "text": "999"
+   }
+  },
+  {
+   "id": "formatCount-1000",
+   "args": {
+    "fn": "formatCount",
+    "call": [
+     1000
+    ]
+   },
+   "expect": {
+    "text": "1,000"
+   }
+  },
+  {
+   "id": "formatCount-negative",
+   "args": {
+    "fn": "formatCount",
+    "call": [
+     -1234
+    ]
+   },
+   "expect": {
+    "text": "−1,234"
+   }
+  },
+  {
+   "id": "formatCount-2^53-1",
+   "args": {
+    "fn": "formatCount",
+    "call": [
+     {
+      "$sum": [9.00719925474099e+15, 1]
+     }
+    ]
+   },
+   "expect": {
+    "text": "9,007,199,254,740,991"
+   }
+  },
+  {
+   "id": "formatCount-bigint-19digits",
+   "args": {
+    "fn": "formatCount",
+    "call": [
+     {
+      "$bigint": "2423922485405222688"
+     }
+    ]
+   },
+   "expect": {
+    "text": "2,423,922,485,405,222,688"
+   }
+  },
+  {
+   "id": "formatCount-bigint-small",
+   "args": {
+    "fn": "formatCount",
+    "call": [
+     {
+      "$bigint": "603"
+     }
+    ]
+   },
+   "expect": {
+    "text": "603"
+   }
+  },
+  {
+   "id": "formatCount-non-integer-throws",
+   "args": {
+    "fn": "formatCountThrows",
+    "call": [
+     1.5
+    ]
+   },
+   "expect": {
+    "threw": true
+   }
+  },
+  {
+   "id": "formatFraction-readme-11/60",
+   "args": {
+    "fn": "formatFraction",
+    "call": [
+     11,
+     60
+    ]
+   },
+   "expect": {
+    "text": "11/60"
+   }
+  },
+  {
+   "id": "formatFraction-readme-negative",
+   "args": {
+    "fn": "formatFraction",
+    "call": [
+     -1,
+     2
+    ]
+   },
+   "expect": {
+    "text": "−1/2"
+   }
+  },
+  {
+   "id": "formatFraction-readme-2",
+   "args": {
+    "fn": "formatFraction",
+    "call": [
+     4,
+     2
+    ]
+   },
+   "expect": {
+    "text": "2"
+   }
+  },
+  {
+   "id": "formatFraction-readme-den0",
+   "args": {
+    "fn": "formatFraction",
+    "call": [
+     1,
+     0
+    ]
+   },
+   "expect": {
+    "text": "NA"
+   }
+  },
+  {
+   "id": "formatFraction-negative-den",
+   "args": {
+    "fn": "formatFraction",
+    "call": [
+     1,
+     -2
+    ]
+   },
+   "expect": {
+    "text": "−1/2"
+   }
+  },
+  {
+   "id": "formatFraction-both-negative",
+   "args": {
+    "fn": "formatFraction",
+    "call": [
+     -3,
+     -9
+    ]
+   },
+   "expect": {
+    "text": "1/3"
+   }
+  },
+  {
+   "id": "formatFraction-zero",
+   "args": {
+    "fn": "formatFraction",
+    "call": [
+     0,
+     5
+    ]
+   },
+   "expect": {
+    "text": "0"
+   }
+  },
+  {
+   "id": "formatFraction-reduce",
+   "args": {
+    "fn": "formatFraction",
+    "call": [
+     120,
+     360
+    ]
+   },
+   "expect": {
+    "text": "1/3"
+   }
+  },
+  {
+   "id": "formatFraction-7/40",
+   "args": {
+    "fn": "formatFraction",
+    "call": [
+     7,
+     40
+    ]
+   },
+   "expect": {
+    "text": "7/40"
+   }
+  },
+  {
+   "id": "rationalApprox-readme-11/60",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.183333333333333
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 11,
+     "den": 60
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-7/40",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.175
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 7,
+     "den": 40
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-3/10",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.3
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 3,
+     "den": 10
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-0.1+0.2",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     {
+      "$sum": [0.1, 0.2]
+     }
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 3,
+     "den": 10
+    }
+   }
+  },
+  {
+   "id": "rationalApprox--1/2",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     -0.5
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": -1,
+     "den": 2
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-2",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     2
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 2,
+     "den": 1
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-0",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 0,
+     "den": 1
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-1/3",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.333333333333333
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 1,
+     "den": 3
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-999/1000",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.999
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 999,
+     "den": 1000
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-1/1001-null",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.000999000999000999
+    ]
+   },
+   "expect": {
+    "value": null
+   }
+  },
+  {
+   "id": "rationalApprox-pi-null",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     3.14159265358979
+    ]
+   },
+   "expect": {
+    "value": null
+   }
+  },
+  {
+   "id": "rationalApprox-sqrt2-null",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     1.4142135623731
+    ]
+   },
+   "expect": {
+    "value": null
+   }
+  },
+  {
+   "id": "rationalApprox-1/7-plus-1e-10-null",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.142857142957143
+    ]
+   },
+   "expect": {
+    "value": null
+   }
+  },
+  {
+   "id": "rationalApprox-1/1001-maxDen2000",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.000999000999000999,
+     {
+      "maxDenominator": 2000
+     }
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 1,
+     "den": 1001
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-1/7-plus-1e-10-tol1e-9",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.142857142957143,
+     {
+      "tolerance": 1e-09
+     }
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": 1,
+     "den": 7
+    }
+   }
+  },
+  {
+   "id": "rationalApprox-11/60-maxDen50-null",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     0.183333333333333,
+     {
+      "maxDenominator": 50
+     }
+    ]
+   },
+   "expect": {
+    "value": null
+   }
+  },
+  {
+   "id": "rationalApprox--7/12",
+   "args": {
+    "fn": "rationalApprox",
+    "call": [
+     -0.583333333333333
+    ]
+   },
+   "expect": {
+    "value": {
+     "num": -7,
+     "den": 12
+    }
+   }
+  },
+  {
+   "id": "formatRational-readme-11/60",
+   "args": {
+    "fn": "formatRational",
+    "call": [
+     0.183333333333333
+    ]
+   },
+   "expect": {
+    "text": "11/60"
+   }
+  },
+  {
+   "id": "formatRational-readme-7/40",
+   "args": {
+    "fn": "formatRational",
+    "call": [
+     0.175
+    ]
+   },
+   "expect": {
+    "text": "7/40"
+   }
+  },
+  {
+   "id": "formatRational-readme-3/10",
+   "args": {
+    "fn": "formatRational",
+    "call": [
+     {
+      "$sum": [0.1, 0.2]
+     }
+    ]
+   },
+   "expect": {
+    "text": "3/10"
+   }
+  },
+  {
+   "id": "formatRational--2/3",
+   "args": {
+    "fn": "formatRational",
+    "call": [
+     -0.666666666666667
+    ]
+   },
+   "expect": {
+    "text": "−2/3"
+   }
+  },
+  {
+   "id": "formatRational-integer-3",
+   "args": {
+    "fn": "formatRational",
+    "call": [
+     3
+    ]
+   },
+   "expect": {
+    "text": "3"
+   }
+  },
+  {
+   "id": "formatRational-pi-throws",
+   "args": {
+    "fn": "formatRationalThrows",
+    "call": [
+     3.14159265358979
+    ]
+   },
+   "expect": {
+    "threw": true
+   }
+  },
+  {
+   "id": "formatRatio-readme-.800",
+   "args": {
+    "fn": "formatRatio",
+    "call": [
+     4,
+     5
+    ]
+   },
+   "expect": {
+    "text": ".800"
+   }
+  },
+  {
+   "id": "formatRatio-den0",
+   "args": {
+    "fn": "formatRatio",
+    "call": [
+     1,
+     0
+    ]
+   },
+   "expect": {
+    "text": "NA"
+   }
+  },
+  {
+   "id": "formatRatio-digits4",
+   "args": {
+    "fn": "formatRatio",
+    "call": [
+     1,
+     3,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": ".3333"
+   }
+  },
+  {
+   "id": "formatRatio-sig3",
+   "args": {
+    "fn": "formatRatio",
+    "call": [
+     1,
+     3000,
+     {
+      "sig": 3
+     }
+    ]
+   },
+   "expect": {
+    "text": ".000333"
+   }
+  },
+  {
+   "id": "formatRatio-below",
+   "args": {
+    "fn": "formatRatio",
+    "call": [
+     1,
+     3000
+    ]
+   },
+   "expect": {
+    "text": "below .001"
+   }
+  },
+  {
+   "id": "formatRatio-zero",
+   "args": {
+    "fn": "formatRatio",
+    "call": [
+     0,
+     7
+    ]
+   },
+   "expect": {
+    "text": "0"
+   }
+  },
+  {
+   "id": "formatRatio-one",
+   "args": {
+    "fn": "formatRatio",
+    "call": [
+     7,
+     7
+    ]
+   },
+   "expect": {
+    "text": "1"
+   }
+  },
+  {
+   "id": "formatRatio-11/60",
+   "args": {
+    "fn": "formatRatio",
+    "call": [
+     11,
+     60
+    ]
+   },
+   "expect": {
+    "text": ".183"
+   }
+  },
+  {
+   "id": "formatEoverN-readme-.0255",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     0.306,
+     12,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": ".0255"
+   }
+  },
+  {
+   "id": "formatEoverN-N0",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     0,
+     0
+    ]
+   },
+   "expect": {
+    "text": "NA: no disclosure"
+   }
+  },
+  {
+   "id": "formatEoverN-N0-digits4",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     0,
+     0,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": "NA: no disclosure"
+   }
+  },
+  {
+   "id": "formatEoverN-six-112233",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     0.0247694,
+     12,
+     {
+      "digits": 5
+     }
+    ]
+   },
+   "expect": {
+    "text": ".00206"
+   }
+  },
+  {
+   "id": "formatEoverN-default-digits",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     0.0247694,
+     12
+    ]
+   },
+   "expect": {
+    "text": ".002"
+   }
+  },
+  {
+   "id": "formatEoverN-below",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     0.0001,
+     12
+    ]
+   },
+   "expect": {
+    "text": "below .001"
+   }
+  },
+  {
+   "id": "formatEoverN-E0",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     0,
+     12
+    ]
+   },
+   "expect": {
+    "text": "0"
+   }
+  },
+  {
+   "id": "formatEoverN-value-null",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     null
+    ]
+   },
+   "expect": {
+    "text": "NA: no disclosure"
+   }
+  },
+  {
+   "id": "formatEoverN-value-.0255-digits4",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     0.0255,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": ".0255"
+   }
+  },
+  {
+   "id": "formatEoverN-value-default",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     0.00206411
+    ]
+   },
+   "expect": {
+    "text": ".002"
+   }
+  },
+  {
+   "id": "formatEoverN-array-digits4",
+   "args": {
+    "fn": "formatEoverN",
+    "call": [
+     [
+      0.1,
+      null,
+      0.0255
+     ],
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": [".1000", "NA: no disclosure", ".0255"]
+   }
+  },
+  {
+   "id": "formatSigned-readme-+.049",
+   "args": {
+    "fn": "formatSigned",
+    "call": [
+     0.049
+    ]
+   },
+   "expect": {
+    "text": "+.049"
+   }
+  },
+  {
+   "id": "formatSigned-readme-negative",
+   "args": {
+    "fn": "formatSigned",
+    "call": [
+     -0.0227,
+     {
+      "digits": 4
+     }
+    ]
+   },
+   "expect": {
+    "text": "−.0227"
+   }
+  },
+  {
+   "id": "formatSigned-readme-displayed-zero",
+   "args": {
+    "fn": "formatSigned",
+    "call": [
+     0.0001
+    ]
+   },
+   "expect": {
+    "text": ".000"
+   }
+  },
+  {
+   "id": "formatSigned-negative-displayed-zero",
+   "args": {
+    "fn": "formatSigned",
+    "call": [
+     -0.0004
+    ]
+   },
+   "expect": {
+    "text": ".000"
+   }
+  },
+  {
+   "id": "formatSigned-sig3",
+   "args": {
+    "fn": "formatSigned",
+    "call": [
+     -0.02274,
+     {
+      "sig": 3
+     }
+    ]
+   },
+   "expect": {
+    "text": "−.0227"
+   }
+  },
+  {
+   "id": "formatSigned-sig3-positive",
+   "args": {
+    "fn": "formatSigned",
+    "call": [
+     0.000203,
+     {
+      "sig": 3
+     }
+    ]
+   },
+   "expect": {
+    "text": "+.000203"
+   }
+  },
+  {
+   "id": "formatSigned-exact-zero",
+   "args": {
+    "fn": "formatSigned",
+    "call": [
+     0
+    ]
+   },
+   "expect": {
+    "text": "0"
+   }
+  },
+  {
+   "id": "formatSigned-large",
+   "args": {
+    "fn": "formatSigned",
+    "call": [
+     1234.5678,
+     {
+      "digits": 1
+     }
+    ]
+   },
+   "expect": {
+    "text": "+1,234.6"
+   }
+  },
+  {
+   "id": "formatSetting-readme-.20",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.2
+    ]
+   },
+   "expect": {
+    "text": ".20"
+   }
+  },
+  {
+   "id": "formatSetting-readme-.25",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.25
+    ]
+   },
+   "expect": {
+    "text": ".25"
+   }
+  },
+  {
+   "id": "formatSetting-readme-.125",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.125
+    ]
+   },
+   "expect": {
+    "text": ".125"
+   }
+  },
+  {
+   "id": "formatSetting-readme-1.96",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     1.96
+    ]
+   },
+   "expect": {
+    "text": "1.96"
+   }
+  },
+  {
+   "id": "formatSetting-readme-1/3",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.333333333333333
+    ]
+   },
+   "expect": {
+    "text": "1/3"
+   }
+  },
+  {
+   "id": "formatSetting-readme-3",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     3
+    ]
+   },
+   "expect": {
+    "text": "3"
+   }
+  },
+  {
+   "id": "formatSetting-readme-w-halves",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     [0.5, 0.5]
+    ]
+   },
+   "expect": {
+    "text": "(1/2, 1/2)"
+   }
+  },
+  {
+   "id": "formatSetting-readme-w-quarters",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     [0.5, 0.25, 0.25]
+    ]
+   },
+   "expect": {
+    "text": "(1/2, 1/4, 1/4)"
+   }
+  },
+  {
+   "id": "formatSetting-readme-w-.8.2",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     [0.8, 0.2]
+    ]
+   },
+   "expect": {
+    "text": "(.8, .2)"
+   }
+  },
+  {
+   "id": "formatSetting-w-thirds",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     [0.333333333333333, 0.666666666666667]
+    ]
+   },
+   "expect": {
+    "text": "(1/3, 2/3)"
+   }
+  },
+  {
+   "id": "formatSetting-w-1-0",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     [1, 0]
+    ]
+   },
+   "expect": {
+    "text": "(1, 0)"
+   }
+  },
+  {
+   "id": "formatSetting-w-.35.65",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     [0.35, 0.65]
+    ]
+   },
+   "expect": {
+    "text": "(.35, .65)"
+   }
+  },
+  {
+   "id": "formatSetting-w-3/8-5/8",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     [0.375, 0.625]
+    ]
+   },
+   "expect": {
+    "text": "(3/8, 5/8)"
+   }
+  },
+  {
+   "id": "formatSetting-w-.6.4",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     [0.6, 0.4]
+    ]
+   },
+   "expect": {
+    "text": "(.6, .4)"
+   }
+  },
+  {
+   "id": "formatSetting-seed",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     20261030
+    ]
+   },
+   "expect": {
+    "text": "20261030"
+   }
+  },
+  {
+   "id": "formatSetting-tau-.05",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.05
+    ]
+   },
+   "expect": {
+    "text": ".05"
+   }
+  },
+  {
+   "id": "formatSetting-tau-.5",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.5
+    ]
+   },
+   "expect": {
+    "text": ".50"
+   }
+  },
+  {
+   "id": "formatSetting-0.1+0.2",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     {
+      "$sum": [0.1, 0.2]
+     }
+    ]
+   },
+   "expect": {
+    "text": ".30"
+   }
+  },
+  {
+   "id": "formatSetting-1/7",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.142857142857143
+    ]
+   },
+   "expect": {
+    "text": "1/7"
+   }
+  },
+  {
+   "id": "formatSetting-2/3",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.666666666666667
+    ]
+   },
+   "expect": {
+    "text": "2/3"
+   }
+  },
+  {
+   "id": "formatSetting-5/12",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.416666666666667
+    ]
+   },
+   "expect": {
+    "text": "5/12"
+   }
+  },
+  {
+   "id": "formatSetting-pi/10",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.314159265358979
+    ]
+   },
+   "expect": {
+    "text": ".3142"
+   }
+  },
+  {
+   "id": "formatSetting-1/13",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.0769230769230769
+    ]
+   },
+   "expect": {
+    "text": ".0769"
+   }
+  },
+  {
+   "id": "formatSetting-level-.95",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     0.95
+    ]
+   },
+   "expect": {
+    "text": ".95"
+   }
+  },
+  {
+   "id": "formatSetting-2.5",
+   "args": {
+    "fn": "formatSetting",
+    "call": [
+     2.5
+    ]
+   },
+   "expect": {
+    "text": "2.50"
+   }
+  },
+  {
+   "id": "formatGrades-readme",
+   "args": {
+    "fn": "formatGrades",
+    "call": [
+     [1, 1, 2, 2, 3, 3]
+    ]
+   },
+   "expect": {
+    "text": "1/1/2/2/3/3"
+   }
+  },
+  {
+   "id": "formatGrades-strict",
+   "args": {
+    "fn": "formatGrades",
+    "call": [
+     [1, 2, 3, 4, 5, 6]
+    ]
+   },
+   "expect": {
+    "text": "1/2/3/4/5/6"
+   }
+  },
+  {
+   "id": "formatGrades-one-unit",
+   "args": {
+    "fn": "formatGrades",
+    "call": [
+     [1]
+    ]
+   },
+   "expect": {
+    "text": "1"
+   }
+  },
+  {
+   "id": "formatGrades-eleven",
+   "args": {
+    "fn": "formatGrades",
+    "call": [
+     [1, 2, 10, 11, 3]
+    ]
+   },
+   "expect": {
+    "text": "1/2/10/11/3"
+   }
+  },
+  {
+   "id": "formatSizes-readme",
+   "args": {
+    "fn": "formatSizes",
+    "call": [
+     [3, 6, 3]
+    ]
+   },
+   "expect": {
+    "text": "sizes 3, 6, 3"
+   }
+  },
+  {
+   "id": "formatSizes-nolabel",
+   "args": {
+    "fn": "formatSizes",
+    "call": [
+     [3, 6, 3],
+     {
+      "label": false
+     }
+    ]
+   },
+   "expect": {
+    "text": "3, 6, 3"
+   }
+  },
+  {
+   "id": "formatSizes-one",
+   "args": {
+    "fn": "formatSizes",
+    "call": [
+     [12]
+    ]
+   },
+   "expect": {
+    "text": "sizes 12"
+   }
+  },
+  {
+   "id": "formatSizes-label-true",
+   "args": {
+    "fn": "formatSizes",
+    "call": [
+     [1, 2],
+     {
+      "label": true
+     }
+    ]
+   },
+   "expect": {
+    "text": "sizes 1, 2"
+   }
+  },
+  {
+   "id": "formatTuple-readme",
+   "args": {
+    "fn": "formatTuple",
+    "call": [
+     [0.15, 0.85, 0.2],
+     {
+      "$fn": "formatSetting"
+     }
+    ]
+   },
+   "expect": {
+    "text": "(.15, .85, .20)"
+   }
+  },
+  {
+   "id": "formatTuple-default-prob",
+   "args": {
+    "fn": "formatTuple",
+    "call": [
+     [0.188, 0.812]
+    ]
+   },
+   "expect": {
+    "text": "(.188, .812)"
+   }
+  },
+  {
+   "id": "formatTuple-risk",
+   "args": {
+    "fn": "formatTuple",
+    "call": [
+     [0.0417, 0.0248],
+     {
+      "$fn": "formatRisk"
+     }
+    ]
+   },
+   "expect": {
+    "text": "(.0417, .0248)"
+   }
+  },
+  {
+   "id": "formatTuple-percent",
+   "args": {
+    "fn": "formatTuple",
+    "call": [
+     [0.14, 0.5],
+     {
+      "$fn": "formatPercent"
+     }
+    ]
+   },
+   "expect": {
+    "text": "(14%, 50%)"
+   }
+  },
+  {
+   "id": "formatTuple-prob-bounds",
+   "args": {
+    "fn": "formatTuple",
+    "call": [
+     [0, 0.0004, 1]
+    ]
+   },
+   "expect": {
+    "text": "(0, below .001, 1)"
+   }
+  },
+  {
+   "id": "erfc--6",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     -6
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 2
+   }
+  },
+  {
+   "id": "erfc--3",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     -3
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.999977909503
+   }
+  },
+  {
+   "id": "erfc--1.5",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     -1.5
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.96610514647531
+   }
+  },
+  {
+   "id": "erfc--1",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     -1
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.84270079294971
+   }
+  },
+  {
+   "id": "erfc--0.5",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     -0.5
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.52049987781305
+   }
+  },
+  {
+   "id": "erfc--1e-08",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     -1e-08
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.00000001128379
+   }
+  },
+  {
+   "id": "erfc-0",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     0
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1
+   }
+  },
+  {
+   "id": "erfc-1e-10",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     1e-10
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.999999999887162
+   }
+  },
+  {
+   "id": "erfc-0.001",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     0.001
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.998871621209031
+   }
+  },
+  {
+   "id": "erfc-0.10000000000000001",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     0.1
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.887537083981715
+   }
+  },
+  {
+   "id": "erfc-0.25",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     0.25
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.723673609831763
+   }
+  },
+  {
+   "id": "erfc-0.47693627620446988",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     0.47693627620447
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.5
+   }
+  },
+  {
+   "id": "erfc-0.5",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     0.5
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.479500122186953
+   }
+  },
+  {
+   "id": "erfc-0.75",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     0.75
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.288844366346485
+   }
+  },
+  {
+   "id": "erfc-0.84375",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     0.84375
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.232774338767658
+   }
+  },
+  {
+   "id": "erfc-1",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     1
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.157299207050285
+   }
+  },
+  {
+   "id": "erfc-1.25",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     1.25
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.0770998717435418
+   }
+  },
+  {
+   "id": "erfc-2",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     2
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.00467773498104727
+   }
+  },
+  {
+   "id": "erfc-2.5",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     2.5
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0.000406952017444959
+   }
+  },
+  {
+   "id": "erfc-3",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     3
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 2.20904969985854e-05
+   }
+  },
+  {
+   "id": "erfc-4",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     4
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.541725790028e-08
+   }
+  },
+  {
+   "id": "erfc-4.5",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     4.5
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.96616044154289e-10
+   }
+  },
+  {
+   "id": "erfc-5",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     5
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.53745979442803e-12
+   }
+  },
+  {
+   "id": "erfc-6",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     6
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 2.15197367124989e-17
+   }
+  },
+  {
+   "id": "erfc-8",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     8
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.12242971729829e-29
+   }
+  },
+  {
+   "id": "erfc-10",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     10
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 2.08848758376255e-45
+   }
+  },
+  {
+   "id": "erfc-12",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     12
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.3562611692059e-64
+   }
+  },
+  {
+   "id": "erfc-15",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     15
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 7.21299417245121e-100
+   }
+  },
+  {
+   "id": "erfc-20",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     20
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 5.3958656116079e-176
+   }
+  },
+  {
+   "id": "erfc-25",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     25
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 8.30017257119652e-274
+   }
+  },
+  {
+   "id": "erfc-26",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     26
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 5.66319240885585e-296
+   }
+  },
+  {
+   "id": "erfc-26.5",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     26.5
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 2.21090766426373e-307
+   }
+  },
+  {
+   "id": "erfc-26.539999999999999",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     26.54
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 2.64555817446851e-308
+   }
+  },
+  {
+   "id": "erfc-26.600000000000001",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     26.6
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 1.08851258854423e-309
+   }
+  },
+  {
+   "id": "erfc-27",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     27
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 5.23704643935263e-319
+   }
+  },
+  {
+   "id": "erfc-30",
+   "args": {
+    "fn": "erfc",
+    "call": [
+     30
+    ],
+    "reference": "mpmath 1.3.0 at 50 digits"
+   },
+   "expect": {
+    "erfc": 0
+   }
+  }
+ ]
+}

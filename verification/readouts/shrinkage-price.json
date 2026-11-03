@@ -1,0 +1,1109 @@
+{
+  "$schema": "./_schema.json",
+  "app": "shrinkage-price",
+  "catalog": "1.6",
+  "about": "The simulated league with the teaching normal-normal posterior of app 1.5 (prior mean 0) along the prior SD, .01 to 1. The read-out gives, at the chosen prior SD, the average squared distance from the posterior means to the true values in this draw and over many draws (closed form) beside the estimates', and the pairs with one direction above .90 and above .99; the panels add the pairs against the true order, the units that end farther and where the curves are lowest; the comparison table sets a too-narrow prior (.05) and a too-wide one (.45) beside the estimates; 1.5's lead, units figure and order figure show the league at the chosen prior SD. A new app (a new angle on v1 L-04 view 2): every expected value comes from the base-R oracle (oracle-summaries, oracle-simulate, oracle-v3 for expectedSquaredDistance and pairCertainty) or from v1's frozen registry; settings (prior SD, seed) from the registry's settings keys; the lead and caption are literals of v1 contract rows 9.4 and 6.5 in their v3 wording. Numbers with no oracle row (this draw's distance at .02, .45 and the steps between, the closed form at .05 and .45, pair certainty off prior SD .15, the closed-form minimum searched in steps of .001) are checked by the general rules only (data-num read back). Part 1 review: the distance and certainty values at the chosen prior SD are said once, in the read-out (their panels keep the flat prior's counts only), so the panel hooks sure-90 and sure-99 went; the comparison lead adds that the counts are the posterior's own probabilities.",
+  "cases": [
+    {
+      "id": "spread",
+      "about": "The first preset: prior SD .15 on the frozen draw (seed 20261030). The read-out, the four panels' values at the chosen prior SD, the lowest points of the distance curves (both at .15 on the slider's steps), the comparison table, 1.5's lead and order note, the seed and the caption.",
+      "preset": "spread",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "read-out: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"spread-truth\"]",
+          "about": "read-out: the true spread, the SD of the true values",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-theta",
+            "field": "sd"
+          },
+          "value": 0.149374664807108
+        },
+        {
+          "select": "[data-prx-readout=\"mse-post\"]",
+          "about": "read-out: the posterior means' average squared distance to the true values, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-postmean-prior.15-vs-theta",
+            "field": "value"
+          },
+          "value": 0.00957941579994825
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-post\"]",
+          "about": "read-out: the same over many draws (closed form)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "mean"
+          },
+          "value": 0.00753608715104925
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "read-out and panels: the estimates' average squared distance to the true values, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-estimate-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0163464984046552
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-est\"]",
+          "about": "read-out and panels: the estimates' expected average squared distance (closed form; no prior)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "rawMean"
+          },
+          "value": 0.0175
+        },
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "read-out and panels: the estimates' pairs against the true order, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"expected-est\"]",
+          "about": "read-out and panels: the estimates' expected pairs against the true order (closed form)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        },
+        {
+          "select": "[data-prx-readout=\"read-sure-90\"]",
+          "about": "read-out: pairs with one direction above .90 (posterior at prior SD .15)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "pairCertainty-league-seed20261030-posterior.15",
+            "field": "counts.0"
+          },
+          "value": 124
+        },
+        {
+          "select": "[data-prx-readout=\"read-sure-99\"]",
+          "about": "read-out: pairs with one direction above .99",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "pairCertainty-league-seed20261030-posterior.15",
+            "field": "counts.1"
+          },
+          "value": 33
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "read-out: pairs among the thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"truth-post\"]",
+          "about": "order panel: the posterior means' pairs against the true order, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-postmean.15-vs-theta",
+            "field": "count"
+          },
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"expected-post\"]",
+          "about": "order panel: expected pairs against the true order (closed form, prior SD .15)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-prior.15",
+            "field": "expected"
+          },
+          "value": 80.6889700818873
+        },
+        {
+          "select": "[data-prx-readout=\"farther\"]",
+          "about": "farther panel: units that end farther from their true value than their estimate was",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "fartherCount-league-seed20261030-prior.15",
+            "field": "count"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"lowest-sd\"]",
+          "about": "distance panel: this draw's lowest step is prior SD .15",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"lowest-mse\"]",
+          "about": "distance panel: its value (the draw's distance at .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-postmean-prior.15-vs-theta",
+            "field": "value"
+          },
+          "value": 0.00957941579994825
+        },
+        {
+          "select": "[data-prx-readout=\"lowest-closed-sd\"]",
+          "about": "distance panel: the closed form's lowest step is prior SD .15",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"lowest-closed-mse\"]",
+          "about": "distance panel: its value (the closed form at .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "mean"
+          },
+          "value": 0.00753608715104925
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-mse\"]",
+          "about": "comparison, too narrow (prior SD .05): average squared distance, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-postmean-prior.05-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0148200794787938
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-pairs\"]",
+          "about": "comparison, too narrow: pairs against the true order, this draw",
+          "source": "registry",
+          "ref": "league.default.prior05.pm.misordered",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-expected\"]",
+          "about": "comparison, too narrow: expected pairs against the true order (closed form)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-prior.05",
+            "field": "expected"
+          },
+          "value": 87.4490940706165
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-farther\"]",
+          "about": "comparison, too narrow: units that end farther, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "fartherCount-league-seed20261030-prior.05",
+            "field": "count"
+          },
+          "value": 17
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-mse\"]",
+          "about": "comparison, the estimates: average squared distance, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-estimate-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0163464984046552
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-closed\"]",
+          "about": "comparison, the estimates: expected average squared distance (closed form)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "rawMean"
+          },
+          "value": 0.0175
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-pairs\"]",
+          "about": "comparison, the estimates: pairs against the true order, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-expected\"]",
+          "about": "comparison, the estimates: expected pairs against the true order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        },
+        {
+          "select": "[data-prx-readout=\"crossings\"]",
+          "about": "1.5's order figure: pairs whose order changes from the estimates to the posterior means",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-postmean.15",
+            "field": "count"
+          },
+          "value": 37
+        },
+        {
+          "select": ".prx-sp-lead",
+          "about": "1.5's lead at prior SD .15: closer on average in this draw, some units farther",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD, in this draw, the posterior means are closer to the true values on average (a smaller average squared distance), but some units end farther from their true value than their estimate was."
+        },
+        {
+          "select": "[data-prx-readout=\"seed\"]",
+          "about": "the seed of the frozen draw in the note",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": ".prx-sp-compare .prx-sp-note",
+          "kind": "text",
+          "about": "the comparison lead: the certainty counts are the posterior's own probabilities, with a direct link to the built true-value check",
+          "source": "literal",
+          "ref": "9.4",
+          "slots": true,
+          "value": "Over many draws, a prior about a third of the true spread (⟨narrow⟩) and one about three times it (⟨wide⟩) end about as far from the true values: ⟨cN⟩ and ⟨cW⟩. Yet in this draw the posterior puts one direction above ⟨t⟩ in ⟨sN⟩ pairs under the first and in ⟨sW⟩ under the second. These are the posterior's own probabilities; whether such directions are right under the true values is checked in Reported and realized error."
+        }
+      ]
+    },
+    {
+      "id": "much-too-narrow",
+      "about": "Prior SD .02: over many draws the posterior means end farther from the true values than the estimates (.0191 against .0175, closed form), and in this draw too (CR-108: .0197 against .0163), so 1.5's lead calls the prior too narrow.",
+      "preset": "much-too-narrow",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"expected-mse-post\"]",
+          "about": "read-out: expected average squared distance at prior SD .02 (closed form)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.02",
+            "field": "mean"
+          },
+          "value": 0.0191488806161152
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "read-out and panels: the estimates' average squared distance to the true values, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-estimate-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0163464984046552
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-est\"]",
+          "about": "read-out and panels: the estimates' expected average squared distance (closed form; no prior)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "rawMean"
+          },
+          "value": 0.0175
+        },
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "read-out and panels: the estimates' pairs against the true order, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"expected-est\"]",
+          "about": "read-out and panels: the estimates' expected pairs against the true order (closed form)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        },
+        {
+          "select": ".prx-sp-lead",
+          "about": "1.5's lead when this draw and the closed form both put the posterior means farther",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD the prior is too narrow for these true values: the posterior means are farther from the true values on average than the estimates (a larger average squared distance), in this draw and over many draws."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "too-narrow",
+      "about": "Prior SD .05, about a third of the true spread: the read-out and the panels at the comparison's narrow prior.",
+      "preset": "too-narrow",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "read-out: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior05",
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"mse-post\"]",
+          "about": "read-out: average squared distance at prior SD .05, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-postmean-prior.05-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0148200794787938
+        },
+        {
+          "select": "[data-prx-readout=\"truth-post\"]",
+          "about": "order panel: pairs against the true order at prior SD .05, this draw",
+          "source": "registry",
+          "ref": "league.default.prior05.pm.misordered",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"expected-post\"]",
+          "about": "order panel: expected pairs against the true order at prior SD .05",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-prior.05",
+            "field": "expected"
+          },
+          "value": 87.4490940706165
+        },
+        {
+          "select": "[data-prx-readout=\"farther\"]",
+          "about": "farther panel: units that end farther at prior SD .05",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "fartherCount-league-seed20261030-prior.05",
+            "field": "count"
+          },
+          "value": 17
+        },
+        {
+          "select": "[data-prx-readout=\"crossings\"]",
+          "about": "1.5's order figure: pairs whose order changes at prior SD .05",
+          "source": "registry",
+          "ref": "league.default.prior05.reordered",
+          "value": 71
+        },
+        {
+          "select": ".prx-sp-lead",
+          "about": "1.5's lead at prior SD .05: closer on average in this draw, some units farther",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD, in this draw, the posterior means are closer to the true values on average (a smaller average squared distance), but some units end farther from their true value than their estimate was."
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-mse\"]",
+          "about": "comparison, too narrow (prior SD .05): average squared distance, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-postmean-prior.05-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0148200794787938
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-pairs\"]",
+          "about": "comparison, too narrow: pairs against the true order, this draw",
+          "source": "registry",
+          "ref": "league.default.prior05.pm.misordered",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-expected\"]",
+          "about": "comparison, too narrow: expected pairs against the true order (closed form)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-prior.05",
+            "field": "expected"
+          },
+          "value": 87.4490940706165
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-farther\"]",
+          "about": "comparison, too narrow: units that end farther, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "fartherCount-league-seed20261030-prior.05",
+            "field": "count"
+          },
+          "value": 17
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-mse\"]",
+          "about": "comparison, the estimates: average squared distance, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-estimate-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0163464984046552
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-closed\"]",
+          "about": "comparison, the estimates: expected average squared distance (closed form)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "rawMean"
+          },
+          "value": 0.0175
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-pairs\"]",
+          "about": "comparison, the estimates: pairs against the true order, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-expected\"]",
+          "about": "comparison, the estimates: expected pairs against the true order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        }
+      ]
+    },
+    {
+      "id": "too-wide",
+      "about": "Prior SD .45, about three times the true spread: the estimates' levels and the comparison table do not move with the prior SD.",
+      "preset": "too-wide",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "read-out and panels: the estimates' average squared distance to the true values, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-estimate-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0163464984046552
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-est\"]",
+          "about": "read-out and panels: the estimates' expected average squared distance (closed form; no prior)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "rawMean"
+          },
+          "value": 0.0175
+        },
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "read-out and panels: the estimates' pairs against the true order, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"expected-est\"]",
+          "about": "read-out and panels: the estimates' expected pairs against the true order (closed form)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-mse\"]",
+          "about": "comparison, too narrow (prior SD .05): average squared distance, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-postmean-prior.05-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0148200794787938
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-pairs\"]",
+          "about": "comparison, too narrow: pairs against the true order, this draw",
+          "source": "registry",
+          "ref": "league.default.prior05.pm.misordered",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-expected\"]",
+          "about": "comparison, too narrow: expected pairs against the true order (closed form)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-prior.05",
+            "field": "expected"
+          },
+          "value": 87.4490940706165
+        },
+        {
+          "select": "[data-prx-readout=\"narrow-farther\"]",
+          "about": "comparison, too narrow: units that end farther, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "fartherCount-league-seed20261030-prior.05",
+            "field": "count"
+          },
+          "value": 17
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-mse\"]",
+          "about": "comparison, the estimates: average squared distance, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-estimate-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0163464984046552
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-closed\"]",
+          "about": "comparison, the estimates: expected average squared distance (closed form)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "rawMean"
+          },
+          "value": 0.0175
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-pairs\"]",
+          "about": "comparison, the estimates: pairs against the true order, this draw",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"estimates-expected\"]",
+          "about": "comparison, the estimates: expected pairs against the true order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        }
+      ]
+    },
+    {
+      "id": "another-draw",
+      "about": "Seed 20261031 at prior SD .15: this draw's numbers move, the closed forms (which do not depend on the seed) stay.",
+      "preset": "another-draw",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seed\"]",
+          "about": "the seed in the note",
+          "source": "registry",
+          "ref": "settings.seed.replay01",
+          "value": 20261031
+        },
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "order panel: the estimates' pairs against the true order, seed 20261031",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261031-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 116
+        },
+        {
+          "select": "[data-prx-readout=\"truth-post\"]",
+          "about": "order panel: the posterior means' pairs against the true order, seed 20261031, prior SD .15",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261031-postmean.15-vs-theta",
+            "field": "count"
+          },
+          "value": 102
+        },
+        {
+          "select": "[data-prx-readout=\"crossings\"]",
+          "about": "1.5's order figure, seed 20261031",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261031-estimate-vs-postmean.15",
+            "field": "count"
+          },
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-post\"]",
+          "about": "read-out: the closed form at prior SD .15 does not depend on the seed",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "mean"
+          },
+          "value": 0.00753608715104925
+        },
+        {
+          "select": "[data-prx-readout=\"expected-post\"]",
+          "about": "order panel: the closed form at prior SD .15 does not depend on the seed",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-prior.15",
+            "field": "expected"
+          },
+          "value": 80.6889700818873
+        },
+        {
+          "select": "[data-prx-readout=\"lowest-closed-mse\"]",
+          "about": "distance panel: the closed form's lowest value, at .15 for every seed",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "mean"
+          },
+          "value": 0.00753608715104925
+        },
+        {
+          "select": "[data-prx-readout=\"lowest-closed-sd\"]",
+          "about": "distance panel: the closed form's lowest step, .15 for every seed",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "prior-10",
+      "about": "A raw query off the presets: the closed form at prior SD .10.",
+      "query": "?priorSd=.10",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"expected-mse-post\"]",
+          "about": "read-out: expected average squared distance at prior SD .10 (closed form)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.10",
+            "field": "mean"
+          },
+          "value": 0.00845974421982239
+        }
+      ]
+    },
+    {
+      "id": "prior-20",
+      "about": "A raw query off the presets: the closed form at prior SD .20.",
+      "query": "?priorSd=.20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"expected-mse-post\"]",
+          "about": "read-out: expected average squared distance at prior SD .20 (closed form)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.20",
+            "field": "mean"
+          },
+          "value": 0.00819267471149952
+        }
+      ]
+    },
+    {
+      "id": "update-prior05",
+      "about": "Mounted at the defaults, then moved to prior SD .05 by an update (as a slider would).",
+      "query": "",
+      "update": [
+        {
+          "priorSd": 0.05
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "read-out: the prior SD after the update",
+          "source": "registry",
+          "ref": "settings.prior05",
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"mse-post\"]",
+          "about": "read-out: average squared distance at prior SD .05, this draw",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-postmean-prior.05-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0148200794787938
+        },
+        {
+          "select": "[data-prx-readout=\"farther\"]",
+          "about": "farther panel: units that end farther at prior SD .05",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "fartherCount-league-seed20261030-prior.05",
+            "field": "count"
+          },
+          "value": 17
+        }
+      ]
+    }
+  ]
+}

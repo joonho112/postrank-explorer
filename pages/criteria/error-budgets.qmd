@@ -1,0 +1,48 @@
+---
+title: "Criterion-specific expected-error budgets"
+subtitle: "4.7 · after the postrank theory book, ch. 13"
+description: "Feasible report families under bounds on criterion-specific expected error shares."
+---
+
+An error weight determines the contribution of a wrong direction to risk. An error budget instead restricts its
+expected share among stated directions on a specified criterion. The cloud plots allowed reports with positive
+disclosure according to their two criterion-specific error shares. Applying one or both budgets reduces the feasible
+family. The selected report minimises weighted risk over this remaining family, and is compared with the
+unconstrained optimum under the same settings. Count-form checks also cover the all-withheld report when it is
+allowed, despite its undefined error share.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/error-budgets.js"></script>
+<script>window.__prxApp = PRX["error-budgets"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Loose budget.** With equal weights and score B's budget at .03, only 3 reports qualify. The best still states
+  9 of 15 pairs and has risk .0933: removing reports need not change the optimum.
+- **Tight budget.** At .02, 2 reports qualify. The best states 8 of 15 pairs and has risk .0939; the other report
+  withholds every comparison. The ring marks the optimum in the reduced family.
+- **Exactly three.** Keeping the .02 budget while requiring exactly three grades leaves 0 reports feasible.
+  The empty family has no best report. Relaxing the grade count restores the all-withheld option.
+- **Both budgets.** Requiring an expected wrong share at most .02 on each score also leaves 2 reports. Both count-form checks and their slacks are reported; a report must pass both rows.
+- **Zero weight.** Score B has zero error weight but still has its .10 budget. The best feasible report has risk
+  .0906. Its largest single score-B error is .240, for E above F, while its average is .0267. A budget on an
+  average allows some individual errors above it.
+- **No budget.** The score-A-only best has risk .0417 and expected wrong share .237 on score B. The cross marks
+  this unconstrained best; the older **At most .15**, **At most .10** and **At most .05** presets retain the same
+  score-A-only comparison.
+
+::: {.callout-note appearance="simple"}
+These are six fictional sites with independent normal posteriors supplied for illustration. The guarantee is an
+expectation under that posterior, not the realised share of wrong directions. All-withheld has zero expected wrong
+count and zero stated pairs: it meets count-form budgets when allowed, although its wrong share is undefined.
+Changing weights or τ changes the loss; changing the grade cap changes the family. The browser enumerates the
+six-site reports directly. postrank's typed-coefficient interface does not accept these budget settings.
+:::
+
+Standalone: [Criterion-specific expected-error budgets](../../embed/error-budgets.html), for example `?preset=both&theme=dark`.
+
+Related applications: [A common grade report for two scores](two-scores.qmd) · [Criterion-specific excess risk of a common report](common-grade-cost.qmd).

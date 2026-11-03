@@ -1,0 +1,58 @@
+---
+title: "Majority comparisons and expected ranks"
+subtitle: "1.15 · after the postrank theory book, ch. 10, and Kline, Rose and Walters (2024), section II.F"
+description: "Relation between majority-win counts, posterior-mean rankings and expected ranks."
+---
+
+The majority-win count $H_i = \#\{j : \Pr(\theta_i > \theta_j \mid Y) > 1/2\}$ counts the opponents that unit $i$
+is more likely to exceed. Expected rank instead sums the probabilities of being exceeded:
+$\prerank{i} = 1 + \sum_{j \neq i} \Pr(\theta_j > \theta_i \mid Y)$. For independent normal posteriors, the
+majority-win count gives the posterior-mean ordering. Other posterior laws need not have this property. The examples
+compare these summaries with KRW's cards at λ = 1, where correct and incorrect directions have equal reward and cost.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/majority-wins.js"></script>
+<script>window.__prxApp = PRX["majority-wins"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Law on orders.** A beats B and C, each only with probability .51; B's one win is nearly sure (.99). Majority wins
+  put A first, the expected rank B (1.52 against A's 1.98).
+- **League.** Majority wins give the posterior-mean order: 0 of the 435 pairs differ. The expected-rank order states 6
+  pairs against the majority; U13 is 8th by it (9.59) and 6th by the other two.
+- **League, prior SD .30.** Still 0 of the 435 pairs; the expected-rank order now states 12 pairs against the majority.
+- **KRW, race.** Majority wins form a strict order. Against it the posterior-mean order states 35 of the 4,656 pairs
+  and the expected-rank order 62; KRW's card at λ = 1 states none against it, so no full ranking expects fewer wrong
+  claims: 1,248, against 1,249 for the posterior-mean order.
+- **KRW, gender.** Macy's beats Jones Lang LaSalle (.5008), which beats Dollar General (.5022), which beats Macy's
+  (.5014): a cycle, and the three win 45 pairs each. KRW's card at λ = 1 (96 grades) puts Macy's and Dollar General
+  in one grade, within KRW's solver tolerances.
+
+::: {.callout-note appearance="simple"}
+KRW call the grades at λ = 1 Condorcet ranks (Section II.F). Their remark there that the count of wins is equivalent
+to the posterior mean rank (the expected rank) does not hold in general: on the race gaps, majority wins and the
+expected rank order 62 pairs differently. The data describe KRW's correspondence experiment, not any firm's current
+conduct. Data: Kline, Rose and Walters (2024), *A Discrimination Report Card*, American Economic Review,
+doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version),
+noncommercial use only. Pair probabilities as adapted in postrank 1.1.0 (pr_case_krw). Cards computed with KRW's code
+(KRW replication companion) under KRW's archived pair probabilities ([KRW's cards along λ](../cases/krw-lambda.qmd)).
+Changes noted; no endorsement by the authors is implied.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank); r <- pr_case_krw$alternatives$race; e <- r$e[, , 1]
+w <- rowSums(e < t(e), na.rm = TRUE); pm <- postrank_posterior_means(r)[, 1]; er <- postrank_expected_rank(r)
+c(mean = sum(outer(w, w, ">") & outer(pm, pm, "<")), rank = sum(outer(w, w, ">") & outer(er, er, ">")))   # 35 62
+```
+:::
+
+Standalone: [embed/majority-wins.html](../../embed/majority-wins.html), for example
+`?data=krw&criterion=gender&unit=95`.
+
+Related applications: [Alternative rankings from a posterior distribution](which-ranking.qmd) (1.14) and [Expected errors in a strict ranking](ranking-claims.qmd) (1.16).

@@ -1,0 +1,21 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part2-g03",
+  "description": "G-03 (The price of silence, pages/grades/price-of-silence.qmd): numbers that part2.json does not hold, for the answer to the third guided preset (tau .40, no cap). The exact optimum among all reports at tau = .40 is the strict order of the six sites; it states every pair, so its risk is its error term alone: the pairs it states and its expected wrong directions, both read from the same exactOptimum call as six.A.all.tau40.grades and six.A.all.tau40.risk in part2.json. It also holds the answer to the open task (the smallest tau on the slider at which the best report without a cap states A above B is .19, where 1/2/3/3/4/5 replaces 1/1/2/2/3/4; the change point is e_AB = .1884, so the error of A above B sets it), with the two tau settings .18 and .19 on either side.",
+  "license_scope": "author",
+  "inputs": {
+    "g03.six.A.all.tau40": {"fn":"exactOptimum","args":[{"$data":"six-sites","path":"arrays.one"},{"tau":{"$setting":"settings.tau40"},"family":{"kind":"all"}}],"note":"the exact optimum among all 4,683 reports of the six sites on score A at tau = .40 (as six.A.all.tau40 in part2.json)"},
+    "g03.six.A.all.taupath": {"fn":"tauPath","args":[{"$data":"six-sites","path":"arrays.one"},{"family":{"kind":"all"}}],"note":"where the best report among all 4,683 reports changes along tau"},
+    "g03.six.A.all.tau18": {"fn":"exactOptimum","args":[{"$data":"six-sites","path":"arrays.one"},{"tau":{"$setting":"settings.tau18"},"family":{"kind":"all"}}],"note":"open task: the slider point just below the change at e_AB"},
+    "g03.six.A.all.tau19": {"fn":"exactOptimum","args":[{"$data":"six-sites","path":"arrays.one"},{"tau":{"$setting":"settings.tau19"},"family":{"kind":"all"}}],"note":"open task: the first slider point above the change at e_AB"}
+  },
+  "keys": {
+    "six.A.all.tau40.N": {"type":"scalar","from":"g03.six.A.all.tau40","field":"N","format":{"fn":"formatCount"},"tolerance":0,"note":"pairs stated by the best report with no cap at tau = .40 (all of them)"},
+    "six.A.all.tau40.E": {"type":"scalar","from":"g03.six.A.all.tau40","field":"Ew","format":{"fn":"formatExpectedCount"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"expected wrong directions of the same report, as the widget's tile shows them"},
+    "six.A.all.tau18.grades": {"type":"vector","from":"g03.six.A.all.tau18","field":"grade","format":{"fn":"formatGrades"},"tolerance":0,"note":"open task: 1/1/2/2/3/4 withholds A-B"},
+    "six.A.all.tau19.grades": {"type":"vector","from":"g03.six.A.all.tau19","field":"grade","format":{"fn":"formatGrades"},"tolerance":0,"note":"open task: 1/2/3/3/4/5 states A above B"},
+    "six.A.all.tau18.relAB": {"type":"scalar","fn":"relations","args":[{"$input":"g03.six.A.all.tau18","path":"grade"}],"field":"0.1","format":{"fn":"formatCount"},"tolerance":0,"note":"relation of A to B in the best report at tau .18: 0, withheld"},
+    "six.A.all.tau19.relAB": {"type":"scalar","fn":"relations","args":[{"$input":"g03.six.A.all.tau19","path":"grade"}],"field":"0.1","format":{"fn":"formatCount"},"tolerance":0,"note":"relation of A to B in the best report at tau .19: 1, A stated above B"},
+    "six.A.all.breakAB": {"type":"scalar","from":"g03.six.A.all.taupath","field":"intervals.3.tauTo","format":{"fn":"formatRisk"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"open task: the change point where A above B starts to be stated, equal to e_AB (six.A.e.AB)"}
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "id": "1.13",
+  "name": "pairwise-matrix",
+  "part": "1",
+  "title": "All pairs at once",
+  "idea": "With every pair's π in one matrix ordered by posterior mean, the uncertain pairs gather near the diagonal (for independent normal posteriors).",
+  "status": "built",
+  "from": "v1 whole · v1 L-08 pairwise-matrix",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "math": true,
+  "credit": "After Kline, Rose and Walters (2024), Figure 2A and slide 38 (first names) and slide 54 (firms).",
+  "caption": "a posterior set by hand for teaching; postrank does not fit it",
+  "presets": [
+    {
+      "id": "six-mean",
+      "label": "Six sites, by posterior mean",
+      "query": "data=six&sort=mean&priorSd=.15"
+    },
+    {
+      "id": "six-label",
+      "label": "Six sites, by label",
+      "query": "data=six&sort=label&priorSd=.15"
+    },
+    {
+      "id": "league-label",
+      "label": "League, by label",
+      "query": "data=league&sort=label&priorSd=.15"
+    },
+    {
+      "id": "league-mean",
+      "label": "League, by posterior mean",
+      "query": "data=league&sort=mean&priorSd=.15"
+    },
+    {
+      "id": "imprecise",
+      "label": "Two imprecise units",
+      "query": "data=league&sort=mean&priorSd=.10&cell=U22,U25"
+    }
+  ],
+  "try": [
+    {
+      "preset": "six-mean",
+      "shows": [
+        "C above D",
+        ".638",
+        "next to the diagonal",
+        "A above B",
+        ".812",
+        "E above F",
+        ".856",
+        ".362"
+      ]
+    },
+    {
+      "preset": "six-label",
+      "shows": [
+        "C above D",
+        ".638"
+      ]
+    },
+    {
+      "preset": "league-label",
+      "shows": [
+        "435 pairs",
+        "U19 above U25",
+        ".502",
+        "6 cells from the diagonal",
+        "None of these 10",
+        "26 cells away"
+      ]
+    },
+    {
+      "preset": "league-mean",
+      "shows": [
+        "U19 above U25",
+        "next to the diagonal",
+        "8 of these 10",
+        "2 cells away"
+      ]
+    },
+    {
+      "preset": "imprecise",
+      "shows": [
+        "prior SD .10",
+        "row U22",
+        "column U25",
+        "5 cells from the diagonal",
+        ".528",
+        "posterior SD .089"
+      ]
+    }
+  ]
+}

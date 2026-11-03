@@ -1,0 +1,68 @@
+{
+  "id": "5.11",
+  "name": "cde-tau-path",
+  "part": "5",
+  "title": "What each step of τ changes",
+  "idea": "At each step of τ the schools' best report states more pairs in all, but a step moves a whole block: it can state pairs whose errors exceed the new price and withhold pairs it stated before.",
+  "status": "built",
+  "from": "v1 view · v1 S-01 case-cde, the τ-path view; adds the pairs each step states and withholds (relationChange)",
+  "data": [
+    "data/released/case-cde.json",
+    "data/released/cde-taupath.json"
+  ],
+  "credit": "12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde).",
+  "caption": "Twelve-school CDE teaching subset; supplied posterior conditional on a statewide fitted prior. Grade 1 states lowest chronic absence; a shared grade withholds directions.",
+  "presets": [
+    {
+      "id": "tau20",
+      "label": "The usual setting",
+      "query": "tau=.20&cuts=3,9"
+    },
+    {
+      "id": "tau45",
+      "label": "Past the last interior boundary",
+      "query": "tau=.45&cuts=3,9"
+    },
+    {
+      "id": "early",
+      "label": "The early boundaries",
+      "query": "tau=.01&cuts=3,9"
+    },
+    {
+      "id": "endpoint",
+      "label": "The upper endpoint",
+      "query": "tau=.50&cuts=3,9"
+    }
+  ],
+  "try": [
+    {
+      "preset": "tau20",
+      "shows": [
+        "45",
+        "3, 6, 3"
+      ]
+    },
+    {
+      "preset": "tau45",
+      "shows": [
+        "47",
+        "4, 5, 3"
+      ]
+    },
+    {
+      "preset": "early",
+      "shows": [
+        ".000162",
+        ".000263",
+        "27"
+      ]
+    },
+    {
+      "preset": "endpoint",
+      "shows": [
+        "13",
+        "47"
+      ]
+    }
+  ]
+}

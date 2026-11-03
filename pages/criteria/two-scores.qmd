@@ -1,0 +1,44 @@
+---
+title: "A common grade report for two scores"
+subtitle: "4.3 · on the postrank package's six fictional sites"
+description: "Weighted directional errors and criterion-specific profiles of a common report."
+---
+
+A common report evaluates wrong directions with weight $w$ on score A and $1-w$ on score B. Withholding costs τ once
+per pair. The lines between posterior means identify units whose orders differ across scores. For each weight,
+withholding cost and grade cap, the display gives the selected common report, its pairwise relation and its two
+criterion-specific error profiles. Thus, a common grade assignment can be evaluated separately on each score even
+though a weighted objective selects it. Shared grades withhold comparisons under both criteria.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/two-scores.js"></script>
+<script>window.__prxApp = PRX["two-scores"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Equal weights.** The report states 9 pairs at risk .0933. Its expected wrong shares are .0177 on score A and .0267 on score B. The outlined pair errors show why low-cost isolated directions need not appear in a coherent report.
+- **No cap.** Searching all 4,683 reports still gives the same 9 stated pairs. At these settings, transitivity of shared grades explains the withheld comparisons; the cap does not.
+- **A-heavy.** Giving score A more weight restores the three blocks {A, B} > {C, D} > {E, F}, stating 12 pairs. The profile shows the consequence for each score separately.
+- **Score A only.** The report follows score A's order between its blocks. On score B an expected .237 of its stated directions are wrong, although score B contributes no error cost.
+- **w .70.** The common report keeps {B, C, D} together; score B's expected wrong share is .115. Its pairwise relations differ from those at equal weights.
+- **Score B only.** The best report is tied with another report. The expected wrong share on score A is .200 under the first and .215 under the other; both reports and full profiles appear.
+
+::: {.callout-note}
+These are illustrative independent normal posteriors. Grade one means highest priority; a shared grade withholds a direction rather than asserting equality. The mean bound concerns an expected average over stated pairs, not every pair. Changing weights changes the loss, so risks at different weights correspond to different objectives.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+two <- postrank(pr_tutorial$two, weights = c(score_A=.5, score_B=.5), tau=.2, G_max=3L, backend="highs")
+get_grades(two); get_profile(two)[c("criterion", "E_over_N", "risk")]
+```
+:::
+
+Standalone: [two-scores](../../embed/two-scores.html), for example `?w=.5&tau=.2&cap=all`.
+
+Related applications: [Reporting risk and withholding cost](../grades/price-of-silence.qmd).

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<!-- 1.5 shrinkage. Build inputs: catalog.json; do not edit. -->
+<title>What a posterior adds · postrank Explorer</title>
+<script>
+  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  (function () {
+    var t = new URLSearchParams(location.search).get("theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/app.css">
+<link rel="stylesheet" href="../styles/temml.css">
+</head>
+<body class="prx-embed">
+<main>
+<h1 class="prx-embed-title">What a posterior adds</h1>
+<div id="app"><p>This app needs JavaScript.</p></div>
+<p class="prx-embed-credit">postrank Explorer · 1.5 · After Kline, Rose and Walters (2024), sections III, V.B and V.E and slide 49; the postrank theory book, ch. 20; and Walters, Mixtape slides p. 27. · <a href="../pages/uncertainty/shrinkage.html">page</a></p>
+</main>
+<!-- classic scripts only, so this page works from file:// -->
+<script src="../js/vendor/d3.min.js"></script>
+<script src="../js/vendor/plot.min.js"></script>
+<script src="../js/vendor/temml/temml.min.js"></script>
+<script src="../js/bundles/shrinkage.js"></script>
+<script>window.__prxApp = PRX["shrinkage"].mountWidget(document.getElementById("app"), {});</script>
+</body>
+</html>

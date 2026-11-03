@@ -1,0 +1,65 @@
+{
+  "id": "2.13",
+  "name": "report-card",
+  "part": "2",
+  "title": "Reading a report card",
+  "idea": "A report card shows the grades, each unit's posterior interval and the expected share of directions between two grades that are wrong.",
+  "status": "built",
+  "from": "v1 whole \u00b7 v1 G-07 report-card",
+  "data": [
+    "data/released/six-sites.json",
+    "data/released/thirty-sites.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), slides 61\u201363 and 69; card layout after the postrank package's report-card plot.",
+  "caption": "A posterior set by hand for teaching; postrank does not fit it.",
+  "presets": [
+    {
+      "id": "six-grade",
+      "label": "Six sites",
+      "query": "data=six&tau=.20&cap=3&order=grade&reveal=0"
+    },
+    {
+      "id": "six-rank-reveal",
+      "label": "Reveal by grade",
+      "query": "data=six&tau=.20&cap=3&order=expected_rank&reveal=1"
+    },
+    {
+      "id": "thirty",
+      "label": "Thirty sites",
+      "query": "data=thirty&tau=.25&cap=4&order=expected_rank&reveal=0"
+    }
+  ],
+  "try": [
+    {
+      "preset": "six-grade",
+      "shows": [
+        "12",
+        "15",
+        ".800",
+        ".0417",
+        ".00206",
+        ".0024",
+        ".0038"
+      ]
+    },
+    {
+      "preset": "six-rank-reveal",
+      "shows": [
+        "Grade 1",
+        "With one grade shown there is nothing to compare yet."
+      ]
+    },
+    {
+      "preset": "thirty",
+      "shows": [
+        "303",
+        "435",
+        ".1603",
+        ".121",
+        ".2019",
+        ".1672",
+        ".0640"
+      ]
+    }
+  ]
+}

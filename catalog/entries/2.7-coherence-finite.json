@@ -1,0 +1,68 @@
+{
+  "id": "2.7",
+  "name": "coherence-finite",
+  "part": "2",
+  "title": "Thirteen reports for three units",
+  "idea": "Under one finite three-unit law, for \u03c4 between 1/10 and 1/4 no report prints the pairwise choices; all 13 reports show what the best printable one costs (11/60 against 1/6 at \u03c4 = 1/5).",
+  "status": "built",
+  "from": "v1 view \u00b7 v1 G-04 coherence, the finite-law view",
+  "data": [
+    "engine"
+  ],
+  "credit": "Three-unit law after the postrank theory book, ch. 10.",
+  "math": true,
+  "caption": "Three-unit finite law from the postrank theory book, chapter 10; all thirteen reports evaluated in the browser.",
+  "presets": [
+    {
+      "id": "tau20",
+      "label": "\u03c4 .20",
+      "query": "tau=.20"
+    },
+    {
+      "id": "tau10",
+      "label": "\u03c4 .10",
+      "query": "tau=.10"
+    },
+    {
+      "id": "tau25",
+      "label": "\u03c4 .25",
+      "query": "tau=.25"
+    },
+    {
+      "id": "tau30",
+      "label": "\u03c4 .30",
+      "query": "tau=.30"
+    }
+  ],
+  "try": [
+    {
+      "preset": "tau20",
+      "shows": [
+        "11/60",
+        "1/6",
+        "1/4"
+      ]
+    },
+    {
+      "preset": "tau10",
+      "shows": [
+        "1/10",
+        "{A, B, C}"
+      ]
+    },
+    {
+      "preset": "tau25",
+      "shows": [
+        "3",
+        "1/5"
+      ]
+    },
+    {
+      "preset": "tau30",
+      "shows": [
+        "{A} > {B} > {C}",
+        "1/5"
+      ]
+    }
+  ]
+}

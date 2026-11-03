@@ -1,0 +1,36 @@
+---
+title: "KRW's reward and postrank's withholding cost"
+subtitle: "5.1 · after Kline, Rose and Walters (2024), Section II"
+description: "Conversion between λ and τ under common posterior and report-family assumptions."
+---
+
+KRW's reporting objective rewards a correct direction by λ, charges one for a wrong direction, and assigns zero
+payoff to withholding. postrank charges one for a wrong direction and τ for withholding. Under the corresponding
+conversion, the objectives select the same reports when the posterior, target orientation, units and feasible family
+are common and the target is tie-free. The displays compare the three isolated-pair actions and coherent reports
+for six sites. A separate audience-model interpretation records the additional behavioural assumptions associated
+with KRW's scale.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/lambda-tau.js"></script>
+<script>window.__prxApp = PRX["lambda-tau"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **λ .25 (KRW's card)** gives τ .20 and a direction-probability cut of .80. For a pair on its own, both rules state a direction beyond that cut. Both choose {A} > {B} > {C, D} > {E} > {F} among the six-site reports.
+- **λ .08** gives τ .0741. The audience-share row explains the behavioural interpretation of withholding.
+- **λ .10** gives τ 1/11 and cut 10/11. The best report is {A, B} > {C, D} > {E, F}; a shared grade leaves its units uncompared.
+- **λ .50** gives τ 1/3 and cut 2/3. The dashed and solid lines give the reverse- and forward-direction costs, respectively.
+- **λ 1** gives τ .50 and {A} > {B} > {C} > {D} > {E} > {F}. The two direction cuts meet, and the stipulated informed-audience share reaches zero.
+- **τ .40** works from the other scale: λ is 2/3. The three outcome rows give the payoff and cost transformations.
+
+The correspondence requires one tie-free target, the same posterior probabilities, orientation, units and report family. It is a change of scale under those conditions, not evidence that a posterior is calibrated. Resolving transitivity across many pairs can raise the certainty a single pair needs; an isolated cut is not a separate ceiling on every direction in a coherent report. The audience share is KRW's stipulated behavioural model, not an estimated share of actual readers.
+
+[Open the standalone app](../../embed/lambda-tau.html?preset=lambda25).
+
+Related applications: [Error rates under two denominators](../grades/two-denominators.qmd) · [The decision for an isolated pair](../grades/one-pair.qmd).

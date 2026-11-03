@@ -1,0 +1,79 @@
+{
+  "id": "2.5",
+  "name": "tau-path",
+  "part": "2",
+  "title": "The best report along \u03c4",
+  "idea": "Each report's risk is a straight line in \u03c4; where the lower envelope bends, the best report changes.",
+  "status": "built",
+  "from": "new angle \u00b7 builds on v1 G-03; adds the risk lines of all reports in \u03c4 and the breakpoints of the envelope",
+  "data": [
+    "data/released/six-sites.json"
+  ],
+  "credit": "After the postrank theory book, ch. 11 and 16.",
+  "caption": "Six fictional sites from the postrank tutorial, reading score only; normal posteriors set by hand for teaching. Every report in the selected family is evaluated in this browser.",
+  "presets": [
+    {
+      "id": "overview",
+      "label": "Overview",
+      "query": "tau=.2&cap=none&zoom=full"
+    },
+    {
+      "id": "early",
+      "label": "Before the first bend",
+      "query": "tau=.0005&cap=none&zoom=low"
+    },
+    {
+      "id": "coherence",
+      "label": "Small cost, coherent report",
+      "query": "tau=.005&cap=none&zoom=low"
+    },
+    {
+      "id": "bend",
+      "label": "Exactly at a bend",
+      "query": "tau=.144422183173242&cap=none&zoom=full"
+    },
+    {
+      "id": "cap",
+      "label": "Three-grade cap",
+      "query": "tau=.4&cap=3&zoom=full"
+    }
+  ],
+  "try": [
+    {
+      "preset": "overview",
+      "shows": [
+        "14",
+        ".0372",
+        ".0417"
+      ]
+    },
+    {
+      "preset": "early",
+      "shows": [
+        "0 of 15",
+        ".0005"
+      ]
+    },
+    {
+      "preset": "coherence",
+      "shows": [
+        "12 of 15",
+        "2"
+      ]
+    },
+    {
+      "preset": "bend",
+      "shows": [
+        "2 reports share the smallest risk"
+      ]
+    },
+    {
+      "preset": "cap",
+      "shows": [
+        "12 of 15",
+        ".0817",
+        ".0480"
+      ]
+    }
+  ]
+}

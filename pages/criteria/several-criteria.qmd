@@ -1,0 +1,52 @@
+---
+title: "Posterior profiles on multiple criteria"
+subtitle: "4.1 · after the postrank vignette m2 and theory book, ch. 12"
+description: "Criterion-specific scales, orderings and pairwise direction probabilities for common units."
+---
+
+The same units can have different posterior orderings on different criteria. Each panel retains its criterion's
+measurement scale, posterior means and marginal intervals. Connecting lines identify units across the separate
+orders, and the pair display gives the error probability of a proposed direction on each criterion. Aligning rows
+by unit makes their profiles comparable without constructing a composite score. The examples distinguish
+opposition between preferred directions from uncertainty within a criterion, and show the effect of reversing the
+substantive orientation of one target.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/several-criteria.js"></script>
+<script>window.__prxApp = PRX["several-criteria"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Thirty sites.** There are 397 opposing pairs among 435 pairs. The highest posterior mean belongs to a different
+  site on each criterion. Alignment by unit labels displays each unit's criterion-specific profiles.
+- **Six sites, B–C.** The error of stating B above C is .007 on score A and .961 on score B. The complete list has
+  3 opposing pairs. A very likely direction on one criterion can be very unlikely on another.
+- **Six sites, B–D.** The errors are .002 on score A and .760 on score B. Matching row labels leaves each
+  criterion’s scale intact; it does not turn the scores into one composite.
+- **Reverse score B.** Lower score B now means higher priority. The error of stating B above C on the oriented
+  score becomes .039. The supplied information stays the same; the substantive direction of the target changes.
+- **Wider intervals.** The marginal level becomes 95%, while the 397 opposing pairs stay the same. Interval level
+  changes the displayed uncertainty bands, not the supplied posterior probabilities or mean orders.
+
+::: {.callout-note appearance="simple"}
+For the fictional six sites, score A is standardised reading growth and score B a standardised family-engagement
+index; higher values mean higher visit priority by default. Grades would decide only the order of
+practice-documentation visits, with no funding consequence. These are supplied synthetic normal laws: intervals
+are marginal, not simultaneous, and thirty-site marginal releases do not supply a composite or sampled joint state.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+pr_tutorial$two$e["B", "C", ]
+pr_tutorial$two$e["B", "D", ]
+```
+:::
+
+Standalone: [open this app](../../embed/several-criteria.html), for example `?preset=six-bc&theme=dark`.
+
+Related applications: [The decision for an isolated pair](../grades/one-pair.html) · [The matrix of pairwise posterior probabilities](../uncertainty/pairwise-matrix.html).

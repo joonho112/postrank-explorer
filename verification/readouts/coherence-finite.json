@@ -1,0 +1,709 @@
+{
+  "$schema": "./_schema.json",
+  "app": "coherence-finite",
+  "catalog": "2.7",
+  "from": "postrank-explorer-v1/verification/readouts/coherence.json",
+  "about": "Full G-04 regression cases split by view; teaching prediction cases removed. Original registry and independent oracle expectations retained. KRW labels A/B/C follow approved CR-177.",
+  "cases": [
+    {
+      "id": "preset-finite",
+      "about": "the theory book's three-unit law at tau = .20 (predict=off: the second question is off and the 13 reports show)",
+      "preset": "tau20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "cost of the pairwise choices, 1/6 (not a report)",
+          "source": "registry",
+          "ref": "tb10.law3.tau20.relaxed",
+          "value": 0.16666666666666666
+        },
+        {
+          "select": "[data-prx-readout=\"optRisk\"]",
+          "about": "risk of the exact optimum, 11/60",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "risk"
+          },
+          "value": 0.183333333333333
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "first optimum 1/1/2",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            1,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"optimum1\"]",
+          "about": "second optimum 1/2/2",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "grades.1"
+          },
+          "value": [
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"over0.0\"]",
+          "about": "1/1/2 states B above C with error 1/4",
+          "source": "registry",
+          "ref": "tb10.law3.tau20.maxstated",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"over1.0\"]",
+          "about": "1/2/2 states A above B with error 1/4",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r122.over",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "size of the family of all reports on three units, shown with the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "familySize"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, the family by its symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₃"
+        },
+        {
+          "select": ".prx-coh-table td .prx-num",
+          "about": "probability of the order ABC",
+          "source": "registry",
+          "ref": "g04.law3.prob.ABC",
+          "value": 0.6,
+          "index": 0
+        },
+        {
+          "select": ".prx-coh-table td .prx-num",
+          "about": "probability of the order ACB",
+          "source": "registry",
+          "ref": "g04.law3.prob.ACB",
+          "value": 0.15,
+          "index": 1
+        },
+        {
+          "select": ".prx-coh-table td .prx-num",
+          "about": "probability of the order BAC",
+          "source": "registry",
+          "ref": "g04.law3.prob.BAC",
+          "value": 0.15,
+          "index": 2
+        },
+        {
+          "select": ".prx-coh-table td .prx-num",
+          "about": "probability of the order CBA",
+          "source": "registry",
+          "ref": "g04.law3.prob.CBA",
+          "value": 0.1,
+          "index": 3
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "about": "pi_AB of the law",
+          "source": "registry",
+          "ref": "g04.law3.pi.AB",
+          "value": 0.75,
+          "index": 0
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "about": "e_AB of the law",
+          "source": "registry",
+          "ref": "g04.law3.e.AB",
+          "value": 0.25,
+          "index": 1
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "about": "pi_BC of the law",
+          "source": "registry",
+          "ref": "g04.law3.pi.BC",
+          "value": 0.75,
+          "index": 2
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "about": "e_BC of the law",
+          "source": "registry",
+          "ref": "g04.law3.e.BC",
+          "value": 0.25,
+          "index": 3
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "about": "pi_AC of the law",
+          "source": "registry",
+          "ref": "g04.law3.pi.AC",
+          "value": 0.8999999999999999,
+          "index": 4
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "about": "e_AC of the law",
+          "source": "registry",
+          "ref": "g04.law3.e.AC",
+          "value": 0.1,
+          "index": 5
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 1/1/2 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r112.risk",
+          "value": 0.18333333333333335,
+          "index": 0
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 1/2/2 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r122.risk",
+          "value": 0.18333333333333335,
+          "index": 1
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 1/1/1 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r111.risk",
+          "value": 0.20000000000000004,
+          "index": 2
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 1/2/3 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r123.risk",
+          "value": 0.19999999999999998,
+          "index": 3
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 1/3/2 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r132.risk",
+          "value": 0.3666666666666667,
+          "index": 4
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 2/1/3 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r213.risk",
+          "value": 0.3666666666666667,
+          "index": 5
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 1/2/1 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r121.risk",
+          "value": 0.39999999999999997,
+          "index": 6
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 2/1/2 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r212.risk",
+          "value": 0.39999999999999997,
+          "index": 7
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 2/1/1 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r211.risk",
+          "value": 0.6166666666666666,
+          "index": 8
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 2/2/1 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r221.risk",
+          "value": 0.6166666666666666,
+          "index": 9
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 2/3/1 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r231.risk",
+          "value": 0.6333333333333333,
+          "index": 10
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 3/1/2 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r312.risk",
+          "value": 0.6333333333333333,
+          "index": 11
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "risk of report 3/2/1 (the 13 reports, smallest first)",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r321.risk",
+          "value": 0.7999999999999999,
+          "index": 12
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(4)",
+          "about": "E of 1/1/2",
+          "source": "registry",
+          "ref": "tb10.law3.tau20.r112.E",
+          "value": 0.35,
+          "index": 0
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(4)",
+          "about": "E of 1/2/2",
+          "source": "registry",
+          "ref": "g04.law3.tau20.r122.E",
+          "value": 0.35,
+          "index": 1
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "the all-withheld report 1/1/1 has risk tau (base-R fixed-order trace, one grade)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-ties",
+            "row": "fixedOrderDPTrace-tb10-ABC-cap3-tau1/5",
+            "field": "riskByG.0"
+          },
+          "value": 0.2,
+          "index": 2
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "about": "the full order 1/2/3 (base-R optimum with exactly 3 grades)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-eq3-tau1/5",
+            "field": "risk"
+          },
+          "value": 0.2,
+          "index": 3
+        },
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "cost of the pairwise choices (base-R relaxedPairRisk)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "relaxedPairRisk-tb10-law3-tau.2",
+            "field": "risk"
+          },
+          "value": 0.166666666666667
+        },
+        {
+          "select": "[data-prx-readout=\"over0.0\"]",
+          "about": "the stated pair of 1/1/2 above tau (base-R statedAbove)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "statedAbove-tb10-law3-tau.2-r112",
+            "field": "max"
+          },
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"over1.0\"]",
+          "about": "the stated pair of 1/2/2 above tau (base-R statedAbove)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "statedAbove-tb10-law3-tau.2-r122",
+            "field": "max"
+          },
+          "value": 0.25
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "index": 0,
+          "about": "pi_AB of the law (base-R finiteLawPairwise)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb10-law3",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.75
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "index": 1,
+          "about": "e_AB of the law (base-R finiteLawPairwise)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb10-law3",
+            "field": "e.0.0.1"
+          },
+          "value": 0.25
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "index": 2,
+          "about": "pi_BC of the law (base-R finiteLawPairwise)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb10-law3",
+            "field": "pi.0.1.2"
+          },
+          "value": 0.75
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "index": 3,
+          "about": "e_BC of the law (base-R finiteLawPairwise)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb10-law3",
+            "field": "e.0.1.2"
+          },
+          "value": 0.25
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "index": 4,
+          "about": "pi_AC of the law (base-R finiteLawPairwise)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb10-law3",
+            "field": "pi.0.0.2"
+          },
+          "value": 0.9
+        },
+        {
+          "select": ".prx-coh-law li .prx-num",
+          "index": 5,
+          "about": "e_AC of the law (base-R finiteLawPairwise)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb10-law3",
+            "field": "e.0.0.2"
+          },
+          "value": 0.1
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 0,
+          "about": "risk of 1/1/2 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r112",
+            "field": "risk"
+          },
+          "value": 0.183333333333333
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 1,
+          "about": "risk of 1/2/2 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r122",
+            "field": "risk"
+          },
+          "value": 0.183333333333333
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 2,
+          "about": "risk of 1/1/1 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r111",
+            "field": "risk"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 3,
+          "about": "risk of 1/2/3 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r123",
+            "field": "risk"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 4,
+          "about": "risk of 1/3/2 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r132",
+            "field": "risk"
+          },
+          "value": 0.366666666666667
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 5,
+          "about": "risk of 2/1/3 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r213",
+            "field": "risk"
+          },
+          "value": 0.366666666666667
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 6,
+          "about": "risk of 1/2/1 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r121",
+            "field": "risk"
+          },
+          "value": 0.4
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 7,
+          "about": "risk of 2/1/2 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r212",
+            "field": "risk"
+          },
+          "value": 0.4
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 8,
+          "about": "risk of 2/1/1 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r211",
+            "field": "risk"
+          },
+          "value": 0.616666666666667
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 9,
+          "about": "risk of 2/2/1 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r221",
+            "field": "risk"
+          },
+          "value": 0.616666666666667
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 10,
+          "about": "risk of 2/3/1 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r231",
+            "field": "risk"
+          },
+          "value": 0.633333333333333
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 11,
+          "about": "risk of 3/1/2 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r312",
+            "field": "risk"
+          },
+          "value": 0.633333333333333
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(5)",
+          "index": 12,
+          "about": "risk of 3/2/1 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r321",
+            "field": "risk"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(4)",
+          "index": 0,
+          "about": "expected wrong directions of 1/1/2 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r112",
+            "field": "Ew"
+          },
+          "value": 0.35
+        },
+        {
+          "select": ".prx-coh-reports .prx-data-table tbody tr td:nth-child(4)",
+          "index": 1,
+          "about": "expected wrong directions of 1/2/2 (base-R evaluateReport)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r122",
+            "field": "Ew"
+          },
+          "value": 0.35
+        },
+        {
+          "select": "[data-prx-readout=\"law-pair-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-3",
+            "field": "M"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    }
+  ]
+}

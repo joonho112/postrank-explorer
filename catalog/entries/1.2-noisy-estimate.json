@@ -1,0 +1,83 @@
+{
+  "id": "1.2",
+  "name": "noisy-estimate",
+  "part": "1",
+  "title": "One number, two parts",
+  "idea": "A reported estimate is its true value plus noise, and the noise changes each time the data are collected again.",
+  "status": "built",
+  "from": "v1 whole · v1 L-02 noisy-estimate",
+  "data": [
+    "engine"
+  ],
+  "credit": "Built for this site; estimate-plus-noise model after Walters, Mixtape slides pp. 5–6; Kline, Rose and Walters (2024), Section III, Assumption 1 (stated before Section III.A), and talk slide 17; and the postrank theory book, ch. 2, “Teacher growth categories: evidence, precision, and the choice of assessment”.",
+  "caption": "Simulated estimates: each is the true value plus the SE times a random draw from the bell-shaped normal curve, and the seed fixes the draws.",
+  "presets": [
+    {
+      "id": "se20",
+      "label": "SE .20",
+      "query": "truth=.50&se=.20&draws=20&seed=1"
+    },
+    {
+      "id": "draws200",
+      "label": "200 draws",
+      "query": "truth=.50&se=.20&draws=200&seed=1"
+    },
+    {
+      "id": "seed2",
+      "label": "Seed 2",
+      "query": "truth=.50&se=.20&draws=20&seed=2"
+    },
+    {
+      "id": "se10",
+      "label": "SE .10",
+      "query": "truth=.50&se=.10&draws=20&seed=1"
+    },
+    {
+      "id": "se05",
+      "label": "SE .05",
+      "query": "truth=.50&se=.05&draws=20&seed=1"
+    }
+  ],
+  "try": [
+    {
+      "preset": "se20",
+      "shows": [
+        ".50",
+        "12 of 20",
+        "13.65",
+        ".229",
+        "−.271"
+      ]
+    },
+    {
+      "preset": "draws200",
+      "shows": [
+        "132 of 200",
+        "136.54",
+        ".6827"
+      ]
+    },
+    {
+      "preset": "seed2",
+      "shows": [
+        "18 of 20",
+        "13.65"
+      ]
+    },
+    {
+      "preset": "se10",
+      "shows": [
+        "−.136",
+        "−1.36",
+        "12 of 20"
+      ]
+    },
+    {
+      "preset": "se05",
+      "shows": [
+        "−.068",
+        "12 of 20"
+      ]
+    }
+  ]
+}

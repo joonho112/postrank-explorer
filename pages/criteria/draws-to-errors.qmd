@@ -1,0 +1,54 @@
+---
+title: "Pairwise errors from joint posterior draws"
+subtitle: "4.11 · after postrank’s posterior-input vignettes"
+description: "Dependence of empirical pairwise errors on the alignment of unit values within posterior states."
+---
+
+A posterior draw contains one joint state of every unit on every criterion. The empirical error probability of a
+proposed direction is the proportion of states in which that direction is wrong. The package's 32-state toy sample
+illustrates the role of alignment: cyclically shifting one unit's vector preserves its marginal values but changes
+its pairing with the other units. Shifting all units together instead permutes complete states and preserves
+full-sample pairwise errors. The display records both counts and denominators, including the effects of using only a
+prefix of the retained sample.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/draws-to-errors.js"></script>
+<script>window.__prxApp = PRX["draws-to-errors"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Original states.** Among the 32 retained states, placing 001 above site-B is wrong 8 times on need_A and
+  32 times on need_B. The empirical error shares are .250 and 1. Each complete state specifies the order of all three units on both criteria.
+- **Shift one unit.** Moving site-B’s whole two-criterion vector forward cyclically changes the need_A count to
+  7 times and its share to .219. The need_B count remains 32 times. The raw marginal values have only been
+  reordered; the joint pairing has changed.
+- **Move states together.** Applying the same shift to every unit restores the original full-sample counts:
+  8 times and 32 times. This is a reordering of complete states, so every full-sample coefficient stays the same.
+- **Short prefix.** Only 8 retained states now enter the estimates. Both the wrong count and denominator depend on the selected prefix length. Short prefixes can change even when complete states
+  are shifted together.
+- **Unshifted pair.** The pair 001 and site C contains neither shifted unit. Its counts remain 0 times and
+  25 times, with need_B share .781. Changing a third unit’s pairing cannot change this pair’s comparisons.
+- **Full cycle.** A full cyclic shift returns every source vector to its original row, with counts 8 times and
+  32 times again. The source table retains all original unit and criterion coordinates.
+
+::: {.callout-note appearance="simple"}
+This is a fixed IID numerical sample from a specified synthetic normal law. A zero empirical error share means
+that the event did not occur in this sample; it does not establish an exact zero posterior probability. The shift
+is a reproducible dependence illustration, not an additional posterior simulation or a convergence test.
+:::
+
+::: {.callout-note collapse="true" title="In postrank"}
+```r
+library(postrank)
+e <- postrank_pairwise(postrank_toy)$e
+e["001", "site-B", ]  # need_A .25, need_B 1
+```
+:::
+
+Standalone: [Pairwise errors from joint posterior draws](../../embed/draws-to-errors.html).
+
+Related applications: [Marginal summaries and joint direction probabilities](../uncertainty/beyond-normal.qmd) · [Monte Carlo error in pairwise probabilities](../uncertainty/mc-error.qmd).

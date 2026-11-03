@@ -1,0 +1,46 @@
+---
+title: "Marginal summaries and joint direction probabilities"
+subtitle: "1.10 · joint laws after the postrank theory book, ch. 9, and a posterior with two bumps"
+description: "Dependence and non-normal posterior shape can change direction probabilities without changing marginal means."
+---
+
+Under a jointly normal posterior, the larger posterior mean identifies the more probable direction, with or without
+independence. This property need not hold for other posterior distributions. Moreover, marginal distributions alone
+do not determine $\pi_{AB} = \Pr(\theta_A > \theta_B \mid Y)$ when dependence is unspecified. The finite examples
+assign each true value to 0, 1 or 2 and preserve both marginal distributions, but give $\pi_{AB}$ = 1/3 under law 1
+and 2/3 under law 2. A separate mixture example shows how a component with small probability at a large value can
+increase A's mean without producing a correspondingly large direction probability.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/beyond-normal.js"></script>
+<script>window.__prxApp = PRX["beyond-normal"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Law 1.** Each unit's own posterior, its row or column total, puts 1/3 on each value, and both posterior means are
+  1.00, yet $\pi_{AB}$ = 1/3 and $\pi_{BA}$ = 2/3: B is more probably the higher unit. In the figure, w = .20 puts A's
+  mean at .120, above B's 0, yet $\pi_{AB}$ = .392.
+- **Law 2.** The same totals, paired differently: now $\pi_{AB}$ = 2/3. The editable cell counts specify the joint law.
+- **Independent.** Every pair once: the totals stay at 1/3, but A equals B with probability 1/3, so $\pi_{AB}$ =
+  $\pi_{BA}$ = 1/3, adding up to 2/3, not one.
+- **Always equal.** The same totals, and A always equals B: $\pi_{AB}$ = $\pi_{BA}$ = 0. Adding a count to a blue cell changes both the margins and $\pi_{AB}$.
+- **w .50.** Two equally weighted mixture components: A's mean, .450, and $\pi_{AB}$ = .620 point the same way. Among the slider's settings,
+  the two disagree only for w from .10 to .30.
+
+::: {.callout-note appearance="simple"}
+The two laws are restated from the postrank theory book, ch. 9 (Fig. f09b); the posteriors are set by hand, and every
+probability is computed in this browser. Tie-freeness, that the two true values are never exactly equal, is an
+assumption about the joint law: with $\theta_A = \theta_B = Z$ for one continuous $Z$, both posteriors are continuous,
+yet A always equals B. postrank's `postrank_mixture_coefficients()` averages the pair probabilities over
+the bumps of such a posterior and does not replace it by one normal posterior.
+:::
+
+Standalone: [embed/beyond-normal.html](../../embed/beyond-normal.html), for example `?cells=021100010&mixW=.30` or
+`?preset=law2&theme=dark`.
+
+Related applications: [Pairwise posterior direction probabilities](two-units.qmd) (1.8) and
+[Posterior dependence and pairwise comparisons](correlated-units.qmd) (1.9) show the jointly normal case.

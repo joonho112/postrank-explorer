@@ -1,0 +1,94 @@
+{
+  "id": "3.11",
+  "name": "better-on-average",
+  "part": "3",
+  "title": "Better on average, not in every draw",
+  "idea": "The best report has the smallest expected loss within its family under the law that chose it; in a single draw, a common rule can do better.",
+  "status": "built",
+  "from": "new concept · theory book ch. 16 (conditional Bayes dominance) and ch. 18; postrank vignette m2; picture: the per-draw realized loss of the best report against a common rule's, with the 45° line, the share of draws the rule wins and the mean difference; a toggle takes the rule outside the family",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 16.",
+  "caption": "Conditional posterior experiment: both reports are selected once from the declared law and then fixed across paired whole-state draws. Dominance concerns expected total reporting loss within the named family.",
+  "presets": [
+    {
+      "id": "inside",
+      "label": "Inside the family",
+      "query": "law=six&family=cap2&rule=tiers&outside=0&tau=.20&S=100&seed=1&draw=1&optimum=0"
+    },
+    {
+      "id": "outside",
+      "label": "Outside the family",
+      "query": "law=six&family=cap2&rule=tiers&outside=1&tau=.20&S=100&seed=1&draw=1&optimum=0"
+    },
+    {
+      "id": "finite",
+      "label": "Two-state law",
+      "query": "law=finite&family=cap2&rule=rank&outside=0&tau=.25&S=100&seed=1&draw=1&optimum=0"
+    },
+    {
+      "id": "short",
+      "label": "A short run",
+      "query": "law=six&family=cap2&rule=tiers&outside=0&tau=.20&S=10&seed=3&draw=1&optimum=0"
+    },
+    {
+      "id": "silent",
+      "label": "A silent common rule",
+      "query": "law=six&family=cap2&rule=withheld&outside=0&tau=.20&S=100&seed=1&draw=1&optimum=0"
+    },
+    {
+      "id": "same",
+      "label": "Identical reports",
+      "query": "law=six&family=cap2&rule=self&outside=0&tau=.20&S=100&seed=1&draw=1&optimum=0"
+    }
+  ],
+  "try": [
+    {
+      "preset": "inside",
+      "shows": [
+        "63",
+        ".0940",
+        ".1046",
+        "57"
+      ]
+    },
+    {
+      "preset": "outside",
+      "shows": [
+        ".0417",
+        ".0940"
+      ]
+    },
+    {
+      "preset": "finite",
+      "shows": [
+        ".2500",
+        ".3000",
+        ".700",
+        "65"
+      ]
+    },
+    {
+      "preset": "short",
+      "shows": [
+        "9",
+        "−.00667"
+      ]
+    },
+    {
+      "preset": "silent",
+      "shows": [
+        "NA: no disclosure",
+        ".2000"
+      ]
+    },
+    {
+      "preset": "same",
+      "shows": [
+        "ties 100"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+---
+title: "Reported error and reference-law evaluation"
+subtitle: "2.9 · after the postrank theory book, ch. 18"
+description: "Comparison of conditional error expectations with realised errors at fixed true values."
+---
+
+A reported error share is an expectation under the posterior distribution used to select the report. Evaluation
+under a separately specified reference law gives another expectation for the same fixed report. The open point
+shows the realised share of wrong directions at the simulated league's fixed true values. These quantities need
+not coincide. The two lower panels distinguish repeated observation of fixed true values from draws of latent values
+conditional on the selected observations. This distinction is necessary when interpreting apparent agreement between
+reported and realised error.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/reported-and-realized.js"></script>
+<script>window.__prxApp = PRX["reported-and-realized"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Same conditional laws.** The report states 152 pair directions. Both conditional expectations are .0632,
+  while the fixed-truth realised share is .0526. Matching expectations does not make a single realization equal
+  their common value. Individual repeated datasets give realised shares on either side of this expectation.
+- **Narrow prior, five grades.** The report claims .140, while the reference expectation for that same report
+  is .115. Their absolute difference is below the largest pair-error gap, .4981. This setting changes the
+  prior, cost and grade cap together. Moving just the prior slider also selects a new report; each setting's
+  two expectations evaluate that newly selected report under both laws.
+- **Lower cost, two grades.** Only 56 pair directions are stated, with claimed share .0254. The two laws still
+  agree. In the grade groups, pairs inside a grade are withheld, and the denominator counts only pairs
+  stated across grades.
+- **One grade, no disclosure.** There are 0 stated directions and every share reads “NA: no disclosure.” No
+  wrong directions is different from a defined error share of zero. The posterior-draw wrong count remains
+  zero because this report makes no comparisons.
+
+The lower panels separate two experiments. Observation replays keep all true values fixed, redraw estimates,
+and choose a new report each time. Posterior draws instead keep the selected observations and report fixed,
+then vary latent values under the chosen conditional law. The histogram and running average describe that
+chosen law; adding draws reduces simulation noise without testing whether the law is correct.
+
+::: {.callout-note appearance="simple"}
+This is a deterministic teaching league, not true values sampled from the reference prior. Its design scale does
+not establish the reference conditional law as the truth. Fixed-truth observation replays therefore do not
+instantiate chapter 18's conditional calibration identity. The pair-gap bound compares two model expectations
+for one fixed report and does not bound its realised share.
+:::
+
+Standalone: [reported and realised shares](../../embed/reported-and-realized.html), for example `?priorSd=.05`.
+
+Related applications: [Expected and realised errors among stated directions](disclosed-errors.qmd),
+[Sensitivity to the prior standard deviation](../uncertainty/shrinkage-price.qmd).

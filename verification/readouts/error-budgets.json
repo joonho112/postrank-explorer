@@ -1,0 +1,2792 @@
+{
+  "app": "error-budgets",
+  "catalog": "4.7",
+  "about": "Independent engine-oracle and frozen storyboard coverage; old presets also exercise full formatting, labels and figure alternatives.",
+  "cases": [
+    {
+      "id": "loose",
+      "preset": "loose",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w.5.5-tau.2-atMost3-qB.03",
+            "field": "size"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w.5.5-tau.2-atMost3-qB.03",
+            "field": "risk"
+          },
+          "value": 0.093343186075059,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w.5.5-tau.2-atMost3-qB.03",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tight",
+      "preset": "tight",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w.5.5-tau.2-atMost3-qB.02",
+            "field": "size"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w.5.5-tau.2-atMost3-qB.02",
+            "field": "risk"
+          },
+          "value": 0.093870777932835,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w.5.5-tau.2-atMost3-qB.02",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "exact3",
+      "preset": "exact3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w.5.5-tau.2-exactly3-qB.02",
+            "field": "size"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "qb10",
+      "preset": "qb10",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w1.0-tau.2-atMost3-qB.10",
+            "field": "size"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w1.0-tau.2-atMost3-qB.10",
+            "field": "risk"
+          },
+          "value": 0.0906466395665067,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w1.0-tau.2-atMost3-qB.10",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "zero-weight",
+      "preset": "zero-weight",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w1.0-tau.2-atMost3-qB.10",
+            "field": "size"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w1.0-tau.2-atMost3-qB.10",
+            "field": "risk"
+          },
+          "value": 0.0906466395665067,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "budgetFamily-six-w1.0-tau.2-atMost3-qB.10",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rounded-boundary-empty",
+      "query": "?qb=.0267&w=.5&tau=.2&cap=exact3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-eq3-tau.20-q1.0267",
+            "field": "familySize"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "exact-three-loose",
+      "query": "?qb=.03&w=.5&tau=.2&cap=exact3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-eq3-tau.20-q1.03",
+            "field": "familySize"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-eq3-tau.20-q1.03",
+            "field": "risk"
+          },
+          "value": 0.093343186075059,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-eq3-tau.20-q1.03",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "full-q-one",
+      "query": "?qa=1&qb=1&w=.5&tau=.2&cap=3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap3-tau.20-q1.1",
+            "field": "familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap3-tau.20-q1.1",
+            "field": "risk"
+          },
+          "value": 0.093343186075059,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap3-tau.20-q1.1",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "uncapped-both",
+      "query": "?qa=.05&qb=.05&w=.5&tau=.2&cap=all",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-all-tau.20-q.05.05",
+            "field": "familySize"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-all-tau.20-q.05.05",
+            "field": "risk"
+          },
+          "value": 0.093343186075059,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-all-tau.20-q.05.05",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cap-two-free",
+      "query": "?qb=none&w=.5&tau=.2&cap=2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap2-tau.20",
+            "field": "familySize"
+          },
+          "value": 63,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap2-tau.20",
+            "field": "risk"
+          },
+          "value": 0.093870777932835,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap2-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "uncapped-free",
+      "query": "?qb=none&w=.5&tau=.2&cap=all",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.093343186075059,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-all-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "zero-a-two-ties",
+      "query": "?qb=none&w=0&tau=.2&cap=3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w0.1-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w0.1-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0815712071866122,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w0.1-cap3-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            1,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w0.1-cap3-tau.20",
+            "field": "grades.1"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ]
+    },
+    {
+      "id": "all-withheld-zero-budgets",
+      "query": "?qa=0&qb=0&w=.5&tau=.25&cap=3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K2-w.5.5-tau.25-all_withheld",
+            "field": "N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K2-w.5.5-tau.25-all_withheld",
+            "field": "EoverN.0"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K2-w.5.5-tau.25-all_withheld",
+            "field": "risk"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "preset-free",
+      "preset": "free",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "preset-qb15",
+      "preset": "qb15",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "preset-qb05",
+      "preset": "qb05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "preset-both",
+      "preset": "both",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-AB-w.5.5-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "budget-display-a-only-qb15",
+      "query": "?w=1&tau=0.2&cap=3&qb=0.15",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "size"
+          },
+          "value": 32,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "baseSize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            2,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.risk"
+          },
+          "value": 0.06694340841381102,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.N"
+          },
+          "value": 11,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.2041511262071653,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.018559193291560482,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.013610075080477686,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.06694340841381102,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "largestByCriterion.0.e"
+          },
+          "value": 0.18837955890579108,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.evaluation.E.1"
+          },
+          "value": 1.26735485465634,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.evaluation.EoverN.1"
+          },
+          "value": 0.11521407769603091,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.evaluation.EoverM.1"
+          },
+          "value": 0.084490323643756,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "optimum.evaluation.Rk.1"
+          },
+          "value": 0.13782365697708934,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "largestByCriterion.1.e"
+          },
+          "value": 0.7602499389065234,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "check.rows.0.E"
+          },
+          "value": 1.26735485465634,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "check.rows.0.N"
+          },
+          "value": 11,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "check.rows.0.EoverN"
+          },
+          "value": 0.11521407769603091,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "check.rows.0.q"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "check.rows.0.qN"
+          },
+          "value": 1.65,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB15",
+            "field": "check.rows.0.slack"
+          },
+          "value": 0.3826451453436599,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "budget-display-a-only-qb05",
+      "query": "?w=1&tau=0.2&cap=3&qb=0.05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "size"
+          },
+          "value": 7,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "baseSize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.risk"
+          },
+          "value": 0.09064663956650672,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.N"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.15969959349760054,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.01774439927751117,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.010646639566506704,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.09064663956650672,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "largestByCriterion.0.e"
+          },
+          "value": 0.14442218317324246,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.evaluation.E.1"
+          },
+          "value": 0.24059598875416946,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.evaluation.EoverN.1"
+          },
+          "value": 0.026732887639352162,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.evaluation.EoverM.1"
+          },
+          "value": 0.016039732583611296,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "optimum.evaluation.Rk.1"
+          },
+          "value": 0.09603973258361131,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "largestByCriterion.1.e"
+          },
+          "value": 0.23975006109347682,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "check.rows.0.E"
+          },
+          "value": 0.24059598875416946,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "check.rows.0.N"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "check.rows.0.EoverN"
+          },
+          "value": 0.026732887639352162,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "check.rows.0.q"
+          },
+          "value": 0.05,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "check.rows.0.qN"
+          },
+          "value": 0.45,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB05",
+            "field": "check.rows.0.slack"
+          },
+          "value": 0.20940401124583055,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "budget-display-a-only-no-budget",
+      "query": "?w=1&tau=0.2&cap=3&qb=none",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "size"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "baseSize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.risk"
+          },
+          "value": 0.041651639945487116,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.N"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.024774599182306668,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.002064549931858889,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.0016516399454871112,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.041651639945487116,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "largestByCriterion.0.e"
+          },
+          "value": 0.010778133380008182,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.evaluation.E.1"
+          },
+          "value": 2.8446326745178494,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.evaluation.EoverN.1"
+          },
+          "value": 0.23705272287648746,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.evaluation.EoverM.1"
+          },
+          "value": 0.18964217830118996,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "optimum.evaluation.Rk.1"
+          },
+          "value": 0.22964217830118996,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-no-budget",
+            "field": "largestByCriterion.1.e"
+          },
+          "value": 0.9614500641282291,
+          "format": {
+            "fn": "formatShare"
+          }
+        }
+      ]
+    },
+    {
+      "id": "budget-display-equal-both02-cap3",
+      "query": "?w=0.5&tau=0.2&cap=3&qa=0.02&qb=0.02",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "size"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "baseSize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.risk"
+          },
+          "value": 0.09387077793283503,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.N"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.015277410324358075,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.0019096762905447594,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.0010184940216238717,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.09435182735495722,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "largestByCriterion.0.e"
+          },
+          "value": 0.010778133380008182,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.evaluation.E.1"
+          },
+          "value": 0.000845927660692636,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.evaluation.EoverN.1"
+          },
+          "value": 0.0001057409575865795,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.evaluation.EoverM.1"
+          },
+          "value": 5.639517737950907e-05,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "optimum.evaluation.Rk.1"
+          },
+          "value": 0.09338972851071285,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "largestByCriterion.1.e"
+          },
+          "value": 0.0007313582933405771,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.0.E"
+          },
+          "value": 0.015277410324358075,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.0.N"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.0.EoverN"
+          },
+          "value": 0.0019096762905447594,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.0.q"
+          },
+          "value": 0.02,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.0.qN"
+          },
+          "value": 0.16,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.0.slack"
+          },
+          "value": 0.14472258967564192,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.1.E"
+          },
+          "value": 0.000845927660692636,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.1.N"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.1.EoverN"
+          },
+          "value": 0.0001057409575865795,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.1.q"
+          },
+          "value": 0.02,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.1.qN"
+          },
+          "value": 0.16,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-cap3",
+            "field": "check.rows.1.slack"
+          },
+          "value": 0.15915407233930737,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "budget-display-equal-both02-exact3-empty",
+      "query": "?w=0.5&tau=0.2&cap=exact3&qa=0.02&qb=0.02",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-exact3-empty",
+            "field": "size"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-equal-both02-exact3-empty",
+            "field": "baseSize"
+          },
+          "value": 540,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "budget-display-exact3-raw-b-boundary",
+      "query": "?w=0.5&tau=0.2&cap=exact3&qb=0.02673288763935218",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "size"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "baseSize"
+          },
+          "value": 540,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.risk"
+          },
+          "value": 0.09334318607505901,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.N"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.15969959349760054,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.01774439927751117,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.010646639566506704,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.09064663956650672,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "largestByCriterion.0.e"
+          },
+          "value": 0.14442218317324246,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.evaluation.E.1"
+          },
+          "value": 0.24059598875416946,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.evaluation.EoverN.1"
+          },
+          "value": 0.026732887639352162,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.evaluation.EoverM.1"
+          },
+          "value": 0.016039732583611296,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "optimum.evaluation.Rk.1"
+          },
+          "value": 0.09603973258361131,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "largestByCriterion.1.e"
+          },
+          "value": 0.23975006109347682,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "check.rows.0.E"
+          },
+          "value": 0.24059598875416946,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "check.rows.0.N"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "check.rows.0.EoverN"
+          },
+          "value": 0.026732887639352162,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "check.rows.0.q"
+          },
+          "value": 0.02673288763935218,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "check.rows.0.qN"
+          },
+          "value": 0.2405959887541696,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-exact3-raw-B-boundary",
+            "field": "check.rows.0.slack"
+          },
+          "value": 1.3877787807814457e-16,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "budget-display-cap3-both-zero-n0",
+      "query": "?w=0.5&tau=0.2&cap=3&qa=0&qb=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "size"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "baseSize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.evaluation.E.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.evaluation.EoverN.1"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.evaluation.EoverM.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "optimum.evaluation.Rk.1"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.0.E"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.0.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.0.q"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.0.qN"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.0.slack"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.1.E"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.1.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.1.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.1.q"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.1.qN"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-cap3-both-zero-N0",
+            "field": "check.rows.1.slack"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "budget-display-a-only-qb30-active",
+      "query": "?w=1&tau=0.2&cap=3&qb=0.3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "size"
+          },
+          "value": 110,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseSize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "baseSize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.risk"
+          },
+          "value": 0.041651639945487116,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.N"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.024774599182306668,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.002064549931858889,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.0016516399454871112,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.041651639945487116,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "largestByCriterion.0.e"
+          },
+          "value": 0.010778133380008182,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.evaluation.E.1"
+          },
+          "value": 2.8446326745178494,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.evaluation.EoverN.1"
+          },
+          "value": 0.23705272287648746,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.evaluation.EoverM.1"
+          },
+          "value": 0.18964217830118996,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "optimum.evaluation.Rk.1"
+          },
+          "value": 0.22964217830118996,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "largestByCriterion.1.e"
+          },
+          "value": 0.9614500641282291,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "check.rows.0.E"
+          },
+          "value": 2.8446326745178494,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "check.rows.0.N"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "check.rows.0.EoverN"
+          },
+          "value": 0.23705272287648746,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "check.rows.0.q"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "check.rows.0.qN"
+          },
+          "value": 3.5999999999999996,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-1-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "budget-display-A-only-qB30-active",
+            "field": "check.rows.0.slack"
+          },
+          "value": 0.7553673254821502,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    }
+  ]
+}

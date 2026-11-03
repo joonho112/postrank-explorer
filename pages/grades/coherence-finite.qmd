@@ -1,0 +1,58 @@
+---
+title: "Coherence in a finite three-unit example"
+subtitle: "2.7 · after the postrank theory book, chapter 10"
+description: "Evaluation of all 13 reports under a four-state posterior distribution."
+---
+
+A finite posterior assigns probability to four possible orders of A, B and C. For some withholding costs, the
+individually optimal pair decisions cannot be represented by any ordered grade report. Evaluating all 13 reports
+establishes the minimum coherent risk and the additional cost relative to the separate pairwise decisions. Each bar
+separates the contribution of expected wrong directions from the contribution of withheld pairs. Because the
+posterior has finite support, these quantities are calculated exactly, without Monte Carlo estimation. Changes in τ
+alter the relative action costs while the posterior probabilities remain fixed.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/coherence-finite.js"></script>
+<script>window.__prxApp = PRX["coherence-finite"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **τ .20.** The pairwise choices cost 1/6 per pair, but the optimal coherent reports cost 11/60. Each states an extra
+  direction with error 1/4. The two reports beneath the bars identify the additional directions and their error probabilities.
+  The dashed line is a lower bound, attained by no report at this setting.
+- **τ .10.** Giving everyone the same grade, {A, B, C}, costs 1/10. The outer pair can now be stated or withheld at
+  equal cost. Some set of the minimum-cost pairwise actions is coherent, and the best bar reaches the dashed line.
+- **τ .25.** There are 3 equally good reports, all at risk 1/5. Their orange and grey segments show that the same
+  total risk can combine different amounts of disclosure and withholding. The text retains every equal-risk optimum.
+- **τ .30.** The full order {A} > {B} > {C} has risk 1/5. Raising the withholding cost changes the choice without
+  changing the posterior law. Keyboard selection provides each report's risk, disclosure and directions with error above the current withholding cost.
+
+::: {.callout-note appearance="simple"}
+The law is set by hand for teaching, from the theory book's three-unit example. Each bar is one complete report:
+its first segment is expected wrong directions per pair, and its second pays for withheld pairs. Grades decide
+all pairs together, so a direction with error above the price can appear in a best report. That is compatible with
+the report's overall optimality. Exact fractions make the comparison inspectable; no draws or simulation error
+enter these calculations.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+
+The package evaluates both fixed reports under these directional errors; it does not search for them. Each returns
+risk 11/60 at τ = 1/5. The input records the same finite teaching law used above.
+
+```r
+e <- matrix(c(NA,1/4,1/10,3/4,NA,1/4,9/10,3/4,NA),3,byrow=TRUE,dimnames=rep(list(c("A","B","C")),2))
+input <- postrank::postrank_probabilities(e,criterion="priority",event="directional_error",zero_ties=TRUE,margin=0,source=list(kind="analytic_reference",description="ABC/ACB/BAC/CBA with masses .60/.15/.15/.10",conditioning="Complete fixed finite target law"),targets=c(priority="Fictional priority; larger is higher"))
+vapply(list(c(A=1,B=1,C=2),c(A=1,B=2,C=2)),function(g) postrank::postrank_evaluate(g,input,weights=c(priority=1),tau=1/5)$primary_risk,numeric(1))
+```
+
+:::
+
+Standalone: [coherence-finite](../../embed/coherence-finite.html), for example `?tau=.18`.
+
+Related applications: [Coherence constraints on pairwise decisions](coherence.qmd), [The decision for an isolated pair](one-pair.qmd).

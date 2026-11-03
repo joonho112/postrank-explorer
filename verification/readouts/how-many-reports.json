@@ -1,0 +1,349 @@
+{
+  "app": "how-many-reports",
+  "catalog": "2.3",
+  "about": "Exact counts independently computed by the base-R report-risk oracle; n=2 cap>=n equals the full family. Empty exact-count output is additionally checked in browser QA.",
+  "cases": [
+    {
+      "id": "three",
+      "preset": "three",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"all\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-all",
+            "field": "size"
+          },
+          "value": "13",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-atMost3",
+            "field": "size"
+          },
+          "value": "13",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-exactly3",
+            "field": "size"
+          },
+          "value": "6",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-order",
+            "field": "size"
+          },
+          "value": "4",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"rank\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-exactly3",
+            "field": "size"
+          },
+          "value": "6",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "six",
+      "preset": "six",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"all\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-all",
+            "field": "size"
+          },
+          "value": "4683",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-atMost3",
+            "field": "size"
+          },
+          "value": "603",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-exactly3",
+            "field": "size"
+          },
+          "value": "540",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-order",
+            "field": "size"
+          },
+          "value": "32",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"rank\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-exactly6",
+            "field": "size"
+          },
+          "value": "720",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "eight",
+      "preset": "eight",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"all\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n8-all",
+            "field": "size"
+          },
+          "value": "545835",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n8-atMost3",
+            "field": "size"
+          },
+          "value": "6051",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n8-exactly3",
+            "field": "size"
+          },
+          "value": "5796",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n8-order",
+            "field": "size"
+          },
+          "value": "128",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"rank\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n8-exactly8",
+            "field": "size"
+          },
+          "value": "40320",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "twelve",
+      "preset": "twelve",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"all\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-all",
+            "field": "size"
+          },
+          "value": "28091567595",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-atMost3",
+            "field": "size"
+          },
+          "value": "523251",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-exactly3",
+            "field": "size"
+          },
+          "value": "519156",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-order",
+            "field": "size"
+          },
+          "value": "2048",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"rank\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-exactly12",
+            "field": "size"
+          },
+          "value": "479001600",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "empty",
+      "preset": "empty",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"all\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n2-all",
+            "field": "size"
+          },
+          "value": "3",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n2-all",
+            "field": "size"
+          },
+          "value": "3",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n2-order",
+            "field": "size"
+          },
+          "value": "2",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"rank\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n2-exactly2",
+            "field": "size"
+          },
+          "value": "2",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    }
+  ]
+}

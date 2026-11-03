@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<!-- 5.11 cde-tau-path. Build inputs: catalog.json; do not edit. -->
+<title>What each step of τ changes · postrank Explorer</title>
+<script>
+  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  (function () {
+    var t = new URLSearchParams(location.search).get("theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/app.css">
+</head>
+<body class="prx-embed">
+<main>
+<h1 class="prx-embed-title">What each step of τ changes</h1>
+<div id="app"><p>This app needs JavaScript.</p></div>
+<p class="prx-embed-credit">postrank Explorer · 5.11 · 12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde). · California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · https://www.cde.ca.gov/re/di/cr/index.asp · No CDE endorsement is implied · changes noted · <a href="../pages/cases/cde-tau-path.html">page</a></p>
+</main>
+<!-- classic scripts only, so this page works from file:// -->
+<script src="../js/vendor/d3.min.js"></script>
+<script src="../js/vendor/plot.min.js"></script>
+<script src="../js/bundles/cde-tau-path.js"></script>
+<script>window.__prxApp = PRX["cde-tau-path"].mountWidget(document.getElementById("app"), {});</script>
+</body>
+</html>

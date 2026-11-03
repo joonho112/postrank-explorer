@@ -1,0 +1,941 @@
+{
+  "$schema": "./_schema.json",
+  "app": "ranking-claims",
+  "catalog": "1.16",
+  "from": "postrank-explorer-v1 verification/readouts/ranking-claims.json",
+  "about": "A strict ranking of the top n units by posterior mean: M (pairCount), the expected number of wrong directions of the posterior-mean order and, with estimates, of the estimate order of the same units (evaluateReport field E), the pairs on which they disagree (misorderedPairs), the claims above one half (statedAbove), the least certain claim (largestStatedError) and, for the simulated league, the wrong claims against its true values (misorderedPairs, expectedMisorderedPairs). Expected values come from v1's frozen registry (part1.json, part1-l10.json and the R case keys krw.frame.*, cde.statewide.*), the base-R oracle rows (pairCount-n, the league's misordered counts) and the postrank golden row of the six sites. Expected counts are shown with formatExpectedCount (four significant digits, corrections register CR-002) where v1 showed about three, so those expectations name the format and compare the raw value with the registry's. The prediction cases of v1 (predict-right, predict-over, predict-under, predict-skip) are gone with the gate; their numbers are the krw case's.",
+  "cases": [
+    {
+      "id": "default",
+      "about": "The app's defaults (no query): KRW's 97 firms, all of them, as the first preset.",
+      "query": "",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "claims of the 97 firms (R case key)",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "posterior-mean order on the released race array",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.strictpm.E",
+          "value": 1248.8677247027194
+        }
+      ]
+    },
+    {
+      "id": "krw",
+      "about": "Preset krw (the first preset): KRW's 97 firms (race), all of them. 4,656 claims; the posterior-mean order is expected to hold 1,249 wrong, the estimate order 1,395; the orders disagree on 639 pairs; 35 claims of the posterior-mean order are more likely wrong than right. Cross-checked in R (postrank_evaluate on pr_case_krw$input gives 1248.868 for race).",
+      "preset": "krw",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"n\"]",
+          "about": "firms in the ranking (R case key)",
+          "source": "registry",
+          "ref": "krw.frame.n",
+          "value": 97
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "claims of the 97 firms (R case key)",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "M from the base-R oracle",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-97",
+            "field": "M"
+          },
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"formula-M\"]",
+          "about": "the count formula's result",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "posterior-mean order on the released race array",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.strictpm.E",
+          "value": 1248.8677247027194
+        },
+        {
+          "select": "[data-prx-readout=\"formula-expected-wrong\"]",
+          "about": "the sum in the formula",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.strictpm.E",
+          "value": 1248.8677247027194
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong-estimate\"]",
+          "about": "the same firms ranked by race estimate",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.strictest.E",
+          "value": 1394.723681693238
+        },
+        {
+          "select": "[data-prx-readout=\"bar-posterior-mean\"]",
+          "about": "comparison bar: posterior-mean order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.strictpm.E",
+          "value": 1248.8677247027194
+        },
+        {
+          "select": "[data-prx-readout=\"bar-estimate\"]",
+          "about": "comparison bar: estimate order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.strictest.E",
+          "value": 1394.723681693238
+        },
+        {
+          "select": "[data-prx-readout=\"disagree\"]",
+          "about": "pairs on which the two orders disagree",
+          "source": "registry",
+          "ref": "krw.race.reordered",
+          "value": 639
+        },
+        {
+          "select": "[data-prx-readout=\"above-half\"]",
+          "about": "claims of the posterior-mean order above one half",
+          "source": "registry",
+          "ref": "krw.race.strictpm.abovehalf",
+          "value": 35
+        },
+        {
+          "select": ".prx-rc-half",
+          "kind": "text",
+          "slots": true,
+          "about": "the above-half note word for word (CR-143); its pointer names apps 1.14 and 1.15 by their titles (links), and one sentence says that 1.15 sets this order beside majority wins",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "⟨count⟩ of these claims sit above one half. For independent normal posteriors, whatever their SDs, the larger posterior mean is always the more likely direction. The firms' race posteriors are not normal (KRW's prior for the race gap allows only positive values), so here it is not always (Three rankings from one posterior and Majority wins and expected rank show how such summaries part ways). The second sets this order beside majority wins: they differ on exactly these ⟨count⟩ pairs."
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out word for word: all the firms, both orders",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "KRW's firms: a strict ranking of all ⟨n⟩ firms makes ⟨M⟩ claims, one for each pair. Ranked by posterior mean, the expected number of wrong claims is ⟨E⟩. Ranked by estimate, it is ⟨Eest⟩."
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "about": "the expected wrong count is the evaluation of a fixed report (the strict posterior-mean order)",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        },
+        {
+          "select": "[data-prx-readout=\"strip-six-M\"]",
+          "about": "scale table: claims of the six sites",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"strip-league-n\"]",
+          "about": "scale table: units of the simulated league",
+          "source": "registry",
+          "ref": "league.spec.n",
+          "value": 30
+        },
+        {
+          "select": "[data-prx-readout=\"strip-league-M\"]",
+          "about": "scale table: claims of the league",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"strip-krw-n\"]",
+          "about": "scale table: KRW's firms (R case key)",
+          "source": "registry",
+          "ref": "krw.frame.n",
+          "value": 97
+        },
+        {
+          "select": "[data-prx-readout=\"strip-krw-M\"]",
+          "about": "scale table: claims of KRW's firms (R case key)",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"strip-cde-n\"]",
+          "about": "scale table: eligible California schools (R case key, pr_case_cde; case-cde.json facts.statewide_schools)",
+          "source": "registry",
+          "ref": "cde.statewide.n",
+          "value": 5834
+        },
+        {
+          "select": "[data-prx-readout=\"strip-cde-M\"]",
+          "about": "scale table: claims of the California schools (R case key: choose(5834, 2); the app takes pairCount of the count)",
+          "source": "registry",
+          "ref": "cde.statewide.M",
+          "value": 17014861
+        },
+        {
+          "select": "[data-prx-readout=\"cde-n\"]",
+          "about": "the California line under the scale table",
+          "source": "registry",
+          "ref": "cde.statewide.n",
+          "value": 5834
+        },
+        {
+          "select": "[data-prx-readout=\"strip-this-M\"]",
+          "about": "scale table: this ranking",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": ".prx-rc-scatter table caption",
+          "about": "above 30 units a hidden table sums the claims by how many places apart they are (A-06)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "Claims of the ranking by how many places apart their two units are: the number of claims, their expected number of wrong claims and the largest probability that one of them is wrong"
+        },
+        {
+          "select": ".prx-rc-scatter svg text tspan[data-num]",
+          "about": "the dot plot's label beside the ringed claims above one half: their count",
+          "source": "registry",
+          "ref": "krw.race.strictpm.abovehalf",
+          "value": 35
+        },
+        {
+          "select": ".prx-rc-source",
+          "kind": "text",
+          "slots": true,
+          "about": "the firms' source line carries the smoothing clause (as the standalone notice)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "KRW's firms: the log contact gap of white-named minus Black-named applications, with a smoothed version of KRW's posteriors. Rank ⟨one⟩ is the largest posterior-mean race gap (white over Black names)."
+        },
+        {
+          "select": ".prx-rc-claims .prx-app-link",
+          "kind": "text",
+          "about": "the triangle note names app 1.13 by its title, a link to its page (base.js appLink)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "All pairs at once"
+        }
+      ]
+    },
+    {
+      "id": "top10",
+      "about": "Preset top10: KRW's top ten firms by race posterior mean (rows 61, 14, 16, 36, 94, 9, 84, 87, 43, 60): 45 claims, of which the posterior expects 18.22 to be wrong (base R on postrank 1.1.0's pr_case_krw$input$e: 18.2196110776663). The scale table keeps the California schools.",
+      "preset": "top10",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "registry",
+          "ref": "cf.pairCount.n10",
+          "value": 45
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.top10.strictpm.E",
+          "value": 18.219611077666293
+        },
+        {
+          "select": "[data-prx-readout=\"formula-expected-wrong\"]",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.top10.strictpm.E",
+          "value": 18.219611077666293
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out word for word: the top n of the firms",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "KRW's firms: a strict ranking of the top ⟨n⟩ of the ⟨N⟩ firms by posterior mean makes ⟨M⟩ claims, one for each pair. Ranked by posterior mean, the expected number of wrong claims is ⟨E⟩. Ranked by estimate, it is ⟨Eest⟩."
+        },
+        {
+          "select": "[data-prx-readout=\"strip-cde-M\"]",
+          "about": "the scale table keeps the California schools",
+          "source": "registry",
+          "ref": "cde.statewide.M",
+          "value": 17014861
+        }
+      ]
+    },
+    {
+      "id": "six",
+      "about": "Preset six: the six sites, all six. M = 15; the strict posterior-mean order (A to F) is expected to hold .7194 wrong directions (postrank golden: evaluateReport of pr_tutorial$one at grades 1..6). The least certain claim is C above D (.362). The sites have no estimates, so no estimate order.",
+      "preset": "six",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "claims of a strict ranking of six units",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "M from the base-R oracle",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-6",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"formula-M\"]",
+          "about": "the count formula's result",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"strip-this-M\"]",
+          "about": "scale table: this ranking",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "expected wrong directions of the strict posterior-mean order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "six.A.strict.E",
+          "value": 0.7194131461772217
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "the same from postrank 1.1.0 (postrank_evaluate of the strict order)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-strict",
+            "field": "E.0"
+          },
+          "value": 0.719413146177222
+        },
+        {
+          "select": "[data-prx-readout=\"formula-expected-wrong\"]",
+          "about": "the sum in the formula",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "six.A.strict.E",
+          "value": 0.7194131461772217
+        },
+        {
+          "select": "[data-prx-readout=\"least-certain\"]",
+          "about": "the least certain claim, C above D: its probability of being wrong",
+          "source": "registry",
+          "ref": "six.A.e.CD",
+          "value": 0.36183680491588155
+        },
+        {
+          "select": ".prx-rc-least",
+          "kind": "text",
+          "slots": true,
+          "about": "the least certain claim, named, between neighbors",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The least certain claim, the highest dot: C above D, next to each other: probability ⟨p⟩ that this claim is wrong."
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "about": "the expected wrong count is the evaluation of a fixed report (the strict posterior-mean order)",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        },
+        {
+          "select": ".prx-rc-noest",
+          "kind": "text",
+          "about": "the six sites have no estimate order",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The six sites come with posteriors only, without estimates of their own, so there is no estimate order to compare."
+        },
+        {
+          "select": "[data-prx-readout=\"strip-six-M\"]",
+          "about": "scale table: claims of the six sites",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"strip-league-n\"]",
+          "about": "scale table: units of the simulated league",
+          "source": "registry",
+          "ref": "league.spec.n",
+          "value": 30
+        },
+        {
+          "select": "[data-prx-readout=\"strip-league-M\"]",
+          "about": "scale table: claims of the league",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"strip-krw-n\"]",
+          "about": "scale table: KRW's firms (R case key)",
+          "source": "registry",
+          "ref": "krw.frame.n",
+          "value": 97
+        },
+        {
+          "select": "[data-prx-readout=\"strip-krw-M\"]",
+          "about": "scale table: claims of KRW's firms (R case key)",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"strip-cde-n\"]",
+          "about": "scale table: eligible California schools (R case key, pr_case_cde)",
+          "source": "registry",
+          "ref": "cde.statewide.n",
+          "value": 5834
+        },
+        {
+          "select": "[data-prx-readout=\"strip-cde-M\"]",
+          "about": "scale table: claims of the California schools (R case key: choose(5834, 2))",
+          "source": "registry",
+          "ref": "cde.statewide.M",
+          "value": 17014861
+        },
+        {
+          "select": "[data-prx-readout=\"cde-n\"]",
+          "about": "the California line under the scale table",
+          "source": "registry",
+          "ref": "cde.statewide.n",
+          "value": 5834
+        }
+      ]
+    },
+    {
+      "id": "league",
+      "about": "Preset league: the simulated league (frozen draw of seed 20261030, teaching posterior with prior SD .15), all thirty units. Posterior-mean order 94.48 expected wrong, estimate order 102.2, the two orders disagree on 37 pairs. Against the league's true values the posterior-mean order states 88 claims wrongly in this draw and 80.69 on average over draws.",
+      "preset": "league",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"n\"]",
+          "about": "units in the ranking",
+          "source": "registry",
+          "ref": "league.spec.n",
+          "value": 30
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "claims of a strict ranking of thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "M from the base-R oracle",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-30",
+            "field": "M"
+          },
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "posterior-mean order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "league.default.prior15.strictpm.E",
+          "value": 94.4777383139178
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong-estimate\"]",
+          "about": "the same units ranked by estimate",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "league.default.prior15.strictest.E",
+          "value": 102.16536804460803
+        },
+        {
+          "select": "[data-prx-readout=\"bar-posterior-mean\"]",
+          "about": "the comparison bar: posterior-mean order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "league.default.prior15.strictpm.E",
+          "value": 94.4777383139178
+        },
+        {
+          "select": "[data-prx-readout=\"bar-estimate\"]",
+          "about": "the comparison bar: estimate order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "league.default.prior15.strictest.E",
+          "value": 102.16536804460803
+        },
+        {
+          "select": "[data-prx-readout=\"disagree\"]",
+          "about": "pairs on which the estimate order and the posterior-mean order disagree",
+          "source": "registry",
+          "ref": "league.default.prior15.reordered",
+          "value": 37
+        },
+        {
+          "select": "[data-prx-readout=\"disagree\"]",
+          "about": "the same from the base-R oracle",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-postmean.15",
+            "field": "count"
+          },
+          "value": 37
+        },
+        {
+          "select": "[data-prx-readout=\"truth-wrong\"]",
+          "about": "wrong claims of the posterior-mean order against the league's true values in this draw (CR-144)",
+          "source": "registry",
+          "ref": "league.default.prior15.pm.misordered",
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"truth-wrong\"]",
+          "about": "the same from the base-R oracle",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-postmean.15-vs-theta",
+            "field": "count"
+          },
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"truth-expected\"]",
+          "about": "wrong claims of the posterior-mean order on average over draws with the same true values (CR-144)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-prior.15",
+            "field": "expected"
+          },
+          "value": 80.6889700818873
+        },
+        {
+          "select": "[data-prx-readout=\"truth-expected\"]",
+          "about": "the same from v1's registry (shown here at four significant digits)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "league.closed.prior15.misordered",
+          "value": 80.68897008188738
+        },
+        {
+          "select": ".prx-rc-truth",
+          "kind": "text",
+          "slots": true,
+          "about": "the two counts told apart (CR-144): wrong against the true values, which only a simulation knows, and expected by the posterior, with why the two averages need not agree",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "The league is simulated, so its true values are known. Against them, ⟨mis⟩ of these ⟨M⟩ claims are wrong in this draw, and ⟨exp⟩ on average over new draws of the estimates. The posterior, which does not know the true values, expects ⟨E⟩. The two averages answer different questions (over new estimates for these true values; over true values, given these estimates), so they need not agree. Only this second count can be given for real units."
+        },
+        {
+          "select": "[data-prx-readout=\"strip-this-M\"]",
+          "about": "scale table: this ranking",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "about": "the league's posterior is a teaching posterior (v3 wording of the caption)",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "about": "the expected wrong count is the evaluation of a fixed report (the strict posterior-mean order)",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        }
+      ]
+    },
+    {
+      "id": "six-top2",
+      "about": "Raw query: the six sites' top two (A and B): one claim, A above B, wrong with probability .1884 (postrank golden 1 - pr_tutorial$one$e).",
+      "query": "?n=2&data=six",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "one pair",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-2",
+            "field": "M"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "the one claim A above B: its probability of being wrong",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "six.A.e.AB",
+          "value": 0.18837955890579108
+        }
+      ]
+    },
+    {
+      "id": "six-top4",
+      "about": "Raw query: the six sites' top four, A to D: six claims, expected wrong .5597 (registry: errorArray of the four normal posteriors; base R from pr_tutorial gives .559713552679621).",
+      "query": "?n=4&data=six",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "six pairs",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-4",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "expected wrong directions of A, B, C, D in that order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "six.A.top4.strict.E",
+          "value": 0.5597135526796212
+        }
+      ]
+    },
+    {
+      "id": "six-clamped",
+      "about": "Raw query with n above the six sites' size: n is set back to six, as at the preset.",
+      "query": "?n=40&data=six",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "set back to six units",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "the full six-site ranking",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "six.A.strict.E",
+          "value": 0.7194131461772217
+        }
+      ]
+    },
+    {
+      "id": "six-update",
+      "about": "The six-site preset, then an update to n = 4 (as the slider sends it): the read-out follows.",
+      "preset": "six",
+      "update": [
+        {
+          "n": 4
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "six pairs",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-4",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "expected wrong directions of A to D",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "six.A.top4.strict.E",
+          "value": 0.5597135526796212
+        }
+      ]
+    },
+    {
+      "id": "league-default-n",
+      "about": "Raw query with only the data set: the default n (97) is set back to the league's thirty units.",
+      "query": "?data=league",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "all thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "posterior-mean order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "league.default.prior15.strictpm.E",
+          "value": 94.4777383139178
+        }
+      ]
+    },
+    {
+      "id": "league-top12",
+      "about": "Raw query: the league's top twelve by posterior mean. Registry keys built from errorArray of their teaching posteriors (rows 25, 20, 7, 28, 2, 12, 9, 5, 23, 29, 15, 0); base R gives 21.8287345176538, 23.7838145177136 and 12.",
+      "query": "?n=12&data=league",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "sixty-six pairs",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-12",
+            "field": "M"
+          },
+          "value": 66
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "posterior-mean order of the twelve",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "league.default.prior15.top12.strictpm.E",
+          "value": 21.828734517653785
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong-estimate\"]",
+          "about": "the twelve ranked by estimate",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "league.default.prior15.top12.strictest.E",
+          "value": 23.783814517713584
+        },
+        {
+          "select": "[data-prx-readout=\"disagree\"]",
+          "about": "pairs on which the two orders disagree",
+          "source": "registry",
+          "ref": "league.default.prior15.top12.reordered",
+          "value": 12
+        }
+      ]
+    },
+    {
+      "id": "krw-top2",
+      "about": "Raw query: KRW's top two firms by race posterior mean (rows 61 and 14). The two orders disagree on their one pair: the posterior-mean order's claim is wrong with probability .4199, the estimate order's with .5801 (released race cells; base R from pr_case_krw$input gives the same).",
+      "query": "?n=2&data=krw",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "one pair",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-2",
+            "field": "M"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "posterior-mean order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.top2.strictpm.E",
+          "value": 0.419891636333051
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong-estimate\"]",
+          "about": "estimate order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.top2.strictest.E",
+          "value": 0.580108363666949
+        },
+        {
+          "select": "[data-prx-readout=\"disagree\"]",
+          "about": "the one pair, ordered differently",
+          "source": "registry",
+          "ref": "krw.race.top2.reordered",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "krw-top5",
+      "about": "Raw query: KRW's top five firms by race posterior mean (rows 61, 14, 16, 36, 94): ten claims, expected wrong 3.933 against 5.394 by estimate; the orders disagree on five pairs (base R: 3.93341510367429, 5.39399458118025, 5).",
+      "query": "?n=5&data=krw",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "ten pairs",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-5",
+            "field": "M"
+          },
+          "value": 10
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "posterior-mean order of the five",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.top5.strictpm.E",
+          "value": 3.9334151036742933
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong-estimate\"]",
+          "about": "estimate order of the five",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.top5.strictest.E",
+          "value": 5.39399458118025
+        },
+        {
+          "select": "[data-prx-readout=\"disagree\"]",
+          "about": "pairs on which the two orders disagree",
+          "source": "registry",
+          "ref": "krw.race.top5.reordered",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"strip-cde-M\"]",
+          "about": "the scale table keeps the California schools",
+          "source": "registry",
+          "ref": "cde.statewide.M",
+          "value": 17014861
+        }
+      ]
+    }
+  ]
+}

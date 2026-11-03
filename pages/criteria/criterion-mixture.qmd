@@ -1,0 +1,58 @@
+---
+title: "A random-criterion representation of weighted risk"
+subtitle: "4.8 · after the postrank theory book, ch. 11–12"
+description: "Equality of weighted risk and risk averaged over an auxiliary criterion selected for a fixed report."
+---
+
+Weighted risk has a random-criterion representation. One auxiliary criterion is selected for the entire fixed report,
+with selection probabilities equal to the error weights. Averaging its criterion-specific reporting risk gives the
+same weighted risk as the direct calculation. The selected criterion applies to all units and reported pairs,
+preserving its within-criterion joint law. This construction averages losses rather than target magnitudes. The
+report is chosen before the auxiliary criterion is revealed; the representation does not describe a distribution
+of stakeholder preferences or criterion-dependent report selection.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/criterion-mixture.js"></script>
+<script>window.__prxApp = PRX["criterion-mixture"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Weighted report.** Both calculations give risk .0933. The criterion contributions are .0453 and .0480.
+  Changing the auxiliary criterion changes the evaluated column: the whole outlined column changes, while report 1/1/1/1/2/3 stays fixed.
+- **Certain opposition.** The two directions each cost .5000, while withholding costs .3000. Both criteria
+  distinguish the units with certainty. The same criterion choice applies to both units and every reported pair.
+- **Three actions tie.** All 3 actions cost .5000. Other retained optima have different criterion-specific risks but the same weighted average. These are different reports, not
+  different reports chosen after the auxiliary criterion is revealed.
+- **Two against one.** The cheaper direction costs .3333, the reverse .6667, and withholding .4000. A certain
+  two-against-one split can favor disclosure. The adjacent one-third boundary preset retains both actions sharing
+  the minimum instead of treating equality as a strict preference.
+- **Zero error weight.** The cheaper weighted direction costs .0000, although the ignored criterion’s own risk
+  is 1.0000. Its selection chance is 0, so this branch contributes nothing. The vector can still be inspected
+  without pretending the mixture would draw it.
+- **No-cap coherence.** Among all 4,683 reports, 1/2/2/3/4/5 states 14 pairs with risk .1275. It states A above C
+  with weighted error .3803 and B above D with .3813, both above τ .35. There is no grade cap in this example.
+
+::: {.callout-note appearance="simple"}
+The report is selected before the auxiliary criterion; conditional on the supplied information, this auxiliary choice is independent of the target law. The mixture retains a whole within-criterion vector law, including unit dependence. Postrank’s
+weak-error identity allows latent equality. The correspondence to KRW’s strict-count objective additionally
+requires the same law, targets, orientation, units and feasible family, plus its affine and equality conditions.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+The fixed default report reproduces the two calculations; small floating-point rounding differences do not change
+their algebraic identity.
+
+```r
+library(postrank)
+ev <- postrank_evaluate(c(A=1L,B=1L,C=1L,D=1L,E=2L,F=3L), pr_tutorial$two, weights=c(score_A=.5,score_B=.5), tau=.2)
+sum(c(.5,.5)*ev$criterion_risk); ev$weighted_risk
+```
+:::
+
+Standalone: [open this app](../../embed/criterion-mixture.html), for example `?preset=coherence&theme=dark`.
+
+Related applications: [Opposing criterion directions](conflict-pairs.html) · [A common grade report for two scores](two-scores.html).

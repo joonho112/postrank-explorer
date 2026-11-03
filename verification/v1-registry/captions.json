@@ -1,0 +1,59 @@
+{
+  "about": "Caption registry (CONTRACT 6.2, 6.5): the three result labels and the captions a result may carry, as exact strings. js/widgets/labels.js embeds the same strings in its CONFIG; verification/check_states.mjs checks that both agree with each other and with CONTRACT.md, and that every marked element on screen shows one of them.",
+  "format": "postrank-explorer-captions/1",
+  "slot": "⟨family⟩",
+  "forbidden": ["certified", "certify", "certifies", "certificate", "certification", "proven"],
+  "family_form": {
+    "about": "The screen form of the family slot (I-02). The text form is the engine name (result.family.name, 𝒜_≤3), so a label's textContent equals the registry string with that name in the slot. On screen every low line and the run after it (up to a space or a parenthesis) are drawn as a hidden low line (an aria-hidden element with low_class, hidden by base.css) and a <sub> element with sub_class holding the run: 𝒜_≤3 is 𝒜<sub>≤3</sub>, 𝒜_q (𝒜_≤3) is 𝒜<sub>q</sub> (𝒜<sub>≤3</sub>). A name without a low line (𝒜₆, 𝒜ᵨ,≤3) is written as it is. The slot in words (pages before G-04) is plain text. Examples: notation/notation.yml label_form.",
+    "low": "_",
+    "subscript_run": "[^\\s()]+",
+    "low_class": "prx-family-low",
+    "sub_class": "prx-family-sub"
+  },
+  "labels": [
+    {
+      "id": "exact-within-family",
+      "text": "exact optimum within ⟨family⟩",
+      "contract": "6.2",
+      "engine_label": "exact-within-family",
+      "slot_from": "family.name",
+      "about": "exhaustive enumeration of the family (exactOptimum and the functions built on it); the floating tie tolerance is stated beside it"
+    },
+    {
+      "id": "optimal-within-order",
+      "text": "optimal within this order",
+      "contract": "6.2",
+      "engine_label": "optimal-within-order",
+      "about": "fixed-order DP with the package's tie rules (fixedOrderDP)"
+    },
+    {
+      "id": "optimal-within-solver-tolerances",
+      "text": "optimal within solver tolerances",
+      "contract": "6.2",
+      "engine_label": "optimal-within-solver-tolerances",
+      "requires_status": "optimal",
+      "about": "highs-js (mip solve) with status optimal, or the status field of a released archived solve; status, bound and gap are shown beside it"
+    }
+  ],
+  "captions": [
+    { "id": "fixed-report", "text": "evaluation of a fixed report", "contract": "6.5", "rows": ["6.5", "12.3"], "about": "risk and counts of a report the learner or a rule supplied (evaluateReport)" },
+    { "id": "fixed-tiers", "text": "fixed tiers, not optimized", "contract": "6.5", "rows": ["6.5"], "about": "a common rule with fixed tier sizes" },
+    { "id": "krw-card", "text": "KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances)", "contract": "6.5", "rows": ["6.5", "12.3"], "about": "KRW's cards and the lambda grid; some grid cards are not exact minimizers" },
+    { "id": "mixture-not-report", "text": "a mixture of two complete reports, not a report we can print", "contract": "6.5", "rows": ["6.5"], "about": "psi on H(m)" },
+    { "id": "different-disclosure", "text": "these reports disclose different amounts", "contract": "6.5", "rows": ["6.5"] },
+    { "id": "tau-not-compared", "text": "risks at different τ are not compared", "contract": "6.5", "rows": ["6.5", "5.4"] },
+    { "id": "teaching-posterior", "text": "a posterior the course specifies for teaching; postrank does not fit it", "contract": "6.5", "rows": ["6.5", "9.4"] },
+    {
+      "id": "monte-carlo",
+      "text": "Monte Carlo, S draws, seed shown",
+      "contract": "6.5",
+      "rows": ["6.5", "7.5"],
+      "engine_label": "monte-carlo",
+      "template": "Monte Carlo, ⟨S⟩ draws, seed ⟨seed⟩",
+      "template_slots": { "S": "S", "seed": "seed" },
+      "about": "simulation results (label monte-carlo). The contract string is accepted as written; the template is the screen form with S and the seed filled from the result, each slot a data-num element"
+    },
+    { "id": "package-quantity", "text": "package quantity", "contract": "6.5", "rows": ["6.5"], "about": "Delta_k" },
+    { "id": "learning-use", "text": "learning use; an analysis for reporting runs in R", "contract": "6.5", "rows": ["6.5"] }
+  ]
+}

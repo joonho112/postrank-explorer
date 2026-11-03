@@ -1,0 +1,95 @@
+{
+  "id": "4.10",
+  "name": "choosing-settings",
+  "part": "4",
+  "title": "Choosing \u03c4, the cap and the weights",
+  "idea": "Within one fixed family a larger \u03c4 never lowers the exact best report's disclosure. Changing \u03c4 or weights changes the loss; changing the cap changes the feasible family. The grid separates these effects.",
+  "status": "built",
+  "from": "new concept \u00b7 v1 storyboard P-12; postrank_settings_grid() and postrank_sensitivity(); picture: a step chart of N against \u03c4 with the grades on each interval and E_k/N lines (risks marked not comparable across \u03c4), and a grid over \u03c4, the cap and the weights",
+  "data": [
+    "data/released/six-sites.json",
+    "data/released/cache-30x3.json",
+    "data/released/cache-tutorial.json"
+  ],
+  "credit": "After the postrank vignette a7 (figures and sensitivity).",
+  "caption": "Exact six-site settings or fixed public archived sensitivity analyses.",
+  "presets": [
+    {
+      "id": "equal",
+      "label": "Equal weights",
+      "query": "source=live&tau=.2&w=.5&cap=3&pair=B,C&unit=B"
+    },
+    {
+      "id": "tau35",
+      "label": "A higher price",
+      "query": "source=live&tau=.35&w=.5&cap=3&pair=B,C&unit=B"
+    },
+    {
+      "id": "tau40",
+      "label": "A still higher price",
+      "query": "source=live&tau=.4&w=.5&cap=3&pair=B,C&unit=B"
+    },
+    {
+      "id": "cap2",
+      "label": "At most two grades",
+      "query": "source=live&tau=.2&w=.5&cap=2&pair=B,C&unit=B"
+    },
+    {
+      "id": "archive30",
+      "label": "Thirty-site archive",
+      "query": "source=archive30&tau=.2&w=.5&cap=3&pair=B,C&unit=B"
+    },
+    {
+      "id": "tutorial",
+      "label": "Tutorial archive",
+      "query": "source=tutorial&tau=.2&w=.5&cap=3&pair=B,C&unit=B"
+    }
+  ],
+  "try": [
+    {
+      "preset": "equal",
+      "shows": [
+        "9",
+        "15",
+        ".0177",
+        ".0267"
+      ]
+    },
+    {
+      "preset": "tau35",
+      "shows": [
+        "11",
+        ".115"
+      ]
+    },
+    {
+      "preset": "tau40",
+      "shows": [
+        "12",
+        ".0575"
+      ]
+    },
+    {
+      "preset": "cap2",
+      "shows": [
+        "8",
+        ".0939"
+      ]
+    },
+    {
+      "preset": "archive30",
+      "shows": [
+        "131",
+        "276",
+        "305",
+        "312"
+      ]
+    },
+    {
+      "preset": "tutorial",
+      "shows": [
+        "7"
+      ]
+    }
+  ]
+}

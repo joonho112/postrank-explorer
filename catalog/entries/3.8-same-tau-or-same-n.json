@@ -1,0 +1,102 @@
+{
+  "id": "3.8",
+  "name": "same-tau-or-same-n",
+  "part": "3",
+  "title": "Same price or same disclosure?",
+  "idea": "At one τ a rule's risk also charges it for the pairs it leaves unsaid; at its own N only its expected wrong directions are set against the frontier.",
+  "status": "built",
+  "from": "v1 view · v1 R-04 rule-comparison, the same-τ view",
+  "data": [
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 16–17.",
+  "presets": [
+    {
+      "id": "same-tau",
+      "label": "Same τ, .20",
+      "query": "data=league8&family=all&match=tau&tau=.20&rule=pmtiers"
+    },
+    {
+      "id": "same-n",
+      "label": "Same N, eight units",
+      "query": "data=league8&family=all&match=n&tau=.20&rule=pmtiers"
+    },
+    {
+      "id": "thirty",
+      "label": "Thirty units, one order",
+      "query": "data=league30&family=cap3&match=n&tau=.20&rule=pmtiers"
+    },
+    {
+      "id": "thirty-tau",
+      "label": "Thirty units, same τ",
+      "query": "data=league30&family=all&match=tau&tau=.20&rule=pmtiers"
+    },
+    {
+      "id": "strict-low-tau",
+      "label": "Strict order, τ .05",
+      "query": "data=league8&family=all&match=n&tau=.05&rule=strict"
+    },
+    {
+      "id": "cap3",
+      "label": "At most three grades",
+      "query": "data=league8&family=cap3&match=n&tau=.20&rule=tiers3"
+    },
+    {
+      "id": "outside-order",
+      "label": "Flags outside the order",
+      "query": "data=league30&family=cap3&match=n&tau=.20&rule=flags"
+    },
+    {
+      "id": "withheld",
+      "label": "All-withheld",
+      "query": "data=league8&family=all&match=tau&tau=.20&rule=withheld"
+    }
+  ],
+  "try": [
+    {
+      "preset": "same-tau",
+      "shows": [
+        "21",
+        ".1612",
+        "17",
+        ".1455"
+      ]
+    },
+    {
+      "preset": "same-n",
+      "shows": [
+        "21",
+        ".1634"
+      ]
+    },
+    {
+      "preset": "thirty",
+      "shows": [
+        "436",
+        "300",
+        "48.31"
+      ]
+    },
+    {
+      "preset": "thirty-tau",
+      "shows": [
+        "536,870,912"
+      ]
+    },
+    {
+      "preset": "outside-order",
+      "shows": [
+        "outside this family"
+      ]
+    },
+    {
+      "preset": "withheld",
+      "shows": [
+        "0",
+        ".2000"
+      ]
+    }
+  ],
+  "caption": "Units U01–U08, or all thirty units, of the simulated league under a normal posterior (prior mean 0, SD .15); flags against the mean of all 30 league estimates.",
+  "presetLabel": "Compare"
+}

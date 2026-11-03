@@ -1,0 +1,36 @@
+---
+title: "Restrictions imposed by a fixed order"
+subtitle: "3.6 · after the postrank theory book, ch. 19, three-unit law"
+description: "A finite posterior example in which posterior-mean cuts exclude the unrestricted optimum."
+---
+
+In the specified three-unit posterior, A has the largest posterior mean but the largest true value only in the less
+probable state. Contiguous cuts of the posterior-mean order can consequently exclude a lower-risk grade report.
+The state table specifies the posterior law, and the complete report table establishes the unrestricted benchmark.
+The boundary display then identifies the reports excluded by each imposed order. Varying the withholding cost shows
+where this restriction affects the optimum and where both families select the same report. The comparison concerns
+this particular law and does not imply a general ranking of ordering methods.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/order-misses.js"></script>
+<script>window.__prxApp = PRX["order-misses"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Mean order: τ .25.** At two stated pairs, the mean-order boundary expects 7/10 wrong directions against 3/10 with any order. Those are expected counts, not risks. At the current price, mean-order cuts withhold everything at risk .2500; the best report puts B above A and C at risk .1833.
+- **Expected ranks: τ .25.** The order becomes B, C, A and its best cut recovers risk .1833. The highlighted summary row and report strips follow the order switch; all four rule cards remain available.
+- **Equal risk: τ .30.** Reports 2/1/2 and 3/1/2 share the minimum. Both disclosure counts and the equal-risk tolerance are reported because the optimum is not unique.
+- **Mean order: τ .50.** The mean-order cuts have risk .4000 against .2000 for the best report. The expected-rank order still reaches the unrestricted boundary.
+- **Mean order: τ .10.** Both methods withhold every pair at risk .1000. The imposed order misses only above the cost at which disclosure first becomes worthwhile.
+
+::: {.callout-note appearance="simple"}
+This is one stipulated joint law, not a general failing of posterior-mean orders. The posterior-mean order is not an expected-rank algorithm's output. Each optimum is conditional on its supplied law, price and feasible family; exact cuts search one order, while the joint benchmark searches every admissible report. Changing the cap changes that comparison. The curve compares methods at each common price and does not compare risks across different prices.
+:::
+
+Standalone: [order-misses](../../embed/order-misses.html), for example `?order=rank&tau=.25`.
+
+Related applications: [Tiers and optimised cuts of posterior rankings](posterior-tiers.qmd), [Restrictions on the report family](../grades/families.qmd).

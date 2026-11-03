@@ -1,0 +1,51 @@
+---
+title: "Normal–normal posterior shrinkage"
+subtitle: "1.5 · a teaching prior, after Kline, Rose and Walters (2024) and Walters' teaching slides"
+description: "Precision-weighted posterior means and changes in pairwise order under a common normal prior."
+---
+
+Under a normal likelihood and a common normal prior, each posterior mean is a precision-weighted average of the
+estimate and the prior mean. The two precisions are the inverse squared standard error and the inverse prior
+variance. The posterior mean minimises posterior expected squared error. Each row displays an estimate
+$\hat\theta_i$ in vermillion and its posterior mean in navy. Less precise estimates receive greater shrinkage towards
+the prior mean. Unequal sampling precisions can therefore change the order of the units; equal precisions preserve
+the order under this model.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/shrinkage.js"></script>
+<script>window.__prxApp = PRX["shrinkage"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Prior SD .15.** Small units move .64 of the way to 0, medium units .31 and large units .10, so greater shrinkage towards 0 changes the order of imprecise units relative to precise units: in this draw the order changes for 37 of the 435 pairs.
+- **Prior SD .05.** A narrower prior increases shrinkage: small units move .94, large units .50, and in this draw 71 of the
+  435 pairs change order.
+- **Every SE .10.** A common SE gives a common retained share, .69, for every unit: no lines cross, and 0 of the 435 pairs change
+  order.
+- **Against the true values.** In this draw the average squared distance to the true values (crosses) falls from
+  .0163 to .0096 and the spread from .162 to .098, below the truth's .149; yet 14 of 30 units end farther (ringed).
+- **Too narrow a prior.** A prior too narrow for these true values can even raise the average: at prior SD .02,
+  .0197 against the estimates' .0163 in this draw, and .0191 against .0175 over many draws.
+
+::: {.callout-note appearance="simple"}
+Kline, Rose and Walters (2024), KRW, estimate their prior from all the firms (section III, slide 49); it is not
+normal, depends on each firm's SE (section V.B) and, for race, puts all its weight on positive gaps. So State Farm's
+race estimate of −.544 (SE .444) has a posterior mean of .155 (90% interval .014 to .342, from a smoothed version of
+KRW's posteriors). In their data, ranks from linear (James–Stein-type) shrinkage "perform substantially worse than
+naively ranking the point estimates" (section V.E). The postrank theory book (ch. 20, "Empirical Bayes specification")
+sets out their prior; the normal prior here is a teaching simplification. Data: Kline, Rose and Walters (2024),
+doi:10.1257/aer.20230700, and deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version),
+noncommercial use only; as adapted in postrank 1.1.0 (pr_case_krw), changes noted; no endorsement by the authors is
+implied. The data describe KRW's correspondence experiment, not any firm's current conduct.
+:::
+
+Standalone: [embed/shrinkage.html](../../embed/shrinkage.html), for example `?priorSd=.05&view=2` or
+`?preset=truth&theme=dark`.
+
+Related applications: [Ranking noisy estimates](noisy-league.qmd) · [Selection bias at the extremes of a ranking](winners-curse.qmd)
+· [Sensitivity to the prior standard deviation](shrinkage-price.qmd).

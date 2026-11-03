@@ -1,0 +1,92 @@
+{
+  "id": "T.1",
+  "name": "your-data",
+  "part": "T",
+  "title": "Your own posterior summaries",
+  "idea": "Paste posterior means and SDs (or estimates, SEs and a stated prior), read as independent normal posteriors, and get pair probabilities, a grade report labelled with the family it is best in, and its card.",
+  "status": "built",
+  "from": "new concept · v1 storyboard X-01; postrank vignettes a5 and quickstart; picture: messages for each failed check, an independence note, the card, relation matrix and profile with the label of the family used, and R code for the same analysis",
+  "data": [
+    "engine",
+    "data/released/six-sites.json"
+  ],
+  "credit": "Built for this site; your data stay in your browser.",
+  "math": false,
+  "caption": "Public examples use declared teaching models. Pasted inputs stay in this component’s memory; the URL carries only public choices and settings. Local exports include the applied inputs and settings.",
+  "presets": [
+    {
+      "id": "league8-posterior",
+      "label": "Eight posterior summaries",
+      "query": "example=league8-posterior&format=posterior&prior=normal&priorMean=0&priorSd=0.15&tau=0.2&cap=3&weights=1&orient=1&matrixEvent=directional_error&zeroTies=true&criterion=0&reportIndex=0&producer=automatic&timeLimit=1"
+    },
+    {
+      "id": "league8-flat",
+      "label": "Eight estimates, flat prior",
+      "query": "example=league8-flat&format=estimates&prior=flat&priorMean=0&priorSd=0.15&tau=0.2&cap=3&weights=1&orient=1&matrixEvent=directional_error&zeroTies=true&criterion=0&reportIndex=0&producer=automatic&timeLimit=1"
+    },
+    {
+      "id": "league8-normal",
+      "label": "Eight estimates, Normal prior",
+      "query": "example=league8-normal&format=estimates&prior=normal&priorMean=0&priorSd=0.15&tau=0.2&cap=3&weights=1&orient=1&matrixEvent=directional_error&zeroTies=true&criterion=0&reportIndex=0&producer=automatic&timeLimit=1"
+    },
+    {
+      "id": "six-probabilities",
+      "label": "Two probability matrices",
+      "query": "example=six-probabilities&format=probabilities&prior=normal&priorMean=0&priorSd=0.15&tau=0.2&cap=3&weights=0.5%2C0.5&orient=1%2C1&matrixEvent=directional_error&zeroTies=true&criterion=0&reportIndex=0&producer=automatic&timeLimit=1"
+    },
+    {
+      "id": "league30-posterior",
+      "label": "Thirty posterior summaries",
+      "query": "example=league30-posterior&format=posterior&prior=normal&priorMean=0&priorSd=0.15&tau=0.2&cap=3&weights=1&orient=1&matrixEvent=directional_error&zeroTies=true&criterion=0&reportIndex=0&producer=automatic&timeLimit=1"
+    },
+    {
+      "id": "equal5",
+      "label": "All reports tied",
+      "query": "example=equal5&format=posterior&prior=normal&priorMean=0&priorSd=0.15&tau=0.5&cap=all&weights=0.3333333333333333%2C0.3333333333333333%2C0.3333333333333333&orient=1%2C-1%2C1&matrixEvent=directional_error&zeroTies=true&criterion=0&reportIndex=0&producer=automatic&timeLimit=1"
+    }
+  ],
+  "try": [
+    {
+      "preset": "league8-posterior",
+      "shows": [
+        "8 units",
+        "17",
+        ".1455"
+      ]
+    },
+    {
+      "preset": "league8-flat",
+      "shows": [
+        ".1368"
+      ]
+    },
+    {
+      "preset": "league8-normal",
+      "shows": [
+        ".1455"
+      ]
+    },
+    {
+      "preset": "six-probabilities",
+      "shows": [
+        "9",
+        ".0933"
+      ]
+    },
+    {
+      "preset": "league30-posterior",
+      "shows": [
+        "251",
+        ".1581"
+      ]
+    },
+    {
+      "preset": "equal5",
+      "shows": [
+        "541",
+        "100",
+        "NA"
+      ]
+    }
+  ]
+}

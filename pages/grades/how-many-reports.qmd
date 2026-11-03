@@ -1,0 +1,46 @@
+---
+title: "The number of ordered grade reports"
+subtitle: "2.3 · after the postrank theory book, ch. 14, and the postrank vignette m5"
+description: "Sizes of unrestricted, grade-restricted and fixed-order report families."
+---
+
+A grade report partitions units into groups and orders those groups. The set of possible reports therefore includes
+all strict rankings as well as reports with shared grades. Restrictions on the number of occupied grades, or on the
+order in which groups may occur, reduce this set. The curves compare the resulting family sizes on a logarithmic
+scale. The small examples identify the groupings and orders counted as distinct reports. These are combinatorial
+counts; calculating them does not require evaluating the reporting risk of each candidate.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/how-many-reports.js"></script>
+<script>window.__prxApp = PRX["how-many-reports"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Three units.** There are 13 ordered grade reports but only 6 strict rankings. In the small examples,
+  some reports group letters, while others give each letter its own box. Swapping the positions of occupied boxes
+  changes which directions are stated.
+- **Six units.** All reports number 4,683. A cap permits 603, while an exact grade count permits 540; cuts of one
+  declared order permit only 32. The capped family includes reports with fewer occupied grades, which explains
+  its larger count than the exact family.
+- **Eight units.** All reports reach 545,835, compared with 6,051 under the cap and 128 along one order. The
+  dashed lines identify the families even where their counts are close. Arrow-key selection and the table give the exact count for each unit count and family.
+- **Twelve units.** There are 28,091,567,595 reports in the full family, while the cap leaves 523,251. The hollow
+  squares mark problem sizes encountered elsewhere in this collection. Counting those possibilities does not
+  require generating every report.
+- **An empty exact family.** The small example has 0 reports: the requested number of nonempty grades exceeds
+  its number of units. An empty family has no logarithmic height, so its count stays visible in the table.
+
+::: {.callout-note appearance="simple"}
+A declared order permits only contiguous cuts of that order, without equal-score blocks here. This is a
+substantive restriction on the available reports. Counts describe family size; they say neither which report
+has smallest risk nor how long a particular optimisation algorithm will take.
+:::
+
+Standalone: [report counts](../../embed/how-many-reports.html), for example `?n=8&G=3`.
+
+Related applications: [Grade reports as pairwise decisions](report-builder.qmd),
+[Reporting risk and withholding cost](price-of-silence.qmd).

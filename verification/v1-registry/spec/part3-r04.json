@@ -1,0 +1,1050 @@
+{
+ "$schema": "../schema.json",
+ "spec": "part3-r04",
+ "description": "Part 3, Comparing rules at the same disclosure (R-04): rules on the frozen league's units U01 ... U08 under the teaching posterior (prior SD .15) against the lower hull H(m) of all 545,835 reports and of the 6,051 reports with at most three grades (ruleGap at each rule's own N; matchedDisclosure for psi, the chance of the more-disclosing vertex, as on G-06), risks at tau .20 and .05, and the In R box's quantile tiers of the package's 30-site example (poverty, tau .25, at most 4 grades). The optimal cuts of that example (N 303, risk .1603) are thirty.poverty.exprank.cap4.tau25.N and thirty.poverty.pmorder.cap4.tau25.risk.",
+ "license_scope": "author",
+ "inputs": {
+  "r04.l8.post": {
+   "fn": "normalPosterior",
+   "args": [
+    [
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.0"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.1"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.2"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.3"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.4"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.5"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.6"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.7"
+     }
+    ],
+    [
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.0"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.1"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.2"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.3"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.4"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.5"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.6"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.7"
+     }
+    ],
+    {
+     "priorSd": {
+      "$setting": "settings.prior15"
+     }
+    }
+   ],
+   "note": "teaching posterior of U01 ... U08 (prior mean 0, SD .15)"
+  },
+  "r04.l8.E": {
+   "fn": "errorArray",
+   "args": [
+    {
+     "$input": "r04.l8.post",
+     "path": "mean"
+    },
+    {
+     "$input": "r04.l8.post",
+     "path": "sd"
+    },
+    {
+     "ids": [
+      {
+       "$data": "league-30",
+       "path": "tables.units.id.0"
+      },
+      {
+       "$data": "league-30",
+       "path": "tables.units.id.1"
+      },
+      {
+       "$data": "league-30",
+       "path": "tables.units.id.2"
+      },
+      {
+       "$data": "league-30",
+       "path": "tables.units.id.3"
+      },
+      {
+       "$data": "league-30",
+       "path": "tables.units.id.4"
+      },
+      {
+       "$data": "league-30",
+       "path": "tables.units.id.5"
+      },
+      {
+       "$data": "league-30",
+       "path": "tables.units.id.6"
+      },
+      {
+       "$data": "league-30",
+       "path": "tables.units.id.7"
+      }
+     ],
+     "criteria": [
+      "theta"
+     ]
+    }
+   ]
+  },
+  "r04.l8.all.cloud": {
+   "fn": "reportCloud",
+   "args": [
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "family": {
+      "kind": "all"
+     }
+    }
+   ],
+   "note": "all 545,835 reports on the eight units"
+  },
+  "r04.l8.all.hull": {
+   "fn": "lowerHull",
+   "args": [
+    {
+     "$input": "r04.l8.all.cloud"
+    }
+   ]
+  },
+  "r04.l8.cap3.cloud": {
+   "fn": "reportCloud",
+   "args": [
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "family": {
+      "kind": "atMost",
+      "G": {
+       "$setting": "settings.cap3"
+      }
+     }
+    }
+   ],
+   "note": "the 6,051 reports with at most three grades"
+  },
+  "r04.l8.cap3.hull": {
+   "fn": "lowerHull",
+   "args": [
+    {
+     "$input": "r04.l8.cap3.cloud"
+    }
+   ]
+  },
+  "r04.l8.rule.tiers3": {
+   "fn": "tierGrades",
+   "args": [
+    [
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.0"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.1"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.2"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.3"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.4"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.5"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.6"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.7"
+     }
+    ],
+    {
+     "$setting": "settings.cap3"
+    },
+    {
+     "direction": "descending"
+    }
+   ],
+   "note": "estimate tiers, three tiers (R-01 rule)"
+  },
+  "r04.l8.rule.pmtiers": {
+   "fn": "tierGrades",
+   "args": [
+    {
+     "$input": "r04.l8.post",
+     "path": "mean"
+    },
+    {
+     "$setting": "settings.cap3"
+    },
+    {
+     "direction": "descending"
+    }
+   ],
+   "note": "posterior-mean tiers, three tiers (R-03 rule a)"
+  },
+  "r04.l8.rule.strict": {
+   "fn": "strictOrder",
+   "args": [
+    [
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.0"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.1"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.2"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.3"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.4"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.5"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.6"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.7"
+     }
+    ],
+    {
+     "direction": "descending"
+    }
+   ],
+   "note": "strict estimate order"
+  },
+  "r04.l8.all.pmtiers.gap": {
+   "fn": "ruleGap",
+   "args": [
+    {
+     "$input": "r04.l8.rule.pmtiers"
+    },
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "hull": {
+      "$input": "r04.l8.all.hull"
+     }
+    }
+   ]
+  },
+  "r04.l8.all.pmtiers.mix": {
+   "fn": "matchedDisclosure",
+   "args": [
+    {
+     "$input": "r04.l8.all.cloud"
+    },
+    {
+     "$input": "r04.l8.all.hull"
+    },
+    {
+     "$input": "r04.l8.all.pmtiers.gap",
+     "path": "N"
+    }
+   ],
+   "note": "psi = chance of the more-disclosing vertex (the G-06 convention), the two vertices and the best single report at the tiers' N"
+  },
+  "r04.l8.all.tiers3.gap": {
+   "fn": "ruleGap",
+   "args": [
+    {
+     "$input": "r04.l8.rule.tiers3"
+    },
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "hull": {
+      "$input": "r04.l8.all.hull"
+     }
+    }
+   ]
+  },
+  "r04.l8.all.strict.gap": {
+   "fn": "ruleGap",
+   "args": [
+    {
+     "$input": "r04.l8.rule.strict"
+    },
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "hull": {
+      "$input": "r04.l8.all.hull"
+     }
+    }
+   ]
+  },
+  "r04.l8.cap3.tiers3.gap": {
+   "fn": "ruleGap",
+   "args": [
+    {
+     "$input": "r04.l8.rule.tiers3"
+    },
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "hull": {
+      "$input": "r04.l8.cap3.hull"
+     }
+    }
+   ]
+  },
+  "r04.l8.cap3.pmtiers.gap": {
+   "fn": "ruleGap",
+   "args": [
+    {
+     "$input": "r04.l8.rule.pmtiers"
+    },
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "hull": {
+      "$input": "r04.l8.cap3.hull"
+     }
+    }
+   ]
+  },
+  "r04.l8.tau20.pmtiers.ev": {
+   "fn": "evaluateReport",
+   "args": [
+    {
+     "$input": "r04.l8.rule.pmtiers"
+    },
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "tau": {
+      "$setting": "settings.tau20"
+     }
+    }
+   ]
+  },
+  "r04.l8.tau05.strict.ev": {
+   "fn": "evaluateReport",
+   "args": [
+    {
+     "$input": "r04.l8.rule.strict"
+    },
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "tau": {
+      "$setting": "settings.tau05"
+     }
+    }
+   ]
+  },
+  "r04.l8.all.tau20.best": {
+   "fn": "exactOptimum",
+   "args": [
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "tau": {
+      "$setting": "settings.tau20"
+     },
+     "family": {
+      "kind": "all"
+     }
+    }
+   ]
+  },
+  "r04.l8.all.tau05.best": {
+   "fn": "exactOptimum",
+   "args": [
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "tau": {
+      "$setting": "settings.tau05"
+     },
+     "family": {
+      "kind": "all"
+     }
+    }
+   ]
+  },
+  "r04.thirty.quantile4": {
+   "fn": "tierGrades",
+   "args": [
+    {
+     "$data": "thirty-sites",
+     "path": "tables.units.mean_poverty"
+    },
+    {
+     "$setting": "settings.cap4"
+    },
+    {
+     "direction": "descending"
+    }
+   ],
+   "note": "postrank_cuts(rule = 'quantile') on pr_example_gaussian poverty, at most 4 grades"
+  },
+  "r04.thirty.quantile4.tau25.ev": {
+   "fn": "evaluateReport",
+   "args": [
+    {
+     "$input": "r04.thirty.quantile4"
+    },
+    {
+     "ids": {
+      "$data": "thirty-sites",
+      "path": "arrays.gaussian.ids"
+     },
+     "criteria": [
+      "poverty"
+     ],
+     "e": [
+      {
+       "$data": "thirty-sites",
+       "path": "arrays.gaussian.e.0"
+      }
+     ]
+    },
+    {
+     "tau": {
+      "$setting": "settings.tau25"
+     }
+    }
+   ]
+  },
+  "r04.l8.ref": {
+   "fn": "summaryStats",
+   "args": [
+    {
+     "$data": "league-30",
+     "path": "tables.units.estimate"
+    }
+   ],
+   "note": "the flags' reference: the mean of the 30 league estimates (R mean semantics)"
+  },
+  "r04.l8.rule.flags": {
+   "fn": "evidenceFlags",
+   "args": [
+    [
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.0"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.1"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.2"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.3"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.4"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.5"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.6"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.estimate.7"
+     }
+    ],
+    [
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.0"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.1"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.2"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.3"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.4"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.5"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.6"
+     },
+     {
+      "$data": "league-30",
+      "path": "tables.units.se.7"
+     }
+    ],
+    {
+     "ref": {
+      "$input": "r04.l8.ref",
+      "path": "mean"
+     },
+     "crit": {
+      "$setting": "settings.crit196"
+     }
+    }
+   ],
+   "note": "flags from standardized evidence at cutoff 1.96 (R-02 rule)"
+  },
+  "r04.l8.rule.pmcuts.tau20": {
+   "fn": "fixedOrderDP",
+   "args": [
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "scores": {
+      "$input": "r04.l8.post",
+      "path": "mean"
+     },
+     "direction": "descending",
+     "G": {
+      "$setting": "settings.cap3"
+     },
+     "tau": {
+      "$setting": "settings.tau20"
+     }
+    }
+   ],
+   "note": "optimal cuts of the posterior-mean order, at most three grades, tau .20"
+  },
+  "r04.l8.all.flags.gap": {
+   "fn": "ruleGap",
+   "args": [
+    {
+     "$input": "r04.l8.rule.flags",
+     "path": "grade"
+    },
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "hull": {
+      "$input": "r04.l8.all.hull"
+     }
+    }
+   ]
+  },
+  "r04.l8.all.pmcuts.gap": {
+   "fn": "ruleGap",
+   "args": [
+    {
+     "$input": "r04.l8.rule.pmcuts.tau20",
+     "path": "grade"
+    },
+    {
+     "$input": "r04.l8.E"
+    },
+    {
+     "hull": {
+      "$input": "r04.l8.all.hull"
+     }
+    }
+   ]
+  },
+  "r04.thirty.cuts4.tau25": {
+   "fn": "fixedOrderDP",
+   "args": [
+    {
+     "ids": {
+      "$data": "thirty-sites",
+      "path": "arrays.gaussian.ids"
+     },
+     "criteria": [
+      "poverty"
+     ],
+     "e": [
+      {
+       "$data": "thirty-sites",
+       "path": "arrays.gaussian.e.0"
+      }
+     ]
+    },
+    {
+     "scores": {
+      "$data": "thirty-sites",
+      "path": "tables.units.mean_poverty"
+     },
+     "direction": "descending",
+     "G": {
+      "$setting": "settings.cap4"
+     },
+     "tau": {
+      "$setting": "settings.tau25"
+     }
+    }
+   ],
+   "note": "postrank_cuts(rule = 'optimal') on the posterior means"
+  }
+ },
+ "keys": {
+  "r04.league8.pmtiers.N": {
+   "type": "scalar",
+   "from": "r04.l8.all.pmtiers.gap",
+   "field": "N",
+   "format": {
+    "fn": "formatCount"
+   },
+   "tolerance": 0,
+   "same_as": "league8.default.prior15.pmtiers3.tau20.N"
+  },
+  "r04.league8.pmtiers.E": {
+   "type": "scalar",
+   "from": "r04.l8.all.pmtiers.gap",
+   "field": "Ew",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "note": "expected wrong directions of the posterior-mean tiers"
+  },
+  "r04.league8.all.pmtiers.H": {
+   "type": "scalar",
+   "from": "r04.l8.all.pmtiers.gap",
+   "field": "H",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "note": "H at the tiers' own N within all reports on the eight units"
+  },
+  "r04.league8.all.pmtiers.gap": {
+   "type": "scalar",
+   "from": "r04.l8.all.pmtiers.gap",
+   "field": "gap",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "note": "E minus H at the tiers' own N (ruleGap)"
+  },
+  "r04.league8.all.pmtiers.psi": {
+   "type": "scalar",
+   "from": "r04.l8.all.pmtiers.mix",
+   "field": "psi",
+   "format": {
+    "fn": "formatProb"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "same_as": "league8.default.prior15.psi",
+   "note": "chance of the more-disclosing vertex report"
+  },
+  "r04.league8.all.pmtiers.upperN": {
+   "type": "scalar",
+   "from": "r04.l8.all.pmtiers.mix",
+   "field": "upper.N",
+   "format": {
+    "fn": "formatCount"
+   },
+   "tolerance": 0
+  },
+  "r04.league8.all.pmtiers.lowerN": {
+   "type": "scalar",
+   "from": "r04.l8.all.pmtiers.mix",
+   "field": "lower.N",
+   "format": {
+    "fn": "formatCount"
+   },
+   "tolerance": 0
+  },
+  "r04.league8.all.pmtiers.upperGrade": {
+   "type": "vector",
+   "from": "r04.l8.all.pmtiers.mix",
+   "field": "upper.grade",
+   "format": {
+    "fn": "formatGrades"
+   },
+   "tolerance": 0
+  },
+  "r04.league8.all.pmtiers.lowerGrade": {
+   "type": "vector",
+   "from": "r04.l8.all.pmtiers.mix",
+   "field": "lower.grade",
+   "format": {
+    "fn": "formatGrades"
+   },
+   "tolerance": 0
+  },
+  "r04.league8.all.pmtiers.bestE": {
+   "type": "scalar",
+   "from": "r04.l8.all.pmtiers.mix",
+   "field": "best.Ew",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "note": "the best single report with exactly the tiers' N"
+  },
+  "r04.league8.all.pmtiers.bestGrade": {
+   "type": "vector",
+   "from": "r04.l8.all.pmtiers.mix",
+   "field": "best.grade",
+   "format": {
+    "fn": "formatGrades"
+   },
+   "tolerance": 0
+  },
+  "r04.league8.tiers3.E": {
+   "type": "scalar",
+   "from": "r04.l8.all.tiers3.gap",
+   "field": "Ew",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   }
+  },
+  "r04.league8.all.tiers3.gap": {
+   "type": "scalar",
+   "from": "r04.l8.all.tiers3.gap",
+   "field": "gap",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "same_as": "league8.default.prior15.tiers3.gap"
+  },
+  "r04.league8.cap3.tiers3.gap": {
+   "type": "scalar",
+   "from": "r04.l8.cap3.tiers3.gap",
+   "field": "gap",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "note": "within at most three grades"
+  },
+  "r04.league8.cap3.pmtiers.gap": {
+   "type": "scalar",
+   "from": "r04.l8.cap3.pmtiers.gap",
+   "field": "gap",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "note": "within at most three grades: the tiers are the last vertex"
+  },
+  "r04.league8.cap3.pmtiers.lowerN": {
+   "type": "scalar",
+   "from": "r04.l8.cap3.pmtiers.gap",
+   "field": "lower.N",
+   "format": {
+    "fn": "formatCount"
+   },
+   "tolerance": 0,
+   "note": "the vertex the tiers sit on: the largest N with at most three grades"
+  },
+  "r04.league8.strict.E": {
+   "type": "scalar",
+   "from": "r04.l8.all.strict.gap",
+   "field": "Ew",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   }
+  },
+  "r04.league8.all.strict.H": {
+   "type": "scalar",
+   "from": "r04.l8.all.strict.gap",
+   "field": "H",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   }
+  },
+  "r04.league8.all.strict.gap": {
+   "type": "scalar",
+   "from": "r04.l8.all.strict.gap",
+   "field": "gap",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   }
+  },
+  "r04.league8.strict.EoverN": {
+   "type": "scalar",
+   "from": "r04.l8.tau05.strict.ev",
+   "field": "EoverN.0",
+   "format": {
+    "fn": "formatShare"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   }
+  },
+  "r04.league8.tau05.strict.risk": {
+   "type": "scalar",
+   "from": "r04.l8.tau05.strict.ev",
+   "field": "risk",
+   "format": {
+    "fn": "formatRisk"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   }
+  },
+  "r04.league8.tau20.pmtiers.risk": {
+   "type": "scalar",
+   "from": "r04.l8.tau20.pmtiers.ev",
+   "field": "risk",
+   "format": {
+    "fn": "formatRisk"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "same_as": "league8.default.prior15.pmtiers3.tau20.risk"
+  },
+  "r04.league8.all.tau20.best.risk": {
+   "type": "scalar",
+   "from": "r04.l8.all.tau20.best",
+   "field": "risk",
+   "format": {
+    "fn": "formatRisk"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "same_as": "league8.default.prior15.opt.tau20.risk"
+  },
+  "r04.league8.all.tau20.best.N": {
+   "type": "scalar",
+   "from": "r04.l8.all.tau20.best",
+   "field": "N",
+   "format": {
+    "fn": "formatCount"
+   },
+   "tolerance": 0,
+   "same_as": "league8.default.prior15.opt.tau20.N"
+  },
+  "r04.league8.all.tau05.best.N": {
+   "type": "scalar",
+   "from": "r04.l8.all.tau05.best",
+   "field": "N",
+   "format": {
+    "fn": "formatCount"
+   },
+   "tolerance": 0
+  },
+  "r04.league8.all.tau05.best.risk": {
+   "type": "scalar",
+   "from": "r04.l8.all.tau05.best",
+   "field": "risk",
+   "format": {
+    "fn": "formatRisk"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   }
+  },
+  "r04.thirty.poverty.quantile4.tau25.N": {
+   "type": "scalar",
+   "from": "r04.thirty.quantile4.tau25.ev",
+   "field": "N",
+   "format": {
+    "fn": "formatCount"
+   },
+   "tolerance": 0,
+   "same_as": "cf.tiers.n30.G4.N",
+   "note": "postrank_cuts(rule = 'quantile'), N 337"
+  },
+  "r04.thirty.poverty.quantile4.tau25.risk": {
+   "type": "scalar",
+   "from": "r04.thirty.quantile4.tau25.ev",
+   "field": "risk",
+   "format": {
+    "fn": "formatRisk"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "note": "postrank_cuts(rule = 'quantile') primary_risk .1758 (postrank 1.1.0)"
+  },
+  "r04.league8.all.flags.gap": {
+   "type": "scalar",
+   "from": "r04.l8.all.flags.gap",
+   "field": "gap",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "note": "the flag report is a vertex of H: gap exactly 0"
+  },
+  "r04.league8.flags.N": {
+   "type": "scalar",
+   "from": "r04.l8.all.flags.gap",
+   "field": "N",
+   "format": {
+    "fn": "formatCount"
+   },
+   "tolerance": 0,
+   "same_as": "league8.default.prior15.flags196.tau20.N"
+  },
+  "r04.league8.all.pmcuts.tau20.gap": {
+   "type": "scalar",
+   "from": "r04.l8.all.pmcuts.gap",
+   "field": "gap",
+   "format": {
+    "fn": "formatExpectedCount"
+   },
+   "tolerance": {
+    "abs": 1e-12,
+    "rel": 1e-12
+   },
+   "note": "the cuts are a vertex of H at tau .20: gap exactly 0 (ruleGap; the older key league8.default.prior15.pmcuts3.gap holds 2.2e-16)"
+  },
+  "r04.thirty.poverty.cuts4.tau25.N": {
+   "type": "scalar",
+   "from": "r04.thirty.cuts4.tau25",
+   "field": "N",
+   "format": {
+    "fn": "formatCount"
+   },
+   "tolerance": 0,
+   "same_as": "thirty.poverty.exprank.cap4.tau25.N",
+   "note": "postrank_cuts(rule = 'optimal') N 303 (postrank 1.1.0)"
+  }
+ }
+}

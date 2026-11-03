@@ -1,0 +1,253 @@
+{
+  "$schema": "./_schema.json",
+  "app": "cde-pair",
+  "catalog": "5.10",
+  "about": "Full S-01 split view. All original substantive checks plus independent R46 complete case projections.",
+  "cases": [
+    {
+      "id": "pair-fi",
+      "preset": "pair-fi",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"stating-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-all-ordered-pair-constraints",
+            "field": "62.risk"
+          },
+          "value": 0.06408688855303728,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "reverse",
+      "preset": "reverse",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"stating-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-all-ordered-pair-constraints",
+            "field": "93.risk"
+          },
+          "value": 0.11226067768361023,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tertiles",
+      "preset": "tertiles",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"stating-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-all-ordered-pair-constraints",
+            "field": "62.risk"
+          },
+          "value": 0.06408688855303728,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "tau45",
+      "preset": "tau45",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"stating-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-choice-tau0.45",
+            "field": "optimum.risk"
+          },
+          "value": 0.14319748054188128,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "preset-pair-fi",
+      "about": "the F-I pair inside grade 2 of the archived grades: probability .9999, the best report stating F above I (the rank-2 report), the three lowest risks and the cap-4 order DP",
+      "preset": "pair-fi",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pair-pi\"]",
+          "source": "registry",
+          "ref": "cde.pair.FI.pi",
+          "value": 0.999896085674573
+        },
+        {
+          "select": "[data-prx-readout=\"stating-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-cde-cap3-tau.20-stating-F-above-I-k2",
+            "field": "risk.0"
+          },
+          "value": 0.0640868885530373,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"stating-matched\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-cde-cap3-tau.20-stating-F-above-I-k2",
+            "field": "matched"
+          },
+          "value": 175099,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"stating-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-cde-cap3-tau.20-stating-F-above-I-k2",
+            "field": "N.0"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-risk-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-cde-cap3-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.0637744657711756,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-risk-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-cde-cap3-tau.20-k3",
+            "field": "risk.1"
+          },
+          "value": 0.0640868885530373,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-risk-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-cde-cap3-tau.20-k3",
+            "field": "risk.2"
+          },
+          "value": 0.0640920717026415,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-N-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-cde-cap3-tau.20-k3",
+            "field": "N.1"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-N\"]",
+          "source": "registry",
+          "ref": "cde.pmorder.cap4.tau20.N",
+          "value": 54
+        },
+        {
+          "select": "[data-prx-readout=\"dp-sizes\"]",
+          "source": "registry",
+          "ref": "cde.pmorder.cap4.tau20.sizes",
+          "value": [
+            3,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"dp-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-cde-pmorder-cap4-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.0368858030674136,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-label=\"optimal-within-order\"]",
+          "source": "literal",
+          "ref": "6.2",
+          "kind": "text",
+          "value": "optimal within this order"
+        }
+      ]
+    }
+  ],
+  "from": "postrank-explorer-v1 verification/readouts/case-cde.json (all ten substantive cases; prediction apparatus removed)"
+}

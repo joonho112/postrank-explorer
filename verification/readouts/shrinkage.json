@@ -1,0 +1,2082 @@
+{
+  "$schema": "./_schema.json",
+  "app": "shrinkage",
+  "catalog": "1.5",
+  "from": "postrank-explorer-v1 verification/readouts/shrinkage.json",
+  "about": "The simulated league with the teaching normal-normal posterior (prior mean 0). The read-out gives the fraction of the way to 0 each size moves and the pairs whose order changes; the rule table gives each size's SE, share kept, fraction moved and posterior SD; the units figure's hidden table gives each unit's estimate, posterior mean, posterior SD and (view 2) true value; the price panel gives this draw against the true values and the closed-form expectations. Ported from v1 with the keys renamed (prior_sd -> priorSd, equal_se -> equalSe: v3 preset keys are plain words), the caption in its v3 wording and the lead scoped to this draw. Posterior means, SDs and shares are rows of the base-R oracle (oracle-simulate); the fractions moved and the counts not in the oracle come from v1's frozen registry; distances, spreads and the count of units that end farther from the registry and oracle-summaries; the closed-form expected squared distance (engine expectedSquaredDistance, new in v3) from oracle-v3. Part 1 review: the expected counts of pairs against the true order print at four significant digits (88.12, 80.69, 87.45; formatExpectedCount, register CR-002), checked against the base-R oracle rows in place of the registry's one-decimal values.",
+  "cases": [
+    {
+      "id": "prior15",
+      "about": "The prediction's setting (deck preset): prior SD .15, the frozen draw, view 1.",
+      "preset": "prior15",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "prior SD in the read-out",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"moved-small\"]",
+          "about": "read-out: fraction of the way to 0, small units",
+          "source": "registry",
+          "ref": "league.prior15.moved.small",
+          "value": 0.64
+        },
+        {
+          "select": "[data-prx-readout=\"moved-medium\"]",
+          "about": "read-out: fraction of the way to 0, medium units",
+          "source": "registry",
+          "ref": "league.prior15.moved.medium",
+          "value": 0.3076923076923077
+        },
+        {
+          "select": "[data-prx-readout=\"moved-large\"]",
+          "about": "read-out: fraction of the way to 0, large units",
+          "source": "registry",
+          "ref": "league.prior15.moved.large",
+          "value": 0.10000000000000009
+        },
+        {
+          "select": "[data-prx-readout=\"reordered\"]",
+          "about": "read-out: pairs whose order changes",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-postmean.15",
+            "field": "count"
+          },
+          "value": 37
+        },
+        {
+          "select": "[data-prx-readout=\"reordered\"]",
+          "about": "the same count in the registry",
+          "source": "registry",
+          "ref": "league.default.prior15.reordered",
+          "value": 37
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "pairs among the thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"crossings\"]",
+          "about": "order panel: crossings",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-postmean.15",
+            "field": "count"
+          },
+          "value": 37
+        },
+        {
+          "select": "[data-prx-readout=\"se-small\"]",
+          "about": "SE of a small unit in the rule table",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.0"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"share-small\"]",
+          "about": "share kept by a small unit (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "shrink.0"
+          },
+          "value": 0.36
+        },
+        {
+          "select": "[data-prx-readout=\"share-small\"]",
+          "about": "share kept by a small unit equals the page's registry value",
+          "source": "registry",
+          "ref": "league.prior15.shrink.small",
+          "value": 0.36
+        },
+        {
+          "select": "[data-prx-readout=\"step-small\"]",
+          "about": "fraction of the way to the prior mean, small units (prior SD .15)",
+          "source": "registry",
+          "ref": "league.prior15.moved.small",
+          "value": 0.64
+        },
+        {
+          "select": "[data-prx-readout=\"postsd-small\"]",
+          "about": "posterior SD of a small unit (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.0"
+          },
+          "value": 0.12
+        },
+        {
+          "select": "[data-prx-readout=\"se-medium\"]",
+          "about": "SE of a medium unit in the rule table",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.1"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"share-medium\"]",
+          "about": "share kept by a medium unit (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "shrink.1"
+          },
+          "value": 0.692307692307692
+        },
+        {
+          "select": "[data-prx-readout=\"share-medium\"]",
+          "about": "share kept by a medium unit equals the page's registry value",
+          "source": "registry",
+          "ref": "league.prior15.shrink.medium",
+          "value": 0.6923076923076923
+        },
+        {
+          "select": "[data-prx-readout=\"step-medium\"]",
+          "about": "fraction of the way to the prior mean, medium units (prior SD .15)",
+          "source": "registry",
+          "ref": "league.prior15.moved.medium",
+          "value": 0.3076923076923077
+        },
+        {
+          "select": "[data-prx-readout=\"postsd-medium\"]",
+          "about": "posterior SD of a medium unit (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.1"
+          },
+          "value": 0.0832050294337844
+        },
+        {
+          "select": "[data-prx-readout=\"se-large\"]",
+          "about": "SE of a large unit in the rule table",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.2"
+          },
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"share-large\"]",
+          "about": "share kept by a large unit (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "shrink.2"
+          },
+          "value": 0.9
+        },
+        {
+          "select": "[data-prx-readout=\"share-large\"]",
+          "about": "share kept by a large unit equals the page's registry value",
+          "source": "registry",
+          "ref": "league.prior15.shrink.large",
+          "value": 0.8999999999999999
+        },
+        {
+          "select": "[data-prx-readout=\"step-large\"]",
+          "about": "fraction of the way to the prior mean, large units (prior SD .15)",
+          "source": "registry",
+          "ref": "league.prior15.moved.large",
+          "value": 0.10000000000000009
+        },
+        {
+          "select": "[data-prx-readout=\"postsd-large\"]",
+          "about": "posterior SD of a large unit (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.2"
+          },
+          "value": 0.0474341649025257
+        },
+        {
+          "select": "[data-prx-readout=\"postsd-small\"]",
+          "about": "posterior SD of a small unit equals the page's registry value",
+          "source": "registry",
+          "ref": "league.prior15.postsd.small",
+          "value": 0.12
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(4)",
+          "about": "U13: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.12"
+          },
+          "value": 0.191004517681948
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(6)",
+          "about": "U13: posterior mean in the units table (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.12"
+          },
+          "value": 0.0687616263655014
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(7)",
+          "about": "U13: posterior SD in the units table (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.12"
+          },
+          "value": 0.12
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(10) > :nth-child(4)",
+          "about": "U28: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.27"
+          },
+          "value": -0.376322556170632
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(10) > :nth-child(6)",
+          "about": "U28: posterior mean in the units table (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.27"
+          },
+          "value": -0.135476120221427
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(10) > :nth-child(7)",
+          "about": "U28: posterior SD in the units table (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.27"
+          },
+          "value": 0.12
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(20) > :nth-child(4)",
+          "about": "U05: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.4"
+          },
+          "value": -0.375548649368271
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(20) > :nth-child(6)",
+          "about": "U05: posterior mean in the units table (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.4"
+          },
+          "value": -0.259995218793419
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(20) > :nth-child(7)",
+          "about": "U05: posterior SD in the units table (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.4"
+          },
+          "value": 0.0832050294337844
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(30) > :nth-child(4)",
+          "about": "U18: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.17"
+          },
+          "value": -0.202848528200127
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(30) > :nth-child(6)",
+          "about": "U18: posterior mean in the units table (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.17"
+          },
+          "value": -0.182563675380114
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(30) > :nth-child(7)",
+          "about": "U18: posterior SD in the units table (prior SD .15)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.17"
+          },
+          "value": 0.0474341649025257
+        },
+        {
+          "select": "[data-prx-readout=\"seed\"]",
+          "about": "seed of the frozen draw in the note",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "prior05",
+      "about": "A narrow prior: prior SD .05.",
+      "preset": "prior05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "prior SD in the read-out",
+          "source": "registry",
+          "ref": "settings.prior05",
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"moved-small\"]",
+          "about": "read-out: fraction of the way to 0, small units",
+          "source": "registry",
+          "ref": "league.prior05.moved.small",
+          "value": 0.9411764705882353
+        },
+        {
+          "select": "[data-prx-readout=\"moved-medium\"]",
+          "about": "read-out: fraction of the way to 0, medium units",
+          "source": "registry",
+          "ref": "league.prior05.moved.medium",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"moved-large\"]",
+          "about": "read-out: fraction of the way to 0, large units",
+          "source": "registry",
+          "ref": "league.prior05.moved.large",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"reordered\"]",
+          "about": "read-out: pairs whose order changes",
+          "source": "registry",
+          "ref": "league.default.prior05.reordered",
+          "value": 71
+        },
+        {
+          "select": "[data-prx-readout=\"se-small\"]",
+          "about": "SE of a small unit in the rule table",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.0"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"share-small\"]",
+          "about": "share kept by a small unit (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "shrink.0"
+          },
+          "value": 0.0588235294117647
+        },
+        {
+          "select": "[data-prx-readout=\"share-small\"]",
+          "about": "share kept by a small unit equals the page's registry value",
+          "source": "registry",
+          "ref": "league.prior05.shrink.small",
+          "value": 0.058823529411764705
+        },
+        {
+          "select": "[data-prx-readout=\"step-small\"]",
+          "about": "fraction of the way to the prior mean, small units (prior SD .05)",
+          "source": "registry",
+          "ref": "league.prior05.moved.small",
+          "value": 0.9411764705882353
+        },
+        {
+          "select": "[data-prx-readout=\"postsd-small\"]",
+          "about": "posterior SD of a small unit (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.0"
+          },
+          "value": 0.0485071250072666
+        },
+        {
+          "select": "[data-prx-readout=\"se-medium\"]",
+          "about": "SE of a medium unit in the rule table",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.1"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"share-medium\"]",
+          "about": "share kept by a medium unit (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "shrink.1"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"share-medium\"]",
+          "about": "share kept by a medium unit equals the page's registry value",
+          "source": "registry",
+          "ref": "league.prior05.shrink.medium",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"step-medium\"]",
+          "about": "fraction of the way to the prior mean, medium units (prior SD .05)",
+          "source": "registry",
+          "ref": "league.prior05.moved.medium",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"postsd-medium\"]",
+          "about": "posterior SD of a medium unit (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.1"
+          },
+          "value": 0.0447213595499958
+        },
+        {
+          "select": "[data-prx-readout=\"se-large\"]",
+          "about": "SE of a large unit in the rule table",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.2"
+          },
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"share-large\"]",
+          "about": "share kept by a large unit (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "shrink.2"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"share-large\"]",
+          "about": "share kept by a large unit equals the page's registry value",
+          "source": "registry",
+          "ref": "league.prior05.shrink.large",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"step-large\"]",
+          "about": "fraction of the way to the prior mean, large units (prior SD .05)",
+          "source": "registry",
+          "ref": "league.prior05.moved.large",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"postsd-large\"]",
+          "about": "posterior SD of a large unit (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.2"
+          },
+          "value": 0.0353553390593274
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(4)",
+          "about": "U13: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.12"
+          },
+          "value": 0.191004517681948
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(6)",
+          "about": "U13: posterior mean in the units table (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.12"
+          },
+          "value": 0.011235559863644
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(7)",
+          "about": "U13: posterior SD in the units table (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.12"
+          },
+          "value": 0.0485071250072666
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(11) > :nth-child(4)",
+          "about": "U26: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.25"
+          },
+          "value": 0.237026192203164
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(11) > :nth-child(6)",
+          "about": "U26: posterior mean in the units table (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.25"
+          },
+          "value": 0.0474052384406329
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(11) > :nth-child(7)",
+          "about": "U26: posterior SD in the units table (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.25"
+          },
+          "value": 0.0447213595499958
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(21) > :nth-child(4)",
+          "about": "U21: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.20"
+          },
+          "value": 0.135804646430934
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(21) > :nth-child(6)",
+          "about": "U21: posterior mean in the units table (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.20"
+          },
+          "value": 0.0679023232154668
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(21) > :nth-child(7)",
+          "about": "U21: posterior SD in the units table (prior SD .05)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.20"
+          },
+          "value": 0.0353553390593274
+        }
+      ]
+    },
+    {
+      "id": "equal-se",
+      "about": "Every SE set to .10, prior SD .15: one share for every unit, so no pair changes order.",
+      "preset": "equal-se",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "prior SD in the read-out",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"equal-se\"]",
+          "about": "the common SE in the read-out",
+          "source": "registry",
+          "ref": "settings.se10",
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"moved-all\"]",
+          "about": "read-out: every unit moves this fraction of the way to 0",
+          "source": "registry",
+          "ref": "league.se10.prior15.moved",
+          "value": 0.3076923076923077
+        },
+        {
+          "select": "[data-prx-readout=\"reordered\"]",
+          "about": "read-out: no pair changes order",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-postmean-equal-se",
+            "field": "count"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reordered\"]",
+          "about": "the same count in the registry",
+          "source": "registry",
+          "ref": "league.default.se10.prior15.reordered",
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"se-all\"]",
+          "about": "the common SE in the rule table",
+          "source": "registry",
+          "ref": "settings.se10",
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"share-all\"]",
+          "about": "the one share every unit keeps",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-equal-se",
+            "field": "shrink.0"
+          },
+          "value": 0.692307692307692
+        },
+        {
+          "select": "[data-prx-readout=\"share-all\"]",
+          "about": "the same share in the registry",
+          "source": "registry",
+          "ref": "league.se10.prior15.shrink",
+          "value": 0.6923076923076923
+        },
+        {
+          "select": "[data-prx-readout=\"step-all\"]",
+          "about": "the one fraction every unit moves",
+          "source": "registry",
+          "ref": "league.se10.prior15.moved",
+          "value": 0.3076923076923077
+        },
+        {
+          "select": "[data-prx-readout=\"postsd-all\"]",
+          "about": "the one posterior SD",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-equal-se",
+            "field": "sd.0"
+          },
+          "value": 0.0832050294337844
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(4)",
+          "about": "U13: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.12"
+          },
+          "value": 0.191004517681948
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(6)",
+          "about": "U13: posterior mean in the units table (every SE .10)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-equal-se",
+            "field": "mean.12"
+          },
+          "value": 0.132233896856733
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(7)",
+          "about": "U13: posterior SD in the units table (every SE .10)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-equal-se",
+            "field": "sd.12"
+          },
+          "value": 0.0832050294337844
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(10) > :nth-child(4)",
+          "about": "U28: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.27"
+          },
+          "value": -0.376322556170632
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(10) > :nth-child(6)",
+          "about": "U28: posterior mean in the units table (every SE .10)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-equal-se",
+            "field": "mean.27"
+          },
+          "value": -0.260531000425822
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(10) > :nth-child(7)",
+          "about": "U28: posterior SD in the units table (every SE .10)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-equal-se",
+            "field": "sd.27"
+          },
+          "value": 0.0832050294337844
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(30) > :nth-child(4)",
+          "about": "U18: estimate in the units table (frozen draw)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.17"
+          },
+          "value": -0.202848528200127
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(30) > :nth-child(6)",
+          "about": "U18: posterior mean in the units table (every SE .10)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-equal-se",
+            "field": "mean.17"
+          },
+          "value": -0.140433596446241
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(30) > :nth-child(7)",
+          "about": "U18: posterior SD in the units table (every SE .10)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-equal-se",
+            "field": "sd.17"
+          },
+          "value": 0.0832050294337844
+        }
+      ]
+    },
+    {
+      "id": "truth",
+      "about": "The view against the true values at prior SD .15 (frozen draw).",
+      "preset": "truth",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "pairs the estimate order puts against the true order",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "the same count in the registry",
+          "source": "registry",
+          "ref": "league.default.raw.misordered",
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"truth-post\"]",
+          "about": "pairs the posterior-mean order puts against the true order",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-postmean.15-vs-theta",
+            "field": "count"
+          },
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"truth-post\"]",
+          "about": "the same count in the registry",
+          "source": "registry",
+          "ref": "league.default.prior15.pm.misordered",
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"expected-est\"]",
+          "about": "expected pairs against the true order, estimates (closed form), four significant digits",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        },
+        {
+          "select": "[data-prx-readout=\"expected-post\"]",
+          "about": "expected pairs against the true order, posterior means (closed form), four significant digits",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-prior.15",
+            "field": "expected"
+          },
+          "value": 80.6889700818873
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(8)",
+          "about": "U13: true value in the units table",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "theta.12"
+          },
+          "value": 0.319206785127748
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(30) > :nth-child(8)",
+          "about": "U18: true value in the units table",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "theta.17"
+          },
+          "value": -0.319206785127748
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(1) > :nth-child(6)",
+          "about": "U13: posterior mean in the units table",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.12"
+          },
+          "value": 0.0687616263655014
+        },
+        {
+          "select": ".prx-shrink-lead",
+          "kind": "text",
+          "about": "the price lead at prior SD .15: closer on average in this draw, some units farther (it follows the table)",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD, in this draw, the posterior means are closer to the true values on average (a smaller average squared distance), but some units end farther from their true value than their estimate was."
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "price table: average squared distance of the estimates to the true values",
+          "source": "registry",
+          "ref": "league.default.raw.msd",
+          "value": 0.01634649840465523
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "price table: average squared distance of the estimates to the true values (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-estimate-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0163464984046552
+        },
+        {
+          "select": "[data-prx-readout=\"spread-est\"]",
+          "about": "price table: spread (SD) of the estimates",
+          "source": "registry",
+          "ref": "league.default.raw.sd",
+          "value": 0.16206975093452108
+        },
+        {
+          "select": "[data-prx-readout=\"spread-est\"]",
+          "about": "price table: spread (SD) of the estimates (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-seed20261030-estimate",
+            "field": "sd"
+          },
+          "value": 0.162069750934521
+        },
+        {
+          "select": "[data-prx-readout=\"spread-truth\"]",
+          "about": "spread (SD) of the true values",
+          "source": "registry",
+          "ref": "league.spec.theta.sd",
+          "value": 0.14937466480710787
+        },
+        {
+          "select": "[data-prx-readout=\"spread-truth\"]",
+          "about": "spread (SD) of the true values (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-theta",
+            "field": "sd"
+          },
+          "value": 0.149374664807108
+        },
+        {
+          "select": "[data-prx-readout=\"mse-post\"]",
+          "about": "price table: average squared distance of the posterior means (prior SD .15)",
+          "source": "registry",
+          "ref": "league.default.prior15.pm.msd",
+          "value": 0.009579415799948237
+        },
+        {
+          "select": "[data-prx-readout=\"mse-post\"]",
+          "about": "price table: average squared distance of the posterior means (prior SD .15) (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-postmean-prior.15-vs-theta",
+            "field": "value"
+          },
+          "value": 0.00957941579994825
+        },
+        {
+          "select": "[data-prx-readout=\"spread-post\"]",
+          "about": "price table: spread (SD) of the posterior means (prior SD .15)",
+          "source": "registry",
+          "ref": "league.default.prior15.pm.sd",
+          "value": 0.09819488199364024
+        },
+        {
+          "select": "[data-prx-readout=\"spread-post\"]",
+          "about": "price table: spread (SD) of the posterior means (prior SD .15) (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-seed20261030-postmean-prior.15",
+            "field": "sd"
+          },
+          "value": 0.0981948819936403
+        },
+        {
+          "select": "[data-prx-readout=\"farther\"]",
+          "about": "units that end farther from their true value (prior SD .15)",
+          "source": "registry",
+          "ref": "league.default.prior15.farther",
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"farther\"]",
+          "about": "units that end farther from their true value (prior SD .15) (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "fartherCount-league-seed20261030-prior.15",
+            "field": "count"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-est\"]",
+          "about": "closed-form expected average squared distance of the estimates (the mean of the squared SEs)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "rawMean"
+          },
+          "value": 0.0175
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-post\"]",
+          "about": "closed-form expected average squared distance of the posterior means at prior SD .15",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.15",
+            "field": "mean"
+          },
+          "value": 0.00753608715104925
+        },
+        {
+          "select": "[data-prx-readout=\"spread-truth\"]",
+          "about": "the true values' spread",
+          "source": "registry",
+          "ref": "league.spec.theta.sd",
+          "value": 0.14937466480710787
+        },
+        {
+          "select": "[data-prx-readout=\"seed\"]",
+          "about": "the seed in the note",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": ".prx-shrink-price-body > p",
+          "index": 2,
+          "kind": "text",
+          "about": "the closed-form sentence: both orders state a direction for every pair, so the counts are a fair comparison",
+          "source": "literal",
+          "ref": "9.4",
+          "slots": true,
+          "value": "Expected over many draws of the estimates, with these true values (closed form): ⟨est⟩ pairs against the true order for the estimates and ⟨post⟩ for the posterior means. Both orders state a direction for all ⟨M⟩ pairs, so the two counts are a fair comparison."
+        }
+      ]
+    },
+    {
+      "id": "narrow-truth",
+      "about": "Raw query: prior SD .05 in the view against the true values (default seed).",
+      "query": "?priorSd=.05&view=2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"expected-post\"]",
+          "about": "expected pairs against the true order at prior SD .05 (closed form), four significant digits",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-prior.05",
+            "field": "expected"
+          },
+          "value": 87.4490940706165
+        },
+        {
+          "select": "[data-prx-readout=\"truth-post\"]",
+          "about": "pairs the posterior-mean order puts against the true order at prior SD .05",
+          "source": "registry",
+          "ref": "league.default.prior05.pm.misordered",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "the estimate order does not depend on the prior",
+          "source": "registry",
+          "ref": "league.default.raw.misordered",
+          "value": 93
+        },
+        {
+          "select": ".prx-shrink-units-chart tbody > tr:nth-child(10) > :nth-child(6)",
+          "about": "U28: posterior mean at prior SD .05",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.27"
+          },
+          "value": -0.0221366209512136
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "price table: average squared distance of the estimates to the true values",
+          "source": "registry",
+          "ref": "league.default.raw.msd",
+          "value": 0.01634649840465523
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "price table: average squared distance of the estimates to the true values (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-estimate-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0163464984046552
+        },
+        {
+          "select": "[data-prx-readout=\"spread-est\"]",
+          "about": "price table: spread (SD) of the estimates",
+          "source": "registry",
+          "ref": "league.default.raw.sd",
+          "value": 0.16206975093452108
+        },
+        {
+          "select": "[data-prx-readout=\"spread-est\"]",
+          "about": "price table: spread (SD) of the estimates (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-seed20261030-estimate",
+            "field": "sd"
+          },
+          "value": 0.162069750934521
+        },
+        {
+          "select": "[data-prx-readout=\"spread-truth\"]",
+          "about": "spread (SD) of the true values",
+          "source": "registry",
+          "ref": "league.spec.theta.sd",
+          "value": 0.14937466480710787
+        },
+        {
+          "select": "[data-prx-readout=\"spread-truth\"]",
+          "about": "spread (SD) of the true values (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-theta",
+            "field": "sd"
+          },
+          "value": 0.149374664807108
+        },
+        {
+          "select": "[data-prx-readout=\"mse-post\"]",
+          "about": "price table: average squared distance of the posterior means (prior SD .05)",
+          "source": "registry",
+          "ref": "league.default.prior05.pm.msd",
+          "value": 0.014820079478793772
+        },
+        {
+          "select": "[data-prx-readout=\"mse-post\"]",
+          "about": "price table: average squared distance of the posterior means (prior SD .05) (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-postmean-prior.05-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0148200794787938
+        },
+        {
+          "select": "[data-prx-readout=\"spread-post\"]",
+          "about": "price table: spread (SD) of the posterior means (prior SD .05)",
+          "source": "registry",
+          "ref": "league.default.prior05.pm.sd",
+          "value": 0.03660160971044347
+        },
+        {
+          "select": "[data-prx-readout=\"spread-post\"]",
+          "about": "price table: spread (SD) of the posterior means (prior SD .05) (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-seed20261030-postmean-prior.05",
+            "field": "sd"
+          },
+          "value": 0.0366016097104434
+        },
+        {
+          "select": "[data-prx-readout=\"farther\"]",
+          "about": "units that end farther from their true value (prior SD .05)",
+          "source": "registry",
+          "ref": "league.default.prior05.farther",
+          "value": 17
+        },
+        {
+          "select": "[data-prx-readout=\"farther\"]",
+          "about": "units that end farther from their true value (prior SD .05) (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "fartherCount-league-seed20261030-prior.05",
+            "field": "count"
+          },
+          "value": 17
+        }
+      ]
+    },
+    {
+      "id": "too-narrow-truth",
+      "about": "Raw query: prior SD .02 in view 2, where the lead calls the prior too narrow (the draw and the closed form agree).",
+      "query": "?priorSd=.02&view=2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "pairs the estimate order puts against the true order (the same at every prior SD)",
+          "source": "registry",
+          "ref": "league.default.raw.misordered",
+          "value": 93
+        },
+        {
+          "select": ".prx-shrink-lead",
+          "kind": "text",
+          "about": "the price lead when the posterior means have the larger average squared distance in this draw and in the closed form (prior SD .02: .0197 against .0163; .0191 against .0175)",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD the prior is too narrow for these true values: the posterior means are farther from the true values on average than the estimates (a larger average squared distance), in this draw and over many draws."
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "price table: average squared distance of the estimates to the true values",
+          "source": "registry",
+          "ref": "league.default.raw.msd",
+          "value": 0.01634649840465523
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "price table: average squared distance of the estimates to the true values (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "meanSquaredDistance-league-seed20261030-estimate-vs-theta",
+            "field": "value"
+          },
+          "value": 0.0163464984046552
+        },
+        {
+          "select": "[data-prx-readout=\"spread-est\"]",
+          "about": "price table: spread (SD) of the estimates",
+          "source": "registry",
+          "ref": "league.default.raw.sd",
+          "value": 0.16206975093452108
+        },
+        {
+          "select": "[data-prx-readout=\"spread-est\"]",
+          "about": "price table: spread (SD) of the estimates (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-seed20261030-estimate",
+            "field": "sd"
+          },
+          "value": 0.162069750934521
+        },
+        {
+          "select": "[data-prx-readout=\"spread-truth\"]",
+          "about": "spread (SD) of the true values",
+          "source": "registry",
+          "ref": "league.spec.theta.sd",
+          "value": 0.14937466480710787
+        },
+        {
+          "select": "[data-prx-readout=\"spread-truth\"]",
+          "about": "spread (SD) of the true values (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-theta",
+            "field": "sd"
+          },
+          "value": 0.149374664807108
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-post\"]",
+          "about": "closed-form expected average squared distance of the posterior means at prior SD .02, above the estimates'",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.02",
+            "field": "mean"
+          },
+          "value": 0.0191488806161152
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-est\"]",
+          "about": "closed-form expected average squared distance of the estimates",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.02",
+            "field": "rawMean"
+          },
+          "value": 0.0175
+        }
+      ]
+    },
+    {
+      "id": "equal-truth",
+      "about": "Raw query: Equal SEs (written on) in the view against the true values; the view compares no distances and says why.",
+      "query": "?equalSe=on&view=2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "both orders put the same number of pairs against the true order",
+          "source": "registry",
+          "ref": "league.default.se10.prior15.pm.misordered",
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "which is the estimate order's count",
+          "source": "registry",
+          "ref": "league.default.raw.misordered",
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"reordered\"]",
+          "about": "read-out: no pair changes order",
+          "source": "registry",
+          "ref": "league.default.se10.prior15.reordered",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "update-prior05",
+      "about": "Mounted at the defaults, then update({ priorSd: .05 }) as a host or a preset link does.",
+      "query": "",
+      "update": [
+        {
+          "priorSd": 0.05
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "prior SD after the update",
+          "source": "registry",
+          "ref": "settings.prior05",
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"moved-small\"]",
+          "about": "read-out after the update",
+          "source": "registry",
+          "ref": "league.prior05.moved.small",
+          "value": 0.9411764705882353
+        },
+        {
+          "select": "[data-prx-readout=\"reordered\"]",
+          "about": "pairs whose order changes after the update",
+          "source": "registry",
+          "ref": "league.default.prior05.reordered",
+          "value": 71
+        }
+      ]
+    },
+    {
+      "id": "clamped",
+      "about": "Raw query: a prior SD above the slider is clamped to its end.",
+      "query": "?priorSd=9",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "the read-out shows the clamped prior SD",
+          "source": "registry",
+          "ref": "settings.prior60",
+          "value": 0.6
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "pairs among the thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        }
+      ]
+    },
+    {
+      "id": "too-narrow",
+      "about": "The fifth preset (new in v3): prior SD .02 against the true values, the setting of the page's last What to try bullet.",
+      "preset": "too-narrow",
+      "expect": [
+        {
+          "select": ".prx-shrink-lead",
+          "kind": "text",
+          "about": "the too-narrow lead",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD the prior is too narrow for these true values: the posterior means are farther from the true values on average than the estimates (a larger average squared distance), in this draw and over many draws."
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "the estimates' average squared distance",
+          "source": "registry",
+          "ref": "league.default.raw.msd",
+          "value": 0.01634649840465523
+        },
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "pairs against the true order for the estimates",
+          "source": "registry",
+          "ref": "league.default.raw.misordered",
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"expected-est\"]",
+          "about": "closed-form expected pairs against the true order for the estimates (no prior) (base-R oracle), four significant digits",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-post\"]",
+          "about": "closed-form expected average squared distance at prior SD .02",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.02",
+            "field": "mean"
+          },
+          "value": 0.0191488806161152
+        },
+        {
+          "select": "[data-prx-readout=\"expected-mse-est\"]",
+          "about": "closed-form expected average squared distance of the estimates",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "expectedSquaredDistance-league-prior.02",
+            "field": "rawMean"
+          },
+          "value": 0.0175
+        }
+      ]
+    },
+    {
+      "id": "draw-farther",
+      "about": "Raw query: prior SD .04 in view 2. In this draw the posterior means are farther from the true values on average (.0164 against .0163), while the closed form puts them closer (.0150 against .0175): the lead says so and does not call the prior too narrow.",
+      "query": "?priorSd=.04&view=2",
+      "expect": [
+        {
+          "select": ".prx-shrink-lead",
+          "kind": "text",
+          "about": "the lead when only this draw puts the posterior means farther",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD, in this draw, the posterior means are farther from the true values on average than the estimates (a larger average squared distance), although over many draws they would be closer."
+        },
+        {
+          "select": "[data-prx-readout=\"mse-est\"]",
+          "about": "the estimates' average squared distance",
+          "source": "registry",
+          "ref": "league.default.raw.msd",
+          "value": 0.01634649840465523
+        }
+      ]
+    },
+    {
+      "id": "other-seed",
+      "about": "Raw query: another seed redraws the league with drawLeague(seed); the crossings and the seed note follow it.",
+      "query": "?seed=20261031",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"reordered\"]",
+          "about": "pairs whose order changes in the draw of seed 20261031 (prior SD .15)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261031-estimate-vs-postmean.15",
+            "field": "count"
+          },
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"crossings\"]",
+          "about": "the same count in the order panel",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261031-estimate-vs-postmean.15",
+            "field": "count"
+          },
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"seed\"]",
+          "about": "the seed in the note",
+          "source": "registry",
+          "ref": "settings.seed.replay01",
+          "value": 20261031
+        }
+      ]
+    },
+    {
+      "id": "equal-words",
+      "about": "Raw query: equalSe takes the on/off words (here yes) on the site page and on the standalone page alike.",
+      "query": "?equalSe=yes",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"equal-se\"]",
+          "about": "the read-out names the common SE",
+          "source": "registry",
+          "ref": "settings.se10",
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"moved-all\"]",
+          "about": "every unit moves the same fraction",
+          "source": "registry",
+          "ref": "league.se10.prior15.moved",
+          "value": 0.3076923076923077
+        },
+        {
+          "select": "[data-prx-readout=\"reordered\"]",
+          "about": "no pair changes order",
+          "source": "registry",
+          "ref": "league.default.se10.prior15.reordered",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "view-clamped",
+      "about": "Raw query: view=3 is clamped to view 2, the view against the true values.",
+      "query": "?view=3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"truth-est\"]",
+          "about": "the price panel of view 2 is shown",
+          "source": "registry",
+          "ref": "league.default.raw.misordered",
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"farther\"]",
+          "about": "units that end farther",
+          "source": "registry",
+          "ref": "league.default.prior15.farther",
+          "value": 14
+        }
+      ]
+    }
+  ]
+}

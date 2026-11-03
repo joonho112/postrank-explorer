@@ -1,0 +1,80 @@
+{
+  "id": "3.2",
+  "name": "tier-sizes",
+  "part": "3",
+  "title": "Tier sizes fix disclosure",
+  "idea": "Tier sizes alone set how many pairs a rule states, whatever the estimates (when no two are equal); for a given number of tiers, balanced sizes state the most.",
+  "status": "built",
+  "from": "new angle · v1 R-01's formula panel and its 1/1/28 counterexample; adds editable tier sizes, the N of every size pattern at one G and the closed form when G divides n",
+  "data": [
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 9, 16 and 17.",
+  "math": true,
+  "caption": "Ordered positive tier-size patterns, each with equal weight; no posterior errors are inferred from disclosure counts. Quantile ties are kept together by the package.",
+  "presets": [
+    {
+      "id": "balanced30",
+      "label": "Balanced thirty",
+      "query": "n=30&G=3&sizes=10,10,10"
+    },
+    {
+      "id": "tiny",
+      "label": "Two tiny tiers",
+      "query": "n=30&G=3&sizes=1,1,28"
+    },
+    {
+      "id": "four",
+      "label": "Four tiers",
+      "query": "n=30&G=4&sizes=8,7,8,7"
+    },
+    {
+      "id": "balanced12",
+      "label": "Balanced twelve",
+      "query": "n=12&G=3&sizes=4,4,4"
+    },
+    {
+      "id": "unequal12",
+      "label": "Unbalanced twelve",
+      "query": "n=12&G=3&sizes=5,4,3"
+    }
+  ],
+  "try": [
+    {
+      "preset": "balanced30",
+      "shows": [
+        "300",
+        "435",
+        ".690"
+      ]
+    },
+    {
+      "preset": "tiny",
+      "shows": [
+        "57",
+        "300"
+      ]
+    },
+    {
+      "preset": "four",
+      "shows": [
+        "337",
+        ".775"
+      ]
+    },
+    {
+      "preset": "balanced12",
+      "shows": [
+        "48",
+        "66"
+      ]
+    },
+    {
+      "preset": "unequal12",
+      "shows": [
+        "47",
+        "48"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "id": "5.1",
+  "name": "lambda-tau",
+  "part": "5",
+  "title": "KRW's λ and postrank's τ",
+  "idea": "KRW's reward λ for a correct direction and postrank's withholding cost τ = λ/(1 + λ) pick the same reports under the same posterior and the same family, when true values cannot be equal.",
+  "status": "built",
+  "from": "v1 view · v1 G-09 krw-bridge, the λ-τ view",
+  "data": [
+    "engine",
+    "data/released/six-sites.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), section II and slides 18–21, 24–26 and 29–30; correspondence after the postrank theory book, ch. 10.",
+  "caption": "Six fictional sites: a posterior set by hand for teaching; postrank does not fit it.",
+  "presets": [
+    {
+      "id": "lambda25",
+      "label": "λ .25 (KRW's card)",
+      "query": "lambda=.25&tau=auto"
+    },
+    {
+      "id": "lambda08",
+      "label": "λ .08",
+      "query": "lambda=.08&tau=auto"
+    },
+    {
+      "id": "lambda10",
+      "label": "λ .10",
+      "query": "lambda=.10&tau=auto"
+    },
+    {
+      "id": "lambda50",
+      "label": "λ .50",
+      "query": "lambda=.50&tau=auto"
+    },
+    {
+      "id": "lambda1",
+      "label": "λ 1",
+      "query": "lambda=1&tau=auto"
+    },
+    {
+      "id": "tau40",
+      "label": "τ .40",
+      "query": "lambda=auto&tau=.40"
+    }
+  ],
+  "try": [
+    {
+      "preset": "lambda10",
+      "shows": [
+        "1/11",
+        "10/11",
+        "{A, B} > {C, D} > {E, F}"
+      ]
+    },
+    {
+      "preset": "lambda25",
+      "shows": [
+        ".20",
+        ".80",
+        "{A} > {B} > {C, D} > {E} > {F}"
+      ]
+    },
+    {
+      "preset": "lambda50",
+      "shows": [
+        "1/3",
+        "2/3"
+      ]
+    },
+    {
+      "preset": "lambda1",
+      "shows": [
+        ".50",
+        "{A} > {B} > {C} > {D} > {E} > {F}"
+      ]
+    },
+    {
+      "preset": "tau40",
+      "shows": [
+        "2/3",
+        ".40"
+      ]
+    },
+    {
+      "preset": "lambda08",
+      "shows": [
+        ".0741"
+      ]
+    }
+  ],
+  "math": true
+}

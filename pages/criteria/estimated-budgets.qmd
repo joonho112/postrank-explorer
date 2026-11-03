@@ -1,0 +1,52 @@
+---
+title: "Error budgets under estimated pairwise probabilities"
+subtitle: "4.14 · after the postrank theory book, ch. 15"
+description: "Inner and outer feasible families under bounds on Monte Carlo coefficient error."
+---
+
+A report can satisfy an error budget on estimated pairwise probabilities and violate it under the stipulated exact
+law. The budget concerns the expected wrong share among stated pairs. Given a proposed uniform bound on probability
+error, tighter and looser estimated thresholds define inner and outer feasible families. The display checks the
+coefficient bound and the resulting inclusions separately, alongside an advisory numerical tolerance. A fixed-size
+independent-draw illustration distinguishes a probabilistic numerical error guarantee from the deterministic
+membership calculations. Neither calculation establishes calibration of the supplied posterior model.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/estimated-budgets.js"></script>
+<script>window.__prxApp = PRX["estimated-budgets"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Estimated pass.** For A above B, the estimated wrong share is .200 and the exact supplied-law share is .300.
+  The budget is .25. Its estimated row passes while its exact row fails; the inner threshold .15 and outer
+  threshold .35 remain separate on the number line.
+- **Negative inner.** The signed inner threshold is −.05, even though the estimated wrong share is 0. Replacing
+  this threshold with zero would wrongly admit A above B. The all-withheld report still passes the count-form
+  tests, with no defined wrong share.
+- **Exactly two.** Requiring two grades removes all-withheld. The inner family has 0 reports; the exact family
+  also happens to be empty here. Their separate counters matter: an empty inner family alone would not establish
+  exact infeasibility.
+- **Radius too small.** The proposed radius is reduced to .05 with the exact law unchanged.
+  The coefficient checks read “no,” and an inner member fails the exact budget. The app displays the actual
+  inclusion counterexample rather than assuming the bracket.
+- **Raw comparisons.** With advisory tolerance removed, its coefficient check reads “no.” At the default radius,
+  the tiny raw excess explains why the strict check fails while the tolerant comparison passes. The actual
+  inclusions are separate tests, not consequences of accepting a soft tolerance.
+- **Fixed-S IID.** The separate illustration uses 1,000 whole-state draws from the six-site independent normal
+  law, reusing the Monte Carlo producer and bound. Score B has error weight 0 but remains protected by its .03
+  budget. Requiring exactly two grades gives an empty inner family while the exact family remains nonempty.
+
+::: {.callout-note appearance="simple"}
+“Exact” means the stipulated supplied law. The main two-unit example declares coefficients deterministically and
+makes no sampling-probability claim. In the IID illustration, the fixed-size simultaneous coefficient event has
+probability at least one minus α across repeated numerical samples from the same law. This concerns numerical
+approximation, not model calibration or a posterior probability of compliance. Signed thresholds are never clipped.
+:::
+
+Standalone: [Error budgets under estimated pairwise probabilities](../../embed/estimated-budgets.html).
+
+Related applications: [Criterion-specific expected-error budgets](error-budgets.qmd) · [Monte Carlo error in pairwise probabilities](../uncertainty/mc-error.qmd).

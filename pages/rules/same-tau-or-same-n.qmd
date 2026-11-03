@@ -1,0 +1,56 @@
+---
+title: "Common withholding cost and matched disclosure"
+subtitle: "3.8 · after the postrank theory book, ch. 16–17"
+description: "Risk comparisons at a common cost and error comparisons at a common disclosure level."
+---
+
+Two comparisons use different constraints. At a common withholding cost, posterior risk combines expected errors
+with the cost of the pairs left unstated. At matched disclosure, the frontier comparison holds the number of stated
+pairs fixed and compares expected wrong counts. The display evaluates the same rules under both criteria, using one
+posterior and a specified report family. This makes the source of each risk or error difference explicit. For the
+thirty-unit example, the boundary is restricted to contiguous cuts of one order.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/same-tau-or-same-n.js"></script>
+<script>window.__prxApp = PRX["same-tau-or-same-n"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Same τ, .20.** Posterior-mean tiers state 21 pairs with risk .1612, while the best report states 17 with risk
+  .1455. These reports disclose different amounts. The solid and dashed lines have the same slope; a lower line
+  has lower risk at this τ.
+- **Same N, eight units.** The tiers' gap is .1634 at N 21. The diamond is a frontier mixture, while the square
+  marks the best single report at that N. The table now compares wrong counts at each rule's own disclosure.
+- **Thirty units, one order.** The capped family has 436 reports. Posterior-mean tiers state 300 pairs with E 48.31.
+  The boundary is optimal within this order; other orders are not searched.
+- **Thirty units, same τ.** Without the cap, the family contains 536,870,912 contiguous cuts of the posterior-mean order. There is no enumerated cloud here. Both comparison modes use the same units.
+- **Flags outside the order.** The flag report is outside this family: it still has an evaluated risk, but no matched-disclosure
+  benchmark in this order family. The hollow mark records this restriction.
+- **All-withheld.** N is 0 and the risk at τ .20 is .2000. Its fraction of stated pairs that are wrong is undefined.
+
+::: {.callout-note appearance="simple"}
+All rules share a supplied normal teaching posterior. Flags use the mean of all thirty estimates as their reference.
+On thirty units the boundary is the hull of contiguous cuts in one declared order, not the unrestricted H(m).
+Changing τ changes the loss; changing the family changes the benchmark. Risks across those settings answer
+different questions. No reporting-risk comparison establishes a rule's value for allocation or classification.
+:::
+
+::: {.callout-note collapse="true" title="In postrank"}
+
+The package's synthetic `pr_example_gaussian` poverty example uses its own thirty sites. At τ .25 with at most four
+grades, this prints quantile cuts with N 337 and risk .1758, versus optimal cuts with N 303 and risk .1603. The risks correspond to different N; H(m) is not a package output.
+
+```r
+w <- c(poverty=1, frl=0, snap=0); s <- postrank_settings(weights=w, tau=.25, G_max=4L); sc <- pr_example_gaussian$means[, "poverty"]
+sapply(c("quantile", "optimal"), function(r) unlist(postrank_cuts(sc, pr_example_gaussian, s, direction="descending", rule=r)$evaluation[c("N", "primary_risk")]))
+```
+
+:::
+
+Standalone: [open this app](../../embed/same-tau-or-same-n.html), for example `?preset=thirty&theme=dark`.
+
+Related applications: [Comparison at matched disclosure](rule-comparison.html) · [The error–disclosure frontier](../grades/frontier.html).

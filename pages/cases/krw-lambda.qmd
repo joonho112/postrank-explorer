@@ -1,0 +1,49 @@
+---
+title: "KRW's archived reward path"
+subtitle: "5.5 · after Kline, Rose and Walters (2024), Figures 5A, 6 and 7"
+description: "Disclosure and expected errors of archived cards across the λ grid."
+---
+
+KRW's reward parameter λ changes the relative value of correct and incorrect directions. The archived grid contains
+a card at each hundredth from zero to one. Larger rewards generally correspond to greater disclosure, although
+individual archived changes need not be monotone. Each fixed card is evaluated using the released pair probabilities.
+The displays record grade counts, stated pairs, error rates and changes relative to the preceding grid row. The
+archived selection probabilities and solver tolerances remain relevant when interpreting deviations from properties
+of an exact optimal path under a single law.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/krw-lambda.js"></script>
+<script>window.__prxApp = PRX["krw-lambda"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **λ .25: published race card.** The baseline card states 1,324 pairs, with E/N .136. Grade counts use a logarithmic scale; DR divides expected errors by every possible pair, separately from the disclosure share.
+- **λ .08: first race split.** Genuine Parts stands alone above the other 96 firms. Its standard error is
+  smaller than AutoNation’s, despite AutoNation’s larger estimate. Risk .07406 is just below its own all-withheld
+  reference; the comparison needs the extra decimal.
+- **λ .01: one grade.** The first positive λ states no direction. E/N is undefined. The complete table
+  also retains the archived λ-zero endpoint, where postrank risk is unavailable rather than assigned a value.
+- **λ .30: statements and silence.** Against the preceding grid row, 830 pairs become stated and 92 become
+  withheld. This comparison always uses neighbouring grid rows, irrespective of your previous slider position.
+- **λ .98: disclosure dip.** Between λ .97 and .98, disclosure falls from 4,620 to 4,614. More reward does not
+  justify a claim that every archived step discloses more.
+- **λ 1: end of grid.** DR and E/N coincide at .268 because every pair is stated. The complete Purples matrix uses a different scale: it shades stated errors, unlike the Blues direction probabilities in the heat-map app.
+
+::: {.callout-note appearance="simple"}
+Grid cards were computed with KRW’s code under archived probabilities and solver tolerances. Their evaluations
+here use the released postrank probabilities and supply no new optimality certificate. Race’s baseline card is
+Figure 7; gender is Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.
+
+Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC
+as stated by the deposit, noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted.
+Provided as is, without warranty; no endorsement is implied. **These historical data do not describe any firm’s
+current conduct.**
+:::
+
+Standalone: [krw-lambda](../../embed/krw-lambda.html).
+
+Related applications: [Error rates under two denominators](../grades/two-denominators.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).

@@ -1,0 +1,72 @@
+{
+  "id": "3.4",
+  "name": "flags-in-the-league",
+  "part": "3",
+  "title": "Flags in a league",
+  "idea": "In a league, a flag rule can state directions that run against the order of the estimates.",
+  "status": "built",
+  "from": "v1 view · v1 R-02 evidence-flags, the league view",
+  "data": [
+    "engine"
+  ],
+  "credit": "Built for this site; flag rule after the postrank theory book, ch. 2 and 17.",
+  "presets": [
+    {
+      "id": "league-196",
+      "label": "League, cutoff 1.96",
+      "query": "crit=1.96&prior=teaching&tau=.20"
+    },
+    {
+      "id": "league-flat",
+      "label": "Same flags, flat prior",
+      "query": "crit=1.96&prior=flat&tau=.20"
+    },
+    {
+      "id": "league-2576",
+      "label": "League, cutoff 2.576",
+      "query": "crit=2.576&prior=teaching&tau=.20"
+    },
+    {
+      "id": "league-tau10",
+      "label": "Same report, τ .10",
+      "query": "crit=1.96&prior=teaching&tau=.10"
+    }
+  ],
+  "caption": "Thirty simulated units; the mean of their estimates is treated as a fixed reference; independent normal posteriors price the flag report.",
+  "try": [
+    {
+      "preset": "league-196",
+      "shows": [
+        "6",
+        "22",
+        "2",
+        "188",
+        "435",
+        ".130",
+        ".1696",
+        "20",
+        ".649"
+      ]
+    },
+    {
+      "preset": "league-flat",
+      "shows": [
+        "188"
+      ]
+    },
+    {
+      "preset": "league-2576",
+      "shows": [
+        "2.576"
+      ]
+    },
+    {
+      "preset": "league-tau10",
+      "shows": [
+        ".10",
+        "188"
+      ]
+    }
+  ],
+  "math": true
+}

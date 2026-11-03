@@ -1,0 +1,85 @@
+{
+  "id": "2.12",
+  "name": "families",
+  "part": "2",
+  "title": "Families of reports",
+  "idea": "An optimum is always the best within a stated family of reports: all reports, at most G grades, exactly G grades, or cuts of one order.",
+  "status": "built",
+  "from": "v1 whole \u00b7 v1 G-08 families",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "credit": "Built on postrank's families (Kline, Rose and Walters (2024), slides 21, 24 and 57, use no cap); four-unit example after the postrank theory book, ch. 14.",
+  "caption": "Six fictional sites from the postrank tutorial, or the theory book's four-unit two-criterion law; the declared family determines the search.",
+  "presets": [
+    {
+      "id": "exact6",
+      "label": "Exactly six",
+      "query": "example=six&family=exact&G=6&tau=.20&order=A,B,C,D,E,F"
+    },
+    {
+      "id": "atmost3",
+      "label": "At most three",
+      "query": "example=six&family=atmost&G=3&tau=.20&order=A,B,C,D,E,F"
+    },
+    {
+      "id": "order-bacdef",
+      "label": "B before A",
+      "query": "example=six&family=order&G=6&tau=.20&order=B,A,C,D,E,F"
+    },
+    {
+      "id": "tb14",
+      "label": "Two criteria",
+      "query": "example=tb14&family=exact&G=4&tau=.25&order=A,B,C,D"
+    },
+    {
+      "id": "dominance",
+      "label": "A dominating set",
+      "query": "example=dominance&family=atmost&G=2&tau=.4444444444444444&order=A,B,X,Y"
+    }
+  ],
+  "try": [
+    {
+      "preset": "exact6",
+      "shows": [
+        "720",
+        ".0480",
+        ".0372"
+      ]
+    },
+    {
+      "preset": "atmost3",
+      "shows": [
+        "603",
+        "540",
+        ".0417"
+      ]
+    },
+    {
+      "preset": "order-bacdef",
+      "shows": [
+        "32",
+        ".0379",
+        ".0372"
+      ]
+    },
+    {
+      "preset": "tb14",
+      "shows": [
+        "24",
+        "75",
+        "8",
+        "7/40"
+      ]
+    },
+    {
+      "preset": "dominance",
+      "shows": [
+        "4/9",
+        "17/54",
+        "4/15"
+      ]
+    }
+  ]
+}

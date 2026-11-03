@@ -1,0 +1,68 @@
+{
+  "id": "2.2",
+  "name": "report-builder",
+  "part": "2",
+  "title": "A report is many pair decisions",
+  "idea": "Moving units between grade boxes states every pair across grades and withholds every pair inside a grade.",
+  "status": "built",
+  "from": "v1 whole \u00b7 v1 G-02 report-builder",
+  "data": [
+    "data/released/six-sites.json"
+  ],
+  "credit": "Block reading after Kline, Rose and Walters (2024), slide 56.",
+  "caption": "Six fictional sites from the postrank tutorial, score A: a higher score means a higher priority. A report here is only a grade vector; no probability enters here.",
+  "presets": [
+    {
+      "id": "one-four-one",
+      "label": "A, then B to E, then F",
+      "query": "units=6&grades=1,2,2,2,2,3"
+    },
+    {
+      "id": "pairs",
+      "label": "Three grades of two sites",
+      "query": "units=6&grades=1,1,2,2,3,3"
+    },
+    {
+      "id": "four-units",
+      "label": "Four sites: 1/2/2/2",
+      "query": "units=4&grades=1,2,2,2"
+    },
+    {
+      "id": "scattered",
+      "label": "Beyond letter order",
+      "query": "units=6&grades=3,1,2,1,3,2"
+    }
+  ],
+  "try": [
+    {
+      "preset": "one-four-one",
+      "shows": [
+        "9 of the 15 pairs",
+        "6",
+        ".600"
+      ]
+    },
+    {
+      "preset": "pairs",
+      "shows": [
+        "12 of the 15 pairs",
+        "3",
+        ".800"
+      ]
+    },
+    {
+      "preset": "four-units",
+      "shows": [
+        "3 of the 6 pairs",
+        ".500"
+      ]
+    },
+    {
+      "preset": "scattered",
+      "shows": [
+        "{B, D} > {C, F} > {A, E}",
+        "12 of the 15 pairs"
+      ]
+    }
+  ]
+}

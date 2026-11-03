@@ -1,0 +1,965 @@
+{
+  "$schema": "./_schema.json",
+  "app": "coherence",
+  "catalog": "2.6",
+  "from": "postrank-explorer-v1/verification/readouts/coherence.json",
+  "about": "Full G-04 regression cases split by view; teaching prediction cases removed. Original registry and independent oracle expectations retained. KRW labels A/B/C follow approved CR-177.",
+  "cases": [
+    {
+      "id": "question-setting",
+      "about": "the widget defaults, the question's setting: omega_2 = 1, tau = .20",
+      "query": "",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi12\"]",
+          "about": "pi_12 at omega_2 = 1",
+          "source": "registry",
+          "ref": "krwex1.omega2_1.tau20.pi12",
+          "value": 0.7602499389065233
+        },
+        {
+          "select": "[data-prx-readout=\"pi23\"]",
+          "about": "pi_23 at omega_2 = 1",
+          "source": "registry",
+          "ref": "krwex1.omega2_1.tau20.pi23",
+          "value": 0.7602499389065233
+        },
+        {
+          "select": "[data-prx-readout=\"pi13\"]",
+          "about": "pi_13 = Phi(sqrt 2), fixed",
+          "source": "registry",
+          "ref": "krwex1.omega2_1.tau20.pi13",
+          "value": 0.9213503964748574
+        },
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "cost per pair of the pairwise choices (not a report)",
+          "source": "registry",
+          "ref": "krwex1.omega2_1.tau20.relaxed",
+          "value": 0.1595498678417142
+        },
+        {
+          "select": "[data-prx-readout=\"optRisk\"]",
+          "about": "risk of the exact optimum within A_3",
+          "source": "registry",
+          "ref": "krwex1.omega2_1.tau20.optrisk",
+          "value": 0.17279988820620643
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "first optimum, 1/1/2",
+          "source": "registry",
+          "ref": "g04.krw.omega1.tau20.grade0",
+          "value": [
+            1,
+            1,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"optimum1\"]",
+          "about": "second optimum, 1/2/2",
+          "source": "registry",
+          "ref": "g04.krw.omega1.tau20.grade1",
+          "value": [
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"tieCount\"]",
+          "about": "two reports share the smallest risk",
+          "source": "registry",
+          "ref": "g04.krw.omega1.tau20.ties",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"over0.0\"]",
+          "about": "1/1/2 states firm 2 above firm 3 with error above tau",
+          "source": "registry",
+          "ref": "g04.krw.omega1.tau20.r112.over",
+          "value": 0.23975006109347674
+        },
+        {
+          "select": "[data-prx-readout=\"over1.0\"]",
+          "about": "1/2/2 states firm 1 above firm 2 with error above tau",
+          "source": "registry",
+          "ref": "g04.krw.omega1.tau20.r122.over",
+          "value": 0.23975006109347674
+        },
+        {
+          "select": "[data-prx-readout=\"bandLower\"]",
+          "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .20",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.2",
+            "field": "lower"
+          },
+          "value": 0.80976783710001
+        },
+        {
+          "select": "[data-prx-readout=\"bandUpper\"]",
+          "about": "upper end of the band, tau .20",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.2",
+            "field": "upper"
+          },
+          "value": 1.19023216289999
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "size of the family of all reports on three units, shown with the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "familySize"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, the family by its symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2083"
+        },
+        {
+          "select": "[data-prx-readout=\"pi12\"]",
+          "about": "pi_12 (base-R pairDirection)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-krwex1-omega1-pi12",
+            "field": "pi"
+          },
+          "value": 0.760249938906523
+        },
+        {
+          "select": "[data-prx-readout=\"pi23\"]",
+          "about": "pi_23 (base-R pairDirection)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-krwex1-omega1-pi23",
+            "field": "pi"
+          },
+          "value": 0.760249938906523
+        },
+        {
+          "select": "[data-prx-readout=\"pi13\"]",
+          "about": "pi_13 (base-R pairDirection)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-krwex1-pi13",
+            "field": "pi"
+          },
+          "value": 0.921350396474857
+        },
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "cost of the pairwise choices (base-R relaxedPairRisk)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "relaxedPairRisk-krwex1-omega1-tau.2",
+            "field": "risk"
+          },
+          "value": 0.159549867841714
+        },
+        {
+          "select": "[data-prx-readout=\"optRisk\"]",
+          "about": "risk of the best report (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega1-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.172799888206207
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "best report 1 (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega1-all-tau.20",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            1,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"optimum1\"]",
+          "about": "best report 2 (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega1-all-tau.20",
+            "field": "grades.1"
+          },
+          "value": [
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"over0.0\"]",
+          "about": "the stated pair of 1/1/2 above tau (base-R statedAbove)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "statedAbove-krwex1-omega1-tau.2-r112",
+            "field": "max"
+          },
+          "value": 0.239750061093477
+        },
+        {
+          "select": "[data-prx-readout=\"over1.0\"]",
+          "about": "the stated pair of 1/2/2 above tau (base-R statedAbove)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "statedAbove-krwex1-omega1-tau.2-r122",
+            "field": "max"
+          },
+          "value": 0.239750061093477
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size (base-R exactOptimum of this example)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega1-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 13
+        }
+      ]
+    },
+    {
+      "id": "preset-krw-omega80",
+      "about": "deck preset: omega_2 = .80, just below the band; the pairwise choices print as 1/2/2",
+      "preset": "omega80",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi12\"]",
+          "about": "pi_12 just above .80",
+          "source": "registry",
+          "ref": "g04.krw.omega80.pi12",
+          "value": 0.8019280454239629
+        },
+        {
+          "select": "[data-prx-readout=\"pi23\"]",
+          "about": "pi_23 below .80",
+          "source": "registry",
+          "ref": "g04.krw.omega80.pi23",
+          "value": 0.7141961775233342
+        },
+        {
+          "select": "[data-prx-readout=\"pi13\"]",
+          "about": "pi_13 does not depend on omega_2",
+          "source": "registry",
+          "ref": "krwex1.omega2_1.tau20.pi13",
+          "value": 0.9213503964748574
+        },
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "cost of the pairwise choices",
+          "source": "registry",
+          "ref": "g04.krw.omega80.tau20.relaxed",
+          "value": 0.15890718603372656
+        },
+        {
+          "select": "[data-prx-readout=\"optRisk\"]",
+          "about": "risk of the optimum, equal to the cost of the choices",
+          "source": "registry",
+          "ref": "g04.krw.omega80.tau20.optrisk",
+          "value": 0.15890718603372656
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "the one optimum, 1/2/2",
+          "source": "registry",
+          "ref": "g04.krw.omega80.tau20.grade",
+          "value": [
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"bandLower\"]",
+          "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .20",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.2",
+            "field": "lower"
+          },
+          "value": 0.80976783710001
+        },
+        {
+          "select": "[data-prx-readout=\"bandUpper\"]",
+          "about": "upper end of the band, tau .20",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.2",
+            "field": "upper"
+          },
+          "value": 1.19023216289999
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "size of the family of all reports on three units, shown with the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "familySize"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, the family by its symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2083"
+        },
+        {
+          "select": "[data-prx-readout=\"pi12\"]",
+          "about": "pi_12 (base-R pairDirection)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-krwex1-omega.80-pi12",
+            "field": "pi"
+          },
+          "value": 0.801928045423963
+        },
+        {
+          "select": "[data-prx-readout=\"pi23\"]",
+          "about": "pi_23 (base-R pairDirection)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-krwex1-omega.80-pi23",
+            "field": "pi"
+          },
+          "value": 0.714196177523334
+        },
+        {
+          "select": "[data-prx-readout=\"pi13\"]",
+          "about": "pi_13 (base-R pairDirection)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-krwex1-pi13",
+            "field": "pi"
+          },
+          "value": 0.921350396474857
+        },
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "cost of the pairwise choices (base-R relaxedPairRisk)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "relaxedPairRisk-krwex1-omega.80-tau.2",
+            "field": "risk"
+          },
+          "value": 0.158907186033727
+        },
+        {
+          "select": "[data-prx-readout=\"optRisk\"]",
+          "about": "risk of the best report (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega.80-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.158907186033727
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "best report 1 (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega.80-all-tau.20",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size (base-R exactOptimum of this example)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega.80-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 13
+        }
+      ]
+    },
+    {
+      "id": "preset-krw-outside",
+      "about": "preset omega_2 = .50: coarse grades without a contradiction",
+      "preset": "omega50",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi12\"]",
+          "about": "pi_12",
+          "source": "registry",
+          "ref": "g04.krw.omega50.pi12",
+          "value": 0.8555778168267576
+        },
+        {
+          "select": "[data-prx-readout=\"pi23\"]",
+          "about": "pi_23",
+          "source": "registry",
+          "ref": "g04.krw.omega50.pi23",
+          "value": 0.6381631950841185
+        },
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "cost of the pairwise choices",
+          "source": "registry",
+          "ref": "g04.krw.omega50.tau20.relaxed",
+          "value": 0.1410239288994617
+        },
+        {
+          "select": "[data-prx-readout=\"optRisk\"]",
+          "about": "risk of the optimum",
+          "source": "registry",
+          "ref": "krwex1.omega2_05.tau20.optrisk",
+          "value": 0.1410239288994617
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "the optimum 1/2/2",
+          "source": "registry",
+          "ref": "g04.krw.omega50.tau20.grade",
+          "value": [
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "size of the family of all reports on three units, shown with the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "familySize"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, the family by its symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2083"
+        },
+        {
+          "select": "[data-prx-readout=\"pi12\"]",
+          "about": "pi_12 (base-R pairDirection)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-krwex1-omega.50-pi12",
+            "field": "pi"
+          },
+          "value": 0.855577816826758
+        },
+        {
+          "select": "[data-prx-readout=\"pi23\"]",
+          "about": "pi_23 (base-R pairDirection)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-krwex1-omega.50-pi23",
+            "field": "pi"
+          },
+          "value": 0.638163195084118
+        },
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "cost of the pairwise choices (base-R relaxedPairRisk)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "relaxedPairRisk-krwex1-omega.50-tau.2",
+            "field": "risk"
+          },
+          "value": 0.141023928899462
+        },
+        {
+          "select": "[data-prx-readout=\"optRisk\"]",
+          "about": "risk of the best report (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega.50-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.141023928899462
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "best report 1 (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega.50-all-tau.20",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size (base-R exactOptimum of this example)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega.50-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 13
+        }
+      ]
+    },
+    {
+      "id": "krw-omega81",
+      "about": "one slider step right of the deck preset: pi_12 just below .80, shown with enough digits to tell it from the line",
+      "query": "omega2=.81&tau=.20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi12\"]",
+          "about": "pi_12 = .79995, five digits",
+          "source": "registry",
+          "ref": "g04.krw.omega81.pi12",
+          "value": 0.7999540371673164
+        },
+        {
+          "select": "[data-prx-readout=\"bandLower\"]",
+          "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .20",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.2",
+            "field": "lower"
+          },
+          "value": 0.80976783710001
+        },
+        {
+          "select": "[data-prx-readout=\"bandUpper\"]",
+          "about": "upper end of the band, tau .20",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.2",
+            "field": "upper"
+          },
+          "value": 1.19023216289999
+        },
+        {
+          "select": "[data-prx-readout=\"pi12\"]",
+          "about": "pi_12 just below .80 (base-R pairDirection)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 5
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-krwex1-omega.81-pi12",
+            "field": "pi"
+          },
+          "value": 0.799954037167316
+        },
+        {
+          "select": "[data-prx-readout=\"optRisk\"]",
+          "about": "risk of the best report (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega.81-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.159565188785942
+        },
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "cost of the pairwise choices (base-R relaxedPairRisk)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "relaxedPairRisk-krwex1-omega.81-tau.2",
+            "field": "risk"
+          },
+          "value": 0.159549867841714
+        }
+      ]
+    },
+    {
+      "id": "krw-band-tau10",
+      "about": "the band at tau = .10",
+      "query": "omega2=1&tau=.10",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"bandLower\"]",
+          "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .10",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.1",
+            "field": "lower"
+          },
+          "value": 0.187612395126353
+        },
+        {
+          "select": "[data-prx-readout=\"bandUpper\"]",
+          "about": "upper end of the band, tau .10",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.1",
+            "field": "upper"
+          },
+          "value": 1.81238760487365
+        }
+      ]
+    },
+    {
+      "id": "krw-band-tau15",
+      "about": "the band at tau = .15",
+      "query": "omega2=1&tau=.15",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"bandLower\"]",
+          "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .15",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.15",
+            "field": "lower"
+          },
+          "value": 0.534261844081567
+        },
+        {
+          "select": "[data-prx-readout=\"bandUpper\"]",
+          "about": "upper end of the band, tau .15",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "krwExample1Band-tau0.15",
+            "field": "upper"
+          },
+          "value": 1.46573815591843
+        }
+      ]
+    },
+    {
+      "id": "krw-tau25",
+      "about": "tau = .25: the band is empty and the pairwise choices print as the full order 1/2/3",
+      "query": "omega2=1&tau=.25",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "the optimum 1/2/3",
+          "source": "registry",
+          "ref": "krwex1.omega2_1.tau25.optimum",
+          "value": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "size of the family of all reports on three units, shown with the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "familySize"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the result label from the engine return value, the family by its symbol (from G-04 on)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within \ud835\udc9c\u2083"
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "the full order at tau .25 (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega1-all-tau.25",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"optRisk\"]",
+          "about": "its risk (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-krwex1-omega1-all-tau.25",
+            "field": "risk"
+          },
+          "value": 0.186049908570699
+        },
+        {
+          "select": "[data-prx-readout=\"relaxed\"]",
+          "about": "the pairwise choices print, so they cost the same (base-R relaxedPairRisk)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "relaxedPairRisk-krwex1-omega1-tau.25",
+            "field": "risk"
+          },
+          "value": 0.186049908570699
+        }
+      ]
+    },
+    {
+      "id": "above-tau-boundary-omega81",
+      "query": "?omega2=.81&tau=.2",
+      "about": "Independent R boundary pin: display the error strictly above tau without rounding both values to .20.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"over0.0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coherence-boundary-omega81",
+            "field": "error"
+          },
+          "value": 0.200045962832684,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 5
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pi12\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coherence-boundary-omega81",
+            "field": "pi"
+          },
+          "value": 0.799954037167316,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 5
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

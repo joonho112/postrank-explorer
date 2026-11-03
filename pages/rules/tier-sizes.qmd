@@ -1,0 +1,45 @@
+---
+title: "Disclosure determined by tier sizes"
+subtitle: "3.2 · after the postrank theory book, ch. 9, 16 and 17"
+description: "Combinatorial disclosure counts and their distribution over ordered positive size vectors."
+---
+
+The sizes of the tiers determine the number of stated pairs. All pairs between different tiers are stated, while
+all within-tier pairs are withheld. The resulting disclosure count depends on the size vector but not on the
+identities or posterior distributions of the units. The examples compare balanced and unbalanced vectors at fixed
+unit and tier counts. The distribution enumerates ordered positive size patterns, rather than assignments of labelled
+units to grades. It therefore describes a combinatorial property of reporting, independently of the accuracy of the
+directions a particular assignment would state.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/tier-sizes.js"></script>
+<script>window.__prxApp = PRX["tier-sizes"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Balanced thirty.** Sizes 10, 10, 10 state 300 of 435 pairs, a share of .690. Each withheld triangle contributes
+  its within-tier count to the grouped formula. Balanced sizes reach the maximum for this number of tiers.
+- **Two tiny tiers.** Sizes 1, 1, 28 state only 57 pairs, although they use the same number of tiers. The balanced
+  reference still states 300. Moving the smallest tiers to another position gives the same disclosure but another
+  ordered size pattern.
+- **Four tiers.** Sizes 8, 7, 8, 7 state 337 pairs (.775). Equal sizes are impossible here. The balanced maximum
+  still exists, while the closed form for equal-sized tiers is hidden.
+- **Balanced twelve.** Three groups of four state 48 of 66 pairs. Valid size changes preserve the total unit count; the vector and individual controls specify the same setting.
+- **Unbalanced twelve.** Sizes 5, 4, 3 state 47 pairs, below the balanced maximum of 48. A zero size or incorrect total is invalid; the result remains unavailable until the vector is feasible.
+
+::: {.callout-note appearance="simple"}
+The distribution gives equal weight to every ordered positive size vector for the declared unit and tier counts.
+Its frequencies count size patterns rather than labelled grade reports. All feasible patterns are included; unit assignments are not enumerated. Quantile positions produce nearly balanced sizes when estimates have no
+ties. The package keeps equal scores together, which can merge tiers and change the realised sizes. The formula's
+count of disclosed pairs is exact for any valid sizes, with no posterior or accuracy guarantee.
+:::
+
+Standalone: [embed/tier-sizes.html](../../embed/tier-sizes.html), for example `?preset=tiny&theme=dark`.
+
+Related applications: [Fixed quantile tiers](fixed-tiers.qmd), with the full league, pair map and expected wrong
+ directions; [The number of ordered grade reports](../grades/how-many-reports.qmd), which counts assignments to ordered grades.

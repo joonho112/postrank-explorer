@@ -1,0 +1,322 @@
+{
+  "$schema": "./_schema.json",
+  "app": "flags-in-the-league",
+  "catalog": "3.4",
+  "from": "v1 verification/readouts/evidence-flags.json",
+  "about": "Full R-02 view split. Original numeric expectations preserved; gates removed and posterior caption uses v3 wording.",
+  "cases": [
+    {
+      "id": "preset-league-196",
+      "about": "the frozen league against the mean of its estimates, cutoff 1.96, teaching posterior",
+      "preset": "league-196",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"above\"]",
+          "about": "units flagged above at cutoff 1.96",
+          "source": "registry",
+          "ref": "r02.league.flags196.above",
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"none\"]",
+          "about": "units not flagged",
+          "source": "registry",
+          "ref": "r02.league.flags196.none",
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"below\"]",
+          "about": "units flagged below",
+          "source": "registry",
+          "ref": "r02.league.flags196.below",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs the flag report states",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.N",
+          "value": 188
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions under the teaching posterior",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.E",
+          "value": 24.371687119516917,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.EoverN",
+          "value": 0.12963663361445169
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk at tau .20",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.risk",
+          "value": 0.1695900853322228
+        },
+        {
+          "select": "[data-prx-readout=\"maxstated\"]",
+          "about": "largest error of a stated direction",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.maxstated",
+          "value": 0.6492693498484499
+        },
+        {
+          "select": "[data-prx-readout=\"overhalf\"]",
+          "about": "stated directions with error above one half",
+          "source": "registry",
+          "ref": "r02.league.flags196.overhalf.count",
+          "value": 7
+        },
+        {
+          "select": "[data-prx-readout=\"against\"]",
+          "about": "stated directions that run against the estimates (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "statedAgainst-league-flags196-vs-estimate",
+            "field": "count"
+          },
+          "value": 20
+        },
+        {
+          "select": "[data-prx-readout=\"againstUnits\"]",
+          "about": "units placed below some unit with a smaller estimate (the oracle row lists units 4, 9, 12, 15, 17, 28, 0-based)",
+          "source": "registry",
+          "ref": "r02.league.flags196.against.units",
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"ref\"]",
+          "about": "the reference: the mean of the 30 frozen estimates (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-league-seed20261030-estimate",
+            "field": "mean"
+          },
+          "value": -0.0475870468696802
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau of the risk",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"allWithheld\"]",
+          "about": "risk of withholding every pair, which equals tau",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "about": "the flag report is evaluated, not optimized",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        }
+      ]
+    },
+    {
+      "id": "league-crit-parser",
+      "about": "A raw cutoff update snaps to the nearest offered value, 1.9 to1.96; expectations remain the independent v1 pins.",
+      "query": "?crit=1.96&prior=teaching&tau=.20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"above\"]",
+          "about": "units flagged above at cutoff 1.96",
+          "source": "registry",
+          "ref": "r02.league.flags196.above",
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"none\"]",
+          "about": "units not flagged",
+          "source": "registry",
+          "ref": "r02.league.flags196.none",
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"below\"]",
+          "about": "units flagged below",
+          "source": "registry",
+          "ref": "r02.league.flags196.below",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs the flag report states",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.N",
+          "value": 188
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions under the teaching posterior",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.E",
+          "value": 24.371687119516917,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.EoverN",
+          "value": 0.12963663361445169
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk at tau .20",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.risk",
+          "value": 0.1695900853322228
+        }
+      ],
+      "update": [
+        {
+          "crit": 1.9
+        }
+      ]
+    },
+    {
+      "id": "league-posterior-update",
+      "about": "Atomic posterior update preserves the fixed flags and restores teaching-posterior values.",
+      "query": "?crit=1.96&prior=flat&tau=.20",
+      "update": [
+        {
+          "crit": 1.96,
+          "prior": "teaching"
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"above\"]",
+          "about": "units flagged above at cutoff 1.96",
+          "source": "registry",
+          "ref": "r02.league.flags196.above",
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"none\"]",
+          "about": "units not flagged",
+          "source": "registry",
+          "ref": "r02.league.flags196.none",
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"below\"]",
+          "about": "units flagged below",
+          "source": "registry",
+          "ref": "r02.league.flags196.below",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs the flag report states",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.N",
+          "value": 188
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions under the teaching posterior",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.E",
+          "value": 24.371687119516917,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.EoverN",
+          "value": 0.12963663361445169
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk at tau .20",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.risk",
+          "value": 0.1695900853322228
+        },
+        {
+          "select": "[data-prx-readout=\"maxstated\"]",
+          "about": "largest error of a stated direction",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.maxstated",
+          "value": 0.6492693498484499
+        },
+        {
+          "select": "[data-prx-readout=\"overhalf\"]",
+          "about": "stated directions with error above one half",
+          "source": "registry",
+          "ref": "r02.league.flags196.overhalf.count",
+          "value": 7
+        }
+      ]
+    },
+    {
+      "id": "flat-posterior-caption",
+      "preset": "league-flat",
+      "expect": [
+        {
+          "select": "[data-prx-caption=\"flat-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "the chance a direction is wrong takes each true value as normal around its estimate, with its SE"
+        }
+      ]
+    },
+    {
+      "id": "posterior-caption-roundtrip",
+      "query": "?crit=1.96&prior=flat&tau=.20",
+      "update": [
+        {
+          "prior": "teaching"
+        },
+        {
+          "prior": "flat"
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-caption=\"flat-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "the chance a direction is wrong takes each true value as normal around its estimate, with its SE"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2570 @@
+{
+  "created": "2026-11-02T02:43:05-0600",
+  "schema": "postrank Explorer data contract v1",
+  "package": "postrank 1.1.0",
+  "r_version": "4.6.0",
+  "licence": "Code MIT; text and figures CC BY 4.0; data per file through license_scope (author files CC BY 4.0, other scopes keep their source conditions).",
+  "precision": "Summaries carry 15 significant digits; toy-joint-draws preserves original source doubles with 17-digit serialization. Undefined probability diagonals are null.",
+  "file_format": "Compact JSON; tables are columnar (column name -> array); ErrorArray = { ids, criteria, e[k][i][j] } with e = Pr(theta_ik <= theta_jk | Y).",
+  "twin_format": "window.PRX_DATA = window.PRX_DATA || {}; window.PRX_DATA[\"<key>\"] = <json>;",
+  "contract_twin_omits": ["created"],
+  "runtime_asset_max_bytes": 400000,
+  "geojson_max_bytes": 150000,
+  "forbidden_field_patterns": ["student", "pupil", "respondent", "person", "child"],
+  "forbidden_rights_key_patterns": ["cleared", "^rights$", "inclusion", "redistribution"],
+  "license_scopes": {
+    "author": {
+      "meaning": "The whole file is the author's own output (synthetic inputs or results computed from them).",
+      "licence": "CC BY 4.0 (site data licence, LICENSE-DATA)",
+      "required_notice": ["CC BY 4.0"]
+    },
+    "cde-source-conditions": {
+      "meaning": "Derived from California Department of Education data; CDE's source conditions apply; not relicensed.",
+      "licence": "CDE source conditions (https://www.cde.ca.gov/re/di/cr/index.asp); no Creative Commons or code licence is substituted",
+      "required_notice": ["California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26", "https://www.cde.ca.gov/re/di/cr/index.asp", "No CDE endorsement is implied"]
+    },
+    "cc-by-nc-krw": {
+      "meaning": "Derived from the Kline, Rose and Walters (2024) replication deposit; noncommercial.",
+      "licence": "CC-BY-NC as stated by the deposit README (no version stated)",
+      "required_notice": ["Kline, Rose and Walters (2024)", "doi:10.1257/aer.20230700", "doi:10.3886/E198284V1", "CC-BY-NC", "Noncommercial", "No endorsement"]
+    },
+    "cc-by-4.0-atlas": {
+      "meaning": "Derived from the Opportunity Atlas replication data.",
+      "licence": "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)",
+      "required_notice": ["Chetty, Friedman, Hendren, Jones and Porter (2022)", "doi:10.7910/DVN/NKCQM1", "CC BY 4.0", "No endorsement"]
+    },
+    "public-domain-census": {
+      "meaning": "U.S. Census Bureau geometry, a U.S. federal government work (public domain, 17 U.S.C. 105).",
+      "licence": "public domain; source line kept as good practice",
+      "required_notice": ["U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20m), via usmapdata 1.1.0"]
+    }
+  },
+  "files": {
+    "krw-absolute-gender.json": {
+      "key": "krw-absolute-gender",
+      "path": "data/released/krw-absolute-gender.json",
+      "title": "KRW's absolute gender contact gap: supplied folded-cell target",
+      "level": "firm",
+      "runtime_asset": true,
+      "license_scope": "cc-by-nc-krw",
+      "attribution": "Data: Kline, Rose and Walters (2024), A Discrimination Report Card, American Economic Review, doi:10.1257/aer.20230700; deposit: Kline, Rose and Walters, Data and Code for: A Discrimination Report Card, AEA/ICPSR E198284V1, doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no licence version stated); recomputed by postrank 1.1.0 (pr_case_krw).",
+      "change_notice": "Changes: extracted only the gender_absolute criterion from public postrank 1.1.0 pr_case_krw$alternatives$absolute_gender, with the same 97 IDs, exact folded-cell pair probabilities and matching supplied central 90% marginal summaries. No Gaussian approximation, complement correction or refit. Copied the existing released signed posterior-mean columns solely to document their across-firm Pearson association. Scientific doubles use 17-digit serialization; existing released case and grid assets are unchanged. Full posterior grids and research files are not included.",
+      "notice": "Noncommercial use only (CC-BY-NC). No endorsement by the original authors is implied. The data describe KRW's correspondence experiment, not any firm's current conduct.",
+      "sources": [
+        {
+          "object": "pr_case_krw$alternatives$absolute_gender",
+          "path": "postrank 1.1.0 data/pr_case_krw.rda",
+          "sha256": "1c6d6ed56e197d3428284e948008968a31d81f9357d40ceb0fb5d0185ab1afe5",
+          "fields": "e[,,gender_absolute], entity_ids, targets, summaries and declared source; matched units/provenance from pr_case_krw"
+        },
+        {
+          "object": "released case-krw signed posterior means",
+          "path": "data/released/case-krw.json",
+          "sha256": "0521785d71dcc2d29951f9341678eaadd476b21f9eef066569b27a6aedd769f2",
+          "fields": "tables.units.id, tables.units.mean_race, tables.units.mean_gender"
+        }
+      ],
+      "upstream": {
+        "source": "Kline, Rose and Walters (2024), AEA/ICPSR E198284V1, doi:10.3886/E198284V1; public postrank 1.1.0 adaptation",
+        "terms": "CC-BY-NC as stated by the deposit (no version stated); noncommercial use only; see notes/data-rights.md and postrank 1.1.0 DATA-NOTICE.md",
+        "fields": ["tables.units.id", "tables.units.firm_name", "tables.units.mean", "tables.units.lower", "tables.units.upper", "arrays.error.e", "tables.signed_means.mean_race", "tables.signed_means.mean_gender"]
+      },
+      "primary": "tables.units",
+      "fields": ["id", "firm_id", "firm_name", "industry", "mean", "lower", "upper"],
+      "rows": 97,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": ["n", "M", "criterion", "target", "orientation", "interval_level", "intervals", "posterior_law", "conditioning", "selection_rule", "source_version", "source_object", "source_criterion", "source_input_criteria", "source_input_identity", "source_data_sha256", "probability_event", "zero_ties", "margin", "probability_correction", "source", "precision", "signed_mean_correlation"]
+        },
+        "tables.units": {
+          "kind": "table",
+          "fields": ["id", "firm_id", "firm_name", "industry", "mean", "lower", "upper"],
+          "rows": 97
+        },
+        "tables.signed_means": {
+          "kind": "table",
+          "fields": ["id", "mean_race", "mean_gender"],
+          "rows": 97
+        },
+        "arrays.error": {
+          "kind": "array",
+          "members": {
+            "ids": [97],
+            "criteria": [1],
+            "e": [1, 97, 97]
+          }
+        }
+      },
+      "sha256": "31effdaa262ef277f5d6560150f4a6571427b58c99a400e09c3f62aa4125af89",
+      "bytes": 205011,
+      "twin": "data/released/krw-absolute-gender.js",
+      "twin_sha256": "0c86c511b0c5150326fe80ff7d1fb6b026794ff115cc9907dd787690d61febc3",
+      "twin_bytes": 205094,
+      "precision": "Folded coefficients and supplied summaries preserve the public source doubles with 17-digit serialization. The signed-mean association uses the exact parsed columns of the unchanged case-krw.json release, whose original summaries carry 15 significant digits; its correlation is not rounded."
+    },
+    "cache-30x3.json": {
+      "key": "cache-30x3",
+      "path": "data/released/cache-30x3.json",
+      "title": "Cached analyses for the thirty sites",
+      "level": "synthetic",
+      "runtime_asset": false,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Extracted from postrank 1.1.0 (data objects and cached analyses read with load_or_compute()); only the fields the course shows; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "analysis_30x3",
+          "path": "inst/extdata/cached/analysis_30x3.rds",
+          "reader": "load_or_compute(\"analysis_30x3\")"
+        },
+        {
+          "object": "analysis_30x3_tau35",
+          "path": "inst/extdata/cached/analysis_30x3_tau35.rds",
+          "reader": "load_or_compute(\"analysis_30x3_tau35\")"
+        },
+        {
+          "object": "gaussian_analysis_30x3",
+          "path": "inst/extdata/cached/gaussian_analysis_30x3.rds",
+          "reader": "load_or_compute(\"gaussian_analysis_30x3\")"
+        },
+        {
+          "object": "commonality_30x3",
+          "path": "inst/extdata/cached/commonality_30x3.rds",
+          "reader": "load_or_compute(\"commonality_30x3\")"
+        },
+        {
+          "object": "commonality_30x3_tau35",
+          "path": "inst/extdata/cached/commonality_30x3_tau35.rds",
+          "reader": "load_or_compute(\"commonality_30x3_tau35\")"
+        },
+        {
+          "object": "comparison_30x3",
+          "path": "inst/extdata/cached/comparison_30x3.rds",
+          "reader": "load_or_compute(\"comparison_30x3\")"
+        },
+        {
+          "object": "comparison_30x3_tau35",
+          "path": "inst/extdata/cached/comparison_30x3_tau35.rds",
+          "reader": "load_or_compute(\"comparison_30x3_tau35\")"
+        },
+        {
+          "object": "frontier_30x3",
+          "path": "inst/extdata/cached/frontier_30x3.rds",
+          "reader": "load_or_compute(\"frontier_30x3\")"
+        }
+      ],
+      "primary": "tables.index",
+      "fields": [
+        "cache_key",
+        "class",
+        "path",
+        "rds_sha256"
+      ],
+      "rows": 8,
+      "structure": {
+        "tables.index": {
+          "kind": "table",
+          "fields": [
+            "cache_key",
+            "class",
+            "path",
+            "rds_sha256"
+          ],
+          "rows": 8
+        },
+        "analyses.analysis_30x3.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "disclosure_rate",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source"
+          ]
+        },
+        "analyses.analysis_30x3.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 30
+        },
+        "analyses.analysis_30x3.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk"
+          ],
+          "rows": 3
+        },
+        "analyses.analysis_30x3_tau35.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "disclosure_rate",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source"
+          ]
+        },
+        "analyses.analysis_30x3_tau35.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 30
+        },
+        "analyses.analysis_30x3_tau35.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk"
+          ],
+          "rows": 3
+        },
+        "analyses.gaussian_analysis_30x3.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "disclosure_rate",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source"
+          ]
+        },
+        "analyses.gaussian_analysis_30x3.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 30
+        },
+        "analyses.gaussian_analysis_30x3.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk"
+          ],
+          "rows": 3
+        },
+        "analyses.commonality_30x3.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "protection"
+          ]
+        },
+        "analyses.commonality_30x3.tables.costs": {
+          "kind": "table",
+          "fields": [
+            "criterion_id",
+            "common_grade_risk",
+            "own_best_risk",
+            "own_lower_bound",
+            "cost_lower",
+            "cost_upper",
+            "own_status",
+            "own_G",
+            "own_disclosures",
+            "relation_agreement"
+          ],
+          "rows": 3
+        },
+        "analyses.commonality_30x3_tau35.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "protection"
+          ]
+        },
+        "analyses.commonality_30x3_tau35.tables.costs": {
+          "kind": "table",
+          "fields": [
+            "criterion_id",
+            "common_grade_risk",
+            "own_best_risk",
+            "own_lower_bound",
+            "cost_lower",
+            "cost_upper",
+            "own_status",
+            "own_G",
+            "own_disclosures",
+            "relation_agreement"
+          ],
+          "rows": 3
+        },
+        "analyses.comparison_30x3.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "reference",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights"
+          ]
+        },
+        "analyses.comparison_30x3.tables.methods": {
+          "kind": "table",
+          "fields": [
+            "method",
+            "risk",
+            "N",
+            "disclosure_rate",
+            "G",
+            "status",
+            "optimality_scope",
+            "risk_lower_bound",
+            "risk_absolute_gap",
+            "E_over_M_poverty",
+            "E_over_M_frl",
+            "E_over_M_snap",
+            "family_feasible"
+          ],
+          "rows": 3
+        },
+        "analyses.comparison_30x3.tables.relations": {
+          "kind": "table",
+          "fields": [
+            "method",
+            "n_same",
+            "n_new_disclosed",
+            "n_new_withheld",
+            "n_reversed",
+            "agreement"
+          ],
+          "rows": 2
+        },
+        "analyses.comparison_30x3.tables.grades": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "joint",
+            "expected_rank",
+            "composite"
+          ],
+          "rows": 30
+        },
+        "analyses.comparison_30x3_tau35.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "reference",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights"
+          ]
+        },
+        "analyses.comparison_30x3_tau35.tables.methods": {
+          "kind": "table",
+          "fields": [
+            "method",
+            "risk",
+            "N",
+            "disclosure_rate",
+            "G",
+            "status",
+            "optimality_scope",
+            "risk_lower_bound",
+            "risk_absolute_gap",
+            "E_over_N_poverty",
+            "E_over_N_frl",
+            "E_over_N_snap",
+            "E_over_M_poverty",
+            "E_over_M_frl",
+            "E_over_M_snap",
+            "family_feasible"
+          ],
+          "rows": 3
+        },
+        "analyses.comparison_30x3_tau35.tables.relations": {
+          "kind": "table",
+          "fields": [
+            "method",
+            "n_same",
+            "n_new_disclosed",
+            "n_new_withheld",
+            "n_reversed",
+            "agreement"
+          ],
+          "rows": 2
+        },
+        "analyses.comparison_30x3_tau35.tables.grades": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "joint",
+            "expected_rank",
+            "composite"
+          ],
+          "rows": 30
+        },
+        "analyses.frontier_30x3.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "backend"
+          ]
+        },
+        "analyses.frontier_30x3.tables.path": {
+          "kind": "table",
+          "fields": [
+            "tau",
+            "status",
+            "G",
+            "N",
+            "disclosure_rate",
+            "primary_risk",
+            "weighted_risk",
+            "risk_absolute_gap",
+            "E_over_N_poverty",
+            "E_over_N_frl",
+            "E_over_N_snap",
+            "risk_poverty",
+            "risk_frl",
+            "risk_snap"
+          ],
+          "rows": 8
+        }
+      },
+      "sha256": "5d1ff76b7291fedb7ee14b5db2cd334d15b45801c74778ef01cf9f2eaf0bda0d",
+      "bytes": 14063,
+      "twin": "data/released/cache-30x3.js",
+      "twin_sha256": "87a6b09832de6b6959c334e2f3655bebb3cae036503e0df84f5a8d380a2441df",
+      "twin_bytes": 14137
+    },
+    "cache-toy.json": {
+      "key": "cache-toy",
+      "path": "data/released/cache-toy.json",
+      "title": "Cached analyses for the package toy",
+      "level": "synthetic",
+      "runtime_asset": false,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Extracted from postrank 1.1.0 (data objects and cached analyses read with load_or_compute()); only the fields the course shows; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "toy_analysis",
+          "path": "inst/extdata/cached/toy_analysis.rds",
+          "reader": "load_or_compute(\"toy_analysis\")"
+        },
+        {
+          "object": "toy_commonality",
+          "path": "inst/extdata/cached/toy_commonality.rds",
+          "reader": "load_or_compute(\"toy_commonality\")"
+        },
+        {
+          "object": "toy_crossfit",
+          "path": "inst/extdata/cached/toy_crossfit.rds",
+          "reader": "load_or_compute(\"toy_crossfit\")"
+        },
+        {
+          "object": "toy_frontier",
+          "path": "inst/extdata/cached/toy_frontier.rds",
+          "reader": "load_or_compute(\"toy_frontier\")"
+        },
+        {
+          "object": "toy_minimax",
+          "path": "inst/extdata/cached/toy_minimax.rds",
+          "reader": "load_or_compute(\"toy_minimax\")"
+        }
+      ],
+      "primary": "tables.index",
+      "fields": [
+        "cache_key",
+        "class",
+        "path",
+        "rds_sha256"
+      ],
+      "rows": 5,
+      "structure": {
+        "tables.index": {
+          "kind": "table",
+          "fields": [
+            "cache_key",
+            "class",
+            "path",
+            "rds_sha256"
+          ],
+          "rows": 5
+        },
+        "analyses.toy_analysis.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "disclosure_rate",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source"
+          ]
+        },
+        "analyses.toy_analysis.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 3
+        },
+        "analyses.toy_analysis.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk"
+          ],
+          "rows": 2
+        },
+        "analyses.toy_commonality.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "protection"
+          ]
+        },
+        "analyses.toy_commonality.tables.costs": {
+          "kind": "table",
+          "fields": [
+            "criterion_id",
+            "common_grade_risk",
+            "own_best_risk",
+            "own_lower_bound",
+            "cost_lower",
+            "cost_upper",
+            "own_status",
+            "own_G",
+            "own_disclosures",
+            "relation_agreement"
+          ],
+          "rows": 2
+        },
+        "analyses.toy_crossfit.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "split",
+            "split_sizes",
+            "agreement",
+            "folds_with_incumbent",
+            "mean_optimism",
+            "mean_abs_optimism"
+          ]
+        },
+        "analyses.toy_crossfit.tables.folds": {
+          "kind": "table",
+          "fields": [
+            "fold",
+            "draws",
+            "status",
+            "G",
+            "in_fold_risk",
+            "out_of_fold_risk",
+            "optimism"
+          ],
+          "rows": 2
+        },
+        "analyses.toy_crossfit.tables.fold_grades": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "A",
+            "B"
+          ],
+          "rows": 3
+        },
+        "analyses.toy_frontier.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "backend"
+          ]
+        },
+        "analyses.toy_frontier.tables.path": {
+          "kind": "table",
+          "fields": [
+            "tau",
+            "status",
+            "G",
+            "N",
+            "disclosure_rate",
+            "primary_risk",
+            "weighted_risk",
+            "risk_absolute_gap",
+            "E_over_N_need_A",
+            "E_over_N_need_B",
+            "risk_need_A",
+            "risk_need_B"
+          ],
+          "rows": 3
+        },
+        "analyses.toy_minimax.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "minimax_criteria",
+            "minimax_refine",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "weighted_risk",
+            "minimax_risk",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status"
+          ]
+        },
+        "analyses.toy_minimax.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 3
+        },
+        "analyses.toy_minimax.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk",
+            "is_minimax_max"
+          ],
+          "rows": 2
+        }
+      },
+      "sha256": "9d8ab3e44699d7e5ee2cf0412e3c241ee9dd98b73d18939f16b80c4127859cc4",
+      "bytes": 6212,
+      "twin": "data/released/cache-toy.js",
+      "twin_sha256": "23c021958a0f6c1daf526259552acdfbdde7a7ccd248864de70717a7d5cd9ba5",
+      "twin_bytes": 6285
+    },
+    "cache-tutorial.json": {
+      "key": "cache-tutorial",
+      "path": "data/released/cache-tutorial.json",
+      "title": "Cached analyses for the six sites",
+      "level": "synthetic",
+      "runtime_asset": false,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Extracted from postrank 1.1.0 (data objects and cached analyses read with load_or_compute()); only the fields the course shows; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "tutorial_one",
+          "path": "inst/extdata/cached/tutorial_one.rds",
+          "reader": "load_or_compute(\"tutorial_one\")"
+        },
+        {
+          "object": "tutorial_two",
+          "path": "inst/extdata/cached/tutorial_two.rds",
+          "reader": "load_or_compute(\"tutorial_two\")"
+        },
+        {
+          "object": "tutorial_frontier",
+          "path": "inst/extdata/cached/tutorial_frontier.rds",
+          "reader": "load_or_compute(\"tutorial_frontier\")"
+        },
+        {
+          "object": "tutorial_commonality",
+          "path": "inst/extdata/cached/tutorial_commonality.rds",
+          "reader": "load_or_compute(\"tutorial_commonality\")"
+        },
+        {
+          "object": "tutorial_sensitivity",
+          "path": "inst/extdata/cached/tutorial_sensitivity.rds",
+          "reader": "load_or_compute(\"tutorial_sensitivity\")"
+        }
+      ],
+      "primary": "tables.index",
+      "fields": [
+        "cache_key",
+        "class",
+        "path",
+        "rds_sha256"
+      ],
+      "rows": 5,
+      "structure": {
+        "tables.index": {
+          "kind": "table",
+          "fields": [
+            "cache_key",
+            "class",
+            "path",
+            "rds_sha256"
+          ],
+          "rows": 5
+        },
+        "analyses.tutorial_one.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "disclosure_rate",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source"
+          ]
+        },
+        "analyses.tutorial_one.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 6
+        },
+        "analyses.tutorial_one.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk"
+          ],
+          "rows": 1
+        },
+        "analyses.tutorial_two.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "disclosure_rate",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source"
+          ]
+        },
+        "analyses.tutorial_two.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 6
+        },
+        "analyses.tutorial_two.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk"
+          ],
+          "rows": 2
+        },
+        "analyses.tutorial_frontier.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "backend"
+          ]
+        },
+        "analyses.tutorial_frontier.tables.path": {
+          "kind": "table",
+          "fields": [
+            "tau",
+            "status",
+            "G",
+            "N",
+            "disclosure_rate",
+            "primary_risk",
+            "weighted_risk",
+            "risk_absolute_gap",
+            "E_over_N_score_A",
+            "E_over_N_score_B",
+            "risk_score_A",
+            "risk_score_B"
+          ],
+          "rows": 5
+        },
+        "analyses.tutorial_commonality.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "protection"
+          ]
+        },
+        "analyses.tutorial_commonality.tables.costs": {
+          "kind": "table",
+          "fields": [
+            "criterion_id",
+            "common_grade_risk",
+            "own_best_risk",
+            "own_lower_bound",
+            "cost_lower",
+            "cost_upper",
+            "own_status",
+            "own_G",
+            "own_disclosures",
+            "relation_agreement"
+          ],
+          "rows": 2
+        },
+        "analyses.tutorial_sensitivity.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "reference_id"
+          ]
+        },
+        "analyses.tutorial_sensitivity.tables.grid": {
+          "kind": "table",
+          "fields": [
+            "setting_id",
+            "label",
+            "tau",
+            "G_max",
+            "w_score_A",
+            "w_score_B",
+            "is_reference"
+          ],
+          "rows": 7
+        },
+        "analyses.tutorial_sensitivity.tables.results": {
+          "kind": "table",
+          "fields": [
+            "setting_id",
+            "risk",
+            "N",
+            "disclosure_rate",
+            "G",
+            "status",
+            "risk_lower_bound",
+            "risk_upper_bound",
+            "risk_absolute_gap",
+            "bound_source",
+            "E_over_N_score_A",
+            "E_over_N_score_B"
+          ],
+          "rows": 7
+        },
+        "analyses.tutorial_sensitivity.tables.grades": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "S01",
+            "S02",
+            "S03",
+            "S04",
+            "S05",
+            "S06",
+            "S07"
+          ],
+          "rows": 6
+        },
+        "analyses.tutorial_sensitivity.tables.changes": {
+          "kind": "table",
+          "fields": [
+            "setting_id",
+            "n_same",
+            "n_new_disclosed",
+            "n_new_withheld",
+            "n_reversed",
+            "change_fraction"
+          ],
+          "rows": 7
+        }
+      },
+      "sha256": "baab012c9cb1afed52f1f67a9fc5cbced2dd19711421ba42dc67123cb77e25c0",
+      "bytes": 9079,
+      "twin": "data/released/cache-tutorial.js",
+      "twin_sha256": "a20c0e83c8e85f5eec512d8005a5e2c36e454b50df4c450decac65629a874ed1",
+      "twin_bytes": 9157
+    },
+    "case-alabama.json": {
+      "key": "case-alabama",
+      "path": "data/released/case-alabama.json",
+      "title": "Alabama counties: historical opportunity on two outcomes",
+      "level": "county",
+      "runtime_asset": true,
+      "license_scope": "cc-by-4.0-atlas",
+      "attribution": "Data: Chetty, Friedman, Hendren, Jones and Porter (2022), Replication Data for: The Opportunity Atlas: Mapping the Childhood Roots of Social Mobility, Harvard Dataverse V1.0, doi:10.7910/DVN/NKCQM1; Opportunity Insights and U.S. Census Bureau; CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); as adapted in postrank 1.1.0 (pr_case_alabama).",
+      "change_notice": "Changes: Alabama filtering (67 counties) with native identifiers and county names; point scales and orientation (income +100 times the household income rank fraction; incarceration -100 times the probability, so larger is more favorable); separate model posterior summaries (95% marginal intervals) and comparison probabilities by the case-study authors; archived reference reports and costs (postrank 0.9.0 with HiGHS) and the common grade as stored in postrank 1.1.0; numbers with 15 significant digits.",
+      "notice": "No endorsement by the data authors, Opportunity Insights or the U.S. Census Bureau is implied. Historical outcomes for children born in 1978–83, not current county conditions, causal effects of places or a measure of need.",
+      "sources": [
+        {
+          "object": "pr_case_alabama",
+          "path": "postrank 1.1.0 data/pr_case_alabama.rda",
+          "fields": "units (FIPS, county names), input (e, summaries, targets), reference (actions, metrics, single_criterion, commonality, settings, interpretation), provenance (text fields)"
+        },
+        {
+          "object": "case_alabama67",
+          "path": "inst/extdata/cached/case_alabama67.rds",
+          "reader": "load_or_compute(\"case_alabama67\")"
+        }
+      ],
+      "upstream": {
+        "source": "Opportunity Atlas replication data (Harvard Dataverse V1.0, doi:10.7910/DVN/NKCQM1): county identifiers, names and the published estimates behind the model summaries",
+        "terms": "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); see postrank 1.1.0 inst/extdata/case-studies/DATA-NOTICE.md",
+        "fields": [
+          "tables.units.fips",
+          "tables.units.name"
+        ]
+      },
+      "primary": "tables.units",
+      "fields": [
+        "fips",
+        "name",
+        "mean_income",
+        "lower_income",
+        "upper_income",
+        "mean_incarceration",
+        "lower_incarceration",
+        "upper_incarceration"
+      ],
+      "rows": 67,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "n",
+            "M",
+            "criteria",
+            "targets",
+            "orientation",
+            "outcome_dates",
+            "cohort",
+            "interval_level",
+            "intervals",
+            "conditioning",
+            "dependence_scope",
+            "source_version",
+            "reference_settings",
+            "archive_note",
+            "identical_reports_note"
+          ]
+        },
+        "tables.units": {
+          "kind": "table",
+          "fields": [
+            "fips",
+            "name",
+            "mean_income",
+            "lower_income",
+            "upper_income",
+            "mean_incarceration",
+            "lower_incarceration",
+            "upper_incarceration"
+          ],
+          "rows": 67
+        },
+        "tables.reports": {
+          "kind": "table",
+          "fields": [
+            "fips",
+            "B0",
+            "B1",
+            "B2",
+            "B3",
+            "P",
+            "D1",
+            "D2"
+          ],
+          "rows": 67
+        },
+        "tables.reference_metrics": {
+          "kind": "table",
+          "fields": [
+            "method",
+            "description",
+            "N",
+            "Goccupied",
+            "tau",
+            "G_max",
+            "A_E_income",
+            "A_E_incarceration",
+            "A_Ew",
+            "A_Ew_over_N",
+            "A_Ew_over_M",
+            "A_Rtau",
+            "A_R_income",
+            "A_R_incarceration",
+            "A_solver_status",
+            "A_solver_lower_bound",
+            "A_solver_gap"
+          ],
+          "rows": 7
+        },
+        "tables.single_criterion": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "method",
+            "risk",
+            "lower_bound",
+            "gap",
+            "normalized_status"
+          ],
+          "rows": 2
+        },
+        "tables.commonality": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "M",
+            "N_common",
+            "tau",
+            "G_max",
+            "common_criterion_risk_A",
+            "single_incumbent_risk_A",
+            "single_lower_bound_A",
+            "cost_lower_A",
+            "cost_upper_A",
+            "single_solver_status",
+            "common_solver_status",
+            "common_solver_gap_A"
+          ],
+          "rows": 3
+        },
+        "arrays.error": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              67
+            ],
+            "criteria": [
+              2
+            ],
+            "e": [
+              2,
+              67,
+              67
+            ]
+          }
+        },
+        "analyses.case_alabama67.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "disclosure_rate",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source"
+          ]
+        },
+        "analyses.case_alabama67.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 67
+        },
+        "analyses.case_alabama67.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk"
+          ],
+          "rows": 2
+        }
+      },
+      "sha256": "8159e3af5defdc63336bcea183913bff91cc70ad0910bfba2e08bedc7011171c",
+      "bytes": 87271,
+      "twin": "data/released/case-alabama.js",
+      "twin_sha256": "70bdace8bc3d227d5e523207491c8af5da5c28a6b224652d96182683dd727c65",
+      "twin_bytes": 87347
+    },
+    "case-cde.json": {
+      "key": "case-cde",
+      "path": "data/released/case-cde.json",
+      "title": "California chronic absence: 12 schools",
+      "level": "school",
+      "runtime_asset": true,
+      "license_scope": "cde-source-conditions",
+      "attribution": "Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 (https://www.cde.ca.gov/ta/ac/cm/chronicdatafiles.asp), as adapted in postrank 1.1.0 (pr_case_cde). CDE source conditions apply (https://www.cde.ca.gov/re/di/cr/index.asp); the data are not relicensed.",
+      "change_notice": "Changes: a deliberately spread 12-school teaching subset of the 5,834 eligible schools; oriented target theta = -p (negative chronic-absence probability); posterior means, 90% marginal intervals and comparison probabilities from the case study's empirical-Bayes model (statewide prior not refitted); fixed reports, the archived statewide summary rows and the archived 12-school analysis as stored in postrank 1.1.0; numbers with 15 significant digits. Raw CDE files, full source tables, logos and the statewide pairwise matrix are not included.",
+      "notice": "No CDE endorsement is implied. No CDE logos or Dashboard figures are used.",
+      "sources": [
+        {
+          "object": "pr_case_cde",
+          "path": "postrank 1.1.0 data/pr_case_cde.rda",
+          "fields": "units, input (e, summaries), reference (actions, metrics, settings, statewide$metrics), provenance (text fields)"
+        },
+        {
+          "object": "case_cde_12",
+          "path": "inst/extdata/cached/case_cde_12.rds",
+          "reader": "load_or_compute(\"case_cde_12\")"
+        }
+      ],
+      "upstream": {
+        "source": "California Department of Education, 2026 California School Dashboard chronic absenteeism downloadable data (academic year 2025–26)",
+        "terms": "CDE source conditions (https://www.cde.ca.gov/re/di/cr/index.asp); not relicensed; see postrank 1.1.0 inst/extdata/case-studies/DATA-NOTICE.md",
+        "fields": [
+          "tables.units.cds_id",
+          "tables.units.chronic_absent_count",
+          "tables.units.eligible_count",
+          "tables.units.observed_rate"
+        ]
+      },
+      "primary": "tables.units",
+      "fields": [
+        "label",
+        "cds_id",
+        "chronic_absent_count",
+        "eligible_count",
+        "observed_rate",
+        "observed_rate_group",
+        "denominator_group",
+        "mean",
+        "lower",
+        "upper"
+      ],
+      "rows": 12,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "n",
+            "M",
+            "criterion",
+            "target",
+            "orientation",
+            "interval_level",
+            "intervals",
+            "conditioning",
+            "source_frame",
+            "selection_rule",
+            "scientific_scope",
+            "source_version",
+            "reference_settings",
+            "statewide_schools",
+            "statewide_M",
+            "statewide_interpretation"
+          ]
+        },
+        "tables.units": {
+          "kind": "table",
+          "fields": [
+            "label",
+            "cds_id",
+            "chronic_absent_count",
+            "eligible_count",
+            "observed_rate",
+            "observed_rate_group",
+            "denominator_group",
+            "mean",
+            "lower",
+            "upper"
+          ],
+          "rows": 12
+        },
+        "tables.reports": {
+          "kind": "table",
+          "fields": [
+            "label",
+            "all_withheld",
+            "observed_rate_tertiles",
+            "posterior_mean_tertiles"
+          ],
+          "rows": 12
+        },
+        "tables.report_metrics": {
+          "kind": "table",
+          "fields": [
+            "method",
+            "G",
+            "N",
+            "M",
+            "E",
+            "risk"
+          ],
+          "rows": 3
+        },
+        "tables.statewide": {
+          "kind": "table",
+          "fields": [
+            "action_id",
+            "method",
+            "order_name",
+            "M",
+            "N",
+            "E",
+            "N_over_M",
+            "E_over_M",
+            "E_over_N",
+            "risk",
+            "tau",
+            "grade_cap",
+            "grade_count",
+            "risk_lower_bound",
+            "absolute_relaxation_gap",
+            "action_family",
+            "selected_grade_sizes"
+          ],
+          "rows": 6
+        },
+        "arrays.error": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              12
+            ],
+            "criteria": [
+              1
+            ],
+            "e": [
+              1,
+              12,
+              12
+            ]
+          }
+        },
+        "analyses.case_cde_12.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "disclosure_rate",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source"
+          ]
+        },
+        "analyses.case_cde_12.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 12
+        },
+        "analyses.case_cde_12.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk"
+          ],
+          "rows": 1
+        }
+      },
+      "sha256": "30775675a41aace037960472593701621d404aa22e08e5f742adb50e7c41d48b",
+      "bytes": 11026,
+      "twin": "data/released/case-cde.js",
+      "twin_sha256": "d6e778b0894542df421c328a2d8524df2591d0dcae441e93db002a2585976cd8",
+      "twin_bytes": 11098
+    },
+    "case-krw.json": {
+      "key": "case-krw",
+      "path": "data/released/case-krw.json",
+      "title": "KRW firms: 97 firms, race and gender contact gaps",
+      "level": "firm",
+      "runtime_asset": true,
+      "license_scope": "cc-by-nc-krw",
+      "attribution": "Data: Kline, Rose and Walters (2024), A Discrimination Report Card, American Economic Review, doi:10.1257/aer.20230700; deposit: Kline, Rose and Walters, Data and Code for: A Discrimination Report Card, AEA/ICPSR E198284V1, doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no licence version stated); recomputed by postrank 1.1.0 (pr_case_krw).",
+      "change_notice": "Changes: fixed 97-firm extraction; continuous midpoint-cell comparison probabilities and matching central 90% marginal intervals (postrank adaptation of KRW's posterior grids); KRW's published single-criterion cards and their archive metrics; the common grade over race and gender recomputed by postrank; numbers with 15 significant digits. Full posterior grids and research files are not included.",
+      "notice": "Noncommercial use only (CC-BY-NC). No endorsement by the original authors is implied. The data describe KRW's correspondence experiment, not any firm's current conduct.",
+      "sources": [
+        {
+          "object": "pr_case_krw",
+          "path": "postrank 1.1.0 data/pr_case_krw.rda",
+          "fields": "units, input (e, summaries, targets), reference$single_criterion (grade, archive_metrics, cell_metrics), reference$signed_core$settings, provenance (text fields)"
+        },
+        {
+          "object": "case_krw_signed97",
+          "path": "inst/extdata/cached/case_krw_signed97.rds",
+          "reader": "load_or_compute(\"case_krw_signed97\")"
+        }
+      ],
+      "upstream": {
+        "source": "Kline, Rose and Walters (2024) replication deposit E198284V1 (firm names, industry codes, estimates and SEs; published cards)",
+        "terms": "CC-BY-NC as stated by the deposit README (no version); noncommercial; see postrank 1.1.0 inst/extdata/case-studies/DATA-NOTICE.md",
+        "fields": [
+          "tables.units.firm_id",
+          "tables.units.firm_name",
+          "tables.units.industry",
+          "tables.units.race_estimate",
+          "tables.units.race_se",
+          "tables.units.gender_estimate",
+          "tables.units.gender_se",
+          "tables.reports.race_card",
+          "tables.reports.gender_card"
+        ]
+      },
+      "primary": "tables.units",
+      "fields": [
+        "id",
+        "firm_id",
+        "firm_name",
+        "industry",
+        "race_estimate",
+        "race_se",
+        "gender_estimate",
+        "gender_se",
+        "mean_race",
+        "lower_race",
+        "upper_race",
+        "mean_gender",
+        "lower_gender",
+        "upper_gender"
+      ],
+      "rows": 97,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "n",
+            "M",
+            "criteria",
+            "targets",
+            "orientation",
+            "interval_level",
+            "intervals",
+            "conditioning",
+            "selection_rule",
+            "source_version",
+            "card_lambda",
+            "card_tau",
+            "card_scope",
+            "card_caption",
+            "common_settings"
+          ]
+        },
+        "tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "firm_id",
+            "firm_name",
+            "industry",
+            "race_estimate",
+            "race_se",
+            "gender_estimate",
+            "gender_se",
+            "mean_race",
+            "lower_race",
+            "upper_race",
+            "mean_gender",
+            "lower_gender",
+            "upper_gender"
+          ],
+          "rows": 97
+        },
+        "tables.reports": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "race_card",
+            "gender_card"
+          ],
+          "rows": 97
+        },
+        "tables.card_metrics": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "lambda",
+            "policy_tau",
+            "N",
+            "M",
+            "E",
+            "DR",
+            "tau_bar",
+            "s",
+            "conditional_DR",
+            "G",
+            "grade_sizes",
+            "archive_risk"
+          ],
+          "rows": 2
+        },
+        "tables.card_evaluation": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "risk",
+            "E",
+            "N",
+            "M",
+            "G",
+            "tau"
+          ],
+          "rows": 2
+        },
+        "arrays.error": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              97
+            ],
+            "criteria": [
+              2
+            ],
+            "e": [
+              2,
+              97,
+              97
+            ]
+          }
+        },
+        "analyses.case_krw_signed97.facts": {
+          "kind": "facts",
+          "fields": [
+            "class",
+            "tau",
+            "G_max",
+            "exact_G",
+            "q",
+            "objective",
+            "weights",
+            "n",
+            "M",
+            "N",
+            "G",
+            "sizes",
+            "disclosure_rate",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source"
+          ]
+        },
+        "analyses.case_krw_signed97.tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "grade"
+          ],
+          "rows": 97
+        },
+        "analyses.case_krw_signed97.tables.profile": {
+          "kind": "table",
+          "fields": [
+            "criterion",
+            "weight",
+            "E",
+            "E_over_M",
+            "E_over_N",
+            "risk"
+          ],
+          "rows": 2
+        }
+      },
+      "sha256": "0521785d71dcc2d29951f9341678eaadd476b21f9eef066569b27a6aedd769f2",
+      "bytes": 359981,
+      "twin": "data/released/case-krw.js",
+      "twin_sha256": "e13df8136511fbfaa42e5932bd453437fe73c4e67e016115349efc00373f6222",
+      "twin_bytes": 360053
+    },
+    "cde-taupath.json": {
+      "key": "cde-taupath",
+      "path": "data/released/cde-taupath.json",
+      "title": "California chronic absence: the tau path of the 12-school problem",
+      "level": "school",
+      "runtime_asset": true,
+      "license_scope": "cde-source-conditions",
+      "attribution": "Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 (https://www.cde.ca.gov/ta/ac/cm/chronicdatafiles.asp), as adapted in postrank 1.1.0 (pr_case_cde). CDE source conditions apply (https://www.cde.ca.gov/re/di/cr/index.asp); the data are not relicensed.",
+      "change_notice": "Changes: the 12-school teaching problem of postrank 1.1.0 (pr_case_cde$input, comparison probabilities from the case study's empirical-Bayes model) solved again with postrank 1.1.0 and the HiGHS backend (threads 1) at 13 values of tau with at most 3 grades; grade sizes, disclosures, expected wrong directions, risk, solver status, bound and gap per tau; numbers with 15 significant digits. No new model, data or statewide solve.",
+      "notice": "No CDE endorsement is implied. No CDE logos or Dashboard figures are used.",
+      "sources": [
+        {
+          "object": "pr_case_cde",
+          "path": "postrank 1.1.0 data/pr_case_cde.rda",
+          "fields": "input (e, entity_ids, criterion_ids)"
+        },
+        {
+          "object": "postrank()",
+          "path": "postrank 1.1.0 postrank() with backend highs 1.12.0.3",
+          "fields": "grades, risk, lower bound, gap, status"
+        }
+      ],
+      "upstream": {
+        "source": "California Department of Education, 2026 California School Dashboard chronic absenteeism downloadable data (academic year 2025–26)",
+        "terms": "CDE source conditions (https://www.cde.ca.gov/re/di/cr/index.asp); not relicensed; see postrank 1.1.0 inst/extdata/case-studies/DATA-NOTICE.md",
+        "fields": [
+          "tables.path.N",
+          "tables.path.E",
+          "tables.path.risk",
+          "arrays.grades.grade"
+        ]
+      },
+      "primary": "tables.path",
+      "fields": [
+        "tau",
+        "tau_source",
+        "G",
+        "sizes",
+        "N",
+        "E",
+        "E_over_N",
+        "risk",
+        "lower_bound",
+        "gap",
+        "status",
+        "bound_source",
+        "result_label"
+      ],
+      "rows": 13,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "n",
+            "M",
+            "criterion",
+            "weights",
+            "G_max",
+            "family",
+            "objective",
+            "interval_level",
+            "backend",
+            "backend_version",
+            "strategy",
+            "control",
+            "call",
+            "tau_grid",
+            "tau_named",
+            "tau_named_note",
+            "label",
+            "breakpoints",
+            "breakpoint_note",
+            "ids"
+          ]
+        },
+        "tables.path": {
+          "kind": "table",
+          "fields": [
+            "tau",
+            "tau_source",
+            "G",
+            "sizes",
+            "N",
+            "E",
+            "E_over_N",
+            "risk",
+            "lower_bound",
+            "gap",
+            "status",
+            "bound_source",
+            "result_label"
+          ],
+          "rows": 13
+        },
+        "arrays.grades": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              12
+            ],
+            "grade": [
+              13,
+              12
+            ]
+          }
+        }
+      },
+      "sha256": "427914cff1ebf38b613266d3539affe1fb19990076833cb9637fd82574f95777",
+      "bytes": 5433,
+      "twin": "data/released/cde-taupath.js",
+      "twin_sha256": "e7fcfe18bc4ef2706e0b30ee7f95541ee0d7d39ad57d55653b61346166a6a608",
+      "twin_bytes": 5508
+    },
+    "census-geojson.json": {
+      "key": "census-geojson",
+      "path": "data/released/census-geojson.json",
+      "title": "Alabama county boundaries (GeoJSON)",
+      "level": "county",
+      "runtime_asset": true,
+      "license_scope": "public-domain-census",
+      "attribution": "County boundaries: U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20m), via usmapdata 1.1.0.",
+      "change_notice": "Changes: Alabama's 67 counties from usmapdata 1.1.0 (extdata/2025/us_counties.gpkg); reprojected from NAD27 / US National Atlas Equal Area to longitude and latitude; simplified with rmapshaper (keep 0.5, shapes and shared borders kept); coordinates rounded to 4 decimals; rings wound for d3-geo.",
+      "notice": "U.S. federal government work, public domain (17 U.S.C. 105). The usmapdata package code is GPL-3; the geometry is Census data.",
+      "sources": [
+        {
+          "object": "us_counties",
+          "path": "usmapdata 1.1.0 extdata/2025/us_counties.gpkg",
+          "fields": "fips, county, geom (Alabama)"
+        }
+      ],
+      "upstream": {
+        "source": "U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20,000,000), counties, as stored in the R package usmapdata",
+        "terms": "public domain (17 U.S.C. 105); no licence required; source line kept",
+        "fields": [
+          "features.fips",
+          "features.name",
+          "features.geometry"
+        ]
+      },
+      "primary": "features",
+      "fields": [
+        "fips",
+        "name"
+      ],
+      "rows": 67,
+      "structure": {
+        "features": {
+          "kind": "features",
+          "fields": [
+            "fips",
+            "name"
+          ],
+          "rows": 67,
+          "geometry": [
+            "MultiPolygon"
+          ]
+        },
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "count",
+            "crs",
+            "source_crs",
+            "simplification",
+            "precision",
+            "winding",
+            "join"
+          ]
+        }
+      },
+      "sha256": "683ef64a6f290cbe8b47ee96c83ce996c85c300a2c6bdb5e4e28370424a45650",
+      "bytes": 26040,
+      "twin": "data/released/census-geojson.js",
+      "twin_sha256": "2e4972d63860cc2234da56be024779a4795d512b73d7168f5cb1019f735b7b08",
+      "twin_bytes": 26118
+    },
+    "krw-lambda-grid.json": {
+      "key": "krw-lambda-grid",
+      "path": "data/released/krw-lambda-grid.json",
+      "title": "KRW lambda grid: grades of the 97 firms at 101 values of lambda",
+      "level": "firm",
+      "runtime_asset": true,
+      "license_scope": "cc-by-nc-krw",
+      "attribution": "Data: Kline, Rose and Walters (2024), A Discrimination Report Card, American Economic Review, doi:10.1257/aer.20230700; deposit: Kline, Rose and Walters, Data and Code for: A Discrimination Report Card, AEA/ICPSR E198284V1, doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no licence version stated); cards computed with KRW's code (KRW replication companion) under KRW's archived pair probabilities; joined to pr_case_krw (postrank 1.1.0) by row position.",
+      "change_notice": "Changes: grades per firm at 101 values of KRW's lambda (0 to 1 by .01), computed with KRW's code in the KRW companion (dump/ranking_results_log_dif_binary_race.csv and _gender.csv) under KRW's archived pair probabilities; matched to pr_case_krw by row position and checked by estimate and SE; the companion's posterior summaries are not included. KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances).",
+      "notice": "Noncommercial use only (CC-BY-NC). No endorsement by the original authors is implied. The data describe KRW's correspondence experiment, not any firm's current conduct.",
+      "sources": [
+        {
+          "object": "KRW lambda grid",
+          "path": "KRW-2024-companion-public dump/ranking_results_log_dif_binary_race.csv",
+          "fields": "est, se, grades_lamb0.0 ... grades_lamb1"
+        },
+        {
+          "object": "KRW lambda grid",
+          "path": "KRW-2024-companion-public dump/ranking_results_log_dif_binary_gender.csv",
+          "fields": "est, se, grades_lamb0.0 ... grades_lamb1"
+        }
+      ],
+      "upstream": {
+        "source": "Kline, Rose and Walters (2024) deposit E198284V1: KRW's grade code run on KRW's archived pair probabilities (KRW companion dump)",
+        "terms": "CC-BY-NC as stated by the deposit (no version); KRW-derived values, not covered by the companion repository's code licence",
+        "fields": [
+          "tables.firms.race_estimate",
+          "tables.firms.race_se",
+          "tables.firms.gender_estimate",
+          "tables.firms.gender_se",
+          "arrays.race.grade",
+          "arrays.gender.grade"
+        ]
+      },
+      "primary": "tables.firms",
+      "fields": [
+        "position",
+        "id",
+        "race_estimate",
+        "race_se",
+        "gender_estimate",
+        "gender_se"
+      ],
+      "rows": 97,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "lambda",
+            "tau",
+            "count",
+            "card_lambda",
+            "tau_range",
+            "join",
+            "orientation",
+            "caption"
+          ]
+        },
+        "tables.firms": {
+          "kind": "table",
+          "fields": [
+            "position",
+            "id",
+            "race_estimate",
+            "race_se",
+            "gender_estimate",
+            "gender_se"
+          ],
+          "rows": 97
+        },
+        "arrays.race": {
+          "kind": "array",
+          "members": {
+            "grade": [
+              101,
+              97
+            ]
+          }
+        },
+        "arrays.gender": {
+          "kind": "array",
+          "members": {
+            "grade": [
+              101,
+              97
+            ]
+          }
+        }
+      },
+      "sha256": "cf74277caf3917c27fa9e04b3b272b6649e046f5d23ed2feacad47a59264d920",
+      "bytes": 51614,
+      "twin": "data/released/krw-lambda-grid.js",
+      "twin_sha256": "f9a23139a471a5b4d253dcbb7e99275095e9c7eaf9c5ca1034043c658523997c",
+      "twin_bytes": 51693
+    },
+    "m4-tie-law.json": {
+      "key": "m4-tie-law",
+      "path": "data/released/m4-tie-law.json",
+      "title": "The vignette m4 tie law: two units with a latent tie",
+      "level": "synthetic",
+      "runtime_asset": false,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Rebuilt with the vignette's constructor and evaluated with postrank 1.1.0 (postrank_tie_pairwise, postrank_tie_evaluate); weak-loss risks computed from the listed law; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "vignette m4 law",
+          "path": "postrank 1.1.0 vignettes/m4-ties-and-withholding.Rmd (states, masses)",
+          "fields": "postrank_tie_pairwise() b, t, d; postrank_tie_evaluate() at tau = .25"
+        }
+      ],
+      "primary": "tables.states",
+      "fields": [
+        "state",
+        "A",
+        "B",
+        "mass",
+        "probability"
+      ],
+      "rows": 3,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "description",
+            "tau",
+            "n",
+            "M",
+            "loss"
+          ]
+        },
+        "tables.states": {
+          "kind": "table",
+          "fields": [
+            "state",
+            "A",
+            "B",
+            "mass",
+            "probability"
+          ],
+          "rows": 3
+        },
+        "tables.actions": {
+          "kind": "table",
+          "fields": [
+            "action",
+            "grade_A",
+            "grade_B",
+            "weak_risk",
+            "neutral_risk",
+            "R0",
+            "N",
+            "D",
+            "T",
+            "E_over_N",
+            "E_over_D"
+          ],
+          "rows": 3
+        },
+        "arrays.tie": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              2
+            ],
+            "criteria": [
+              1
+            ],
+            "b": [
+              1,
+              2,
+              2
+            ],
+            "t": [
+              1,
+              2,
+              2
+            ],
+            "d": [
+              1,
+              2,
+              2
+            ]
+          }
+        }
+      },
+      "sha256": "8c62a9a489d743288dd9731048c361916e2ddf26e9aa64bdd011bdccc21031bd",
+      "bytes": 1450,
+      "twin": "data/released/m4-tie-law.js",
+      "twin_sha256": "e067dbc47e70613ecf1d93ec5975890c129ab54a0399dc7051a01a73051e0bc5",
+      "twin_bytes": 1524
+    },
+    "six-sites.json": {
+      "key": "six-sites",
+      "path": "data/released/six-sites.json",
+      "title": "Six fictional sites: Gaussian law and error arrays for scores A and B",
+      "level": "synthetic",
+      "runtime_asset": false,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Extracted from postrank 1.1.0 (data objects and cached analyses read with load_or_compute()); only the fields the course shows; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "pr_tutorial",
+          "path": "postrank 1.1.0 data/pr_tutorial.rda",
+          "fields": "units, law (means, covariance), one$e, two$e"
+        }
+      ],
+      "primary": "tables.units",
+      "fields": [
+        "id",
+        "label",
+        "mean_A",
+        "sd_A",
+        "mean_B",
+        "sd_B"
+      ],
+      "rows": 6,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "description",
+            "conditioning",
+            "direction",
+            "units",
+            "n",
+            "M",
+            "criteria"
+          ]
+        },
+        "tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "label",
+            "mean_A",
+            "sd_A",
+            "mean_B",
+            "sd_B"
+          ],
+          "rows": 6
+        },
+        "arrays.one": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              6
+            ],
+            "criteria": [
+              1
+            ],
+            "e": [
+              1,
+              6,
+              6
+            ]
+          }
+        },
+        "arrays.two": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              6
+            ],
+            "criteria": [
+              2
+            ],
+            "e": [
+              2,
+              6,
+              6
+            ]
+          }
+        }
+      },
+      "sha256": "32cec8e7136c0a0a5f56b54edb9b1fd84f0be7d09ec717eab8e7903b87a34c80",
+      "bytes": 3274,
+      "twin": "data/released/six-sites.js",
+      "twin_sha256": "092784fddbba693b221b109939235cb34b303864ba874792378321a1986906b9",
+      "twin_bytes": 3347
+    },
+    "thirty-draws.json": {
+      "key": "thirty-draws",
+      "path": "data/released/thirty-draws.json",
+      "title": "Thirty fictional sites: summaries of 4,000 posterior draws",
+      "level": "synthetic",
+      "runtime_asset": false,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Extracted from postrank 1.1.0 (data objects and cached analyses read with load_or_compute()); only the fields the course shows; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "pr_example_draws",
+          "path": "postrank 1.1.0 data/pr_example_draws.rda",
+          "fields": "joint_draws$tensor (summaries only)"
+        },
+        {
+          "object": "analysis_30x3",
+          "path": "inst/extdata/cached/analysis_30x3.rds",
+          "fields": "pairwise$e (draw error array)"
+        }
+      ],
+      "primary": "tables.units",
+      "fields": [
+        "id",
+        "mean_poverty",
+        "sd_poverty",
+        "q05_poverty",
+        "q95_poverty",
+        "mean_frl",
+        "sd_frl",
+        "q05_frl",
+        "q95_frl",
+        "mean_snap",
+        "sd_snap",
+        "q05_snap",
+        "q95_snap"
+      ],
+      "rows": 30,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "description",
+            "draws",
+            "n",
+            "M",
+            "criteria",
+            "quantiles"
+          ]
+        },
+        "tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "mean_poverty",
+            "sd_poverty",
+            "q05_poverty",
+            "q95_poverty",
+            "mean_frl",
+            "sd_frl",
+            "q05_frl",
+            "q95_frl",
+            "mean_snap",
+            "sd_snap",
+            "q05_snap",
+            "q95_snap"
+          ],
+          "rows": 30
+        },
+        "arrays.draws": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              30
+            ],
+            "criteria": [
+              3
+            ],
+            "e": [
+              3,
+              30,
+              30
+            ]
+          }
+        }
+      },
+      "sha256": "9f63bdb7c0f7c2ff8f70c38e3bb5c772f7f23852be2926eddc6e438de5592d04",
+      "bytes": 27553,
+      "twin": "data/released/thirty-draws.js",
+      "twin_sha256": "3bac250af437f6de69667a0e3d5d69b66c26cee08a2fe90099c7a5001ba4c524",
+      "twin_bytes": 27629
+    },
+    "thirty-sites.json": {
+      "key": "thirty-sites",
+      "path": "data/released/thirty-sites.json",
+      "title": "Thirty fictional sites: known Gaussian law and its error array",
+      "level": "synthetic",
+      "runtime_asset": true,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Extracted from postrank 1.1.0 (data objects and cached analyses read with load_or_compute()); only the fields the course shows; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "pr_example_gaussian",
+          "path": "postrank 1.1.0 data/pr_example_gaussian.rda",
+          "fields": "means, source$covariance (diagonal), e"
+        }
+      ],
+      "primary": "tables.units",
+      "fields": [
+        "id",
+        "mean_poverty",
+        "sd_poverty",
+        "mean_frl",
+        "sd_frl",
+        "mean_snap",
+        "sd_snap"
+      ],
+      "rows": 30,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "description",
+            "n",
+            "M",
+            "criteria"
+          ]
+        },
+        "tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "mean_poverty",
+            "sd_poverty",
+            "mean_frl",
+            "sd_frl",
+            "mean_snap",
+            "sd_snap"
+          ],
+          "rows": 30
+        },
+        "arrays.gaussian": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              30
+            ],
+            "criteria": [
+              3
+            ],
+            "e": [
+              3,
+              30,
+              30
+            ]
+          }
+        }
+      },
+      "sha256": "1a7516c8d2039dd7ca0e04184caaaf9b89385f83c9764ea11a8a28d935052467",
+      "bytes": 52707,
+      "twin": "data/released/thirty-sites.js",
+      "twin_sha256": "39a3de3d56d9dff875592751bfeff8bc820bc3cd9f772b48c9ba9372c515c320",
+      "twin_bytes": 52783
+    },
+    "toy-joint-draws.json": {
+      "key": "toy-joint-draws",
+      "path": "data/released/toy-joint-draws.json",
+      "title": "The package toy's 32 complete joint states",
+      "level": "synthetic",
+      "runtime_asset": true,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Extracted the complete 32 by 3 by 2 tensor from the public postrank 1.1.0 example, checked against postrank_toy. Values and whole-state order retained; existing coefficient and summary assets unchanged.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "postrank_toy$joint_draws$tensor",
+          "path": "postrank 1.1.0 inst/examples/synthetic-iid.json",
+          "sha256": "fcecaa12ad927033d21408ee66452148c3071d7d597a92b9bb253de0d3a74136",
+          "fields": "joint_draws.tensor.values, entity_ids, criterion_ids, joint_draws.draw_index"
+        }
+      ],
+      "primary": "tables.draws",
+      "fields": ["draw", "source_draw_id"],
+      "rows": 32,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": ["description", "draws", "n", "K", "M", "seed", "axis_order", "source_sha256", "precision", "conditioning"]
+        },
+        "tables.draws": {
+          "kind": "table",
+          "fields": ["draw", "source_draw_id"],
+          "rows": 32
+        },
+        "arrays.joint": {
+          "kind": "array",
+          "members": {
+            "ids": [3],
+            "criteria": [2],
+            "values": [32, 3, 2]
+          }
+        }
+      },
+      "sha256": "efd97e4e1398a9475305c799e89287bfc3406326f36b384b7a9ecdfd54aefe2a",
+      "bytes": 6120,
+      "twin": "data/released/toy-joint-draws.js",
+      "twin_sha256": "af040c3682098f9d73cebfd12538a1583544434ff80fe633fd9c1c326ee5169f",
+      "twin_bytes": 6199
+    },
+    "toy-mcmc.json": {
+      "key": "toy-mcmc",
+      "path": "data/released/toy-mcmc.json",
+      "title": "pr_toy_mcmc: a slowly mixing two-state chain and its diagnostics",
+      "level": "synthetic",
+      "runtime_asset": false,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Chain states derived from the array (the array follows from them); diagnostics computed with postrank 1.1.0 and the posterior package; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "pr_toy_mcmc",
+          "path": "postrank 1.1.0 data/pr_toy_mcmc.rda"
+        },
+        {
+          "object": "vignette m6 diagnostic call",
+          "path": "postrank 1.1.0 vignettes/m6-monte-carlo-uncertainty.Rmd",
+          "fields": "postrank_draws(regime = \"mcmc\", chains = 4); postrank_diagnose() pair A, B on k1 and the fixed report (1, 2, 3), weights .6/.4, tau .25"
+        }
+      ],
+      "primary": "tables.chains",
+      "fields": [
+        "chain",
+        "ones",
+        "mean",
+        "pair_chain_mean"
+      ],
+      "rows": 4,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "description",
+            "transitions",
+            "stationary_p1",
+            "second_eigenvalue",
+            "chains",
+            "draws_per_chain",
+            "draws",
+            "states",
+            "pair",
+            "fixed_report",
+            "known",
+            "reading"
+          ]
+        },
+        "tables.chains": {
+          "kind": "table",
+          "fields": [
+            "chain",
+            "ones",
+            "mean",
+            "pair_chain_mean"
+          ],
+          "rows": 4
+        },
+        "arrays.trace": {
+          "kind": "array",
+          "members": {
+            "states": [
+              4,
+              512
+            ]
+          }
+        }
+      },
+      "sha256": "8bf470a810400df11f4c3214195eae8281742b394b13dba1698804c73410ce20",
+      "bytes": 6117,
+      "twin": "data/released/toy-mcmc.js",
+      "twin_sha256": "22a7d284b967152d6978916f6b56155007f7051eb931fbbd2c4b70f6da60daab",
+      "twin_bytes": 6189
+    },
+    "toy.json": {
+      "key": "toy",
+      "path": "data/released/toy.json",
+      "title": "The package toy: three entities, two criteria, 32 draws",
+      "level": "synthetic",
+      "runtime_asset": false,
+      "license_scope": "author",
+      "attribution": "Synthetic teaching data and results from the postrank 1.1.0 R package (JoonHo Lee; package code MIT). Site data licence CC BY 4.0.",
+      "change_notice": "Extracted from postrank 1.1.0 (data objects and cached analyses read with load_or_compute()); only the fields the course shows; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "postrank_toy",
+          "path": "postrank 1.1.0 data/postrank_toy.rda",
+          "fields": "joint_draws$tensor (summaries only)"
+        },
+        {
+          "object": "toy_analysis",
+          "path": "inst/extdata/cached/toy_analysis.rds",
+          "fields": "pairwise$e"
+        }
+      ],
+      "primary": "tables.units",
+      "fields": [
+        "id",
+        "mean_need_A",
+        "sd_need_A",
+        "mean_need_B",
+        "sd_need_B"
+      ],
+      "rows": 3,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "description",
+            "draws",
+            "seed",
+            "n",
+            "M",
+            "criteria"
+          ]
+        },
+        "tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "mean_need_A",
+            "sd_need_A",
+            "mean_need_B",
+            "sd_need_B"
+          ],
+          "rows": 3
+        },
+        "arrays.draws": {
+          "kind": "array",
+          "members": {
+            "ids": [
+              3
+            ],
+            "criteria": [
+              2
+            ],
+            "e": [
+              2,
+              3,
+              3
+            ]
+          }
+        }
+      },
+      "sha256": "144cdc72e7ea257e91dc701c34715df65f735c6bb0899343b7a812d936f8a8d9",
+      "bytes": 1354,
+      "twin": "data/released/toy.js",
+      "twin_sha256": "303e84340f6134a1fb148474aaba98e3d2e798fd5ab2ca5752ba45ab9c718310",
+      "twin_bytes": 1421
+    }
+  },
+  "precomputed": {
+    "league-30.json": {
+      "key": "league-30",
+      "path": "data/precomputed/league-30.json",
+      "title": "The simulated league of 30 units: truth and the frozen estimates for seed 20261030",
+      "level": "synthetic",
+      "runtime_asset": false,
+      "license_scope": "author",
+      "attribution": "Synthetic league computed for postrank Explorer (JoonHo Lee). Site data licence CC BY 4.0.",
+      "change_notice": "Computed from the course's league specification and seeded stream; frozen once; numbers with 15 significant digits.",
+      "notice": "Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "sources": [
+        {
+          "object": "simulated league",
+          "path": "engine/API.md (Simulated league specification); r-export/_rng.R (seeded stream)"
+        }
+      ],
+      "primary": "tables.units",
+      "fields": [
+        "id",
+        "size",
+        "group",
+        "se",
+        "theta",
+        "rank",
+        "estimate"
+      ],
+      "rows": 30,
+      "structure": {
+        "facts": {
+          "kind": "facts",
+          "fields": [
+            "seed",
+            "n",
+            "specification",
+            "stream",
+            "teaching_posterior"
+          ]
+        },
+        "tables.units": {
+          "kind": "table",
+          "fields": [
+            "id",
+            "size",
+            "group",
+            "se",
+            "theta",
+            "rank",
+            "estimate"
+          ],
+          "rows": 30
+        }
+      },
+      "sha256": "78a0374fe7832d8106f8bbe1d2aa17b37ce0b9ff0ef6a62b89de8c2d12303a9f",
+      "bytes": 3000
+    }
+  },
+  "registry": {
+    "numbers-cases.json": {
+      "key": "numbers-cases",
+      "path": "data/numbers-cases.json",
+      "title": "Number registry: case values",
+      "writer": "r-export/22_case_registry.R",
+      "schema": "numbers/schema.json#/$defs/numbersFile",
+      "license_scope": "mixed",
+      "scope_note": "Each entry carries its own license_scope (one of the five scopes above); mixed is not a licence.",
+      "present": true,
+      "keys": 168,
+      "scopes": {
+        "author": 9,
+        "cc-by-4.0-atlas": 15,
+        "cc-by-nc-krw": 126,
+        "cde-source-conditions": 18
+      },
+      "sha256": "7fce3bbf3b32070959904184b76255b15a2e506b25744bfb2be92fb9e433e088",
+      "bytes": 127324,
+      "check": "sha256, bytes and keys describe the file when this entry was written; they are compared only when the file is present. Rewritten by every run of r-export/22_case_registry.R."
+    },
+    "numbers.json": {
+      "key": "numbers",
+      "path": "data/numbers.json",
+      "title": "Number registry: engine values",
+      "writer": "scripts/build_numbers.mjs",
+      "schema": "numbers/schema.json#/$defs/numbersFile",
+      "license_scope": "mixed",
+      "scope_note": "Each entry carries its own license_scope (one of the five scopes above); mixed is not a licence.",
+      "present": true,
+      "keys": 1242,
+      "scopes": {
+        "author": 1104,
+        "cc-by-4.0-atlas": 4,
+        "cc-by-nc-krw": 93,
+        "cde-source-conditions": 41
+      },
+      "sha256": "3da9c90d4299ec6cb918050170e70f82523d7ae876879a64416b901cba2d7c14",
+      "bytes": 892758,
+      "check": "sha256, bytes and keys describe the file when this entry was written; they are compared only when the file is present. The file is written by scripts/build_numbers.mjs; rerun r-export/22_case_registry.R after rebuilding it."
+    }
+  }
+}

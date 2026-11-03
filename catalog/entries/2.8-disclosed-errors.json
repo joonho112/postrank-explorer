@@ -1,0 +1,85 @@
+{
+  "id": "2.8",
+  "name": "disclosed-errors",
+  "part": "2",
+  "title": "How often are stated directions wrong?",
+  "idea": "E/N is the share of stated directions expected to be wrong, and for the exact best report of a family that can withhold every pair it is at most \u03c4; draws of the true values make it concrete. The chance that every stated direction is right depends on the joint law, beyond these pairwise errors.",
+  "status": "built",
+  "from": "v1 whole \u00b7 v1 G-05 disclosed-errors",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "credit": "Definitions after Kline, Rose and Walters (2024), slides 22 and 25\u201326; finite law after the postrank theory book, chapter 10. Joint-event interpretation after the postrank theory book, chapter 6.",
+  "caption": "Six fictional sites with independent normal latent values and a three-unit finite law; posteriors taken as given, not fitted by postrank.",
+  "presetLabel": "Presets",
+  "presets": [
+    {
+      "id": "start",
+      "label": "Start without draws",
+      "query": "law=six&grades=1,2,3,3,4,5&cap=none&tau=.20&draws=0&seed=1&coupling=0"
+    },
+    {
+      "id": "optimum-draws",
+      "label": "Best report, draws",
+      "query": "law=six&grades=1,2,3,3,4,5&cap=none&tau=.20&draws=100&seed=1&coupling=0"
+    },
+    {
+      "id": "all-withheld",
+      "label": "All withheld",
+      "query": "law=six&grades=1,1,1,1,1,1&cap=none&tau=.20&draws=100&seed=1&coupling=0"
+    },
+    {
+      "id": "finite-112",
+      "label": "Three-unit law",
+      "query": "law=finite&grades=1,1,2&cap=none&tau=.20&draws=100&seed=1&coupling=0"
+    },
+    {
+      "id": "finite-coupled",
+      "label": "Another coupling",
+      "query": "law=finite&grades=1,1,2&cap=none&tau=.20&draws=100&seed=1&coupling=.1"
+    }
+  ],
+  "try": [
+    {
+      "preset": "start",
+      "shows": [
+        "14 of 15",
+        ".0255"
+      ]
+    },
+    {
+      "preset": "optimum-draws",
+      "shows": [
+        "100",
+        ".360",
+        ".0257",
+        ".3576"
+      ]
+    },
+    {
+      "preset": "all-withheld",
+      "shows": [
+        "NA: no disclosure"
+      ]
+    },
+    {
+      "preset": "finite-112",
+      "shows": [
+        "7/40",
+        "1/4",
+        "1/2",
+        "3/4",
+        "13/20"
+      ]
+    },
+    {
+      "preset": "finite-coupled",
+      "shows": [
+        "7/40",
+        "13/20"
+      ]
+    }
+  ],
+  "math": true
+}

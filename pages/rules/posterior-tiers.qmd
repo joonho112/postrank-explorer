@@ -1,0 +1,42 @@
+---
+title: "Tiers and optimised cuts of posterior rankings"
+subtitle: "3.5 · after the postrank theory book, ch. 17, and postrank's fixed-order cuts"
+description: "Comparison of fixed posterior tiers, optimised boundaries and joint report optimisation."
+---
+
+An ordering and a set of grade boundaries impose separate restrictions on a report. Fixed posterior-mean tiers
+choose both by convention. Optimising the boundaries searches all permitted cuts of the specified posterior-mean or
+expected-rank order. For eight units, enumeration also provides the minimum over all feasible reports. Each card
+identifies its search family and disclosure, allowing risk comparisons under a common posterior and withholding cost.
+The larger examples retain the restriction to one order, so their results do not establish an unrestricted optimum.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/posterior-tiers.js"></script>
+<script>window.__prxApp = PRX["posterior-tiers"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Eight units: optimal cuts.** Both orders' cuts state 17 pairs at risk .1455, matching the best of 6,051 reports with at most three grades. Fixed tiers state 21 pairs at risk .1612. This equality between cuts and the joint optimum is a property of these units.
+- **League: fixed tiers.** The tiers state 300 pairs at risk .1731. Optimizing their boundaries states 251 at risk .1581. Every rule uses the same posterior and price, but these reports disclose different amounts.
+- **Thirty sites: rank cuts.** The cuts state 303 pairs at risk .1603, after searching 4,090 contiguous reports. The orders table shows that the two orders need not coincide for their chosen cuts to agree.
+- **Eight units: all reports.** The benchmark expands to 545,835 reports. The reported family determines the scope of the gap for each rule and grade cap.
+
+::: {.callout-note appearance="simple"}
+The tiers are constructed comparators, not optimised reports. When the same order's tiers belong to its cut family, optimising the boundaries cannot raise risk. Joint optimisation can improve further only within the declared family. The guarantee table separates composite and directional objectives; an optimiser for one need not be best for the other. Larger examples have no joint optimum displayed, so their distance from it is unknown.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+w <- c(poverty = 1, frl = 0, snap = 0); s <- postrank_settings(weights = w, tau = .25, G_max = 4L)
+pm <- postrank_cuts(pr_example_gaussian$means[, "poverty"], pr_example_gaussian, s, direction = "descending", method = "posterior_mean")
+c(risk = pm$risk)
+```
+:::
+
+Standalone: [posterior-tiers](../../embed/posterior-tiers.html), for example `?preset=league8-cuts`.
+
+Related applications: [Restrictions imposed by a fixed order](order-misses.qmd), [Restrictions on the report family](../grades/families.qmd).

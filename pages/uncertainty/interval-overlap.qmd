@@ -1,0 +1,55 @@
+---
+title: "Marginal interval overlap and direction probabilities"
+subtitle: "1.11 · two posterior intervals and one direction probability, after Kline, Rose and Walters (2024)"
+description: "Pairwise direction probabilities associated with overlapping marginal credible intervals."
+---
+
+Consider independent normal posterior distributions for A and B with equal standard deviations. The upper figure
+shows their central credible intervals; the lower figure shows the posterior distribution of the difference A − B.
+The standard deviation of the difference is $\sqrt 2$ times the common posterior SD, whereas the sum of the two
+marginal SDs is 2 times that quantity. Interval overlap and the probability of a positive difference consequently
+measure different features of the posterior. A direction can have high posterior probability even when the marginal
+intervals overlap substantially.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/interval-overlap.js"></script>
+<script>window.__prxApp = PRX["interval-overlap"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Just touch, 90%.** The intervals meet at 1.645, and the posterior means are 3.290 posterior SDs apart. The
+  difference has SD 1.414, so they are 2.326 of its SDs apart, and A is very probably the higher: .990.
+- **Just touch, 95%.** Wider intervals touch only farther apart, at 3.920 posterior SDs, so touching 95% intervals correspond to direction probability .997.
+- **Means 2 SDs apart.** The intervals overlap by 1.290 posterior SDs, and the chance that A's true value is larger is
+  still .921.
+- **Means 1 SD apart.** An overlap of 2.290 posterior SDs corresponds to direction probability .760.
+
+::: {.callout-note appearance="simple"}
+When two 90% intervals just touch, A is very probably the higher, .990, for two independent normal posteriors with
+equal SDs (.997 for 95% intervals). With unequal SDs the distance at which the intervals touch and the SD of the
+difference change, and the probability with them. Kline, Rose and Walters (2024, section IV.C and Figure 3) draw a
+credible interval beside each first name, but they grade the names from pairwise posterior probabilities, not from
+whether the intervals overlap.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+Sites D and E of the package's tutorial input have posterior means .15 and −.50 and SD .20 each, 3.250 posterior SDs
+apart: the app at `?gap=3.25` gives the same probability, .989, with intervals that overlap by .040 posterior SDs.
+
+```r
+library(postrank); m <- postrank_posterior_means(pr_tutorial$one, level = .9)
+attr(m, "upper")["E", 1] - attr(m, "lower")["D", 1]   # 0.007941451 = .040 × SD .20: the 90% intervals of D and E overlap
+1 - pr_tutorial$one$e["D", "E", "score_A"]             # 0.9892219: the chance that D is truly higher
+```
+:::
+
+Standalone: [embed/interval-overlap.html](../../embed/interval-overlap.html), for example `?gap=3.25` or
+`?preset=touch95&theme=dark`.
+
+Related applications: [Interval overlap across 435 pairs](overlap-in-the-league.qmd) (1.12) sorts all 435 pairs
+of a league by overlap and direction; [Pairwise posterior direction probabilities](two-units.qmd) (1.8) computes this probability for
+any two means and SDs, and [The matrix of pairwise posterior probabilities](pairwise-matrix.qmd) (1.13) shows it for every pair of a league.

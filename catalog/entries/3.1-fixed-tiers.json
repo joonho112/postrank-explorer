@@ -1,0 +1,96 @@
+{
+  "id": "3.1",
+  "name": "fixed-tiers",
+  "part": "3",
+  "title": "Fixed tiers",
+  "idea": "A quantile-tier rule is a grade report chosen without the posterior, and the posterior still says how many of its stated directions to expect wrong.",
+  "status": "built",
+  "from": "v1 whole · v1 R-01 fixed-tiers",
+  "data": [
+    "engine"
+  ],
+  "credit": "Simulated data; rule definition after the postrank theory book, ch. 17.",
+  "caption": "Thirty simulated units, cut into tiers by their estimates; the chance a direction is wrong comes from a normal posterior (prior mean 0, SD .15).",
+  "presets": [
+    {
+      "id": "three-tiers",
+      "label": "Three tiers",
+      "query": "G=3&tau=.20&outline=0"
+    },
+    {
+      "id": "ten-tiers",
+      "label": "Ten tiers, marks on",
+      "query": "G=10&tau=.20&outline=1"
+    },
+    {
+      "id": "four-tiers",
+      "label": "Four tiers",
+      "query": "G=4&tau=.20&outline=0"
+    },
+    {
+      "id": "tiers2",
+      "label": "Two tiers",
+      "query": "G=2&tau=.20&outline=0"
+    },
+    {
+      "id": "tiers30",
+      "label": "Thirty tiers",
+      "query": "G=30&tau=.20&outline=0"
+    }
+  ],
+  "try": [
+    {
+      "preset": "three-tiers",
+      "shows": [
+        "300",
+        "435",
+        ".690",
+        "51.86",
+        ".173",
+        ".1813"
+      ]
+    },
+    {
+      "preset": "ten-tiers",
+      "shows": [
+        "405",
+        ".931",
+        "89.40",
+        ".221",
+        ".2193",
+        "197",
+        ".802"
+      ]
+    },
+    {
+      "preset": "four-tiers",
+      "shows": [
+        "8, 7, 8, 7",
+        "337",
+        ".775"
+      ]
+    },
+    {
+      "preset": "tiers2",
+      "shows": [
+        "225",
+        ".517"
+      ]
+    },
+    {
+      "preset": "tiers30",
+      "shows": [
+        "435",
+        "102.2"
+      ]
+    },
+    {
+      "query": "G=1&tau=.20&outline=1",
+      "shows": [
+        "NA: no disclosure",
+        ".2000"
+      ]
+    }
+  ],
+  "math": true
+}

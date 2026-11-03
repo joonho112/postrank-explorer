@@ -1,0 +1,95 @@
+{
+  "id": "4.3",
+  "name": "two-scores",
+  "part": "4",
+  "title": "One grade for two scores",
+  "idea": "One grade report for two scores: the weight decides how much each score's wrong directions count, and so which conflicting pairs are stated.",
+  "status": "built",
+  "from": "v2 refill \u00b7 v2 two-scores rebuilt from v1 storyboard P-02",
+  "data": [
+    "data/released/six-sites.json"
+  ],
+  "credit": "On the postrank package's six fictional sites (scores A and B).",
+  "caption": "Six fictional sites; independent Normal posteriors set by hand for teaching; postrank does not fit them.",
+  "presets": [
+    {
+      "id": "equal",
+      "label": "Equal weights",
+      "query": "w=.5&tau=.2&cap=3"
+    },
+    {
+      "id": "nocap",
+      "label": "No cap",
+      "query": "w=.5&tau=.2&cap=all"
+    },
+    {
+      "id": "a-heavy",
+      "label": "A-heavy",
+      "query": "w=.8&tau=.2&cap=3"
+    },
+    {
+      "id": "w100",
+      "label": "Score A only",
+      "query": "w=1"
+    },
+    {
+      "id": "w70",
+      "label": "w .70",
+      "query": "w=.70"
+    },
+    {
+      "id": "w50",
+      "label": "w .50",
+      "query": "w=.50"
+    },
+    {
+      "id": "w0",
+      "label": "Score B only",
+      "query": "w=0"
+    }
+  ],
+  "try": [
+    {
+      "preset": "equal",
+      "shows": [
+        ".0177",
+        ".0267",
+        "9",
+        ".0933"
+      ]
+    },
+    {
+      "preset": "nocap",
+      "shows": [
+        "4,683",
+        "9"
+      ]
+    },
+    {
+      "preset": "a-heavy",
+      "shows": [
+        "12"
+      ]
+    },
+    {
+      "preset": "w100",
+      "shows": [
+        ".237"
+      ]
+    },
+    {
+      "preset": "w70",
+      "shows": [
+        ".115"
+      ]
+    },
+    {
+      "preset": "w0",
+      "shows": [
+        "tied with another report",
+        ".200",
+        ".215"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "3.6",
+  "name": "order-misses",
+  "part": "3",
+  "title": "When the order misses the best report",
+  "idea": "On a three-unit law, for τ above .15 the best cuts of the posterior-mean order miss the best report of all, which a cut of the expected-rank order attains; one example, not a general failing of posterior means.",
+  "status": "built",
+  "from": "v1 view · v1 R-03 posterior-tiers, the chapter 19 example (and v2's posterior-tiers)",
+  "data": [
+    "engine"
+  ],
+  "credit": "Three-unit example after the postrank theory book, ch. 19.",
+  "caption": "Three units with two possible states of their true values; exact probabilities, every report evaluated in this browser.",
+  "presets": [
+    {
+      "id": "tau25",
+      "label": "Mean order: τ .25",
+      "query": "data=tb19&order=mean&rule=pm-cuts&tau=.25&cap=3&opt=cap"
+    },
+    {
+      "id": "rank25",
+      "label": "Expected ranks: τ .25",
+      "query": "data=tb19&order=rank&rule=er-cuts&tau=.25&cap=3&opt=cap"
+    },
+    {
+      "id": "tau30",
+      "label": "Equal risk: τ .30",
+      "query": "data=tb19&order=rank&rule=er-cuts&tau=.30&cap=3&opt=cap"
+    },
+    {
+      "id": "tau50",
+      "label": "Mean order: τ .50",
+      "query": "data=tb19&order=mean&rule=pm-cuts&tau=.50&cap=3&opt=cap"
+    },
+    {
+      "id": "tau10",
+      "label": "Mean order: τ .10",
+      "query": "data=tb19&order=mean&rule=pm-cuts&tau=.10&cap=3&opt=cap"
+    }
+  ],
+  "try": [
+    {
+      "preset": "tau25",
+      "shows": [
+        "7/10",
+        "3/10",
+        ".2500",
+        ".1833"
+      ]
+    },
+    {
+      "preset": "rank25",
+      "shows": [
+        "B, C, A",
+        ".1833"
+      ]
+    },
+    {
+      "preset": "tau30",
+      "shows": [
+        "2/1/2",
+        "3/1/2"
+      ]
+    },
+    {
+      "preset": "tau50",
+      "shows": [
+        ".4000",
+        ".2000"
+      ]
+    },
+    {
+      "preset": "tau10",
+      "shows": [
+        ".1000"
+      ]
+    }
+  ],
+  "math": false
+}

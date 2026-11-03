@@ -1,0 +1,98 @@
+{
+  "id": "4.5",
+  "name": "common-grade-cost",
+  "part": "4",
+  "title": "What each criterion gives up",
+  "idea": "Under a common report, each criterion's risk is at least as high as under its own best report in the same family; the difference is \u0394_k.",
+  "status": "built",
+  "from": "v2 refill \u00b7 v2 common-grade-cost rebuilt from v1 storyboard P-03",
+  "data": [
+    "data/released/six-sites.json",
+    "data/released/cache-30x3.json"
+  ],
+  "credit": "The cost of a common grade is a postrank package concept (vignette m2).",
+  "caption": "Six fictional sites with live error weights, or fixed archived thirty-site analyses from postrank.",
+  "presets": [
+    {
+      "id": "six",
+      "label": "Equal weights",
+      "query": "data=six&w=.5"
+    },
+    {
+      "id": "w100",
+      "label": "Score A only",
+      "query": "data=six&w=1"
+    },
+    {
+      "id": "w70",
+      "label": "w .70",
+      "query": "data=six&w=.70"
+    },
+    {
+      "id": "w50",
+      "label": "w .50",
+      "query": "data=six&w=.50"
+    },
+    {
+      "id": "w0",
+      "label": "Score B only",
+      "query": "data=six&w=0"
+    },
+    {
+      "id": "thirty-35",
+      "label": "Thirty sites, higher price",
+      "query": "data=thirty35&w=.5"
+    },
+    {
+      "id": "thirty-25",
+      "label": "Thirty sites, lower price",
+      "query": "data=thirty25&w=.5"
+    }
+  ],
+  "try": [
+    {
+      "preset": "six",
+      "shows": [
+        ".0490",
+        ".0145"
+      ]
+    },
+    {
+      "preset": "w100",
+      "shows": [
+        ".1481"
+      ]
+    },
+    {
+      "preset": "w70",
+      "shows": [
+        ".0253",
+        ".0563"
+      ]
+    },
+    {
+      "preset": "w0",
+      "shows": [
+        "Two common reports tie",
+        ".1580",
+        ".1697"
+      ]
+    },
+    {
+      "preset": "thirty-35",
+      "shows": [
+        ".4455",
+        ".784",
+        "276"
+      ]
+    },
+    {
+      "preset": "thirty-25",
+      "shows": [
+        ".0895",
+        ".0749",
+        ".1022"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "id": "2.16",
+  "name": "computing-grades",
+  "part": "2",
+  "title": "How the best report is found",
+  "idea": "This browser searches small families report by report, dynamic programming cuts one declared order exactly, and postrank's solver takes the joint problem and reports its status, bound and gap.",
+  "status": "built",
+  "from": "new concept · v1 storyboard P-08; theory book ch. 14; postrank vignette m5 (enumeration, fixed-order DP, MIP with status, bound and gap); picture: family sizes on a log axis, the 0/1 patterns of three units, the dynamic-programming table filling cell by cell, and a HiGHS solve with its incumbent risk, bound, gap and status",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "credit": "After the postrank vignette m5 and the theory book, ch. 14.",
+  "caption": "Family counts and search results computed in this browser. Six fictional sites use the postrank tutorial score-A posterior; the joint solver uses a frozen simulated league. Optimization answers only for its stated family and supplied probabilities.",
+  "presets": [
+    {
+      "id": "dp-complete",
+      "label": "DP: six sites, τ .20",
+      "query": "view=dp&n=6&cap=3&tau=.20&pattern=0&invalid=false&step=15&solverN=20&timeLimit=2"
+    },
+    {
+      "id": "dp-step",
+      "label": "DP: inspect one cell",
+      "query": "view=dp&n=6&cap=3&tau=.20&pattern=0&invalid=false&step=8&solverN=20&timeLimit=2"
+    },
+    {
+      "id": "count-large",
+      "label": "Twelve units",
+      "query": "view=count&n=12&cap=3&tau=.20&pattern=0&invalid=false&step=15&solverN=20&timeLimit=2"
+    },
+    {
+      "id": "invalid-pattern",
+      "label": "A broken binary pattern",
+      "query": "view=encoding&n=6&cap=3&tau=.20&pattern=0&invalid=true&step=15&solverN=20&timeLimit=2"
+    },
+    {
+      "id": "joint-solver",
+      "label": "Joint search: twenty units",
+      "query": "view=solver&n=6&cap=3&tau=.25&pattern=0&invalid=false&step=15&solverN=20&timeLimit=2"
+    }
+  ],
+  "try": [
+    {
+      "preset": "dp-complete",
+      "shows": [
+        ".0417",
+        "603",
+        "16 contiguous reports",
+        "{A, B} > {C, D} > {E, F}"
+      ]
+    },
+    {
+      "preset": "dp-step",
+      "shows": [
+        "8 of 15",
+        "b = 2"
+      ]
+    },
+    {
+      "preset": "count-large",
+      "shows": [
+        "28,091,567,595",
+        "523,251",
+        "67"
+      ]
+    },
+    {
+      "preset": "invalid-pattern",
+      "shows": [
+        "2 > 1",
+        "not transitive"
+      ]
+    },
+    {
+      "preset": "joint-solver",
+      "shows": [
+        "20 league units",
+        ".1750",
+        ".1500"
+      ]
+    }
+  ],
+  "math": true
+}

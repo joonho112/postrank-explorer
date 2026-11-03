@@ -1,0 +1,58 @@
+---
+title: "The error–disclosure frontier"
+subtitle: "2.10 · after the postrank theory book, ch. 16, and Kline, Rose and Walters (2024), slides 58–60"
+description: "The lower convex boundary of expected wrong counts at different levels of disclosure."
+---
+
+Each point represents a report, with its number of stated pairs on the horizontal axis and expected wrong count on
+the vertical axis. A supporting line of slope $\tau$ identifies a report with minimum posterior risk in the
+selected family. The lower convex boundary summarises these choices across withholding costs. Its vertices are
+attained by reports; points within its edges may require mixtures of complete reports. The display distinguishes
+this convex boundary from the minimum error attainable by a single report at each discrete disclosure level.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/frontier.js"></script>
+<script>window.__prxApp = PRX["frontier"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **τ .20, all reports.** The touched vertex states 14 pairs and expects .3576 wrong directions, with risk .0372.
+  The vertex table records this report and its adjacent slopes. The circles below the grey columns mark the smallest error at each attainable
+  disclosure; only some of those circles are corners of the dashed boundary.
+- **τ .15, all reports.** A lower withholding cost selects a smaller disclosure: 13 pairs, .1692 expected wrong directions and risk
+  .0313. The posterior did not change. The smaller slope reduces the loss reduction available from additional disclosure.
+- **τ .40, all reports.** The line reaches the last vertex: 15 stated pairs, .7194 expected wrong directions and
+  risk .0480. This is the strict order. The **Every report (full height)** view gives the full vertical range; the close view resolves reports near the frontier.
+- **τ .20, at most 3 grades.** Only 603 reports are available. The boundary ends at 12 stated pairs and .02477
+  expected wrong directions; the selected report has risk .0417. The missing corners belong to reports outside this
+  family, so they cannot be selected even when withholding becomes costly.
+
+The table's edge slopes are the withholding costs where the selected report changes. They are also the change points
+in *The withholding cost*: each measures the extra expected wrong directions per extra stated pair. When the line
+lies along an edge, both endpoint reports have the same risk.
+
+::: {.callout-note appearance="simple"}
+The dashed segments describe mixtures of complete reports, so a point between corners need not be a deterministic report. These are fictional tutorial sites under one supplied posterior and one criterion. KRW's related
+empirical figure is Figure 6 in Section V.E, “Reporting Possibilities”; the cloud here is computed from the tutorial
+law.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+p <- postrank_frontier(pr_tutorial$one, weights=c(score_A=1), tau=c(.15,.20,.40), G_max=6L, backend="highs")
+p$table[, c("tau", "N", "primary_risk")]
+```
+
+This returns selected reports along a withholding-cost path. It does not compute the convex boundary or the mixtures
+between its vertices.
+:::
+
+Standalone: [embed/frontier.html](../../embed/frontier.html), for example `?tau=.15&family=all&view=near`.
+
+Related applications: [Reporting risk and withholding cost](price-of-silence.qmd) ·
+[The decision for an isolated pair](one-pair.qmd) · [Posterior summaries in a grade report](report-card.qmd).

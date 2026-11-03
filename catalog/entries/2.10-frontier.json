@@ -1,0 +1,71 @@
+{
+  "id": "2.10",
+  "name": "frontier",
+  "part": "2",
+  "title": "The frontier",
+  "idea": "Every report as a point (N, E): the lower hull is the frontier, and \u03c4 is the slope of a line that touches it.",
+  "status": "built",
+  "from": "v1 view \u00b7 v1 G-06 frontier, the hull view",
+  "data": [
+    "data/released/six-sites.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), slides 58\u201360; frontier after the postrank theory book, ch. 16.",
+  "caption": "Six fictional sites from the postrank tutorial, score A only; their normal posteriors are specified for teaching and taken as given. Every report of the family is evaluated in this browser.",
+  "presets": [
+    {
+      "id": "tau20",
+      "label": "\u03c4 .20, all reports",
+      "query": "tau=.20&family=all&view=near"
+    },
+    {
+      "id": "tau15",
+      "label": "\u03c4 .15, all reports",
+      "query": "tau=.15&family=all&view=near"
+    },
+    {
+      "id": "tau40",
+      "label": "\u03c4 .40, all reports",
+      "query": "tau=.40&family=all&view=near"
+    },
+    {
+      "id": "cap3",
+      "label": "\u03c4 .20, at most 3 grades",
+      "query": "tau=.20&family=cap3&view=near"
+    }
+  ],
+  "try": [
+    {
+      "preset": "tau20",
+      "shows": [
+        "14",
+        ".3576",
+        ".0372"
+      ]
+    },
+    {
+      "preset": "tau15",
+      "shows": [
+        "13",
+        ".1692",
+        ".0313"
+      ]
+    },
+    {
+      "preset": "tau40",
+      "shows": [
+        "15",
+        ".7194",
+        ".0480"
+      ]
+    },
+    {
+      "preset": "cap3",
+      "shows": [
+        "603",
+        "12",
+        ".02477",
+        ".0417"
+      ]
+    }
+  ]
+}

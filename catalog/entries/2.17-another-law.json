@@ -1,0 +1,83 @@
+{
+  "id": "2.17",
+  "name": "another-law",
+  "part": "2",
+  "title": "Judging a report under another law",
+  "idea": "A report chosen under one posterior and judged under another can have a different risk; within the same family its regret is at most twice the largest weighted gap between the two laws' pair error probabilities, plus the optimizer's gap.",
+  "status": "built",
+  "from": "new concept \u00b7 v1 storyboard P-11; theory book ch. 16 and 18 (regret under a different law); picture: two posteriors for the same units, a report chosen under one and judged under both, its regret and the bound 2d + \u03b7",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 16 and 18.",
+  "caption": "Six fictional sites, reading score only: two independent normal laws set by hand for teaching. A law is declared for selection and another for evaluation; this comparison does not establish empirical calibration.",
+  "presets": [
+    {
+      "id": "same",
+      "label": "Same laws",
+      "query": "tau=.2&shift=0&scale=1&unit=C&cap=3"
+    },
+    {
+      "id": "move",
+      "label": "Move C upward",
+      "query": "tau=.2&shift=1&scale=1&unit=C&cap=3"
+    },
+    {
+      "id": "spread",
+      "label": "Wider evaluation law",
+      "query": "tau=.2&shift=0&scale=2&unit=C&cap=3"
+    },
+    {
+      "id": "uncapped",
+      "label": "C +.40, no cap",
+      "query": "tau=.2&shift=.4&scale=1&unit=C&cap=none"
+    },
+    {
+      "id": "small",
+      "label": "Small change, new report",
+      "query": "tau=.36&shift=.01&scale=1&unit=C&cap=none"
+    }
+  ],
+  "try": [
+    {
+      "preset": "same",
+      "shows": [
+        ".0417",
+        "0"
+      ]
+    },
+    {
+      "preset": "move",
+      "shows": [
+        ".1360",
+        ".0542",
+        ".0817",
+        "3"
+      ]
+    },
+    {
+      "preset": "spread",
+      "shows": [
+        ".0779",
+        "0"
+      ]
+    },
+    {
+      "preset": "uncapped",
+      "shows": [
+        "+.40",
+        ".0108"
+      ]
+    },
+    {
+      "preset": "small",
+      "shows": [
+        ".0132",
+        "1",
+        ".0008",
+        ".0263"
+      ]
+    }
+  ]
+}

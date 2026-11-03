@@ -1,0 +1,6060 @@
+{
+  "$schema": "./_schema.json",
+  "app": "stability",
+  "catalog": "3.12",
+  "about": "Initial complete draft. Independent base-R R30 composition pins the complete selected reports, own-posterior claims, all relation-change counts and all-rule replay summaries at every shipped setting plus last-pair/maximum-seed/one-grade boundaries. Original matching frozen observation-A source regressions remain.",
+  "cases": [
+    {
+      "id": "inherited-observation-a-cuts",
+      "preset": "cuts",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "about": "Same frozen observation-A posterior-mean cuts, not the source preset selected tier rule.",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.N",
+          "value": 251
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "about": "risk",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.risk",
+          "value": 0.15806797310378426
+        }
+      ]
+    },
+    {
+      "id": "inherited-observation-a-raw",
+      "preset": "raw",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "about": "pairs stated by three tiers",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers3.tau20.N",
+          "value": 300
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "about": "expected wrong directions E",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers3.tau20.E",
+          "value": 51.86392046017462,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "about": "E/N at three significant digits",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers3.tau20.EoverN",
+          "value": 0.17287973486724872
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "about": "expected loss per pair (risk) at tau .20",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers3.tau20.risk",
+          "value": 0.18129636887396466
+        }
+      ]
+    },
+    {
+      "id": "stability-default-seed20261030-r20-cuts-pair1",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.seed1"
+          },
+          "value": 20261030,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.seed2"
+          },
+          "value": 20261031,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.r"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.grade1"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            2,
+            3,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            3,
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            1,
+            2,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation1.N"
+          },
+          "value": 251,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation1.Ew"
+          },
+          "value": 31.9595683001462,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation1.EoverN"
+          },
+          "value": 0.1273289573711,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation1.disclosure"
+          },
+          "value": 0.577011494252874,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation1.risk"
+          },
+          "value": 0.158067973103784,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.grade2"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation2.N"
+          },
+          "value": 152,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation2.Ew"
+          },
+          "value": 9.60324144279219,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation2.EoverN"
+          },
+          "value": 0.0631792200183697,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation2.disclosure"
+          },
+          "value": 0.349425287356322,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.evaluation2.risk"
+          },
+          "value": 0.152191359638603,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.change.nSame"
+          },
+          "value": 264,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.change.nNewDisclosed"
+          },
+          "value": 36,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.change.nNewWithheld"
+          },
+          "value": 135,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.change.changed"
+          },
+          "value": 171,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.cuts.change.changeShare"
+          },
+          "value": 0.393103448275862,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0.424942528735632,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0.570344827586207,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": 0.0951597815542411,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0.422988505747126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": 0.142068350699056,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0.395632183908046,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": 0.136753739097,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "preset": "cuts"
+    },
+    {
+      "id": "stability-default-seed20261030-r20-raw-pair1",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.seed1"
+          },
+          "value": 20261030,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.seed2"
+          },
+          "value": 20261031,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.r"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.grade1"
+          },
+          "value": [
+            2,
+            3,
+            1,
+            2,
+            3,
+            1,
+            3,
+            1,
+            2,
+            1,
+            3,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            3,
+            3,
+            3,
+            1,
+            3,
+            2,
+            1,
+            3,
+            1,
+            2,
+            3,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation1.N"
+          },
+          "value": 300,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation1.Ew"
+          },
+          "value": 51.8639204601746,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation1.EoverN"
+          },
+          "value": 0.172879734867249,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation1.disclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation1.risk"
+          },
+          "value": 0.181296368873965,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.grade2"
+          },
+          "value": [
+            3,
+            3,
+            1,
+            3,
+            3,
+            2,
+            3,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2,
+            3,
+            3,
+            3,
+            2,
+            1,
+            1,
+            3,
+            2,
+            1,
+            1,
+            2,
+            3,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation2.N"
+          },
+          "value": 300,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation2.Ew"
+          },
+          "value": 47.8942618321691,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation2.EoverN"
+          },
+          "value": 0.159647539440564,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation2.disclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.evaluation2.risk"
+          },
+          "value": 0.172170716855561,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.change.nSame"
+          },
+          "value": 244,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.change.nNewDisclosed"
+          },
+          "value": 78,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.change.nNewWithheld"
+          },
+          "value": 78,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.change.nReversed"
+          },
+          "value": 35,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.change.changed"
+          },
+          "value": 191,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.raw.change.changeShare"
+          },
+          "value": 0.439080459770115,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0.424942528735632,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0.570344827586207,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": 0.0951597815542411,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0.422988505747126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": 0.142068350699056,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0.395632183908046,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": 0.136753739097,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "preset": "raw"
+    },
+    {
+      "id": "stability-default-seed20261030-r20-posterior-pair1",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.seed1"
+          },
+          "value": 20261030,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.seed2"
+          },
+          "value": 20261031,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.r"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.grade1"
+          },
+          "value": [
+            2,
+            3,
+            1,
+            2,
+            3,
+            1,
+            2,
+            1,
+            2,
+            1,
+            3,
+            3,
+            1,
+            2,
+            3,
+            2,
+            2,
+            3,
+            3,
+            3,
+            1,
+            2,
+            2,
+            1,
+            3,
+            1,
+            2,
+            3,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation1.N"
+          },
+          "value": 300,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation1.Ew"
+          },
+          "value": 48.3119486189011,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation1.EoverN"
+          },
+          "value": 0.16103982872967,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation1.disclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation1.risk"
+          },
+          "value": 0.17313091636529,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.grade2"
+          },
+          "value": [
+            3,
+            3,
+            1,
+            3,
+            3,
+            2,
+            3,
+            1,
+            2,
+            2,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2,
+            3,
+            3,
+            3,
+            2,
+            1,
+            1,
+            3,
+            1,
+            1,
+            1,
+            2,
+            3,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation2.N"
+          },
+          "value": 300,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation2.Ew"
+          },
+          "value": 46.2062929272289,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation2.EoverN"
+          },
+          "value": 0.154020976424096,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation2.disclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.evaluation2.risk"
+          },
+          "value": 0.168290328568342,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.change.nSame"
+          },
+          "value": 236,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.change.nNewDisclosed"
+          },
+          "value": 81,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.change.nNewWithheld"
+          },
+          "value": 81,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.change.nReversed"
+          },
+          "value": 37,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.change.changed"
+          },
+          "value": 199,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.posterior.change.changeShare"
+          },
+          "value": 0.457471264367816,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0.424942528735632,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0.570344827586207,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": 0.0951597815542411,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0.422988505747126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": 0.142068350699056,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0.395632183908046,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": 0.136753739097,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "query": "?seed=20261030&replays=20&G=3&tau=0.2&priorSd=0.15&rule=post-tiers&pair=1"
+    },
+    {
+      "id": "stability-default-seed20261030-r20-withheld-pair1",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.seed1"
+          },
+          "value": 20261030,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.seed2"
+          },
+          "value": 20261031,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.r"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.grade1"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation1.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation1.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation1.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation1.disclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation1.risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.grade2"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation2.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation2.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation2.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation2.disclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.evaluation2.risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.change.nSame"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.change.nNewDisclosed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.change.nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.0.rules.withheld.change.changeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0.424942528735632,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0.570344827586207,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": 0.0951597815542411,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0.422988505747126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": 0.142068350699056,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0.395632183908046,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": 0.136753739097,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "preset": "silent"
+    },
+    {
+      "id": "stability-default-seed20261030-r20-cuts-pair20",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.seed1"
+          },
+          "value": 20261068,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.seed2"
+          },
+          "value": 20261069,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.r"
+          },
+          "value": 20,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.grade1"
+          },
+          "value": [
+            3,
+            3,
+            1,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2,
+            3,
+            1,
+            2,
+            2,
+            2,
+            3,
+            1,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            3,
+            2,
+            2,
+            3,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation1.N"
+          },
+          "value": 243,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation1.Ew"
+          },
+          "value": 24.5666610230531,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation1.EoverN"
+          },
+          "value": 0.101097370465239,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation1.disclosure"
+          },
+          "value": 0.558620689655172,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation1.risk"
+          },
+          "value": 0.144750944880582,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.grade2"
+          },
+          "value": [
+            2,
+            2,
+            2,
+            3,
+            3,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            3,
+            2,
+            2,
+            3,
+            2,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation2.N"
+          },
+          "value": 183,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation2.Ew"
+          },
+          "value": 12.0377662426692,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation2.EoverN"
+          },
+          "value": 0.0657801434025638,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation2.disclosure"
+          },
+          "value": 0.420689655172414,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.evaluation2.risk"
+          },
+          "value": 0.143535094810734,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.change.nSame"
+          },
+          "value": 230,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.change.nNewDisclosed"
+          },
+          "value": 67,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.change.nNewWithheld"
+          },
+          "value": 127,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.change.nReversed"
+          },
+          "value": 11,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.change.changed"
+          },
+          "value": 205,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "pairs.19.rules.cuts.change.changeShare"
+          },
+          "value": 0.471264367816092,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0.424942528735632,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0.570344827586207,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": 0.0951597815542411,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0.422988505747126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": 0.142068350699056,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0.395632183908046,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": 0.136753739097,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-default-seed20261030-R20",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "query": "?seed=20261030&replays=20&G=3&tau=0.2&priorSd=0.15&rule=pm-cuts&pair=20"
+    },
+    {
+      "id": "stability-low-tau05-cuts-pair1",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.seed1"
+          },
+          "value": 20261030,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.seed2"
+          },
+          "value": 20261031,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.r"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.grade1"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation1.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation1.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation1.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation1.disclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation1.risk"
+          },
+          "value": 0.05,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.grade2"
+          },
+          "value": [
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation2.N"
+          },
+          "value": 83,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation2.Ew"
+          },
+          "value": 2.35761020939086,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation2.EoverN"
+          },
+          "value": 0.0284049422818176,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation2.disclosure"
+          },
+          "value": 0.190804597701149,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.evaluation2.risk"
+          },
+          "value": 0.0458795636997491,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.change.nSame"
+          },
+          "value": 352,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.change.nNewDisclosed"
+          },
+          "value": 83,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.change.nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.change.changed"
+          },
+          "value": 83,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "pairs.0.rules.cuts.change.changeShare"
+          },
+          "value": 0.190804597701149,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0.116666666666667,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0.12551724137931,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": 0.028325836462549,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0.422988505747126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": 0.142068350699056,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0.395632183908046,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": 0.136753739097,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-low-tau05",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "preset": "low-cost"
+    },
+    {
+      "id": "stability-narrow-prior05-cuts-pair1",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.seed1"
+          },
+          "value": 20261030,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.seed2"
+          },
+          "value": 20261031,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.r"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.grade1"
+          },
+          "value": [
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            3,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation1.N"
+          },
+          "value": 107,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation1.Ew"
+          },
+          "value": 12.7643851313438,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation1.EoverN"
+          },
+          "value": 0.119293318984522,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation1.disclosure"
+          },
+          "value": 0.245977011494253,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation1.risk"
+          },
+          "value": 0.180148011796193,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.grade2"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation2.N"
+          },
+          "value": 131,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation2.Ew"
+          },
+          "value": 9.00246922666593,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation2.EoverN"
+          },
+          "value": 0.0687211391348544,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation2.disclosure"
+          },
+          "value": 0.301149425287356,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.evaluation2.risk"
+          },
+          "value": 0.160465446498083,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.change.nSame"
+          },
+          "value": 359,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.change.nNewDisclosed"
+          },
+          "value": 50,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.change.nNewWithheld"
+          },
+          "value": 26,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.change.changed"
+          },
+          "value": 76,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "pairs.0.rules.cuts.change.changeShare"
+          },
+          "value": 0.174712643678161,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0.255632183908046,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0.385632183908046,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": 0.0986053353525567,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0.422988505747126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": 0.229208870211355,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0.392068965517241,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": 0.208009587628188,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-narrow-prior05",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "preset": "narrow"
+    },
+    {
+      "id": "stability-max-seed-wrap-r2-cuts-pair1",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.seed1"
+          },
+          "value": 4294967295,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.seed2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.r"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.grade1"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            2,
+            2,
+            1,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.N"
+          },
+          "value": 227,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.Ew"
+          },
+          "value": 20.4168920757583,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.EoverN"
+          },
+          "value": 0.0899422558403449,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.disclosure"
+          },
+          "value": 0.52183908045977,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.risk"
+          },
+          "value": 0.142567567990249,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.grade2"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            3,
+            2,
+            3,
+            1,
+            2,
+            3,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.N"
+          },
+          "value": 192,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.Ew"
+          },
+          "value": 16.3576276694653,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.EoverN"
+          },
+          "value": 0.0851959774451318,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.disclosure"
+          },
+          "value": 0.441379310344828,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.risk"
+          },
+          "value": 0.14932787969992,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.change.nSame"
+          },
+          "value": 230,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.change.nNewDisclosed"
+          },
+          "value": 78,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.change.nNewWithheld"
+          },
+          "value": 113,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.change.nReversed"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.change.changed"
+          },
+          "value": 205,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.0.rules.cuts.change.changeShare"
+          },
+          "value": 0.471264367816092,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0.401149425287356,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0.490229885057471,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": 0.084279440652016,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0.477011494252874,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": 0.152294274833655,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0.422988505747126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": 0.143837038663584,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "query": "?seed=4294967295&replays=2&G=3&tau=0.2&priorSd=0.15&rule=pm-cuts&pair=1"
+    },
+    {
+      "id": "stability-max-seed-wrap-r2-cuts-pair2",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.seed1"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.seed2"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.r"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.grade1"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            3,
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            1,
+            1,
+            2,
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation1.N"
+          },
+          "value": 243,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation1.Ew"
+          },
+          "value": 24.2848275236684,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation1.EoverN"
+          },
+          "value": 0.0999375618257959,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation1.disclosure"
+          },
+          "value": 0.558620689655172,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation1.risk"
+          },
+          "value": 0.144103051778548,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.grade2"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            3,
+            1,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation2.N"
+          },
+          "value": 191,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation2.Ew"
+          },
+          "value": 10.8310156072777,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation2.EoverN"
+          },
+          "value": 0.0567068879962181,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation2.disclosure"
+          },
+          "value": 0.439080459770115,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.evaluation2.risk"
+          },
+          "value": 0.137082794499489,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.change.nSame"
+          },
+          "value": 291,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.change.nNewDisclosed"
+          },
+          "value": 46,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.change.nNewWithheld"
+          },
+          "value": 98,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.change.changed"
+          },
+          "value": 144,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "pairs.1.rules.cuts.change.changeShare"
+          },
+          "value": 0.331034482758621,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0.401149425287356,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0.490229885057471,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": 0.084279440652016,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0.477011494252874,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": 0.152294274833655,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0.422988505747126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0.689655172413793,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": 0.143837038663584,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-max-seed-wrap-R2",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "query": "?seed=4294967295&replays=2&G=3&tau=0.2&priorSd=0.15&rule=pm-cuts&pair=2"
+    },
+    {
+      "id": "stability-one-grade-r2-cuts-pair1",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.seed1"
+          },
+          "value": 20261030,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.seed2"
+          },
+          "value": 20261031,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.r"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.grade1"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.disclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation1.risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.grade2"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.disclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.evaluation2.risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.change.nSame"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.change.nNewDisclosed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.change.nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.0.rules.cuts.change.changeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "query": "?seed=20261030&replays=2&G=1&tau=0.2&priorSd=0.15&rule=pm-cuts&pair=1"
+    },
+    {
+      "id": "stability-one-grade-r2-raw-pair2",
+      "about": "Independent R30 paired measurement experiment, full selected grade vectors and own-posterior evaluations, all relation counts, and all four rules’ replay summaries.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"seedA\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.seed1"
+          },
+          "value": 20261032,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"seedB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.seed2"
+          },
+          "value": 20261033,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"pair\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.r"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.grade1"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation1.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"a-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation1.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation1.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation1.disclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"a-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation1.risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.grade2"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation2.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"b-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation2.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-EN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation2.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation2.disclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"b-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.evaluation2.risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.change.M"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"same\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.change.nSame"
+          },
+          "value": 435,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newStated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.change.nNewDisclosed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.change.nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changeShare\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "pairs.1.rules.raw.change.changeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.cuts.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.cuts.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-pm-cuts\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.cuts.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.raw.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.raw.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-est-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.raw.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.posterior.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.posterior.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-post-tiers\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.posterior.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-change-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.withheld.meanChangeShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"mean-disclosure-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.withheld.meanDisclosure"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "[data-prx-readout=\"pooled-claim-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3-experiments",
+            "row": "stability-one-grade-R2",
+            "field": "summary.withheld.pooledEoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": 1e-12
+        }
+      ],
+      "query": "?seed=20261030&replays=2&G=1&tau=0.2&priorSd=0.15&rule=est-tiers&pair=2"
+    }
+  ]
+}

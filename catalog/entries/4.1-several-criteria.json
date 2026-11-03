@@ -1,0 +1,79 @@
+{
+  "id": "4.1",
+  "name": "several-criteria",
+  "part": "4",
+  "title": "Units measured on several criteria",
+  "idea": "Units can be ordered differently on different criteria, and each criterion has its own pair probabilities.",
+  "status": "built",
+  "from": "new concept \u00b7 v1 storyboard P-01; postrank vignette m2; picture: the thirty sites on three criteria and the six sites on two scores, with each criterion's posterior intervals, its own order and the pairs whose criteria point opposite ways",
+  "data": [
+    "data/released/thirty-sites.json",
+    "data/released/six-sites.json"
+  ],
+  "credit": "After the postrank vignette m2 and the theory book, ch. 12.",
+  "caption": "Synthetic postrank Normal laws: thirty sites on three criteria or six sites on two scores. Marginal posterior intervals and mean orders, not optimized grades.",
+  "presets": [
+    {
+      "id": "thirty",
+      "label": "Thirty sites",
+      "query": "data=thirty&level=90&order=criterion&pair=auto&unit=auto&orientB=higher"
+    },
+    {
+      "id": "six-bc",
+      "label": "Six sites, B\u2013C",
+      "query": "data=six&level=90&order=criterion&pair=B,C&unit=B&orientB=higher"
+    },
+    {
+      "id": "six-bd",
+      "label": "Six sites, B\u2013D",
+      "query": "data=six&level=90&order=aligned&pair=B,D&unit=B&orientB=higher"
+    },
+    {
+      "id": "reverse-b",
+      "label": "Reverse score B",
+      "query": "data=six&level=90&order=criterion&pair=B,C&unit=B&orientB=lower"
+    },
+    {
+      "id": "interval95",
+      "label": "Wider intervals",
+      "query": "data=thirty&level=95&order=criterion&pair=site001,site002&unit=site001&orientB=higher"
+    }
+  ],
+  "try": [
+    {
+      "preset": "thirty",
+      "shows": [
+        "397",
+        "435"
+      ]
+    },
+    {
+      "preset": "six-bc",
+      "shows": [
+        ".007",
+        ".961",
+        "3"
+      ]
+    },
+    {
+      "preset": "six-bd",
+      "shows": [
+        ".002",
+        ".760"
+      ]
+    },
+    {
+      "preset": "reverse-b",
+      "shows": [
+        ".039"
+      ]
+    },
+    {
+      "preset": "interval95",
+      "shows": [
+        "95%",
+        "397"
+      ]
+    }
+  ]
+}

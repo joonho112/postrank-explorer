@@ -1,0 +1,100 @@
+{
+ "group": "oracle-v3p2-correction",
+ "generator": "r-export/27_v3_part2_correction.R",
+ "uses_postrank": false,
+ "rows": [
+  {
+   "id": "correction-six-AB-drop-C",
+   "args": {
+    "data": "six",
+    "score": "AB",
+    "unit": "C",
+    "tau": 0.2,
+    "cap": "all",
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "means": [
+     [1.2, 0.7],
+     [0.95, 0.4],
+     [0.25, 0.9],
+     [0.15, 0.6],
+     [-0.5, -0.5],
+     [-0.8, -0.7]
+    ],
+    "sds": [
+     [0.2, 0.2],
+     [0.2, 0.2],
+     [0.2, 0.2],
+     [0.2, 0.2],
+     [0.2, 0.2],
+     [0.2, 0.2]
+    ],
+    "w": [0.5, 0.5]
+   },
+   "expect": {
+    "beforeGrade": [1, 1, 1, 1, 2, 3],
+    "afterGrade": [1, 2, 2, 3, 4],
+    "beforeSizes": [4, 1, 1],
+    "afterSizes": [1, 2, 1, 1],
+    "beforeN": 9,
+    "afterN": 9,
+    "beforeRisk": 0.093343186075059,
+    "afterRisk": 0.0745464389411965,
+    "beforeFamilySize": 4683,
+    "afterFamilySize": 541,
+    "commonPairs": 10,
+    "changed": 2,
+    "nSame": 8,
+    "nNewWithheld": 0,
+    "nNewDisclosed": 2,
+    "nReversed": 0,
+    "untouchedChanged": 2,
+    "untouchedPairs": 10,
+    "coefficientGap": 0
+   }
+  },
+  {
+   "id": "correction-six-A-mean-C-equals-D",
+   "args": {
+    "kind": "ties",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "unit": 2,
+    "value": 0.15,
+    "tau": 0.5
+   },
+   "expect": {
+    "beforeGrades": [
+     [1, 2, 3, 4, 5, 6]
+    ],
+    "afterGrades": [
+     [1, 2, 3, 3, 4, 5],
+     [1, 2, 3, 4, 5, 6],
+     [1, 2, 4, 3, 5, 6]
+    ],
+    "beforeTieCount": 1,
+    "afterTieCount": 3,
+    "comparisons": [
+     {
+      "beforeGrade": [1, 2, 3, 4, 5, 6],
+      "afterGrade": [1, 2, 3, 3, 4, 5],
+      "changed": 1,
+      "untouchedChanged": 0
+     },
+     {
+      "beforeGrade": [1, 2, 3, 4, 5, 6],
+      "afterGrade": [1, 2, 3, 4, 5, 6],
+      "changed": 0,
+      "untouchedChanged": 0
+     },
+     {
+      "beforeGrade": [1, 2, 3, 4, 5, 6],
+      "afterGrade": [1, 2, 4, 3, 5, 6],
+      "changed": 1,
+      "untouchedChanged": 0
+     }
+    ]
+   }
+  }
+ ]
+}

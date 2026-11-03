@@ -1,0 +1,78 @@
+{
+  "id": "2.18",
+  "name": "chosen-and-judged",
+  "part": "2",
+  "title": "Scored on the draws that chose it",
+  "idea": "A report chosen on posterior draws can look better or worse on them than under the exact law, though better on average; the gap is at most N/M times the draws' largest pair-probability error, which shrinks as draws grow.",
+  "status": "built",
+  "from": "new concept · postrank vignette m6 (fixed and selected actions; cross-fitting as the package view of fold grades) and theory book ch. 15 (the envelope covers selection on the same draws); picture: reruns of S draws, each run's chosen report scored on its own draws against its exact risk, the signed gap over runs, and the regret bound 2δ_w + η",
+  "data": [
+    "data/released/six-sites.json",
+    "data/released/cache-toy.json",
+    "engine"
+  ],
+  "credit": "After the postrank vignette m6 and the theory book, ch. 15.",
+  "caption": "Six fictional normal posteriors; reports selected from independent posterior draws and evaluated on those same draws and the exact declared law. A separate cached package toy shows fold reports.",
+  "presets": [
+    {
+      "id": "own",
+      "label": "Own draws",
+      "query": "S=100&seed=1&criteria=A&tau=.2&cap=none&run=1&bounds=false"
+    },
+    {
+      "id": "worse",
+      "label": "Looks worse",
+      "query": "S=100&seed=1&criteria=A&tau=.2&cap=none&run=6&bounds=false"
+    },
+    {
+      "id": "more",
+      "label": "More draws",
+      "query": "S=4000&seed=1&criteria=A&tau=.2&cap=none&run=1&bounds=false"
+    },
+    {
+      "id": "cap",
+      "label": "Tighter family",
+      "query": "S=100&seed=1&criteria=A&tau=.2&cap=3&run=1&bounds=true"
+    },
+    {
+      "id": "both",
+      "label": "Both scores",
+      "query": "S=40&seed=11&criteria=AB&tau=.25&cap=3&run=1&bounds=false"
+    }
+  ],
+  "try": [
+    {
+      "preset": "own",
+      "shows": [
+        "33 look worse",
+        "−.00061"
+      ]
+    },
+    {
+      "preset": "worse",
+      "shows": [
+        "+.00072"
+      ]
+    },
+    {
+      "preset": "more",
+      "shows": [
+        "4,000 draws",
+        "−.00025"
+      ]
+    },
+    {
+      "preset": "cap",
+      "shows": [
+        "+.00102",
+        "603 reports"
+      ]
+    },
+    {
+      "preset": "both",
+      "shows": [
+        "−.00322"
+      ]
+    }
+  ]
+}

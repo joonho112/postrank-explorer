@@ -1,0 +1,1101 @@
+{
+  "$schema": "./_schema.json",
+  "app": "case-zero",
+  "catalog": "1.1",
+  "from": "postrank-explorer-v1 verification/readouts/case-zero.json",
+  "about": "KRW's 97 firms as a league table beside one of the two cards KRW published. The read-out gives M, the pairs the card states (N), their share s, the pairs that share a grade and the pairs inside each grade; the card legend gives the number of grades and the sizes; the details panel gives the selected firm (at a preset without a firm, the first row of the table's order). Card counts come from v1's frozen numbers registry (krw.*.card.N, .s, .sizes, .G) and the base-R oracle row disclosure-krw-sizes-2-81-14; the released values of the named firms (esttop, meantop, est2, statefarm) are registry keys too; the bar note's share is cf.normal.within1 and the interval levels are settings. The selected firm's pair line comes from the registry keys of the engine's unitRelationCounts and its base-R oracle rows. Literals: the KRW card caption (6.5), the headings and table caption (11.4), the grade-1 legend (3.3), the gloss (12.3), the race card's prior note, and the read-out (v1's three sentences, then one on how the card's directions run against the table's order) and the pairs lines word for word with their numbers as slots (9.4), at every preset. The read-out and pairs lines say how many of the card's directions run as the table orders them (its strictOrder ranks by estimate or by posterior mean) and how many the other way: race card 1,219 and 105 by estimate, all 1,324 by posterior mean; gender card 730 and 1 in both orders; Nationwide 15 and 1, State Farm 2 and 14 by estimate. These counts come from the engine's statedAgainst and match an R count with postrank 1.1.0's pr_case_krw; no golden or oracle row holds them yet, so they are checked as shown numbers (data-num read back) inside the word-for-word sentences. Pair counts inside the grades other than race grade 2 and gender grade 3 have no registry or oracle source and are checked only as shown numbers.",
+  "cases": [
+    {
+      "id": "race-card",
+      "about": "The race card beside the league table ordered by estimate (the app loads here); AutoNation, first by estimate, is selected.",
+      "preset": "race-card",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "all pairs of the 97 firms, the pairs a league table orders",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "M from the base-R oracle row of the race card's disclosure",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-krw-sizes-2-81-14",
+            "field": "M"
+          },
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs the race card states (KRW's archive metrics)",
+          "source": "registry",
+          "ref": "krw.race.card.N",
+          "value": 1324
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "N from the base-R oracle row",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-krw-sizes-2-81-14",
+            "field": "N"
+          },
+          "value": 1324
+        },
+        {
+          "select": "[data-prx-readout=\"s\"]",
+          "about": "share of the pairs the race card states",
+          "source": "registry",
+          "ref": "krw.race.card.s",
+          "value": 0.284364261168385
+        },
+        {
+          "select": "[data-prx-readout=\"s\"]",
+          "about": "s from the base-R oracle row",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-krw-sizes-2-81-14",
+            "field": "s"
+          },
+          "value": 0.284364261168385
+        },
+        {
+          "select": "[data-prx-readout=\"withheld\"]",
+          "about": "pairs that share a grade of the race card",
+          "source": "registry",
+          "ref": "krw.race.card.withheld",
+          "value": 3332
+        },
+        {
+          "select": "[data-prx-readout=\"inside-2\"]",
+          "about": "pairs inside grade 2",
+          "source": "registry",
+          "ref": "krw.race.card.inside2",
+          "value": 3240
+        },
+        {
+          "select": "[data-prx-readout=\"G\"]",
+          "about": "number of grades of the race card",
+          "source": "registry",
+          "ref": "krw.race.card.G",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"sizes\"]",
+          "about": "grade sizes of the race card",
+          "source": "registry",
+          "ref": "krw.race.card.sizes",
+          "value": [
+            2,
+            81,
+            14
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"sizes\"]",
+          "about": "grade sizes from the base-R oracle row",
+          "format": {
+            "fn": "formatSizes"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-krw-sizes-2-81-14",
+            "field": "sizes"
+          },
+          "value": [
+            2,
+            81,
+            14
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"within\"]",
+          "about": "share of repeated estimates within one SE of the true value, in the bar note",
+          "source": "registry",
+          "ref": "cf.normal.within1",
+          "value": 0.6826894921370859,
+          "format": {
+            "fn": "formatPercent"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"level\"]",
+          "about": "posterior interval level in the card note",
+          "source": "registry",
+          "ref": "settings.level90",
+          "value": 0.9
+        },
+        {
+          "select": "[data-prx-readout=\"krw-level\"]",
+          "about": "the interval level KRW's Figure 7 caption gives",
+          "source": "registry",
+          "ref": "settings.level95",
+          "value": 0.95
+        },
+        {
+          "select": "[data-prx-caption=\"krw-card\"]",
+          "kind": "text",
+          "about": "KRW's card carries the KRW caption",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances)"
+        },
+        {
+          "select": "[data-prx-readout=\"firm-n\"]",
+          "about": "the number of firms in the selected firm's rank line",
+          "source": "registry",
+          "ref": "krw.frame.n",
+          "value": 97
+        },
+        {
+          "select": "[data-prx-readout=\"firm-rank-estimate\"]",
+          "about": "the selected firm (the first row, AutoNation) is first by estimate",
+          "source": "registry",
+          "ref": "krw.race.esttop.rank.estimate",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"firm-rank-mean\"]",
+          "about": "its rank by posterior mean",
+          "source": "registry",
+          "ref": "krw.race.esttop.rank.mean",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"firm-estimate\"]",
+          "about": "its race estimate",
+          "source": "registry",
+          "ref": "krw.race.esttop.estimate",
+          "value": 0.4332195
+        },
+        {
+          "select": "[data-prx-readout=\"firm-se\"]",
+          "about": "its SE",
+          "source": "registry",
+          "ref": "krw.race.esttop.se",
+          "value": 0.1308592
+        },
+        {
+          "select": "[data-prx-readout=\"firm-mean\"]",
+          "about": "its posterior mean",
+          "source": "registry",
+          "ref": "krw.race.esttop.mean",
+          "value": 0.233182657405701
+        },
+        {
+          "select": "[data-prx-readout=\"firm-lower\"]",
+          "about": "lower end of its 90% posterior interval",
+          "source": "registry",
+          "ref": "krw.race.esttop.lower",
+          "value": 0.0810294210563499
+        },
+        {
+          "select": "[data-prx-readout=\"firm-upper\"]",
+          "about": "upper end of its 90% posterior interval",
+          "source": "registry",
+          "ref": "krw.race.esttop.upper",
+          "value": 0.447811713401654
+        },
+        {
+          "select": "[data-prx-readout=\"firm-grade\"]",
+          "about": "its grade on the race card",
+          "source": "registry",
+          "ref": "krw.race.esttop.grade",
+          "value": 1
+        },
+        {
+          "select": "tbody tr .prx-cz-col-rank",
+          "about": "first row of the league table: rank 1",
+          "source": "registry",
+          "ref": "krw.race.esttop.rank.estimate",
+          "value": 1,
+          "index": 0
+        },
+        {
+          "select": "tbody tr .prx-cz-est-num",
+          "about": "first row: its estimate",
+          "source": "registry",
+          "ref": "krw.race.esttop.estimate",
+          "value": 0.4332195,
+          "index": 0
+        },
+        {
+          "select": "tbody tr .prx-cz-est-num",
+          "about": "first row: its SE",
+          "source": "registry",
+          "ref": "krw.race.esttop.se",
+          "value": 0.1308592,
+          "index": 1
+        },
+        {
+          "select": "tbody tr td.prx-cz-col-mean",
+          "about": "first row: its posterior mean",
+          "source": "registry",
+          "ref": "krw.race.esttop.mean",
+          "value": 0.233182657405701,
+          "index": 0
+        },
+        {
+          "select": "tbody tr .prx-cz-badge",
+          "about": "first row: its grade badge",
+          "source": "registry",
+          "ref": "krw.race.esttop.grade",
+          "value": 1,
+          "index": 0
+        },
+        {
+          "select": "tbody tr .prx-cz-col-other",
+          "about": "first row: its rank by posterior mean",
+          "source": "registry",
+          "ref": "krw.race.esttop.rank.mean",
+          "value": 2,
+          "index": 0
+        },
+        {
+          "select": "tbody tr .prx-cz-col-rank",
+          "about": "last row of the league table: rank 97",
+          "source": "registry",
+          "ref": "krw.frame.n",
+          "value": 97,
+          "index": 96
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] caption",
+          "kind": "text",
+          "about": "caption of the card's hidden data table",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "KRW's race card. Grade, posterior mean and posterior interval of each firm, in the card's order"
+        },
+        {
+          "select": ".prx-cz-card .prx-cz-heading",
+          "kind": "text",
+          "about": "heading of the card panel",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "KRW's race card"
+        },
+        {
+          "select": ".prx-cz-table-heading",
+          "kind": "text",
+          "about": "heading of the league table: it names the criterion of the card",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Race league table"
+        },
+        {
+          "select": "[data-prx-readout=\"firm-pairs\"]",
+          "about": "selected firm (row 14): pairs it belongs to, n - 1",
+          "source": "registry",
+          "ref": "krw.race.card.partners",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"firm-pairs\"]",
+          "about": "selected firm (row 14): pairs it belongs to, n - 1 (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "partners"
+          },
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"firm-stated\"]",
+          "about": "selected firm (row 14): directions the race card states about it",
+          "source": "registry",
+          "ref": "krw.race.esttop.stated",
+          "value": 95
+        },
+        {
+          "select": "[data-prx-readout=\"firm-stated\"]",
+          "about": "selected firm (row 14): directions the race card states about it (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "stated.14"
+          },
+          "value": 95
+        },
+        {
+          "select": "[data-prx-readout=\"firm-silent\"]",
+          "about": "selected firm (row 14): pairs the race card is silent on",
+          "source": "registry",
+          "ref": "krw.race.esttop.withheld",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"firm-silent\"]",
+          "about": "selected firm (row 14): pairs the race card is silent on (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "withheld.14"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"firm-others\"]",
+          "about": "selected firm (row 14): other firms in its grade",
+          "source": "registry",
+          "ref": "krw.race.esttop.withheld",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"firm-others\"]",
+          "about": "selected firm (row 14): other firms in its grade (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "withheld.14"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-cz-grade1-text",
+          "kind": "text",
+          "about": "the grade-1 legend: the end the posterior places highest, as stated by the card",
+          "source": "literal",
+          "ref": "3.3",
+          "value": "Grade 1 = stated highest on white-name contact advantage, as the posterior judges it."
+        },
+        {
+          "select": ".prx-cz-gloss",
+          "kind": "text",
+          "about": "the plain gloss next to the KRW card caption",
+          "source": "literal",
+          "ref": "12.3",
+          "value": "In plain words: these grades are the baseline card KRW published, computed with KRW's own code and probabilities; we show it as published."
+        },
+        {
+          "select": ".prx-cz-bar-note",
+          "kind": "text",
+          "about": "the bars are labelled ± 1 SE with the share of repeated estimates whose bar covers the true value (register CR-083 as amended)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Bars: estimate ± ⟨se⟩ SE (such a bar covers the true value in about ⟨within⟩ of repeated estimates).",
+          "slots": true
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "about": "the read-out word for word: v1's three sentences, then how many of the card's directions run as the table orders them (by estimate here) and how many the other way",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "The league table states a direction for every one of the ⟨M⟩ pairs of firms. KRW's race card states ⟨N⟩ of them, a share of ⟨s⟩: the pairs whose two firms are in different grades. It is silent on the ⟨withheld⟩ pairs that share a grade (⟨i1⟩ inside grade ⟨g1⟩, ⟨i2⟩ inside grade ⟨g2⟩ and ⟨i3⟩ inside grade ⟨g3⟩). Of the ⟨n⟩ directions the card states, ⟨agree⟩ run as the table does and ⟨against⟩ the other way.",
+          "slots": true
+        },
+        {
+          "select": ".prx-cz-prior",
+          "kind": "text",
+          "about": "under the race card: why every race interval lies right of zero (KRW's race prior; register CR-102)",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "KRW's race prior puts all its weight on positive gaps, so every race posterior lies above zero, even for a firm with a negative estimate."
+        },
+        {
+          "select": ".prx-cz-pairs",
+          "kind": "text",
+          "about": "AutoNation, first by estimate: all 95 directions the card states about it run as the table does",
+          "source": "literal",
+          "ref": "9.4",
+          "slots": true,
+          "value": "The league table states a direction between this firm and each of the other ⟨n⟩ firms. KRW's race card states a direction for ⟨stated⟩ of these pairs, all as the table does, and is silent on the ⟨silent⟩ firm that shares its grade."
+        }
+      ]
+    },
+    {
+      "id": "second-place",
+      "about": "Nationwide, second by race estimate, is selected: it shares grade 2 with 80 other firms, so the card states 16 of its 96 directions (registry keys krw.race.est2.*; oracle row 36 of unitRelationCounts).",
+      "preset": "second-place",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"firm-grade\"]",
+          "about": "Nationwide's grade on the race card",
+          "source": "registry",
+          "ref": "krw.race.est2.grade",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"firm-others\"]",
+          "about": "the other firms in its grade",
+          "source": "registry",
+          "ref": "krw.race.est2.withheld",
+          "value": 80
+        },
+        {
+          "select": "[data-prx-readout=\"firm-silent\"]",
+          "about": "the pairs the card is silent on",
+          "source": "registry",
+          "ref": "krw.race.est2.withheld",
+          "value": 80
+        },
+        {
+          "select": "[data-prx-readout=\"firm-stated\"]",
+          "about": "the directions the card states about it (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "stated.36"
+          },
+          "value": 16
+        },
+        {
+          "select": "[data-prx-readout=\"firm-silent\"]",
+          "about": "the pairs the card is silent on (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "withheld.36"
+          },
+          "value": 80
+        },
+        {
+          "select": "[data-prx-readout=\"firm-pairs\"]",
+          "about": "the pairs it belongs to, n - 1",
+          "source": "registry",
+          "ref": "krw.race.card.partners",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "registry",
+          "ref": "krw.race.card.N",
+          "value": 1324
+        },
+        {
+          "select": ".prx-cz-pairs",
+          "kind": "text",
+          "about": "the pairs line: of Nationwide's 16 stated directions, how many run as the table orders them and how many the other way",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "The league table states a direction between this firm and each of the other ⟨n⟩ firms. KRW's race card states a direction for ⟨stated⟩ of these pairs, ⟨agree⟩ as the table does and ⟨against⟩ the other way, and is silent on the ⟨silent⟩ firms that share its grade.",
+          "slots": true
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "about": "the read-out at the estimate order: v1's sentences and the card-level split",
+          "source": "literal",
+          "ref": "9.4",
+          "slots": true,
+          "value": "The league table states a direction for every one of the ⟨M⟩ pairs of firms. KRW's race card states ⟨N⟩ of them, a share of ⟨s⟩: the pairs whose two firms are in different grades. It is silent on the ⟨withheld⟩ pairs that share a grade (⟨i1⟩ inside grade ⟨g1⟩, ⟨i2⟩ inside grade ⟨g2⟩ and ⟨i3⟩ inside grade ⟨g3⟩). Of the ⟨n⟩ directions the card states, ⟨agree⟩ run as the table does and ⟨against⟩ the other way."
+        }
+      ]
+    },
+    {
+      "id": "last-place",
+      "about": "State Farm, last by race estimate and with the largest SE, is selected: 14th by posterior mean (registry keys krw.race.statefarm.*); its row is the last of the table, kept in the DOM with the others.",
+      "preset": "last-place",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"firm-rank-estimate\"]",
+          "about": "last by estimate",
+          "source": "registry",
+          "ref": "krw.race.statefarm.rank.estimate",
+          "value": 97
+        },
+        {
+          "select": "[data-prx-readout=\"firm-rank-mean\"]",
+          "about": "14th by posterior mean",
+          "source": "registry",
+          "ref": "krw.race.statefarm.rank.mean",
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"firm-estimate\"]",
+          "about": "its race estimate",
+          "source": "registry",
+          "ref": "krw.race.statefarm.estimate",
+          "value": -0.5437424
+        },
+        {
+          "select": "[data-prx-readout=\"firm-se\"]",
+          "about": "its SE",
+          "source": "registry",
+          "ref": "krw.race.statefarm.se",
+          "value": 0.4439744
+        },
+        {
+          "select": "[data-prx-readout=\"firm-mean\"]",
+          "about": "its posterior mean",
+          "source": "registry",
+          "ref": "krw.race.statefarm.mean",
+          "value": 0.155014267761232
+        },
+        {
+          "select": "[data-prx-readout=\"firm-lower\"]",
+          "about": "lower end of its 90% posterior interval",
+          "source": "registry",
+          "ref": "krw.race.statefarm.lower",
+          "value": 0.0144283040205415
+        },
+        {
+          "select": "[data-prx-readout=\"firm-upper\"]",
+          "about": "upper end of its 90% posterior interval",
+          "source": "registry",
+          "ref": "krw.race.statefarm.upper",
+          "value": 0.341908653314546
+        },
+        {
+          "select": "[data-prx-readout=\"firm-stated\"]",
+          "about": "the directions the race card states about it (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "stated.30"
+          },
+          "value": 16
+        },
+        {
+          "select": "tbody tr .prx-cz-col-rank",
+          "about": "the last row of the table is State Farm, rank 97",
+          "source": "registry",
+          "ref": "krw.race.statefarm.rank.estimate",
+          "value": 97,
+          "index": 96
+        },
+        {
+          "select": "tbody tr .prx-cz-col-other",
+          "about": "its rank by posterior mean in the other-order column",
+          "source": "registry",
+          "ref": "krw.race.statefarm.rank.mean",
+          "value": 14,
+          "index": 96
+        },
+        {
+          "select": ".prx-cz-pairs",
+          "kind": "text",
+          "about": "State Farm: of the 16 directions the card states about it, 2 run as the table does and 14 the other way",
+          "source": "literal",
+          "ref": "9.4",
+          "slots": true,
+          "value": "The league table states a direction between this firm and each of the other ⟨n⟩ firms. KRW's race card states a direction for ⟨stated⟩ of these pairs, ⟨agree⟩ as the table does and ⟨against⟩ the other way, and is silent on the ⟨silent⟩ firms that share its grade."
+        }
+      ]
+    },
+    {
+      "id": "race-by-mean",
+      "about": "The race card with the league table ordered by posterior mean; Genuine Parts (first by posterior mean, sixth by estimate) is selected.",
+      "preset": "race-by-mean",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "registry",
+          "ref": "krw.race.card.N",
+          "value": 1324
+        },
+        {
+          "select": "[data-prx-readout=\"firm-rank-mean\"]",
+          "about": "the selected firm (the first row, Genuine Parts) is first by posterior mean",
+          "source": "registry",
+          "ref": "krw.race.meantop.rank.mean",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"firm-rank-estimate\"]",
+          "about": "and sixth by estimate",
+          "source": "registry",
+          "ref": "krw.race.meantop.rank.estimate",
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"firm-mean\"]",
+          "about": "its posterior mean",
+          "source": "registry",
+          "ref": "krw.race.meantop.mean",
+          "value": 0.250108721681425
+        },
+        {
+          "select": "[data-prx-readout=\"firm-estimate\"]",
+          "about": "its estimate",
+          "source": "registry",
+          "ref": "krw.race.meantop.estimate",
+          "value": 0.3303573
+        },
+        {
+          "select": "tbody tr .prx-cz-col-rank",
+          "about": "first row: rank 1 by posterior mean",
+          "source": "registry",
+          "ref": "krw.race.meantop.rank.mean",
+          "value": 1,
+          "index": 0
+        },
+        {
+          "select": "tbody tr .prx-cz-col-other",
+          "about": "first row: its rank by estimate",
+          "source": "registry",
+          "ref": "krw.race.meantop.rank.estimate",
+          "value": 6,
+          "index": 0
+        },
+        {
+          "select": "tbody tr td.prx-cz-col-mean",
+          "about": "first row: its posterior mean",
+          "source": "registry",
+          "ref": "krw.race.meantop.mean",
+          "value": 0.250108721681425,
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"firm-pairs\"]",
+          "about": "selected firm (row 61): pairs it belongs to, n - 1",
+          "source": "registry",
+          "ref": "krw.race.card.partners",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"firm-pairs\"]",
+          "about": "selected firm (row 61): pairs it belongs to, n - 1 (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "partners"
+          },
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"firm-stated\"]",
+          "about": "selected firm (row 61): directions the race card states about it",
+          "source": "registry",
+          "ref": "krw.race.meantop.stated",
+          "value": 95
+        },
+        {
+          "select": "[data-prx-readout=\"firm-stated\"]",
+          "about": "selected firm (row 61): directions the race card states about it (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "stated.61"
+          },
+          "value": 95
+        },
+        {
+          "select": "[data-prx-readout=\"firm-silent\"]",
+          "about": "selected firm (row 61): pairs the race card is silent on",
+          "source": "registry",
+          "ref": "krw.race.meantop.withheld",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"firm-silent\"]",
+          "about": "selected firm (row 61): pairs the race card is silent on (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "withheld.61"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"firm-others\"]",
+          "about": "selected firm (row 61): other firms in its grade",
+          "source": "registry",
+          "ref": "krw.race.meantop.withheld",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"firm-others\"]",
+          "about": "selected firm (row 61): other firms in its grade (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-race-card",
+            "field": "withheld.61"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "about": "ordered by posterior mean, every direction the race card states runs as the table does",
+          "source": "literal",
+          "ref": "9.4",
+          "slots": true,
+          "value": "The league table states a direction for every one of the ⟨M⟩ pairs of firms. KRW's race card states ⟨N⟩ of them, a share of ⟨s⟩: the pairs whose two firms are in different grades. It is silent on the ⟨withheld⟩ pairs that share a grade (⟨i1⟩ inside grade ⟨g1⟩, ⟨i2⟩ inside grade ⟨g2⟩ and ⟨i3⟩ inside grade ⟨g3⟩). All ⟨n⟩ directions the card states run as the table does."
+        },
+        {
+          "select": ".prx-cz-pairs",
+          "kind": "text",
+          "about": "Genuine Parts, first by posterior mean: all 95 directions run as the table does",
+          "source": "literal",
+          "ref": "9.4",
+          "slots": true,
+          "value": "The league table states a direction between this firm and each of the other ⟨n⟩ firms. KRW's race card states a direction for ⟨stated⟩ of these pairs, all as the table does, and is silent on the ⟨silent⟩ firm that shares its grade."
+        }
+      ]
+    },
+    {
+      "id": "gender-card",
+      "about": "The gender card, sizes 1, 3, 89, 4; Builders FirstSource (first by gender estimate, alone in grade 1) is selected.",
+      "preset": "gender-card",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs the gender card states (KRW's archive metrics)",
+          "source": "registry",
+          "ref": "krw.gender.card.N",
+          "value": 731
+        },
+        {
+          "select": "[data-prx-readout=\"s\"]",
+          "about": "share of the pairs the gender card states",
+          "source": "registry",
+          "ref": "krw.gender.card.s",
+          "value": 0.157001718213058
+        },
+        {
+          "select": "[data-prx-readout=\"withheld\"]",
+          "about": "pairs that share a grade of the gender card",
+          "source": "registry",
+          "ref": "krw.gender.card.withheld",
+          "value": 3925
+        },
+        {
+          "select": "[data-prx-readout=\"inside-3\"]",
+          "about": "pairs inside grade 3",
+          "source": "registry",
+          "ref": "krw.gender.card.inside3",
+          "value": 3916
+        },
+        {
+          "select": "[data-prx-readout=\"G\"]",
+          "about": "number of grades of the gender card",
+          "source": "registry",
+          "ref": "krw.gender.card.G",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"sizes\"]",
+          "about": "grade sizes of the gender card",
+          "source": "registry",
+          "ref": "krw.gender.card.sizes",
+          "value": [
+            1,
+            3,
+            89,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"firm-estimate\"]",
+          "about": "the selected firm (the first row, Builders FirstSource): its gender estimate",
+          "source": "registry",
+          "ref": "krw.gender.esttop.estimate",
+          "value": 1.568249
+        },
+        {
+          "select": "[data-prx-readout=\"firm-se\"]",
+          "about": "its SE",
+          "source": "registry",
+          "ref": "krw.gender.esttop.se",
+          "value": 0.5514917
+        },
+        {
+          "select": "[data-prx-readout=\"firm-mean\"]",
+          "about": "its posterior mean",
+          "source": "registry",
+          "ref": "krw.gender.esttop.mean",
+          "value": 0.896033823132844
+        },
+        {
+          "select": "[data-prx-readout=\"firm-rank-mean\"]",
+          "about": "its rank by posterior mean",
+          "source": "registry",
+          "ref": "krw.gender.esttop.rank.mean",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"firm-grade\"]",
+          "about": "its grade on the gender card, alone in grade 1",
+          "source": "registry",
+          "ref": "krw.gender.esttop.grade",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-caption=\"krw-card\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances)"
+        },
+        {
+          "select": ".prx-cz-card .prx-cz-heading",
+          "kind": "text",
+          "about": "heading of the card panel",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "KRW's gender card"
+        },
+        {
+          "select": ".prx-cz-table-heading",
+          "kind": "text",
+          "about": "heading of the league table: with the gender card it ranks the gender estimates",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Gender league table"
+        },
+        {
+          "select": "[data-prx-readout=\"firm-pairs\"]",
+          "about": "selected firm (row 94): pairs it belongs to, n - 1",
+          "source": "registry",
+          "ref": "krw.gender.card.partners",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"firm-pairs\"]",
+          "about": "selected firm (row 94): pairs it belongs to, n - 1 (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-gender-card",
+            "field": "partners"
+          },
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"firm-stated\"]",
+          "about": "selected firm (row 94, alone in grade 1): every direction is stated",
+          "source": "registry",
+          "ref": "krw.gender.esttop.stated",
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"firm-stated\"]",
+          "about": "selected firm (row 94, alone in grade 1): every direction is stated (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "unitRelationCounts-krw-gender-card",
+            "field": "stated.94"
+          },
+          "value": 96
+        },
+        {
+          "select": ".prx-cz-grade1-text",
+          "kind": "text",
+          "about": "the gender card's grade-1 legend",
+          "source": "literal",
+          "ref": "3.3",
+          "value": "Grade 1 = stated highest on male-name contact advantage, as the posterior judges it."
+        },
+        {
+          "select": ".prx-cz-pairs",
+          "kind": "text",
+          "about": "Builders FirstSource is alone in grade 1, so the card states every direction about it, all as the table does",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "The league table states a direction between this firm and each of the other ⟨n⟩ firms. KRW's gender card states a direction for ⟨stated⟩ of these pairs, all as the table does, and is silent on none of them.",
+          "slots": true
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "about": "the gender card's read-out: v1's sentences (four grades), then 730 directions as the table does and 1 the other way",
+          "source": "literal",
+          "ref": "9.4",
+          "slots": true,
+          "value": "The league table states a direction for every one of the ⟨M⟩ pairs of firms. KRW's gender card states ⟨N⟩ of them, a share of ⟨s⟩: the pairs whose two firms are in different grades. It is silent on the ⟨withheld⟩ pairs that share a grade (⟨i1⟩ inside grade ⟨g1⟩, ⟨i2⟩ inside grade ⟨g2⟩, ⟨i3⟩ inside grade ⟨g3⟩ and ⟨i4⟩ inside grade ⟨g4⟩). Of the ⟨n⟩ directions the card states, ⟨agree⟩ run as the table does and ⟨against⟩ the other way."
+        }
+      ]
+    },
+    {
+      "id": "defaults",
+      "about": "No query: the widget defaults are the race card and the estimate order.",
+      "query": "",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "registry",
+          "ref": "krw.race.card.N",
+          "value": 1324
+        },
+        {
+          "select": "[data-prx-readout=\"firm-estimate\"]",
+          "source": "registry",
+          "ref": "krw.race.esttop.estimate",
+          "value": 0.4332195
+        },
+        {
+          "select": "tbody tr .prx-cz-col-rank",
+          "source": "registry",
+          "ref": "krw.race.esttop.rank.estimate",
+          "value": 1,
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "gender-by-mean",
+      "about": "Gender card ordered by posterior mean: Builders FirstSource is first by posterior mean too.",
+      "query": "?card=gender&sort=mean",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "registry",
+          "ref": "krw.gender.card.N",
+          "value": 731
+        },
+        {
+          "select": "[data-prx-readout=\"firm-rank-mean\"]",
+          "source": "registry",
+          "ref": "krw.gender.esttop.rank.mean",
+          "value": 1
+        },
+        {
+          "select": "tbody tr .prx-cz-col-rank",
+          "source": "registry",
+          "ref": "krw.gender.esttop.rank.mean",
+          "value": 1,
+          "index": 0
+        },
+        {
+          "select": "tbody tr td.prx-cz-col-mean",
+          "source": "registry",
+          "ref": "krw.gender.esttop.mean",
+          "value": 0.896033823132844,
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "unknown-values",
+      "about": "Values that are not a card or an order are ignored and the defaults stay. Given as a spec: a URL with them would be reported by the query rule, which asks every URL value to name a setting.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "registry",
+          "ref": "krw.race.card.N",
+          "value": 1324
+        },
+        {
+          "select": "[data-prx-readout=\"sizes\"]",
+          "source": "registry",
+          "ref": "krw.race.card.sizes",
+          "value": [
+            2,
+            81,
+            14
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"firm-rank-estimate\"]",
+          "source": "registry",
+          "ref": "krw.race.esttop.rank.estimate",
+          "value": 1
+        }
+      ],
+      "query": "",
+      "spec": {
+        "card": "income",
+        "sort": "size"
+      }
+    },
+    {
+      "id": "update-to-gender",
+      "about": "update() after the first render (the slide-host bridge): from the race card to the gender card; the counts follow the card.",
+      "preset": "race-card",
+      "update": [
+        {
+          "card": "gender"
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "registry",
+          "ref": "krw.gender.card.N",
+          "value": 731
+        },
+        {
+          "select": "[data-prx-readout=\"withheld\"]",
+          "source": "registry",
+          "ref": "krw.gender.card.withheld",
+          "value": 3925
+        },
+        {
+          "select": "[data-prx-readout=\"sizes\"]",
+          "source": "registry",
+          "ref": "krw.gender.card.sizes",
+          "value": [
+            1,
+            3,
+            89,
+            4
+          ]
+        }
+      ]
+    }
+  ]
+}

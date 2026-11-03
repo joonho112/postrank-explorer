@@ -1,0 +1,125 @@
+{
+  "$schema": "./_schema.json",
+  "app": "interval-overlap",
+  "catalog": "1.11",
+  "from": "postrank-explorer-v1 verification/readouts/interval-overlap.json",
+  "about": "Interval overlap beside the direction probability: v1 L-06's view of two units with equal SDs (SD 1, B's posterior mean 0). The read-out gives the level, the distance between the posterior means and the probability that A's true value is larger than B's; the pair card gives the four interval ends, the status, the same probability, the SD of the difference and the distance in SDs of the difference; the lower figure's key gives the probability again. Ported from v1 (cases touch90, touch95, touch-gap2) with the keys of the league view dropped from the queries (mode, pair, prior_sd: the league view is app 1.12, whose cases moved with it) and the caption in its v3 wording. Interval ends at the touching point are base-R oracle quantiles (oracle-special); distances, probabilities, the SD of the difference (1.414) and the distance in its SDs come from v1's frozen registry (cf.touch.*). New in v3: the probabilities at distances 1 and 2 from base-R oracle rows of pairDirection (oracle-pairwise; pairDirection(1, 1, 0, 1) and (2, 1, 0, 1)); the distance 3.25, where the probability equals that of sites D and E of postrank 1.1.0's pr_tutorial (posterior means .15 and −.50, SD .20 each: 3.25 posterior SDs apart), from the golden postrank 1.1.0 row of that error array; the touching distance followed when the level changes; the apart wording. The overlap amounts, the distance 4.5 and the touch distance of a raw slider value have no independent source in these files: the general rules read their displays back.",
+  "cases": [
+    {
+      "id": "touch90",
+      "about": "The first preset, v1's default: 90% intervals that just touch.",
+      "preset": "touch90",
+      "expect": [
+        { "select": "[data-prx-readout=\"level\"]", "about": "interval level in the read-out", "source": "registry", "ref": "settings.level90", "value": 0.9 },
+        { "select": "[data-prx-readout=\"gap\"]", "about": "distance between the posterior means at the touching point, in posterior SDs", "source": "registry", "ref": "cf.touch.level90.gap", "value": 3.289707253902943 },
+        { "select": "[data-prx-readout=\"pi\"]", "about": "probability that A's true value is larger than B's (read-out)", "source": "registry", "ref": "cf.touch.level90.pi", "value": 0.989995373141941 },
+        { "select": "[data-prx-readout=\"card-pi\"]", "about": "the same probability in the pair card", "source": "registry", "ref": "cf.touch.level90.pi", "value": 0.989995373141941 },
+        { "select": "[data-prx-readout=\"diff-pi\"]", "about": "the same probability in the key of the difference figure", "source": "registry", "ref": "cf.touch.level90.pi", "value": 0.989995373141941 },
+        { "select": "[data-prx-readout=\"card-b-lower\"]", "about": "B's lower end: the normal quantile of the lower tail (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.05", "field": "quantile" }, "value": -1.64485362695147 },
+        { "select": "[data-prx-readout=\"card-b-upper\"]", "about": "B's upper end: the normal quantile of the upper tail (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.95", "field": "quantile" }, "value": 1.64485362695147 },
+        { "select": "[data-prx-readout=\"card-a-lower\"]", "about": "A's lower end equals B's upper end when the intervals touch (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.95", "field": "quantile" }, "value": 1.64485362695147 },
+        { "select": "[data-prx-readout=\"card-a-lower\"]", "about": "A's lower end in the registry", "source": "registry", "ref": "cf.touch.level90.end", "value": 1.6448536269514715 },
+        { "select": "[data-prx-readout=\"card-a-upper\"]", "about": "A's upper end, three half-widths above B's posterior mean", "source": "registry", "ref": "cf.touch.level90.Aupper", "value": 4.934560880854415 },
+        { "select": "[data-prx-readout=\"diff-sd\"]", "about": "the SD of the difference A minus B, √2 posterior SDs (v1's verdict number, shown at once in v3)", "source": "registry", "ref": "cf.touch.diffsd", "value": 1.4142135623730947 },
+        { "select": "[data-prx-readout=\"diff-z\"]", "about": "the distance between the posterior means in SDs of the difference", "source": "registry", "ref": "cf.touch.level90.z", "value": 2.326174307353347 },
+        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior set by hand for teaching; postrank does not fit it" },
+        { "select": "[data-prx-status]", "about": "the status of the pair card", "kind": "text", "attr": "data-prx-status", "source": "literal", "ref": "11.4", "value": "touch" },
+        { "select": "[data-prx-status]", "about": "the status line, word for word", "kind": "text", "source": "literal", "ref": "11.4", "value": "They just touch." },
+        { "select": ".prx-readout", "about": "the read-out, word for word", "kind": "text", "slots": true, "source": "literal", "ref": "11.4", "value": "The ⟨level⟩ intervals just touch: the posterior means are ⟨gap⟩ posterior SDs apart. The chance that A's true value is larger than B's is ⟨pi⟩." },
+        { "select": ".prx-io-cell .prx-hint a.prx-io-app", "about": "the card's pointer to app 1.8: its title is a link where page links work (as here and on site pages and embeds); elsewhere it stands in quotes, so it never runs into the sentence", "kind": "text", "source": "literal", "ref": "11.4", "value": "Two units, one probability" }
+      ]
+    },
+    {
+      "id": "touch95",
+      "about": "95% intervals that just touch.",
+      "preset": "touch95",
+      "expect": [
+        { "select": "[data-prx-readout=\"level\"]", "about": "interval level in the read-out", "source": "registry", "ref": "settings.level95", "value": 0.95 },
+        { "select": "[data-prx-readout=\"gap\"]", "about": "distance between the posterior means at the touching point, in posterior SDs", "source": "registry", "ref": "cf.touch.level95.gap", "value": 3.919927969080107 },
+        { "select": "[data-prx-readout=\"pi\"]", "about": "probability that A's true value is larger than B's (read-out)", "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
+        { "select": "[data-prx-readout=\"card-pi\"]", "about": "the same probability in the pair card", "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
+        { "select": "[data-prx-readout=\"diff-pi\"]", "about": "the same probability in the key of the difference figure", "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
+        { "select": "[data-prx-readout=\"card-b-lower\"]", "about": "B's lower end: the normal quantile of the lower tail (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.025", "field": "quantile" }, "value": -1.95996398454005 },
+        { "select": "[data-prx-readout=\"card-b-upper\"]", "about": "B's upper end: the normal quantile of the upper tail (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.975", "field": "quantile" }, "value": 1.95996398454005 },
+        { "select": "[data-prx-readout=\"card-a-lower\"]", "about": "A's lower end equals B's upper end when the intervals touch (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.975", "field": "quantile" }, "value": 1.95996398454005 },
+        { "select": "[data-prx-readout=\"card-a-lower\"]", "about": "A's lower end in the registry", "source": "registry", "ref": "cf.touch.level95.end", "value": 1.9599639845400536 },
+        { "select": "[data-prx-readout=\"card-a-upper\"]", "about": "A's upper end, three half-widths above B's posterior mean", "source": "registry", "ref": "cf.touch.level95.Aupper", "value": 5.879891953620161 },
+        { "select": "[data-prx-readout=\"diff-sd\"]", "about": "the SD of the difference A minus B", "source": "registry", "ref": "cf.touch.diffsd", "value": 1.4142135623730947 },
+        { "select": "[data-prx-readout=\"diff-z\"]", "about": "the distance between the posterior means in SDs of the difference", "source": "registry", "ref": "cf.touch.level95.z", "value": 2.771807648699349 },
+        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior set by hand for teaching; postrank does not fit it" }
+      ]
+    },
+    {
+      "id": "touch-gap2",
+      "about": "Raw query: the posterior means 2 posterior SDs apart, so the 90% intervals overlap (v1's query without the league view's keys; the preset gap2 is the same setting).",
+      "query": "?gap=2&level=90",
+      "expect": [
+        { "select": "[data-prx-readout=\"level\"]", "source": "registry", "ref": "settings.level90", "value": 0.9 },
+        { "select": "[data-prx-readout=\"pi\"]", "about": "probability at distance 2", "source": "registry", "ref": "cf.touch.gap2.pi", "value": 0.9213503964748574 },
+        { "select": "[data-prx-readout=\"pi\"]", "about": "the same probability, base-R oracle pairDirection(2, 1, 0, 1)", "format": { "fn": "formatProb" }, "source": "oracle", "ref": { "group": "oracle-pairwise", "row": "pairDirection-krwex1-pi13", "field": "pi" }, "value": 0.921350396474857 },
+        { "select": "[data-prx-readout=\"card-pi\"]", "source": "registry", "ref": "cf.touch.gap2.pi", "value": 0.9213503964748574 },
+        { "select": "[data-prx-readout=\"card-a-lower\"]", "source": "registry", "ref": "cf.touch.gap2.level90.Alower", "value": 0.3551463730485285 },
+        { "select": "[data-prx-readout=\"card-a-upper\"]", "source": "registry", "ref": "cf.touch.gap2.level90.Aupper", "value": 3.6448536269514715 },
+        { "select": "[data-prx-readout=\"card-b-lower\"]", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.05", "field": "quantile" }, "value": -1.64485362695147 },
+        { "select": "[data-prx-readout=\"card-b-upper\"]", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.95", "field": "quantile" }, "value": 1.64485362695147 },
+        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior set by hand for teaching; postrank does not fit it" },
+        { "select": "[data-prx-status]", "about": "the status of the pair card", "kind": "text", "attr": "data-prx-status", "source": "literal", "ref": "11.4", "value": "overlap" },
+        { "select": "[data-prx-status]", "about": "the status line, word for word", "kind": "text", "slots": true, "source": "literal", "ref": "11.4", "value": "They overlap by ⟨amount⟩ posterior SDs." },
+        { "select": ".prx-io-key-item:has(.prx-io-swatch-edge)", "about": "the key item of the overlap band: its swatch has the thin edge the band has in the figure", "kind": "text", "source": "literal", "ref": "11.4", "value": "gray band: where the two intervals overlap" }
+      ]
+    },
+    {
+      "id": "gap1",
+      "about": "The posterior means 1 posterior SD apart: a wide overlap, and the direction in real doubt.",
+      "preset": "gap1",
+      "expect": [
+        { "select": "[data-prx-readout=\"level\"]", "source": "registry", "ref": "settings.level90", "value": 0.9 },
+        { "select": "[data-prx-readout=\"pi\"]", "about": "probability at distance 1, base-R oracle pairDirection(1, 1, 0, 1)", "format": { "fn": "formatProb" }, "source": "oracle", "ref": { "group": "oracle-pairwise", "row": "pairDirection-krwex1-omega1-pi23", "field": "pi" }, "value": 0.760249938906523 },
+        { "select": "[data-prx-readout=\"card-pi\"]", "format": { "fn": "formatProb" }, "source": "oracle", "ref": { "group": "oracle-pairwise", "row": "pairDirection-krwex1-omega1-pi23", "field": "pi" }, "value": 0.760249938906523 },
+        { "select": "[data-prx-readout=\"diff-pi\"]", "format": { "fn": "formatProb" }, "source": "oracle", "ref": { "group": "oracle-pairwise", "row": "pairDirection-krwex1-omega1-pi23", "field": "pi" }, "value": 0.760249938906523 },
+        { "select": "[data-prx-readout=\"card-b-lower\"]", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.05", "field": "quantile" }, "value": -1.64485362695147 },
+        { "select": "[data-prx-readout=\"card-b-upper\"]", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.95", "field": "quantile" }, "value": 1.64485362695147 },
+        { "select": "[data-prx-readout=\"diff-sd\"]", "source": "registry", "ref": "cf.touch.diffsd", "value": 1.4142135623730947 },
+        { "select": ".prx-readout", "about": "the read-out, word for word", "kind": "text", "slots": true, "source": "literal", "ref": "11.4", "value": "The ⟨level⟩ intervals overlap by ⟨amount⟩ posterior SDs: the posterior means are ⟨gap⟩ posterior SDs apart. The chance that A's true value is larger than B's is ⟨pi⟩." }
+      ]
+    },
+    {
+      "id": "tutorial-de",
+      "about": "Raw query: the posterior means 3.25 posterior SDs apart, as sites D and E of postrank's pr_tutorial (.15 and −.50, SD .20 each): their 90% intervals overlap by a little, and the probability is the package's 1 − e[D, E] (golden postrank 1.1.0 row).",
+      "query": "?gap=3.25&level=90",
+      "expect": [
+        { "select": "[data-prx-readout=\"level\"]", "source": "registry", "ref": "settings.level90", "value": 0.9 },
+        { "select": "[data-prx-readout=\"pi\"]", "about": "Pr(D truly above E) = e[E, D] of the golden pr_tutorial error array (postrank 1.1.0)", "format": { "fn": "formatProb" }, "source": "golden", "ref": { "group": "postrank-pairwise", "row": "errorArray-pr_tutorial-one", "field": "e.0.4.3" }, "value": 0.989221866619992 },
+        { "select": "[data-prx-readout=\"card-pi\"]", "format": { "fn": "formatProb" }, "source": "golden", "ref": { "group": "postrank-pairwise", "row": "errorArray-pr_tutorial-one", "field": "e.0.4.3" }, "value": 0.989221866619992 },
+        { "select": "[data-prx-readout=\"card-b-upper\"]", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.95", "field": "quantile" }, "value": 1.64485362695147 },
+        { "select": "[data-prx-status]", "about": "the intervals overlap", "kind": "text", "attr": "data-prx-status", "source": "literal", "ref": "11.4", "value": "overlap" }
+      ]
+    },
+    {
+      "id": "apart",
+      "about": "Raw query: the posterior means 4.5 posterior SDs apart, so the 90% intervals do not overlap.",
+      "query": "?gap=4.5&level=90",
+      "expect": [
+        { "select": "[data-prx-readout=\"level\"]", "source": "registry", "ref": "settings.level90", "value": 0.9 },
+        { "select": "[data-prx-readout=\"card-b-upper\"]", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.95", "field": "quantile" }, "value": 1.64485362695147 },
+        { "select": "[data-prx-readout=\"diff-sd\"]", "source": "registry", "ref": "cf.touch.diffsd", "value": 1.4142135623730947 },
+        { "select": "[data-prx-status]", "about": "the status of the pair card", "kind": "text", "attr": "data-prx-status", "source": "literal", "ref": "11.4", "value": "apart" },
+        { "select": "[data-prx-status]", "about": "the status line, word for word", "kind": "text", "slots": true, "source": "literal", "ref": "11.4", "value": "They do not overlap: ⟨amount⟩ posterior SDs lie between them." },
+        { "select": ".prx-readout", "about": "the read-out, word for word", "kind": "text", "slots": true, "source": "literal", "ref": "11.4", "value": "The ⟨level⟩ intervals do not overlap: the posterior means are ⟨gap⟩ posterior SDs apart. The chance that A's true value is larger than B's is ⟨pi⟩." }
+      ]
+    },
+    {
+      "id": "retouch",
+      "about": "The touching distance follows the level: from 90% intervals that just touch, switching to 95% touches again at the 95% distance.",
+      "preset": "touch90",
+      "update": [{ "level": 95 }],
+      "expect": [
+        { "select": "[data-prx-readout=\"level\"]", "source": "registry", "ref": "settings.level95", "value": 0.95 },
+        { "select": "[data-prx-readout=\"gap\"]", "about": "the 95% touching distance", "source": "registry", "ref": "cf.touch.level95.gap", "value": 3.919927969080107 },
+        { "select": "[data-prx-readout=\"pi\"]", "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
+        { "select": "[data-prx-readout=\"card-a-lower\"]", "source": "registry", "ref": "cf.touch.level95.end", "value": 1.9599639845400536 },
+        { "select": "[data-prx-status]", "about": "still touching", "kind": "text", "attr": "data-prx-status", "source": "literal", "ref": "11.4", "value": "touch" }
+      ]
+    }
+  ]
+}

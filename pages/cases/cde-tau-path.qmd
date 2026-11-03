@@ -1,0 +1,40 @@
+---
+title: "School-report changes along the withholding-cost path"
+subtitle: "5.11 · the public twelve-school CDE example"
+description: "Exact optimal disclosure and changes in individual school-pair relations as τ varies."
+---
+
+With the posterior and report family fixed, minimum-risk school reports change at specific withholding costs.
+The path records total disclosure and every newly stated, newly withheld or reversed comparison at each change.
+Exact optimal disclosure is nondecreasing in τ under these conditions, but individual relations need not be retained.
+The display distinguishes the exact browser path from archived solver results, preserving the status and gap of
+each archived solve. Boundary tables include equal-risk reports and transitions below the slider's displayed minimum.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/cde-tau-path.js"></script>
+<script>window.__prxApp = PRX["cde-tau-path"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **The usual setting** uses τ .20. The optimum states 45 pairs in groups of sizes 3, 6, 3.
+- **Past the last interior boundary** uses τ .45. The optimum states 47 pairs in groups of sizes 4, 5, 3; the complete pair-change list gives the altered relations.
+- **The early boundaries** keeps the slider at its low end. The exact boundaries near .000162 and .000263 lie below that minimum but remain in the tables, including the step to 27 pairs.
+- **The upper endpoint** reaches τ .50. The path still states 47 pairs, and the chart retains all 13 archived solves.
+
+The posterior, criterion weight and at-most-three-grade family stay fixed along this path. Exact optimal disclosure is nondecreasing in τ under those conditions. Individual relationships can change in more than one way, which is why the tables retain newly withheld and reversed pairs as well as new statements.
+
+Changing τ changes the loss. A risk printed at one step is evaluated at that step’s own τ; cross-setting risk differences therefore concern different losses. At a boundary the app also lists all returned equal-risk reports and the comparison tolerance. The archived dots use the same family but were obtained with HiGHS, so their solver-status and gap fields remain separate from exact enumeration.
+
+Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (`pr_case_cde`). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply; the data are not relicensed, are provided as is without warranty, and imply no CDE endorsement.
+
+The analysis concerns directional reporting of chronic absence within this subset. It neither computes Dashboard status-and-change colours nor establishes school quality, causal effects, statewide optimality or calibration. Shared grades do not imply equal absence probabilities.
+
+[Open the standalone app](../../embed/cde-tau-path.html).
+
+Related applications: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
+
+Related school analyses: [School tertiles and minimum-risk grades](cde-cuts.qmd) · [School reports at matched disclosure](cde-one-disclosure.qmd) · [A high-probability school comparison withheld](cde-pair.qmd).

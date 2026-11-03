@@ -1,0 +1,95 @@
+{
+  "id": "1.9",
+  "name": "correlated-units",
+  "part": "1",
+  "title": "When two posteriors move together",
+  "idea": "When two jointly normal posteriors are correlated, the SD of their difference changes and π moves away from or toward one half, but never crosses it.",
+  "status": "built",
+  "from": "new angle · v1 L-07 Deeper box 1 (correlation) as the main view; adds the joint-posterior ellipse with the region θ_A > θ_B shaded, and a preset with the positive correlation a shared, uncertain prior mean induces",
+  "data": [
+    "engine"
+  ],
+  "credit": "Built for this site (bivariate normal; a shared, uncertain prior mean makes posteriors move together); dependence after the postrank theory book, ch. 9 and 18.",
+  "math": true,
+  "caption": "a posterior set by hand for teaching; postrank does not fit it",
+  "presets": [
+    {
+      "id": "corr50",
+      "label": "Correlation .50",
+      "query": "muA=.30&sdA=.20&muB=.10&sdB=.20&corr=.50"
+    },
+    {
+      "id": "independent",
+      "label": "Independent",
+      "query": "muA=.30&sdA=.20&muB=.10&sdB=.20&corr=0"
+    },
+    {
+      "id": "corr95",
+      "label": "Correlation .95",
+      "query": "muA=.30&sdA=.20&muB=.10&sdB=.20&corr=.95"
+    },
+    {
+      "id": "corr-minus95",
+      "label": "Correlation −.95",
+      "query": "muA=.30&sdA=.20&muB=.10&sdB=.20&corr=-.95"
+    },
+    {
+      "id": "shared-mean",
+      "label": "Shared prior mean",
+      "query": "source=shared&yA=.30&seA=.20&yB=.10&seB=.20&priorSd=.10&meanSd=.50"
+    }
+  ],
+  "try": [
+    {
+      "preset": "corr50",
+      "shows": [
+        ".200",
+        ".283",
+        ".841",
+        ".760"
+      ]
+    },
+    {
+      "preset": "independent",
+      "shows": [
+        ".283",
+        ".760"
+      ]
+    },
+    {
+      "preset": "corr95",
+      "shows": [
+        ".063",
+        ".999"
+      ]
+    },
+    {
+      "preset": "corr-minus95",
+      "shows": [
+        ".395",
+        ".694"
+      ]
+    },
+    {
+      "preset": "shared-mean",
+      "shows": [
+        ".30",
+        ".10",
+        ".20",
+        ".50",
+        ".645",
+        ".126",
+        ".212",
+        ".624",
+        ".575"
+      ]
+    },
+    {
+      "query": "source=shared&yA=.30&seA=.20&yB=.10&seB=.20&priorSd=.10&meanSd=0",
+      "shows": [
+        ".089",
+        ".624"
+      ]
+    }
+  ]
+}

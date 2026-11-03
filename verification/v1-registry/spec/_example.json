@@ -1,0 +1,118 @@
+{
+  "$schema": "../schema.json",
+  "spec": "example",
+  "description": "Example spec for the registry fixture (verification/fixtures/registry-site). The default build skips files whose name starts with _. Six sites: score A of pr_tutorial (means 1.2, .95, .25, .15, -.5, -.8; SD .20). Three-unit finite law: theory book ch. 10.",
+  "license_scope": "author",
+  "inputs": {
+    "six.A": {
+      "fn": "errorArray",
+      "args": [[1.2, 0.95, 0.25, 0.15, -0.5, -0.8], 0.2, { "criteria": ["score_A"] }],
+      "note": "pr_tutorial$law score A (r-export/02_pairwise.R six_means)"
+    },
+    "six.A.cap3.tau20": {
+      "fn": "exactOptimum",
+      "args": [{ "$input": "six.A" }, { "tau": { "$setting": "settings.tau20" }, "family": { "kind": "atMost", "G": { "$setting": "settings.cap3" } } }]
+    },
+    "six.A.all.tau20": {
+      "fn": "exactOptimum",
+      "args": [{ "$input": "six.A" }, { "tau": { "$setting": "settings.tau20" }, "family": { "kind": "all" } }]
+    },
+    "six.A.released": {
+      "$data": "six-sites", "path": "arrays.one",
+      "note": "the released ErrorArray for score A (data/released/six-sites.json)"
+    },
+    "tb10.law3": {
+      "fn": "finiteLawPairwise",
+      "args": [[[[3], [2], [1]], [[3], [1], [2]], [[2], [3], [1]], [[1], [2], [3]]], [0.6, 0.15, 0.15, 0.1]],
+      "note": "orders ABC 3/5, ACB 3/20, BAC 3/20, CBA 1/10"
+    },
+    "tb10.law3.tau20": {
+      "fn": "exactOptimum",
+      "args": [{ "$input": "tb10.law3" }, { "tau": { "$setting": "settings.tau20" }, "family": { "kind": "all" } }]
+    }
+  },
+  "keys": {
+    "settings.tau20": { "type": "scalar", "setting": "tau", "value": 0.2 },
+    "settings.tau25": { "type": "scalar", "setting": "tau", "value": 0.25 },
+    "settings.cap3": { "type": "scalar", "setting": "cap", "value": 3 },
+    "settings.w.equal2": { "type": "vector", "setting": "w", "value": [0.5, 0.5] },
+    "settings.seed.league": { "type": "scalar", "setting": "seed", "value": 20261030 },
+    "settings.level90": { "type": "scalar", "setting": "level", "value": 0.9, "format": { "fn": "formatPercent" } },
+
+    "six.A.e.AB": {
+      "type": "scalar", "from": "six.A", "field": "e.0.0.1",
+      "format": { "fn": "formatProb" }, "tolerance": 1e-12
+    },
+    "six.A.exprank.A": {
+      "type": "scalar", "fn": "expectedRank", "args": [{ "$input": "six.A.released" }], "field": "0",
+      "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "tolerance": 1e-12
+    },
+    "six.family.all.size": {
+      "type": "scalar", "fn": "familySize", "args": [6, { "kind": "all" }],
+      "format": { "fn": "formatCount" }, "tolerance": 0
+    },
+    "six.family.cap3.size": {
+      "type": "scalar", "fn": "familySize", "args": [6, { "kind": "atMost", "G": { "$setting": "settings.cap3" } }],
+      "format": { "fn": "formatCount" }, "tolerance": 0
+    },
+    "six.A.cap3.tau20.grades": {
+      "type": "vector", "from": "six.A.cap3.tau20", "field": "grade",
+      "format": { "fn": "formatGrades" }, "tolerance": 0
+    },
+    "six.A.cap3.tau20.sizes": {
+      "type": "vector", "fn": "disclosure", "args": [{ "$input": "six.A.cap3.tau20", "path": "grade" }], "field": "sizes",
+      "format": { "fn": "formatSizes" }, "tolerance": 0
+    },
+    "six.A.cap3.tau20.family": {
+      "type": "text", "from": "six.A.cap3.tau20", "field": "family.words"
+    },
+    "six.A.cap3.tau20.N": {
+      "type": "scalar", "from": "six.A.cap3.tau20", "field": "N",
+      "format": { "fn": "formatCount" }, "tolerance": 0
+    },
+    "six.A.cap3.tau20.E": {
+      "type": "scalar", "from": "six.A.cap3.tau20", "field": "Ew",
+      "format": { "fn": "formatRisk" }, "tolerance": 1e-12
+    },
+    "six.A.cap3.tau20.EoverM": {
+      "type": "scalar", "from": "six.A.cap3.tau20", "field": "evaluation.EoverM.0",
+      "format": { "fn": "formatSig", "options": { "sig": 3 } }, "tolerance": 1e-12
+    },
+    "six.A.cap3.tau20.wh": {
+      "type": "scalar", "from": "six.A.cap3.tau20", "field": "evaluation.withholdingTerm",
+      "format": { "fn": "formatRisk" }, "tolerance": 1e-12
+    },
+    "six.A.cap3.tau20.risk": {
+      "type": "scalar", "from": "six.A.cap3.tau20", "field": "risk",
+      "format": { "fn": "formatRisk" }, "tolerance": 1e-12
+    },
+    "six.A.cap3.tau20.EoverN": {
+      "type": "scalar", "from": "six.A.cap3.tau20", "field": "EoverN.0",
+      "format": { "fn": "formatEoverN", "options": { "sig": 3 } }, "tolerance": 1e-12
+    },
+    "six.A.all.tau20.grades": {
+      "type": "vector", "from": "six.A.all.tau20", "field": "grade",
+      "format": { "fn": "formatGrades" }, "tolerance": 0
+    },
+    "six.A.all.tau20.risk": {
+      "type": "scalar", "from": "six.A.all.tau20", "field": "risk",
+      "format": { "fn": "formatRisk" }, "tolerance": 1e-12
+    },
+    "six.A.r111111.tau20.EoverN": {
+      "type": "na", "fn": "evaluateReport", "args": [[1, 1, 1, 1, 1, 1], { "$input": "six.A" }, { "tau": { "$setting": "settings.tau20" } }],
+      "field": "EoverN.0", "format": { "fn": "formatEoverN" }
+    },
+    "cf.tau25.lambda": {
+      "type": "fraction", "fn": "tauToLambda", "args": [{ "$setting": "settings.tau25" }],
+      "format": { "fn": "formatRational" }, "tolerance": 1e-12
+    },
+    "tb10.law3.tau20.optima": {
+      "type": "set", "from": "tb10.law3.tau20", "field": "grades",
+      "format": { "fn": "formatTuple", "item": { "fn": "formatGrades" } }, "tolerance": 0
+    },
+    "tb10.law3.tau20.optrisk": {
+      "type": "fraction", "from": "tb10.law3.tau20", "field": "risk",
+      "format": { "fn": "formatRational" }, "tolerance": 1e-12
+    }
+  }
+}

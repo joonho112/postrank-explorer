@@ -1,0 +1,45 @@
+---
+title: "A common report for Alabama county outcomes"
+subtitle: "5.12 · Opportunity Atlas data, one common grade on a map"
+description: "Criterion-specific evaluation of common grades for historical income and incarceration outcomes."
+---
+
+A common report evaluates Alabama counties on historical income and incarceration outcomes. The weight sets the
+relative cost of criterion errors. The map and table connect grades with marginal intervals. Grade 1 denotes
+higher income and lower incarceration. The live search uses weighted expected-rank cuts; archived reports and
+commonality-cost bounds retain their original optimisation scope.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/alabama-map.js"></script>
+<script>window.__prxApp = PRX["alabama-map"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **“Equal weights.”** Crenshaw County is alone in grade one; Montgomery and Russell share grade five; the shares expected wrong are .0520 on income and .172 on incarceration. Grade one means favourable historical outcomes: higher income and lower incarceration, rather than greater need.
+- **“Income only.”** The report states 1,769 of 2,211 pairs, while its share expected wrong on incarceration rises to .349. **“Income .80”** brings that share to .305 and income’s to .0305; risks at different weights belong to different losses.
+- **“Fixed income D1.”** Its grades stay fixed at equal weights, with risk .1906; D2’s risk is .1998. The corresponding archived map can be displayed beside the selected common-report map.
+- **“Color counties by this report.”** The display accepts an archived baseline or an edited grade vector. The complete table shows every county’s grades and marginal intervals; the relation summary compares it with archived P. **“Incarceration only”** gives shares .312 on income and .0873 on incarceration.
+
+The live search is best along the current weighted expected-rank order, which combines the criteria’s posterior average positions. At the original cost and cap, it reproduces archived P at equal weights, D1 for income alone and D2 for incarceration alone. The app retains their solver status and bounds. The archived commonality table answers a separate question: the increase in each criterion's risk under the original common report relative to its separate optimum. Its bounds belong to that original loss and full capped family, when a different live setting is selected.
+
+::: {.callout-note appearance="simple"}
+Outcomes condition on parents’ income at percentile 25, with race and gender pooled, for cohorts born 1978–83: household income in 2014–15 and incarceration on 1 April 2010. These are historical associations, rather than current conditions, causal effects of places, need or eligibility. Separate criterion fits do not supply a joint posterior. Data: Chetty, Friedman, Hendren, Jones and Porter (2022), Opportunity Atlas replication, Harvard Dataverse doi:10.7910/DVN/NKCQM1; Opportunity Insights and U.S. Census Bureau, CC BY 4.0; as adapted in postrank 1.1.0. Changes: Alabama filtering, favorable target orientation, supplied marginal summaries, archived reports and browser searches. Boundaries: U.S. Census Bureau Cartographic Boundary Files 2025, public domain, via usmapdata 1.1.0. No endorsement implied.
+:::
+
+<details class="prx-recipe">
+<summary>In postrank</summary>
+
+```r
+library(postrank); source(system.file("scripts", "_vignette-setup.R", package = "postrank"))
+al <- load_or_compute("case_alabama67"); get_profile(al)
+pr_case_alabama$reference$commonality[, c("criterion", "cost_lower_A", "cost_upper_A")]
+```
+</details>
+
+Standalone: [embed/alabama-map.html](../../embed/alabama-map.html), for example `?w=.5&overlay=income`.
+
+Related applications: [Criterion-specific excess risk of a common report](../criteria/common-grade-cost.qmd) · [A common report for race and gender gaps](krw-two.qmd).

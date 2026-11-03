@@ -1,0 +1,111 @@
+{
+  "id": "3.7",
+  "name": "rule-comparison",
+  "part": "3",
+  "presetLabel": "Compare",
+  "title": "Compare rules at the same disclosure",
+  "idea": "A rule is compared with the frontier at its own disclosure, the lowest expected wrong count a report or a mixture of two in the family attains with as many stated pairs, not with the best report at some τ.",
+  "status": "built",
+  "from": "v1 view · v1 R-04 rule-comparison, the same-disclosure view",
+  "data": [
+    "engine"
+  ],
+  "credit": "Frontier after the postrank theory book, ch. 16; rules as points after Kline, Rose and Walters (2024), slides 58–60.",
+  "caption": "Units U01–U08 of the simulated league under a normal posterior (prior mean 0, SD .15); flags against the mean of all 30 league estimates.",
+  "presets": [
+    {
+      "id": "same-n",
+      "label": "Same N, τ .20",
+      "query": "data=league8&family=all&match=n&tau=.20&rule=pmtiers"
+    },
+    {
+      "id": "tiers",
+      "label": "Estimate tiers",
+      "query": "data=league8&family=all&match=n&tau=.20&rule=tiers3"
+    },
+    {
+      "id": "flags",
+      "label": "Flags",
+      "query": "data=league8&family=all&match=n&tau=.20&rule=flags"
+    },
+    {
+      "id": "pmcuts",
+      "label": "Posterior-mean cuts",
+      "query": "data=league8&family=all&match=n&tau=.20&rule=pmcuts"
+    },
+    {
+      "id": "strict-low-tau",
+      "label": "Strict order, τ .05",
+      "query": "data=league8&family=all&match=n&tau=.05&rule=strict"
+    },
+    {
+      "id": "cap3",
+      "label": "At most three grades",
+      "query": "data=league8&family=cap3&match=n&tau=.20&rule=tiers3"
+    },
+    {
+      "id": "outside-cap",
+      "label": "Four tiers outside the cap",
+      "query": "data=league8&family=cap3&match=n&tau=.20&rule=tiers4"
+    },
+    {
+      "id": "withheld",
+      "label": "All-withheld",
+      "query": "data=league8&family=all&match=n&tau=.20&rule=withheld"
+    }
+  ],
+  "try": [
+    {
+      "preset": "same-n",
+      "shows": [
+        "21",
+        "3.114",
+        "2.951",
+        ".1634",
+        ".667",
+        "3.013"
+      ]
+    },
+    {
+      "preset": "tiers",
+      "shows": [
+        "21",
+        ".6429"
+      ]
+    },
+    {
+      "preset": "flags",
+      "shows": [
+        "19",
+        "0"
+      ]
+    },
+    {
+      "preset": "strict-low-tau",
+      "shows": [
+        "28",
+        ".2305",
+        "risk above all-withheld"
+      ]
+    },
+    {
+      "preset": "cap3",
+      "shows": [
+        "6,051",
+        ".4796"
+      ]
+    },
+    {
+      "preset": "outside-cap",
+      "shows": [
+        "outside this family"
+      ]
+    },
+    {
+      "preset": "withheld",
+      "shows": [
+        "0"
+      ]
+    }
+  ]
+}

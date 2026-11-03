@@ -1,0 +1,75 @@
+{
+  "id": "3.9",
+  "name": "deciles-quartiles",
+  "part": "3",
+  "title": "Deciles and quartiles of posterior means",
+  "idea": "Deciles and quartiles of KRW's posterior means sit inside the curve traced by KRW's cards along λ: for each, some card has a lower discordance rate and a higher informativeness.",
+  "status": "built",
+  "from": "new angle · builds on 3.5 and 5.5; adds deciles and quartiles of KRW's posterior means on KRW's two axes (KRW sections IV.B and V.E, Figures 2C and 6), evaluated with postrank's pair probabilities",
+  "data": [
+    "data/released/case-krw.json",
+    "data/released/krw-lambda-grid.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), section IV.B (Figure 2C) and section V.E (Figure 6). Firms as adapted in postrank 1.1.0 (pr_case_krw). Cards computed with KRW's code (KRW replication companion) under KRW's archived pair probabilities.",
+  "caption": "Posterior-mean tiers and archived KRW cards evaluated under the same released signed-target pair probabilities.",
+  "presets": [
+    {
+      "id": "race-four",
+      "label": "Race quartiles, card λ .60",
+      "query": "criterion=race&G=4&lambda=.60"
+    },
+    {
+      "id": "race-ten",
+      "label": "Race deciles, card λ .82",
+      "query": "criterion=race&G=10&lambda=.82"
+    },
+    {
+      "id": "gender-four",
+      "label": "Gender quartiles, card λ .64",
+      "query": "criterion=gender&G=4&lambda=.64"
+    },
+    {
+      "id": "gender-ten",
+      "label": "Gender deciles, card λ .80",
+      "query": "criterion=gender&G=10&lambda=.80"
+    }
+  ],
+  "try": [
+    {
+      "preset": "race-four",
+      "shows": [
+        ".1696",
+        ".4185",
+        ".1678",
+        ".4336"
+      ]
+    },
+    {
+      "preset": "race-ten",
+      "shows": [
+        ".2271",
+        ".4550",
+        ".2243",
+        ".4589"
+      ]
+    },
+    {
+      "preset": "gender-four",
+      "shows": [
+        ".1978",
+        ".3621",
+        ".1908",
+        ".3875"
+      ]
+    },
+    {
+      "preset": "gender-ten",
+      "shows": [
+        ".2525",
+        ".4042",
+        ".2373",
+        ".4078"
+      ]
+    }
+  ]
+}

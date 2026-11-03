@@ -1,0 +1,56 @@
+---
+title: "Pairwise posterior direction probabilities"
+subtitle: "1.8 · the direction probability of two independent normal posteriors, after Kline, Rose and Walters (2024)"
+description: "Direction probabilities from the difference of two independent normal posterior variables."
+---
+
+Suppose that the true values of units A and B have independent normal posterior distributions. Their pairwise
+ordering is described by $\pi_{AB} = \Pr(\theta_A > \theta_B \mid Y)$. This is the posterior probability that A has
+the larger true value, obtained by integrating the distribution of A − B above zero. The figure displays this
+distribution on the same scales as the two marginal distributions. Independence implies that the variance of the
+difference is the sum of the marginal variances, so uncertainty in both true values contributes to the comparison.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/two-units.js"></script>
+<script>window.__prxApp = PRX["two-units"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Means .30 and .10, SDs .20 and .20.** The two posteriors overlap substantially, while $\pi_{AB}$ = .760. The gap is
+  measured against the SD of the difference, .283, not against one unit's SD: A's mean is .707 SDs of the difference
+  above B's.
+- **Means .30 and .10, SDs .20 and .60 (B much less precise).** The same gap, but the difference widens to SD .632,
+  so A's mean is only .316 SDs of it above B's, and $\pi_{AB}$ falls to .624, closer to one half.
+- **Means .20 and .20, SDs .20 and .40.** With equal means each direction has probability .500, for either choice of marginal SDs; the difference keeps mean 0 and only spreads out (SD .447).
+- **Means 1.20 and .95, SDs .20 and .20 (tutorial sites A and B).** Sites A and B of the six fictional sites in
+  postrank's tutorial data: $\pi_{AB}$ = .812. The package stores one minus this number, the chance that stating A
+  above B would be wrong.
+
+::: {.callout-note appearance="simple"}
+The formula holds for two independent normal posteriors, set here by hand. For them, whatever their SDs, the larger
+posterior mean is always the more likely direction, and $\pi_{BA} = 1 - \pi_{AB}$, because the two true values have
+probability zero of being equal. Kline, Rose and Walters (2024), section II.E, Example 1, and slide 27 of their talk,
+use the special case of this formula with both SDs equal to 1.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+1 - pr_tutorial$one$e["A", "B", "score_A"]   # 0.8116204: tutorial sites A and B, one minus the stored error
+pnorm((1.20 - .95) / sqrt(.20^2 + .20^2))    # 0.8116204: the app's formula at the same means and SDs
+```
+:::
+
+Standalone: [embed/two-units.html](../../embed/two-units.html), for example `?muA=.30&sdA=.20&muB=.10&sdB=.60` or
+`?preset=equal-means&theme=dark`.
+
+Related applications: [Posterior dependence and pairwise comparisons](correlated-units.qmd) (1.9) drops independence;
+[Marginal summaries and joint direction probabilities](beyond-normal.qmd) (1.10) drops the normal shape, and with its joint laws
+independence too; [Marginal interval overlap and direction probabilities](interval-overlap.qmd) (1.11) shows overlapping intervals beside
+a confident direction, and [The matrix of pairwise posterior probabilities](pairwise-matrix.qmd) (1.13) shows this probability for every pair of
+thirty units.

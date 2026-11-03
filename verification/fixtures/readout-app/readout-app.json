@@ -1,0 +1,51 @@
+{
+  "$schema": "../../readouts/_schema.json",
+  "app": "readout-app",
+  "catalog": null,
+  "module": "verification/fixtures/readout-app/readout-app.js",
+  "from": "postrank-explorer-v1 verification/readouts/test-widget.json",
+  "about": "The read-out check's fixture app (no catalog entry, raw queries). Its read-out shows τ, the unit count and a run counter; the setting values come from v1's registry settings keys. The figure, its hidden table and the slider output are checked by the general rules (every number carries data-num and reads back as its raw value). The self-test runs these cases clean, then plants faults in them.",
+  "cases": [
+    {
+      "id": "defaults",
+      "about": "No query: the CONFIG defaults τ = .20 and four units.",
+      "query": "",
+      "expect": [
+        { "select": "[data-prx-part~=\"readout\"] .prx-num", "index": 0, "about": "τ in the read-out", "format": { "fn": "formatSetting" }, "source": "registry", "ref": "settings.tau20", "value": 0.2 },
+        { "select": "[data-prx-part~=\"readout\"] .prx-num", "index": 1, "about": "units in the read-out", "format": { "fn": "formatCount" }, "source": "registry", "ref": "settings.cap4", "value": 4 },
+        { "select": ".prx-slider output", "about": "the slider value", "source": "registry", "ref": "settings.tau20", "value": 0.2 },
+        { "select": "[data-prx-part~=\"table\"] caption", "kind": "text", "about": "the hidden table's caption is the figure's text alternative", "source": "literal", "ref": "11.4", "value": "Test points" },
+        { "select": "svg[role=\"img\"]", "attr": "aria-label", "kind": "text", "about": "the figure's accessible name", "source": "literal", "ref": "11.4", "value": "Four test points A to D with their probabilities" }
+      ]
+    },
+    {
+      "id": "tau30-two-units",
+      "about": "A raw query moves τ, the unit count and the family.",
+      "query": "?tau=.30&n=2&family=capped",
+      "expect": [
+        { "select": "[data-prx-part~=\"readout\"] .prx-num", "index": 0, "format": { "fn": "formatSetting" }, "source": "registry", "ref": "settings.tau30", "value": 0.3 },
+        { "select": "[data-prx-part~=\"readout\"] .prx-num", "index": 1, "format": { "fn": "formatCount" }, "source": "registry", "ref": "settings.cap2", "value": 2 },
+        { "select": ".prx-slider output", "source": "registry", "ref": "settings.tau30", "value": 0.3 }
+      ]
+    },
+    {
+      "id": "tau-clamped",
+      "about": "An out-of-range τ is clamped to the slider maximum, not rejected.",
+      "query": "?tau=.90",
+      "expect": [
+        { "select": "[data-prx-part~=\"readout\"] .prx-num", "index": 0, "format": { "fn": "formatSetting" }, "source": "registry", "ref": "settings.tau50", "value": 0.5 },
+        { "select": ".prx-slider output", "source": "registry", "ref": "settings.tau50", "value": 0.5 }
+      ]
+    },
+    {
+      "id": "update-after-mount",
+      "about": "update() after the first render (the postMessage bridge's path).",
+      "query": "?tau=.25",
+      "update": [{ "tau": 0.4 }, { "n": 2 }],
+      "expect": [
+        { "select": "[data-prx-part~=\"readout\"] .prx-num", "index": 0, "format": { "fn": "formatSetting" }, "source": "registry", "ref": "settings.tau40", "value": 0.4 },
+        { "select": "[data-prx-part~=\"readout\"] .prx-num", "index": 1, "format": { "fn": "formatCount" }, "source": "registry", "ref": "settings.cap2", "value": 2 }
+      ]
+    }
+  ]
+}

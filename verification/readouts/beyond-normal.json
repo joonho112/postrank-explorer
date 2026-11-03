@@ -1,0 +1,1707 @@
+{
+  "$schema": "./_schema.json",
+  "app": "beyond-normal",
+  "catalog": "1.10",
+  "from": "postrank-explorer-v1 verification/readouts/two-units.json",
+  "about": "Two pictures in which the means, or the two posteriors one at a time, do not settle the direction probability. The joint-law panel (v1 L-07 Deeper box 2): the law's cells, both margins (engine finiteLawMargins), pi_AB and pi_BA and the tie probability t (finiteLawPairwise) and pi_AB + pi_BA (tieLawPairwise); laws 1 and 2 against the base-R oracle rows finiteLawPairwise-tb09-Q1 and -Q2, finiteLawMargins-tb09-Q1 and -Q2 (oracle-v3) and v1's frozen registry (tb09.*, settings.tb09.state); the independence law's margins against oracle-v3's nine-cell row; an edited law with the oracle's tie law (finiteLawPairwise-m4-ties, masses .1, .4, .5 as counts 1, 4, 5). The two-bump panel (v1 L-07 Deeper box 3): per-bump pi (pairDirection), the whole pi (mixturePairDirection) and A's mean (rankSummaries of the bump centers) against the oracle rows and the registry (cf.mix.*, settings.mix.*). Ported from v1's joint-q1, joint-q2, mixture-w20, mixture-w50 and update-deeper cases: the deeper key is gone (both panels show at once), the misreading boxes' expectations were dropped with the boxes, law Q1 and Q2 are law 1 and law 2, the slider and figure indices are renumbered for this app. New in v3: the independence, always-equal and edited laws, the result and tie sentences word for word (slotted literals), and the result line at the edges of the flip range on the slider grid.",
+  "cases": [
+    {
+      "id": "joint-law1",
+      "about": "Law 1 (v1 law Q1; theory book ch. 9): three equally probable states (0, 1), (1, 2), (2, 0); both margins uniform on 0, 1 and 2.",
+      "preset": "law1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"joint-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q1",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "pi_AB under law 1 (oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-pi\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.pi",
+          "value": 0.3333333333333333,
+          "about": "pi_AB under law 1 (registry)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-pi-ba\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q1",
+            "field": "pi.0.1.0"
+          },
+          "value": 0.666666666666667,
+          "about": "pi_BA under law 1 (oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-pi-ba\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.piBA",
+          "value": 0.6666666666666666,
+          "about": "pi_BA under law 1 (registry)"
+        },
+        {
+          "select": "[data-prx-readout=\"live-joint-pi\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.pi",
+          "value": 0.3333333333333333,
+          "about": "the read-out: pi_AB"
+        },
+        {
+          "select": "[data-prx-readout=\"live-joint-pi-ba\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.piBA",
+          "value": 0.6666666666666666,
+          "about": "the read-out: pi_BA"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-cell-0-1\"]",
+          "source": "registry",
+          "ref": "settings.tb09.state",
+          "value": 0.3333333333333333,
+          "about": "the state (A, B) = (0, 1) has the law's state probability"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-cell-1-2\"]",
+          "source": "registry",
+          "ref": "settings.tb09.state",
+          "value": 0.3333333333333333,
+          "about": "the state (A, B) = (1, 2) has the law's state probability"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-cell-2-0\"]",
+          "source": "registry",
+          "ref": "settings.tb09.state",
+          "value": 0.3333333333333333,
+          "about": "the state (A, B) = (2, 0) has the law's state probability"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a0\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.marginA.v0",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(A = 0) under law 1"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a0\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q1",
+            "field": "probs.0.0.0"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(A = 0) under law 1 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a1\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.marginA.v1",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(A = 1) under law 1"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a1\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q1",
+            "field": "probs.0.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(A = 1) under law 1 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a2\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.marginA.v2",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(A = 2) under law 1"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a2\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q1",
+            "field": "probs.0.0.2"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(A = 2) under law 1 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b0\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.marginB.v0",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(B = 0) under law 1"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b0\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q1",
+            "field": "probs.1.0.0"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(B = 0) under law 1 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b1\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.marginB.v1",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(B = 1) under law 1"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b1\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q1",
+            "field": "probs.1.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(B = 1) under law 1 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b2\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.marginB.v2",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(B = 2) under law 1"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b2\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q1",
+            "field": "probs.1.0.2"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(B = 2) under law 1 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-third\"]",
+          "source": "registry",
+          "ref": "settings.tb09.state",
+          "value": 0.3333333333333333,
+          "about": "the margin named in the totals sentence"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-t\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q1",
+            "field": "t.0.0.1"
+          },
+          "value": 0,
+          "about": "law 1 has no ties (oracle)"
+        },
+        {
+          "select": ".prx-two-units-law caption",
+          "kind": "text",
+          "about": "caption of the joint-law table",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Law 1: the probability of each pair of true values (rows: A's true value; columns: B's true value)"
+        },
+        {
+          "select": ".prx-bn-tie-line",
+          "kind": "text",
+          "slots": true,
+          "about": "no ties: pi_AB + pi_BA = 1",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The two true values are never equal here (t = ⟨joint-t⟩), so πAB + πBA = ⟨joint-d⟩."
+        },
+        {
+          "select": ".prx-two-units-key",
+          "index": 0,
+          "kind": "text",
+          "about": "the key line of the joint-law table, word for word",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Blue cells: A's true value is larger than B's, and πAB is the total of their probabilities. A cell with count 0 has probability zero."
+        },
+        {
+          "select": ".prx-two-units-key",
+          "index": 1,
+          "kind": "text",
+          "about": "the key line of the diagonal cells",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Cells with a dashed outline: the two true values are equal, and t is the total of their probabilities."
+        },
+        {
+          "select": "[data-prx-readout=\"joint-d\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-tb09-Q1-tie-free",
+            "field": "d.0.0.1"
+          },
+          "value": 1,
+          "about": "law 1: pi_AB + pi_BA = 1 - t = 1 (engine tieLawPairwise against the oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-law2-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q2",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.666666666666667,
+          "about": "the totals line keeps law 2's pi_AB on screen beside law 1's (oracle)"
+        },
+        {
+          "select": ".prx-bn-law .prx-seg[aria-pressed=\"true\"]",
+          "kind": "text",
+          "about": "the panel's own Joint law row shows the law the cells hold",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Law 1"
+        },
+        {
+          "select": ".prx-bn-preset-note",
+          "kind": "text",
+          "about": "the line under the preset row: a preset is a whole setting of both panels",
+          "source": "literal",
+          "ref": "10.4",
+          "value": "A preset sets both panels; the Joint law buttons, the count boxes and the weight slider each change only their own panel."
+        }
+      ]
+    },
+    {
+      "id": "mixture-w20",
+      "about": "The two-bump posterior at weight .20 (the first preset): A's mean (.120) is above B's (0), yet pi_AB is below one half.",
+      "preset": "law1",
+      "expect": [
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "source": "registry",
+          "ref": "settings.mix.w20",
+          "value": 0.2,
+          "about": "slider: weight of A's upper bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-weight-lower\"]",
+          "source": "registry",
+          "ref": "settings.mix.w80",
+          "value": 0.8,
+          "about": "weight of the lower bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-weight-upper\"]",
+          "source": "registry",
+          "ref": "settings.mix.w20",
+          "value": 0.2,
+          "about": "weight of the upper bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-center-lower\"]",
+          "source": "registry",
+          "ref": "settings.mix.lo",
+          "value": -0.1,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "center of the lower bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-center-upper\"]",
+          "source": "registry",
+          "ref": "settings.mix.hi",
+          "value": 1,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "center of the upper bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi-lower\"]",
+          "source": "registry",
+          "ref": "cf.mix.lower.pi",
+          "value": 0.23975006109347674,
+          "about": "Pr(A > B) within the lower bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi-upper\"]",
+          "source": "registry",
+          "ref": "cf.mix.upper.pi",
+          "value": 0.9999999999992313,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols"
+            }
+          },
+          "about": "Pr(A > B) within the upper bump (a bound)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi-lower\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-L07-mixture-lower-bump",
+            "field": "pi"
+          },
+          "value": 0.239750061093477,
+          "about": "Pr(A > B) within the lower bump (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi-upper\"]",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols"
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-L07-mixture-upper-bump",
+            "field": "pi"
+          },
+          "value": 0.999999999999231,
+          "about": "Pr(A > B) within the upper bump, a bound (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-mean-a\"]",
+          "source": "registry",
+          "ref": "cf.mix.w20.meanA",
+          "value": 0.12,
+          "about": "A's posterior mean: the weighted average of the centers"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi\"]",
+          "source": "registry",
+          "ref": "cf.mix.w20.pi",
+          "value": 0.3918000488746277,
+          "about": "pi_AB: the weighted average of the bumps' probabilities"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "mixturePairDirection-L07-upper-weight.20",
+            "field": "pi"
+          },
+          "value": 0.391800048874628,
+          "about": "pi_AB of the whole posterior (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-result-mean-a\"]",
+          "source": "registry",
+          "ref": "cf.mix.w20.meanA",
+          "value": 0.12,
+          "about": "the result line: A's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-result-mean-b\"]",
+          "source": "registry",
+          "ref": "settings.mix.meanB",
+          "value": 0,
+          "about": "the result line: B's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-result-pi\"]",
+          "source": "registry",
+          "ref": "cf.mix.w20.pi",
+          "value": 0.3918000488746277,
+          "about": "the result line: pi_AB"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-result-pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "mixturePairDirection-L07-upper-weight.20",
+            "field": "pi"
+          },
+          "value": 0.391800048874628,
+          "about": "the result line: pi_AB (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-w\"]",
+          "source": "registry",
+          "ref": "settings.mix.w20",
+          "value": 0.2,
+          "about": "the read-out: w"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-mean-a\"]",
+          "source": "registry",
+          "ref": "cf.mix.w20.meanA",
+          "value": 0.12,
+          "about": "the read-out: A's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-mean-b\"]",
+          "source": "registry",
+          "ref": "settings.mix.meanB",
+          "value": 0,
+          "about": "the read-out: B's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-pi\"]",
+          "source": "registry",
+          "ref": "cf.mix.w20.pi",
+          "value": 0.3918000488746277,
+          "about": "the read-out: pi_AB"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "mixturePairDirection-L07-upper-weight.20",
+            "field": "pi"
+          },
+          "value": 0.391800048874628,
+          "about": "the read-out: pi_AB (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-hi\"]",
+          "source": "registry",
+          "ref": "settings.mix.hi",
+          "value": 1,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "settings line: center of the upper bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-lo\"]",
+          "source": "registry",
+          "ref": "settings.mix.lo",
+          "value": -0.1,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "settings line: center of the lower bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-sd\"]",
+          "source": "registry",
+          "ref": "settings.mix.sd10",
+          "value": 0.1,
+          "about": "settings line: SD of each bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-mean-b\"]",
+          "source": "registry",
+          "ref": "settings.mix.meanB",
+          "value": 0,
+          "about": "settings line: B's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-sd-b\"]",
+          "source": "registry",
+          "ref": "settings.mix.sd10",
+          "value": 0.1,
+          "about": "settings line: B's SD"
+        },
+        {
+          "select": "p.prx-two-units-result",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line, flip form",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A's posterior mean, ⟨mix-result-mean-a⟩, is above B's mean, ⟨mix-result-mean-b⟩, yet πAB = ⟨mix-result-pi⟩: B's true value is more probably the larger."
+        },
+        {
+          "select": ".prx-bn-explain",
+          "kind": "text",
+          "slots": true,
+          "about": "the two-bump explanation (CR-119's sentence) and the weights at which A's mean and pi_AB point to different units",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A small bump far above B pulls A's mean up but adds little to πAB: the mean averages the two centers, while πAB averages the bumps' chances (last column), so the upper bump adds at most w. On the slider, A's mean and πAB point to different units for w from ⟨mix-flip-from⟩ to ⟨mix-flip-to⟩."
+        },
+        {
+          "select": "svg[role=\"img\"]",
+          "index": 0,
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "text alternative of the two-bump figure (the app's only figure)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Posterior density of unit A, a mixture of two normal bumps (solid line), and of unit B (dashed line), with dotted vertical lines at A's and B's posterior means."
+        },
+        {
+          "select": ".prx-two-units-mixtable caption",
+          "kind": "text",
+          "about": "caption of the bump-by-bump table",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Unit A's posterior bump by bump, and as a whole"
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "about": "the posteriors are set by hand for teaching (caption in its v3 wording)",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "input[type=\"range\"]",
+          "index": 0,
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the slider's name",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Weight of the upper bump of unit A's posterior"
+        },
+        {
+          "select": "input[type=\"number\"]",
+          "index": 6,
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the count box of the cell A = 2, B = 0",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Count of pairs with A = 2 and B = 0"
+        }
+      ]
+    },
+    {
+      "id": "joint-law2",
+      "about": "Law 2 (v1 law Q2): states (0, 2), (1, 0), (2, 1); the same margins as law 1, and pi_AB reversed.",
+      "preset": "law2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"joint-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q2",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.666666666666667,
+          "about": "pi_AB under law 2 (oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-pi\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.pi",
+          "value": 0.6666666666666666,
+          "about": "pi_AB under law 2 (registry)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-pi-ba\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q2",
+            "field": "pi.0.1.0"
+          },
+          "value": 0.333333333333333,
+          "about": "pi_BA under law 2 (oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-pi-ba\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.piBA",
+          "value": 0.3333333333333333,
+          "about": "pi_BA under law 2 (registry)"
+        },
+        {
+          "select": "[data-prx-readout=\"live-joint-pi\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.pi",
+          "value": 0.6666666666666666,
+          "about": "the read-out: pi_AB"
+        },
+        {
+          "select": "[data-prx-readout=\"live-joint-pi-ba\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.piBA",
+          "value": 0.3333333333333333,
+          "about": "the read-out: pi_BA"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-cell-0-2\"]",
+          "source": "registry",
+          "ref": "settings.tb09.state",
+          "value": 0.3333333333333333,
+          "about": "the state (A, B) = (0, 2) has the law's state probability"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-cell-1-0\"]",
+          "source": "registry",
+          "ref": "settings.tb09.state",
+          "value": 0.3333333333333333,
+          "about": "the state (A, B) = (1, 0) has the law's state probability"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-cell-2-1\"]",
+          "source": "registry",
+          "ref": "settings.tb09.state",
+          "value": 0.3333333333333333,
+          "about": "the state (A, B) = (2, 1) has the law's state probability"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a0\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.marginA.v0",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(A = 0) under law 2"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a0\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q2",
+            "field": "probs.0.0.0"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(A = 0) under law 2 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a1\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.marginA.v1",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(A = 1) under law 2"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a1\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q2",
+            "field": "probs.0.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(A = 1) under law 2 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a2\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.marginA.v2",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(A = 2) under law 2"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a2\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q2",
+            "field": "probs.0.0.2"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(A = 2) under law 2 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b0\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.marginB.v0",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(B = 0) under law 2"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b0\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q2",
+            "field": "probs.1.0.0"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(B = 0) under law 2 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b1\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.marginB.v1",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(B = 1) under law 2"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b1\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q2",
+            "field": "probs.1.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(B = 1) under law 2 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b2\"]",
+          "source": "registry",
+          "ref": "tb09.Q2.marginB.v2",
+          "value": 0.3333333333333333,
+          "about": "total: Pr(B = 2) under law 2"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b2\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-Q2",
+            "field": "probs.1.0.2"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(B = 2) under law 2 (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-third\"]",
+          "source": "registry",
+          "ref": "settings.tb09.state",
+          "value": 0.3333333333333333,
+          "about": "the margin named in the totals sentence"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-t\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q2",
+            "field": "t.0.0.1"
+          },
+          "value": 0,
+          "about": "law 2 has no ties (oracle)"
+        },
+        {
+          "select": ".prx-two-units-law caption",
+          "kind": "text",
+          "about": "caption of the joint-law table",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Law 2: the probability of each pair of true values (rows: A's true value; columns: B's true value)"
+        },
+        {
+          "select": ".prx-bn-tie-line",
+          "kind": "text",
+          "slots": true,
+          "about": "no ties: pi_AB + pi_BA = 1",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The two true values are never equal here (t = ⟨joint-t⟩), so πAB + πBA = ⟨joint-d⟩."
+        },
+        {
+          "select": ".prx-two-units-key",
+          "index": 0,
+          "kind": "text",
+          "about": "the key line of the joint-law table, word for word",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Blue cells: A's true value is larger than B's, and πAB is the total of their probabilities. A cell with count 0 has probability zero."
+        },
+        {
+          "select": ".prx-two-units-key",
+          "index": 1,
+          "kind": "text",
+          "about": "the key line of the diagonal cells",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Cells with a dashed outline: the two true values are equal, and t is the total of their probabilities."
+        },
+        {
+          "select": "[data-prx-readout=\"joint-law1-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q1",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "the totals line keeps law 1's pi_AB on screen beside law 2's (oracle)"
+        },
+        {
+          "select": ".prx-bn-law .prx-seg[aria-pressed=\"true\"]",
+          "kind": "text",
+          "about": "the panel's own Joint law row shows the law the cells hold",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Law 2"
+        }
+      ]
+    },
+    {
+      "id": "joint-independent",
+      "about": "The independence law: all nine pairs once. The margins are those of laws 1 and 2, but A equals B with probability 1/3, so pi_AB + pi_BA = 2/3.",
+      "preset": "independent",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"joint-margin-a0\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-independent-nine-cells",
+            "field": "probs.0.0.0"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(A = 0) under the independence law (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a1\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-independent-nine-cells",
+            "field": "probs.0.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(A = 1) under the independence law (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-a2\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-independent-nine-cells",
+            "field": "probs.0.0.2"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(A = 2) under the independence law (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b0\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-independent-nine-cells",
+            "field": "probs.1.0.0"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(B = 0) under the independence law (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b1\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-independent-nine-cells",
+            "field": "probs.1.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(B = 1) under the independence law (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-margin-b2\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "finiteLawMargins-tb09-independent-nine-cells",
+            "field": "probs.1.0.2"
+          },
+          "value": 0.333333333333333,
+          "about": "total: Pr(B = 2) under the independence law (engine finiteLawMargins against the base-R oracle)"
+        },
+        {
+          "select": ".prx-two-units-law caption",
+          "kind": "text",
+          "about": "caption of the joint-law table",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The independence law: the probability of each pair of true values (rows: A's true value; columns: B's true value)"
+        },
+        {
+          "select": ".prx-bn-result-line",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line when pi_AB equals pi_BA",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Under the independence law, πAB = ⟨joint-pi⟩ and πBA = ⟨joint-pi-ba⟩: neither unit is more probably the higher."
+        },
+        {
+          "select": ".prx-bn-tie-line",
+          "kind": "text",
+          "slots": true,
+          "about": "ties: pi_AB + pi_BA = 1 - t, and tie-freeness is an assumption about the joint law (theory book ch. 9)",
+          "source": "literal",
+          "ref": "1.1",
+          "value": "The two true values are equal with probability t = ⟨joint-t⟩, so πAB + πBA = ⟨joint-d⟩, not ⟨one⟩. Tie-freeness (that the two true values are never exactly equal) is an assumption about the joint law: even continuous margins (each unit's own posterior) allow θA = θB."
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out word for word",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The independence law gives πAB = ⟨live-joint-pi⟩ and πBA = ⟨live-joint-pi-ba⟩, and A equals B with probability ⟨live-joint-t⟩. With two bumps, w = ⟨live-mix-w⟩ gives A a posterior mean of ⟨live-mix-mean-a⟩ against B's ⟨live-mix-mean-b⟩, and πAB = ⟨live-mix-pi⟩."
+        },
+        {
+          "select": "[data-prx-readout=\"joint-law1-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q1",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "the totals line names law 1's pi_AB for the same totals (oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-law2-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q2",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.666666666666667,
+          "about": "the totals line names law 2's pi_AB for the same totals (oracle)"
+        }
+      ]
+    },
+    {
+      "id": "joint-equal",
+      "about": "The always-equal law: the diagonal. The same margins again, and A always equals B: pi_AB = pi_BA = 0.",
+      "preset": "equal",
+      "expect": [
+        {
+          "select": ".prx-two-units-law caption",
+          "kind": "text",
+          "about": "caption of the joint-law table",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The always-equal law: the probability of each pair of true values (rows: A's true value; columns: B's true value)"
+        },
+        {
+          "select": ".prx-bn-result-line",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line when both directions have probability 0",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Under the always-equal law, πAB = ⟨joint-pi⟩ and πBA = ⟨joint-pi-ba⟩: neither unit is more probably the higher."
+        },
+        {
+          "select": ".prx-bn-tie-line",
+          "kind": "text",
+          "slots": true,
+          "about": "ties",
+          "source": "literal",
+          "ref": "1.1",
+          "value": "The two true values are equal with probability t = ⟨joint-t⟩, so πAB + πBA = ⟨joint-d⟩, not ⟨one⟩. Tie-freeness (that the two true values are never exactly equal) is an assumption about the joint law: even continuous margins (each unit's own posterior) allow θA = θB."
+        }
+      ]
+    },
+    {
+      "id": "joint-edited",
+      "about": "An edited law with the counts in a comma list: (0, 1) once, (1, 1) four times, (2, 1) five times. It is the oracle's law with masses .1, .4 and .5.",
+      "query": "?cells=0,1,0,0,4,0,0,5,0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"joint-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-m4-ties",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.5,
+          "about": "pi_AB of the edited law (oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-pi-ba\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-m4-ties",
+            "field": "pi.0.1.0"
+          },
+          "value": 0.1,
+          "about": "pi_BA of the edited law (oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-t\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-m4-ties",
+            "field": "t.0.0.1"
+          },
+          "value": 0.4,
+          "about": "the tie probability of the edited law (oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"live-joint-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-m4-ties",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.5,
+          "about": "the read-out: pi_AB"
+        },
+        {
+          "select": "[data-prx-readout=\"live-joint-t\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-m4-ties",
+            "field": "t.0.0.1"
+          },
+          "value": 0.4,
+          "about": "the read-out: the tie probability"
+        },
+        {
+          "select": ".prx-two-units-law caption",
+          "kind": "text",
+          "about": "caption of an edited law",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "This law: the probability of each pair of true values (rows: A's true value; columns: B's true value)"
+        },
+        {
+          "select": ".prx-bn-result-line",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line, A more probably the higher",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Under this law, πAB = ⟨joint-pi⟩ and πBA = ⟨joint-pi-ba⟩, so A is more probably the higher unit."
+        },
+        {
+          "select": ".prx-bn-tie-line",
+          "kind": "text",
+          "slots": true,
+          "about": "ties",
+          "source": "literal",
+          "ref": "1.1",
+          "value": "The two true values are equal with probability t = ⟨joint-t⟩, so πAB + πBA = ⟨joint-d⟩, not ⟨one⟩. Tie-freeness (that the two true values are never exactly equal) is an assumption about the joint law: even continuous margins (each unit's own posterior) allow θA = θB."
+        },
+        {
+          "select": "[data-prx-readout=\"joint-law1-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q1",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.333333333333333,
+          "about": "an edited law with other totals: the line still names law 1's pi_AB (oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"joint-law2-pi\"]",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "finiteLawPairwise-tb09-Q2",
+            "field": "pi.0.0.1"
+          },
+          "value": 0.666666666666667,
+          "about": "an edited law with other totals: the line still names law 2's pi_AB (oracle)"
+        }
+      ]
+    },
+    {
+      "id": "mixture-w50",
+      "about": "The two-bump posterior at equal weights: the means and pi_AB agree.",
+      "preset": "w50",
+      "expect": [
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "source": "registry",
+          "ref": "settings.mix.w50",
+          "value": 0.5,
+          "about": "slider: weight of A's upper bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-weight-lower\"]",
+          "source": "registry",
+          "ref": "settings.mix.w50",
+          "value": 0.5,
+          "about": "weight of the lower bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-weight-upper\"]",
+          "source": "registry",
+          "ref": "settings.mix.w50",
+          "value": 0.5,
+          "about": "weight of the upper bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-center-lower\"]",
+          "source": "registry",
+          "ref": "settings.mix.lo",
+          "value": -0.1,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "center of the lower bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-center-upper\"]",
+          "source": "registry",
+          "ref": "settings.mix.hi",
+          "value": 1,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "center of the upper bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi-lower\"]",
+          "source": "registry",
+          "ref": "cf.mix.lower.pi",
+          "value": 0.23975006109347674,
+          "about": "Pr(A > B) within the lower bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi-upper\"]",
+          "source": "registry",
+          "ref": "cf.mix.upper.pi",
+          "value": 0.9999999999992313,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols"
+            }
+          },
+          "about": "Pr(A > B) within the upper bump (a bound)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi-lower\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-L07-mixture-lower-bump",
+            "field": "pi"
+          },
+          "value": 0.239750061093477,
+          "about": "Pr(A > B) within the lower bump (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi-upper\"]",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols"
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-L07-mixture-upper-bump",
+            "field": "pi"
+          },
+          "value": 0.999999999999231,
+          "about": "Pr(A > B) within the upper bump, a bound (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-mean-a\"]",
+          "source": "registry",
+          "ref": "cf.mix.w50.meanA",
+          "value": 0.45,
+          "about": "A's posterior mean: the weighted average of the centers"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi\"]",
+          "source": "registry",
+          "ref": "cf.mix.w50.pi",
+          "value": 0.6198750305463541,
+          "about": "pi_AB: the weighted average of the bumps' probabilities"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "mixturePairDirection-L07-upper-weight.50",
+            "field": "pi"
+          },
+          "value": 0.619875030546354,
+          "about": "pi_AB of the whole posterior (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-result-mean-a\"]",
+          "source": "registry",
+          "ref": "cf.mix.w50.meanA",
+          "value": 0.45,
+          "about": "the result line: A's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-result-mean-b\"]",
+          "source": "registry",
+          "ref": "settings.mix.meanB",
+          "value": 0,
+          "about": "the result line: B's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-result-pi\"]",
+          "source": "registry",
+          "ref": "cf.mix.w50.pi",
+          "value": 0.6198750305463541,
+          "about": "the result line: pi_AB"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-result-pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "mixturePairDirection-L07-upper-weight.50",
+            "field": "pi"
+          },
+          "value": 0.619875030546354,
+          "about": "the result line: pi_AB (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-w\"]",
+          "source": "registry",
+          "ref": "settings.mix.w50",
+          "value": 0.5,
+          "about": "the read-out: w"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-mean-a\"]",
+          "source": "registry",
+          "ref": "cf.mix.w50.meanA",
+          "value": 0.45,
+          "about": "the read-out: A's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-mean-b\"]",
+          "source": "registry",
+          "ref": "settings.mix.meanB",
+          "value": 0,
+          "about": "the read-out: B's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-pi\"]",
+          "source": "registry",
+          "ref": "cf.mix.w50.pi",
+          "value": 0.6198750305463541,
+          "about": "the read-out: pi_AB"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "mixturePairDirection-L07-upper-weight.50",
+            "field": "pi"
+          },
+          "value": 0.619875030546354,
+          "about": "the read-out: pi_AB (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-hi\"]",
+          "source": "registry",
+          "ref": "settings.mix.hi",
+          "value": 1,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "settings line: center of the upper bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-lo\"]",
+          "source": "registry",
+          "ref": "settings.mix.lo",
+          "value": -0.1,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "settings line: center of the lower bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-sd\"]",
+          "source": "registry",
+          "ref": "settings.mix.sd10",
+          "value": 0.1,
+          "about": "settings line: SD of each bump"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-mean-b\"]",
+          "source": "registry",
+          "ref": "settings.mix.meanB",
+          "value": 0,
+          "about": "settings line: B's mean"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-sd-b\"]",
+          "source": "registry",
+          "ref": "settings.mix.sd10",
+          "value": 0.1,
+          "about": "settings line: B's SD"
+        },
+        {
+          "select": "p.prx-two-units-result",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line, agree form",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A's posterior mean, ⟨mix-result-mean-a⟩, is above B's mean, ⟨mix-result-mean-b⟩, and πAB = ⟨mix-result-pi⟩ agrees."
+        },
+        {
+          "select": ".prx-bn-explain",
+          "kind": "text",
+          "slots": true,
+          "about": "the two-bump explanation (CR-119's sentence) and the weights at which A's mean and pi_AB point to different units",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A small bump far above B pulls A's mean up but adds little to πAB: the mean averages the two centers, while πAB averages the bumps' chances (last column), so the upper bump adds at most w. On the slider, A's mean and πAB point to different units for w from ⟨mix-flip-from⟩ to ⟨mix-flip-to⟩."
+        }
+      ]
+    },
+    {
+      "id": "update-mix50",
+      "about": "update() after the first render (the postMessage bridge): law 1, then the weight .50; the joint law keeps its numbers.",
+      "preset": "law1",
+      "update": [
+        {
+          "mixW": 0.5
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"joint-pi\"]",
+          "source": "registry",
+          "ref": "tb09.Q1.pi",
+          "value": 0.3333333333333333,
+          "about": "the joint law is unchanged"
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi\"]",
+          "source": "registry",
+          "ref": "cf.mix.w50.pi",
+          "value": 0.6198750305463541
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-pi\"]",
+          "source": "registry",
+          "ref": "cf.mix.w50.pi",
+          "value": 0.6198750305463541
+        },
+        {
+          "select": "[data-prx-readout=\"mix-pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "mixturePairDirection-L07-upper-weight.50",
+            "field": "pi"
+          },
+          "value": 0.619875030546354,
+          "about": "cf.mix.w50.pi (independent base-R oracle)"
+        },
+        {
+          "select": "[data-prx-readout=\"live-mix-pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "mixturePairDirection-L07-upper-weight.50",
+            "field": "pi"
+          },
+          "value": 0.619875030546354,
+          "about": "cf.mix.w50.pi (independent base-R oracle)"
+        }
+      ]
+    },
+    {
+      "id": "mixture-w05",
+      "about": "The two-bump posterior at w .05 both point to B: no flip (the result line's form; F53's flip range on the slider grid).",
+      "query": "?mixW=.05",
+      "expect": [
+        {
+          "select": "p.prx-two-units-result",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A's posterior mean, ⟨mix-result-mean-a⟩, is below B's mean, ⟨mix-result-mean-b⟩, and πAB = ⟨mix-result-pi⟩ agrees."
+        },
+        {
+          "select": ".prx-bn-explain",
+          "kind": "text",
+          "slots": true,
+          "about": "the two-bump explanation (CR-119's sentence) and the weights at which A's mean and pi_AB point to different units",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A small bump far above B pulls A's mean up but adds little to πAB: the mean averages the two centers, while πAB averages the bumps' chances (last column), so the upper bump adds at most w. On the slider, A's mean and πAB point to different units for w from ⟨mix-flip-from⟩ to ⟨mix-flip-to⟩."
+        }
+      ]
+    },
+    {
+      "id": "mixture-w10",
+      "about": "The two-bump posterior at w .10, the smallest weight of the flip (the result line's form; F53's flip range on the slider grid).",
+      "query": "?mixW=.10",
+      "expect": [
+        {
+          "select": "p.prx-two-units-result",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A's posterior mean, ⟨mix-result-mean-a⟩, is above B's mean, ⟨mix-result-mean-b⟩, yet πAB = ⟨mix-result-pi⟩: B's true value is more probably the larger."
+        },
+        {
+          "select": ".prx-bn-explain",
+          "kind": "text",
+          "slots": true,
+          "about": "the two-bump explanation (CR-119's sentence) and the weights at which A's mean and pi_AB point to different units",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A small bump far above B pulls A's mean up but adds little to πAB: the mean averages the two centers, while πAB averages the bumps' chances (last column), so the upper bump adds at most w. On the slider, A's mean and πAB point to different units for w from ⟨mix-flip-from⟩ to ⟨mix-flip-to⟩."
+        }
+      ]
+    },
+    {
+      "id": "mixture-w30",
+      "about": "The two-bump posterior at w .30, the largest weight of the flip (the result line's form; F53's flip range on the slider grid).",
+      "query": "?mixW=.30",
+      "expect": [
+        {
+          "select": "p.prx-two-units-result",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A's posterior mean, ⟨mix-result-mean-a⟩, is above B's mean, ⟨mix-result-mean-b⟩, yet πAB = ⟨mix-result-pi⟩: B's true value is more probably the larger."
+        },
+        {
+          "select": ".prx-bn-explain",
+          "kind": "text",
+          "slots": true,
+          "about": "the two-bump explanation (CR-119's sentence) and the weights at which A's mean and pi_AB point to different units",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A small bump far above B pulls A's mean up but adds little to πAB: the mean averages the two centers, while πAB averages the bumps' chances (last column), so the upper bump adds at most w. On the slider, A's mean and πAB point to different units for w from ⟨mix-flip-from⟩ to ⟨mix-flip-to⟩."
+        }
+      ]
+    },
+    {
+      "id": "mixture-w35",
+      "about": "The two-bump posterior at w .35 both point to A: no flip (the result line's form; F53's flip range on the slider grid).",
+      "query": "?mixW=.35",
+      "expect": [
+        {
+          "select": "p.prx-two-units-result",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A's posterior mean, ⟨mix-result-mean-a⟩, is above B's mean, ⟨mix-result-mean-b⟩, and πAB = ⟨mix-result-pi⟩ agrees."
+        },
+        {
+          "select": ".prx-bn-explain",
+          "kind": "text",
+          "slots": true,
+          "about": "the two-bump explanation (CR-119's sentence) and the weights at which A's mean and pi_AB point to different units",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A small bump far above B pulls A's mean up but adds little to πAB: the mean averages the two centers, while πAB averages the bumps' chances (last column), so the upper bump adds at most w. On the slider, A's mean and πAB point to different units for w from ⟨mix-flip-from⟩ to ⟨mix-flip-to⟩."
+        }
+      ]
+    },
+    {
+      "id": "mixture-clamped",
+      "about": "The two-bump posterior a weight past the slider's end is clamped to .95 (the result line's form; F53's flip range on the slider grid).",
+      "query": "?mixW=1.4",
+      "expect": [
+        {
+          "select": "p.prx-two-units-result",
+          "kind": "text",
+          "slots": true,
+          "about": "the result line",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A's posterior mean, ⟨mix-result-mean-a⟩, is above B's mean, ⟨mix-result-mean-b⟩, and πAB = ⟨mix-result-pi⟩ agrees."
+        },
+        {
+          "select": ".prx-bn-explain",
+          "kind": "text",
+          "slots": true,
+          "about": "the two-bump explanation (CR-119's sentence) and the weights at which A's mean and pi_AB point to different units",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "A small bump far above B pulls A's mean up but adds little to πAB: the mean averages the two centers, while πAB averages the bumps' chances (last column), so the upper bump adds at most w. On the slider, A's mean and πAB point to different units for w from ⟨mix-flip-from⟩ to ⟨mix-flip-to⟩."
+        }
+      ]
+    }
+  ]
+}

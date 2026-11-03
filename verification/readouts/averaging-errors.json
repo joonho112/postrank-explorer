@@ -1,0 +1,488 @@
+{
+  "$schema": "./_schema.json",
+  "app": "averaging-errors",
+  "catalog": "2.19",
+  "about": "Independent base-R oracle-v3 values: the theory book three-case law, weighted law, complete-report kernel and simulated league replays. For all-silent cases every zero and undefined ratio is invariant to positive case weights and M. Exact fractions in finite hand-set laws; house share format for the simulated datasets.",
+  "cases": [
+    {
+      "id": "three",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"ERR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-tb16-three-case-equal-weights-explicit",
+            "field": "ERR"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.4
+        },
+        {
+          "select": "[data-prx-readout=\"meanFraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-tb16-three-case-equal-weights-explicit",
+            "field": "meanFraction"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"zeroImputed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-tb16-three-case-equal-weights-explicit",
+            "field": "zeroImputed"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.333333333333333
+        },
+        {
+          "select": "[data-prx-readout=\"positiveFrequency\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-tb16-three-case-equal-weights-explicit",
+            "field": "positiveFrequency"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.666666666666666
+        },
+        {
+          "select": "[data-prx-readout=\"meanDisclosure\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-tb16-three-case-equal-weights-explicit",
+            "field": "meanDisclosure"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.555555555555555
+        }
+      ],
+      "preset": "three"
+    },
+    {
+      "id": "weighted",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"ERR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-spec-weights-.5-.25-.25-M3",
+            "field": "ERR"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.571428571428571
+        },
+        {
+          "select": "[data-prx-readout=\"meanFraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-spec-weights-.5-.25-.25-M3",
+            "field": "meanFraction"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.666666666666667
+        },
+        {
+          "select": "[data-prx-readout=\"zeroImputed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-spec-weights-.5-.25-.25-M3",
+            "field": "zeroImputed"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"positiveFrequency\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-spec-weights-.5-.25-.25-M3",
+            "field": "positiveFrequency"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.75
+        },
+        {
+          "select": "[data-prx-readout=\"meanDisclosure\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-spec-weights-.5-.25-.25-M3",
+            "field": "meanDisclosure"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.583333333333333
+        }
+      ],
+      "preset": "weighted"
+    },
+    {
+      "id": "lottery",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"ERR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-randomized-kernel-.25-.75",
+            "field": "ERR"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.125
+        },
+        {
+          "select": "[data-prx-readout=\"meanFraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-randomized-kernel-.25-.75",
+            "field": "meanFraction"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.1225
+        },
+        {
+          "select": "[data-prx-readout=\"zeroImputed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-randomized-kernel-.25-.75",
+            "field": "zeroImputed"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.1225
+        },
+        {
+          "select": "[data-prx-readout=\"positiveFrequency\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-randomized-kernel-.25-.75",
+            "field": "positiveFrequency"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"meanDisclosure\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-randomized-kernel-.25-.75",
+            "field": "meanDisclosure"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0.75
+        }
+      ],
+      "preset": "lottery"
+    },
+    {
+      "id": "silent",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"ERR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-all-silent-weighted",
+            "field": "ERR"
+          },
+          "format": {
+            "fn": "formatEoverN"
+          },
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"meanFraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-all-silent-weighted",
+            "field": "meanFraction"
+          },
+          "format": {
+            "fn": "formatEoverN"
+          },
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"zeroImputed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-all-silent-weighted",
+            "field": "zeroImputed"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"positiveFrequency\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-all-silent-weighted",
+            "field": "positiveFrequency"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"meanDisclosure\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "disclosedErrorEstimands-all-silent-weighted",
+            "field": "meanDisclosure"
+          },
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 10000
+            }
+          },
+          "value": 0
+        }
+      ],
+      "preset": "silent"
+    },
+    {
+      "id": "league",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"ERR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R20-prior.15-tau.2-cap3-explicit",
+            "field": "estimands.ERR"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": 0.0892252539334794
+        },
+        {
+          "select": "[data-prx-readout=\"meanFraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R20-prior.15-tau.2-cap3-explicit",
+            "field": "estimands.meanFraction"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": 0.0891378945445856
+        },
+        {
+          "select": "[data-prx-readout=\"zeroImputed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R20-prior.15-tau.2-cap3-explicit",
+            "field": "estimands.zeroImputed"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": 0.0891378945445856
+        },
+        {
+          "select": "[data-prx-readout=\"positiveFrequency\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R20-prior.15-tau.2-cap3-explicit",
+            "field": "estimands.positiveFrequency"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"meanDisclosure\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R20-prior.15-tau.2-cap3-explicit",
+            "field": "estimands.meanDisclosure"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": 0.577126436781609
+        }
+      ],
+      "preset": "league"
+    },
+    {
+      "id": "league-silent",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"ERR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R3-cap1-nothing-stated",
+            "field": "estimands.ERR"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"meanFraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R3-cap1-nothing-stated",
+            "field": "estimands.meanFraction"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"zeroImputed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R3-cap1-nothing-stated",
+            "field": "estimands.zeroImputed"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"positiveFrequency\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R3-cap1-nothing-stated",
+            "field": "estimands.positiveFrequency"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"meanDisclosure\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R3-cap1-nothing-stated",
+            "field": "estimands.meanDisclosure"
+          },
+          "format": {
+            "fn": "formatShare"
+          },
+          "value": 0
+        }
+      ],
+      "query": "mode=replays&replays=3&cap=1"
+    }
+  ]
+}

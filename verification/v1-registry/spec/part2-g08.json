@@ -1,0 +1,29 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part2-g08",
+  "description": "Part 2, Limits on the number of grades (G-08, Deeper). The six-site family optima at tau = .20 (exactly G and the fixed orders) are six.A.eq*.tau20.* and six.A.order*.tau20.* in part2.json, and the theory book's fixed-order risks tb14.four.tau25.eq4.risk and tb14.four.tau25.le4.risk too; this fragment adds what the G-08 page writes about the theory book's four-unit law (ch. 14, sec-fixed-order-dp-example: two states with probabilities 3/4 and 1/4, two criteria weighted 3/5 and 2/5, tau = 1/4): its state probabilities, the weighted pair error of B above C, the best reports of the four families the widget shows at tau = 1/4 and their sizes.",
+  "license_scope": "author",
+  "inputs": {
+    "g08.tb14": {"fn":"finiteLawPairwise","args":[[[[4,4],[3,2],[2,3],[1,1]],[[3,1],[4,2],[2,3],[1,4]]],[0.75,0.25],{"ids":["A","B","C","D"],"criteria":["criterion 1","criterion 2"]}],"note":"theory book ch. 14: state 1 (3/4) orders ABCD on criterion 1 and ACBD on criterion 2, state 2 (1/4) BACD and DCBA; values 4, 3, 2, 1 along each order (the same law as tb16.four in part2.json)"},
+    "g08.tb14.probs": {"fn":"rankSummaries","args":[{"states":[[0.75,0.25]],"probs":null}],"note":"the two state probabilities gathered as a one-state law (means = the values)"},
+    "g08.tb14.ebar": {"fn":"weightedError","args":[{"$input":"g08.tb14"},{"$setting":"settings.w60"}],"note":"weighted pair errors with weights (3/5, 2/5)"},
+    "g08.tb14.tau25.eq4": {"fn":"exactOptimum","args":[{"$input":"g08.tb14"},{"tau":{"$setting":"settings.tau25"},"w":{"$setting":"settings.w60"},"family":{"kind":"exactly","G":{"$setting":"settings.exactG4"}}}],"note":"exactly 4 grades among all reports (the 24 strict orders)"},
+    "g08.tb14.tau25.all": {"fn":"exactOptimum","args":[{"$input":"g08.tb14"},{"tau":{"$setting":"settings.tau25"},"w":{"$setting":"settings.w60"},"family":{"kind":"all"}}],"note":"at most 4 grades = every report (75)"},
+    "g08.tb14.tau25.order": {"fn":"fixedOrderDP","args":[{"$input":"g08.tb14"},{"order":[0,1,2,3],"tau":{"$setting":"settings.tau25"},"w":{"$setting":"settings.w60"}}],"note":"every contiguous cut of A, B, C, D (8 reports), the theory book's setting"}
+  },
+  "keys": {
+    "g08.tb14.prob.high": {"type":"fraction","from":"g08.tb14.probs","field":"means.0","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"probability of the first state","same_as":"g06.tb16.prob.high"},
+    "g08.tb14.prob.low": {"type":"fraction","from":"g08.tb14.probs","field":"means.1","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"probability of the second state","same_as":"g06.tb16.prob.low"},
+    "g08.tb14.ebar.BC": {"type":"fraction","from":"g08.tb14.ebar","field":"1.2","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"the weighted error of B above C (theory book table: 2/5)"},
+    "g08.tb14.ebar.AB": {"type":"fraction","from":"g08.tb14.ebar","field":"0.1","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"the weighted error of A above B (theory book table: 1/4, equal to tau)"},
+    "g08.tb14.e2.BC": {"type":"fraction","from":"g08.tb14","field":"e.1.1.2","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"criterion 2 error of B above C: 1 (B is below C on criterion 2 in both states)"},
+    "g08.tb14.tau25.eq4.grades": {"type":"vector","from":"g08.tb14.tau25.eq4","field":"grade","format":{"fn":"formatGrades"},"tolerance":0},
+    "g08.tb14.tau25.eq4.risk": {"type":"fraction","from":"g08.tb14.tau25.eq4","field":"risk","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"7/40, the same as the fixed-order value tb14.four.tau25.eq4.risk"},
+    "g08.tb14.tau25.all.grades": {"type":"vector","from":"g08.tb14.tau25.all","field":"grade","format":{"fn":"formatGrades"},"tolerance":0},
+    "g08.tb14.tau25.all.risk": {"type":"fraction","from":"g08.tb14.tau25.all","field":"risk","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"3/20, the same as the fixed-order value tb14.four.tau25.le4.risk"},
+    "g08.tb14.tau25.order.grades": {"type":"vector","from":"g08.tb14.tau25.order","field":"grade","format":{"fn":"formatGrades"},"tolerance":0},
+    "g08.tb14.family.eq4.size": {"type":"scalar","fn":"familySize","args":[4,{"kind":"exactly","G":{"$setting":"settings.exactG4"}}],"format":{"fn":"formatCount"},"tolerance":0},
+    "g08.tb14.family.all.size": {"type":"scalar","fn":"familySize","args":[4,{"kind":"all"}],"format":{"fn":"formatCount"},"tolerance":0},
+    "g08.tb14.family.order.size": {"type":"scalar","fn":"familySize","args":[4,{"kind":"order","order":[0,1,2,3]}],"format":{"fn":"formatCount"},"tolerance":0}
+  }
+}

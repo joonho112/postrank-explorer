@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part2-g09",
+  "description": "Part 2, For KRW readers (G-09, Deeper). The lambda-tau conversions (cf.lambda25.tau, cf.lambda1.tau, cf.tau25.lambda), the KRW race card's summary values (krw.race.card.*) and its KRW risk at lambda = .25 (krw.race.card.lambda25.krwrisk), the lambda = 1 grid card's DR (krw.grid.race.lambda1.DR) and the six-site fixed report 1/1/2/2/3/3 (six.A.cap3.tau20.*) are keys of part2.json and numbers-cases.json; this fragment adds what the G-09 page writes about the lambda = 1 endpoint (the six sites' best report at tau = 1/2 and its two risks, the number of grades of KRW's lambda = 1 grid card) and two counts of the race card's direction table (the size of its third grade and the number of firms above a third-grade firm).",
+  "license_scope": "author",
+  "inputs": {
+    "g09.six": {"$data":"six-sites","path":"arrays.one","note":"the released error array of score A (data/released/six-sites.json)"},
+    "g09.six.all.tau50": {"fn":"exactOptimum","args":[{"$input":"g09.six"},{"tau":{"$setting":"settings.tau50"},"family":{"kind":"all"}}],"note":"the exact optimum among all 4,683 reports at tau = 1/2 (lambda = 1)"}
+  },
+  "keys": {
+    "g09.six.all.tau50.grades": {"type":"vector","from":"g09.six.all.tau50","field":"grade","format":{"fn":"formatGrades"},"tolerance":0,"note":"the full order A > B > C > D > E > F (oracle row exactOptimum-six-A-all-tau.50)"},
+    "g09.six.all.tau50.risk": {"type":"scalar","from":"g09.six.all.tau50","field":"risk","format":{"fn":"formatRisk"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"postrank's risk of the full order at tau = 1/2 (oracle row exactOptimum-six-A-all-tau.50)"},
+    "g09.six.all.tau50.krwrisk": {"type":"scalar","fn":"krwRisk","args":[{"$input":"g09.six.all.tau50","path":"grade"},{"$input":"g09.six"},{"lambda":{"$setting":"settings.lambda1"}}],"format":{"fn":"formatRisk"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"KRW's risk of the same report at lambda = 1 (oracle row krwRisk-six-strict-lambda1); tau + (1 - tau) times it is the risk above"},
+    "g09.krw.grid.lambda1.G": {"type":"scalar","fn":"disclosure","args":[{"$data":"krw-lambda-grid","path":"arrays.race.grade.100"}],"field":"G","format":{"fn":"formatCount"},"tolerance":0,"license_scope":"cc-by-nc-krw","note":"the number of grades of KRW's lambda = 1 race grid card (KRW's Condorcet ranks): every firm alone"},
+    "g09.krw.race.card.size3": {"type":"scalar","fn":"disclosure","args":[{"$data":"case-krw","path":"tables.reports.race_card"}],"field":"sizes.2","format":{"fn":"formatCount"},"tolerance":0,"license_scope":"cc-by-nc-krw","note":"the firms in the race card's third grade (the size of the second grade is krw.race.card.size2)"},
+    "g09.krw.race.card.above3": {"type":"scalar","fn":"unitRelationCounts","args":[{"$data":"case-krw","path":"tables.reports.race_card"}],"field":"below.5","format":{"fn":"formatCount"},"tolerance":0,"license_scope":"cc-by-nc-krw","note":"the firms in higher-priority grades than a third-grade firm (row position 6 is in grade 3): KRW's reconstruction gives it 1 + this count"},
+    "g09.krw.grid.firstlambda": {"type":"scalar","fn":"rankSummaries","args":[{"states":[[{"$data":"krw-lambda-grid","path":"facts.lambda.1"}]],"probs":null}],"field":"means.0","format":{"fn":"formatSetting"},"tolerance":0,"license_scope":"cc-by-nc-krw","note":"the first positive lambda of KRW's grid, gathered as a one-state law (the grid starts at 0, an endpoint outside postrank)"}
+  }
+}

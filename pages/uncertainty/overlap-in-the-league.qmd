@@ -1,0 +1,48 @@
+---
+title: "Interval overlap across 435 pairs"
+subtitle: "1.12 · the posterior intervals of a simulated league and the directions they hide, after Kline, Rose and Walters (2024)"
+description: "Comparison of marginal interval overlap and direction probabilities in a thirty-unit simulation."
+---
+
+The thirty units of the simulated league yield 435 unordered pairs. Their posterior intervals are calculated under
+the normal model used in [normal–normal posterior shrinkage](shrinkage.qmd). For each selected pair, the display gives the
+interval overlap and the posterior probability that the first unit has the larger true value. The table distinguishes
+non-overlapping intervals from overlapping intervals with, or without, a direction probability above .90. This
+classification quantifies the extent to which interval overlap coexists with relatively high posterior support for
+one direction. It also permits comparisons across interval levels and prior standard deviations.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/overlap-in-the-league.js"></script>
+<script>window.__prxApp = PRX["overlap-in-the-league"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Overlap, highest probability.** 399 of the 435 pairs have overlapping 90% intervals, and 88 of them still have one
+  direction above .90. The highest is .988, for U13 above U05, whose intervals overlap by .005: no overlapping pair is
+  above .99.
+- **U06 and U20.** These intervals do not overlap (.002 lies between them), and U06 is the higher with probability
+  .988, the same to three decimals as the overlapping pair above: the two comparisons have similar posterior support despite different overlap classifications.
+- **U04 and U18.** A wide overlap, .107, and still U04 is the higher with probability .904: U18's narrow interval ends
+  at −.105, below U04's posterior mean, −.014.
+- **95% intervals.** Wider intervals overlap more often, in 413 pairs, and 102 of these have one direction above .90.
+  The highest is now .997, for U03 above U15.
+- **Prior SD .05.** A narrow prior pulls every posterior mean toward zero: 427 pairs overlap, only 58 of them with one
+  direction above .90.
+
+::: {.callout-note appearance="simple"}
+For two independent normal posteriors, whatever their SDs, the more likely direction has a probability above .950 when
+their 90% intervals do not overlap. When they overlap, it is at most .990, the value for equal SDs and intervals that
+just touch (.975 and .997 for 95% intervals). Kline, Rose and Walters (2024, section IV.C) draw a credible interval
+beside each name, but they grade the names from pairwise posterior probabilities.
+:::
+
+Standalone: [embed/overlap-in-the-league.html](../../embed/overlap-in-the-league.html), for example `?pair=U05-U13`
+(U05 first: the card gives .012) or `?preset=league-95&theme=dark`.
+
+Related applications: [Marginal interval overlap and direction probabilities](interval-overlap.qmd) (1.11) takes one pair with equal
+SDs and shows why; [Pairwise posterior direction probabilities](two-units.qmd) (1.8) computes the probability for any two normal
+posteriors; [The matrix of pairwise posterior probabilities](pairwise-matrix.qmd) (1.13) shows it for every pair of this league.

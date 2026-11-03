@@ -1,0 +1,66 @@
+{
+  "id": "5.10",
+  "name": "cde-pair",
+  "part": "5",
+  "title": "A sure pair left unsaid",
+  "idea": "At τ = .20, the best report with at most three grades leaves the near-certain F–I direction unsaid. The cheapest report stating it in the same family has slightly higher risk; the four-grade comparison within the posterior-mean order also states it.",
+  "status": "built",
+  "from": "v1 view · v1 S-01 case-cde, the pair view",
+  "data": [
+    "data/released/case-cde.json",
+    "data/released/cde-taupath.json"
+  ],
+  "credit": "12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde).",
+  "caption": "Twelve-school CDE teaching subset; supplied posterior conditional on a statewide fitted prior. Grade 1 states lowest chronic absence; a shared grade withholds directions.",
+  "presets": [
+    {
+      "id": "pair-fi",
+      "label": "F above I",
+      "query": "tau=.20&cuts=3,9&pair=F,I"
+    },
+    {
+      "id": "reverse",
+      "label": "I above F",
+      "query": "tau=.20&cuts=3,9&pair=I,F"
+    },
+    {
+      "id": "tertiles",
+      "label": "The tertiles state it",
+      "query": "tau=.20&cuts=4,8&pair=F,I"
+    },
+    {
+      "id": "tau45",
+      "label": "The higher-cost optimum",
+      "query": "tau=.45&cuts=3,9&pair=F,I"
+    }
+  ],
+  "try": [
+    {
+      "preset": "pair-fi",
+      "shows": [
+        ".9999",
+        ".064087",
+        "175,099"
+      ]
+    },
+    {
+      "preset": "reverse",
+      "shows": [
+        ".112261"
+      ]
+    },
+    {
+      "preset": "tertiles",
+      "shows": [
+        "48",
+        ".082255"
+      ]
+    },
+    {
+      "preset": "tau45",
+      "shows": [
+        ".143197"
+      ]
+    }
+  ]
+}

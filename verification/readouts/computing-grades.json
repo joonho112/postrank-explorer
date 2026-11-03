@@ -1,0 +1,641 @@
+{
+  "$schema": "./_schema.json",
+  "app": "computing-grades",
+  "catalog": "2.16",
+  "about": "Independent package/base-R pins for counts, binary pattern, fixed-order and full-family risks. Runtime solver checked separately for lazy loading, offline operation and risk-scale objective accounting.",
+  "cases": [
+    {
+      "id": "dp-default",
+      "query": "",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"dp-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-grades\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-capped-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-capped-size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-order-size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-order-atMost3",
+            "field": "size"
+          },
+          "value": "16",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "counts-twelve",
+      "preset": "count-large",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"count-all\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-all",
+            "field": "size"
+          },
+          "value": "28091567595",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"count-capped\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-atMost3",
+            "field": "size"
+          },
+          "value": "523251",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"count-order\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-order-atMost3",
+            "field": "size"
+          },
+          "value": "67",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "counts-cap-one",
+      "query": "?view=count&n=12&cap=1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"count-capped\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-atMost1",
+            "field": "size"
+          },
+          "value": "1",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "valid-shared-grade",
+      "query": "?view=encoding&pattern=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pattern-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-all",
+            "field": "size"
+          },
+          "value": "13",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"z-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "weakRelation-1.1.1",
+            "field": "z.0.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"z-0-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "weakRelation-1.1.1",
+            "field": "z.0.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"z-1-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "weakRelation-1.1.1",
+            "field": "z.1.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"z-1-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "weakRelation-1.1.1",
+            "field": "z.1.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"z-2-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "weakRelation-1.1.1",
+            "field": "z.2.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"z-2-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "weakRelation-1.1.1",
+            "field": "z.2.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "solver-before-click",
+      "preset": "joint-solver",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"book-exact\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-ties",
+            "row": "fixedOrderDPTrace-tb14-ABCD-cap4-tau1/4",
+            "field": "riskByG.3"
+          },
+          "value": 0.175,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"book-cap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-ties",
+            "row": "fixedOrderDPTrace-tb14-ABCD-cap4-tau1/4",
+            "field": "risk"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dp-trace-start",
+      "query": "?view=dp&step=0",
+      "update": [
+        {
+          "step": 8
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"dp-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-order-size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-order-atMost3",
+            "field": "size"
+          },
+          "value": "16",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dp-cap-two",
+      "query": "?view=dp&cap=2&tau=.20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"dp-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap2-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0939664891773561,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-grades\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap2-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap2-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0939664891773562,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap2-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0939664891773561,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-capped-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap2-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0939664891773562,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-capped-size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap2-tau.20",
+            "field": "familySize"
+          },
+          "value": 63,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dp-no-cap",
+      "query": "?view=dp&cap=6&tau=.20&step=21",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"dp-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap6-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-grades\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap6-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap6-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-capped-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-capped-size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dp-more-cost",
+      "query": "?view=dp&cap=3&tau=.40",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"dp-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.40",
+            "field": "risk"
+          },
+          "value": 0.0816516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.40",
+            "field": "risk"
+          },
+          "value": 0.0816516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.40",
+            "field": "risk"
+          },
+          "value": 0.0816516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-capped-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.40",
+            "field": "risk"
+          },
+          "value": 0.0816516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-capped-size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.40",
+            "field": "familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"dp-answer-order-size\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-order-atMost3",
+            "field": "size"
+          },
+          "value": "16",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    }
+  ]
+}

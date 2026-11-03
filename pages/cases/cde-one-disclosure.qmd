@@ -1,0 +1,52 @@
+---
+title: "School reports at matched disclosure"
+subtitle: "5.9 · the public twelve-school CDE example"
+description: "Expected-error distribution of the three-grade reports that state 48 pairs."
+---
+
+Matched disclosure gives a different comparison from risk at a common withholding cost. Three grades for twelve
+schools state at most 48 pairs. The display gives the expected-error range at each disclosure and the complete
+distribution of reports stating 48 pairs, including the tertiles. A lower convex boundary permits mixtures of
+complete reports. The maximum-disclosure constraint explains why randomisation cannot improve on the least-error
+member at that endpoint.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/cde-one-disclosure.js"></script>
+<script>window.__prxApp = PRX["cde-one-disclosure"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **At the tertiles’ disclosure** shows all 34,650 reports at N = 48. The tertiles have the smallest E, 1.829; the next report has E = 1.909.
+- **Between feasible disclosures** selects N = 46. No single report in this family states exactly 46 pairs, while the lower hull reaches H = .4551 by a mixture with weight .500 on the more-disclosing report.
+- **A lower mixture** selects N = 30. The hull value is .005174, using weight .167 on the more-disclosing endpoint.
+- **Other cuts, full range** places cuts at 1 and 2. The selected report states 21 pairs and expects 1.116 wrong directions; the enlarged axis shows the complete ranges at every disclosure.
+
+For twelve units, at most three grades allow at most 48 stated pairs. Reaching that maximum requires three groups of four. Any mixture with expected disclosure 48 must therefore use reports at that maximum; averaging them cannot improve on their least-error member. This explains why randomisation cannot improve on the tertiles at their own disclosure.
+
+The hull mixes complete reports before one is selected. Such a mixture is not itself a single deterministic grade report. Its weight belongs to that reporting mixture, with the larger-disclosure endpoint explicitly named. The histogram and keyboard table show the complete error distribution, while the five-report table identifies its least-error tail.
+
+Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (`pr_case_cde`). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply; the data are not relicensed, are provided as is without warranty, and imply no CDE endorsement.
+
+The analysis concerns directional reporting of chronic absence within this subset. It neither computes Dashboard status-and-change colours nor establishes school quality, causal effects, statewide optimality or calibration. Shared grades do not imply equal absence probabilities.
+
+::: {.callout-note collapse="true"}
+## In postrank
+
+The following call evaluates the fixed tertiles at τ .20 without model fitting or optimisation.
+
+```r
+library(postrank)
+g <- pr_case_cde$reference$actions$observed_rate_tertiles
+postrank_evaluate(g, pr_case_cde$input, weights = c(negative_chronic_absence = 1), tau = .2)[c("N", "E", "primary_risk")]
+```
+:::
+
+[Open the standalone app](../../embed/cde-one-disclosure.html).
+
+Related applications: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
+
+Related school analyses: [School tertiles and minimum-risk grades](cde-cuts.qmd) · [A high-probability school comparison withheld](cde-pair.qmd) · [School-report changes along the withholding-cost path](cde-tau-path.qmd).

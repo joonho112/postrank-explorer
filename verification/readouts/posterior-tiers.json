@@ -1,0 +1,734 @@
+{
+  "$schema": "./_schema.json",
+  "app": "posterior-tiers",
+  "catalog": "3.5",
+  "from": "postrank-explorer-v1/verification/readouts/posterior-tiers.json",
+  "about": "Complete applicable v1 non-gate numerical regressions. Prediction result content becomes the plain law-full-tau25 case; source registry/golden/oracle values unchanged.",
+  "cases": [
+    {
+      "id": "preset-pm-tiers",
+      "about": "deck preset: league, posterior-mean tiers, 3 grades, tau .20",
+      "preset": "pm-tiers",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "read-out N",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.N",
+          "value": 300
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "read-out E",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.E",
+          "value": 48.311948618901134,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "read-out risk",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.risk",
+          "value": 0.17313091636529
+        },
+        {
+          "select": ".prx-pt-label [data-prx-caption]",
+          "about": "the chosen rule's caption",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "fixed tiers, not optimized"
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-readout=\"pm-cuts.sizes\"]",
+          "about": "posterior-mean cuts: sizes",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.sizes",
+          "value": [
+            13,
+            15,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-readout=\"pm-cuts.N\"]",
+          "about": "N",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.N",
+          "value": 251
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-readout=\"pm-cuts.risk\"]",
+          "about": "risk",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.risk",
+          "value": 0.15806797310378426
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-readout=\"er-cuts.risk\"]",
+          "about": "expected-rank cuts: risk",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank3.tau20.risk",
+          "value": 0.15806797310378426
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-readout=\"er-cuts.E\"]",
+          "about": "E",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank3.tau20.E",
+          "value": 31.959568300146152,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-family-size]",
+          "about": "436 contiguous reports with at most 3 grades",
+          "source": "registry",
+          "ref": "league.family.order.cap3.size",
+          "value": 436
+        },
+        {
+          "select": ".prx-caption [data-prx-caption]",
+          "about": "teaching posterior caption",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": ".prx-caption .prx-num",
+          "about": "the league seed",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030,
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "preset-league8-cuts",
+      "about": "eight units, posterior-mean cuts, at most 3 grades, tau .20: both cuts are the exact optimum within at most 3 grades",
+      "preset": "league8-cuts",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "read-out risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.145504722733723
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-readout=\"pm-cuts.grades\"]",
+          "about": "posterior-mean cuts",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            1,
+            3,
+            1,
+            2,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-readout=\"er-cuts.grades\"]",
+          "about": "expected-rank cuts",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            1,
+            3,
+            1,
+            2,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.risk\"]",
+          "about": "exact optimum risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.145504722733723
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-family-size]",
+          "about": "6,051 reports",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "size"
+          },
+          "value": 6051
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-readout=\"pm-cuts.gap\"]",
+          "about": "risk gap 0 (the same report)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-cap3-pmcuts3",
+            "field": "gap"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "N 17",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "N.0"
+          },
+          "value": 17
+        },
+        {
+          "select": "[data-prx-row=\"pm-tiers\"] [data-prx-readout=\"pm-tiers.risk\"]",
+          "about": "posterior-mean tiers: risk",
+          "source": "registry",
+          "ref": "league8.default.prior15.pmtiers3.tau20.risk",
+          "value": 0.16122376619367731
+        },
+        {
+          "select": "[data-prx-row=\"pm-tiers\"] [data-prx-readout=\"pm-tiers.N\"]",
+          "about": "N 21",
+          "source": "registry",
+          "ref": "league8.default.prior15.pmtiers3.tau20.N",
+          "value": 21
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-family-size]",
+          "about": "29 contiguous reports",
+          "source": "registry",
+          "ref": "league8.family.order.cap3.size",
+          "value": 29
+        },
+        {
+          "select": "[data-prx-row=\"pm-tiers\"] [data-prx-caption=\"different-disclosure\"]",
+          "about": "the tiers state more pairs than the optimum",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "these reports disclose different amounts"
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-label]",
+          "about": "exact label",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜_≤3"
+        }
+      ]
+    },
+    {
+      "id": "league8-all",
+      "about": "eight units, the exact optimum within every report: the same report",
+      "query": "?data=league8&rule=optimum&cap=3&tau=.20&opt=all",
+      "expect": [
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-family-size]",
+          "about": "545,835 reports",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "size"
+          },
+          "value": 545835
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "read-out risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.145504722733723
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.grades\"]",
+          "about": "the report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            1,
+            3,
+            1,
+            2,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-readout=\"er-cuts.gap\"]",
+          "about": "risk gap 0",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmcuts3",
+            "field": "gap"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-label]",
+          "about": "label",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₈"
+        }
+      ]
+    },
+    {
+      "id": "preset-thirty",
+      "about": "30 sites, expected-rank cuts, at most 4 grades, tau .25 (postrank_cuts golden)",
+      "preset": "thirty",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "read-out risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-gauss30-poverty-exprank-cap4-tau.25",
+            "field": "risk"
+          },
+          "value": 0.160293809956247
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-readout=\"er-cuts.risk\"]",
+          "about": "expected-rank cuts",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-gauss30-poverty-exprank-cap4-tau.25",
+            "field": "risk"
+          },
+          "value": 0.160293809956247
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-readout=\"pm-cuts.risk\"]",
+          "about": "posterior-mean cuts: the same risk",
+          "source": "registry",
+          "ref": "thirty.poverty.pmorder.cap4.tau25.risk",
+          "value": 0.16029380995624715
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-readout=\"pm-cuts.sizes\"]",
+          "about": "sizes 5, 11, 12, 2",
+          "source": "registry",
+          "ref": "thirty.poverty.pmorder.cap4.tau25.sizes",
+          "value": [
+            5,
+            11,
+            12,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "N 303",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.N",
+          "value": 303
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-family-size]",
+          "about": "4,090 contiguous reports",
+          "source": "registry",
+          "ref": "thirty.poverty.order.cap4.size",
+          "value": 4090
+        }
+      ]
+    },
+    {
+      "id": "edge-league-optimum-fallback",
+      "about": "edge: rule optimum on the league (no enumeration for 30 units) falls back to the posterior-mean cuts; cap 9 clamps to 5",
+      "query": "?data=league&rule=optimum&cap=9&tau=.20&opt=all",
+      "expect": [
+        {
+          "select": ".prx-pt-label [data-prx-label]",
+          "about": "read-out label of the posterior-mean cuts",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "optimal within this order"
+        }
+      ]
+    },
+    {
+      "id": "league8-all-independent-cap1",
+      "about": "P3-A-M01/M02: the exact all-report benchmark ignores the separate tier/cut cap; full scope and exact-score block policy remain visible. Expected numbers reuse the existing independent all-report R row.",
+      "query": "?data=league8&rule=optimum&cap=1&tau=.20&opt=all",
+      "expect": [
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "size"
+          },
+          "value": 545835,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": ".prx-readout [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "size"
+          },
+          "value": 545835,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.145504722733723,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "N.0"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "Ew.0"
+          },
+          "value": 1.87413223654424,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            1,
+            3,
+            1,
+            2,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": ".prx-readout [data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "best of all ⟨size⟩ reports",
+          "slots": true
+        },
+        {
+          "select": ".prx-pt-label [data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₈"
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₈"
+        },
+        {
+          "select": ".prx-pt-cap legend",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Number of grades G: tiers use G; cuts use at most G. The exact optimum uses its separate family control."
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-score-ties]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Exactly equal summary scores stay in one grade."
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-score-ties]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Exactly equal summary scores stay in one grade."
+        }
+      ]
+    },
+    {
+      "id": "league8-all-independent-cap2",
+      "about": "P3-A-M01/M02: the exact all-report benchmark ignores the separate tier/cut cap; full scope and exact-score block policy remain visible. Expected numbers reuse the existing independent all-report R row.",
+      "query": "?data=league8&rule=optimum&cap=2&tau=.20&opt=all",
+      "expect": [
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "size"
+          },
+          "value": 545835,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": ".prx-readout [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "size"
+          },
+          "value": 545835,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.145504722733723,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "N.0"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "Ew.0"
+          },
+          "value": 1.87413223654424,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            1,
+            3,
+            1,
+            2,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": ".prx-readout [data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "best of all ⟨size⟩ reports",
+          "slots": true
+        },
+        {
+          "select": ".prx-pt-label [data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₈"
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₈"
+        },
+        {
+          "select": ".prx-pt-cap legend",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Number of grades G: tiers use G; cuts use at most G. The exact optimum uses its separate family control."
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-score-ties]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Exactly equal summary scores stay in one grade."
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-score-ties]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Exactly equal summary scores stay in one grade."
+        }
+      ]
+    }
+  ]
+}

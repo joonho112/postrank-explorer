@@ -1,0 +1,62 @@
+---
+title: "postrank Explorer"
+subtitle: "Posterior ranking and ordered grade reports"
+description: "Methods and numerical illustrations for posterior ranking, directional reporting and grading under uncertainty."
+---
+
+Ranking uncertain quantities requires decisions about which comparisons to report. A strict ranking states a
+direction for every pair of units. An ordered grade report states directions between grades and withholds
+comparisons within grades. The resulting report can be evaluated by its posterior expected errors and its extent
+of disclosure.
+
+This website examines these decisions using postrank, an R package for posterior ranking with integer grades.
+The applications cover posterior inputs, reporting losses, coherence constraints, alternative reporting rules and
+multiple criteria. Numerical illustrations use specified posterior distributions and released empirical examples.
+Each calculation is conditional on the posterior and report family stated with its result.
+
+## Organisation
+
+::: {.prx-story}
+1. **[Ranking under uncertainty](pages/uncertainty/index.qmd).** Sampling variation, posterior shrinkage,
+   pairwise probabilities and alternative ranking summaries. The
+   [normal–normal example](pages/uncertainty/shrinkage.qmd) examines how precision affects posterior ordering.
+2. **[From ranks to grades](pages/grades/index.qmd).** Pairwise decisions, coherent grade reports, reporting
+   risk and the error–disclosure frontier. [Withholding cost](pages/grades/price-of-silence.qmd) specifies the
+   relative cost of leaving a comparison unstated.
+3. **[Common rules](pages/rules/index.qmd).** Evaluation of tiers, evidence flags and posterior cuts under a
+   common reporting loss. [Matched-disclosure comparisons](pages/rules/rule-comparison.qmd) distinguish
+   additional expected errors from differences in the number of statements.
+4. **[Several criteria](pages/criteria/index.qmd).** Common reports selected using criterion weights,
+   error budgets or minimax risk. The [two-score example](pages/criteria/two-scores.qmd) gives the corresponding
+   criterion-specific error profiles.
+5. **[Cases](pages/cases/index.qmd).** Firm contact gaps, school chronic absence and historical county outcomes.
+   The [school example](pages/cases/cde-cuts.qmd) compares tertiles with minimum-risk grades under a fixed posterior.
+6. **[Tools](pages/tools/index.qmd).** Calculation from supplied posterior summaries and specification of reports
+   for released cases. The [case-report tool](pages/tools/report-designer.qmd) retains targets, settings,
+   computation scope and source information in its exports.
+:::
+
+The [catalogue](catalog.qmd) indexes applications by part, concept and data source. Application numbers give the
+part and position within it; for example, 1.3 denotes the third application in Part 1. Each application has named
+presets, a numerical-illustration section and a standalone version. Downloaded standalone versions also operate
+without a network connection.
+
+## Numerical verification
+
+Browser calculations are compared with postrank 1.1.0 results and independent base-R calculations that use neither
+postrank nor the JavaScript engine. Released data have recorded sources, fields, licences and checksums. Page
+checks reproduce the specified numerical illustrations and compare their quoted values with the displayed results.
+Inputs and comparison code are retained in `verification/` and `r-export/` in the source repository.
+
+Result labels identify the family searched when a report is selected. Numerical agreement is assessed for the
+defined examples and tolerances; it does not establish correctness for every input or calibration of a supplied
+posterior model. Source notes give the conditioning assumptions and scope of the empirical illustrations.
+
+## About
+
+The website was developed by JoonHo Lee, The University of Alabama
+([jlee296@ua.edu](mailto:jlee296@ua.edu)). It accompanies research on posterior ranking and ordered grade reporting.
+
+## Acknowledgements
+
+The research underlying this website was supported primarily by the National Academy of Education and the Spencer Foundation through the 2025 National Academy of Education/Spencer Postdoctoral Fellowship awarded to JoonHo Lee. Additional support was provided by the Institute of Education Sciences, U.S. Department of Education, through Grant R305D240078 to The University of Alabama.

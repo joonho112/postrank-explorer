@@ -1,0 +1,91 @@
+{
+  "id": "1.15",
+  "name": "majority-wins",
+  "part": "1",
+  "title": "Majority wins and expected rank",
+  "idea": "For independent normal posteriors, counting the pairs each unit more likely wins gives the posterior-mean order; on KRW's race gaps it gives an order of its own, which KRW's λ = 1 race card follows.",
+  "status": "built",
+  "from": "new angle · v1 L-09 Deeper box (the law on orders); adds majority-win counts, on the league (where they equal the posterior-mean order) and on KRW's 97 firms (where they differ), and KRW's λ = 1 cards (the gender card's one tie is within KRW's solver tolerance)",
+  "data": [
+    "data/released/case-krw.json",
+    "data/released/krw-lambda-grid.json",
+    "engine"
+  ],
+  "math": true,
+  "credit": "Law on orders after the postrank theory book, ch. 10; shared grades at λ = 1 after ch. 16; Condorcet ranks after Kline, Rose and Walters (2024), section II.F, whose remark that the count of wins equals the posterior mean of the rank (the expected rank) does not hold in general (postrank theory book, ch. 10). Firms as adapted in postrank 1.1.0 (pr_case_krw). Cards computed with KRW's code (KRW replication companion) under KRW's archived pair probabilities.",
+  "caption": "The law on orders after the postrank theory book, ch. 10, a simulated league built for this site and KRW's 97 firms; every order and count is computed in this browser from each data set's pair probabilities.",
+  "presets": [
+    {
+      "id": "orders",
+      "label": "Law on orders",
+      "query": "data=orders"
+    },
+    {
+      "id": "league",
+      "label": "League",
+      "query": "data=league&priorSd=.15"
+    },
+    {
+      "id": "league-wide",
+      "label": "League, prior SD .30",
+      "query": "data=league&priorSd=.3"
+    },
+    {
+      "id": "krw-race",
+      "label": "KRW, race",
+      "query": "data=krw&criterion=race"
+    },
+    {
+      "id": "krw-gender",
+      "label": "KRW, gender",
+      "query": "data=krw&criterion=gender"
+    }
+  ],
+  "try": [
+    {
+      "preset": "orders",
+      "shows": [
+        ".51",
+        ".99",
+        "1.52",
+        "1.98"
+      ]
+    },
+    {
+      "preset": "league",
+      "shows": [
+        "0 of the 435 pairs",
+        "6 pairs",
+        "9.59",
+        "8th",
+        "6th"
+      ]
+    },
+    {
+      "preset": "league-wide",
+      "shows": [
+        "0 of the 435 pairs",
+        "12 pairs"
+      ]
+    },
+    {
+      "preset": "krw-race",
+      "shows": [
+        "35 of the 4,656 pairs",
+        "62",
+        "1,248",
+        "1,249"
+      ]
+    },
+    {
+      "preset": "krw-gender",
+      "shows": [
+        ".5008",
+        ".5022",
+        ".5014",
+        "45 pairs",
+        "96 grades"
+      ]
+    }
+  ]
+}

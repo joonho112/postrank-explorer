@@ -1,0 +1,90 @@
+{
+  "id": "4.13",
+  "name": "pairs-leave-open",
+  "part": "4",
+  "title": "What pair probabilities leave open",
+  "idea": "Pair probabilities fix the weighted risk but not the chance that a composite direction is right or that every stated direction is right; those need the joint law.",
+  "status": "built",
+  "from": "new concept \u00b7 theory book ch. 11 and 19; postrank vignettes m2 and m3 (information requirements) and inputs-and-producers; picture: a joint-law editor for two units on two criteria (presets together and opposite), where what the pair probabilities fix stays locked while composite and joint quantities move",
+  "data": [
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 11 (four-unit law after ch. 19), and the postrank vignette m3.",
+  "caption": "Restated synthetic finite laws after the postrank theory book, chapters 11 and 19, and vignettes m2/m3. Within-criterion pair errors determine additive expected risk; composite and joint-event probabilities use the complete stipulated law.",
+  "presets": [
+    {
+      "id": "together",
+      "label": "Together",
+      "query": "law=coupling&lambda=1&w=.5&tau=.2&report=1/2"
+    },
+    {
+      "id": "opposite",
+      "label": "Opposite",
+      "query": "law=coupling&lambda=0&w=.5&tau=.2&report=1/2"
+    },
+    {
+      "id": "halfway",
+      "label": "Halfway",
+      "query": "law=coupling&lambda=.5&w=.5&tau=.2&report=1/2"
+    },
+    {
+      "id": "zero-weight",
+      "label": "One zero error weight",
+      "query": "law=coupling&lambda=0&w=1&tau=.2&report=1/2"
+    },
+    {
+      "id": "withhold",
+      "label": "Select withholding",
+      "query": "law=coupling&lambda=.5&w=.5&tau=.2&report=1/1"
+    },
+    {
+      "id": "chapter",
+      "label": "Five statements",
+      "query": "law=ch19&w=.6&tau=.2&report=1/2/2/3"
+    }
+  ],
+  "try": [
+    {
+      "preset": "together",
+      "shows": [
+        ".5000",
+        ".5"
+      ]
+    },
+    {
+      "preset": "opposite",
+      "shows": [
+        ".5000",
+        "0"
+      ]
+    },
+    {
+      "preset": "halfway",
+      "shows": [
+        ".25"
+      ]
+    },
+    {
+      "preset": "zero-weight",
+      "shows": [
+        ".5",
+        "0"
+      ]
+    },
+    {
+      "preset": "withhold",
+      "shows": [
+        "NA: no disclosure"
+      ]
+    },
+    {
+      "preset": "chapter",
+      "shows": [
+        ".87",
+        ".75",
+        "5",
+        "2.6"
+      ]
+    }
+  ]
+}

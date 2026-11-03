@@ -1,0 +1,33 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part1-l08",
+  "description": "Part 1, All pairs at once (L-08, pages/learn/pairwise-matrix.qmd): the six sites' score A posteriors as released (data/released/six-sites.json: posterior means and the common SD), direction probabilities of the six-site matrix that part1.json does not hold (A above F, D above C), the C-D gap, the SD of a difference of two of these posteriors and the gap in those SDs (each through Phi and its inverse, as in part1.json), and the simulated league's least certain pair (U19 above U25) under the teaching posterior at prior SD .15 (frozen draw, seed 20261030). Indices are 0-based unit positions (A = 0; U01 = 0).",
+  "license_scope": "author",
+  "inputs": {
+    "l08.six.means": {"$data": "six-sites", "path": "tables.units.mean_A", "note": "posterior means of score A, sites A to F"},
+    "l08.six.sds": {"$data": "six-sites", "path": "tables.units.sd_A", "note": "posterior SDs of score A (all .20)"},
+    "l08.six.meanlaw": {"fn": "rankSummaries", "args": [{"states": [{"$input": "l08.six.means"}], "probs": null}], "note": "a one-state law whose means are the released posterior means (read through the engine)"},
+    "l08.six.sdlaw": {"fn": "rankSummaries", "args": [{"states": [{"$input": "l08.six.sds"}], "probs": null}], "note": "a one-state law whose means are the released posterior SDs"},
+    "l08.six.pi": {"fn": "directionMatrix", "args": [{"$input": "l08.six.means"}, {"$input": "l08.six.sds"}], "note": "pi_ij for the six sites' score A (golden: oracle-pairwise directionMatrix-six-scoreA; 1 - pr_tutorial$one$e)"},
+    "l08.six.gapCD.pi": {"fn": "pairDirection", "args": [{"$input": "l08.six.means", "path": "2"}, 1, {"$input": "l08.six.means", "path": "3"}, 0], "note": "Phi((mean_C - mean_D) / 1), so Phi^-1 of it is the gap between the two means"},
+    "l08.six.diffsd.pi": {"fn": "pairDirection", "args": [0.08, {"$input": "l08.six.sds", "path": "2"}, 0, {"$input": "l08.six.sds", "path": "3"}], "note": "Phi(v / sqrt(v)) = Phi(sqrt(v)) with v = .2^2 + .2^2 = .08, so Phi^-1 of it is the SD of the difference"},
+    "l08.league.post": {"fn": "normalPosterior", "args": [{"$data": "league-30", "path": "tables.units.estimate"}, {"$data": "league-30", "path": "tables.units.se"}, {"priorSd": {"$setting": "settings.prior15"}}], "note": "the frozen draw, teaching posterior with prior mean 0 and prior SD .15"},
+    "l08.league.pi": {"fn": "directionMatrix", "args": [{"$input": "l08.league.post", "path": "mean"}, {"$input": "l08.league.post", "path": "sd"}], "note": "pi_ij for the league at prior SD .15"}
+  },
+  "keys": {
+    "six.A.mean.A": {"type": "scalar", "from": "l08.six.meanlaw", "field": "means.0", "format": {"fn": "formatDecimal", "options": {"digits": 2}}, "tolerance": 0, "note": "posterior mean of site A, score A"},
+    "six.A.mean.B": {"type": "scalar", "from": "l08.six.meanlaw", "field": "means.1", "format": {"fn": "formatDecimal", "options": {"digits": 2}}, "tolerance": 0},
+    "six.A.mean.C": {"type": "scalar", "from": "l08.six.meanlaw", "field": "means.2", "format": {"fn": "formatDecimal", "options": {"digits": 2}}, "tolerance": 0},
+    "six.A.mean.D": {"type": "scalar", "from": "l08.six.meanlaw", "field": "means.3", "format": {"fn": "formatDecimal", "options": {"digits": 2}}, "tolerance": 0},
+    "six.A.mean.E": {"type": "scalar", "from": "l08.six.meanlaw", "field": "means.4", "format": {"fn": "formatDecimal", "options": {"digits": 2}}, "tolerance": 0},
+    "six.A.mean.F": {"type": "scalar", "from": "l08.six.meanlaw", "field": "means.5", "format": {"fn": "formatDecimal", "options": {"digits": 2}}, "tolerance": 0},
+    "six.A.sd": {"type": "scalar", "from": "l08.six.sdlaw", "field": "means.0", "format": {"fn": "formatDecimal", "options": {"digits": 2}}, "tolerance": 0, "note": "the posterior SD of every site on score A"},
+    "six.A.pi.AF": {"type": "scalar", "from": "l08.six.pi", "field": "0.5", "format": {"fn": "formatProb"}, "tolerance": {"abs": 1e-12, "rel": 1e-12}, "note": "A above F: shown as a bound"},
+    "six.A.pi.DC": {"type": "scalar", "from": "l08.six.pi", "field": "3.2", "format": {"fn": "formatProb"}, "tolerance": {"abs": 1e-12, "rel": 1e-12}, "note": "D above C, the mirror cell of C above D (1 - pi_CD)"},
+    "six.A.gap.CD": {"type": "scalar", "fn": "normalQuantile", "args": [{"$input": "l08.six.gapCD.pi"}], "format": {"fn": "formatDecimal", "options": {"digits": 2}}, "tolerance": {"abs": 1e-12, "rel": 1e-12}, "note": "posterior mean of C minus posterior mean of D, .25 - .15"},
+    "six.A.diffsd": {"type": "scalar", "fn": "normalQuantile", "args": [{"$input": "l08.six.diffsd.pi"}], "format": {"fn": "formatDecimal", "options": {"digits": 3}}, "tolerance": {"abs": 1e-12, "rel": 1e-12}, "note": "SD of the difference of two six-site posteriors, sqrt(.2^2 + .2^2)"},
+    "six.A.z.CD": {"type": "scalar", "fn": "normalQuantile", "args": [{"$input": "l08.six.pi", "path": "2.3"}], "format": {"fn": "formatDecimal", "options": {"digits": 3}}, "tolerance": {"abs": 1e-12, "rel": 1e-12}, "note": "Phi^-1(pi_CD): the C-D gap in SDs of the difference, .10 / .283"},
+    "league.default.prior15.pi.U19U25": {"type": "scalar", "from": "l08.league.pi", "field": "18.24", "format": {"fn": "formatProb"}, "tolerance": {"abs": 1e-12, "rel": 1e-12}, "note": "the league's least certain pair at prior SD .15: U19 above U25"},
+    "league.default.prior15.pi.U25U19": {"type": "scalar", "from": "l08.league.pi", "field": "24.18", "format": {"fn": "formatProb"}, "tolerance": {"abs": 1e-12, "rel": 1e-12}, "note": "its mirror cell, U25 above U19"}
+  }
+}

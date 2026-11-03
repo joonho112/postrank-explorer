@@ -1,0 +1,85 @@
+{
+  "id": "1.12",
+  "name": "overlap-in-the-league",
+  "part": "1",
+  "title": "435 pairs: overlap against direction",
+  "idea": "Sorting the league's 435 pairs by interval overlap and by direction probability shows that overlapping intervals often hide a likely direction.",
+  "status": "built",
+  "from": "v1 view · v1 L-06 interval-overlap, league view",
+  "data": [
+    "engine"
+  ],
+  "credit": "Built for this site; interval reading after Kline, Rose and Walters (2024), section IV.C.",
+  "caption": "a posterior set by hand for teaching; postrank does not fit it. In plain words: this prior was chosen for teaching, and this browser computes the posterior from it.",
+  "presets": [
+    {
+      "id": "league-overlap",
+      "label": "Overlap, highest probability",
+      "query": "pair=overlap-high&priorSd=.15&level=90"
+    },
+    {
+      "id": "league-apart",
+      "label": "U06 and U20",
+      "query": "pair=U06-U20&priorSd=.15&level=90"
+    },
+    {
+      "id": "league-wide",
+      "label": "U04 and U18",
+      "query": "pair=U04-U18&priorSd=.15&level=90"
+    },
+    {
+      "id": "league-95",
+      "label": "95% intervals",
+      "query": "pair=overlap-high&priorSd=.15&level=95"
+    },
+    {
+      "id": "prior05",
+      "label": "Prior SD .05",
+      "query": "pair=overlap-high&priorSd=.05&level=90"
+    }
+  ],
+  "try": [
+    {
+      "preset": "league-overlap",
+      "shows": [
+        "399",
+        "88",
+        ".988",
+        "U13 above U05",
+        ".005"
+      ]
+    },
+    {
+      "preset": "league-apart",
+      "shows": [
+        ".002",
+        ".988"
+      ]
+    },
+    {
+      "preset": "league-wide",
+      "shows": [
+        ".107",
+        ".904",
+        "−.105",
+        "−.014"
+      ]
+    },
+    {
+      "preset": "league-95",
+      "shows": [
+        "413",
+        "102",
+        ".997",
+        "U03 above U15"
+      ]
+    },
+    {
+      "preset": "prior05",
+      "shows": [
+        "427",
+        "58"
+      ]
+    }
+  ]
+}

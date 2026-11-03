@@ -1,0 +1,59 @@
+---
+title: "The matrix of pairwise posterior probabilities"
+subtitle: "1.13 · after Kline, Rose and Walters (2024), Figure 2A and slides 38 and 54"
+description: "Pairwise probabilities under alternative orderings of the same units."
+---
+
+The cell in row $i$ and column $j$ contains $\pi_{ij} = \Pr(\theta_i > \theta_j \mid Y)$. Since equality has posterior
+probability zero in this example, the transposed cell contains $1 - \pi_{ij}$. Under independent normal posteriors,
+ordering units by their posterior means places many of the less certain comparisons near the diagonal. The width of
+this region also reflects differences in posterior precision. Alternative orderings permute each unit's row and
+column together, leaving the underlying probabilities unchanged. The matrix thus distinguishes posterior uncertainty
+from the choice of an ordering for presentation.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/pairwise-matrix.js"></script>
+<script>window.__prxApp = PRX["pairwise-matrix"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Six sites, by posterior mean.** C above D, .638, is the least certain direction, and its cell is next to the
+  diagonal; A above B (.812) and E above F (.856) follow. Below the diagonal each cell is one minus its mirror: D
+  above C is .362.
+- **Six sites, by label.** The same matrix, with C above D still at .638: the labels already follow the posterior
+  means.
+- **League, by label.** Of 435 pairs, the least certain, U19 above U25 at .502, sits 6 cells from the diagonal.
+  None of these 10 least certain pairs is next to the diagonal; the farthest is 26 cells away.
+- **League, by posterior mean.** The middle-blue cells now form a band: U19 above U25 is next to the diagonal, and
+  so are 8 of these 10 least certain pairs; the farthest is 2 cells away.
+- **Two imprecise units.** At prior SD .10 the cell in row U22, column U25 is 5 cells from the diagonal, yet its
+  probability is only .528: both are small units with posterior SD .089.
+
+::: {.callout-note appearance="simple"}
+The six sites are fictional after-school sites, A to F, from postrank's tutorial data: their normal posteriors for
+the reading score are set by hand and taken as given. An evaluation office grades them to set the order of its
+visits. The league is that of [Ranking noisy estimates](noisy-league.qmd), with the posterior of
+[normal–normal posterior shrinkage](shrinkage.qmd). Two imprecise units can have direction probabilities near one half even when they are far apart in the
+ranking. Kline, Rose and Walters (2024), Section IV.B, Figure 2A, and slide 38: the heat map of pairwise posterior
+probabilities for the first names of KRW's name analysis (KRW call the posteriors beliefs). Slide 54 shows the same
+heat map for the firms. KRW put one half on the diagonal by convention; postrank leaves the diagonal empty.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+round(1 - pr_tutorial$one$e[, , "score_A"], 3)   # the six sites' matrix (C, D: 0.638)
+1 - pr_tutorial$one$e["C", "D", "score_A"]       # 0.6381632
+```
+:::
+
+Standalone: [embed/pairwise-matrix.html](../../embed/pairwise-matrix.html), for example `?data=league&sort=label` or
+`?preset=imprecise&theme=dark`.
+
+Related applications: [Pairwise posterior direction probabilities](two-units.qmd), [Marginal interval overlap and direction probabilities](interval-overlap.qmd), [Interval overlap across 435 pairs](overlap-in-the-league.qmd) (the same league
+pairs) and [Expected errors in a strict ranking](ranking-claims.qmd).

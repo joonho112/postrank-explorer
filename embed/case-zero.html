@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<!-- 1.1 case-zero. Build inputs: catalog.json; do not edit. -->
+<title>A league table and a report card · postrank Explorer</title>
+<script>
+  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  (function () {
+    var t = new URLSearchParams(location.search).get("theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/app.css">
+</head>
+<body class="prx-embed">
+<main>
+<h1 class="prx-embed-title">A league table and a report card</h1>
+<div id="app"><p>This app needs JavaScript.</p></div>
+<p class="prx-embed-credit">postrank Explorer · 1.1 · After Kline, Rose and Walters (2024), Introduction and section VI (Figure 7), and slides 4–5 and 61–63 (card layout); the gender card, section VIII (Figure 14). Firms as adapted in postrank 1.1.0 (pr_case_krw). · Kline, Rose and Walters (2024) · doi:10.1257/aer.20230700 · doi:10.3886/E198284V1 · CC-BY-NC · Noncommercial · No endorsement · Changes: continuous midpoint-cell comparison probabilities and matching central 90% marginal intervals replace KRW’s posterior grids (postrank adaptation). · <a href="../pages/uncertainty/case-zero.html">page</a></p>
+</main>
+<!-- classic scripts only, so this page works from file:// -->
+<script src="../js/vendor/d3.min.js"></script>
+<script src="../js/vendor/plot.min.js"></script>
+<script src="../js/bundles/case-zero.js"></script>
+<script>window.__prxApp = PRX["case-zero"].mountWidget(document.getElementById("app"), {});</script>
+</body>
+</html>

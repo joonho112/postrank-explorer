@@ -1,0 +1,3722 @@
+{
+  "app": "report-designer",
+  "catalog": "T.2",
+  "from": "Independent frozen base-R R49 Tools projections; original public case arrays, no frontend-generated expected numbers.",
+  "cases": [
+    {
+      "id": "cde",
+      "preset": "cde",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.tieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieTol\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"familySize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.familySize"
+          },
+          "value": 523251,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.M"
+          },
+          "value": 66,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.risk"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"errorTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.errorTerm"
+          },
+          "value": 0.00013810213481190608,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withholdingTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.withholdingTerm"
+          },
+          "value": 0.06363636363636364,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "archive.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"archive-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "archive.evaluation.risk"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "archive.sourceFacts.lower_bound"
+          },
+          "value": 0.0637744657711755,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "archive.sourceFacts.gap"
+          },
+          "value": 1.38777878078145e-17,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-stated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "change.nNewDisclosed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "change.nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.0091147408975858,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.0002025497977241289,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.00013810213481190608,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tool-largest",
+            "row": "tool-largest-cde",
+            "field": "largest.0.e"
+          },
+          "value": 0.00160366198458828,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "about": "Independent R50 maximum over all directions stated by this displayed report, on this criterion"
+        }
+      ]
+    },
+    {
+      "id": "krw",
+      "preset": "krw",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.grade"
+          },
+          "value": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.tieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieTol\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"familySize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.familySize"
+          },
+          "value": 147537,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 636,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.M"
+          },
+          "value": 4656,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.risk"
+          },
+          "value": 0.2454704108702616,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"errorTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.errorTerm"
+          },
+          "value": 0.029619895406344073,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withholdingTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.withholdingTerm"
+          },
+          "value": 0.21585051546391754,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "archive.evaluation.N"
+          },
+          "value": 636,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"archive-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "archive.evaluation.risk"
+          },
+          "value": 0.2454704108702616,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "archive.sourceFacts.lower_bound"
+          },
+          "value": 0.245470410870262,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "archive.sourceFacts.gap"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-stated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "change.nNewDisclosed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "change.nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 124.82461702069882,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.19626512110172772,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.026809410872143218,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.24265992633606076,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.E.1"
+          },
+          "value": 150.99584900317717,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.EoverN.1"
+          },
+          "value": 0.23741485692323455,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.EoverM.1"
+          },
+          "value": 0.03243037994054492,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.Rk.1"
+          },
+          "value": 0.24828089540446246,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": ".prx-result-tag",
+          "index": 0,
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "slots": true,
+          "value": "best along the weighted expected-rank order (\u27e8size\u27e9 reports)",
+          "about": "T2-IR-01: prominent tag names the actual DP order"
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tool-largest",
+            "row": "tool-largest-krw",
+            "field": "largest.0.e"
+          },
+          "value": 0.803716414207126,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "about": "Independent R50 maximum over all directions stated by this displayed report, on this criterion"
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tool-largest",
+            "row": "tool-largest-krw",
+            "field": "largest.1.e"
+          },
+          "value": 0.9751820594712,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "about": "Independent R50 maximum over all directions stated by this displayed report, on this criterion"
+        }
+      ]
+    },
+    {
+      "id": "alabama",
+      "preset": "alabama",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.grade"
+          },
+          "value": [
+            3,
+            2,
+            3,
+            3,
+            2,
+            3,
+            3,
+            3,
+            3,
+            3,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            3,
+            2,
+            1,
+            2,
+            3,
+            3,
+            2,
+            2,
+            3,
+            3,
+            2,
+            2,
+            2,
+            3,
+            2,
+            3,
+            3,
+            2,
+            4,
+            2,
+            2,
+            2,
+            3,
+            3,
+            3,
+            3,
+            3,
+            2,
+            2,
+            2,
+            3,
+            2,
+            5,
+            3,
+            3,
+            2,
+            3,
+            3,
+            5,
+            2,
+            2,
+            3,
+            3,
+            3,
+            3,
+            2,
+            2,
+            3,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.tieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieTol\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"familySize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.familySize"
+          },
+          "value": 768692,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 1249,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.M"
+          },
+          "value": 2211,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.risk"
+          },
+          "value": 0.15039369911804618,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"errorTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.errorTerm"
+          },
+          "value": 0.06337425090456811,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withholdingTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.withholdingTerm"
+          },
+          "value": 0.08701944821347807,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "archive.evaluation.N"
+          },
+          "value": 1249,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"archive-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "archive.evaluation.risk"
+          },
+          "value": 0.15039369911804618,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "archive.sourceFacts.lower_bound"
+          },
+          "value": 0.150393699118046,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "archive.sourceFacts.gap"
+          },
+          "value": 1.11022302462516e-16,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-stated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "change.nNewDisclosed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "change.nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 64.96624999999996,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.052014611689351446,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.029383197648123003,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.11640264586160107,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.E.1"
+          },
+          "value": 215.27468750000017,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.EoverN.1"
+          },
+          "value": 0.17235763610888724,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.EoverM.1"
+          },
+          "value": 0.09736530416101319,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-alabama",
+            "field": "optimum.evaluation.Rk.1"
+          },
+          "value": 0.18438475237449126,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": ".prx-result-tag",
+          "index": 0,
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "slots": true,
+          "value": "best along the weighted expected-rank order (\u27e8size\u27e9 reports)",
+          "about": "T2-IR-01: prominent tag names the actual DP order"
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tool-largest",
+            "row": "tool-largest-alabama",
+            "field": "largest.0.e"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "about": "Independent R50 maximum over all directions stated by this displayed report, on this criterion"
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tool-largest",
+            "row": "tool-largest-alabama",
+            "field": "largest.1.e"
+          },
+          "value": 0.996125,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "about": "Independent R50 maximum over all directions stated by this displayed report, on this criterion"
+        }
+      ]
+    },
+    {
+      "id": "cde-budget",
+      "preset": "cde-budget",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.tieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieTol\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"familySize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.familySize"
+          },
+          "value": 523251,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.evaluation.M"
+          },
+          "value": 66,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.evaluation.risk"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"errorTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.evaluation.errorTerm"
+          },
+          "value": 0.00013810213481190608,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withholdingTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.evaluation.withholdingTerm"
+          },
+          "value": 0.06363636363636364,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "archive.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"archive-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "archive.evaluation.risk"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "archive.sourceFacts.lower_bound"
+          },
+          "value": 0.0637744657711755,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "archive.sourceFacts.gap"
+          },
+          "value": 1.38777878078145e-17,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-stated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "change.nNewDisclosed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "change.nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.0091147408975858,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.0002025497977241289,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.00013810213481190608,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "budget.0.q"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "budget.0.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "budget.0.E"
+          },
+          "value": 0.0091147408975858,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "budget.0.EoverN"
+          },
+          "value": 0.0002025497977241289,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "budget.0.qN"
+          },
+          "value": 4.5,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-budget",
+            "field": "budget.0.slack"
+          },
+          "value": 4.490885259102414,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tool-largest",
+            "row": "tool-largest-cde-budget",
+            "field": "largest.0.e"
+          },
+          "value": 0.00160366198458828,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "about": "Independent R50 maximum over all directions stated by this displayed report, on this criterion"
+        }
+      ]
+    },
+    {
+      "id": "cde-cap2",
+      "preset": "cde-cap2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.tieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieTol\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"familySize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.familySize"
+          },
+          "value": 4095,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 36,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.evaluation.M"
+          },
+          "value": 66,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.evaluation.risk"
+          },
+          "value": 0.09129315718826517,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"errorTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.evaluation.errorTerm"
+          },
+          "value": 0.00038406627917426196,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withholdingTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.evaluation.withholdingTerm"
+          },
+          "value": 0.09090909090909091,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "archive.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"archive-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "archive.evaluation.risk"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "archive.sourceFacts.lower_bound"
+          },
+          "value": 0.0637744657711755,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "archive.sourceFacts.gap"
+          },
+          "value": 1.38777878078145e-17,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "change.changed"
+          },
+          "value": 27,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-stated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "change.nNewDisclosed"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "change.nNewWithheld"
+          },
+          "value": 18,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.02534837442550129,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.0007041215118194803,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.00038406627917426196,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.09129315718826517,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "budget.0.q"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "budget.0.N"
+          },
+          "value": 36,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "budget.0.E"
+          },
+          "value": 0.02534837442550129,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "budget.0.EoverN"
+          },
+          "value": 0.0007041215118194803,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "budget.0.qN"
+          },
+          "value": 3.6,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap2",
+            "field": "budget.0.slack"
+          },
+          "value": 3.5746516255744987,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tool-largest",
+            "row": "tool-largest-cde-cap2",
+            "field": "largest.0.e"
+          },
+          "value": 0.00739056632845447,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "about": "Independent R50 maximum over all directions stated by this displayed report, on this criterion"
+        }
+      ]
+    },
+    {
+      "id": "cde-cap4",
+      "preset": "cde-cap4",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            3,
+            3,
+            3,
+            4,
+            4,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.tieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieTol\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"familySize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.familySize"
+          },
+          "value": 232,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 54,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.evaluation.M"
+          },
+          "value": 66,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.evaluation.risk"
+          },
+          "value": 0.03688580306741358,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"errorTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.evaluation.errorTerm"
+          },
+          "value": 0.0005221667037772122,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withholdingTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.evaluation.withholdingTerm"
+          },
+          "value": 0.03636363636363637,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "archive.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"archive-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "archive.evaluation.risk"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "archive.sourceFacts.lower_bound"
+          },
+          "value": 0.0637744657711755,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "archive.sourceFacts.gap"
+          },
+          "value": 1.38777878078145e-17,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "change.changed"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-stated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "change.nNewDisclosed"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "change.nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0.034463002449296,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": 0.0006382037490610371,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0.0005221667037772122,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.03688580306741358,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "budget.0.q"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "budget.0.N"
+          },
+          "value": 54,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "budget.0.E"
+          },
+          "value": 0.034463002449296,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "budget.0.EoverN"
+          },
+          "value": 0.0006382037490610371,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "budget.0.qN"
+          },
+          "value": 5.4,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-cap4",
+            "field": "budget.0.slack"
+          },
+          "value": 5.365536997550705,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": ".prx-result-tag",
+          "index": 0,
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "slots": true,
+          "value": "best along the posterior-mean order (\u27e8size\u27e9 reports)",
+          "about": "T2-IR-01: prominent tag names the actual DP order"
+        },
+        {
+          "select": "[data-prx-readout=\"scope-method\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Cuts are optimal only within the declared posterior-mean order. Equal order scores stay in one grade; no cut splits an exact-score block. Equal-risk cuts prefer fewer grades, then the earlier cut. The supplied posterior means define this order; the single criterion has weight one.",
+          "about": "T2-IR-02: CDE method text does not claim weighted-ER recomputation"
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tool-largest",
+            "row": "tool-largest-cde-cap4",
+            "field": "largest.0.e"
+          },
+          "value": 0.00739056632845447,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "about": "Independent R50 maximum over all directions stated by this displayed report, on this criterion"
+        }
+      ]
+    },
+    {
+      "id": "cde-withheld",
+      "preset": "cde-withheld",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.tieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tieTol\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"familySize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.familySize"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.evaluation.M"
+          },
+          "value": 66,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.evaluation.risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"errorTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.evaluation.errorTerm"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withholdingTerm\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.evaluation.withholdingTerm"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "archive.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"archive-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "archive.evaluation.risk"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "archive.sourceFacts.lower_bound"
+          },
+          "value": 0.0637744657711755,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"archive-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "archive.sourceFacts.gap"
+          },
+          "value": 1.38777878078145e-17,
+          "format": {
+            "fn": "formatSci"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "change.changed"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-stated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "change.nNewDisclosed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"new-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "change.nNewWithheld"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "change.nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.evaluation.E.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.evaluation.EoverN.0"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverM-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.evaluation.EoverM.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "optimum.evaluation.Rk.0"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-q\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "budget.0.q"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "budget.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "budget.0.E"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "budget.0.EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-qN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "budget.0.qN"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"budget-0-slack\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde-withheld",
+            "field": "budget.0.slack"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"largest-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tool-largest",
+            "row": "tool-largest-cde-withheld",
+            "field": "largest.0"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 1e-12
+          },
+          "about": "Independent R50 maximum over all directions stated by this displayed report, on this criterion"
+        }
+      ]
+    },
+    {
+      "id": "cde-relations",
+      "query": "?case=cde&tau=0.2&cap=3&w=1&qa=off&qb=off&view=relations&criterion=0&focus=auto",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        }
+      ]
+    },
+    {
+      "id": "cde-report",
+      "query": "?case=cde&tau=0.2&cap=3&w=1&qa=off&qb=off&view=report&criterion=0&focus=auto",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-cde",
+            "field": "optimum.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        }
+      ]
+    },
+    {
+      "id": "krw-relations",
+      "query": "?case=krw&tau=0.25&cap=4&w=0.5&qa=off&qb=off&view=relations&criterion=0&focus=auto",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 636,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.grade"
+          },
+          "value": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        }
+      ]
+    },
+    {
+      "id": "krw-report",
+      "query": "?case=krw&tau=0.25&cap=4&w=0.5&qa=off&qb=off&view=report&criterion=0&focus=auto",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 636,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "change.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-tools",
+            "row": "tool-designer-krw",
+            "field": "optimum.grade"
+          },
+          "value": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            3,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "4.7",
+  "name": "error-budgets",
+  "part": "4",
+  "title": "A budget for each criterion",
+  "idea": "A budget on each criterion's expected error share removes reports, so the best remaining report has a weighted risk at least as high.",
+  "status": "built",
+  "from": "v2 refill \u00b7 v2 error-budgets rebuilt from v1 storyboard P-05",
+  "data": [
+    "data/released/six-sites.json"
+  ],
+  "credit": "Protections after the postrank theory book, ch. 13.",
+  "caption": "Six fictional sites, independent Normal posteriors on scores A and B; a posterior set by hand for teaching; postrank does not fit it.",
+  "presets": [
+    {
+      "id": "loose",
+      "label": "Loose budget",
+      "query": "qb=.03&w=.5&tau=.2&cap=3&fa=0&fb=0"
+    },
+    {
+      "id": "tight",
+      "label": "Tight budget",
+      "query": "qb=.02&w=.5&tau=.2&cap=3&fa=0&fb=0"
+    },
+    {
+      "id": "exact3",
+      "label": "Exactly three",
+      "query": "qb=.02&w=.5&tau=.2&cap=exact3&fa=0&fb=0"
+    },
+    {
+      "id": "both",
+      "label": "Both budgets",
+      "query": "qa=.02&qb=.02&w=.5&tau=.2&cap=3&fa=0&fb=0"
+    },
+    {
+      "id": "zero-weight",
+      "label": "Zero weight",
+      "query": "qb=.1&w=1&tau=.2&cap=3&fa=0&fb=0"
+    },
+    {
+      "id": "free",
+      "label": "No budget",
+      "query": "qb=none&w=1&tau=.2&cap=3&fa=0&fb=0"
+    },
+    {
+      "id": "qb15",
+      "label": "At most .15",
+      "query": "qb=.15&w=1&tau=.2&cap=3&fa=0&fb=0"
+    },
+    {
+      "id": "qb10",
+      "label": "At most .10",
+      "query": "qb=.1&w=1&tau=.2&cap=3&fa=0&fb=0"
+    },
+    {
+      "id": "qb05",
+      "label": "At most .05",
+      "query": "qb=.05&w=1&tau=.2&cap=3&fa=0&fb=0"
+    }
+  ],
+  "try": [
+    {
+      "preset": "loose",
+      "shows": [
+        "3 reports",
+        ".0933"
+      ]
+    },
+    {
+      "preset": "tight",
+      "shows": [
+        "2 reports",
+        "8 of 15",
+        ".0939"
+      ]
+    },
+    {
+      "preset": "exact3",
+      "shows": [
+        "0 reports"
+      ]
+    },
+    {
+      "preset": "both",
+      "shows": [
+        "2 reports"
+      ]
+    },
+    {
+      "preset": "zero-weight",
+      "shows": [
+        ".0906",
+        ".240",
+        ".0267"
+      ]
+    },
+    {
+      "preset": "free",
+      "shows": [
+        ".0417",
+        ".237"
+      ]
+    }
+  ]
+}

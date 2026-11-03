@@ -1,0 +1,124 @@
+{
+  "id": "4.9",
+  "name": "worst-criterion",
+  "part": "4",
+  "title": "Guarding the worse criterion",
+  "idea": "Instead of the weighted best, one can choose the report that makes the worse criterion's risk smallest.",
+  "status": "built",
+  "from": "v2 refill \u00b7 v2 worst-criterion rebuilt from v1 storyboard P-07",
+  "data": [
+    "data/released/six-sites.json"
+  ],
+  "credit": "Mixture reading after the postrank theory book, ch. 11; minimax after ch. 13.",
+  "caption": "Expected-criterion minimax and weighted risk in the same displayed report family.",
+  "presets": [
+    {
+      "id": "w90",
+      "label": "w .90",
+      "query": "data=six&w=.9&tau=.2&cap=3&objective=weighted"
+    },
+    {
+      "id": "w70",
+      "label": "w .70",
+      "query": "data=six&w=.7&tau=.2&cap=3&objective=weighted"
+    },
+    {
+      "id": "w30",
+      "label": "w .30",
+      "query": "data=six&w=.3&tau=.2&cap=3&objective=minimax"
+    },
+    {
+      "id": "w0",
+      "label": "Score B only",
+      "query": "data=six&w=0&tau=.2&cap=3&objective=weighted"
+    },
+    {
+      "id": "low",
+      "label": "Book low",
+      "query": "data=book&w=.3&tau=.25&cap=all&objective=weighted"
+    },
+    {
+      "id": "high",
+      "label": "Book high",
+      "query": "data=book&w=.7&tau=.25&cap=all&objective=weighted"
+    },
+    {
+      "id": "minimax",
+      "label": "Book minimax",
+      "query": "data=book&w=.7&tau=.25&cap=all&objective=minimax"
+    },
+    {
+      "id": "zero",
+      "label": "Zero error weight",
+      "query": "data=book&w=1&tau=.25&cap=all&objective=minimax"
+    },
+    {
+      "id": "opposition",
+      "label": "Certain opposition",
+      "query": "data=opposition&w=.5&tau=.5&cap=exact2&objective=minimax"
+    }
+  ],
+  "try": [
+    {
+      "preset": "w90",
+      "shows": [
+        ".0605",
+        ".2296"
+      ]
+    },
+    {
+      "preset": "w70",
+      "shows": [
+        ".0882",
+        ".1378"
+      ]
+    },
+    {
+      "preset": "w30",
+      "shows": [
+        ".0944"
+      ]
+    },
+    {
+      "preset": "w0",
+      "shows": [
+        ".1996",
+        ".2113"
+      ]
+    },
+    {
+      "preset": "low",
+      "shows": [
+        ".2500"
+      ]
+    },
+    {
+      "preset": "high",
+      "shows": [
+        ".1500"
+      ]
+    },
+    {
+      "preset": "minimax",
+      "shows": [
+        ".2500"
+      ]
+    },
+    {
+      "preset": "zero",
+      "shows": [
+        ".2500"
+      ]
+    },
+    {
+      "preset": "opposition",
+      "shows": [
+        ".5000",
+        "1.0000"
+      ]
+    }
+  ],
+  "predecessors": [
+    "weight-path"
+  ]
+}

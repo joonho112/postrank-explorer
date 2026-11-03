@@ -1,0 +1,2444 @@
+{
+  "app": "tau-path",
+  "catalog": "2.5",
+  "about": "Exact path intervals, counts and vertex errors independently computed by the base-R frontier oracle; risk at the default from the optimize oracle. The equal-mean endpoint ties are the full three-unit family.",
+  "cases": [
+    {
+      "id": "overview",
+      "preset": "overview",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"from-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.0"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.1"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.1"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.1"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.1"
+          },
+          "value": 0.0094973376603423,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.1"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.2"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.2"
+          },
+          "value": 0.144422183173242,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.2"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.2"
+          },
+          "value": 0.0247745991823067,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.3"
+          },
+          "value": 0.144422183173242,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.3"
+          },
+          "value": 0.188379558905791,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.3"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.3"
+          },
+          "value": 0.169196782355549,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.3"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.4"
+          },
+          "value": 0.188379558905791,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.4"
+          },
+          "value": 0.361836804915882,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.4"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.4"
+          },
+          "value": 0.35757634126134,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.4"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.5"
+          },
+          "value": 0.361836804915882,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.5"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.5"
+          },
+          "value": 15,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.5"
+          },
+          "value": 0.719413146177222,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.5"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"endpoint-ties\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-all",
+            "field": "size"
+          },
+          "value": "13",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-comparison=\"selected\"] [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-comparison=\"other\"] [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "N.2"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "early",
+      "preset": "early",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"from-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.0"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.1"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.1"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.1"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.1"
+          },
+          "value": 0.0094973376603423,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.1"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.2"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.2"
+          },
+          "value": 0.144422183173242,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.2"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.2"
+          },
+          "value": 0.0247745991823067,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.3"
+          },
+          "value": 0.144422183173242,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.3"
+          },
+          "value": 0.188379558905791,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.3"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.3"
+          },
+          "value": 0.169196782355549,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.3"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.4"
+          },
+          "value": 0.188379558905791,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.4"
+          },
+          "value": 0.361836804915882,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.4"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.4"
+          },
+          "value": 0.35757634126134,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.4"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.5"
+          },
+          "value": 0.361836804915882,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.5"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.5"
+          },
+          "value": 15,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.5"
+          },
+          "value": 0.719413146177222,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.5"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"endpoint-ties\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-all",
+            "field": "size"
+          },
+          "value": "13",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coherence",
+      "preset": "coherence",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"from-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.0"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.1"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.1"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.1"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.1"
+          },
+          "value": 0.0094973376603423,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.1"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.2"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.2"
+          },
+          "value": 0.144422183173242,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.2"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.2"
+          },
+          "value": 0.0247745991823067,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.3"
+          },
+          "value": 0.144422183173242,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.3"
+          },
+          "value": 0.188379558905791,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.3"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.3"
+          },
+          "value": 0.169196782355549,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.3"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.4"
+          },
+          "value": 0.188379558905791,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.4"
+          },
+          "value": 0.361836804915882,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.4"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.4"
+          },
+          "value": 0.35757634126134,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.4"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.5"
+          },
+          "value": 0.361836804915882,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.5"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.5"
+          },
+          "value": 15,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.5"
+          },
+          "value": 0.719413146177222,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.5"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.2"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"endpoint-ties\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-all",
+            "field": "size"
+          },
+          "value": "13",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bend",
+      "preset": "bend",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"from-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.0"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.1"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.1"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.1"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.1"
+          },
+          "value": 0.0094973376603423,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.1"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.2"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.2"
+          },
+          "value": 0.144422183173242,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.2"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.2"
+          },
+          "value": 0.0247745991823067,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.3"
+          },
+          "value": 0.144422183173242,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.3"
+          },
+          "value": 0.188379558905791,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.3"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.3"
+          },
+          "value": 0.169196782355549,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.3"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.4"
+          },
+          "value": 0.188379558905791,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.4"
+          },
+          "value": 0.361836804915882,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.4"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.4"
+          },
+          "value": 0.35757634126134,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.4"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.5"
+          },
+          "value": 0.361836804915882,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.5"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.5"
+          },
+          "value": 15,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "Ew.5"
+          },
+          "value": 0.719413146177222,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.5"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"endpoint-ties\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-all",
+            "field": "size"
+          },
+          "value": "13",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cap",
+      "preset": "cap",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"from-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauFrom.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauTo.0"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "N.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "Ew.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauFrom.1"
+          },
+          "value": 0.00118716720754279,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauTo.1"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "N.1"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "Ew.1"
+          },
+          "value": 0.0094973376603423,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "grade.1"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"from-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauFrom.2"
+          },
+          "value": 0.0038193153804911,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 8
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"to-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauTo.2"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "N.2"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "Ew.2"
+          },
+          "value": 0.0247745991823067,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"grade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"endpoint-ties\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-all",
+            "field": "size"
+          },
+          "value": "13",
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "counterpart-bend-ties",
+      "query": "?tau=.144422183173242&cap=3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"other-tie-grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"other-tie-N-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.2"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"other-tie-grade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "grade.3"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"other-tie-N-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "N.3"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherTieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"other-tieTolerance\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherRisk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "allRisk"
+          },
+          "value": 0.0305360765801355,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "cap3Risk"
+          },
+          "value": 0.0305360765801355,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-comparison=\"selected\"] [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "cap3.familySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-comparison=\"other\"] [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.familySize"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-caption=\"different-disclosure\"]",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "these reports disclose different amounts",
+          "kind": "text"
+        }
+      ],
+      "about": "Both adjacent independent-R path vertices are optimum at their shared breakpoint; the all-report counterpart must expose both grade vectors and their distinct disclosure counts."
+    }
+  ]
+}

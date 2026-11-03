@@ -1,0 +1,18 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part2-g01",
+  "description": "Part 2, One pair (G-01): the direction probabilities of the prediction and the presets (settings.pi*, set with the widget's slider), and the error probabilities of the isolated-pair decision at those settings (pairDecision: the cost of stating A above B is e_AB = 1 - pi_AB, the cost of stating B above A is e_BA = pi_AB because the pair's posterior gives latent equality probability zero, and withholding costs tau). The three costs at pi .85 as one vector and the number of equally good actions at the two boundary presets are cf.onepair.* keys in part2.json.",
+  "license_scope": "author",
+  "inputs": {
+    "cf.onepair.pi85.tau20.dec": {"fn":"pairDecision","args":[0.15,{"$setting":"settings.pi85"},{"$setting":"settings.tau20"}],"note":"pi_AB = .85: e_AB = .15, e_BA = pi_AB = .85, tau .20"},
+    "cf.onepair.pi80.tau20.dec": {"fn":"pairDecision","args":[0.2,{"$setting":"settings.pi80"},{"$setting":"settings.tau20"}],"note":"pi_AB = .80: e_AB = .20 = tau, e_BA = .80"},
+    "cf.onepair.pi50.tau50.dec": {"fn":"pairDecision","args":[0.5,{"$setting":"settings.pi50"},{"$setting":"settings.tau50"}],"note":"pi_AB = .50: e_AB = e_BA = tau = .50"}
+  },
+  "keys": {
+    "cf.onepair.pi85.eAB": {"type":"scalar","from":"cf.onepair.pi85.tau20.dec","field":"costs.iAboveJ","format":{"fn":"formatProb","options":{"digits":2}},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"e_AB = 1 - .85, the cost of stating A above B"},
+    "cf.onepair.pi85.eBA": {"type":"scalar","from":"cf.onepair.pi85.tau20.dec","field":"costs.jAboveI","format":{"fn":"formatProb","options":{"digits":2}},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"e_BA = 1 - e_AB = .85, the cost of stating B above A"},
+    "cf.onepair.pi85.wh": {"type":"scalar","from":"cf.onepair.pi85.tau20.dec","field":"costs.withhold","format":{"fn":"formatSetting"},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"the cost of withholding, tau .20"},
+    "cf.onepair.pi80.eAB": {"type":"scalar","from":"cf.onepair.pi80.tau20.dec","field":"costs.iAboveJ","format":{"fn":"formatProb","options":{"digits":2}},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"e_AB = 1 - .80 = tau: stating A above B and withholding cost the same"},
+    "cf.onepair.pi50.tau50.e": {"type":"scalar","from":"cf.onepair.pi50.tau50.dec","field":"costs.iAboveJ","format":{"fn":"formatProb","options":{"digits":2}},"tolerance":{"abs":1e-12,"rel":1e-12},"note":"e_AB = e_BA = .50 = tau: all three actions cost the same"}
+  }
+}

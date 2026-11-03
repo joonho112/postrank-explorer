@@ -1,0 +1,44 @@
+---
+title: "Coherence constraints on pairwise decisions"
+subtitle: "2.6 · after Kline, Rose and Walters (2024), Example 1"
+description: "Compatibility of isolated-pair decisions with an ordered grade report."
+---
+
+Decisions that minimise loss separately for each pair need not correspond to a coherent grade report. Three
+independent normal posteriors for A, B and C provide an example. Varying B's mean changes the pairwise direction
+probabilities and their loss-minimising actions at withholding cost $\tau$. The density panel describes the posterior
+specification. The remaining panels compare the unconstrained pairwise minimum with the minimum over ordered grade
+reports. Their difference is the additional expected cost imposed by coherence, which requires all pair decisions
+to be represented by a single ordered partition.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/coherence.js"></script>
+<script>window.__prxApp = PRX["coherence"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Middle at 1.00.** A–B and B–C are withheld separately, while A above C has probability .921 and is stated.
+  Transitivity of shared grades contradicts that direction. The minimum coherent risk is .1728. Both optimal reports beneath the curves resolve the conflict by stating an additional direction.
+- **Middle at .50.** B moves closer to C. The choices now form {A} > {B, C}, with risk .1410. The coherent
+  report reaches the pairwise cost: no extra cost is needed to make the local decisions coherent.
+- **Middle at .80.** The mean is just outside the shaded band and the report reaches risk .1589. Additional displayed digits resolve probabilities near the decision boundary.
+- **Middle at 1.00, τ .10.** The withholding cost decreases. The best report is {A, B, C}, risk .1000; it withholds the
+  confident outer pair too. The pairwise choices remain incompatible with a grade report, but the minimum-risk coherent resolution has changed.
+- **Middle at 1.00, τ .25.** The threshold falls to .75, below .760. Every pair is stated, the shaded band vanishes,
+  and {A} > {B} > {C} represents the pairwise choices. The density panel is unchanged because τ affects the loss rather than the posterior.
+
+::: {.callout-note appearance="simple"}
+Shared grades assert no equality of true values. They withhold directions, and sharing a grade is transitive.
+Kline, Rose and Walters call this a form of a “Condorcet cycle in indifferences”: the conflict is in the shared
+grades. These are posteriors set by hand for teaching. The browser evaluates every report of the stated family,
+lists equal-risk optima and gives their tolerance; the band is an aid to reading the picture, while compatibility is checked directly against the reports.
+:::
+
+Standalone: [coherence](../../embed/coherence.html), for example `?omega2=.81&tau=.20`.
+
+Related applications: [The decision for an isolated pair](one-pair.qmd), [Coherence in a finite three-unit example](coherence-finite.qmd).

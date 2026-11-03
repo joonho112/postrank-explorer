@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "numbers/schema.json",
+  "title": "postrank Explorer number registry",
+  "description": "Validates the registry specs (numbers/spec/<part>.json, settings.json) and the two registry files (data/numbers.json written by scripts/build_numbers.mjs, data/numbers-cases.json written by R). CONTRACT 5.1-5.3. scripts/build_numbers.mjs and verification/check_numbers.mjs apply $defs/spec and $defs/numbersFile with a small built-in validator (the keywords used here only) plus the cross-field rules listed in each description.",
+  "$defs": {
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z0-9][A-Za-z0-9_.]*$",
+      "description": "Registry key grammar (CONTRACT 4.2). Keys read <data set>.<settings>.<quantity> (notes/storyboards part1-2.md D). Setting values use settings.<name>. The builder also rejects empty dotted segments (a..b, a trailing dot)."
+    },
+    "licenseScope": {
+      "enum": ["author", "cde-source-conditions", "cc-by-nc-krw", "cc-by-4.0-atlas", "public-domain-census"]
+    },
+    "type": {
+      "enum": ["scalar", "vector", "fraction", "text", "na", "set"],
+      "description": "scalar: one finite number; vector: an array (nested arrays allowed) of numbers or null; fraction: one number displayed as an exact fraction; text: a string; na: null (for example E/N with N = 0); set: an unordered array (compared as a set)."
+    },
+    "toleranceOne": {
+      "anyOf": [
+        { "type": "number", "minimum": 0, "description": "absolute tolerance" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "abs": { "type": "number", "minimum": 0 },
+            "rel": { "type": "number", "minimum": 0 }
+          },
+          "description": "|a - b| <= abs + rel * |b|"
+        }
+      ]
+    },
+    "tolerance": {
+      "anyOf": [
+        { "$ref": "#/$defs/toleranceOne" },
+        { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/toleranceOne" }, "description": "one tolerance per element of the flattened value" }
+      ]
+    },
+    "format": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fn"],
+      "properties": {
+        "fn": { "type": "string", "pattern": "^format[A-Z][A-Za-z]*$", "description": "an engine formatter (js/pr-core.js, engine/README.md format.ts) or a named format of js/widgets/format.js NAMED_FORMATS (formatShare, formatExpectedCount; no options)" },
+        "options": { "type": "object", "description": "the formatter's options object (second argument)" },
+        "item": { "$ref": "#/$defs/format", "description": "formatTuple only: the formatter applied to each element" },
+        "spread": { "type": "boolean", "description": "pass the value array as positional arguments (formatFraction, formatRatio)" }
+      }
+    },
+    "reference": {
+      "description": "Inside args or inputs, an object with exactly one of these keys is a reference: {\"$input\": name, \"path\"?} (a named input of the same spec), {\"$setting\": \"settings.<name>\"} (a setting value; required for the options tau, lambda and w), {\"$data\": \"<released key>\", \"path\"?} (data/released/<key>.json through data/released/data_contract.json, or data/precomputed/<key>.json). path is dot-separated, with array indices as numbers.",
+      "type": "object"
+    },
+    "input": {
+      "description": "A named intermediate value shared by keys of one spec: an engine call or a released-data reference.",
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fn", "args"],
+          "properties": {
+            "fn": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]*$" },
+            "args": { "type": "array" },
+            "field": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["$data"],
+          "properties": {
+            "$data": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+$" },
+            "path": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "engineKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "anyOf": [{ "required": ["fn", "args"] }, { "required": ["from"] }],
+      "description": "A value computed by an engine function: fn + args, or from (a named engine-call input of the same spec, so that several keys read fields of one call). Cross-field rules: fn is an exported function of js/pr-core.js and not a formatter; fn/args and from are not combined; the value at field matches type; format is required except for text (whose display is the value) and must return a string; tolerance is required for scalar, vector, fraction and set (0 allowed) and, when an array, has one element per flattened value element; settings lists every $setting used in args (derived when omitted).",
+      "properties": {
+        "type": { "$ref": "#/$defs/type" },
+        "fn": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]*$" },
+        "args": { "type": "array" },
+        "from": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+$" },
+        "field": { "type": "string", "description": "dot path into the result; omit to use the whole result" },
+        "format": { "$ref": "#/$defs/format" },
+        "settings": {
+          "type": "object",
+          "description": "setting name -> settings.* key (or a literal descriptor such as a family name). Every $setting in args must appear here; when omitted it is derived from the $setting references, named by each setting's own name.",
+          "additionalProperties": true
+        },
+        "license_scope": { "$ref": "#/$defs/licenseScope" },
+        "tolerance": { "$ref": "#/$defs/tolerance" },
+        "same_as": { "type": "string", "pattern": "^[a-z0-9][A-Za-z0-9_.]*$", "description": "another registry key (a spec key or a case key of data/numbers-cases.json) that holds the same quantity: the two display strings must be identical (scripts/build_numbers.mjs sameAsProblems; checked by build_numbers and check_numbers)" },
+        "note": { "type": "string" }
+      }
+    },
+    "settingKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "setting", "value"],
+      "description": "A literal setting value (tau, cap, weights, cutoffs, interval levels, seeds). The key must start with settings. and the display string is formatSetting(value) unless format names another engine formatter; a text setting displays its value.",
+      "properties": {
+        "type": { "enum": ["scalar", "vector", "text"] },
+        "setting": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "description": "what the value sets: tau, lambda, cap, w, seed, level, cutoff, prior_sd, ..." },
+        "value": {},
+        "format": { "$ref": "#/$defs/format" },
+        "license_scope": { "$ref": "#/$defs/licenseScope" },
+        "note": { "type": "string" }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spec", "license_scope", "keys"],
+      "description": "One file per Part (numbers/spec/<part>.json) plus settings.json. Files whose name starts with _ (such as _example.json) are examples: the default build skips them.",
+      "properties": {
+        "$schema": { "type": "string" },
+        "spec": { "type": "string", "pattern": "^[a-z0-9_-]+$" },
+        "description": { "type": "string" },
+        "license_scope": { "$ref": "#/$defs/licenseScope", "description": "default licence scope of the file's keys" },
+        "inputs": {
+          "type": "object",
+          "propertyNames": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+$" },
+          "additionalProperties": { "$ref": "#/$defs/input" }
+        },
+        "keys": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "$ref": "#/$defs/key" },
+          "additionalProperties": { "anyOf": [{ "$ref": "#/$defs/engineKey" }, { "$ref": "#/$defs/settingKey" }] }
+        }
+      }
+    },
+    "source": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fn", "args"],
+          "description": "engine value: function, arguments as written in the spec (references unexpanded), field, the named inputs used, and the released files read",
+          "properties": {
+            "fn": { "type": "string" },
+            "args": { "type": "array" },
+            "field": { "type": ["string", "null"] },
+            "inputs": { "type": "object" },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["key", "file", "sha256"],
+                "properties": { "key": { "type": "string" }, "file": { "type": "string" }, "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["setting"],
+          "description": "literal setting value",
+          "properties": { "setting": { "type": "string" } }
+        },
+        {
+          "type": "object",
+          "required": ["file"],
+          "description": "case value written by R: the released file and the row or field it comes from",
+          "properties": {
+            "file": { "type": "string" },
+            "object": { "type": "string" },
+            "row": {},
+            "field": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "value", "display", "settings", "source", "license_scope", "owner"],
+      "description": "One registry entry. Cross-field rules (checked in code): value matches type; tolerance is present for scalar, vector, fraction and numeric sets; keys are unique across numbers.json and numbers-cases.json.",
+      "properties": {
+        "type": { "$ref": "#/$defs/type" },
+        "value": {},
+        "display": { "type": "string" },
+        "tolerance": { "$ref": "#/$defs/tolerance" },
+        "settings": { "type": "object" },
+        "source": { "$ref": "#/$defs/source" },
+        "license_scope": { "$ref": "#/$defs/licenseScope" },
+        "owner": { "type": "string", "minLength": 1, "description": "the file that owns the entry: a spec file (numbers/spec/<part>.json) or the R script that wrote it" }
+      }
+    },
+    "numbersFile": {
+      "type": "object",
+      "description": "data/numbers.json or data/numbers-cases.json: registry key -> entry, keys in code-point order.",
+      "propertyNames": { "$ref": "#/$defs/key" },
+      "additionalProperties": { "$ref": "#/$defs/entry" }
+    }
+  }
+}

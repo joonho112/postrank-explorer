@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<!-- 4.12 why-withheld. Build inputs: catalog.json; do not edit. -->
+<title>Why do these two share a grade? · postrank Explorer</title>
+<script>
+  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  (function () {
+    var t = new URLSearchParams(location.search).get("theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/app.css">
+</head>
+<body class="prx-embed">
+<main>
+<h1 class="prx-embed-title">Why do these two share a grade?</h1>
+<div id="app"><p>This app needs JavaScript.</p></div>
+<p class="prx-embed-credit">postrank Explorer · 4.12 · After the postrank theory book, ch. 19 and 21. Firms as adapted in postrank 1.1.0 (pr_case_krw). 12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde). · California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · https://www.cde.ca.gov/re/di/cr/index.asp · No CDE endorsement is implied · changes noted · Kline, Rose and Walters (2024) · doi:10.1257/aer.20230700 · doi:10.3886/E198284V1 · CC-BY-NC · Noncommercial · No endorsement · Changes: continuous midpoint-cell comparison probabilities and matching central 90% marginal intervals replace KRW’s posterior grids (postrank adaptation). · <a href="../pages/criteria/why-withheld.html">page</a></p>
+</main>
+<!-- classic scripts only, so this page works from file:// -->
+<script src="../js/vendor/d3.min.js"></script>
+<script src="../js/vendor/plot.min.js"></script>
+<script src="../js/bundles/why-withheld.js"></script>
+<script>window.__prxApp = PRX["why-withheld"].mountWidget(document.getElementById("app"), {});</script>
+</body>
+</html>

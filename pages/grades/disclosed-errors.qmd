@@ -1,0 +1,46 @@
+---
+title: "Expected and realised errors among stated directions"
+subtitle: "2.8 · after Kline, Rose and Walters (2024), slides 22 and 25–26"
+description: "Expected error shares, realised wrong counts and the joint probability that all statements are correct."
+---
+
+For a fixed report with N stated directions and expected wrong count $E$, the expected error share is $E/N$ when
+$N>0$. Posterior draws illustrate the variation of realised wrong counts around E. The probability that every
+statement is correct depends on the joint posterior distribution, whereas the expected count is a sum of pairwise
+error probabilities. The display also identifies the conditions under which optimality within a report family
+implies $E \leq \tau N$. Withholding every pair gives an undefined error share because N is zero.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/disclosed-errors.js"></script>
+<script>window.__prxApp = PRX["disclosed-errors"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Start without draws.** The report states 14 of 15 pairs, and its expected share wrong is .0255. The blue cells give the stated-pair errors. The optimality badge is reassessed after changes to the grades or eligible family.
+- **Best report, draws.** Across 100 draws, the mean count is .360 wrong directions per draw, with mean share .0257; the expected count is .3576. The matrix crosses the directions wrong in the final draw. The histogram counts draws, while the line shows their running average.
+- **All withheld.** The share reads “NA: no disclosure.” The all-right event is vacuous with probability 1; no direction is stated, so there is no error-share denominator. The drawn values remain visible, and the histogram records no wrong statements. The best-report button evaluates an alternative report on the same draws.
+- **Three-unit law.** The expected share wrong is 7/40, while B above C has error 1/4, above τ. The exact all-right probability is 3/4, with union lower bound 13/20. The final draw's wrong share is 1/2.
+- **Another coupling.** The expected share stays 7/40, but the exact all-right probability becomes 13/20, meeting the same union lower bound. As the coupling varies, the order table, draws and zero histogram bin change together.
+
+Changing the report keeps the same draws and scores them again. Changing τ changes the withholding charge without changing the report's expected wrong count.
+
+::: {.callout-note appearance="simple"}
+The badge appears only for an exact optimum of the shown family when that family includes the all-withheld report. Every report also shows the defined risk/count diagnostic, including when nothing is stated: $E \leq \tau N$ exactly when risk is at most τ. The six-site draws use independent normal latent values: their all-right values are Monte Carlo estimates, while the finite-law values and union bounds are exact. Both posteriors are stipulated; the joint-event interpretation and finite example follow the theory book, chapters 6 and 10.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+ev <- postrank_evaluate(c(A=1,B=2,C=3,D=3,E=4,F=5), pr_tutorial$one, weights=c(score_A=1), tau=.2)
+ev[c("N", "E", "E_over_N")]
+```
+:::
+
+Standalone: [open the app](../../embed/disclosed-errors.html), for example `?draws=100&seed=1`.
+
+Related applications: [Reporting risk and withholding cost](price-of-silence.qmd) · [Grade reports as pairwise decisions](report-builder.qmd).

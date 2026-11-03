@@ -1,0 +1,51 @@
+---
+title: "Alternative rankings from a posterior distribution"
+subtitle: "1.14 · after the postrank theory book, ch. 19, and Kline, Rose and Walters (2024)"
+description: "Rankings by posterior mean, expected rank and top-group probability need not coincide."
+---
+
+A posterior distribution supports several ranking summaries. The slope chart compares orderings by posterior mean,
+expected rank and probability of membership in a specified top group. Expected rank is the posterior average
+position, with rank 1 assigned to the largest value. Differences in posterior dispersion or shape can produce
+different pairwise orders under these summaries. Rank distributions describe the remaining uncertainty in each unit's
+position. A finite three-unit distribution and a simulated league illustrate these distinctions, including the
+effect of changing the measurement scale on rankings by posterior mean.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/which-ranking.js"></script>
+<script>window.__prxApp = PRX["which-ranking"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Three-unit law, posterior mean.** A has the largest posterior mean, a value it takes in neither state, yet its
+  expected rank, 2.4, is the worst: A is first with probability .3 and last otherwise. The two orders differ on 2 of
+  the 3 pairs.
+- **Three-unit law, first place.** B is the most likely to be first (.7); C never is.
+- **Three-unit law, √θ.** On the square-root scale A's posterior mean falls to 1.34, below B's 2.00 and C's 1.73, so
+  the first column now follows the expected ranks: 0 of the 3 pairs differ.
+- **League, expected rank.** U13, a small unit with posterior SD .120, is 6th by posterior mean but 8th by expected
+  rank (9.59): the large units U06 and U24 pass it. Its 90% rank interval runs from rank 1 to rank 24. The two
+  orders differ on 6 of the 435 pairs.
+- **League, top ten.** U21 is the unit most often in the top ten in 4,000 Monte Carlo draws (.96; one standard error
+  is below .01), ahead of U26 (.94), which has the largest posterior mean. Two units are never in the top ten.
+- **League, exp(10θ).** On this scale U13 climbs from 6th to 3rd by posterior mean (4.09), and that order puts 40 of
+  the 435 pairs differently from the expected rank.
+
+::: {.callout-note appearance="simple"}
+The three-unit law is specified directly and the league's posterior is set by hand for teaching; postrank fits
+neither. Rankings by posterior means appear in Kline, Rose and Walters (2024), Section IV.B and the notes to Figure
+2C, where empirical Bayes posterior means are coarsened into deciles and quartiles; talk slide 59 sets such rules
+beside their grades for the firms. Their Section II.F names the expected rank.
+:::
+
+Standalone: [embed/which-ranking.html](../../embed/which-ranking.html), for example `?data=league&unit=U06` or
+`?preset=league-exp&expK=20&theme=dark`.
+
+Related applications: [Majority comparisons and expected ranks](majority-wins.qmd) (1.15) counts the pairs each unit more
+likely wins; [Expected errors in a strict ranking](ranking-claims.qmd) (1.16), [Normal–normal posterior shrinkage](shrinkage.qmd) (1.5)
+and [Restrictions imposed by a fixed order](../rules/order-misses.qmd) (3.6).

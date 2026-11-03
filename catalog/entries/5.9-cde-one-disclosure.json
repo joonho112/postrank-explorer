@@ -1,0 +1,70 @@
+{
+  "id": "5.9",
+  "name": "cde-one-disclosure",
+  "part": "5",
+  "title": "At one disclosure the tertiles win",
+  "idea": "Of the 34,650 three-grade reports that state 48 pairs, the most three grades allow for twelve schools, the tertiles expect the fewest wrong directions.",
+  "status": "built",
+  "from": "v1 view · v1 S-01 case-cde, the same-disclosure view",
+  "data": [
+    "data/released/case-cde.json",
+    "data/released/cde-taupath.json"
+  ],
+  "credit": "12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde).",
+  "caption": "Twelve-school CDE teaching subset; supplied posterior conditional on a statewide fitted prior. Grade 1 states lowest chronic absence; a shared grade withholds directions.",
+  "presets": [
+    {
+      "id": "matched48",
+      "label": "At the tertiles’ disclosure",
+      "query": "tau=.20&cuts=4,8&n=48&full=false"
+    },
+    {
+      "id": "matched46",
+      "label": "Between feasible disclosures",
+      "query": "tau=.20&cuts=4,8&n=46&full=false"
+    },
+    {
+      "id": "matched30",
+      "label": "A lower mixture",
+      "query": "tau=.20&cuts=3,9&n=30&full=false"
+    },
+    {
+      "id": "other-cuts",
+      "label": "Other cuts, full range",
+      "query": "tau=.20&cuts=1,2&n=21&full=true"
+    }
+  ],
+  "try": [
+    {
+      "preset": "matched48",
+      "shows": [
+        "34,650",
+        "1.829",
+        "1.909"
+      ]
+    },
+    {
+      "preset": "matched46",
+      "shows": [
+        "46",
+        ".4551",
+        ".500"
+      ]
+    },
+    {
+      "preset": "matched30",
+      "shows": [
+        "30",
+        ".005174",
+        ".167"
+      ]
+    },
+    {
+      "preset": "other-cuts",
+      "shows": [
+        "21",
+        "1.116"
+      ]
+    }
+  ]
+}

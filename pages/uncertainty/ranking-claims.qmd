@@ -1,0 +1,60 @@
+---
+title: "Expected errors in a strict ranking"
+subtitle: "1.16 · after Kline, Rose and Walters (2024), section II.B and slides 21–22"
+description: "Posterior expected wrong-direction counts among the n(n − 1)/2 statements of a strict ranking."
+---
+
+A strict ranking states a direction for every unordered pair of units. For $n$ units it therefore makes
+$M = n(n-1)/2$ statements, represented by the cells of a triangle. A statement that $i$ exceeds $j$ is wrong with
+posterior probability $1 - \pi_{ij}$, where $\pi_{ij}$ is the probability that $i$ has the larger true value. Summing
+these error probabilities gives the posterior expected number of incorrect statements. In the examples, uncertain
+comparisons are concentrated among nearby ranks, although two imprecise units can remain difficult to order even
+when widely separated in the displayed ranking ([The matrix of pairwise posterior probabilities](pairwise-matrix.qmd)).
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/ranking-claims.js"></script>
+<script>window.__prxApp = PRX["ranking-claims"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **97 firms.** Kline, Rose and Walters' (KRW) firms, ranked by posterior mean, make 4,656 claims; the posterior expected wrong count is 1,249, more than one in four. Ranked by estimate they expect 1,395 (the two orders disagree on 639
+  pairs); KRW find the posterior-mean order close to their best strict ranking (Section V.E), but that is not a general
+  rule. Here 35 claims sit above one half.
+- **Top 10 by posterior mean.** 45 claims, 18.22 expected wrong. The scale table sets them beside the 17,014,861
+  claims of a ranking of the case study's 5,834 California schools (elementary-type schools with at least 30 students
+  counted).
+- **Six sites.** 15 claims, .7194 expected wrong. The highest dot, C above D, is a claim between neighbours, wrong with
+  probability .362.
+- **League of 30.** 435 claims; 94.48 expected wrong, 102.2 by estimate (37 pairs differ). Only a simulation knows the
+  true values: 88 claims are wrong against them in this draw, 80.69 on average.
+
+::: {.callout-note appearance="simple"}
+KRW's race card at λ = 1 is also a full ranking, in a slightly different order, so it expects 1,248 wrong claims where
+the posterior-mean order expects 1,249 ([KRW's archived reward path](../cases/krw-lambda.qmd)). The expected count is a sum
+of probabilities over all the claims, not a list of particular claims. The data describe KRW's correspondence
+experiment, not any firm's current conduct. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit
+doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. Changes: race pair
+probabilities as adapted in postrank 1.1.0 (pr_case_krw); firms ranked here by posterior mean, top-n blocks and
+expected counts computed in this browser. No endorsement is implied. School count: California Department of
+Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, via postrank 1.1.0
+(pr_case_cde); CDE source conditions apply
+([https://www.cde.ca.gov/re/di/cr/index.asp](https://www.cde.ca.gov/re/di/cr/index.asp){style="word-break: break-all"});
+only the statewide count is shown (changes noted); no CDE endorsement is implied.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+m <- pr_case_krw$input$summaries$means[, "race_signed"]
+postrank_evaluate(rank(-m), pr_case_krw$input, weights = c(race_signed = 1, gender_signed = 0), tau = .2)$E["race_signed"]   # 1248.868
+```
+:::
+
+Standalone: [embed/ranking-claims.html](../../embed/ranking-claims.html), for example `?data=krw&n=20`.
+
+Related applications: [The matrix of pairwise posterior probabilities](pairwise-matrix.qmd) (1.13), [Alternative rankings from a posterior distribution](which-ranking.qmd) (1.14), [Majority comparisons and expected ranks](majority-wins.qmd) (1.15) and [Ranking noisy estimates](noisy-league.qmd) (1.3).

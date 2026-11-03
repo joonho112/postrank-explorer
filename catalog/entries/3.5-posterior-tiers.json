@@ -1,0 +1,73 @@
+{
+  "id": "3.5",
+  "name": "posterior-tiers",
+  "part": "3",
+  "title": "Tiers from posterior summaries",
+  "idea": "At one τ and cap, the risk never rises from posterior-mean tiers to the best cuts of their order to the best report of all, as each family holds the one before; on the eight units the last two coincide.",
+  "status": "built",
+  "from": "v1 whole · v1 R-03 posterior-tiers",
+  "data": [
+    "engine",
+    "data/released/thirty-sites.json"
+  ],
+  "credit": "League built for this site (the eight units are its U01–U08); 30-site example from the postrank package (synthetic); tiers after the postrank theory book, ch. 17.",
+  "math": false,
+  "caption": "One supplied posterior and one withholding price for every rule; fixed tiers, optimized cuts within named orders, and exhaustive optimization only on the eight units.",
+  "presets": [
+    {
+      "id": "league8-cuts",
+      "label": "Eight units: optimal cuts",
+      "query": "data=league8&rule=pm-cuts&cap=3&tau=.20&opt=cap"
+    },
+    {
+      "id": "pm-tiers",
+      "label": "League: fixed tiers",
+      "query": "data=league&rule=pm-tiers&cap=3&tau=.20&opt=cap"
+    },
+    {
+      "id": "thirty",
+      "label": "Thirty sites: rank cuts",
+      "query": "data=thirty&rule=er-cuts&cap=4&tau=.25&opt=cap"
+    },
+    {
+      "id": "league8-all",
+      "label": "Eight units: all reports",
+      "query": "data=league8&rule=optimum&cap=3&tau=.20&opt=all"
+    }
+  ],
+  "try": [
+    {
+      "preset": "league8-cuts",
+      "shows": [
+        "17",
+        ".1455",
+        "6,051",
+        "21",
+        ".1612"
+      ]
+    },
+    {
+      "preset": "pm-tiers",
+      "shows": [
+        "300",
+        ".1731",
+        "251",
+        ".1581"
+      ]
+    },
+    {
+      "preset": "thirty",
+      "shows": [
+        "303",
+        ".1603",
+        "4,090"
+      ]
+    },
+    {
+      "preset": "league8-all",
+      "shows": [
+        "545,835"
+      ]
+    }
+  ]
+}

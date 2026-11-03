@@ -1,0 +1,41 @@
+{
+  "about": "The catalog: the parts here, one file per app in catalog/entries/<id>-<name>.json. Edit these, then run node scripts/build.mjs, which writes the merged catalog.json at the project root (generated; do not edit it). status: planned | built. A built app has js/apps/<name>.js and pages/<part slug>/<name>.qmd.",
+  "parts": [
+    {
+      "key": "1",
+      "slug": "uncertainty",
+      "title": "Ranking under uncertainty",
+      "lead": "Estimates are noisy, so a league table of them is partly noise. A posterior says how sure we are of each unit and of each direction between two units."
+    },
+    {
+      "key": "2",
+      "slug": "grades",
+      "title": "From ranks to grades",
+      "lead": "A grade report states the direction of every pair in different grades and stays silent on pairs in the same grade. Its risk adds the expected wrong directions and a price τ for each silent pair."
+    },
+    {
+      "key": "3",
+      "slug": "rules",
+      "title": "Common rules",
+      "lead": "Tiers, flags and posterior cuts are grade reports too. Read as reports, they can be compared with the frontier at the same disclosure. Other questions, such as stability or filling a fixed number of places, need their own yardsticks."
+    },
+    {
+      "key": "4",
+      "slug": "criteria",
+      "title": "Several criteria",
+      "lead": "One common grade for two or more criteria: the weights set how much each criterion's wrong directions count; budgets protect each criterion, and a minimax rule guards the worse one. Pair probabilities from whole-state draws are all the weighted risk needs; composite and joint claims need more."
+    },
+    {
+      "key": "5",
+      "slug": "cases",
+      "title": "Cases",
+      "lead": "KRW's loss and its λ set against postrank's τ, then released case data read as postrank reports: firms in the KRW discrimination report card, California schools and Alabama counties."
+    },
+    {
+      "key": "T",
+      "slug": "tools",
+      "title": "Tools",
+      "lead": "Your own posterior summaries in the browser, and a released case graded with your settings, with what the report states and leaves unsaid."
+    }
+  ]
+}

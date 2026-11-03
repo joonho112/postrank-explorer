@@ -1,0 +1,39 @@
+{
+ "group": "postrank-v3p2-correction",
+ "generator": "r-export/27_v3_part2_correction.R",
+ "uses_postrank": true,
+ "rows": [
+  {
+   "id": "correction-league-drop-U15",
+   "args": {
+    "data": "league",
+    "unit": "U15",
+    "tau": 0.2,
+    "cap": "all",
+    "seed": 20261030,
+    "priorSd": 0.15
+   },
+   "expect": {
+    "beforeGrade": [2, 3, 2, 3, 4, 2, 3, 2, 3, 2, 3, 3, 2, 3, 3, 2, 3, 4, 3, 3, 2, 3, 3, 2, 3, 1, 2, 3, 2, 2],
+    "afterGrade": [2, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 2, 1, 2, 2, 2, 3, 2, 3, 1, 2, 2, 1, 2, 1, 2, 2, 1, 2],
+    "beforeSizes": [1, 12, 15, 2],
+    "afterSizes": [9, 17, 3],
+    "beforeN": 263,
+    "afterN": 231,
+    "beforeRisk": 0.157784030324618,
+    "afterRisk": 0.159962788916062,
+    "beforeFamilySize": 536870912,
+    "afterFamilySize": 268435456,
+    "commonPairs": 406,
+    "changed": 107,
+    "nSame": 299,
+    "nNewWithheld": 62,
+    "nNewDisclosed": 45,
+    "nReversed": 0,
+    "untouchedChanged": 107,
+    "untouchedPairs": 406,
+    "coefficientGap": 0
+   }
+  }
+ ]
+}

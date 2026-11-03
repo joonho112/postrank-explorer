@@ -1,0 +1,205 @@
+{
+ "group": "oracle-v3-native-tie-actions",
+ "generator": "r-export/34_v3_native_tie_actions.R",
+ "uses_postrank": false,
+ "rows": [
+  {
+   "id": "tb19-tau30-native-actions-h2-budget1",
+   "args": {
+    "fn": "nativeTieActions",
+    "states": [
+     [20, 4, 3],
+     [0, 4, 3]
+    ],
+    "probs": [0.3, 0.7],
+    "tau": 0.3,
+    "tieTol": 1e-12,
+    "budget": 1,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 2
+   },
+   "expect": {
+    "means": [6, 4, 3],
+    "pTop": [0.3, 0.7, 0],
+    "probabilities": [0.3, 1, 0],
+    "grades": [
+     [2, 1, 2],
+     [3, 1, 2]
+    ],
+    "tieCount": 2,
+    "tieTol": 1e-12,
+    "allReports": [
+     {
+      "grade": [1, 1, 1],
+      "N": 0,
+      "Ew": 0,
+      "risk": 0.3
+     },
+     {
+      "grade": [1, 1, 2],
+      "N": 2,
+      "Ew": 0.7,
+      "risk": 0.333333333333333
+     },
+     {
+      "grade": [1, 2, 1],
+      "N": 2,
+      "Ew": 1.7,
+      "risk": 0.666666666666667
+     },
+     {
+      "grade": [1, 2, 2],
+      "N": 2,
+      "Ew": 1.4,
+      "risk": 0.566666666666667
+     },
+     {
+      "grade": [1, 2, 3],
+      "N": 3,
+      "Ew": 1.4,
+      "risk": 0.466666666666667
+     },
+     {
+      "grade": [1, 3, 2],
+      "N": 3,
+      "Ew": 2.4,
+      "risk": 0.8
+     },
+     {
+      "grade": [2, 1, 1],
+      "N": 2,
+      "Ew": 0.6,
+      "risk": 0.3
+     },
+     {
+      "grade": [2, 1, 2],
+      "N": 2,
+      "Ew": 0.3,
+      "risk": 0.2
+     },
+     {
+      "grade": [2, 1, 3],
+      "N": 3,
+      "Ew": 1,
+      "risk": 0.333333333333333
+     },
+     {
+      "grade": [2, 2, 1],
+      "N": 2,
+      "Ew": 1.3,
+      "risk": 0.533333333333333
+     },
+     {
+      "grade": [2, 3, 1],
+      "N": 3,
+      "Ew": 2,
+      "risk": 0.666666666666667
+     },
+     {
+      "grade": [3, 1, 2],
+      "N": 3,
+      "Ew": 0.6,
+      "risk": 0.2
+     },
+     {
+      "grade": [3, 2, 1],
+      "N": 3,
+      "Ew": 1.6,
+      "risk": 0.533333333333333
+     }
+    ],
+    "reports": [
+     {
+      "grade": [2, 1, 2],
+      "N": 2,
+      "Ew": 0.3,
+      "risk": 0.2,
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667,
+       "selectedValue": 13
+      }
+     },
+     {
+      "grade": [3, 1, 2],
+      "N": 3,
+      "Ew": 0.6,
+      "risk": 0.2,
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 2,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 1.3,
+       "meanCost": 0.433333333333333,
+       "selectedValue": 7
+      }
+     }
+    ],
+    "bayesClassification": {
+     "positive": [false, true, false],
+     "bayesPositive": [false, true, false],
+     "positiveCount": 1,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 0, 1],
+     "negativeCost": [0.3, 1, 0],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.1,
+     "selectedValue": 4
+    }
+   },
+   "record": {
+    "candidateCount": 13,
+    "membership": "All reports within absolute risk tolerance 1e-12 of the enumerated minimum",
+    "ordering": "Lexicographic canonical grade vectors",
+    "allocationConvention": "Higher grades first; uniform complete subset of the boundary grade; budget exactly 1",
+    "classificationConvention": "Positive iff grade <= 2; target event is strictly theta > 3.5",
+    "contrast": "212 and 312 both allocate the one place to B (expected value 4, overlap .7). At h=2, 212 declares all 3 positive with total cost 1.7 and selected value 13; 312 declares B and C positive with total cost 1.3 and selected value 7. The Bayes classification declares only B positive with selected value 4.",
+    "minimumRisk": 0.2,
+    "nextExcludedRiskGap": 0.1
+   }
+  }
+ ]
+}

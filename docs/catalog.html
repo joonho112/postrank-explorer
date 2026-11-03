@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Catalogue of 79 applications on posterior ranking and ordered grade reporting.">
+
+<title>Application catalogue – postrank Explorer</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./media/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-5be8e64b570d4824bd296b124c7eebe3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>document.documentElement.setAttribute("data-theme", "light");</script>
+
+
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/app.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">postrank Explorer</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-uncertainty" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">1 · Uncertainty</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-uncertainty">    
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/case-zero.html">
+ <span class="dropdown-text">League tables and report cards</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/noisy-estimate.html">
+ <span class="dropdown-text">Estimates and sampling error</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/noisy-league.html">
+ <span class="dropdown-text">Ranking noisy estimates</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/winners-curse.html">
+ <span class="dropdown-text">Selection bias at the extremes of a ranking</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/shrinkage.html">
+ <span class="dropdown-text">Normal–normal posterior shrinkage</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/shrinkage-price.html">
+ <span class="dropdown-text">Sensitivity to the prior standard deviation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/posterior-pipeline.html">
+ <span class="dropdown-text">From data to posterior decisions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/two-units.html">
+ <span class="dropdown-text">Pairwise posterior direction probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/correlated-units.html">
+ <span class="dropdown-text">Posterior dependence and pairwise comparisons</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/beyond-normal.html">
+ <span class="dropdown-text">Marginal summaries and joint direction probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/interval-overlap.html">
+ <span class="dropdown-text">Marginal interval overlap and direction probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/overlap-in-the-league.html">
+ <span class="dropdown-text">Interval overlap across 435 pairs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/pairwise-matrix.html">
+ <span class="dropdown-text">The matrix of pairwise posterior probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/which-ranking.html">
+ <span class="dropdown-text">Alternative rankings from a posterior distribution</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/majority-wins.html">
+ <span class="dropdown-text">Majority comparisons and expected ranks</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/ranking-claims.html">
+ <span class="dropdown-text">Expected errors in a strict ranking</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/mc-error.html">
+ <span class="dropdown-text">Monte Carlo error in pairwise probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/uncertainty/chain-draws.html">
+ <span class="dropdown-text">Monte Carlo error with dependent draws</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-grade-reports" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">2 · Grade reports</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-grade-reports">    
+        <li>
+    <a class="dropdown-item" href="./pages/grades/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/one-pair.html">
+ <span class="dropdown-text">The decision for an isolated pair</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/report-builder.html">
+ <span class="dropdown-text">Grade reports as pairwise decisions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/how-many-reports.html">
+ <span class="dropdown-text">The number of ordered grade reports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/price-of-silence.html">
+ <span class="dropdown-text">Reporting risk and withholding cost</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/tau-path.html">
+ <span class="dropdown-text">Optimal reports along the withholding-cost path</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/coherence.html">
+ <span class="dropdown-text">Coherence constraints on pairwise decisions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/coherence-finite.html">
+ <span class="dropdown-text">Coherence in a finite three-unit example</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/disclosed-errors.html">
+ <span class="dropdown-text">Expected and realised errors among stated directions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/reported-and-realized.html">
+ <span class="dropdown-text">Reported error and reference-law evaluation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/frontier.html">
+ <span class="dropdown-text">The error–disclosure frontier</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/frontier-mixtures.html">
+ <span class="dropdown-text">Mixtures of frontier reports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/families.html">
+ <span class="dropdown-text">Restrictions on the report family</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/report-card.html">
+ <span class="dropdown-text">Posterior summaries in a grade report</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/two-denominators.html">
+ <span class="dropdown-text">Error rates under two denominators</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/ties-and-withholding.html">
+ <span class="dropdown-text">Posterior equality and withholding</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/computing-grades.html">
+ <span class="dropdown-text">Computation of optimal grade reports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/another-law.html">
+ <span class="dropdown-text">Evaluation under an alternative posterior law</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/chosen-and-judged.html">
+ <span class="dropdown-text">Selection and evaluation using posterior draws</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/averaging-errors.html">
+ <span class="dropdown-text">Averaging error shares across reports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/grades/one-correction.html">
+ <span class="dropdown-text">Sensitivity to corrections and unit removal</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-reporting-rules" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">3 · Reporting rules</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-reporting-rules">    
+        <li>
+    <a class="dropdown-item" href="./pages/rules/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/fixed-tiers.html">
+ <span class="dropdown-text">Fixed quantile tiers</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/tier-sizes.html">
+ <span class="dropdown-text">Disclosure determined by tier sizes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/evidence-flags.html">
+ <span class="dropdown-text">Grades based on standardised evidence</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/flags-in-the-league.html">
+ <span class="dropdown-text">Standardised-evidence flags in a league</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/posterior-tiers.html">
+ <span class="dropdown-text">Tiers and optimised cuts of posterior rankings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/order-misses.html">
+ <span class="dropdown-text">Restrictions imposed by a fixed order</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/rule-comparison.html">
+ <span class="dropdown-text">Comparison at matched disclosure</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/same-tau-or-same-n.html">
+ <span class="dropdown-text">Common withholding cost and matched disclosure</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/deciles-quartiles.html">
+ <span class="dropdown-text">Deciles and quartiles of posterior means</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/naive-thresholding.html">
+ <span class="dropdown-text">Coherence of pairwise threshold decisions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/better-on-average.html">
+ <span class="dropdown-text">Expected and state-specific reporting loss</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/stability.html">
+ <span class="dropdown-text">Report stability under repeated measurement</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/rules/one-place.html">
+ <span class="dropdown-text">Reporting, allocation and classification</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-multiple-criteria" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">4 · Multiple criteria</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-multiple-criteria">    
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/several-criteria.html">
+ <span class="dropdown-text">Posterior profiles on multiple criteria</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/conflict-pairs.html">
+ <span class="dropdown-text">Opposing criterion directions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/two-scores.html">
+ <span class="dropdown-text">A common grade report for two scores</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/weight-path.html">
+ <span class="dropdown-text">Optimal reports along the criterion-weight path</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/common-grade-cost.html">
+ <span class="dropdown-text">Criterion-specific excess risk of a common report</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/composite-or-criterion.html">
+ <span class="dropdown-text">Composite targets and criterion directions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/error-budgets.html">
+ <span class="dropdown-text">Criterion-specific expected-error budgets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/criterion-mixture.html">
+ <span class="dropdown-text">A random-criterion representation of weighted risk</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/worst-criterion.html">
+ <span class="dropdown-text">Minimising the largest criterion risk</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/choosing-settings.html">
+ <span class="dropdown-text">Sensitivity to costs, weights and grade restrictions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/draws-to-errors.html">
+ <span class="dropdown-text">Pairwise errors from joint posterior draws</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/why-withheld.html">
+ <span class="dropdown-text">Reasons for a withheld comparison</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/pairs-leave-open.html">
+ <span class="dropdown-text">Quantities not identified by pairwise probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/criteria/estimated-budgets.html">
+ <span class="dropdown-text">Error budgets under estimated pairwise probabilities</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-cases" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">5 · Cases</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-cases">    
+        <li>
+    <a class="dropdown-item" href="./pages/cases/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/lambda-tau.html">
+ <span class="dropdown-text">KRW’s reward and postrank’s withholding cost</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/krw-axes.html">
+ <span class="dropdown-text">Equivalent reporting-loss scales</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/krw-card.html">
+ <span class="dropdown-text">KRW’s race and gender report cards</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/krw-heatmap.html">
+ <span class="dropdown-text">Firm-pair probabilities and report-card blocks</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/krw-lambda.html">
+ <span class="dropdown-text">KRW’s archived reward path</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/signed-or-absolute.html">
+ <span class="dropdown-text">Signed and absolute gender-gap targets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/krw-two.html">
+ <span class="dropdown-text">A common report for race and gender gaps</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/cde-cuts.html">
+ <span class="dropdown-text">School tertiles and minimum-risk grades</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/cde-one-disclosure.html">
+ <span class="dropdown-text">School reports at matched disclosure</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/cde-pair.html">
+ <span class="dropdown-text">A high-probability school comparison withheld</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/cde-tau-path.html">
+ <span class="dropdown-text">School-report changes along the withholding-cost path</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/cases/alabama-map.html">
+ <span class="dropdown-text">A common report for Alabama county outcomes</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tools" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Tools</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-tools">    
+        <li>
+    <a class="dropdown-item" href="./pages/tools/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/tools/your-data.html">
+ <span class="dropdown-text">Reports from supplied posterior summaries</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./pages/tools/report-designer.html">
+ <span class="dropdown-text">Case-report specification and export</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./catalog.html" aria-current="page"> 
+<span class="menu-text">Catalogue</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./pages/words.html"> 
+<span class="menu-text">Terminology</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Application catalogue</h1>
+<p class="subtitle lead">Index by part, concept and data source</p>
+</div>
+
+<div>
+  <div class="description">
+    Catalogue of 79 applications on posterior ranking and ordered grade reporting.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The catalogue lists all applications with their subject, data source and location in the collection. Search covers titles, descriptions and preset names, including the application names used within the interactive displays. Part, concept and data filters can be combined. Each entry links to an explanatory page and a standalone version of the application.</p>
+<!-- Build inputs: the catalog and discovery metadata; do not edit. -->
+<section class="prx-catalog" data-catalog="">
+<form class="prx-catalog-filters" hidden="" aria-label="Application catalogue">
+<label>Search<input type="search" name="query" placeholder="τ, intervals, posterior" autocomplete="off"></label>
+<label>Part<select name="part"><option value="">All parts</option><option value="1">1 · Ranking under uncertainty</option><option value="2">2 · From ranks to grades</option><option value="3">3 · Common rules</option><option value="4">4 · Several criteria</option><option value="5">5 · Cases</option><option value="T">Tools</option></select></label>
+<label>Concept<select name="topic"><option value="">All concepts</option><option value="evidence">Evidence and uncertainty</option><option value="pairs">Pairwise comparisons</option><option value="grades">Coherent grades and families</option><option value="loss">Loss and disclosure</option><option value="rules">Common rules</option><option value="criteria">Several criteria</option><option value="joint">Joint and composite claims</option><option value="computation">Computation and draws</option><option value="evaluation">Choosing and evaluating reports</option></select></label>
+<label>Data<select name="data"><option value="">All data</option><option value="generated">Generated examples</option><option value="sites">Fictional six/thirty sites</option><option value="krw">KRW firms</option><option value="cde">California schools</option><option value="alabama">Alabama counties</option><option value="local">Your summaries or matrices</option></select></label>
+<button type="reset">Clear filters</button>
+</form>
+<p class="prx-catalog-count" role="status" aria-live="polite" aria-atomic="true">79 apps</p>
+<p class="prx-catalog-empty" hidden="">No applications match the selected filters.</p>
+<div class="prx-cards"><article data-part="1" data-topics="grades evidence loss" data-data="krw" data-search="1.1 League tables and report cards Comparison of pairwise statements in a strict ranking and KRW's report cards for 97 firms. A league table and a report card The same 97 firms in a league table and in KRW's report card: the two reports say different things about pairs of firms. Coherent grades and families Evidence and uncertainty Loss and disclosure KRW firms Race card Second place Last place By posterior mean Gender card" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/case-zero.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/case-zero.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Evidence and uncertainty</span> <span>Loss and disclosure</span></p><p class="prx-catalog-data">KRW firms</p><p class="prx-card-id">1.1</p>
+<h3 class="anchored"><a href="pages/uncertainty/case-zero.html">League tables and report cards</a></h3>
+<p>Comparison of pairwise statements in a strict ranking and KRW's report cards for 97 firms.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/case-zero.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="evidence" data-data="generated" data-search="1.2 Estimates and sampling error Sampling variation of a normally distributed estimate with a fixed true value and known standard error. One number, two parts A reported estimate is its true value plus noise, and the noise changes each time the data are collected again. Evidence and uncertainty Generated examples SE .20 200 draws Seed 2 SE .10 SE .05" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/noisy-estimate.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/noisy-estimate.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.2</p>
+<h3 class="anchored"><a href="pages/uncertainty/noisy-estimate.html">Estimates and sampling error</a></h3>
+<p>Sampling variation of a normally distributed estimate with a fixed true value and known standard error.</p>
+<p class="prx-card-links"><a href="embed/noisy-estimate.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="evidence computation" data-data="generated" data-search="1.3 Ranking noisy estimates Effects of unequal sampling precision on the extreme positions of a ranking. Ranking noisy estimates Ranking noisy estimates sends more of the noisiest units to the top and bottom places than their true values would, and replays show it is not one draw's luck. Evidence and uncertainty Computation and draws Generated examples First draw True values Twenty replays Replay 11 Extremes highlighted" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/noisy-league.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/noisy-league.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Evidence and uncertainty</span> <span>Computation and draws</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.3</p>
+<h3 class="anchored"><a href="pages/uncertainty/noisy-league.html">Ranking noisy estimates</a></h3>
+<p>Effects of unequal sampling precision on the extreme positions of a ranking.</p>
+<p class="prx-card-links"><a href="embed/noisy-league.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="evidence" data-data="generated" data-search="1.4 Selection bias at the extremes of a ranking Repeated-sampling bias of selected extreme estimates and its dependence on the prior used for shrinkage. Too good to be true at the top Units that reach the top by their estimates have estimates above their true values on average; a posterior mean whose prior matches the true values' center and spread takes back about all of it. Evidence and uncertainty Generated examples Top 3 Replay 9 Top 1 Bottom 3 Prior SD .05" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/winners-curse.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/winners-curse.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.4</p>
+<h3 class="anchored"><a href="pages/uncertainty/winners-curse.html">Selection bias at the extremes of a ranking</a></h3>
+<p>Repeated-sampling bias of selected extreme estimates and its dependence on the prior used for shrinkage.</p>
+<p class="prx-card-links"><a href="embed/winners-curse.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="evidence" data-data="generated" data-search="1.5 Normal–normal posterior shrinkage Precision-weighted posterior means and changes in pairwise order under a common normal prior. What a posterior adds With one prior shared by all units, the posterior mean pulls imprecise estimates further toward the prior mean than precise ones, so it can reorder units, and only units whose precisions differ. Evidence and uncertainty Generated examples Prior SD .15 Prior SD .05 Every SE .10 Against the true values Too narrow a prior" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/shrinkage.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/shrinkage.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.5</p>
+<h3 class="anchored"><a href="pages/uncertainty/shrinkage.html">Normal–normal posterior shrinkage</a></h3>
+<p>Precision-weighted posterior means and changes in pairwise order under a common normal prior.</p>
+<p class="prx-card-links"><a href="embed/shrinkage.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="evidence evaluation" data-data="generated" data-search="1.6 Sensitivity to the prior standard deviation Repeated-sampling squared error and pairwise posterior probabilities across prior standard deviations. How much to shrink The prior SD is set or estimated by the producer: over many draws the distance to the true values is smallest near the true spread (prior centered on their average), and the pair probabilities postrank reads move with it. Evidence and uncertainty Choosing and evaluating reports Generated examples Near the true spread Much too narrow Too narrow Too wide Another draw" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/shrinkage-price.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/shrinkage-price.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Evidence and uncertainty</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.6</p>
+<h3 class="anchored"><a href="pages/uncertainty/shrinkage-price.html">Sensitivity to the prior standard deviation</a></h3>
+<p>Repeated-sampling squared error and pairwise posterior probabilities across prior standard deviations.</p>
+<p class="prx-card-links"><a href="embed/shrinkage-price.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="evidence computation joint" data-data="generated" data-search="1.7 From data to posterior decisions Separation of model fitting, posterior calculation and grade-report selection. Where the posterior comes from Of data, model, posterior and decision, postrank does only the last step: it reads a posterior and makes grades. Evidence and uncertainty Computation and draws Joint and composite claims Generated examples Box 1 (Data) Box 2 (Model) Box 3 (Posterior) B more precise Box 4 (Decision) τ .10 Prior SD .05" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/posterior-pipeline.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/posterior-pipeline.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Evidence and uncertainty</span> <span>Computation and draws</span> <span>Joint and composite claims</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.7</p>
+<h3 class="anchored"><a href="pages/uncertainty/posterior-pipeline.html">From data to posterior decisions</a></h3>
+<p>Separation of model fitting, posterior calculation and grade-report selection.</p>
+<p class="prx-card-links"><a href="embed/posterior-pipeline.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="pairs evidence" data-data="generated" data-search="1.8 Pairwise posterior direction probabilities Direction probabilities from the difference of two independent normal posterior variables. Two units, one probability One number, π = Pr(θ_A > θ_B ∣ Y), says how sure we are of a direction between two units. Pairwise comparisons Evidence and uncertainty Generated examples Means .30 and .10, SDs .20 and .20 Means .30 and .10, SDs .20 and .60 (B much less precise) Means .20 and .20, SDs .20 and .40 Means 1.20 and .95, SDs .20 and .20 (tutorial sites A and B)" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/two-units.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/two-units.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.8</p>
+<h3 class="anchored"><a href="pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a></h3>
+<p>Direction probabilities from the difference of two independent normal posterior variables.</p>
+<p class="prx-card-links"><a href="embed/two-units.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="pairs joint" data-data="generated" data-search="1.9 Posterior dependence and pairwise comparisons Effect of correlation on direction probabilities under a bivariate normal posterior distribution. When two posteriors move together When two jointly normal posteriors are correlated, the SD of their difference changes and π moves away from or toward one half, but never crosses it. Pairwise comparisons Joint and composite claims Generated examples Correlation .50 Independent Correlation .95 Correlation −.95 Shared prior mean" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/correlated-units.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/correlated-units.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Joint and composite claims</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.9</p>
+<h3 class="anchored"><a href="pages/uncertainty/correlated-units.html">Posterior dependence and pairwise comparisons</a></h3>
+<p>Effect of correlation on direction probabilities under a bivariate normal posterior distribution.</p>
+<p class="prx-card-links"><a href="embed/correlated-units.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="pairs evidence" data-data="generated" data-search="1.10 Marginal summaries and joint direction probabilities Dependence and non-normal posterior shape can change direction probabilities without changing marginal means. Same means, different directions Two posteriors with the same margins can give opposite directions (1/3 against 2/3), and a two-bump posterior can have the larger mean but the smaller chance of being higher. Pairwise comparisons Evidence and uncertainty Generated examples Law 1 Law 2 Independent Always equal w .50" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/beyond-normal.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/beyond-normal.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.10</p>
+<h3 class="anchored"><a href="pages/uncertainty/beyond-normal.html">Marginal summaries and joint direction probabilities</a></h3>
+<p>Dependence and non-normal posterior shape can change direction probabilities without changing marginal means.</p>
+<p class="prx-card-links"><a href="embed/beyond-normal.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="pairs evidence" data-data="generated" data-search="1.11 Marginal interval overlap and direction probabilities Pairwise direction probabilities associated with overlapping marginal credible intervals. Intervals do not decide directions Two posterior intervals can overlap while one direction is very likely. Pairwise comparisons Evidence and uncertainty Generated examples Just touch, 90% Just touch, 95% Means 2 SDs apart Means 1 SD apart" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/interval-overlap.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/interval-overlap.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.11</p>
+<h3 class="anchored"><a href="pages/uncertainty/interval-overlap.html">Marginal interval overlap and direction probabilities</a></h3>
+<p>Pairwise direction probabilities associated with overlapping marginal credible intervals.</p>
+<p class="prx-card-links"><a href="embed/interval-overlap.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="pairs evidence" data-data="generated" data-search="1.12 Interval overlap across 435 pairs Comparison of marginal interval overlap and direction probabilities in a thirty-unit simulation. 435 pairs: overlap against direction Sorting the league's 435 pairs by interval overlap and by direction probability shows that overlapping intervals often hide a likely direction. Pairwise comparisons Evidence and uncertainty Generated examples Overlap, highest probability U06 and U20 U04 and U18 95% intervals Prior SD .05" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/overlap-in-the-league.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/overlap-in-the-league.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.12</p>
+<h3 class="anchored"><a href="pages/uncertainty/overlap-in-the-league.html">Interval overlap across 435 pairs</a></h3>
+<p>Comparison of marginal interval overlap and direction probabilities in a thirty-unit simulation.</p>
+<p class="prx-card-links"><a href="embed/overlap-in-the-league.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="pairs grades" data-data="generated sites" data-search="1.13 The matrix of pairwise posterior probabilities Pairwise probabilities under alternative orderings of the same units. All pairs at once With every pair's π in one matrix ordered by posterior mean, the uncertain pairs gather near the diagonal (for independent normal posteriors). Pairwise comparisons Coherent grades and families Generated examples Fictional six/thirty sites Six sites, by posterior mean Six sites, by label League, by label League, by posterior mean Two imprecise units" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/pairwise-matrix.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/pairwise-matrix.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">1.13</p>
+<h3 class="anchored"><a href="pages/uncertainty/pairwise-matrix.html">The matrix of pairwise posterior probabilities</a></h3>
+<p>Pairwise probabilities under alternative orderings of the same units.</p>
+<p class="prx-card-links"><a href="embed/pairwise-matrix.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="grades pairs" data-data="generated" data-search="1.14 Alternative rankings from a posterior distribution Rankings by posterior mean, expected rank and top-group probability need not coincide. Three rankings from one posterior One posterior can rank units differently by posterior mean, by expected rank and by the chance of being on top when the posteriors differ in width or shape, and each unit's own rank is uncertain. Coherent grades and families Pairwise comparisons Generated examples Three-unit law, posterior mean Three-unit law, first place Three-unit law, √θ League, expected rank League, top ten League, exp(10θ)" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/which-ranking.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/which-ranking.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.14</p>
+<h3 class="anchored"><a href="pages/uncertainty/which-ranking.html">Alternative rankings from a posterior distribution</a></h3>
+<p>Rankings by posterior mean, expected rank and top-group probability need not coincide.</p>
+<p class="prx-card-links"><a href="embed/which-ranking.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="grades pairs" data-data="generated krw" data-search="1.15 Majority comparisons and expected ranks Relation between majority-win counts, posterior-mean rankings and expected ranks. Majority wins and expected rank For independent normal posteriors, counting the pairs each unit more likely wins gives the posterior-mean order; on KRW's race gaps it gives an order of its own, which KRW's λ = 1 race card follows. Coherent grades and families Pairwise comparisons Generated examples KRW firms Law on orders League League, prior SD .30 KRW, race KRW, gender" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/majority-wins.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/majority-wins.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">Generated examples · KRW firms</p><p class="prx-card-id">1.15</p>
+<h3 class="anchored"><a href="pages/uncertainty/majority-wins.html">Majority comparisons and expected ranks</a></h3>
+<p>Relation between majority-win counts, posterior-mean rankings and expected ranks.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/majority-wins.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="pairs evaluation" data-data="generated sites krw cde" data-search="1.16 Expected errors in a strict ranking Posterior expected wrong-direction counts among the n(n − 1)/2 statements of a strict ranking. A ranking makes many claims A strict ranking of n units makes n(n − 1)/2 claims, and the posterior expects many of them to be wrong. Pairwise comparisons Choosing and evaluating reports Generated examples Fictional six/thirty sites KRW firms California schools 97 firms Top 10 by posterior mean Six sites League of 30" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/ranking-claims.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/ranking-claims.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites · KRW firms · California schools</p><p class="prx-card-id">1.16</p>
+<h3 class="anchored"><a href="pages/uncertainty/ranking-claims.html">Expected errors in a strict ranking</a></h3>
+<p>Posterior expected wrong-direction counts among the n(n − 1)/2 statements of a strict ranking.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC · California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied</p>
+<p class="prx-card-links"><a href="embed/ranking-claims.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="computation pairs" data-data="generated sites" data-search="1.17 Monte Carlo error in pairwise probabilities Monte Carlo uncertainty in estimated pairwise errors and its implications for report selection. Probabilities from draws carry noise An error probability estimated from posterior draws has Monte Carlo error; pairs near τ can flip between runs, but the report need not change with them. Computation and draws Pairwise comparisons Generated examples Fictional six/thirty sites S 1,000 All reports S 100 S 4,000 C–D at τ .35 Both scores" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/mc-error.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/mc-error.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Computation and draws</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">1.17</p>
+<h3 class="anchored"><a href="pages/uncertainty/mc-error.html">Monte Carlo error in pairwise probabilities</a></h3>
+<p>Monte Carlo uncertainty in estimated pairwise errors and its implications for report selection.</p>
+<p class="prx-card-links"><a href="embed/mc-error.html">standalone</a></p>
+</div>
+</article>
+<article data-part="1" data-topics="computation evidence" data-data="generated" data-search="1.18 Monte Carlo error with dependent draws Finite-sample uncertainty of pair probabilities estimated from a stationary two-state Markov chain. Draws that remember Successive MCMC draws are usually positively correlated, so a pair probability estimated from them carries more Monte Carlo error than the iid formula says, and an iid error bound can fail far more often than its α. Computation and draws Evidence and uncertainty Generated examples Stay .99 Stay .99, chain-aware A stuck chain Stay .50 1,000 draws postrank's chains" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/uncertainty/chain-draws.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/chain-draws.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Computation and draws</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">1.18</p>
+<h3 class="anchored"><a href="pages/uncertainty/chain-draws.html">Monte Carlo error with dependent draws</a></h3>
+<p>Finite-sample uncertainty of pair probabilities estimated from a stationary two-state Markov chain.</p>
+<p class="prx-card-links"><a href="embed/chain-draws.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="pairs loss" data-data="generated" data-search="2.1 The decision for an isolated pair Posterior expected loss of the two strict directions and withholding for a single pair. One pair: state or withhold For a pair on its own, state a direction only when its chance of being wrong is below the withholding cost τ. Pairwise comparisons Loss and disclosure Generated examples π .85, τ .10 π .85, τ .20 π .80, τ .20 π .50, τ .50" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/one-pair.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/one-pair.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Loss and disclosure</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">2.1</p>
+<h3 class="anchored"><a href="pages/grades/one-pair.html">The decision for an isolated pair</a></h3>
+<p>Posterior expected loss of the two strict directions and withholding for a single pair.</p>
+<p class="prx-card-links"><a href="embed/one-pair.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="grades pairs" data-data="sites" data-search="2.2 Grade reports as pairwise decisions Pairwise statements induced by assigning units to ordered grades. A report is many pair decisions Moving units between grade boxes states every pair across grades and withholds every pair inside a grade. Coherent grades and families Pairwise comparisons Fictional six/thirty sites A, then B to E, then F Three grades of two sites Four sites: 1/2/2/2 Beyond letter order" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/report-builder.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/report-builder.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">2.2</p>
+<h3 class="anchored"><a href="pages/grades/report-builder.html">Grade reports as pairwise decisions</a></h3>
+<p>Pairwise statements induced by assigning units to ordered grades.</p>
+<p class="prx-card-links"><a href="embed/report-builder.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="grades computation" data-data="generated" data-search="2.3 The number of ordered grade reports Sizes of unrestricted, grade-restricted and fixed-order report families. How many grade reports are there? Grade reports far outnumber strict rankings (13 for three units, 4,683 for six, 545,835 for eight), while a cap or a fixed order leaves far fewer (for eight units, 6,051 with at most three grades, 128 along one order). Coherent grades and families Computation and draws Generated examples Three units Six units Eight units Twelve units An empty exact family" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/how-many-reports.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/how-many-reports.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Computation and draws</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">2.3</p>
+<h3 class="anchored"><a href="pages/grades/how-many-reports.html">The number of ordered grade reports</a></h3>
+<p>Sizes of unrestricted, grade-restricted and fixed-order report families.</p>
+<p class="prx-card-links"><a href="embed/how-many-reports.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="loss grades" data-data="sites" data-search="2.4 Reporting risk and withholding cost Expected wrong directions and withholding costs in the posterior risk of a grade report. The price of silence With a price τ on silence, risk is E/M + τ(M − N)/M, and the best report moves with τ; your own report can be scored beside it. Loss and disclosure Coherent grades and families Fictional six/thirty sites τ .20, at most 3 grades τ .20, no cap τ .40, no cap τ .30, no cap" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/price-of-silence.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/price-of-silence.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">2.4</p>
+<h3 class="anchored"><a href="pages/grades/price-of-silence.html">Reporting risk and withholding cost</a></h3>
+<p>Expected wrong directions and withholding costs in the posterior risk of a grade report.</p>
+<p class="prx-card-links"><a href="embed/price-of-silence.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="loss grades" data-data="sites" data-search="2.5 Optimal reports along the withholding-cost path The lower envelope of affine report-risk functions and its change points. The best report along τ Each report's risk is a straight line in τ; where the lower envelope bends, the best report changes. Loss and disclosure Coherent grades and families Fictional six/thirty sites Overview Before the first bend Small cost, coherent report Exactly at a bend Three-grade cap" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/tau-path.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/tau-path.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">2.5</p>
+<h3 class="anchored"><a href="pages/grades/tau-path.html">Optimal reports along the withholding-cost path</a></h3>
+<p>The lower envelope of affine report-risk functions and its change points.</p>
+<p class="prx-card-links"><a href="embed/tau-path.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="grades pairs" data-data="generated" data-search="2.6 Coherence constraints on pairwise decisions Compatibility of isolated-pair decisions with an ordered grade report. Why a report must be coherent Choices made pair by pair can be impossible to print as a grade report, and the best printable report then costs more. Coherent grades and families Pairwise comparisons Generated examples Middle at 1.00 Middle at .50 Middle at .80 Middle at 1.00, τ .10 Middle at 1.00, τ .25" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/coherence.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/coherence.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">2.6</p>
+<h3 class="anchored"><a href="pages/grades/coherence.html">Coherence constraints on pairwise decisions</a></h3>
+<p>Compatibility of isolated-pair decisions with an ordered grade report.</p>
+<p class="prx-card-links"><a href="embed/coherence.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="grades computation" data-data="generated" data-search="2.7 Coherence in a finite three-unit example Evaluation of all 13 reports under a four-state posterior distribution. Thirteen reports for three units Under one finite three-unit law, for τ between 1/10 and 1/4 no report prints the pairwise choices; all 13 reports show what the best printable one costs (11/60 against 1/6 at τ = 1/5). Coherent grades and families Computation and draws Generated examples τ .20 τ .10 τ .25 τ .30" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/coherence-finite.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/coherence-finite.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Computation and draws</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">2.7</p>
+<h3 class="anchored"><a href="pages/grades/coherence-finite.html">Coherence in a finite three-unit example</a></h3>
+<p>Evaluation of all 13 reports under a four-state posterior distribution.</p>
+<p class="prx-card-links"><a href="embed/coherence-finite.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="loss evaluation" data-data="generated sites" data-search="2.8 Expected and realised errors among stated directions Expected error shares, realised wrong counts and the joint probability that all statements are correct. How often are stated directions wrong? E/N is the share of stated directions expected to be wrong, and for the exact best report of a family that can withhold every pair it is at most τ; draws of the true values make it concrete. The chance that every stated direction is right depends on the joint law, beyond these pairwise errors. Loss and disclosure Choosing and evaluating reports Generated examples Fictional six/thirty sites Start without draws Best report, draws All withheld Three-unit law Another coupling" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/disclosed-errors.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/disclosed-errors.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">2.8</p>
+<h3 class="anchored"><a href="pages/grades/disclosed-errors.html">Expected and realised errors among stated directions</a></h3>
+<p>Expected error shares, realised wrong counts and the joint probability that all statements are correct.</p>
+<p class="prx-card-links"><a href="embed/disclosed-errors.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="evaluation joint" data-data="generated" data-search="2.9 Reported error and reference-law evaluation Comparison of conditional error expectations with realised errors at fixed true values. Reported and realized error For a fixed report, its claimed wrong share and its expectation under an explicit reference law differ by at most the largest pair-error probability gap; a single fixed-truth realization can lie on either side. Choosing and evaluating reports Joint and composite claims Generated examples Same conditional laws Narrow prior, five grades Lower cost, two grades One grade, no disclosure" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/reported-and-realized.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/reported-and-realized.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Choosing and evaluating reports</span> <span>Joint and composite claims</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">2.9</p>
+<h3 class="anchored"><a href="pages/grades/reported-and-realized.html">Reported error and reference-law evaluation</a></h3>
+<p>Comparison of conditional error expectations with realised errors at fixed true values.</p>
+<p class="prx-card-links"><a href="embed/reported-and-realized.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="loss evaluation" data-data="sites" data-search="2.10 The error–disclosure frontier The lower convex boundary of expected wrong counts at different levels of disclosure. The frontier Every report as a point (N, E): the lower hull is the frontier, and τ is the slope of a line that touches it. Loss and disclosure Choosing and evaluating reports Fictional six/thirty sites τ .20, all reports τ .15, all reports τ .40, all reports τ .20, at most 3 grades" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/frontier.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/frontier.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">2.10</p>
+<h3 class="anchored"><a href="pages/grades/frontier.html">The error–disclosure frontier</a></h3>
+<p>The lower convex boundary of expected wrong counts at different levels of disclosure.</p>
+<p class="prx-card-links"><a href="embed/frontier.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="loss joint" data-data="generated sites" data-search="2.11 Mixtures of frontier reports Randomisation over complete reports at a specified mean disclosure. Mixtures between frontier corners Between two vertices the frontier is a mixture of two complete reports (on the six sites no report lies there); with all reports and no latent ties it ends at a strict ranking, on a line of slope 1/2. Loss and disclosure Joint and composite claims Generated examples Fictional six/thirty sites Six sites, mean 10 Six sites, mean 9 Six sites, mean 12 Four units, mean 4 At most 3 grades, mean 9" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/frontier-mixtures.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/frontier-mixtures.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Joint and composite claims</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">2.11</p>
+<h3 class="anchored"><a href="pages/grades/frontier-mixtures.html">Mixtures of frontier reports</a></h3>
+<p>Randomisation over complete reports at a specified mean disclosure.</p>
+<p class="prx-card-links"><a href="embed/frontier-mixtures.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="grades computation" data-data="generated sites" data-search="2.12 Restrictions on the report family Consequences of grade caps, exact grade counts and fixed-order restrictions for minimum risk. Families of reports An optimum is always the best within a stated family of reports: all reports, at most G grades, exactly G grades, or cuts of one order. Coherent grades and families Computation and draws Generated examples Fictional six/thirty sites Exactly six At most three B before A Two criteria A dominating set" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/families.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/families.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Computation and draws</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">2.12</p>
+<h3 class="anchored"><a href="pages/grades/families.html">Restrictions on the report family</a></h3>
+<p>Consequences of grade caps, exact grade counts and fixed-order restrictions for minimum risk.</p>
+<p class="prx-card-links"><a href="embed/families.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="grades evidence" data-data="sites" data-search="2.13 Posterior summaries in a grade report Marginal intervals and mean pairwise errors between ordered grades. Reading a report card A report card shows the grades, each unit's posterior interval and the expected share of directions between two grades that are wrong. Coherent grades and families Evidence and uncertainty Fictional six/thirty sites Six sites Reveal by grade Thirty sites" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/report-card.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/report-card.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">2.13</p>
+<h3 class="anchored"><a href="pages/grades/report-card.html">Posterior summaries in a grade report</a></h3>
+<p>Marginal intervals and mean pairwise errors between ordered grades.</p>
+<p class="prx-card-links"><a href="embed/report-card.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="loss evaluation" data-data="sites krw" data-search="2.14 Error rates under two denominators Relation between expected errors per possible pair and expected errors per stated pair. Wrong among stated, wrong among all KRW's DR divides expected wrong directions by all pairs and E/N by the stated pairs, so a card that states few pairs can show a small DR beside a large E/N: DR = (N/M) × E/N. Loss and disclosure Choosing and evaluating reports Fictional six/thirty sites KRW firms τ .25 KRW setting All pairs stated" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/two-denominators.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/two-denominators.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">Fictional six/thirty sites · KRW firms</p><p class="prx-card-id">2.14</p>
+<h3 class="anchored"><a href="pages/grades/two-denominators.html">Error rates under two denominators</a></h3>
+<p>Relation between expected errors per possible pair and expected errors per stated pair.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/two-denominators.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="pairs grades" data-data="generated" data-search="2.15 Posterior equality and withholding Effect of equality mass on weak-error and equality-neutral reporting losses. When true values can be equal When true values can be exactly equal, a shared grade still claims no equality, and postrank's equality-neutral risk prices stated and withheld pairs differently from the weak loss. Pairwise comparisons Coherent grades and families Generated examples Equality .40, weak loss Equality .40, neutral loss No equality Equality .90 Certain equality" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/ties-and-withholding.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/ties-and-withholding.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">2.15</p>
+<h3 class="anchored"><a href="pages/grades/ties-and-withholding.html">Posterior equality and withholding</a></h3>
+<p>Effect of equality mass on weak-error and equality-neutral reporting losses.</p>
+<p class="prx-card-links"><a href="embed/ties-and-withholding.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="computation grades" data-data="generated sites" data-search="2.16 Computation of optimal grade reports Enumeration, fixed-order dynamic programming and joint optimisation with explicit result bounds. How the best report is found This browser searches small families report by report, dynamic programming cuts one declared order exactly, and postrank's solver takes the joint problem and reports its status, bound and gap. Computation and draws Coherent grades and families Generated examples Fictional six/thirty sites DP: six sites, τ .20 DP: inspect one cell Twelve units A broken binary pattern Joint search: twenty units" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/computing-grades.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/computing-grades.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Computation and draws</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">2.16</p>
+<h3 class="anchored"><a href="pages/grades/computing-grades.html">Computation of optimal grade reports</a></h3>
+<p>Enumeration, fixed-order dynamic programming and joint optimisation with explicit result bounds.</p>
+<p class="prx-card-links"><a href="embed/computing-grades.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="evaluation loss" data-data="generated sites" data-search="2.17 Evaluation under an alternative posterior law Fixed-report risk and regret under distinct selection and evaluation laws. Judging a report under another law A report chosen under one posterior and judged under another can have a different risk; within the same family its regret is at most twice the largest weighted gap between the two laws' pair error probabilities, plus the optimizer's gap. Choosing and evaluating reports Loss and disclosure Generated examples Fictional six/thirty sites Same laws Move C upward Wider evaluation law C +.40, no cap Small change, new report" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/another-law.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/another-law.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Choosing and evaluating reports</span> <span>Loss and disclosure</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">2.17</p>
+<h3 class="anchored"><a href="pages/grades/another-law.html">Evaluation under an alternative posterior law</a></h3>
+<p>Fixed-report risk and regret under distinct selection and evaluation laws.</p>
+<p class="prx-card-links"><a href="embed/another-law.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="evaluation computation" data-data="generated sites" data-search="2.18 Selection and evaluation using posterior draws Discrepancy between risk estimated on selection draws and risk under the exact posterior law. Scored on the draws that chose it A report chosen on posterior draws can look better or worse on them than under the exact law, though better on average; the gap is at most N/M times the draws' largest pair-probability error, which shrinks as draws grow. Choosing and evaluating reports Computation and draws Generated examples Fictional six/thirty sites Own draws Looks worse More draws Tighter family Both scores" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/chosen-and-judged.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/chosen-and-judged.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Choosing and evaluating reports</span> <span>Computation and draws</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">2.18</p>
+<h3 class="anchored"><a href="pages/grades/chosen-and-judged.html">Selection and evaluation using posterior draws</a></h3>
+<p>Discrepancy between risk estimated on selection draws and risk under the exact posterior law.</p>
+<p class="prx-card-links"><a href="embed/chosen-and-judged.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="evaluation joint" data-data="generated" data-search="2.19 Averaging error shares across reports Pooled errors, conditional mean error shares and zero-imputed means when disclosure varies. Three ways to average a wrong share Over datasets, or outcomes of a randomized report, the wrong share of stated directions has three averages that generally differ: a ratio of expected counts, a mean over datasets that state something, and a mean counting silent ones as zero. Choosing and evaluating reports Joint and composite claims Generated examples Three outcomes More weight on errors A complete-report lottery All silent Twenty datasets" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/averaging-errors.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/averaging-errors.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Choosing and evaluating reports</span> <span>Joint and composite claims</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">2.19</p>
+<h3 class="anchored"><a href="pages/grades/averaging-errors.html">Averaging error shares across reports</a></h3>
+<p>Pooled errors, conditional mean error shares and zero-imputed means when disclosure varies.</p>
+<p class="prx-card-links"><a href="embed/averaging-errors.html">standalone</a></p>
+</div>
+</article>
+<article data-part="2" data-topics="pairs grades" data-data="generated sites" data-search="2.20 Sensitivity to corrections and unit removal Changes in pairwise reported relations after modifying one marginal distribution or the comparison population. One correction moves other grades Grades are chosen together, so correcting one unit's input, or dropping a unit, can change the relation between two other units. Pairwise comparisons Coherent grades and families Generated examples Fictional six/thirty sites Correct a mean No correction More uncertainty Drop a unit Drop U15 from the league Two scores, drop C" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/grades/one-correction.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/one-correction.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">2.20</p>
+<h3 class="anchored"><a href="pages/grades/one-correction.html">Sensitivity to corrections and unit removal</a></h3>
+<p>Changes in pairwise reported relations after modifying one marginal distribution or the comparison population.</p>
+<p class="prx-card-links"><a href="embed/one-correction.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules grades" data-data="generated" data-search="3.1 Fixed quantile tiers Posterior evaluation of directions stated by quantile groups of the estimates. Fixed tiers A quantile-tier rule is a grade report chosen without the posterior, and the posterior still says how many of its stated directions to expect wrong. Common rules Coherent grades and families Generated examples Three tiers Ten tiers, marks on Four tiers Two tiers Thirty tiers" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/fixed-tiers.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/fixed-tiers.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">3.1</p>
+<h3 class="anchored"><a href="pages/rules/fixed-tiers.html">Fixed quantile tiers</a></h3>
+<p>Posterior evaluation of directions stated by quantile groups of the estimates.</p>
+<p class="prx-card-links"><a href="embed/fixed-tiers.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules loss" data-data="generated" data-search="3.2 Disclosure determined by tier sizes Combinatorial disclosure counts and their distribution over ordered positive size vectors. Tier sizes fix disclosure Tier sizes alone set how many pairs a rule states, whatever the estimates (when no two are equal); for a given number of tiers, balanced sizes state the most. Common rules Loss and disclosure Generated examples Balanced thirty Two tiny tiers Four tiers Balanced twelve Unbalanced twelve" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/tier-sizes.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/tier-sizes.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Loss and disclosure</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">3.2</p>
+<h3 class="anchored"><a href="pages/rules/tier-sizes.html">Disclosure determined by tier sizes</a></h3>
+<p>Combinatorial disclosure counts and their distribution over ordered positive size vectors.</p>
+<p class="prx-card-links"><a href="embed/tier-sizes.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules evidence" data-data="generated" data-search="3.3 Grades based on standardised evidence Directional statements induced by flags constructed from estimates and standard errors. Flags from standardized evidence A flag rule on standardized evidence is a report with at most three grades (flagged above, not flagged, flagged below), and precision moves units across the flags. Common rules Evidence and uncertainty Generated examples Two units, flat prior Same flags, teaching prior B’s SE .15 Cutoff 2.576" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/evidence-flags.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/evidence-flags.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">3.3</p>
+<h3 class="anchored"><a href="pages/rules/evidence-flags.html">Grades based on standardised evidence</a></h3>
+<p>Directional statements induced by flags constructed from estimates and standard errors.</p>
+<p class="prx-card-links"><a href="embed/evidence-flags.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules evidence" data-data="generated" data-search="3.4 Standardised-evidence flags in a league Pairwise directions and posterior risk of a thirty-unit flag report. Flags in a league In a league, a flag rule can state directions that run against the order of the estimates. Common rules Evidence and uncertainty Generated examples League, cutoff 1.96 Same flags, flat prior League, cutoff 2.576 Same report, τ .10" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/flags-in-the-league.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/flags-in-the-league.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">3.4</p>
+<h3 class="anchored"><a href="pages/rules/flags-in-the-league.html">Standardised-evidence flags in a league</a></h3>
+<p>Pairwise directions and posterior risk of a thirty-unit flag report.</p>
+<p class="prx-card-links"><a href="embed/flags-in-the-league.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules evidence" data-data="generated sites" data-search="3.5 Tiers and optimised cuts of posterior rankings Comparison of fixed posterior tiers, optimised boundaries and joint report optimisation. Tiers from posterior summaries At one τ and cap, the risk never rises from posterior-mean tiers to the best cuts of their order to the best report of all, as each family holds the one before; on the eight units the last two coincide. Common rules Evidence and uncertainty Generated examples Fictional six/thirty sites Eight units: optimal cuts League: fixed tiers Thirty sites: rank cuts Eight units: all reports" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/posterior-tiers.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/posterior-tiers.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">3.5</p>
+<h3 class="anchored"><a href="pages/rules/posterior-tiers.html">Tiers and optimised cuts of posterior rankings</a></h3>
+<p>Comparison of fixed posterior tiers, optimised boundaries and joint report optimisation.</p>
+<p class="prx-card-links"><a href="embed/posterior-tiers.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules computation" data-data="generated" data-search="3.6 Restrictions imposed by a fixed order A finite posterior example in which posterior-mean cuts exclude the unrestricted optimum. When the order misses the best report On a three-unit law, for τ above .15 the best cuts of the posterior-mean order miss the best report of all, which a cut of the expected-rank order attains; one example, not a general failing of posterior means. Common rules Computation and draws Generated examples Mean order: τ .25 Expected ranks: τ .25 Equal risk: τ .30 Mean order: τ .50 Mean order: τ .10" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/order-misses.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/order-misses.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Computation and draws</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">3.6</p>
+<h3 class="anchored"><a href="pages/rules/order-misses.html">Restrictions imposed by a fixed order</a></h3>
+<p>A finite posterior example in which posterior-mean cuts exclude the unrestricted optimum.</p>
+<p class="prx-card-links"><a href="embed/order-misses.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules evaluation" data-data="generated" data-search="3.7 Comparison at matched disclosure Excess expected wrong counts relative to a frontier at each rule's disclosure. Compare rules at the same disclosure A rule is compared with the frontier at its own disclosure, the lowest expected wrong count a report or a mixture of two in the family attains with as many stated pairs, not with the best report at some τ. Common rules Choosing and evaluating reports Generated examples Same N, τ .20 Estimate tiers Flags Posterior-mean cuts Strict order, τ .05 At most three grades Four tiers outside the cap All-withheld" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/rule-comparison.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/rule-comparison.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">3.7</p>
+<h3 class="anchored"><a href="pages/rules/rule-comparison.html">Comparison at matched disclosure</a></h3>
+<p>Excess expected wrong counts relative to a frontier at each rule's disclosure.</p>
+<p class="prx-card-links"><a href="embed/rule-comparison.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules loss" data-data="generated" data-search="3.8 Common withholding cost and matched disclosure Risk comparisons at a common cost and error comparisons at a common disclosure level. Same price or same disclosure? At one τ a rule's risk also charges it for the pairs it leaves unsaid; at its own N only its expected wrong directions are set against the frontier. Common rules Loss and disclosure Generated examples Same τ, .20 Same N, eight units Thirty units, one order Thirty units, same τ Strict order, τ .05 At most three grades Flags outside the order All-withheld" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/same-tau-or-same-n.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/same-tau-or-same-n.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Loss and disclosure</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">3.8</p>
+<h3 class="anchored"><a href="pages/rules/same-tau-or-same-n.html">Common withholding cost and matched disclosure</a></h3>
+<p>Risk comparisons at a common cost and error comparisons at a common disclosure level.</p>
+<p class="prx-card-links"><a href="embed/same-tau-or-same-n.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules evaluation" data-data="krw" data-search="3.9 Deciles and quartiles of posterior means Evaluation of fixed posterior-mean tiers on KRW's discordance and informativeness axes. Deciles and quartiles of posterior means Deciles and quartiles of KRW's posterior means sit inside the curve traced by KRW's cards along λ: for each, some card has a lower discordance rate and a higher informativeness. Common rules Choosing and evaluating reports KRW firms Race quartiles, card λ .60 Race deciles, card λ .82 Gender quartiles, card λ .64 Gender deciles, card λ .80" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/deciles-quartiles.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/deciles-quartiles.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">KRW firms</p><p class="prx-card-id">3.9</p>
+<h3 class="anchored"><a href="pages/rules/deciles-quartiles.html">Deciles and quartiles of posterior means</a></h3>
+<p>Evaluation of fixed posterior-mean tiers on KRW's discordance and informativeness axes.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/deciles-quartiles.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="pairs grades" data-data="krw" data-search="3.10 Coherence of pairwise threshold decisions Incompatible triples and the relations stated by KRW's coherent archived cards. Pairwise thresholds no report can print Thresholding each pair on its own leaves triples of firms that no grade report can print; the card's grade blocks repair them by withholding some confident pairs and stating some doubtful ones. Pairwise comparisons Coherent grades and families KRW firms Race λ .25 Race λ .10 Race λ .50 Race λ .75 Race λ .25, card blocks Gender λ .25 Gender λ 1.00" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/naive-thresholding.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/naive-thresholding.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">KRW firms</p><p class="prx-card-id">3.10</p>
+<h3 class="anchored"><a href="pages/rules/naive-thresholding.html">Coherence of pairwise threshold decisions</a></h3>
+<p>Incompatible triples and the relations stated by KRW's coherent archived cards.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/naive-thresholding.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="evaluation joint" data-data="generated sites" data-search="3.11 Expected and state-specific reporting loss Comparison of minimum expected loss with realised losses in paired posterior draws. Better on average, not in every draw The best report has the smallest expected loss within its family under the law that chose it; in a single draw, a common rule can do better. Choosing and evaluating reports Joint and composite claims Generated examples Fictional six/thirty sites Inside the family Outside the family Two-state law A short run A silent common rule Identical reports" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/better-on-average.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/better-on-average.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Choosing and evaluating reports</span> <span>Joint and composite claims</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">3.11</p>
+<h3 class="anchored"><a href="pages/rules/better-on-average.html">Expected and state-specific reporting loss</a></h3>
+<p>Comparison of minimum expected loss with realised losses in paired posterior draws.</p>
+<p class="prx-card-links"><a href="embed/better-on-average.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="rules evidence" data-data="generated" data-search="3.12 Report stability under repeated measurement Changes in pairwise relations across independent datasets at fixed true values. Measure again, grade again Measuring again and grading again changes some pair relations; stability has to be read beside disclosure, because withholding every pair is perfectly stable. Common rules Evidence and uncertainty Generated examples Optimal cuts Estimate tiers Prior SD .05 Withhold every pair τ .05" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/stability.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/stability.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">3.12</p>
+<h3 class="anchored"><a href="pages/rules/stability.html">Report stability under repeated measurement</a></h3>
+<p>Changes in pairwise relations across independent datasets at fixed true values.</p>
+<p class="prx-card-links"><a href="embed/stability.html">standalone</a></p>
+</div>
+</article>
+<article data-part="3" data-topics="grades evaluation" data-data="generated" data-search="3.13 Reporting, allocation and classification Distinct objectives for pairwise reporting, place allocation and threshold classification. A grade is not an allocation With a fixed number of places or a fixed threshold, posterior means, the chances of being in the top or above the threshold, and the grades can pick differently; using grades for either needs one more rule. Coherent grades and families Choosing and evaluating reports Generated examples Three units, reporting objective Three units, mean-value order Two units, τ .25 Two units, τ .40 Equal classification costs False-negative cost 3 Threshold 4 Equal reporting risk, different classifications League, five places League, top-set order" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/rules/one-place.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/one-place.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">3.13</p>
+<h3 class="anchored"><a href="pages/rules/one-place.html">Reporting, allocation and classification</a></h3>
+<p>Distinct objectives for pairwise reporting, place allocation and threshold classification.</p>
+<p class="prx-card-links"><a href="embed/one-place.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria evidence" data-data="sites" data-search="4.1 Posterior profiles on multiple criteria Criterion-specific scales, orderings and pairwise direction probabilities for common units. Units measured on several criteria Units can be ordered differently on different criteria, and each criterion has its own pair probabilities. Several criteria Evidence and uncertainty Fictional six/thirty sites Thirty sites Six sites, B–C Six sites, B–D Reverse score B Wider intervals" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/several-criteria.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/several-criteria.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">4.1</p>
+<h3 class="anchored"><a href="pages/criteria/several-criteria.html">Posterior profiles on multiple criteria</a></h3>
+<p>Criterion-specific scales, orderings and pairwise direction probabilities for common units.</p>
+<p class="prx-card-links"><a href="embed/several-criteria.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria pairs" data-data="sites" data-search="4.2 Opposing criterion directions Comparison of directional disagreement, posterior uncertainty and isolated-pair expected costs. Where criteria disagree When criteria disagree about a pair's direction, stating either direction costs something even with no uncertainty, when both sides carry positive weight; on a posterior, uncertainty and conflict mix. Several criteria Pairwise comparisons Fictional six/thirty sites Six sites, B–C Thirty sites Certain opposition Uncertain agreement Zero error weight Three actions share the minimum Certain B–C conflict Latent equality" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/conflict-pairs.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/conflict-pairs.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">4.2</p>
+<h3 class="anchored"><a href="pages/criteria/conflict-pairs.html">Opposing criterion directions</a></h3>
+<p>Comparison of directional disagreement, posterior uncertainty and isolated-pair expected costs.</p>
+<p class="prx-card-links"><a href="embed/conflict-pairs.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria grades" data-data="sites" data-search="4.3 A common grade report for two scores Weighted directional errors and criterion-specific profiles of a common report. One grade for two scores One grade report for two scores: the weight decides how much each score's wrong directions count, and so which conflicting pairs are stated. Several criteria Coherent grades and families Fictional six/thirty sites Equal weights No cap A-heavy Score A only w .70 w .50 Score B only" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/two-scores.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/two-scores.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">4.3</p>
+<h3 class="anchored"><a href="pages/criteria/two-scores.html">A common grade report for two scores</a></h3>
+<p>Weighted directional errors and criterion-specific profiles of a common report.</p>
+<p class="prx-card-links"><a href="embed/two-scores.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria loss" data-data="sites" data-search="4.4 Optimal reports along the criterion-weight path Exact weight intervals and criterion-specific errors of minimum-risk reports. The best report along the weight Moving the weight changes the best report a few times, and each score's error share moves in steps. Several criteria Loss and disclosure Fictional six/thirty sites Equal weights Lower A weight Higher A weight Score B only No cap Higher withholding cost" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/weight-path.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/weight-path.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Loss and disclosure</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">4.4</p>
+<h3 class="anchored"><a href="pages/criteria/weight-path.html">Optimal reports along the criterion-weight path</a></h3>
+<p>Exact weight intervals and criterion-specific errors of minimum-risk reports.</p>
+<p class="prx-card-links"><a href="embed/weight-path.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria loss" data-data="sites" data-search="4.5 Criterion-specific excess risk of a common report Increase in each criterion's risk relative to its own optimum in the same report family. What each criterion gives up Under a common report, each criterion's risk is at least as high as under its own best report in the same family; the difference is Δ_k. Several criteria Loss and disclosure Fictional six/thirty sites Equal weights Score A only w .70 w .50 Score B only Thirty sites, higher price Thirty sites, lower price" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/common-grade-cost.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/common-grade-cost.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Loss and disclosure</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">4.5</p>
+<h3 class="anchored"><a href="pages/criteria/common-grade-cost.html">Criterion-specific excess risk of a common report</a></h3>
+<p>Increase in each criterion's risk relative to its own optimum in the same report family.</p>
+<p class="prx-card-links"><a href="embed/common-grade-cost.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria joint" data-data="generated sites" data-search="4.6 Composite targets and criterion directions Comparison of reporting objectives based on composite values and criterion-specific directions. Composite or criterion directions? Getting the direction of a weighted composite right and getting each criterion's directions right are different goals and can pick different reports. Several criteria Joint and composite claims Generated examples Fictional six/thirty sites Different targets Rescale the second criterion Change composite coefficients Composite equality Two reports, same disclosure Transform the whole law Independent Normal composite Rescale the Normal composite" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/composite-or-criterion.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/composite-or-criterion.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Joint and composite claims</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">4.6</p>
+<h3 class="anchored"><a href="pages/criteria/composite-or-criterion.html">Composite targets and criterion directions</a></h3>
+<p>Comparison of reporting objectives based on composite values and criterion-specific directions.</p>
+<p class="prx-card-links"><a href="embed/composite-or-criterion.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria loss" data-data="sites" data-search="4.7 Criterion-specific expected-error budgets Feasible report families under bounds on criterion-specific expected error shares. A budget for each criterion A budget on each criterion's expected error share removes reports, so the best remaining report has a weighted risk at least as high. Several criteria Loss and disclosure Fictional six/thirty sites Loose budget Tight budget Exactly three Both budgets Zero weight No budget At most .15 At most .10 At most .05" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/error-budgets.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/error-budgets.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Loss and disclosure</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">4.7</p>
+<h3 class="anchored"><a href="pages/criteria/error-budgets.html">Criterion-specific expected-error budgets</a></h3>
+<p>Feasible report families under bounds on criterion-specific expected error shares.</p>
+<p class="prx-card-links"><a href="embed/error-budgets.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria joint" data-data="sites" data-search="4.8 A random-criterion representation of weighted risk Equality of weighted risk and risk averaged over an auxiliary criterion selected for a fixed report. Weights as a randomly chosen criterion Choosing one auxiliary criterion for an entire fixed report reproduces its weighted risk. Opposing criteria can make both strict directions costly, while a coherent report can still state either. Several criteria Joint and composite claims Fictional six/thirty sites Weighted report Certain opposition Three actions tie Two against one The one-third boundary Zero error weight No-cap coherence Score B only" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/criterion-mixture.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/criterion-mixture.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Joint and composite claims</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">4.8</p>
+<h3 class="anchored"><a href="pages/criteria/criterion-mixture.html">A random-criterion representation of weighted risk</a></h3>
+<p>Equality of weighted risk and risk averaged over an auxiliary criterion selected for a fixed report.</p>
+<p class="prx-card-links"><a href="embed/criterion-mixture.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria loss" data-data="sites" data-search="4.9 Minimising the largest criterion risk Comparison of weighted-risk and deterministic minimax report selection. Guarding the worse criterion Instead of the weighted best, one can choose the report that makes the worse criterion's risk smallest. Several criteria Loss and disclosure Fictional six/thirty sites w .90 w .70 w .30 Score B only Book low Book high Book minimax Zero error weight Certain opposition" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/worst-criterion.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/worst-criterion.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Loss and disclosure</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">4.9</p>
+<h3 class="anchored"><a href="pages/criteria/worst-criterion.html">Minimising the largest criterion risk</a></h3>
+<p>Comparison of weighted-risk and deterministic minimax report selection.</p>
+<p class="prx-card-links"><a href="embed/worst-criterion.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria computation" data-data="sites" data-search="4.10 Sensitivity to costs, weights and grade restrictions Separate effects of changing the reporting loss and the feasible report family. Choosing τ, the cap and the weights Within one fixed family a larger τ never lowers the exact best report's disclosure. Changing τ or weights changes the loss; changing the cap changes the feasible family. The grid separates these effects. Several criteria Computation and draws Fictional six/thirty sites Equal weights A higher price A still higher price At most two grades Thirty-site archive Tutorial archive" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/choosing-settings.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/choosing-settings.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Computation and draws</span></p><p class="prx-catalog-data">Fictional six/thirty sites</p><p class="prx-card-id">4.10</p>
+<h3 class="anchored"><a href="pages/criteria/choosing-settings.html">Sensitivity to costs, weights and grade restrictions</a></h3>
+<p>Separate effects of changing the reporting loss and the feasible report family.</p>
+<p class="prx-card-links"><a href="embed/choosing-settings.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="computation joint" data-data="generated" data-search="4.11 Pairwise errors from joint posterior draws Dependence of empirical pairwise errors on the alignment of unit values within posterior states. From draws to pair errors Each posterior draw is one joint state of every unit on every criterion; counting orders within each criterion gives the pair errors the weighted risk needs, and shuffling one unit's draws keeps its margins but changes them. Computation and draws Joint and composite claims Generated examples Original states Shift one unit Move states together Short prefix Unshifted pair Full cycle" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/draws-to-errors.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/draws-to-errors.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Computation and draws</span> <span>Joint and composite claims</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">4.11</p>
+<h3 class="anchored"><a href="pages/criteria/draws-to-errors.html">Pairwise errors from joint posterior draws</a></h3>
+<p>Dependence of empirical pairwise errors on the alignment of unit values within posterior states.</p>
+<p class="prx-card-links"><a href="embed/draws-to-errors.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="pairs grades" data-data="generated sites krw cde" data-search="4.12 Reasons for a withheld comparison Isolated-pair costs, criterion conflict, coherence and family restrictions in shared-grade decisions. Why do these two share a grade? A shared grade can come from an uncertain direction, from criteria that conflict, from coherence with other pairs or from the family's limits, and the grade does not say which. Pairwise comparisons Coherent grades and families Generated examples Fictional six/thirty sites KRW firms California schools Coherence Cap three Certain conflict Uncertainty Fixed order Indivisible block CDE subset KRW fixed order" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/why-withheld.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/why-withheld.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites · KRW firms · California schools</p><p class="prx-card-id">4.12</p>
+<h3 class="anchored"><a href="pages/criteria/why-withheld.html">Reasons for a withheld comparison</a></h3>
+<p>Isolated-pair costs, criterion conflict, coherence and family restrictions in shared-grade decisions.</p>
+<p class="prx-card-credit">Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied · Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/why-withheld.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="joint pairs" data-data="generated" data-search="4.13 Quantities not identified by pairwise probabilities Limits of pairwise probabilities for composite targets and joint-correctness events. What pair probabilities leave open Pair probabilities fix the weighted risk but not the chance that a composite direction is right or that every stated direction is right; those need the joint law. Joint and composite claims Pairwise comparisons Generated examples Together Opposite Halfway One zero error weight Select withholding Five statements" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/pairs-leave-open.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/pairs-leave-open.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Joint and composite claims</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">Generated examples</p><p class="prx-card-id">4.13</p>
+<h3 class="anchored"><a href="pages/criteria/pairs-leave-open.html">Quantities not identified by pairwise probabilities</a></h3>
+<p>Limits of pairwise probabilities for composite targets and joint-correctness events.</p>
+<p class="prx-card-links"><a href="embed/pairs-leave-open.html">standalone</a></p>
+</div>
+</article>
+<article data-part="4" data-topics="criteria computation" data-data="generated sites" data-search="4.14 Error budgets under estimated pairwise probabilities Inner and outer feasible families under bounds on Monte Carlo coefficient error. A budget met on estimated probabilities With pair probabilities estimated from draws, a report can meet an error budget on the estimates yet fail it under the exact law; when the draws' error bound holds, inner and outer families bracket the compliant reports. Several criteria Computation and draws Generated examples Fictional six/thirty sites Estimated pass Negative inner Exactly two Radius too small Raw comparisons Fixed-S IID" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/criteria/estimated-budgets.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/estimated-budgets.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Computation and draws</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">4.14</p>
+<h3 class="anchored"><a href="pages/criteria/estimated-budgets.html">Error budgets under estimated pairwise probabilities</a></h3>
+<p>Inner and outer feasible families under bounds on Monte Carlo coefficient error.</p>
+<p class="prx-card-links"><a href="embed/estimated-budgets.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="loss pairs" data-data="generated sites" data-search="5.1 KRW's reward and postrank's withholding cost Conversion between λ and τ under common posterior and report-family assumptions. KRW's λ and postrank's τ KRW's reward λ for a correct direction and postrank's withholding cost τ = λ/(1 + λ) pick the same reports under the same posterior and the same family, when true values cannot be equal. Loss and disclosure Pairwise comparisons Generated examples Fictional six/thirty sites λ .25 (KRW's card) λ .08 λ .10 λ .50 λ 1 τ .40" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/lambda-tau.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/lambda-tau.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites</p><p class="prx-card-id">5.1</p>
+<h3 class="anchored"><a href="pages/cases/lambda-tau.html">KRW's reward and postrank's withholding cost</a></h3>
+<p>Conversion between λ and τ under common posterior and report-family assumptions.</p>
+<p class="prx-card-links"><a href="embed/lambda-tau.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="loss evaluation" data-data="sites krw" data-search="5.2 Equivalent reporting-loss scales Affine equivalence of KRW's loss and postrank's risk over the six-site report family. Two ways to score a report Scoring the 4,683 reports of six sites by KRW's loss at λ and by postrank's risk at τ = λ/(1 + λ) orders them the same way: one is an increasing linear function of the other. Loss and disclosure Choosing and evaluating reports Fictional six/thirty sites KRW firms λ 1, flat line λ .25 τ .25, whole grid λ .08 τ .40" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/krw-axes.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/krw-axes.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">Fictional six/thirty sites · KRW firms</p><p class="prx-card-id">5.2</p>
+<h3 class="anchored"><a href="pages/cases/krw-axes.html">Equivalent reporting-loss scales</a></h3>
+<p>Affine equivalence of KRW's loss and postrank's risk over the six-site report family.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/krw-axes.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="grades evidence" data-data="krw" data-search="5.3 KRW's race and gender report cards Marginal summaries and pairwise statements in the archived cards for 97 firms. KRW's race and gender cards On KRW's cards for 97 firms, grade 1 is the end the posterior places highest, yet coherence also states doubtful directions; three on the gender card, whose end grades hold gaps of opposite sign, are more likely wrong than right. Coherent grades and families Evidence and uncertainty KRW firms Published race card Reveal grade 1 Sort by estimate KRW figure order λ .08: first race split λ .10 λ .30 Published gender card One grade" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/krw-card.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/krw-card.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Coherent grades and families</span> <span>Evidence and uncertainty</span></p><p class="prx-catalog-data">KRW firms</p><p class="prx-card-id">5.3</p>
+<h3 class="anchored"><a href="pages/cases/krw-card.html">KRW's race and gender report cards</a></h3>
+<p>Marginal summaries and pairwise statements in the archived cards for 97 firms.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/krw-card.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="pairs grades" data-data="krw" data-search="5.4 Firm-pair probabilities and report-card blocks Comparison of isolated-pair thresholds with the relations in KRW's coherent cards. Which firm pairs the card states Laying the card's blocks over the 4,656 pair probabilities shows the pairs it states and the confident pairs it leaves unsaid. Pairwise comparisons Coherent grades and families KRW firms All direction probabilities Above the threshold Add the card blocks λ .50 blocks λ .08 blocks Gender blocks" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/krw-heatmap.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/krw-heatmap.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">KRW firms</p><p class="prx-card-id">5.4</p>
+<h3 class="anchored"><a href="pages/cases/krw-heatmap.html">Firm-pair probabilities and report-card blocks</a></h3>
+<p>Comparison of isolated-pair thresholds with the relations in KRW's coherent cards.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/krw-heatmap.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="loss grades" data-data="krw" data-search="5.5 KRW's archived reward path Disclosure and expected errors of archived cards across the λ grid. KRW's cards along λ Along KRW's λ grid, cards with larger λ tend to state more pairs, with a larger share of them expected wrong. Loss and disclosure Coherent grades and families KRW firms λ .25: published race card λ .08: first race split λ .01: one grade λ .10: next split λ .30: statements and silence λ .97 λ .98: disclosure dip λ .99 λ 1: end of grid Gender grid" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/krw-lambda.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/krw-lambda.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">KRW firms</p><p class="prx-card-id">5.5</p>
+<h3 class="anchored"><a href="pages/cases/krw-lambda.html">KRW's archived reward path</a></h3>
+<p>Disclosure and expected errors of archived cards across the λ grid.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/krw-lambda.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="evidence pairs" data-data="krw" data-search="5.6 Signed and absolute gender-gap targets Target-specific posterior probabilities and fixed-order reports for signed and absolute contact gaps. Signed or absolute gender gap Grading the signed gender gap and grading its size answer different questions: which firm has the larger gap in size does not follow from the signed pair probabilities. Evidence and uncertainty Pairwise comparisons KRW firms Both target-specific cards Every changed pair All firm summaries" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/signed-or-absolute.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/signed-or-absolute.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Evidence and uncertainty</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">KRW firms</p><p class="prx-card-id">5.6</p>
+<h3 class="anchored"><a href="pages/cases/signed-or-absolute.html">Signed and absolute gender-gap targets</a></h3>
+<p>Target-specific posterior probabilities and fixed-order reports for signed and absolute contact gaps.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/signed-or-absolute.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="criteria grades" data-data="krw" data-search="5.7 A common report for race and gender gaps Weighted expected-risk evaluation of a common report and two fixed KRW cards. Race and gender: one common grade At the default loss, a common grade beats withholding every pair while each fixed KRW card does so only when its own gap receives enough weight. Several criteria Coherent grades and families KRW firms Equal weights Race .80 Gender .80" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/krw-two.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/krw-two.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">KRW firms</p><p class="prx-card-id">5.7</p>
+<h3 class="anchored"><a href="pages/cases/krw-two.html">A common report for race and gender gaps</a></h3>
+<p>Weighted expected-risk evaluation of a common report and two fixed KRW cards.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
+<p class="prx-card-links"><a href="embed/krw-two.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="rules grades" data-data="cde" data-search="5.8 School tertiles and minimum-risk grades Fixed cuts and unrestricted three-grade reporting for a twelve-school chronic-absence example. Twelve schools: tiers and grades Dragging two cuts through the twelve schools' posterior order shows that at τ .20 the tertiles state three more pairs than the best report with at most three grades but expect far more wrong directions. Common rules Coherent grades and families California schools Tertiles Archived grades One boundary Higher withholding cost" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/cde-cuts.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/cde-cuts.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Common rules</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">California schools</p><p class="prx-card-id">5.8</p>
+<h3 class="anchored"><a href="pages/cases/cde-cuts.html">School tertiles and minimum-risk grades</a></h3>
+<p>Fixed cuts and unrestricted three-grade reporting for a twelve-school chronic-absence example.</p>
+<p class="prx-card-credit">Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied</p>
+<p class="prx-card-links"><a href="embed/cde-cuts.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="loss evaluation" data-data="cde" data-search="5.9 School reports at matched disclosure Expected-error distribution of the three-grade reports that state 48 pairs. At one disclosure the tertiles win Of the 34,650 three-grade reports that state 48 pairs, the most three grades allow for twelve schools, the tertiles expect the fewest wrong directions. Loss and disclosure Choosing and evaluating reports California schools At the tertiles’ disclosure Between feasible disclosures A lower mixture Other cuts, full range" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/cde-one-disclosure.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/cde-one-disclosure.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Choosing and evaluating reports</span></p><p class="prx-catalog-data">California schools</p><p class="prx-card-id">5.9</p>
+<h3 class="anchored"><a href="pages/cases/cde-one-disclosure.html">School reports at matched disclosure</a></h3>
+<p>Expected-error distribution of the three-grade reports that state 48 pairs.</p>
+<p class="prx-card-credit">Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied</p>
+<p class="prx-card-links"><a href="embed/cde-one-disclosure.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="pairs grades" data-data="cde" data-search="5.10 A high-probability school comparison withheld Full-report cost of requiring the F-above-I direction under declared family restrictions. A sure pair left unsaid At τ = .20, the best report with at most three grades leaves the near-certain F–I direction unsaid. The cheapest report stating it in the same family has slightly higher risk; the four-grade comparison within the posterior-mean order also states it. Pairwise comparisons Coherent grades and families California schools F above I I above F The tertiles state it The higher-cost optimum" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/cde-pair.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/cde-pair.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Pairwise comparisons</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">California schools</p><p class="prx-card-id">5.10</p>
+<h3 class="anchored"><a href="pages/cases/cde-pair.html">A high-probability school comparison withheld</a></h3>
+<p>Full-report cost of requiring the F-above-I direction under declared family restrictions.</p>
+<p class="prx-card-credit">Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied</p>
+<p class="prx-card-links"><a href="embed/cde-pair.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="loss pairs" data-data="cde" data-search="5.11 School-report changes along the withholding-cost path Exact optimal disclosure and changes in individual school-pair relations as τ varies. What each step of τ changes At each step of τ the schools' best report states more pairs in all, but a step moves a whole block: it can state pairs whose errors exceed the new price and withhold pairs it stated before. Loss and disclosure Pairwise comparisons California schools The usual setting Past the last interior boundary The early boundaries The upper endpoint" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/cde-tau-path.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/cde-tau-path.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Loss and disclosure</span> <span>Pairwise comparisons</span></p><p class="prx-catalog-data">California schools</p><p class="prx-card-id">5.11</p>
+<h3 class="anchored"><a href="pages/cases/cde-tau-path.html">School-report changes along the withholding-cost path</a></h3>
+<p>Exact optimal disclosure and changes in individual school-pair relations as τ varies.</p>
+<p class="prx-card-credit">Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied</p>
+<p class="prx-card-links"><a href="embed/cde-tau-path.html">standalone</a></p>
+</div>
+</article>
+<article data-part="5" data-topics="criteria grades" data-data="alabama" data-search="5.12 A common report for Alabama county outcomes Criterion-specific evaluation of common grades for historical income and incarceration outcomes. Alabama counties on two outcomes On the map one common grade serves both outcomes, yet each outcome keeps its own share of stated directions expected wrong, and the two shares can differ several-fold. Several criteria Coherent grades and families Alabama counties Equal weights Income only Income .80 Incarceration only Fixed income D1 Fixed incarceration D2" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/cases/alabama-map.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/alabama-map.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Several criteria</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">Alabama counties</p><p class="prx-card-id">5.12</p>
+<h3 class="anchored"><a href="pages/cases/alabama-map.html">A common report for Alabama county outcomes</a></h3>
+<p>Criterion-specific evaluation of common grades for historical income and incarceration outcomes.</p>
+<p class="prx-card-credit">Data: Chetty, Friedman, Hendren, Jones and Porter (2022) · CC BY 4.0 · Opportunity Insights and U.S. Census Bureau · U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20m), via usmapdata 1.1.0</p>
+<p class="prx-card-links"><a href="embed/alabama-map.html">standalone</a></p>
+</div>
+</article>
+<article data-part="T" data-topics="computation evidence grades criteria" data-data="generated sites local" data-search="T.1 Reports from supplied posterior summaries Local calculation from normal summaries, declared priors or pairwise probability matrices. Your own posterior summaries Paste posterior means and SDs (or estimates, SEs and a stated prior), read as independent normal posteriors, and get pair probabilities, a grade report labelled with the family it is best in, and its card. Computation and draws Evidence and uncertainty Coherent grades and families Several criteria Generated examples Fictional six/thirty sites Your summaries or matrices Eight posterior summaries Eight estimates, flat prior Eight estimates, Normal prior Two probability matrices Thirty posterior summaries All reports tied" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/tools/your-data.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/your-data.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Computation and draws</span> <span>Evidence and uncertainty</span> <span>Coherent grades and families</span> <span>Several criteria</span></p><p class="prx-catalog-data">Generated examples · Fictional six/thirty sites · Your summaries or matrices</p><p class="prx-card-id">T.1</p>
+<h3 class="anchored"><a href="pages/tools/your-data.html">Reports from supplied posterior summaries</a></h3>
+<p>Local calculation from normal summaries, declared priors or pairwise probability matrices.</p>
+<p class="prx-card-links"><a href="embed/your-data.html">standalone</a></p>
+</div>
+</article>
+<article data-part="T" data-topics="evaluation criteria grades" data-data="krw cde alabama" data-search="T.2 Case-report specification and export Reports accompanied by target definitions, computation scope, error-budget checks and source information. Grade a case and report it Choose a case and settings, and get the card with what the report states and leaves unsaid, from the engine's results. Choosing and evaluating reports Several criteria Coherent grades and families KRW firms California schools Alabama counties CDE: three-grade family KRW: equal weights Alabama: equal weights Check CDE budget .10 CDE: cap two CDE: mean-order cap four CDE: all withheld" class="prx-card prx-card-built">
+<a class="prx-card-thumb" href="pages/tools/report-designer.html" tabindex="-1" aria-hidden="true"><img src="media/thumbs/report-designer.png" alt="" loading="lazy"></a>
+<div class="prx-card-body">
+<p class="prx-catalog-topics"><span>Choosing and evaluating reports</span> <span>Several criteria</span> <span>Coherent grades and families</span></p><p class="prx-catalog-data">KRW firms · California schools · Alabama counties</p><p class="prx-card-id">T.2</p>
+<h3 class="anchored"><a href="pages/tools/report-designer.html">Case-report specification and export</a></h3>
+<p>Reports accompanied by target definitions, computation scope, error-budget checks and source information.</p>
+<p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC · California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied · Chetty, Friedman, Hendren, Jones and Porter (2022) · CC BY 4.0 · Opportunity Insights and U.S. Census Bureau</p>
+<p class="prx-card-links"><a href="embed/report-designer.html">standalone</a></p>
+</div>
+</article></div>
+</section>
+<script src="js/site/catalog.js" defer=""></script>
+
+
+
+</main> <!-- /main -->
+<script id="prx-recipe-keyboard">
+(() => {
+  // Quarto's collapsed callout header is a div. Keep Bootstrap in charge of its
+  // collapse state while giving the existing click target button semantics.
+  const enhance = () => {
+    for (const header of document.querySelectorAll('.callout-header[data-bs-toggle="collapse"]')) {
+      if (header.hasAttribute('data-prx-recipe-keyboard') || header.closest('details') ||
+          header.matches('button, input, select, textarea, a[href], summary')) continue;
+      const title = header.querySelector('.callout-title-container')?.cloneNode(true);
+      title?.querySelectorAll('.screen-reader-only, .visually-hidden, [aria-hidden="true"]').forEach(node => node.remove());
+      const name = title?.textContent.replace(/\s+/g, ' ').trim();
+      if (name) header.setAttribute('aria-label', name);
+      header.setAttribute('role', 'button');
+      header.setAttribute('tabindex', '0');
+      header.setAttribute('data-prx-recipe-keyboard', '');
+      header.addEventListener('keydown', event => {
+        if (event.target !== header || (event.key !== 'Enter' && event.key !== ' ')) return;
+        event.preventDefault();
+        if (!event.repeat) header.click();
+      });
+    }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', enhance, { once: true });
+  else enhance();
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>postrank Explorer v3 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built on postrank 1.1.0</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

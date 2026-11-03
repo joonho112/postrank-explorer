@@ -1,0 +1,61 @@
+---
+title: "League tables and report cards"
+subtitle: "1.1 · after Kline, Rose and Walters (2024): their firms and their report cards"
+description: "Comparison of pairwise statements in a strict ranking and KRW's report cards for 97 firms."
+---
+
+Kline, Rose and Walters (2024), hereafter KRW, estimated race and gender contact gaps from fictitious applications
+sent to 97 large U.S. employers. The gaps measure contact advantages for distinctively white over Black names and
+male over female names. Ranking the estimates states a direction for every firm pair. KRW's cards state directions
+between grades only, and these can disagree with the estimate ranking. The displays compare the statements for
+each firm.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/case-zero.js"></script>
+<script>window.__prxApp = PRX["case-zero"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Race card.** The table states a direction for each of the 4,656 pairs of firms. KRW's race card states 1,324 of
+  them (.284): 1,219 run as the table does and 105 the other way; it is silent on the other 3,332.
+- **Second place.** Nationwide is second by estimate (.402 ± .216) but shares grade 2 with 80 other firms. Of its pairs
+  with the other 96 firms, the card states 16: 15 as the table does and 1 the other way, Genuine Parts (sixth by
+  estimate) above it.
+- **Last place.** State Farm has the lowest race estimate, −.544, and the largest SE, .444, yet stands at rank 14 by
+  posterior mean (.155), pulled up by KRW's race prior ([normal–normal posterior shrinkage](shrinkage.qmd)). Of its 16 stated
+  pairs: 2 as the table does and 14 the other way.
+- **By posterior mean.** Genuine Parts (Napa Auto) now leads (.250), though sixth by estimate (.330 ± .071). It shares
+  grade 1 with AutoNation, the largest estimate (.433). Now every one of the card's 1,324 directions runs as the table
+  does.
+- **Gender card.** The table now ranks the gender estimates. The card's four grades, sizes 1, 3, 89, 4, state 731 pairs
+  (.157): 730 run as the table does and 1 the other way. Builders FirstSource is alone in grade 1, so all 96 of its
+  pairs are stated.
+
+::: {.callout-note appearance="simple"}
+Sources: KRW's Introduction and Section VI, "Racial Discrimination Report Cards" (Figure 7, the race card), Section
+VIII (Figure 14, the gender card), and talk slides 4–5 and 61–63 (card layout after slides 61–63). On the race card,
+grade 1 is KRW's ★ (one star), which KRW call the worst grade. A shared grade means "not compared", not "equal". Data:
+Kline, Rose and Walters (2024), doi:10.1257/aer.20230700, and deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the
+deposit (no version), noncommercial use only; as adapted in postrank 1.1.0 (pr_case_krw), changes noted; no
+endorsement by the authors is implied. The data describe KRW's correspondence experiment, not any firm's current
+conduct.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+pr_case_krw$reference$single_criterion$archive_metrics[, c("criterion", "grade_sizes", "N", "M", "s")]  # race 2/81/14: 1324 of 4656; gender 1/3/89/4: 731
+head(pr_case_krw$units[order(-pr_case_krw$units$race_estimate), c("firm_name", "race_estimate", "race_se")], 2)  # AutoNation 0.4332195, Nationwide 0.4022631
+```
+:::
+
+Standalone: [embed/case-zero.html](../../embed/case-zero.html), for example `?card=gender&sort=mean` or
+`?firm=35&rows=all&theme=dark`.
+
+Related applications: [Expected errors in a strict ranking](ranking-claims.qmd) ·
+[Grade reports as pairwise decisions](../grades/report-builder.qmd) · [Posterior summaries in a grade report](../grades/report-card.qmd) ·
+[KRW's archived reward path](../cases/krw-lambda.qmd).

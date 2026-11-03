@@ -1,0 +1,760 @@
+{
+  "$schema": "./_schema.json",
+  "app": "two-units",
+  "catalog": "1.8",
+  "from": "postrank-explorer-v1 verification/readouts/two-units.json",
+  "about": "Two independent normal posteriors. The read-out gives pi_AB, pi_BA, the posterior mean and SD of the difference A minus B and the size of the gap in SDs of the difference (with above, below or apart in words); the worked formula repeats them with the four settings; the reverse line gives pi_BA = 1 - pi_AB; the sliders show the settings. Ported from v1's core cases: the Deeper boxes' cases moved with their content to apps 1.9 and 1.10, the two scripted predictions were dropped (v3 has no prediction gate), the corr and mixW slider outputs left gap20, and the caption reads in its v3 wording. Probabilities are rows of the base-R oracle (oracle-pairwise, pairDirection); the gap, the SD of the difference and the gap in SDs come from v1's frozen registry (cf.pair.*, settings.*). The clamped case moves both means past the slider ends: pi_BA equals the oracle value at means 2 and -2 only if both were clamped there. New in v3: the preset for tutorial sites A and B, the read-out sentences word for word (slotted literals), the reverse line's condition, the upper table, legends and slider names, and means 2 and -2 with SDs .05, where the doubles of both probabilities are exactly 1 and 0 and read as bounds (CR-008), as pi_AB does in the clamped case.",
+  "cases": [
+    {
+      "id": "gap20",
+      "about": "The first preset and the defaults: means .30 and .10, SDs .20 and .20.",
+      "preset": "gap20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "pi_AB in the read-out (base-R oracle)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-forward",
+            "field": "pi"
+          },
+          "value": 0.760249938906523
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "pi_AB in the read-out equals the page's registry value",
+          "source": "registry",
+          "ref": "cf.pair.p1.pi",
+          "value": 0.7602499389065233
+        },
+        {
+          "select": "[data-prx-readout=\"pi-reverse\"]",
+          "about": "pi_BA in the read-out (base-R oracle)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-reverse",
+            "field": "pi"
+          },
+          "value": 0.239750061093477
+        },
+        {
+          "select": "[data-prx-readout=\"diff-mean\"]",
+          "about": "posterior mean of A minus B",
+          "source": "registry",
+          "ref": "cf.pair.p1.gap",
+          "value": 0.1999999999999999
+        },
+        {
+          "select": "[data-prx-readout=\"diff-sd\"]",
+          "about": "posterior SD of A minus B",
+          "source": "registry",
+          "ref": "cf.pair.p1.diffsd",
+          "value": 0.2828427124746189
+        },
+        {
+          "select": "[data-prx-readout=\"z\"]",
+          "about": "the gap in SDs of the difference",
+          "source": "registry",
+          "ref": "cf.pair.p1.z",
+          "value": 0.7071067811865476
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 0,
+          "about": "mean of A in the worked formula",
+          "source": "registry",
+          "ref": "settings.mean30",
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 1,
+          "about": "mean of B in the worked formula",
+          "source": "registry",
+          "ref": "settings.mean10",
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 2,
+          "about": "SD of A in the worked formula",
+          "source": "registry",
+          "ref": "settings.sd20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 3,
+          "about": "SD of B in the worked formula",
+          "source": "registry",
+          "ref": "settings.sd20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 4,
+          "about": "the gap in the worked formula",
+          "source": "registry",
+          "ref": "cf.pair.p1.gap",
+          "value": 0.1999999999999999
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 5,
+          "about": "the SD of the difference in the worked formula",
+          "source": "registry",
+          "ref": "cf.pair.p1.diffsd",
+          "value": 0.2828427124746189
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 6,
+          "about": "the argument of Phi",
+          "source": "registry",
+          "ref": "cf.pair.p1.z",
+          "value": 0.7071067811865476
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 7,
+          "about": "pi_AB at the end of the worked formula",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-forward",
+            "field": "pi"
+          },
+          "value": 0.760249938906523
+        },
+        {
+          "select": "[data-prx-tex=\"reverse\"] mtext",
+          "index": 1,
+          "about": "pi_BA = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-reverse",
+            "field": "pi"
+          },
+          "value": 0.239750061093477
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: posterior mean of A",
+          "source": "registry",
+          "ref": "settings.mean30",
+          "value": 0.3
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: posterior SD of A",
+          "source": "registry",
+          "ref": "settings.sd20",
+          "value": 0.2
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 2,
+          "about": "slider: posterior mean of B",
+          "source": "registry",
+          "ref": "settings.mean10",
+          "value": 0.1
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 3,
+          "about": "slider: posterior SD of B",
+          "source": "registry",
+          "ref": "settings.sd20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "about": "the posteriors are set by hand for teaching (caption in its v3 wording)",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "svg[role=\"img\"]",
+          "index": 0,
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "text alternative of the figure of the two posteriors",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Posterior densities of the true values of unit A (solid line) and unit B (dashed line)."
+        },
+        {
+          "select": "svg[role=\"img\"]",
+          "index": 1,
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "text alternative of the figure of the difference; it names the other figure by what it shows, since the two sit side by side in a wide container",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Posterior density of the difference of the true values, A minus B (dash-dot line), on the same scales as the figure of the two posteriors. The area to the right of zero is shaded; it is the probability that A's true value is larger than B's."
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] caption",
+          "index": 1,
+          "kind": "text",
+          "about": "caption of the lower figure's data table",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Posterior mean and SD of the difference A minus B"
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] caption",
+          "index": 0,
+          "kind": "text",
+          "about": "caption of the upper figure's data table",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Posterior mean and SD of each unit"
+        },
+        {
+          "select": "fieldset.prx-two-units-unit > legend",
+          "index": 0,
+          "kind": "text",
+          "about": "unit A's fieldset names its line style",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Unit A (solid line)"
+        },
+        {
+          "select": "fieldset.prx-two-units-unit > legend",
+          "index": 1,
+          "kind": "text",
+          "about": "unit B's fieldset names its line style",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Unit B (dashed line)"
+        },
+        {
+          "select": "input[type=\"range\"]",
+          "index": 0,
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the first slider's accessible name",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Posterior mean of unit A"
+        },
+        {
+          "select": "input[type=\"range\"]",
+          "index": 3,
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the last slider's accessible name",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Posterior SD of unit B"
+        },
+        {
+          "select": ".prx-two-units-step:last-child > .prx-two-units-note",
+          "kind": "text",
+          "about": "the condition under the reverse line: pi_BA = 1 - pi_AB needs probability zero of equal true values (R1-06)",
+          "source": "literal",
+          "ref": "1.1",
+          "value": "This holds when the two true values have probability zero of being equal (here: their difference is normal with positive SD)."
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's two sentences, word for word (A's mean above B's)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The probability that A's true value is larger than B's is πAB = ⟨pi⟩, and the reverse is πBA = ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference above B's."
+        }
+      ]
+    },
+    {
+      "id": "wide-b",
+      "about": "Unit B much less precise: the SD of the difference grows and pi_AB falls toward one half.",
+      "preset": "wide-b",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.60-forward",
+            "field": "pi"
+          },
+          "value": 0.624085182977075
+        },
+        {
+          "select": "[data-prx-readout=\"pi-reverse\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.60-reverse",
+            "field": "pi"
+          },
+          "value": 0.375914817022925
+        },
+        {
+          "select": "[data-prx-readout=\"diff-mean\"]",
+          "about": "the same gap as the prediction's setting",
+          "source": "registry",
+          "ref": "cf.pair.p1.gap",
+          "value": 0.1999999999999999
+        },
+        {
+          "select": "[data-prx-readout=\"diff-sd\"]",
+          "source": "registry",
+          "ref": "cf.pair.p2.diffsd",
+          "value": 0.6324555320336759
+        },
+        {
+          "select": "[data-prx-readout=\"z\"]",
+          "source": "registry",
+          "ref": "cf.pair.p2.z",
+          "value": 0.31622776601683805
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 7,
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.60-forward",
+            "field": "pi"
+          },
+          "value": 0.624085182977075
+        }
+      ]
+    },
+    {
+      "id": "equal-means",
+      "about": "Equal means: pi_AB is one half whatever the SDs.",
+      "preset": "equal-means",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.20-sA.20-mB.20-sB.40-forward",
+            "field": "pi"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"pi-reverse\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.20-sA.20-mB.20-sB.40-reverse",
+            "field": "pi"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"diff-mean\"]",
+          "source": "registry",
+          "ref": "cf.pair.p3.gap",
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"diff-sd\"]",
+          "source": "registry",
+          "ref": "cf.pair.p3.diffsd",
+          "value": 0.44721359549995776
+        },
+        {
+          "select": "[data-prx-readout=\"z\"]",
+          "source": "registry",
+          "ref": "cf.pair.p3.z",
+          "value": 0
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"]",
+          "kind": "text",
+          "slots": true,
+          "about": "with equal means the read-out says the two means are 0 SDs of the difference apart",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The probability that A's true value is larger than B's is πAB = ⟨pi⟩, and the reverse is πBA = ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so the two means are ⟨z⟩ SDs of the difference apart."
+        }
+      ]
+    },
+    {
+      "id": "six-sites-ab",
+      "about": "Sites A and B of the six sites: oracle row and the registry value from the package's pr_tutorial.",
+      "query": "?muA=1.20&sdA=.20&muB=.95&sdB=.20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "base-R oracle",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-A-above",
+            "field": "pi"
+          },
+          "value": 0.811620441094209
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "the six sites' pi_AB (1 - pr_tutorial$one$e)",
+          "source": "registry",
+          "ref": "six.A.pi.AB",
+          "value": 0.8116204410942089
+        }
+      ]
+    },
+    {
+      "id": "sites-ab",
+      "about": "The preset for tutorial sites A and B (means 1.20 and .95, SD .20 each): pi_AB equals 1 - pr_tutorial$one$e[\"A\", \"B\", \"score_A\"], the page's In postrank number.",
+      "preset": "sites-ab",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "base-R oracle",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-A-above",
+            "field": "pi"
+          },
+          "value": 0.811620441094209
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "the six sites' pi_AB (1 - pr_tutorial$one$e)",
+          "source": "registry",
+          "ref": "six.A.pi.AB",
+          "value": 0.8116204410942089
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 7,
+          "about": "pi_AB at the end of the worked formula",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-A-above",
+            "field": "pi"
+          },
+          "value": 0.811620441094209
+        }
+      ]
+    },
+    {
+      "id": "a-below",
+      "about": "A's mean below B's: pi_AB below one half.",
+      "query": "?muA=.15&sdA=.20&muB=.25&sdB=.20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-A-below",
+            "field": "pi"
+          },
+          "value": 0.361836804915882
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 7,
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-A-below",
+            "field": "pi"
+          },
+          "value": 0.361836804915882
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"]",
+          "kind": "text",
+          "slots": true,
+          "about": "A's mean below B's: the size of the gap with below",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The probability that A's true value is larger than B's is πAB = ⟨pi⟩, and the reverse is πBA = ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference below B's."
+        }
+      ]
+    },
+    {
+      "id": "negative-means",
+      "about": "Negative means and unequal SDs.",
+      "query": "?muA=-.50&sdA=.25&muB=-.80&sdB=.15",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-corr-0-explicit",
+            "field": "pi"
+          },
+          "value": 0.848258167987579
+        }
+      ]
+    },
+    {
+      "id": "equal-means-oracle",
+      "about": "Equal means with unequal SDs, from the oracle.",
+      "query": "?muA=.40&sdA=.20&muB=.40&sdB=.30",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-eq-means",
+            "field": "pi"
+          },
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "clamped-far",
+      "about": "Means 9 and -9 are clamped to the slider ends 2 and -2 (CONTRACT 8.1). pi_AB's double is exactly 1, but the probability of a direction between two normal posteriors with positive SDs lies strictly inside (0, 1), so it reads \"above .999\" (formatProb with open, CR-008), not \"1\"; pi_BA is far below .001, shown as a bound. Both bounds follow their symbols in words.",
+      "query": "?muA=9&sdA=.10&muB=-9&sdB=.10",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "pi_AB: the double 1, written as a bound",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "open": true
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-upper",
+            "field": "pi"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"pi-reverse\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-lower",
+            "field": "pi"
+          },
+          "value": 2.69793280580441e-176
+        },
+        {
+          "select": "[data-prx-tex=\"reverse\"] mtext",
+          "index": 1,
+          "about": "the bound written as a relation in the formula",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols"
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-lower",
+            "field": "pi"
+          },
+          "value": 2.69793280580441e-176
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"]",
+          "kind": "text",
+          "slots": true,
+          "about": "a probability shown as a bound follows its symbol in words, here both of them",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The probability that A's true value is larger than B's, πAB, is ⟨pi⟩, and the reverse, πBA, is ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference above B's."
+        }
+      ]
+    },
+    {
+      "id": "far-narrow",
+      "about": "Means 2 and -2 with SDs .05 (CR-008): the difference A minus B has mean 4 and SD .0707, so the two means are 56.6 SDs of the difference apart, and the doubles of pi_AB and pi_BA are exactly 1 and 0. A direction probability of two normal posteriors with positive SDs lies strictly inside (0, 1), so the app writes them \"above .999\" and \"below .001\" (formatProb with open), in words after their symbols, and \">.999\" and \"<.001\" in the formulas, never \"1\" and \"0\". No oracle row sits at this setting; the clamped case's rows at SDs .10 bound it, since halving both SDs doubles the distance in SDs: pi_AB is the double 1 there already (pairDirection-far-upper), and pi_BA lies between 0 and the value there, 2.7e-176 (pairDirection-far-lower, the tolerance).",
+      "query": "?muA=2&sdA=.05&muB=-2&sdB=.05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "pi_AB: the double 1, written as a bound",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "open": true
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-upper",
+            "field": "pi"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"pi-reverse\"]",
+          "about": "pi_BA: the double 0, written as a bound (between 0 and the value at SDs .10)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "open": true
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-lower",
+            "field": "pi"
+          },
+          "value": 2.69793280580441e-176,
+          "tol": {
+            "abs": 2.69793280580441e-176
+          }
+        },
+        {
+          "select": "[data-prx-tex=\"worked\"] mtext",
+          "index": 7,
+          "about": "pi_AB at the end of the worked formula, as a relation",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols",
+              "open": true
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-upper",
+            "field": "pi"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-tex=\"reverse\"] mtext",
+          "index": 1,
+          "about": "pi_BA in the reverse line, as a relation",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols",
+              "open": true
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-lower",
+            "field": "pi"
+          },
+          "value": 2.69793280580441e-176,
+          "tol": {
+            "abs": 2.69793280580441e-176
+          }
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"]",
+          "kind": "text",
+          "slots": true,
+          "about": "both probabilities shown as bounds follow their symbols in words",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The probability that A's true value is larger than B's, πAB, is ⟨pi⟩, and the reverse, πBA, is ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference above B's."
+        }
+      ]
+    },
+    {
+      "id": "update-after-mount",
+      "about": "update() after the first render (the postMessage bridge): the first preset, then B's SD moved to .60.",
+      "preset": "gap20",
+      "update": [
+        {
+          "sdB": 0.6
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.60-forward",
+            "field": "pi"
+          },
+          "value": 0.624085182977075
+        },
+        {
+          "select": "[data-prx-readout=\"diff-sd\"]",
+          "source": "registry",
+          "ref": "cf.pair.p2.diffsd",
+          "value": 0.6324555320336759
+        }
+      ]
+    }
+  ]
+}

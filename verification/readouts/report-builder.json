@@ -1,0 +1,1100 @@
+{
+  "$schema": "./_schema.json",
+  "catalog": "2.2",
+  "about": "G-02, a grade report placed by hand: the three catalog presets, raw queries (four sites 1/1/2/2, labels to tidy, blocks out of letter order), two update() paths (moving B into grade 1, switching to four sites) and three scripted predictions. Counts come from the base-R oracle rows disclosure-*, pairCount-*, canonicalGrade-* and familySize-n*-all (oracle-report-risk), from the postrank 1.1.0 golden evaluateReport rows of pr_tutorial$one (N, disclosure_rate, G), and from registry keys (part2.json, part2-g02.json), which the page writes; the report 1/2/2/2/2/3 (N 9, N/M .600, three grades, sizes 1, 4, 1) has the base-R row disclosure-1.2.2.2.2.3. Pairs inside a grade are pairCount of the grade's size. No probabilities, labels or captions: nothing is optimized on this page.",
+  "cases": [
+    {
+      "id": "one-four-one",
+      "about": "Deck preset: {A} > {B, C, D, E} > {F} (1/2/2/2/2/3), the prediction's first report. M from the base-R pairCount row; N, N/M, the number of grades and the sizes from the base-R row disclosure-1.2.2.2.2.3 and from the part2.json and part2-g02.json registry keys the page writes; the grade vector from the registry (canonicalGrade); the pairs inside the grade of four sites (6) from the base-R pairCount row for four units; the side fact from the base-R familySize rows.",
+      "preset": "one-four-one",
+      "expect": [
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"M\"]",
+          "about": "pairs of six sites",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-6",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"M\"]",
+          "about": "the same from the registry",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated",
+          "source": "registry",
+          "ref": "six.r122223.N",
+          "value": 9
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"s\"]",
+          "about": "share stated N/M",
+          "source": "registry",
+          "ref": "six.r122223.s",
+          "value": 0.6
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"G\"]",
+          "about": "number of grades",
+          "source": "registry",
+          "ref": "six.r122223.G",
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"grades\"]",
+          "about": "the grade vector in site order",
+          "source": "registry",
+          "ref": "six.r122223.grades",
+          "value": [
+            1,
+            2,
+            2,
+            2,
+            2,
+            3
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"sizes\"]",
+          "about": "the grade sizes",
+          "source": "registry",
+          "ref": "six.r122223.sizes",
+          "value": [
+            1,
+            4,
+            1
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"rule-M\"]",
+          "about": "the rule: M",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-6",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"rule-inside\"]",
+          "about": "the rule: pairs inside each grade (only the grade of four sites has any: C(4, 2))",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-4",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"rule-N\"]",
+          "about": "the rule: N",
+          "source": "registry",
+          "ref": "six.r122223.N",
+          "value": 9
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"inside-2\"]",
+          "about": "pairs inside grade 2 (four sites)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-4",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"inside-all\"]",
+          "about": "pairs inside all grades",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-4",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-readout [data-prx-readout=\"readout-N\"]",
+          "about": "the live read-out: pairs stated",
+          "source": "registry",
+          "ref": "six.r122223.N",
+          "value": 9
+        },
+        {
+          "select": ".prx-readout [data-prx-readout=\"readout-M\"]",
+          "about": "the live read-out: M",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-6",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": ".prx-readout [data-prx-readout=\"readout-withheld\"]",
+          "about": "the live read-out: pairs withheld (the pairs inside the grade of four)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-4",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"reports-2\"]",
+          "about": "side fact: possible reports of 2 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n2-all",
+            "field": "size"
+          },
+          "value": "3"
+        },
+        {
+          "select": "[data-prx-readout=\"reports-3\"]",
+          "about": "side fact: possible reports of 3 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-all",
+            "field": "size"
+          },
+          "value": "13"
+        },
+        {
+          "select": "[data-prx-readout=\"reports-4\"]",
+          "about": "side fact: possible reports of 4 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n4-all",
+            "field": "size"
+          },
+          "value": "75"
+        },
+        {
+          "select": "[data-prx-readout=\"reports-5\"]",
+          "about": "side fact: possible reports of 5 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n5-all",
+            "field": "size"
+          },
+          "value": "541"
+        },
+        {
+          "select": "[data-prx-readout=\"reports-6\"]",
+          "about": "side fact: possible reports of 6 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-all",
+            "field": "size"
+          },
+          "value": "4683"
+        },
+        {
+          "select": ".prx-rb-orientation",
+          "kind": "text",
+          "about": "what grade 1 means and the orientation (CONTRACT 3.3)",
+          "source": "literal",
+          "ref": "3.3",
+          "value": "Grade 1 = highest priority, the sites visited first; a larger grade number is a lower priority."
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated by 1/2/2/2/2/3 (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2.2.3",
+            "field": "N"
+          },
+          "value": 9
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"s\"]",
+          "about": "share stated, N/M (base-R disclosure)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2.2.3",
+            "field": "s"
+          },
+          "value": 0.6
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"G\"]",
+          "about": "number of grades (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2.2.3",
+            "field": "G"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"sizes\"]",
+          "about": "grade sizes (base-R disclosure)",
+          "format": {
+            "fn": "formatSizes"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2.2.3",
+            "field": "sizes"
+          },
+          "value": [
+            1,
+            4,
+            1
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"rule-N\"]",
+          "about": "N in the rule line (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2.2.3",
+            "field": "N"
+          },
+          "value": 9
+        },
+        {
+          "select": ".prx-readout [data-prx-readout=\"readout-N\"]",
+          "about": "N in the read-out (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2.2.3",
+            "field": "N"
+          },
+          "value": 9
+        }
+      ]
+    },
+    {
+      "id": "pairs",
+      "about": "Preset: {A, B} > {C, D} > {E, F} (1/1/2/2/3/3), the prediction's second report. M, N, N/M, the number of grades and the sizes from the base-R disclosure row; N also from the postrank golden (postrank_evaluate of pr_tutorial$one); the grade vector from the registry (canonicalGrade); one pair inside each grade of two from the base-R pairCount row.",
+      "preset": "pairs",
+      "expect": [
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"M\"]",
+          "about": "pairs",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "N"
+          },
+          "value": 12
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated (postrank 1.1.0)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112233",
+            "field": "N"
+          },
+          "value": 12
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"s\"]",
+          "about": "share stated",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "s"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"s\"]",
+          "about": "share stated (postrank disclosure_rate)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112233",
+            "field": "s"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"G\"]",
+          "about": "number of grades",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "G"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"sizes\"]",
+          "about": "grade sizes",
+          "format": {
+            "fn": "formatSizes"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "sizes"
+          },
+          "value": [
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"grades\"]",
+          "about": "grade vector",
+          "source": "registry",
+          "ref": "six.r112233.grades",
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"rule-N\"]",
+          "about": "the rule: N",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "N"
+          },
+          "value": 12
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"inside-1\"]",
+          "about": "pairs inside grade 1 (two sites)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-2",
+            "field": "M"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"inside-2\"]",
+          "about": "pairs inside grade 2",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-2",
+            "field": "M"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"inside-3\"]",
+          "about": "pairs inside grade 3",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-2",
+            "field": "M"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-readout [data-prx-readout=\"readout-N\"]",
+          "about": "live read-out",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "N"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"reports-2\"]",
+          "about": "side fact: possible reports of 2 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n2-all",
+            "field": "size"
+          },
+          "value": "3"
+        },
+        {
+          "select": "[data-prx-readout=\"reports-3\"]",
+          "about": "side fact: possible reports of 3 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n3-all",
+            "field": "size"
+          },
+          "value": "13"
+        },
+        {
+          "select": "[data-prx-readout=\"reports-4\"]",
+          "about": "side fact: possible reports of 4 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n4-all",
+            "field": "size"
+          },
+          "value": "75"
+        },
+        {
+          "select": "[data-prx-readout=\"reports-5\"]",
+          "about": "side fact: possible reports of 5 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n5-all",
+            "field": "size"
+          },
+          "value": "541"
+        },
+        {
+          "select": "[data-prx-readout=\"reports-6\"]",
+          "about": "side fact: possible reports of 6 sites (familySize, unrestricted)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-all",
+            "field": "size"
+          },
+          "value": "4683"
+        }
+      ]
+    },
+    {
+      "id": "four-units",
+      "about": "Preset: four sites A to D, 1/2/2/2 ({A} > {B, C, D}): the theory book's first four-unit report. M, N, N/M, the number of grades and the sizes from the base-R disclosure row; the three pairs inside the grade of three from the base-R pairCount row; the side fact with four sites marked.",
+      "preset": "four-units",
+      "expect": [
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"M\"]",
+          "about": "pairs of four sites",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"M\"]",
+          "about": "the same from the registry",
+          "source": "registry",
+          "ref": "six.u4.M",
+          "value": 6
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "N"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "the same from the registry",
+          "source": "registry",
+          "ref": "six.u4.r1222.N",
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"s\"]",
+          "about": "share stated",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "s"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"G\"]",
+          "about": "number of grades",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "G"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"sizes\"]",
+          "about": "grade sizes",
+          "format": {
+            "fn": "formatSizes"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "sizes"
+          },
+          "value": [
+            1,
+            3
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"grades\"]",
+          "about": "grade vector",
+          "source": "registry",
+          "ref": "six.u4.r1222.grades",
+          "value": [
+            1,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"inside-2\"]",
+          "about": "pairs inside grade 2 (three sites)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-3",
+            "field": "M"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-side-now [data-prx-readout=\"reports-4\"]",
+          "about": "the side fact marks four sites",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n4-all",
+            "field": "size"
+          },
+          "value": "75"
+        }
+      ]
+    },
+    {
+      "id": "four-units-1122",
+      "about": "Raw query: four sites, 1/1/2/2 ({A, B} > {C, D}): same number of grades as 1/2/2/2, one more stated pair. Base-R disclosure row.",
+      "query": "?units=4&grades=1,1,2,2",
+      "expect": [
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2",
+            "field": "N"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "the same from the registry",
+          "source": "registry",
+          "ref": "six.u4.r1122.N",
+          "value": 4
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"s\"]",
+          "about": "share stated",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2",
+            "field": "s"
+          },
+          "value": 0.666666666666667
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"G\"]",
+          "about": "number of grades",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2",
+            "field": "G"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"sizes\"]",
+          "about": "grade sizes",
+          "format": {
+            "fn": "formatSizes"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2",
+            "field": "sizes"
+          },
+          "value": [
+            2,
+            2
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"grades\"]",
+          "about": "grade vector",
+          "source": "registry",
+          "ref": "six.u4.r1122.grades",
+          "value": [
+            1,
+            1,
+            2,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tidy-labels",
+      "about": "Raw query with labels that skip numbers: 4/4/1/6/1/9 is tidied to its canonical vector 2/2/1/3/1/4 (base-R canonicalGrade row); the tidy note appears.",
+      "query": "?units=6&grades=4,4,1,6,1,9",
+      "expect": [
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"grades\"]",
+          "about": "the report shown is the canonical vector",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "canonicalGrade-4.4.1.6.1.9",
+            "field": "grade"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            3,
+            1,
+            4
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"tidied\"]",
+          "about": "the tidy note gives the canonical vector",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "canonicalGrade-4.4.1.6.1.9",
+            "field": "grade"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            3,
+            1,
+            4
+          ]
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"M\"]",
+          "about": "pairs",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-6",
+            "field": "M"
+          },
+          "value": 15
+        }
+      ]
+    },
+    {
+      "id": "scattered-blocks",
+      "about": "Raw query: 3/1/2/1/3/2, the blocks {B, D} > {C, F} > {A, E} (not in letter order). Base-R disclosure row; N also from the postrank golden.",
+      "query": "?units=6&grades=3,1,2,1,3,2",
+      "expect": [
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-3.1.2.1.3.2",
+            "field": "N"
+          },
+          "value": 12
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated (postrank 1.1.0)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-312132",
+            "field": "N"
+          },
+          "value": 12
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"s\"]",
+          "about": "share stated",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-3.1.2.1.3.2",
+            "field": "s"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"sizes\"]",
+          "about": "grade sizes",
+          "format": {
+            "fn": "formatSizes"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-3.1.2.1.3.2",
+            "field": "sizes"
+          },
+          "value": [
+            2,
+            2,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "update-move-b",
+      "about": "The slide-host path: the deck preset, then update() moves B into grade 1 (1/1/2/2/2/3, {A, B} > {C, D, E} > {F}). N and N/M from the postrank golden (postrank_evaluate of pr_tutorial$one at 1/1/2/2/2/3); the three pairs inside the grade of three from the base-R pairCount row.",
+      "preset": "one-four-one",
+      "update": [
+        {
+          "grades": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            3
+          ]
+        }
+      ],
+      "expect": [
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated after the move",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112223",
+            "field": "N"
+          },
+          "value": 11
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"s\"]",
+          "about": "share stated after the move",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112223",
+            "field": "s"
+          },
+          "value": 0.733333333333333
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"G\"]",
+          "about": "number of grades",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112223",
+            "field": "G"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"inside-2\"]",
+          "about": "pairs inside grade 2 (three sites)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-3",
+            "field": "M"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"inside-1\"]",
+          "about": "pairs inside grade 1 (two sites)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-2",
+            "field": "M"
+          },
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "update-to-four",
+      "about": "update() switches six sites to four: the grade vector is cut to its first four labels (1/2/2/2/2/3 becomes 1/2/2/2). Base-R disclosure row.",
+      "preset": "one-four-one",
+      "update": [
+        {
+          "units": 4
+        }
+      ],
+      "expect": [
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"M\"]",
+          "about": "pairs of four sites",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"N\"]",
+          "about": "pairs stated",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "N"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-counts [data-prx-readout=\"grades\"]",
+          "about": "grade vector",
+          "source": "registry",
+          "ref": "six.u4.r1222.grades",
+          "value": [
+            1,
+            2,
+            2,
+            2
+          ]
+        }
+      ]
+    }
+  ],
+  "app": "report-builder",
+  "from": "postrank-explorer-v1/verification/readouts/report-builder.json"
+}

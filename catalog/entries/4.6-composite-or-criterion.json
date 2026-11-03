@@ -1,0 +1,110 @@
+{
+  "id": "4.6",
+  "name": "composite-or-criterion",
+  "part": "4",
+  "title": "Composite or criterion directions?",
+  "idea": "Getting the direction of a weighted composite right and getting each criterion's directions right are different goals and can pick different reports.",
+  "status": "built",
+  "from": "new concept \u00b7 v1 storyboard P-04; theory book ch. 12; postrank vignette m2 (estimand costs); picture: the costs of A above B, B above A and withholding under the criterion-direction loss and the composite-direction loss, the action each prefers, and a transform control under which grades stay and composites move",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 12 (four-unit law after ch. 19), and the postrank vignette m2.",
+  "caption": "Supplied synthetic laws after the postrank theory book, ch. 12 and19, and vignette m2. Both losses use one law, withholding price and report family.",
+  "presets": [
+    {
+      "id": "known",
+      "label": "Different targets",
+      "query": "data=known&w=.75&a=.5&tau=.3&multiplier=1&cap=all&transform=identity&pair=auto"
+    },
+    {
+      "id": "scale25",
+      "label": "Rescale the second criterion",
+      "query": "data=known&w=.75&a=.5&tau=.3&multiplier=.25&cap=all&transform=identity&pair=A,B"
+    },
+    {
+      "id": "coefficients",
+      "label": "Change composite coefficients",
+      "query": "data=known&w=.75&a=.75&tau=.3&multiplier=1&cap=all&transform=identity&pair=A,B"
+    },
+    {
+      "id": "composite-tie",
+      "label": "Composite equality",
+      "query": "data=tie&w=.75&a=.5&tau=.3&multiplier=1&cap=all&transform=identity&pair=A,B"
+    },
+    {
+      "id": "ch19",
+      "label": "Two reports, same disclosure",
+      "query": "data=ch19&w=.6&a=.75&tau=.2&multiplier=1&cap=all&transform=identity&pair=B,C"
+    },
+    {
+      "id": "exp",
+      "label": "Transform the whole law",
+      "query": "data=ch19&w=.6&a=.75&tau=.2&multiplier=1&cap=all&transform=exp&pair=B,C"
+    },
+    {
+      "id": "normal",
+      "label": "Independent Normal composite",
+      "query": "data=six&w=.5&a=.5&tau=.2&multiplier=1&cap=3&transform=identity&pair=B,C"
+    },
+    {
+      "id": "normal-scaled",
+      "label": "Rescale the Normal composite",
+      "query": "data=six&w=.5&a=.5&tau=.2&multiplier=.1&cap=3&transform=identity&pair=B,C"
+    }
+  ],
+  "try": [
+    {
+      "preset": "known",
+      "shows": [
+        ".2500",
+        ".7500",
+        ".3000",
+        "1.0000",
+        ".0000",
+        "1/2",
+        "2/1"
+      ]
+    },
+    {
+      "preset": "scale25",
+      "shows": [
+        ".250",
+        ".2500"
+      ]
+    },
+    {
+      "preset": "composite-tie",
+      "shows": [
+        "1.0000",
+        ".3000"
+      ]
+    },
+    {
+      "preset": "ch19",
+      "shows": [
+        "75",
+        "1/2/2/3",
+        "1/1/2/3",
+        ".1417",
+        ".0333",
+        "5"
+      ]
+    },
+    {
+      "preset": "exp",
+      "shows": [
+        ".1417",
+        "1/1/2/2",
+        ".0667"
+      ]
+    },
+    {
+      "preset": "normal-scaled",
+      "shows": [
+        ".635"
+      ]
+    }
+  ]
+}

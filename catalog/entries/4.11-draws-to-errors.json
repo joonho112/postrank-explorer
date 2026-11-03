@@ -1,0 +1,93 @@
+{
+  "id": "4.11",
+  "name": "draws-to-errors",
+  "part": "4",
+  "title": "From draws to pair errors",
+  "idea": "Each posterior draw is one joint state of every unit on every criterion; counting orders within each criterion gives the pair errors the weighted risk needs, and shuffling one unit's draws keeps its margins but changes them.",
+  "status": "built",
+  "from": "new concept \u00b7 postrank vignette m3 (posterior inputs; the package toy's 32 draws); picture: the draws as whole states, each criterion's order counted draw by draw into running shares, and a shuffle toggle that keeps one unit's margins but changes the error probabilities",
+  "data": [
+    "data/released/toy-joint-draws.json"
+  ],
+  "credit": "After the postrank vignettes m3 and inputs-and-producers.",
+  "caption": "The package toy\u2019s actual 32 complete IID states. Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+  "presets": [
+    {
+      "id": "original",
+      "label": "Original states",
+      "query": "prefix=32&draw=1&mode=original&unit=site-B&shift=0&pair=0&reverse=false&criterion=need_A"
+    },
+    {
+      "id": "unit-shift",
+      "label": "Shift one unit",
+      "query": "prefix=32&draw=16&mode=unit&unit=site-B&shift=1&pair=0&reverse=false&criterion=need_A"
+    },
+    {
+      "id": "shared-shift",
+      "label": "Move states together",
+      "query": "prefix=32&draw=32&mode=all&unit=site-B&shift=1&pair=0&reverse=false&criterion=need_A"
+    },
+    {
+      "id": "short-prefix",
+      "label": "Short prefix",
+      "query": "prefix=8&draw=8&mode=unit&unit=site-B&shift=1&pair=0&reverse=false&criterion=need_A"
+    },
+    {
+      "id": "untouched-pair",
+      "label": "Unshifted pair",
+      "query": "prefix=32&draw=1&mode=unit&unit=site-B&shift=1&pair=1&reverse=false&criterion=need_B"
+    },
+    {
+      "id": "full-cycle",
+      "label": "Full cycle",
+      "query": "prefix=32&draw=32&mode=unit&unit=site-B&shift=32&pair=0&reverse=false&criterion=need_A"
+    }
+  ],
+  "try": [
+    {
+      "preset": "original",
+      "shows": [
+        "8 times",
+        "32 times",
+        ".250",
+        "1"
+      ]
+    },
+    {
+      "preset": "unit-shift",
+      "shows": [
+        "7 times",
+        "32 times",
+        ".219"
+      ]
+    },
+    {
+      "preset": "shared-shift",
+      "shows": [
+        "8 times",
+        "32 times"
+      ]
+    },
+    {
+      "preset": "short-prefix",
+      "shows": [
+        "8 retained states"
+      ]
+    },
+    {
+      "preset": "untouched-pair",
+      "shows": [
+        "0 times",
+        "25 times",
+        ".781"
+      ]
+    },
+    {
+      "preset": "full-cycle",
+      "shows": [
+        "8 times",
+        "32 times"
+      ]
+    }
+  ]
+}

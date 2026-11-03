@@ -1,0 +1,1459 @@
+{
+  "catalog": "3.8",
+  "about": "Full R-04 shared presentation on eight or thirty frozen league units, matched by N or tau. Source oracle-part3 pins cover eight-unit gaps and best reports; frozen registry pins cover mixtures, tau .05 optimum and the thirty-unit rule evaluations. Both data-by-match modes and both capped/uncapped families are exercised; no thirty-unit cloud is claimed.",
+  "app": "same-tau-or-same-n",
+  "cases": [
+    {
+      "id": "preset-same-n",
+      "about": "deck preset, the question's setting: the posterior-mean tiers against H(21) within all reports",
+      "preset": "same-n",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs stated by the posterior-mean tiers (base-R ruleGap)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmtiers3",
+            "field": "N"
+          },
+          "value": 21
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "their expected wrong directions",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmtiers3",
+            "field": "Ew"
+          },
+          "value": 3.11426545342296
+        },
+        {
+          "select": "[data-prx-readout=\"H\"]",
+          "about": "H at N = 21 within all 545,835 reports (base-R ruleGap)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmtiers3",
+            "field": "H"
+          },
+          "value": 2.95090200603657
+        },
+        {
+          "select": "[data-prx-readout=\"gap\"]",
+          "about": "gap E - H at its own N",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmtiers3",
+            "field": "gap"
+          },
+          "value": 0.163363447386388
+        },
+        {
+          "select": "[data-prx-readout=\"psi\"]",
+          "about": "psi, the chance of the more-disclosing vertex (matchedDisclosure, the G-06 convention; base-R ruleGap gives the lower weight 1/3)",
+          "source": "registry",
+          "ref": "r04.league8.all.pmtiers.psi",
+          "value": 0.6666666666666666
+        },
+        {
+          "select": "[data-prx-readout=\"upperN\"]",
+          "about": "the more-disclosing vertex",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmtiers3",
+            "field": "upperN"
+          },
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"lowerN\"]",
+          "about": "the less-disclosing vertex",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmtiers3",
+            "field": "lowerN"
+          },
+          "value": 19
+        },
+        {
+          "select": "[data-prx-readout=\"upperGrade\"]",
+          "about": "its report",
+          "source": "registry",
+          "ref": "r04.league8.all.pmtiers.upperGrade",
+          "value": [
+            2,
+            3,
+            1,
+            2,
+            4,
+            1,
+            2,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"lowerGrade\"]",
+          "about": "its report",
+          "source": "registry",
+          "ref": "r04.league8.all.pmtiers.lowerGrade",
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            1,
+            2,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"bestE\"]",
+          "about": "the best single report with exactly N = 21",
+          "source": "registry",
+          "ref": "r04.league8.all.pmtiers.bestE",
+          "value": 3.013100675936999
+        },
+        {
+          "select": "[data-prx-readout=\"bestGrade\"]",
+          "about": "its grade vector",
+          "source": "registry",
+          "ref": "r04.league8.all.pmtiers.bestGrade",
+          "value": [
+            2,
+            3,
+            2,
+            2,
+            4,
+            2,
+            3,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "size"
+          },
+          "value": 545835,
+          "index": 0
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the label of the exact report cloud (every report evaluated)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₈"
+        },
+        {
+          "select": "[data-prx-readout=\"bestTau\"]",
+          "about": "the best report at tau .20 (base-R bestReports, rank 1)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            1,
+            3,
+            1,
+            2,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-caption=\"mixture-not-report\"]",
+          "kind": "text",
+          "about": "caption of the psi mixture (CONTRACT 6.5)",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a mixture of two complete reports, not a report we can print",
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tGap-tiers3\"]",
+          "about": "estimate tiers: gap .6429",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-tiers3",
+            "field": "gap"
+          },
+          "value": 0.642916016725792
+        },
+        {
+          "select": "[data-prx-readout=\"tH-tiers3\"]",
+          "about": "H at their N",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-tiers3",
+            "field": "H"
+          },
+          "value": 2.95090200603657
+        },
+        {
+          "select": "[data-prx-readout=\"tGap-flags\"]",
+          "about": "flags: a vertex, gap exactly 0",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-flags196",
+            "field": "gap"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tGap-pmcuts\"]",
+          "about": "posterior-mean cuts at tau .20: a vertex, gap exactly 0 (not 2.2e-16)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmcuts3",
+            "field": "gap"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tGap-best\"]",
+          "about": "best report at tau .20: gap 0",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-opt",
+            "field": "gap"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tGap-strict\"]",
+          "about": "strict order: gap .2305",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-strict",
+            "field": "gap"
+          },
+          "value": 0.230484502090637
+        },
+        {
+          "select": "[data-prx-readout=\"tE-strict\"]",
+          "about": "strict order E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-strict",
+            "field": "Ew"
+          },
+          "value": 5.65655143844497
+        },
+        {
+          "select": "[data-prx-readout=\"tGap-pmtiers\"]",
+          "about": "table: posterior-mean tiers gap",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmtiers3",
+            "field": "gap"
+          },
+          "value": 0.163363447386388
+        },
+        {
+          "select": ".prx-rcmp-conditions [data-prx-family-size]",
+          "about": "family size in the conditions box",
+          "source": "registry",
+          "ref": "league8.family.all.size",
+          "value": 545835
+        },
+        {
+          "select": "[data-prx-tolerance-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Equal-risk tolerance",
+          "about": "P3-B-F02: the tolerance concerns equal reporting risks, not equal unit values."
+        }
+      ]
+    },
+    {
+      "id": "preset-same-tau",
+      "about": "matched by tau .20: risks of reports that disclose different amounts",
+      "preset": "same-tau",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the posterior-mean tiers at tau .20",
+          "source": "registry",
+          "ref": "r04.league8.tau20.pmtiers.risk",
+          "value": 0.16122376619367731
+        },
+        {
+          "select": "[data-prx-readout=\"bestRisk\"]",
+          "about": "risk of the best report at tau .20 (base-R bestReports)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.145504722733723
+        },
+        {
+          "select": "[data-prx-readout=\"bestN\"]",
+          "about": "it states 17 pairs",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "N.0"
+          },
+          "value": 17
+        },
+        {
+          "select": "[data-prx-readout=\"bestTauGrade\"]",
+          "about": "its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "grade.0"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            1,
+            3,
+            1,
+            2,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-caption=\"different-disclosure\"]",
+          "kind": "text",
+          "about": "caption: risks of reports at different N",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "these reports disclose different amounts",
+          "index": 0
+        },
+        {
+          "select": "[data-prx-caption=\"tau-not-compared\"]",
+          "kind": "text",
+          "about": "caption in the conditions box",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "risks at different τ are not compared",
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tRisk-flags\"]",
+          "about": "flags at tau .20: rank-3 report of the family (base-R bestReports)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "risk.2"
+          },
+          "value": 0.150113132336148
+        },
+        {
+          "select": "[data-prx-readout=\"tRisk-strict\"]",
+          "about": "strict order risk at tau .20",
+          "source": "registry",
+          "ref": "league8.default.prior15.strict.tau20.risk",
+          "value": 0.20201969423017757
+        }
+      ]
+    },
+    {
+      "id": "preset-strict-low-tau",
+      "about": "the strict order at tau .05: gap unchanged, risk above all-withheld",
+      "preset": "strict-low-tau",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "the strict order states all 28 pairs",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-strict",
+            "field": "N"
+          },
+          "value": 28
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "its E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-strict",
+            "field": "Ew"
+          },
+          "value": 5.65655143844497
+        },
+        {
+          "select": "[data-prx-readout=\"H\"]",
+          "about": "H(28): the best strict order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-strict",
+            "field": "H"
+          },
+          "value": 5.42606693635433
+        },
+        {
+          "select": "[data-prx-readout=\"gap\"]",
+          "about": "gap at its own N (no tau in it)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-strict",
+            "field": "gap"
+          },
+          "value": 0.230484502090637
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N above tau .05: risk above all-withheld",
+          "source": "registry",
+          "ref": "r04.league8.strict.EoverN",
+          "value": 0.20201969423017757
+        },
+        {
+          "select": ".prx-rcmp-row-sel .prx-rcmp-notecell",
+          "kind": "text",
+          "about": "the mark on the chosen rule's row (storyboard wording)",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "risk above all-withheld at this τ"
+        }
+      ]
+    },
+    {
+      "id": "preset-cap3",
+      "about": "at most three grades: the three-tier rules within their own cap",
+      "preset": "cap3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "estimate tiers state 21 pairs",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-cap3-tiers3",
+            "field": "N"
+          },
+          "value": 21
+        },
+        {
+          "select": "[data-prx-readout=\"H\"]",
+          "about": "H(21) within at most three grades: the last vertex",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-cap3-tiers3",
+            "field": "H"
+          },
+          "value": 3.11426545342296
+        },
+        {
+          "select": "[data-prx-readout=\"gap\"]",
+          "about": "gap within the cap",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-cap3-tiers3",
+            "field": "gap"
+          },
+          "value": 0.479552569339404
+        },
+        {
+          "select": "[data-prx-readout=\"tGap-pmtiers\"]",
+          "about": "posterior-mean tiers: the last vertex, gap 0",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-cap3-pmtiers3",
+            "field": "gap"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tGap-flags\"]",
+          "about": "flags: gap 0",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-cap3-flags196",
+            "field": "gap"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tGap-pmcuts\"]",
+          "about": "cuts: gap 0",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-cap3-pmcuts3",
+            "field": "gap"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "about": "family size beside the label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "size"
+          },
+          "value": 6051,
+          "index": 0
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the label of the capped cloud",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜_≤3"
+        },
+        {
+          "select": "[data-prx-readout=\"tN-pmtiers\"]",
+          "about": "N of the posterior-mean tiers: the largest N with at most three grades",
+          "source": "registry",
+          "ref": "r04.league8.cap3.pmtiers.lowerN",
+          "value": 21
+        }
+      ]
+    },
+    {
+      "id": "preset-thirty",
+      "about": "all 30 units: the boundary within the posterior-mean order, at most three grades",
+      "preset": "thirty",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "posterior-mean tiers of all 30 units",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.N",
+          "value": 300
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "their E (same 4-significant display)",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.E",
+          "value": 48.311948618901134
+        },
+        {
+          "select": "[data-prx-readout=\"tN-pmcuts\"]",
+          "about": "optimal cuts of the posterior-mean order at tau .20",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.N",
+          "value": 251
+        },
+        {
+          "select": "[data-prx-readout=\"tN-flags\"]",
+          "about": "flags on 30 units",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.N",
+          "value": 188
+        },
+        {
+          "select": "[data-prx-readout=\"tE-tiers3\"]",
+          "about": "estimate tiers E (outside the order family)",
+          "source": "registry",
+          "ref": "league.default.prior15.tiers3.tau20.E",
+          "value": 51.86392046017462
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the order-family label (fixedOrderDP)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "optimal within this order"
+        }
+      ]
+    },
+    {
+      "id": "clamp-tau",
+      "about": "tau above the range is clamped to .50",
+      "query": "?tau=.99&rule=pmtiers&match=tau",
+      "expect": [
+        {
+          "select": ".prx-slider output",
+          "about": "tau clamped to .50",
+          "source": "registry",
+          "ref": "settings.tau50",
+          "value": 0.5,
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "update-tau05",
+      "about": "update() to tau .05 matched by tau: the best report of the family states 7 pairs",
+      "query": "?data=league8&family=all&match=n&tau=.20&rule=pmtiers",
+      "update": [
+        {
+          "match": "tau",
+          "tau": 0.05
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"bestN\"]",
+          "about": "best report at tau .05 states 7 pairs",
+          "source": "registry",
+          "ref": "r04.league8.all.tau05.best.N",
+          "value": 7
+        },
+        {
+          "select": "[data-prx-readout=\"bestRisk\"]",
+          "about": "its risk",
+          "source": "registry",
+          "ref": "r04.league8.all.tau05.best.risk",
+          "value": 0.04788705195592012
+        }
+      ]
+    },
+    {
+      "id": "thirty-all-same-tau",
+      "about": "all thirty units, full order family, at the same withholding cost",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "posterior-mean tiers of all 30 units",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.N",
+          "value": 300
+        },
+        {
+          "select": "[data-prx-readout=\"tN-pmcuts\"]",
+          "about": "optimal cuts of the posterior-mean order at tau .20",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.N",
+          "value": 251
+        },
+        {
+          "select": "[data-prx-readout=\"tN-flags\"]",
+          "about": "flags on 30 units",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.N",
+          "value": 188
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the order-family label (fixedOrderDP)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "optimal within this order"
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "all-thirty PT risk under the same posterior and tau",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.risk",
+          "value": 0.17313091636529
+        }
+      ],
+      "query": "?data=league30&family=all&match=tau&tau=.20&rule=pmtiers"
+    },
+    {
+      "id": "outside-cap",
+      "about": "four-tier report has no three-grade-family benchmark",
+      "expect": [
+        {
+          "select": ".prx-rcmp-row-sel .prx-rcmp-notecell",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "outside this family: ⟨G⟩ grades",
+          "slots": true
+        }
+      ],
+      "query": "?data=league8&family=cap3&match=n&tau=.20&rule=tiers4"
+    },
+    {
+      "id": "thirty-cap3-same-tau",
+      "about": "thirty units, capped order family at the same cost; PT count and risk are unchanged",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "posterior-mean tiers of all 30 units",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.N",
+          "value": 300
+        },
+        {
+          "select": "[data-prx-readout=\"tN-pmcuts\"]",
+          "about": "optimal cuts of the posterior-mean order at tau .20",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.N",
+          "value": 251
+        },
+        {
+          "select": "[data-prx-readout=\"tN-flags\"]",
+          "about": "flags on 30 units",
+          "source": "registry",
+          "ref": "league.default.prior15.flags196.tau20.N",
+          "value": 188
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "about": "the order-family label (fixedOrderDP)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "optimal within this order"
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "all-thirty PT risk under the same posterior and tau",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.risk",
+          "value": 0.17313091636529
+        }
+      ],
+      "query": "?data=league30&family=cap3&match=tau&tau=.20&rule=pmtiers"
+    },
+    {
+      "id": "thirty-cap3-equal-risk-tau",
+      "about": "P3-B-F02: independently enumerated436 ordered cuts have two equal-risk reports with different disclosure; display both, keep the DP representative, exact family and equal-risk tolerance.",
+      "query": "?data=league30&family=cap3&match=tau&rule=best&tau=.05300042422140842",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"bestTieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieTol\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci",
+            "options": {
+              "trim": true
+            }
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTauN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieGrades.0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieN.0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieE.0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieRisk.0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.risk"
+          },
+          "value": 0.0530004242214084,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieGrades.1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.1.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieN.1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.1.N"
+          },
+          "value": 29,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieE.1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.1.Ew"
+          },
+          "value": 1.53701230242084,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieRisk.1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.1.risk"
+          },
+          "value": 0.0530004242214084,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": ".prx-rcmp-label [data-prx-family-size]",
+          "source": "registry",
+          "ref": "league.family.order.cap3.size",
+          "value": 436
+        },
+        {
+          "select": ".prx-rcmp-label [data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "optimal within this order"
+        },
+        {
+          "select": "[data-prx-best-tie-policy]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The read-out and B point use the first representative below: fewer grades, then earlier cuts."
+        },
+        {
+          "select": ".prx-rcmp-label [data-prx-caption=\"different-disclosure\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "these reports disclose different amounts"
+        }
+      ]
+    },
+    {
+      "id": "thirty-cap3-equal-risk-n",
+      "about": "P3-B-F02: independently enumerated436 ordered cuts have two equal-risk reports with different disclosure; display both, keep the DP representative, exact family and equal-risk tolerance.",
+      "query": "?data=league30&family=cap3&match=n&rule=best&tau=.05300042422140842",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"bestTieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieTol\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci",
+            "options": {
+              "trim": true
+            }
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTauN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieGrades.0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieN.0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieE.0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieRisk.0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.0.risk"
+          },
+          "value": 0.0530004242214084,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieGrades.1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.1.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieN.1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.1.N"
+          },
+          "value": 29,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieE.1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.1.Ew"
+          },
+          "value": 1.53701230242084,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"bestTieRisk.1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-ordered-tau-ties",
+            "row": "league30-cap3-tau005300042422140842-ties",
+            "field": "reports.1.risk"
+          },
+          "value": 0.0530004242214084,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": {
+            "abs": 1e-12,
+            "rel": 0
+          }
+        },
+        {
+          "select": ".prx-rcmp-label [data-prx-family-size]",
+          "source": "registry",
+          "ref": "league.family.order.cap3.size",
+          "value": 436
+        },
+        {
+          "select": ".prx-rcmp-label [data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "optimal within this order"
+        },
+        {
+          "select": "[data-prx-best-tie-policy]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The read-out and B point use the first representative below: fewer grades, then earlier cuts."
+        },
+        {
+          "select": ".prx-rcmp-label [data-prx-caption=\"different-disclosure\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "these reports disclose different amounts"
+        }
+      ]
+    }
+  ],
+  "from": "postrank-explorer-v1 verification/readouts/rule-comparison.json, minus course prediction cases"
+}

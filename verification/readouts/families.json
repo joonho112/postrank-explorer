@@ -1,0 +1,1805 @@
+{
+  "$schema": "./_schema.json",
+  "catalog": "2.12",
+  "about": "G-08. Six sites (score A): every family's best report tied to the base-R golden rows of oracle-optimize (exactOptimum over at most G, exactly G and all reports; fixedOrderDP in A to F) at tau .05, .20, .25 and .40; the order B, A, C, D, E, F and family sizes without a golden row come from the registry (part2.json). The four-unit law of the theory book (ch. 14): at most 4 (all 75) and the A, B, C, D cuts from base-R rows, its pair errors from the postrank golden of the same law and the weighted errors from the base-R row; exactly 4 among all 24 strict orders from the registry (part2-g08.json). Two cases script the prediction (Check with the right and with a wrong answer).",
+  "cases": [
+    {
+      "id": "question-setting",
+      "about": "the widget defaults, the question's setting: six sites, exactly 6 grades chosen, G = 6, tau = .20, order A to F",
+      "query": "",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "the read-out: risk of the best report with exactly 6 grades",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq6-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-readout=\"exact.risk\"]",
+          "about": "best report with exactly 6 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq6-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-readout=\"exact.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq6-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-family-size]",
+          "about": "size of the exactly-6 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq6-tau.20",
+            "field": "familySize"
+          },
+          "value": 720
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.risk\"]",
+          "about": "best report with at most 6 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"atmost\"] [data-prx-family-size]",
+          "about": "size of the at-most-6 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-readout=\"all.risk\"]",
+          "about": "the best of all reports (legend mark)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
+        },
+        {
+          "select": "[data-prx-readout=\"order.risk\"]",
+          "about": "fixed-order DP in A to F: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "fixedOrderDP-six-A-ABCDEF-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
+        },
+        {
+          "select": "[data-prx-readout=\"order.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "fixedOrderDP-six-A-ABCDEF-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"order\"] [data-prx-family-size]",
+          "about": "contiguous cuts of one order of six units: 2^5",
+          "source": "registry",
+          "ref": "six.family.order.size",
+          "value": 32
+        },
+        {
+          "select": "[data-prx-readout=\"exact.N\"]",
+          "about": "the full order states all M pairs",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.N\"]",
+          "about": "pairs stated by the best of all reports",
+          "source": "registry",
+          "ref": "six.A.all.tau20.N",
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"order.N\"]",
+          "about": "the A-to-F cut is the same report",
+          "source": "registry",
+          "ref": "six.A.all.tau20.N",
+          "value": 14
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-label]",
+          "kind": "text",
+          "about": "label of the exactly-6 row",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜_=6"
+        },
+        {
+          "select": "[data-prx-row=\"atmost\"] [data-prx-label]",
+          "kind": "text",
+          "about": "label of the at-most-6 row: every report",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₆"
+        },
+        {
+          "select": "[data-prx-row=\"order\"] [data-prx-label]",
+          "kind": "text",
+          "about": "label of the order row (fixed-order DP)",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "optimal within this order"
+        },
+        {
+          "select": ".prx-fam-label [data-prx-label]",
+          "kind": "text",
+          "about": "label of the chosen family",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜_=6"
+        },
+        {
+          "select": "[data-prx-row=\"order\"] [data-prx-family]:not([data-prx-label])",
+          "kind": "text",
+          "about": "the order family named in words (its symbol waits for R-03; the label is the browser DP's 'within this order'); CR-197 explicitly exposes the order-family symbol alongside its words.",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "𝒜ᵨ: contiguous cuts of A, B, C, D, E, F"
+        }
+      ]
+    },
+    {
+      "id": "preset-exact6",
+      "about": "deck preset: the question's setting written out",
+      "preset": "exact6",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the best report with exactly 6 grades",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq6-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-readout=\"exact.grades\"]",
+          "about": "the full order",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq6-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.risk\"]",
+          "about": "at most 6 = all reports",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
+        },
+        {
+          "select": "[data-prx-readout=\"over.CD\"]",
+          "about": "the read-out names the forced statement C above D and its error",
+          "source": "registry",
+          "ref": "six.A.e.CD",
+          "value": 0.36183680491588155
+        }
+      ]
+    },
+    {
+      "id": "preset-atmost3",
+      "about": "preset: at most 3 grades chosen; exactly 3 gives the same report",
+      "preset": "atmost3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "the read-out: at most 3 grades",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871
+        },
+        {
+          "select": "[data-prx-readout=\"exact.risk\"]",
+          "about": "best report with exactly 3 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871
+        },
+        {
+          "select": "[data-prx-readout=\"exact.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq3-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-family-size]",
+          "about": "size of the exactly-3 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq3-tau.20",
+            "field": "familySize"
+          },
+          "value": 540
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.risk\"]",
+          "about": "best report with at most 3 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"atmost\"] [data-prx-family-size]",
+          "about": "size of the at-most-3 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603
+        },
+        {
+          "select": "[data-prx-readout=\"all.risk\"]",
+          "about": "the best of all reports (legend mark)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
+        },
+        {
+          "select": "[data-prx-result-scope] [data-prx-label=\"exact-within-family\"][data-prx-family=\"𝒜₆\"] ~ [data-prx-family-size]",
+          "about": "size of all reports in the legend",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 4683,
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"order.risk\"]",
+          "about": "fixed-order DP in A to F",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "fixedOrderDP-six-A-ABCDEF-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
+        },
+        {
+          "select": ".prx-fam-label [data-prx-label]",
+          "kind": "text",
+          "about": "label of the chosen family",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜_≤3"
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-label]",
+          "kind": "text",
+          "about": "label of the exactly-3 row",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜_=3"
+        }
+      ]
+    },
+    {
+      "id": "preset-order-bacdef",
+      "about": "preset: contiguous cuts of B, A, C, D, E, F chosen; no golden row holds this order's uncapped DP, so its risk and grades come from the registry (postrank_cuts with scores in this order gives the same .0379 and 1/1/2/2/3/4 in R)",
+      "preset": "order-bacdef",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "the read-out: optimal within this order",
+          "source": "registry",
+          "ref": "six.A.orderBACDEF.tau20.risk",
+          "value": 0.037946452157036584
+        },
+        {
+          "select": "[data-prx-readout=\"order.risk\"]",
+          "about": "the order row",
+          "source": "registry",
+          "ref": "six.A.orderBACDEF.tau20.risk",
+          "value": 0.037946452157036584
+        },
+        {
+          "select": "[data-prx-readout=\"order.grades\"]",
+          "about": "its grades",
+          "source": "registry",
+          "ref": "six.A.orderBACDEF.tau20.grades",
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"order\"] [data-prx-family-size]",
+          "about": "32 cuts",
+          "source": "registry",
+          "ref": "six.family.order.size",
+          "value": 32
+        },
+        {
+          "select": "[data-prx-readout=\"exact.risk\"]",
+          "about": "exactly 6 grades",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq6-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.risk\"]",
+          "about": "at most 6 = all reports",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
+        },
+        {
+          "select": ".prx-fam-label [data-prx-label]",
+          "kind": "text",
+          "about": "label of the chosen family",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "optimal within this order"
+        },
+        {
+          "select": ".prx-fam-label [data-prx-family]:not([data-prx-label])",
+          "kind": "text",
+          "about": "family name in words beside the order label (browser DP: 'within this order'); CR-197 explicitly exposes the order-family symbol alongside its words.",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "𝒜ᵨ: contiguous cuts of B, A, C, D, E, F"
+        },
+        {
+          "select": "[data-prx-readout=\"order.risk\"]",
+          "about": "the best cut of B, A, C, D, E, F (base-R fixed-order DP)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "fixedOrderDP-six-A-BACDEF-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0379464521570366
+        },
+        {
+          "select": "[data-prx-readout=\"order.grades\"]",
+          "about": "its report (base-R fixed-order DP)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "fixedOrderDP-six-A-BACDEF-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"order\"] [data-prx-family-size]",
+          "about": "contiguous cuts of one order of six units (base-R family size)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-order012345",
+            "field": "size"
+          },
+          "value": "32"
+        }
+      ]
+    },
+    {
+      "id": "preset-tb14",
+      "about": "preset: the theory book's four-unit law (ch. 14) at tau = 1/4 with exactly 4 grades chosen. At most 4 = all 75 reports and the A, B, C, D cuts come from the base-R rows of the same law; no golden row holds exactly 4 among all reports (24 strict orders), so that risk comes from the registry (it equals the fixed-order golden 7/40 and the theory book's table)",
+      "preset": "tb14",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "the read-out: exactly 4 grades, 7/40",
+          "source": "registry",
+          "ref": "g08.tb14.tau25.eq4.risk",
+          "value": 0.17500000000000002,
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 40
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact.risk\"]",
+          "about": "exactly 4 row",
+          "source": "registry",
+          "ref": "g08.tb14.tau25.eq4.risk",
+          "value": 0.17500000000000002,
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 40
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"exact.grades\"]",
+          "about": "the full order A > B > C > D",
+          "source": "registry",
+          "ref": "g08.tb14.tau25.eq4.grades",
+          "value": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-family-size]",
+          "about": "24 strict orders",
+          "source": "registry",
+          "ref": "g08.tb14.family.eq4.size",
+          "value": 24
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.risk\"]",
+          "about": "at most 4 = all reports: 3/20",
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 40
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb14-all-tau1/4",
+            "field": "risk"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.grades\"]",
+          "about": "A | BC | D",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb14-all-tau1/4",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            2,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"atmost\"] [data-prx-family-size]",
+          "about": "75 reports",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb14-all-tau1/4",
+            "field": "familySize"
+          },
+          "value": 75
+        },
+        {
+          "select": "[data-prx-readout=\"order.risk\"]",
+          "about": "fixed-order DP in A, B, C, D (at most 4 = every cut)",
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 40
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "fixedOrderDP-tb14-ABCD-cap4-tau1/4",
+            "field": "risk"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"order.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "fixedOrderDP-tb14-ABCD-cap4-tau1/4",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            2,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"order\"] [data-prx-family-size]",
+          "about": "8 cuts",
+          "source": "registry",
+          "ref": "g08.tb14.family.order.size",
+          "value": 8
+        },
+        {
+          "select": "[data-prx-readout=\"all.risk\"]",
+          "about": "the best of all reports",
+          "format": {
+            "fn": "formatRational",
+            "options": {
+              "maxDenominator": 40
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb14-all-tau1/4",
+            "field": "risk"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"law.ebar.BC\"]",
+          "about": "weighted error of B above C: 2/5",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "weightedError-tb14-w.6.4",
+            "field": "ebar.1.2"
+          },
+          "value": 0.4
+        },
+        {
+          "select": "[data-prx-readout=\"law.ebar.AB\"]",
+          "about": "weighted error of A above B: 1/4",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "weightedError-tb14-w.6.4",
+            "field": "ebar.0.1"
+          },
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"law.ebar.AC\"]",
+          "about": "weighted error of A above C: 1/10",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-multi",
+            "row": "weightedError-tb14-w.6.4",
+            "field": "ebar.0.2"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"law.e1.BC\"]",
+          "about": "criterion 1 error of B above C: 0",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-pairwise",
+            "row": "finiteLawPairwise-tb14-four-unit",
+            "field": "e.0.1.2"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"law.e2.BC\"]",
+          "about": "criterion 2 error of B above C: 1",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-pairwise",
+            "row": "finiteLawPairwise-tb14-four-unit",
+            "field": "e.1.1.2"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"law.e2.AB\"]",
+          "about": "criterion 2 error of A above B: 1/4",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-pairwise",
+            "row": "finiteLawPairwise-tb14-four-unit",
+            "field": "e.1.0.1"
+          },
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"law.prob.1\"]",
+          "about": "probability of state 1",
+          "source": "registry",
+          "ref": "g08.tb14.prob.high",
+          "value": 0.75
+        },
+        {
+          "select": "[data-prx-readout=\"law.prob.2\"]",
+          "about": "probability of state 2",
+          "source": "registry",
+          "ref": "g08.tb14.prob.low",
+          "value": 0.25
+        },
+        {
+          "select": ".prx-fam-label [data-prx-label]",
+          "kind": "text",
+          "about": "label of the chosen family",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜_=4"
+        },
+        {
+          "select": "[data-prx-row=\"atmost\"] [data-prx-label]",
+          "kind": "text",
+          "about": "label of the at-most-4 row: every report",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₄"
+        },
+        {
+          "select": "[data-prx-readout=\"exact.risk\"]",
+          "about": "exactly 4 grades among all 24 strict orders (base-R exactOptimum)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb14-eq4-tau1/4",
+            "field": "risk"
+          },
+          "value": 0.175
+        },
+        {
+          "select": "[data-prx-readout=\"exact.grades\"]",
+          "about": "its report (base-R exactOptimum)",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb14-eq4-tau1/4",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-family-size]",
+          "about": "the family size (base-R exactOptimum)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb14-eq4-tau1/4",
+            "field": "familySize"
+          },
+          "value": 24
+        },
+        {
+          "select": "[data-prx-row=\"order\"] [data-prx-family-size]",
+          "about": "contiguous cuts of one order of four units (base-R family size)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n4-order0123",
+            "field": "size"
+          },
+          "value": "8"
+        }
+      ]
+    },
+    {
+      "id": "six-tau05-g3",
+      "about": "six sites at tau = .05 with G = 3 (golden rows at this tau for at most 3 and exactly 3)",
+      "query": "?example=six&family=atmost&G=3&tau=.05&order=A,B,C,D,E,F",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"exact.risk\"]",
+          "about": "best report with exactly 3 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq3-tau.05",
+            "field": "risk"
+          },
+          "value": 0.0116516399454871
+        },
+        {
+          "select": "[data-prx-readout=\"exact.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq3-tau.05",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-family-size]",
+          "about": "size of the exactly-3 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq3-tau.05",
+            "field": "familySize"
+          },
+          "value": 540
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.risk\"]",
+          "about": "best report with at most 3 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.05",
+            "field": "risk"
+          },
+          "value": 0.0116516399454871
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.05",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"atmost\"] [data-prx-family-size]",
+          "about": "size of the at-most-3 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.05",
+            "field": "familySize"
+          },
+          "value": 603
+        },
+        {
+          "select": "[data-prx-readout=\"all.risk\"]",
+          "about": "the best of all reports (legend mark)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.05",
+            "field": "risk"
+          },
+          "value": 0.0116516399454871
+        },
+        {
+          "select": "[data-prx-result-scope] [data-prx-label=\"exact-within-family\"][data-prx-family=\"𝒜₆\"] ~ [data-prx-family-size]",
+          "about": "size of all reports in the legend",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.05",
+            "field": "familySize"
+          },
+          "value": 4683,
+          "index": 0
+        }
+      ]
+    },
+    {
+      "id": "six-tau40-g2",
+      "about": "six sites at tau = .40 with G = 2",
+      "query": "?example=six&family=exact&G=2&tau=.40&order=A,B,C,D,E,F",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"exact.risk\"]",
+          "about": "best report with exactly 2 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq2-tau.40",
+            "field": "risk"
+          },
+          "value": 0.184559077873992
+        },
+        {
+          "select": "[data-prx-readout=\"exact.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq2-tau.40",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-family-size]",
+          "about": "size of the exactly-2 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq2-tau.40",
+            "field": "familySize"
+          },
+          "value": 62
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.risk\"]",
+          "about": "best report with at most 2 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap2-tau.40",
+            "field": "risk"
+          },
+          "value": 0.184559077873992
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap2-tau.40",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"atmost\"] [data-prx-family-size]",
+          "about": "size of the at-most-2 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap2-tau.40",
+            "field": "familySize"
+          },
+          "value": 63
+        },
+        {
+          "select": "[data-prx-readout=\"all.risk\"]",
+          "about": "the best of all reports (legend mark)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-result-scope] [data-prx-label=\"exact-within-family\"][data-prx-family=\"𝒜₆\"] ~ [data-prx-family-size]",
+          "about": "size of all reports in the legend",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "familySize"
+          },
+          "value": 4683,
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "the read-out: exactly 2 grades",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq2-tau.40",
+            "field": "risk"
+          },
+          "value": 0.184559077873992
+        }
+      ]
+    },
+    {
+      "id": "six-tau25-g4",
+      "about": "six sites at tau = .25 with G = 4",
+      "query": "?example=six&family=atmost&G=4&tau=.25&order=A,B,C,D,E,F",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"exact.risk\"]",
+          "about": "best report with exactly 4 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq4-tau.25",
+            "field": "risk"
+          },
+          "value": 0.0446131188237032
+        },
+        {
+          "select": "[data-prx-readout=\"exact.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq4-tau.25",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-family-size]",
+          "about": "size of the exactly-4 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-eq4-tau.25",
+            "field": "familySize"
+          },
+          "value": 1560
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.risk\"]",
+          "about": "best report with at most 4 grades: risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap4-tau.25",
+            "field": "risk"
+          },
+          "value": 0.0446131188237032
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.grades\"]",
+          "about": "its grades",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap4-tau.25",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"atmost\"] [data-prx-family-size]",
+          "about": "size of the at-most-4 family",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap4-tau.25",
+            "field": "familySize"
+          },
+          "value": 2163
+        },
+        {
+          "select": "[data-prx-readout=\"all.risk\"]",
+          "about": "the best of all reports (legend mark)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.25",
+            "field": "risk"
+          },
+          "value": 0.0405050894174227
+        },
+        {
+          "select": "[data-prx-result-scope] [data-prx-label=\"exact-within-family\"][data-prx-family=\"𝒜₆\"] ~ [data-prx-family-size]",
+          "about": "size of all reports in the legend",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.25",
+            "field": "familySize"
+          },
+          "value": 4683,
+          "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "the read-out: at most 4 grades",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap4-tau.25",
+            "field": "risk"
+          },
+          "value": 0.0446131188237032
+        }
+      ]
+    },
+    {
+      "id": "dominance-all",
+      "query": "example=dominance&G=2&tau=.4444444444444444&family=atmost",
+      "about": "Book chapter10 dominance construction and restricted family; independent base-R enumeration pins.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"all.risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "dominance-all",
+            "field": "risk"
+          },
+          "format": {
+            "fn": "formatRational"
+          },
+          "value": 0.266666666666667
+        }
+      ]
+    },
+    {
+      "id": "dominance-atmost",
+      "query": "example=dominance&G=2&tau=.4444444444444444&family=atmost",
+      "about": "Book chapter10 dominance construction and restricted family; independent base-R enumeration pins.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "dominance-atMost",
+            "field": "risk"
+          },
+          "format": {
+            "fn": "formatRational"
+          },
+          "value": 0.314814814814815
+        },
+        {
+          "select": "[data-prx-row=\"atmost\"] [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "dominance-atMost",
+            "field": "familySize"
+          },
+          "format": {
+            "fn": "formatCount"
+          },
+          "value": 15
+        }
+      ]
+    },
+    {
+      "id": "dominance-exactly",
+      "query": "example=dominance&G=2&tau=.4444444444444444&family=exact",
+      "about": "Book chapter10 dominance construction and restricted family; independent base-R enumeration pins.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "dominance-exactly",
+            "field": "risk"
+          },
+          "format": {
+            "fn": "formatRational"
+          },
+          "value": 0.314814814814815
+        },
+        {
+          "select": "[data-prx-row=\"exact\"] [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "dominance-exactly",
+            "field": "familySize"
+          },
+          "format": {
+            "fn": "formatCount"
+          },
+          "value": 14
+        }
+      ]
+    },
+    {
+      "id": "all-family-disclosure-ties",
+      "query": "example=six&tau=.144422183173242&G=3&family=all",
+      "about": "Independent R enumeration pins every unrestricted tied report and differing disclosure count; cap family has one optimum.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"all.tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"all.tie.0.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.grades.0"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"all.tie.0.N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.Ns.0"
+          },
+          "value": 12,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"all.tie.1.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.grades.1"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"all.tie.1.N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.Ns.1"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "cap3.tieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "four-unit-family-ties",
+      "query": "example=tb14&tau=.10&G=3&family=order",
+      "about": "Independent finite-state R arithmetic pins both minimizing vectors and N0/3 in each relevant family.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"all.tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "all.tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"all.tie.0.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "all.grades.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"all.tie.0.N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "all.Ns.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"all.tie.1.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "all.grades.1"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"all.tie.1.N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "all.Ns.1"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "cap3.tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.tie.0.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "cap3.grades.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.tie.0.N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "cap3.Ns.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.tie.1.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "cap3.grades.1"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"atmost.tie.1.N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "cap3.Ns.1"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order.tieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "order.tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order.tie.0.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "order.grades.0"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order.tie.0.N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "order.Ns.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order.tie.1.grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "order.grades.1"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"order.tie.1.N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "order.Ns.1"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    }
+  ],
+  "app": "families",
+  "from": "postrank-explorer-v1/verification/readouts/families.json"
+}

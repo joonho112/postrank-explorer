@@ -1,0 +1,55 @@
+---
+title: "Optimal reports along the withholding-cost path"
+subtitle: "2.5 · after the postrank theory book, ch. 11 and 16"
+description: "The lower envelope of affine report-risk functions and its change points."
+---
+
+For a fixed report, posterior risk is an affine function of the withholding cost. The lower envelope of these
+functions gives the minimum risk over the selected family at each τ. Intersections on this envelope mark changes in
+the set of optimal reports. A grade cap can exclude reports that define the unrestricted envelope and hence alter
+both the path and its minimum risk. The low-cost view resolves the initial changes, including the interval on which
+withholding every pair is optimal.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/tau-path.js"></script>
+<script>window.__prxApp = PRX["tau-path"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Overview.** The unrestricted best report states 14 pairs, with risk .0372. The capped comparison gives .0417.
+  The faint lines are fixed reports; the heavy envelope follows their pointwise minimum. Arrow keys identify the reports on the envelope; the table gives their complete intervals.
+- **Before the first bend.** The report states 0 of 15 pairs, and risk equals the withholding cost .0005. The
+  low-cost strip includes the all-withheld report that an overview starting farther right would miss. The
+  left boundary is a limit, since the cost is positive.
+- **Small cost, coherent report.** The best report states 12 of 15 pairs, including 2 directions whose error
+  exceeds the withholding cost. The list gives the error probability for each newly stated direction. These choices are
+  made jointly, so the path cannot be read as a collection of isolated-pair thresholds.
+- **Exactly at a bend.** 2 reports share the smallest risk. Both neighbouring segments include the
+  shared endpoint; the read-out shows the first report under the stated equal-risk tolerance. Moving just
+  beyond the bend changes which line is lowest.
+- **Three-grade cap.** At the larger cost the capped report still states 12 of 15 pairs, with risk .0817; the
+  unrestricted comparison gives .0480. Restricting the available grades changes the decision problem even
+  though the posterior and the price of withholding are the same.
+
+::: {.callout-note appearance="simple"}
+These are fictional sites with normal posteriors specified for teaching. The lower panel separately shows equal-mean
+targets: an endpoint-only optimal report must remain in the path even though its interval has no width.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+g <- c(A=1L,B=2L,C=3L,D=3L,E=4L,F=5L)
+postrank_evaluate(g, pr_tutorial$one, weights=c(score_A=1), tau=.2)$weighted_risk # .03717176
+```
+The call evaluates the displayed report at a fixed cost.
+:::
+
+Standalone: [the τ path](../../embed/tau-path.html), for example `?tau=.005&zoom=low`.
+
+Related applications: [Reporting risk and withholding cost](price-of-silence.qmd),
+[Grade reports as pairwise decisions](report-builder.qmd).

@@ -1,0 +1,273 @@
+{
+  "$schema": "./_schema.json",
+  "app": "evidence-flags",
+  "catalog": "3.3",
+  "from": "v1 verification/readouts/evidence-flags.json",
+  "about": "Full R-02 view split. Original numeric expectations preserved; gates removed and posterior caption uses v3 wording.",
+  "cases": [
+    {
+      "id": "preset-two-units",
+      "about": "deck preset: the theory book's two units, flat-prior posterior",
+      "preset": "two-units",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"zA\"]",
+          "about": "z of unit A against the reference 0 (base-R oracle; theory book ch. 2)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "evidenceFlags-tb02-two-unit-ref0-crit1.96",
+            "field": "z.0"
+          },
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"zB\"]",
+          "about": "z of unit B",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "evidenceFlags-tb02-two-unit-ref0-crit1.96",
+            "field": "z.1"
+          },
+          "value": 1.5
+        },
+        {
+          "select": "[data-prx-readout=\"error\"]",
+          "about": "error of the stated direction A above B under the flat-prior posterior",
+          "source": "registry",
+          "ref": "cf.flags.two.flat.eAB",
+          "value": 0.6861870974858203
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the two-unit flag report at tau .20: the one pair is stated, so the risk is its error",
+          "source": "registry",
+          "ref": "cf.flags.two.flat.eAB",
+          "value": 0.6861870974858203,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N of the same report (one stated pair)",
+          "source": "registry",
+          "ref": "cf.flags.two.flat.eAB",
+          "value": 0.6861870974858203,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "E of the same report",
+          "source": "registry",
+          "ref": "cf.flags.two.flat.eAB",
+          "value": 0.6861870974858203,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"against\"]",
+          "about": "stated directions that run against the estimates (statedAgainst)",
+          "source": "registry",
+          "ref": "r02.two.against.count",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau of the risk",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"allWithheld\"]",
+          "about": "risk of withholding the pair, which equals tau",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "about": "the flag report is evaluated, not optimized",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        },
+        {
+          "select": "[data-prx-caption=\"flat-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "the chance a direction is wrong takes each true value as normal around its estimate, with its SE"
+        }
+      ]
+    },
+    {
+      "id": "preset-pair-teaching",
+      "about": "the same two units under the teaching posterior: e changes, the flags do not",
+      "preset": "pair-teaching",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"zA\"]",
+          "about": "the flags do not use the posterior: z of A is unchanged",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "evidenceFlags-tb02-two-unit-ref0-crit1.96",
+            "field": "z.0"
+          },
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"zB\"]",
+          "about": "z of B is unchanged",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "evidenceFlags-tb02-two-unit-ref0-crit1.96",
+            "field": "z.1"
+          },
+          "value": 1.5
+        },
+        {
+          "select": "[data-prx-readout=\"error\"]",
+          "about": "error of A above B under the teaching posterior (prior mean 0, prior SD .15)",
+          "source": "registry",
+          "ref": "r02.two.teaching.eAB",
+          "value": 0.2884260618443868
+        },
+        {
+          "select": "[data-prx-readout=\"meanA\"]",
+          "about": "teaching posterior mean of A",
+          "source": "registry",
+          "ref": "r02.two.teaching.meanA",
+          "value": 0.18
+        },
+        {
+          "select": "[data-prx-readout=\"meanB\"]",
+          "about": "teaching posterior mean of B",
+          "source": "registry",
+          "ref": "r02.two.teaching.meanB",
+          "value": 0.108
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the one stated pair at tau .20",
+          "source": "registry",
+          "ref": "r02.two.teaching.eAB",
+          "value": 0.2884260618443868,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "pair-seb15",
+      "about": "What to try: B's SE lowered to .15 puts both units in the flagged-above group, and the report withholds the pair",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"zB\"]",
+          "about": "z of B at SE .15",
+          "source": "registry",
+          "ref": "r02.two.seB15.zB",
+          "value": 2,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "no pair is stated",
+          "source": "registry",
+          "ref": "r02.two.seB15.N",
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"allWithheld\"]",
+          "about": "the report is all-withheld: its risk equals tau",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the flag report, which withholds the pair",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ],
+      "preset": "se15"
+    },
+    {
+      "id": "posterior-caption-roundtrip",
+      "query": "?estA=.20&seA=.05&estB=.30&seB=.20&crit=1.96&prior=flat&tau=.20",
+      "update": [
+        {
+          "prior": "teaching"
+        },
+        {
+          "prior": "flat"
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-caption=\"flat-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "the chance a direction is wrong takes each true value as normal around its estimate, with its SE"
+        }
+      ]
+    }
+  ]
+}

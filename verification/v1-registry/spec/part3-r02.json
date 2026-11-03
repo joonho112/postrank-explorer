@@ -1,0 +1,454 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part3-r02",
+  "description": "Part 3, Flags from standardized evidence (R-02): the two-unit example of the theory book, ch. 2 (estimates .20 and .30, SEs .05 and .20, reference 0) under the flat-prior and the teaching posterior, and the flag report on the frozen league with the mean of the 30 estimates as the reference (summaryStats, R mean semantics), under the teaching posterior (prior SD .15). The two-unit z values and the flat-prior error are cf.flags.two.* in part3.json; the league flag report's N, E, E/N, risk and largest stated error at cutoff 1.96 and tau .20 are league.default.prior15.flags196.tau20.* there (the same flags: the reference there is the same mean computed another way).",
+  "license_scope": "author",
+  "inputs": {
+    "r02.two.flags": {
+      "fn": "evidenceFlags",
+      "args": [
+        [
+          {
+            "$setting": "settings.r02.estA"
+          },
+          {
+            "$setting": "settings.r02.estB"
+          }
+        ],
+        [
+          {
+            "$setting": "settings.r02.seA"
+          },
+          {
+            "$setting": "settings.r02.seB"
+          }
+        ],
+        {
+          "ref": 0,
+          "crit": {
+            "$setting": "settings.crit196"
+          }
+        }
+      ],
+      "note": "the two-unit flag report against the reference 0 (theory book, ch. 2)"
+    },
+    "r02.two.teaching.post": {
+      "fn": "normalPosterior",
+      "args": [
+        [
+          {
+            "$setting": "settings.r02.estA"
+          },
+          {
+            "$setting": "settings.r02.estB"
+          }
+        ],
+        [
+          {
+            "$setting": "settings.r02.seA"
+          },
+          {
+            "$setting": "settings.r02.seB"
+          }
+        ],
+        {
+          "priorSd": {
+            "$setting": "settings.prior15"
+          }
+        }
+      ],
+      "note": "the teaching posterior of the two units: prior mean 0, prior SD .15"
+    },
+    "r02.two.teaching.E": {
+      "fn": "errorArray",
+      "args": [
+        {
+          "$input": "r02.two.teaching.post",
+          "path": "mean"
+        },
+        {
+          "$input": "r02.two.teaching.post",
+          "path": "sd"
+        },
+        {}
+      ]
+    },
+    "r02.league.ref": {
+      "fn": "summaryStats",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        }
+      ],
+      "note": "the reference of the league view: the mean of the 30 estimates, treated as fixed"
+    },
+    "r02.league.flags196": {
+      "fn": "evidenceFlags",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        {
+          "$data": "league-30",
+          "path": "tables.units.se"
+        },
+        {
+          "ref": {
+            "$input": "r02.league.ref",
+            "path": "mean"
+          },
+          "crit": {
+            "$setting": "settings.crit196"
+          }
+        }
+      ],
+      "note": "the league flag report at cutoff 1.96"
+    },
+    "r02.league.flags196.against": {
+      "fn": "statedAgainst",
+      "args": [
+        {
+          "$input": "r02.league.flags196",
+          "path": "grade"
+        },
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        {
+          "direction": "descending"
+        }
+      ],
+      "note": "stated pairs of the flag report whose estimates run the other way"
+    },
+    "r02.league.post": {
+      "fn": "normalPosterior",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        {
+          "$data": "league-30",
+          "path": "tables.units.se"
+        },
+        {
+          "priorSd": {
+            "$setting": "settings.prior15"
+          }
+        }
+      ],
+      "note": "the league's teaching posterior (prior mean 0, prior SD .15)"
+    },
+    "r02.league.E": {
+      "fn": "errorArray",
+      "args": [
+        {
+          "$input": "r02.league.post",
+          "path": "mean"
+        },
+        {
+          "$input": "r02.league.post",
+          "path": "sd"
+        },
+        {
+          "ids": {
+            "$data": "league-30",
+            "path": "tables.units.id"
+          },
+          "criteria": [
+            "theta"
+          ]
+        }
+      ]
+    },
+    "r02.two.seB15.flags": {
+      "fn": "evidenceFlags",
+      "args": [
+        [
+          {
+            "$setting": "settings.r02.estA"
+          },
+          {
+            "$setting": "settings.r02.estB"
+          }
+        ],
+        [
+          {
+            "$setting": "settings.r02.seA"
+          },
+          {
+            "$setting": "settings.r02.seB15"
+          }
+        ],
+        {
+          "ref": 0,
+          "crit": {
+            "$setting": "settings.crit196"
+          }
+        }
+      ],
+      "note": "What to try: B's SE lowered to .15; both units are flagged above"
+    }
+  },
+  "keys": {
+    "r02.two.against.count": {
+      "type": "scalar",
+      "settings": {
+        "estimate_A": "settings.r02.estA",
+        "estimate_B": "settings.r02.estB",
+        "se_A": "settings.r02.seA",
+        "se_B": "settings.r02.seB",
+        "cutoff": "settings.crit196"
+      },
+      "fn": "statedAgainst",
+      "args": [
+        {
+          "$input": "r02.two.flags",
+          "path": "grade"
+        },
+        [
+          {
+            "$setting": "settings.r02.estA"
+          },
+          {
+            "$setting": "settings.r02.estB"
+          }
+        ],
+        {
+          "direction": "descending"
+        }
+      ],
+      "field": "count",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "the flag report states A above B, the reverse of the estimates"
+    },
+    "r02.two.teaching.meanA": {
+      "type": "scalar",
+      "settings": {
+        "estimate_A": "settings.r02.estA",
+        "estimate_B": "settings.r02.estB",
+        "se_A": "settings.r02.seA",
+        "se_B": "settings.r02.seB",
+        "prior_sd": "settings.prior15"
+      },
+      "from": "r02.two.teaching.post",
+      "field": "mean.0",
+      "format": {
+        "fn": "formatDecimal",
+        "options": {
+          "digits": 3
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      }
+    },
+    "r02.two.teaching.meanB": {
+      "type": "scalar",
+      "settings": {
+        "estimate_A": "settings.r02.estA",
+        "estimate_B": "settings.r02.estB",
+        "se_A": "settings.r02.seA",
+        "se_B": "settings.r02.seB",
+        "prior_sd": "settings.prior15"
+      },
+      "from": "r02.two.teaching.post",
+      "field": "mean.1",
+      "format": {
+        "fn": "formatDecimal",
+        "options": {
+          "digits": 3
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      }
+    },
+    "r02.two.teaching.eAB": {
+      "type": "scalar",
+      "settings": {
+        "estimate_A": "settings.r02.estA",
+        "estimate_B": "settings.r02.estB",
+        "se_A": "settings.r02.seA",
+        "se_B": "settings.r02.seB",
+        "prior_sd": "settings.prior15"
+      },
+      "from": "r02.two.teaching.E",
+      "field": "e.0.0.1",
+      "format": {
+        "fn": "formatProb"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "teaching posterior: Pr(theta_A <= theta_B), the error of the stated direction A above B"
+    },
+    "r02.league.ref.mean": {
+      "type": "scalar",
+      "from": "r02.league.ref",
+      "field": "mean",
+      "format": {
+        "fn": "formatDecimal",
+        "options": {
+          "digits": 3
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "the reference of the league view"
+    },
+    "r02.league.flags196.above": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r02.league.flags196",
+          "path": "labels"
+        }
+      ],
+      "field": "sizes.0",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "units flagged above (label 1); every label occurs at this cutoff, so the sizes follow the labels"
+    },
+    "r02.league.flags196.none": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r02.league.flags196",
+          "path": "labels"
+        }
+      ],
+      "field": "sizes.1",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "units not flagged (label 2)"
+    },
+    "r02.league.flags196.below": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r02.league.flags196",
+          "path": "labels"
+        }
+      ],
+      "field": "sizes.2",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "units flagged below (label 3)"
+    },
+    "r02.league.flags196.against.count": {
+      "type": "scalar",
+      "from": "r02.league.flags196.against",
+      "field": "count",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "stated directions that run against the estimates"
+    },
+    "r02.league.flags196.against.units": {
+      "type": "scalar",
+      "from": "r02.league.flags196.against",
+      "field": "units.length",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "units placed below some unit with a smaller estimate"
+    },
+    "r02.two.seB15.zB": {
+      "type": "scalar",
+      "from": "r02.two.seB15.flags",
+      "field": "z.1",
+      "settings": {
+        "estimate_A": "settings.r02.estA",
+        "estimate_B": "settings.r02.estB",
+        "se_A": "settings.r02.seA",
+        "se_B": "settings.r02.seB15",
+        "cutoff": "settings.crit196"
+      },
+      "format": {
+        "fn": "formatDecimal",
+        "options": {
+          "digits": 1
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      }
+    },
+    "r02.two.seB15.N": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r02.two.seB15.flags",
+          "path": "grade"
+        }
+      ],
+      "field": "N",
+      "settings": {
+        "estimate_A": "settings.r02.estA",
+        "estimate_B": "settings.r02.estB",
+        "se_A": "settings.r02.seA",
+        "se_B": "settings.r02.seB15",
+        "cutoff": "settings.crit196"
+      },
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "both units in one flag group: the report withholds the pair"
+    },
+    "r02.league.flags196.overhalf.count": {
+      "type": "scalar",
+      "fn": "statedAbove",
+      "args": [
+        {
+          "$input": "r02.league.flags196",
+          "path": "grade"
+        },
+        {
+          "$input": "r02.league.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau50"
+          }
+        }
+      ],
+      "field": "count",
+      "settings": {
+        "cutoff": "settings.crit196",
+        "prior_sd": "settings.prior15",
+        "tau": "settings.tau50"
+      },
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "stated directions with error above one half (more likely wrong than right), teaching posterior"
+    }
+  }
+}

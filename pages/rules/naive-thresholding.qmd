@@ -1,0 +1,51 @@
+---
+title: "Coherence of pairwise threshold decisions"
+subtitle: "3.10 · after Kline, Rose and Walters (2024), §V.E"
+description: "Incompatible triples and the relations stated by KRW's coherent archived cards."
+---
+
+An isolated-pair threshold states a direction when its error probability is strictly below $\tau$ and otherwise
+withholds the pair. Applying this rule independently can produce relations inconsistent with any ordered grade
+report. In particular, two withheld pairs may require a shared grade that contradicts the stated direction of the
+third pair. The triple display records these conflicts and strict directed cycles. Superimposing the archived
+card's grade blocks identifies the differences between independent threshold decisions and a coherent complete
+report, using the released probabilities for evaluation.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/naive-thresholding.js"></script>
+<script>window.__prxApp = PRX["naive-thresholding"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Race λ .25.** Naive thresholding states 1,575 directions. Among 147,440 triples, 32,773 have two pairs
+  withheld and the third stated. For the selected triple, the withheld
+  pairs would force every firm into the same grade, contradicting the stated direction.
+- **Race λ .10.** The two-withheld count is 24,278. The triple selector and map arrows locate other conflicts in the matrix.
+- **Race λ .50.** The count falls to 15,107. More confident pairs do not make the consistency problem grow
+  monotonically. The curve counts every triple.
+- **Race λ .75.** The count falls again to 3,108. The curve distinguishes the different failure types. Absence of
+  strict directed cycles alone cannot establish that the pair choices form a coherent report.
+- **Race λ .25, card blocks.** The card withholds 575 confident pairs and states 324 directions whose errors
+  exceed τ. The selected triple retains its identity within these blocks. KRW's card has no cap on the number of grades,
+  so these differences arise from coherence.
+- **Gender λ 1.00.** All 4,656 pairs are stated, but 1 directed cycle precludes a coherent grade report. The absence of cycles
+  at the race baseline does not extend to every target and threshold.
+
+::: {.callout-note appearance="simple"}
+Shared grades withhold directions; they assert neither equality nor indistinguishability of the true values.
+The threshold counts use the released signed-target pair probabilities. Archived cards were selected with KRW's
+code under archived probabilities and are evaluated here under the released law. This is a consistency diagnostic,
+not a new solve or a certificate that these archived cards minimise postrank's loss.
+
+Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC,
+noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted; no endorsement is implied.
+Provided as is, without warranty. **The data describe KRW's correspondence experiment, not any firm's current conduct.**
+:::
+
+Standalone: [naive-thresholding](../../embed/naive-thresholding.html), for example `?lambda=.25&blocks=true&triple=0`.
+
+Related applications: [Coherence constraints on pairwise decisions](../grades/coherence.qmd), [Deciles and quartiles of posterior means](deciles-quartiles.qmd).

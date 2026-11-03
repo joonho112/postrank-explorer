@@ -1,0 +1,49 @@
+---
+title: "The decision for an isolated pair"
+subtitle: "2.1 · after the postrank theory book, ch. 10, and Kline, Rose and Walters (2024), slides 18–20"
+description: "Posterior expected loss of the two strict directions and withholding for a single pair."
+---
+
+For an isolated pair, the action with the smallest posterior expected loss depends on the direction probability and
+the cost of withholding. The two strict directions incur their respective error probabilities; withholding incurs
+a fixed cost τ. The graph expresses these losses as functions of $e_{AB}=1-\pi_{AB}$, the probability that stating
+A above B is wrong. An increase in $\pi_{AB}$ therefore moves the selected pair to the **left**. The horizontal
+withholding line and the two directional lines identify the loss-minimising actions, including ties at their
+intersections.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/one-pair.js"></script>
+<script>window.__prxApp = PRX["one-pair"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **π .85, τ .10.** Stating A above B is wrong with probability .15, above the .10 cost of withholding, which minimises loss.
+  The grey dot marks this minimum despite the posterior support for A above B. Its height varies with the withholding cost.
+- **π .85, τ .20.** The posterior is unchanged, but the withholding cost increases. The error remains .15, below .20, so the selected action is “state A above B”.
+  Only the horizontal line moved; the posterior probability and both directional costs stayed fixed.
+- **π .80, τ .20.** The error equals .20: stating A above B and withholding have equal expected loss, labelled “equally good”. The open circle marks
+  their crossing, and both dots receive a ring. A ring identifies a minimum-cost action at the current pair; it does not
+  identify a correct direction in the unknown truth.
+- **π .50, τ .50.** Both directions cost .50 and withholding also costs .50; the summary reads “all three actions are equally good”.
+  The crossing circles merge, while the table marks every action as minimum-cost.
+
+The shaded area follows the smallest cost along the whole error axis. The scale above the graph connects a
+direction probability to its error, and the table beside it gives the costs at the selected pair.
+
+::: {.callout-note appearance="simple"}
+This example gives equal true values probability zero. For an isolated pair, disclose only when the posterior
+probability of the direction exceeds $1-\tau$; at equality, disclosing and withholding tie. A shared grade withholds a
+direction rather than asserting equal true values. Combining many pair decisions into one coherent report adds a
+constraint that this isolated-pair rule does not impose.
+:::
+
+Standalone: [embed/one-pair.html](../../embed/one-pair.html), for example `?pi=.9&tau=.05` or
+`?preset=pi80&theme=dark`.
+
+Related applications: [Pairwise posterior direction probabilities](../uncertainty/two-units.qmd) ·
+[Grade reports as pairwise decisions](report-builder.qmd) · [Reporting risk and withholding cost](price-of-silence.qmd).

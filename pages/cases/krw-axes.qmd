@@ -1,0 +1,37 @@
+---
+title: "Equivalent reporting-loss scales"
+subtitle: "5.2 · after Kline, Rose and Walters (2024), Section II"
+description: "Affine equivalence of KRW's loss and postrank's risk over the six-site report family."
+---
+
+The complete six-site family contains 4,683 coherent reports. Each is evaluated under KRW's loss at reward λ and
+postrank's risk at the corresponding withholding cost τ. The scatter compares these two evaluations and identifies
+their minimising sets. Under the stated tie-free and common-family conditions, an increasing affine transformation
+relates the objectives, so their optimal reports coincide. The grid check repeats this comparison across cost
+settings. An additional archived firm card is evaluated as a fixed report and retains the distinction between its
+original selection probabilities and the released evaluation probabilities.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/krw-axes.js"></script>
+<script>window.__prxApp = PRX["krw-axes"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **λ 1, flat line** gives slope 0. The full order 1/2/3/4/5/6 has DR .0480 and expected correct minus wrong per pair .904. KRW call these minimising grades Condorcet ranks. The separate 97-firm grid card is evaluated as a fixed report.
+- **λ .25** gives slope 3. Both objectives choose 1/2/3/3/4/5, with postrank risk .0372. The ring marks a coherent report, rather than a collection of independent pair decisions.
+- **τ .25, whole grid** checks every report at every one of 49 τ settings. The two complete minimising sets agree at 49 of 49 values. The table gives the corresponding decimal λ and complete grade vectors for both objectives.
+- **λ .08** gives τ .0741 and 1/1/2/2/3/3. More pairs share a grade when a correct direction earns less.
+- **τ .40** moves the other slider: λ becomes 2/3 and the full order returns. Arrow keys on the figure read every report, including reports away from the best line.
+
+The correspondence requires a tie-free target and the same posterior probabilities, orientation, units and report family. For every such report, postrank's risk at τ equals τ plus one minus τ times KRW's risk at the matching λ. The reported residual checks this identity over the complete family; it measures floating-point rounding, not posterior calibration. Equal-risk tolerances determine which reports remain in each minimising set.
+
+The additional KRW card uses released probabilities for evaluation, while KRW's code chose it under archived probabilities. It is not claimed to be optimal here. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only, without warranty. Changes: postrank 1.1.0 midpoint-cell pair probabilities; archived λ-grid cards retained. No endorsement is implied. These data describe the historical correspondence experiment, not any firm's current conduct.
+
+[Open the standalone app](../../embed/krw-axes.html?preset=lambda1).
+
+Related applications: [KRW's reward and postrank's withholding cost](lambda-tau.qmd) · [The error–disclosure frontier](../grades/frontier.qmd) · [Error rates under two denominators](../grades/two-denominators.qmd).

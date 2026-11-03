@@ -1,0 +1,1271 @@
+{
+  "$schema": "./_schema.json",
+  "app": "noisy-estimate",
+  "catalog": "1.2",
+  "from": "postrank-explorer-v1 verification/readouts/noisy-estimate.json",
+  "about": "One unit with a true value and an SE; seeded estimates truth + SE z with z from the engine's stream (simulateEstimates, normals). The read-out gives the count within one SE (evidenceFlags with crit 1) beside the expected count draws x (Phi(1) - Phi(-1)) and the share, then the latest estimate as the true value plus its noise and the noise in SEs; the parts box repeats the latest estimate; the hidden table lists every draw (Draw, Estimate, Noise, Noise in SEs, Within one SE; td index = 4 x row + column - 1). Estimates at the two oracle settings are rows of the base-R oracle (oracle-simulate), one standard normal of seed 1 is a row of oracle-stream; the counts within one SE, the noise and its size in SEs at the other settings come from the registry (numbers/spec/part1-l02.json), the expected count at 20 draws and the share from the Part 1 closed forms (cf.*). The Monte Carlo caption's slots are the settings of draws and seed.",
+  "cases": [
+    {
+      "id": "se20",
+      "about": "The first preset (se20): true value .50, SE .20, 20 draws, seed 1. The estimates are rows of the base-R oracle (oracle-simulate, the same seeded stream reimplemented in R); the counts, the noise and its size in SEs come from v1's frozen registry (l02.*), the expected count and the normal share from the Part 1 closed forms. The read-out sentence, the legend, the keyboard label and the Monte Carlo caption are checked word for word, their numbers as slots.",
+      "preset": "se20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"within\"]",
+          "about": "estimates within one SE of the true value (evidenceFlags, crit 1)",
+          "source": "registry",
+          "ref": "l02.q.within",
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"draws\"]",
+          "about": "draws so far",
+          "source": "registry",
+          "ref": "settings.l02.draws20",
+          "value": 20
+        },
+        {
+          "select": "[data-prx-readout=\"expected\"]",
+          "about": "expected count, 20 (Phi(1) - Phi(-1))",
+          "source": "registry",
+          "ref": "cf.estimate.within1.count20",
+          "value": 13.653789842741716
+        },
+        {
+          "select": "[data-prx-readout=\"draws-expected\"]",
+          "source": "registry",
+          "ref": "settings.l02.draws20",
+          "value": 20
+        },
+        {
+          "select": "[data-prx-readout=\"share\"]",
+          "about": "share expected within one SE, to four decimals (N-03)",
+          "source": "registry",
+          "ref": "l02.share.within1",
+          "value": 0.6826894921370859
+        },
+        {
+          "select": "[data-prx-readout=\"latest-draw\"]",
+          "about": "the latest draw is the 20th",
+          "source": "registry",
+          "ref": "settings.l02.draws20",
+          "value": 20
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the 20th estimate (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n20-seed1",
+            "field": "estimates.19"
+          },
+          "value": 0.228834946005521
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the 20th estimate equals the registry value",
+          "source": "registry",
+          "ref": "l02.q.latest",
+          "value": 0.22883494600552085
+        },
+        {
+          "select": "[data-prx-readout=\"truth\"]",
+          "source": "registry",
+          "ref": "settings.l02.truth50",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"noise\"]",
+          "about": "the noise of the 20th estimate",
+          "source": "registry",
+          "ref": "l02.q.noise",
+          "value": -0.27116505399447915
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the noise of the 20th estimate in SEs",
+          "source": "registry",
+          "ref": "l02.n20.z",
+          "value": -1.3558252699723958
+        },
+        {
+          "select": "[data-prx-readout=\"parts-estimate\"]",
+          "about": "the parts: the estimate",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n20-seed1",
+            "field": "estimates.19"
+          },
+          "value": 0.228834946005521
+        },
+        {
+          "select": "[data-prx-readout=\"parts-truth\"]",
+          "about": "the parts: the true value",
+          "source": "registry",
+          "ref": "settings.l02.truth50",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"parts-noise\"]",
+          "about": "the parts: the noise",
+          "source": "registry",
+          "ref": "l02.q.noise",
+          "value": -0.27116505399447915
+        },
+        {
+          "select": "[data-prx-readout=\"parts-noise-se\"]",
+          "about": "the parts: the noise in SEs",
+          "source": "registry",
+          "ref": "l02.n20.z",
+          "value": -1.3558252699723958
+        },
+        {
+          "select": "[data-prx-readout=\"parts-draw\"]",
+          "about": "the parts: the draw number",
+          "source": "registry",
+          "ref": "settings.l02.draws20",
+          "value": 20
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: true value",
+          "source": "registry",
+          "ref": "settings.l02.truth50",
+          "value": 0.5
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: SE",
+          "source": "registry",
+          "ref": "settings.l02.se20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
+          "index": 0,
+          "about": "Monte Carlo caption: the number of draws",
+          "source": "registry",
+          "ref": "settings.l02.draws20",
+          "value": 20
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
+          "index": 1,
+          "about": "Monte Carlo caption: the seed",
+          "source": "registry",
+          "ref": "settings.seed.s1",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr td",
+          "index": 0,
+          "about": "hidden table: the first estimate (row 1, Estimate column)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n20-seed1",
+            "field": "estimates.0"
+          },
+          "value": 0.69319481176219
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr:last-child td",
+          "index": 0,
+          "about": "hidden table: the last estimate",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n20-seed1",
+            "field": "estimates.19"
+          },
+          "value": 0.228834946005521
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr:last-child td",
+          "index": 1,
+          "about": "hidden table: the noise of the last estimate",
+          "source": "registry",
+          "ref": "l02.q.noise",
+          "value": -0.27116505399447915
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr:last-child td",
+          "index": 2,
+          "about": "hidden table: the noise of the last estimate in SEs",
+          "source": "registry",
+          "ref": "l02.n20.z",
+          "value": -1.3558252699723958
+        },
+        {
+          "select": "svg[role=\"img\"]",
+          "index": 0,
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "text alternative of the dot plot",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Dot plot of the estimates drawn so far, one dot per draw on the estimate axis. The solid vertical line is the true value, and the shaded band reaches one SE on each side of it. Filled dots lie within one SE of the true value and open dots farther away. The ringed dot is the latest estimate; the arrow above the dots runs from the true value to it and is its noise. A dotted line marks zero."
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] caption",
+          "kind": "text",
+          "about": "caption of the figure's data table",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The estimates drawn so far, in draw order"
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the 20th draw's noise in SEs (base-R oracle stream)",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed1-20",
+            "field": "values.19"
+          },
+          "value": -1.3558252699724
+        },
+        {
+          "select": "[data-prx-readout=\"parts-noise-se\"]",
+          "about": "the same in the parts box (base-R oracle stream)",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed1-20",
+            "field": "values.19"
+          },
+          "value": -1.3558252699724
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Within one SE of the true value: ⟨within⟩ of ⟨draws⟩ estimates, compared with ⟨expected⟩ of ⟨draws⟩ expected on average (a share of ⟨share⟩). The latest estimate, from draw ⟨draw⟩, is ⟨latest⟩: the true value ⟨truth⟩ plus noise ⟨noise⟩, or ⟨z⟩ SEs.",
+          "slots": true,
+          "about": "the read-out sentence, word for word (its numbers are the slots, checked above)"
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"]",
+          "kind": "text",
+          "slots": true,
+          "source": "literal",
+          "ref": "6.5",
+          "value": "Monte Carlo, ⟨S⟩ draws, seed ⟨seed⟩",
+          "about": "the Monte Carlo caption in its labels.js wording"
+        },
+        {
+          "select": ".prx-kbd-layer",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Estimates drawn so far. Use the arrow keys to read each one, in draw order.",
+          "attr": "aria-label",
+          "about": "the keyboard reading of the dots (in draw order)"
+        },
+        {
+          "select": "[data-prx-part~=\"legend\"] .nse-key",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "estimate within one SE of the true value",
+          "index": 0,
+          "about": "legend key 1, on the plot panel"
+        },
+        {
+          "select": "[data-prx-part~=\"legend\"] .nse-key",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "estimate farther than one SE away",
+          "index": 1,
+          "about": "legend key 2, on the plot panel"
+        },
+        {
+          "select": "[data-prx-part~=\"legend\"] .nse-key",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "the band: one SE on each side of the true value",
+          "index": 2,
+          "about": "legend key 3, on the plot panel"
+        },
+        {
+          "select": "[data-prx-part~=\"legend\"] .nse-key",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "the latest estimate; the arrow above the dots is its noise",
+          "index": 3,
+          "about": "legend key 4, on the plot panel"
+        },
+        {
+          "select": "[data-prx-part~=\"legend\"] .nse-key",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "the dotted line marks zero",
+          "index": 4,
+          "about": "legend key 5, on the plot panel"
+        },
+        {
+          "select": "[data-prx-part~=\"legend\"] .nse-key",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "the dark dotted line leads from the latest estimate up to its arrow",
+          "index": 5,
+          "about": "legend key 6, on the plot panel: the second dotted line, the guide from the latest estimate up to its noise arrow"
+        }
+      ]
+    },
+    {
+      "id": "se10",
+      "about": "Preset se10: the same 20 draws of seed 1 with a smaller SE. Each keeps its noise in SEs, so the count within one SE and the noise in SEs are those of se20, and every estimate sits closer to the true value.",
+      "preset": "se10",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"within\"]",
+          "source": "registry",
+          "ref": "l02.se10.within",
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"expected\"]",
+          "source": "registry",
+          "ref": "cf.estimate.within1.count20",
+          "value": 13.653789842741716
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "source": "registry",
+          "ref": "l02.se10.latest",
+          "value": 0.3644174730027604
+        },
+        {
+          "select": "[data-prx-readout=\"noise\"]",
+          "source": "registry",
+          "ref": "l02.se10.noise",
+          "value": -0.13558252699723958
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the same size in SEs as at SE .20",
+          "source": "registry",
+          "ref": "l02.n20.z",
+          "value": -1.3558252699723958
+        },
+        {
+          "select": "[data-prx-readout=\"parts-estimate\"]",
+          "source": "registry",
+          "ref": "l02.se10.latest",
+          "value": 0.3644174730027604
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: SE",
+          "source": "registry",
+          "ref": "settings.l02.se10",
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
+          "index": 0,
+          "source": "registry",
+          "ref": "settings.l02.draws20",
+          "value": 20
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
+          "index": 1,
+          "source": "registry",
+          "ref": "settings.seed.s1",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the 20th estimate at SE .10 (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.1-n20-seed1",
+            "field": "estimates.19"
+          },
+          "value": 0.36441747300276
+        },
+        {
+          "select": "[data-prx-readout=\"parts-estimate\"]",
+          "about": "the same in the parts box (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.1-n20-seed1",
+            "field": "estimates.19"
+          },
+          "value": 0.36441747300276
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the noise in SEs is the same draw at every SE (base-R oracle stream)",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed1-20",
+            "field": "values.19"
+          },
+          "value": -1.3558252699724
+        }
+      ]
+    },
+    {
+      "id": "se05",
+      "about": "Preset se05: the same 20 draws of seed 1 with a smaller SE. Each keeps its noise in SEs, so the count within one SE and the noise in SEs are those of se20, and every estimate sits closer to the true value.",
+      "preset": "se05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"within\"]",
+          "source": "registry",
+          "ref": "l02.se05.within",
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"expected\"]",
+          "source": "registry",
+          "ref": "cf.estimate.within1.count20",
+          "value": 13.653789842741716
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "source": "registry",
+          "ref": "l02.se05.latest",
+          "value": 0.4322087365013802
+        },
+        {
+          "select": "[data-prx-readout=\"noise\"]",
+          "source": "registry",
+          "ref": "l02.se05.noise",
+          "value": -0.06779126349861979
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the same size in SEs as at SE .20",
+          "source": "registry",
+          "ref": "l02.n20.z",
+          "value": -1.3558252699723958
+        },
+        {
+          "select": "[data-prx-readout=\"parts-estimate\"]",
+          "source": "registry",
+          "ref": "l02.se05.latest",
+          "value": 0.4322087365013802
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: SE",
+          "source": "registry",
+          "ref": "settings.l02.se05",
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
+          "index": 0,
+          "source": "registry",
+          "ref": "settings.l02.draws20",
+          "value": 20
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
+          "index": 1,
+          "source": "registry",
+          "ref": "settings.seed.s1",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the 20th estimate at SE .05 (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.05-n20-seed1",
+            "field": "estimates.19"
+          },
+          "value": 0.43220873650138
+        },
+        {
+          "select": "[data-prx-readout=\"parts-estimate\"]",
+          "about": "the same in the parts box (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.05-n20-seed1",
+            "field": "estimates.19"
+          },
+          "value": 0.43220873650138
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the noise in SEs is the same draw at every SE (base-R oracle stream)",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed1-20",
+            "field": "values.19"
+          },
+          "value": -1.3558252699724
+        }
+      ]
+    },
+    {
+      "id": "draws200",
+      "about": "Preset draws200: the app's maximum of 200 draws for the same unit and seed; the count within one SE settles near the expected share, and the first twenty draws are those of se20.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"within\"]",
+          "source": "registry",
+          "ref": "l02.n200.within",
+          "value": 132
+        },
+        {
+          "select": "[data-prx-readout=\"draws\"]",
+          "source": "registry",
+          "ref": "settings.l02.draws200",
+          "value": 200
+        },
+        {
+          "select": "[data-prx-readout=\"expected\"]",
+          "about": "expected count, 200 (Phi(1) - Phi(-1))",
+          "source": "registry",
+          "ref": "l02.n200.expected",
+          "value": 136.5378984274172
+        },
+        {
+          "select": "[data-prx-readout=\"share\"]",
+          "source": "registry",
+          "ref": "l02.share.within1",
+          "value": 0.6826894921370859,
+          "about": "share expected within one SE, to four decimals (N-03)"
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "source": "registry",
+          "ref": "l02.n200.latest",
+          "value": 0.5039137183859074
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
+          "index": 0,
+          "about": "Monte Carlo caption: 200 draws",
+          "source": "registry",
+          "ref": "settings.l02.draws200",
+          "value": 200
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr td",
+          "index": 76,
+          "about": "hidden table: draw 20 of 200 is draw 20 of the 20 (the draws are the first values of one stream)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n20-seed1",
+            "field": "estimates.19"
+          },
+          "value": 0.228834946005521
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the 200th estimate (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n200-seed1",
+            "field": "estimates.199"
+          },
+          "value": 0.503913718385907
+        },
+        {
+          "select": ".nse-full",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The app holds at most ⟨max⟩ estimates; press Clear to start again.",
+          "slots": true,
+          "about": "the note at the maximum of 200 draws"
+        }
+      ],
+      "preset": "draws200"
+    },
+    {
+      "id": "draws11-stream",
+      "about": "Eleven draws of seed 1: the estimates are the first eleven of the 20 in the oracle row, and the noise of the 11th in SEs is the 11th standard normal of the base-R stream (oracle-stream).",
+      "query": "?truth=.50&se=.20&draws=11&seed=1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the 11th estimate",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n20-seed1",
+            "field": "estimates.10"
+          },
+          "value": 0.249725942579749
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the 11th normal of seed 1",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed1-11",
+            "field": "values.10"
+          },
+          "value": -1.25137028710126
+        },
+        {
+          "select": "[data-prx-readout=\"parts-noise-se\"]",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed1-11",
+            "field": "values.10"
+          },
+          "value": -1.25137028710126
+        }
+      ]
+    },
+    {
+      "id": "one-draw",
+      "about": "One draw of seed 1: the read-out uses the singular (\"1 of 1 estimate\"); the estimate is the first of the 20 in the oracle row and its noise in SEs the first standard normal of the base-R stream.",
+      "query": "?truth=.50&se=.20&draws=1&seed=1",
+      "expect": [
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Within one SE of the true value: ⟨within⟩ of ⟨draws⟩ estimate, compared with ⟨expected⟩ of ⟨draws⟩ expected on average (a share of ⟨share⟩). The latest estimate, from draw ⟨draw⟩, is ⟨latest⟩: the true value ⟨truth⟩ plus noise ⟨noise⟩, or ⟨z⟩ SEs.",
+          "slots": true,
+          "about": "the read-out sentence with one draw (singular)"
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the first estimate",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n20-seed1",
+            "field": "estimates.0"
+          },
+          "value": 0.69319481176219
+        },
+        {
+          "select": "[data-prx-readout=\"parts-estimate\"]",
+          "about": "the same in the parts box",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n20-seed1",
+            "field": "estimates.0"
+          },
+          "value": 0.69319481176219
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the first normal of seed 1",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed1-11",
+            "field": "values.0"
+          },
+          "value": 0.965974058810949
+        }
+      ]
+    },
+    {
+      "id": "oracle-seed",
+      "about": "Another seed, true value and SE: the setting of the second base-R oracle row (true value -.30, SE .05, 7 draws, seed 20261030). No estimate lies more than one SE above the true value here.",
+      "query": "?truth=-.30&se=.05&draws=7&seed=20261030",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the 7th estimate (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth-0.3-se0.05-n7-seed20261030",
+            "field": "estimates.6"
+          },
+          "value": -0.329345916482001
+        },
+        {
+          "select": "[data-prx-readout=\"parts-estimate\"]",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth-0.3-se0.05-n7-seed20261030",
+            "field": "estimates.6"
+          },
+          "value": -0.329345916482001
+        },
+        {
+          "select": "[data-prx-readout=\"within\"]",
+          "source": "registry",
+          "ref": "l02.n7.within",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"expected\"]",
+          "about": "expected count, 7 (Phi(1) - Phi(-1))",
+          "source": "registry",
+          "ref": "l02.n7.expected",
+          "value": 4.7788264449596
+        },
+        {
+          "select": "[data-prx-readout=\"noise\"]",
+          "source": "registry",
+          "ref": "l02.n7.noise",
+          "value": -0.02934591648200063
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "source": "registry",
+          "ref": "l02.n7.z",
+          "value": -0.5869183296400126
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
+          "index": 1,
+          "about": "Monte Carlo caption: seed 20261030",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr td",
+          "index": 0,
+          "about": "hidden table: estimate 1",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth-0.3-se0.05-n7-seed20261030",
+            "field": "estimates.0"
+          },
+          "value": -0.304050251272519
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr td",
+          "index": 4,
+          "about": "hidden table: estimate 2",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth-0.3-se0.05-n7-seed20261030",
+            "field": "estimates.1"
+          },
+          "value": -0.325004227840831
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr td",
+          "index": 8,
+          "about": "hidden table: estimate 3",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth-0.3-se0.05-n7-seed20261030",
+            "field": "estimates.2"
+          },
+          "value": -0.371103702607976
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr td",
+          "index": 12,
+          "about": "hidden table: estimate 4",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth-0.3-se0.05-n7-seed20261030",
+            "field": "estimates.3"
+          },
+          "value": -0.305207818120029
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr td",
+          "index": 16,
+          "about": "hidden table: estimate 5",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth-0.3-se0.05-n7-seed20261030",
+            "field": "estimates.4"
+          },
+          "value": -0.364410302662775
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr td",
+          "index": 20,
+          "about": "hidden table: estimate 6",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth-0.3-se0.05-n7-seed20261030",
+            "field": "estimates.5"
+          },
+          "value": -0.305894227192123
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] tbody tr td",
+          "index": 24,
+          "about": "hidden table: estimate 7",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth-0.3-se0.05-n7-seed20261030",
+            "field": "estimates.6"
+          },
+          "value": -0.329345916482001
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the 7th draw's noise in SEs (base-R oracle stream)",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed20261030-7",
+            "field": "values.6"
+          },
+          "value": -0.586918329640012
+        }
+      ]
+    },
+    {
+      "id": "clamped",
+      "about": "Out-of-range keys are clamped (CONTRACT 8.1): true value 9 to 1, SE 9 to .50, 999 draws to 200. The latest estimate equals the registry value at true value 1, SE .50 and 200 draws only if all three were clamped there.",
+      "query": "?truth=9&se=9&draws=999&seed=1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "source": "registry",
+          "ref": "l02.clamp.latest",
+          "value": 1.0097842959647683
+        },
+        {
+          "select": "[data-prx-readout=\"within\"]",
+          "source": "registry",
+          "ref": "l02.clamp.within",
+          "value": 132
+        },
+        {
+          "select": "[data-prx-readout=\"draws\"]",
+          "source": "registry",
+          "ref": "settings.l02.draws200",
+          "value": 200
+        },
+        {
+          "select": "[data-prx-readout=\"expected\"]",
+          "source": "registry",
+          "ref": "l02.n200.expected",
+          "value": 136.5378984274172
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the 200th estimate at true value 1 and SE .50, the clamped setting (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth1-se0.5-n200-seed1",
+            "field": "estimates.199"
+          },
+          "value": 1.00978429596477
+        }
+      ]
+    },
+    {
+      "id": "update-draw",
+      "about": "update() after the first render (Draw once more, or a parent page through postMessage): the first preset, then 21 draws.",
+      "preset": "se20",
+      "update": [
+        {
+          "draws": 21
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"within\"]",
+          "source": "registry",
+          "ref": "l02.n21.within",
+          "value": 13
+        },
+        {
+          "select": "[data-prx-readout=\"expected\"]",
+          "source": "registry",
+          "ref": "l02.n21.expected",
+          "value": 14.336479334878803
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "source": "registry",
+          "ref": "l02.n21.latest",
+          "value": 0.6148987629267355
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "source": "registry",
+          "ref": "l02.n21.z",
+          "value": 0.5744938146336773
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "the 21st estimate after one more draw (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.2-n21-seed1",
+            "field": "estimates.20"
+          },
+          "value": 0.614898762926736
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the 21st draw's noise in SEs (base-R oracle stream)",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed1-21",
+            "field": "values.20"
+          },
+          "value": 0.574493814633677
+        }
+      ]
+    },
+    {
+      "id": "update-se",
+      "about": "update() after the first render: the first preset, then SE .10. The result equals the se10 preset: the draws keep their noise in SEs.",
+      "preset": "se20",
+      "update": [
+        {
+          "se": 0.1
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"within\"]",
+          "source": "registry",
+          "ref": "l02.se10.within",
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "source": "registry",
+          "ref": "l02.se10.latest",
+          "value": 0.3644174730027604
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "source": "registry",
+          "ref": "l02.n20.z",
+          "value": -1.3558252699723958
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "source": "registry",
+          "ref": "settings.l02.se10",
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"latest\"]",
+          "about": "after the update to SE .10, the 20th estimate (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "simulateEstimates-truth0.5-se0.1-n20-seed1",
+            "field": "estimates.19"
+          },
+          "value": 0.36441747300276
+        },
+        {
+          "select": "[data-prx-readout=\"noise-se\"]",
+          "about": "the noise in SEs is unchanged by the SE (base-R oracle stream)",
+          "format": {
+            "fn": "formatSigned",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "normals-seed1-20",
+            "field": "values.19"
+          },
+          "value": -1.3558252699724
+        }
+      ]
+    },
+    {
+      "id": "no-draws",
+      "about": "Zero draws (after Clear): no dots and no Monte Carlo caption; the sliders, the figure's text alternative and the table caption remain.",
+      "query": "?truth=.50&se=.20&draws=0&seed=1",
+      "expect": [
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "source": "registry",
+          "ref": "settings.l02.truth50",
+          "value": 0.5
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "source": "registry",
+          "ref": "settings.l02.se20",
+          "value": 0.2
+        },
+        {
+          "select": "svg[role=\"img\"]",
+          "index": 0,
+          "attr": "aria-label",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Dot plot of the estimates drawn so far, one dot per draw on the estimate axis. The solid vertical line is the true value, and the shaded band reaches one SE on each side of it. Filled dots lie within one SE of the true value and open dots farther away. The ringed dot is the latest estimate; the arrow above the dots runs from the true value to it and is its noise. A dotted line marks zero."
+        },
+        {
+          "select": "[data-prx-part~=\"table\"] caption",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The estimates drawn so far, in draw order"
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "No estimates yet. Press Draw for one estimate or Draw ⟨n⟩ for twenty.",
+          "slots": true,
+          "about": "the read-out with no draws"
+        },
+        {
+          "select": ".nse-parts-empty",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Press Draw to collect an estimate.",
+          "about": "the parts box with no draws"
+        }
+      ]
+    }
+  ]
+}

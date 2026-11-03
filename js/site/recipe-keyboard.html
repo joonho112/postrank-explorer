@@ -1,0 +1,26 @@
+<script id="prx-recipe-keyboard">
+(() => {
+  // Quarto's collapsed callout header is a div. Keep Bootstrap in charge of its
+  // collapse state while giving the existing click target button semantics.
+  const enhance = () => {
+    for (const header of document.querySelectorAll('.callout-header[data-bs-toggle="collapse"]')) {
+      if (header.hasAttribute('data-prx-recipe-keyboard') || header.closest('details') ||
+          header.matches('button, input, select, textarea, a[href], summary')) continue;
+      const title = header.querySelector('.callout-title-container')?.cloneNode(true);
+      title?.querySelectorAll('.screen-reader-only, .visually-hidden, [aria-hidden="true"]').forEach(node => node.remove());
+      const name = title?.textContent.replace(/\s+/g, ' ').trim();
+      if (name) header.setAttribute('aria-label', name);
+      header.setAttribute('role', 'button');
+      header.setAttribute('tabindex', '0');
+      header.setAttribute('data-prx-recipe-keyboard', '');
+      header.addEventListener('keydown', event => {
+        if (event.target !== header || (event.key !== 'Enter' && event.key !== ' ')) return;
+        event.preventDefault();
+        if (!event.repeat) header.click();
+      });
+    }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', enhance, { once: true });
+  else enhance();
+})();
+</script>

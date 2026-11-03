@@ -1,0 +1,30 @@
+{
+  "name": "postrank-explorer-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "pr-core: the numerical engine of postrank Explorer (TypeScript, built to ../js/pr-core.js and ../js/pr-core.umd.js; solver bundle ../js/bundles/solver.js)",
+  "author": "JoonHo Lee <jlee296@ua.edu>",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=25.8.1"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json && node scripts/clean-outputs.mjs && vite build && tsc -p tsconfig.build.json && node scripts/write-dts-entry.mjs && node scripts/build-bundles.mjs && node scripts/build-solver.mjs && node scripts/write-hash.mjs",
+    "bundles": "node scripts/build-bundles.mjs",
+    "solver": "node scripts/build-solver.mjs",
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "check:fresh": "node scripts/check-fresh.mjs",
+    "check:fresh:self-test": "node scripts/check-fresh.mjs --self-test",
+    "fixtures": "Rscript scripts/fixtures/normal-r.R && Rscript scripts/fixtures/stream-r.R && python3 -I scripts/fixtures/erfc-mpmath.py"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "typescript": "5.9.3",
+    "vite": "6.4.5"
+  },
+  "dependencies": {
+    "highs": "1.15.4"
+  }
+}

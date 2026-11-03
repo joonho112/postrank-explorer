@@ -1,0 +1,4886 @@
+{
+  "$schema": "./_schema.json",
+  "app": "order-misses",
+  "catalog": "3.6",
+  "from": "postrank-explorer-v1/verification/readouts/posterior-tiers.json",
+  "about": "Complete applicable v1 non-gate numerical regressions. Prediction result content becomes the plain law-full-tau25 case; source registry/golden/oracle values unchanged.",
+  "cases": [
+    {
+      "id": "law-full-tau25",
+      "about": "Ungated complete law at tau.25, mean-order cuts; preserves every non-gate source assertion",
+      "query": "?data=tb19&rule=pm-cuts&order=mean&tau=.25&cap=3",
+      "expect": [
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-readout=\"pm-cuts.grades\"]",
+          "about": "posterior-mean cuts at tau 1/4: all-withheld",
+          "source": "registry",
+          "ref": "tb19.law3.pmorder.tau25.optimum",
+          "value": [
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "read-out: risk of the posterior-mean cuts",
+          "source": "registry",
+          "ref": "tb19.law3.tau25.r111.risk",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"opt.risk\"]",
+          "about": "read-out: the exact optimum's risk",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.0"
+          },
+          "value": 0.183333333333333
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.risk\"]",
+          "about": "exact optimum within all 13 reports: risk",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.0"
+          },
+          "value": 0.183333333333333
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.grades\"]",
+          "about": "its report",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "grade.0"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-family-size]",
+          "about": "family size 13",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "size"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-readout=\"er-cuts.grades\"]",
+          "about": "expected-rank cuts: the exact optimum",
+          "source": "registry",
+          "ref": "r03.tb19.ercuts.tau25.grades",
+          "value": [
+            2,
+            1,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-readout=\"er-cuts.risk\"]",
+          "about": "their risk",
+          "source": "registry",
+          "ref": "r03.tb19.ercuts.tau25.risk",
+          "value": 0.18333333333333335
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-family-size]",
+          "about": "order family size",
+          "source": "registry",
+          "ref": "r03.tb19.family.order.size",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-row=\"pm-tiers\"] [data-prx-readout=\"pm-tiers.risk\"]",
+          "about": "posterior-mean tiers (three tiers of three units: the full order A, B, C)",
+          "source": "registry",
+          "ref": "tb19.law3.tau25.r123.risk",
+          "value": 0.4666666666666666
+        },
+        {
+          "select": "[data-prx-row=\"pm-tiers\"] [data-prx-caption=\"fixed-tiers\"]",
+          "about": "tiers caption",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "fixed tiers, not optimized"
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-label]",
+          "about": "order label",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "optimal within this order"
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-label]",
+          "about": "exact label (the engine name 𝒜₃ has no low line)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜₃"
+        },
+        {
+          "select": ".prx-pt-law-text .prx-num",
+          "about": "law text: expected ranks",
+          "format": {
+            "fn": "formatTuple",
+            "item": {
+              "fn": "formatDecimal",
+              "options": {
+                "digits": 1
+              }
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb19-law3",
+            "field": "rank"
+          },
+          "value": [
+            2.4,
+            1.3,
+            2.3
+          ],
+          "index": 5
+        },
+        {
+          "select": "tr[data-prx-report=\"2/1/2\"] td:nth-of-type(3) .prx-num",
+          "about": "table: risk of 2/1/2 at tau 1/4",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.0"
+          },
+          "value": 0.183333333333333
+        },
+        {
+          "select": "tr[data-prx-report=\"3/1/2\"] td:nth-of-type(3) .prx-num",
+          "about": "table: risk of 3/1/2 at tau 1/4",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.1"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "tr[data-prx-report=\"1/1/1\"] td:nth-of-type(3) .prx-num",
+          "about": "table: risk of 1/1/1 at tau 1/4",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.2"
+          },
+          "value": 0.25
+        },
+        {
+          "select": "tr[data-prx-report=\"1/1/2\"] td:nth-of-type(3) .prx-num",
+          "about": "table: risk of 1/1/2 at tau 1/4",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.4"
+          },
+          "value": 0.316666666666667
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/3\"] td:nth-of-type(3) .prx-num",
+          "about": "table: risk of 1/2/3 at tau 1/4",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.6"
+          },
+          "value": 0.466666666666667
+        },
+        {
+          "select": "tr[data-prx-report=\"1/3/2\"] td:nth-of-type(3) .prx-num",
+          "about": "table: risk of 1/3/2 at tau 1/4",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.12"
+          },
+          "value": 0.8
+        }
+      ]
+    },
+    {
+      "id": "preset-tb19",
+      "about": "three-unit law, expected-rank cuts, tau .25: they recover the exact optimum",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "read-out risk 11/60",
+          "source": "registry",
+          "ref": "r03.tb19.ercuts.tau25.risk",
+          "value": 0.18333333333333335
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "N 2",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.0"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "E 3/10",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.0"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-readout=\"er-cuts.gap\"]",
+          "about": "gap 0",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-tb19-all-212",
+            "field": "gap"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.risk\"]",
+          "about": "optimum",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.0"
+          },
+          "value": 0.183333333333333
+        }
+      ],
+      "query": "?data=tb19&rule=er-cuts&order=rank&cap=3&tau=.25&opt=cap"
+    },
+    {
+      "id": "tb19-tau50",
+      "about": "three-unit law at tau 1/2: expected-rank cuts give the full order B, C, A, the exact optimum; posterior-mean cuts give {A, B} > {C}",
+      "query": "?data=tb19&rule=pm-cuts&cap=3&tau=.50&opt=cap",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "read-out: posterior-mean cuts",
+          "source": "registry",
+          "ref": "r03.tb19.pmcuts.tau50.risk",
+          "value": 0.39999999999999997
+        },
+        {
+          "select": "[data-prx-row=\"pm-cuts\"] [data-prx-readout=\"pm-cuts.grades\"]",
+          "about": "1/1/2",
+          "source": "registry",
+          "ref": "r03.tb19.pmcuts.tau50.grades",
+          "value": [
+            1,
+            1,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"er-cuts\"] [data-prx-readout=\"er-cuts.grades\"]",
+          "about": "3/1/2",
+          "source": "registry",
+          "ref": "r03.tb19.ercuts.tau50.grades",
+          "value": [
+            3,
+            1,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.risk\"]",
+          "about": "exact optimum risk 1/5",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.50-k13",
+            "field": "risk.0"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"opt.risk\"]",
+          "about": "read-out: the exact optimum",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.50-k13",
+            "field": "risk.0"
+          },
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "tb19-tau30-tie",
+      "about": "edge: at tau .30 the reports 2/1/2 and 3/1/2 tie; the engine keeps fewer grades (package rule) and the expected-rank cuts are the same report",
+      "query": "?data=tb19&rule=er-cuts&order=rank&cap=3&tau=.30&opt=cap",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "read-out risk 1/5 (every risk at tau .30 is a fraction with denominator 30)",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.30-k13",
+            "field": "risk.0"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.grades\"]",
+          "about": "2/1/2 kept",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.30-k13",
+            "field": "grade.0"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ]
+        },
+        {
+          "select": "tr[data-prx-report=\"3/1/2\"] td:nth-of-type(3) .prx-num",
+          "about": "3/1/2 at the same risk",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.30-k13",
+            "field": "risk.1"
+          },
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "edge-tb19-cap1",
+      "about": "edge: one grade allowed: every rule is the all-withheld report and its risk is tau",
+      "query": "?data=tb19&rule=pm-tiers&cap=1&tau=.25&opt=cap",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk 1/4",
+          "source": "registry",
+          "ref": "tb19.law3.tau25.r111.risk",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-readout=\"optimum.risk\"]",
+          "about": "the optimum with at most one grade",
+          "source": "registry",
+          "ref": "tb19.law3.tau25.r111.risk",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-row=\"optimum\"] [data-prx-label]",
+          "about": "label",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.2",
+          "value": "exact optimum within 𝒜_≤1"
+        }
+      ]
+    },
+    {
+      "id": "retained-v2-state-summaries",
+      "query": "?order=rank&rule=er-cuts&tau=.25",
+      "about": "State table rows retain the actual v2 posterior summaries/order highlight; all values from an independent existing base-R law row.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"state-mean-A\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.0"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-mean-B\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.1"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-mean-C\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.2"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-rank-A\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "expectedRank.0"
+          },
+          "value": 2.4,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-rank-B\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "expectedRank.1"
+          },
+          "value": 1.3,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-rank-C\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "expectedRank.2"
+          },
+          "value": 2.3,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-top-A\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.0"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-top-B\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.1"
+          },
+          "value": 0.7,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"state-top-C\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "all-thirteen-complete-table",
+      "query": "?order=mean&rule=pm-cuts&tau=.25&cap=3",
+      "about": "Every report N,expected wrong count and risk pinned to independent full13 base-R bestReports output, independent of UI row sort.",
+      "expect": [
+        {
+          "select": "tr[data-prx-report=\"2/1/2\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.0"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/1/2\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.0"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/1/2\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.0"
+          },
+          "value": 0.183333333333333,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"3/1/2\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.1"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"3/1/2\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.1"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"3/1/2\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.1"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/1/1\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/1/1\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/1/1\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.2"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/1/1\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.3"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/1/1\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.3"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/1/1\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.3"
+          },
+          "value": 0.283333333333333,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/1/2\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.4"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/1/2\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.4"
+          },
+          "value": 0.7,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/1/2\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.4"
+          },
+          "value": 0.316666666666667,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/1/3\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.5"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/1/3\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.5"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/1/3\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.5"
+          },
+          "value": 0.333333333333333,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/3\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.6"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/3\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.6"
+          },
+          "value": 1.4,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/3\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.6"
+          },
+          "value": 0.466666666666667,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/2/1\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.7"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/2/1\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.7"
+          },
+          "value": 1.3,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/2/1\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.7"
+          },
+          "value": 0.516666666666667,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"3/2/1\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.8"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"3/2/1\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.8"
+          },
+          "value": 1.6,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"3/2/1\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.8"
+          },
+          "value": 0.533333333333333,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/2\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.9"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/2\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.9"
+          },
+          "value": 1.4,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/2\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.9"
+          },
+          "value": 0.55,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/1\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.10"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/1\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.10"
+          },
+          "value": 1.7,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/2/1\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.10"
+          },
+          "value": 0.65,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/3/1\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.11"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/3/1\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.11"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"2/3/1\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.11"
+          },
+          "value": 0.666666666666667,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/3/2\"] td:nth-of-type(1) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "N.12"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/3/2\"] td:nth-of-type(2) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "Ew.12"
+          },
+          "value": 2.4,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "tr[data-prx-report=\"1/3/2\"] td:nth-of-type(3) .prx-num",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-tb19-all-tau.25-k13",
+            "field": "risk.12"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "both-equal-risk-reports-marked-best",
+      "query": "?order=rank&rule=er-cuts&tau=.30&cap=3",
+      "expect": [
+        {
+          "select": "tr[data-prx-report=\"3/1/2\"] td:last-child",
+          "source": "literal",
+          "ref": "9.1",
+          "kind": "text",
+          "value": "cuts of B, C, A and exact optimum"
+        }
+      ]
+    },
+    {
+      "id": "exact-risk-curves-cap1-cap",
+      "query": "?cap=1&opt=cap&order=mean&rule=pm-cuts&tau=.25",
+      "about": "Independent base-R exact lawPath intervals for both orders and the declared benchmark family over[0,.5], including grades,N,E and both endpoint risks.",
+      "expect": [
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap1",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap1",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap1",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap1",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap1",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap1",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap1",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        }
+      ]
+    },
+    {
+      "id": "exact-risk-curves-cap1-all",
+      "query": "?cap=1&opt=all&order=mean&rule=pm-cuts&tau=.25",
+      "about": "Independent base-R exact lawPath intervals for both orders and the declared benchmark family over[0,.5], including grades,N,E and both endpoint risks.",
+      "expect": [
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap1",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap1",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.tauFrom"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.grade"
+          },
+          "value": [
+            3,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.N"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.Ew"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.riskFrom"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        }
+      ]
+    },
+    {
+      "id": "exact-risk-curves-cap2-cap",
+      "query": "?cap=2&opt=cap&order=mean&rule=pm-cuts&tau=.25",
+      "about": "Independent base-R exact lawPath intervals for both orders and the declared benchmark family over[0,.5], including grades,N,E and both endpoint risks.",
+      "expect": [
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            1,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.7,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.266666666666667,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap2",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.266666666666667,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        }
+      ]
+    },
+    {
+      "id": "exact-risk-curves-cap2-all",
+      "query": "?cap=2&opt=all&order=mean&rule=pm-cuts&tau=.25",
+      "about": "Independent base-R exact lawPath intervals for both orders and the declared benchmark family over[0,.5], including grades,N,E and both endpoint risks.",
+      "expect": [
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            1,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.7,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap2",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap2",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.266666666666667,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.tauFrom"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.grade"
+          },
+          "value": [
+            3,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.N"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.Ew"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.riskFrom"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        }
+      ]
+    },
+    {
+      "id": "exact-risk-curves-cap3-cap",
+      "query": "?cap=3&opt=cap&order=mean&rule=pm-cuts&tau=.25",
+      "about": "Independent base-R exact lawPath intervals for both orders and the declared benchmark family over[0,.5], including grades,N,E and both endpoint risks.",
+      "expect": [
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            1,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.7,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.tauFrom"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.grade"
+          },
+          "value": [
+            3,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.N"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.Ew"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.riskFrom"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.2.tauFrom"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.2.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.2.grade"
+          },
+          "value": [
+            3,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.2.N"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.2.Ew"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.2.riskFrom"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-unrestricted-cap3",
+            "field": "intervals.2.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        }
+      ]
+    },
+    {
+      "id": "exact-risk-curves-cap3-all",
+      "query": "?cap=3&opt=all&order=mean&rule=pm-cuts&tau=.25",
+      "about": "Independent base-R exact lawPath intervals for both orders and the declared benchmark family over[0,.5], including grades,N,E and both endpoint risks.",
+      "expect": [
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            1,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.7,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"mean\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-mean-cap3",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.tauFrom"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.grade"
+          },
+          "value": [
+            3,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.N"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.Ew"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.riskFrom"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"rank\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-rank-cap3",
+            "field": "intervals.2.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.tauFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.tauTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.grade"
+          },
+          "value": [
+            1,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.Ew"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.riskFrom"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"0\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.0.riskTo"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.tauFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.tauTo"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.grade"
+          },
+          "value": [
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.Ew"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.riskFrom"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"1\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.1.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-from\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.tauFrom"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-to\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.tauTo"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.grade"
+          },
+          "value": [
+            3,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.N"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.Ew"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskFrom\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.riskFrom"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        },
+        {
+          "select": "tr[data-prx-path=\"best\"][data-prx-interval=\"2\"] [data-prx-readout=\"path-riskTo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "tb19-lawpath-all",
+            "field": "intervals.2.riskTo"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "tol": 1e-12
+        }
+      ]
+    }
+  ]
+}

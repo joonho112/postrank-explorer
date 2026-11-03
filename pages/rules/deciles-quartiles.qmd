@@ -1,0 +1,54 @@
+---
+title: "Deciles and quartiles of posterior means"
+subtitle: "3.9 · after Kline, Rose and Walters (2024), Figures 2C and 6"
+description: "Evaluation of fixed posterior-mean tiers on KRW's discordance and informativeness axes."
+---
+
+Quartiles and deciles partition a posterior-mean order into nearly equal groups, with exact score ties retained.
+The resulting reports are evaluated on KRW's discordance-rate and informativeness axes. The archived-card curve uses
+the same released pair probabilities as the fixed-tier points. In each illustrated comparison, an archived card has
+both a lower expected wrong-direction rate DR and higher informativeness I. The comparison separates a fixed
+quantile-grouping convention from selection of grade boundaries under a reporting objective. It evaluates existing
+cards and does not perform a new optimisation under the released law.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/deciles-quartiles.js"></script>
+<script>window.__prxApp = PRX["deciles-quartiles"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Race quartiles, card λ .60.** The quartile point has DR .1696 and I .4185. The ringed card has lower DR,
+  .1678, and higher I, .4336. The size patterns distinguish optimised boundary positions from nearly equal tier sizes.
+- **Race deciles, card λ .82.** Deciles move to DR .2271 and I .4550, while the selected card reaches .2243
+  and .4589. More tiers disclose more pairs; that alone does not make them a better tradeoff on both axes.
+- **Gender quartiles, card λ .64.** Under the signed male-name contact-gap target, quartiles have DR .1978
+  and I .3621; the card gives .1908 and .3875. These coordinates concern a different target from the race comparisons.
+- **Gender deciles, card λ .80.** Deciles give DR .2525 and I .4042; the card gives .2373 and .4078.
+  The comparison depends on the selected λ. The selected card need not improve both coordinates at every grid setting.
+
+::: {.callout-note appearance="simple"}
+KRW discuss deciles and quartiles in §IV.B and Figure 2C, and reporting possibilities in §V.E and Figure 6.
+The diamonds are constructed fixed-tier comparisons. The curve joins archived grid cards selected under KRW's
+archived probabilities; recomputing their coordinates under the released law supplies no new optimality certificate.
+KRW write τ̄ for the informativeness axis. Gender remains signed, rather than an absolute contact gap.
+
+Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC,
+noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted; no endorsement is implied.
+Provided as is, without warranty. **The data describe KRW's correspondence experiment, not any firm's current conduct.**
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+x <- postrank::pr_case_krw$alternatives$race
+b <- postrank::postrank_cuts(setNames(x$summaries$means[,1],x$entity_ids),x,postrank::postrank_settings(weights=c(race_signed=1),tau=.375,G_max=10),direction="descending",rule="quantile",G_b=4,method="posterior_mean")
+b$evaluation[c("N","E_over_N","primary_risk")]
+```
+:::
+
+Standalone: [deciles-quartiles](../../embed/deciles-quartiles.html), for example `?criterion=race&G=4&lambda=.60`.
+
+Related applications: [Tiers and optimised cuts of posterior rankings](posterior-tiers.qmd), [Fixed quantile tiers](fixed-tiers.qmd).

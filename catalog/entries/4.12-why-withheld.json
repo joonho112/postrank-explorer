@@ -1,0 +1,100 @@
+{
+  "id": "4.12",
+  "name": "why-withheld",
+  "part": "4",
+  "title": "Why do these two share a grade?",
+  "idea": "A shared grade can come from an uncertain direction, from criteria that conflict, from coherence with other pairs or from the family's limits, and the grade does not say which.",
+  "status": "built",
+  "from": "new concept \u00b7 theory book ch. 10, 12, 19 and 21; postrank vignette a2 (pairwise support); picture: the relation matrix; clicking a shared-grade pair opens four tests (the isolated rule, the criteria's directions, stated alone, the family) and the cheapest report that states the pair, with its extra risk",
+  "data": [
+    "data/released/six-sites.json",
+    "data/released/case-cde.json",
+    "data/released/case-krw.json",
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 19 and 21. Firms as adapted in postrank 1.1.0 (pr_case_krw). 12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde).",
+  "caption": "Six fictional sites and restated finite teaching laws; case views carry their released conditioning, attribution and licence notices. Four nonexclusive tests under the supplied law; same grade means not compared.",
+  "presets": [
+    {
+      "id": "coherence",
+      "label": "Coherence",
+      "query": "data=six&tau=.2&cap=all"
+    },
+    {
+      "id": "cap-three",
+      "label": "Cap three",
+      "query": "data=six&tau=.2&cap=3"
+    },
+    {
+      "id": "certain-conflict",
+      "label": "Certain conflict",
+      "query": "data=ch19&tau=.2&cap=all"
+    },
+    {
+      "id": "uncertainty",
+      "label": "Uncertainty",
+      "query": "data=uncertain&tau=.2&cap=all"
+    },
+    {
+      "id": "fixed-order",
+      "label": "Fixed order",
+      "query": "data=order&tau=.25&cap=all"
+    },
+    {
+      "id": "blocked",
+      "label": "Indivisible block",
+      "query": "data=order&tau=.25&cap=all&restriction=blocked"
+    },
+    {
+      "id": "cde",
+      "label": "CDE subset",
+      "query": "data=cde&tau=.25&cap=3"
+    },
+    {
+      "id": "krw",
+      "label": "KRW fixed order",
+      "query": "data=krw&tau=.25&cap=4"
+    }
+  ],
+  "try": [
+    {
+      "preset": "coherence",
+      "shows": [
+        ".1019",
+        ".008513"
+      ]
+    },
+    {
+      "preset": "certain-conflict",
+      "shows": [
+        ".1667",
+        ".025"
+      ]
+    },
+    {
+      "preset": "uncertainty",
+      "shows": [
+        ".4000",
+        ".6000"
+      ]
+    },
+    {
+      "preset": "fixed-order",
+      "shows": [
+        ".3167"
+      ]
+    },
+    {
+      "preset": "cde",
+      "shows": [
+        "523,251"
+      ]
+    },
+    {
+      "preset": "krw",
+      "shows": [
+        "147,537"
+      ]
+    }
+  ]
+}

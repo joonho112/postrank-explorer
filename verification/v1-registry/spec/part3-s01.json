@@ -1,0 +1,604 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part3-s01",
+  "description": "Part 3 case S-01, California chronic absence (12 schools, tau .20, at most 3 grades). Archived values are case keys of numbers-cases.json (cde.cap3.tau20.*, cde.tertiles.tau20.*) and engine keys of part3.json (cde.cap3.* enumeration). This fragment adds engine results of the Step 7.1 helpers on the released array: the tertiles as cuts of the posterior-mean order (cutGrade), the three lowest risks and the best report stating F above I (bestReports; their keys name the rank and point at part3.json's hand-entered keys with same_as), the two smallest E among the reports at N = 48 (reportsAtN), the relation changes from the optimum to the tertiles with the four near-even stated errors (relationChange), the tertiles' gap above H (ruleGap), the largest N with at most 3 grades and the size of the cap-4 order family.",
+  "license_scope": "cde-source-conditions",
+  "inputs": {
+    "s01.order": {
+      "fn": "scoreOrder",
+      "args": [
+        {
+          "$data": "case-cde",
+          "path": "tables.units.mean"
+        },
+        {
+          "direction": "descending"
+        }
+      ],
+      "note": "the posterior-mean order of theta = -p (A, C, B, F, E, D, H, G, I, K, L, J), which is also the observed-rate order"
+    },
+    "s01.tertiles": {
+      "fn": "cutGrade",
+      "args": [
+        12,
+        [
+          4,
+          8
+        ],
+        {
+          "order": {
+            "$input": "s01.order",
+            "path": "order"
+          }
+        }
+      ],
+      "note": "cuts after positions 4 and 8 of the posterior-mean order: the tertiles (equal to the released observed_rate_tertiles)"
+    },
+    "s01.tertiles.disclosure": {
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "s01.tertiles"
+        }
+      ]
+    },
+    "s01.opt": {
+      "fn": "exactOptimum",
+      "args": [
+        {
+          "$data": "case-cde",
+          "path": "arrays.error"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          },
+          "family": {
+            "kind": "atMost",
+            "G": {
+              "$setting": "settings.cap3"
+            }
+          }
+        }
+      ],
+      "note": "the exact optimum within the 523,251 reports with at most 3 grades at tau = .20 (3/6/3, the archived report)"
+    },
+    "s01.best3": {
+      "fn": "bestReports",
+      "args": [
+        {
+          "$data": "case-cde",
+          "path": "arrays.error"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          },
+          "family": {
+            "kind": "atMost",
+            "G": {
+              "$setting": "settings.cap3"
+            }
+          },
+          "k": 3
+        }
+      ],
+      "note": "the three lowest risks at tau = .20 with at most 3 grades"
+    },
+    "s01.statingFI": {
+      "fn": "bestReports",
+      "args": [
+        {
+          "$data": "case-cde",
+          "path": "arrays.error"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          },
+          "family": {
+            "kind": "atMost",
+            "G": {
+              "$setting": "settings.cap3"
+            }
+          },
+          "k": 1,
+          "stating": [
+            [
+              5,
+              8
+            ]
+          ]
+        }
+      ],
+      "note": "the best report with at most 3 grades that states F (index 5) above I (index 8)"
+    },
+    "s01.at48": {
+      "fn": "reportsAtN",
+      "args": [
+        {
+          "$data": "case-cde",
+          "path": "arrays.error"
+        },
+        {
+          "family": {
+            "kind": "atMost",
+            "G": {
+              "$setting": "settings.cap3"
+            }
+          },
+          "N": 48,
+          "k": 2
+        }
+      ],
+      "note": "the reports with at most 3 grades that state exactly 48 directions and their two smallest E"
+    },
+    "s01.rel": {
+      "fn": "relationChange",
+      "args": [
+        {
+          "$input": "s01.opt",
+          "path": "grade"
+        },
+        {
+          "$input": "s01.tertiles"
+        },
+        {
+          "$data": "case-cde",
+          "path": "arrays.error"
+        }
+      ],
+      "note": "relations from the optimum (3/6/3) to the tertiles; pairs in pair order, error = the error of the direction the tertiles state"
+    },
+    "s01.cloud": {
+      "fn": "reportCloud",
+      "args": [
+        {
+          "$data": "case-cde",
+          "path": "arrays.error"
+        },
+        {
+          "family": {
+            "kind": "atMost",
+            "G": {
+              "$setting": "settings.cap3"
+            }
+          }
+        }
+      ],
+      "note": "all 523,251 reports with at most 3 grades by N"
+    },
+    "s01.hull": {
+      "fn": "lowerHull",
+      "args": [
+        {
+          "$input": "s01.cloud"
+        }
+      ]
+    },
+    "s01.gap.tertiles": {
+      "fn": "ruleGap",
+      "args": [
+        {
+          "$input": "s01.tertiles"
+        },
+        {
+          "$data": "case-cde",
+          "path": "arrays.error"
+        },
+        {
+          "hull": {
+            "$input": "s01.hull"
+          }
+        }
+      ],
+      "note": "the tertiles' height above H at their own N"
+    },
+    "s01.dp4": {
+      "fn": "fixedOrderDP",
+      "args": [
+        {
+          "$data": "case-cde",
+          "path": "arrays.error"
+        },
+        {
+          "scores": {
+            "$data": "case-cde",
+            "path": "tables.units.mean"
+          },
+          "direction": "descending",
+          "G": {
+            "$setting": "settings.cap4"
+          },
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "note": "the best cuts of the posterior-mean order with at most 4 grades"
+    },
+    "s01.md46": {
+      "fn": "matchedDisclosure",
+      "args": [
+        {
+          "$input": "s01.cloud"
+        },
+        {
+          "$input": "s01.hull"
+        },
+        46
+      ],
+      "note": "H at N = 46, between the hull vertices at 45 and 47"
+    }
+  },
+  "keys": {
+    "s01.cde.tertiles.sizes": {
+      "type": "vector",
+      "from": "s01.tertiles.disclosure",
+      "field": "sizes",
+      "format": {
+        "fn": "formatSizes"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "note": "the tertiles' grade sizes (4/4/4)"
+    },
+    "s01.cde.opt.risk": {
+      "type": "scalar",
+      "from": "s01.opt",
+      "field": "risk",
+      "format": {
+        "fn": "formatRisk",
+        "options": {
+          "digits": 6
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "same_as": "cde.cap3.tau20.risk",
+      "note": "the browser enumeration's optimum at tau = .20 (equals the archived solve)"
+    },
+    "s01.cde.opt.N": {
+      "type": "scalar",
+      "from": "s01.opt",
+      "field": "N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "same_as": "cde.cap3.tau20.N"
+    },
+    "s01.cde.family.size": {
+      "type": "scalar",
+      "from": "s01.opt",
+      "field": "family.size",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "same_as": "cde.family.cap3.size"
+    },
+    "s01.cde.rank2.risk": {
+      "type": "scalar",
+      "from": "s01.best3",
+      "field": "reports.1.risk",
+      "format": {
+        "fn": "formatRisk",
+        "options": {
+          "digits": 6
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "same_as": "cde.cap3.tau20.bestFI.risk",
+      "note": "the second-lowest risk at tau = .20: {A-F}/{G, H, I}/{J, K, L}"
+    },
+    "s01.cde.rank2.N": {
+      "type": "scalar",
+      "from": "s01.best3",
+      "field": "reports.1.N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions"
+    },
+    "s01.cde.rank3.risk": {
+      "type": "scalar",
+      "from": "s01.best3",
+      "field": "reports.2.risk",
+      "format": {
+        "fn": "formatRisk",
+        "options": {
+          "digits": 6
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "same_as": "cde.cap3.tau20.second.risk",
+      "note": "the third-lowest risk at tau = .20: {A, B, C}/{D, E, F}/{G-L}"
+    },
+    "s01.cde.rank3.N": {
+      "type": "scalar",
+      "from": "s01.best3",
+      "field": "reports.2.N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions"
+    },
+    "s01.cde.statingFI.risk": {
+      "type": "scalar",
+      "from": "s01.statingFI",
+      "field": "reports.0.risk",
+      "format": {
+        "fn": "formatRisk",
+        "options": {
+          "digits": 6
+        }
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "same_as": "cde.cap3.tau20.bestFI.risk",
+      "note": "the best report that states F above I is the rank-2 report"
+    },
+    "s01.cde.statingFI.matched": {
+      "type": "scalar",
+      "from": "s01.statingFI",
+      "field": "matched",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "note": "reports with at most 3 grades that state F above I"
+    },
+    "s01.cde.N48.count": {
+      "type": "scalar",
+      "from": "s01.at48",
+      "field": "count",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "same_as": "cde.cap3.N48.count"
+    },
+    "s01.cde.N48.E1": {
+      "type": "scalar",
+      "from": "s01.at48",
+      "field": "reports.0.Ew",
+      "format": {
+        "fn": "formatRisk"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "same_as": "cde.cap3.N48.minE",
+      "note": "the smallest E at N = 48: the tertiles"
+    },
+    "s01.cde.N48.E2": {
+      "type": "scalar",
+      "from": "s01.at48",
+      "field": "reports.1.Ew",
+      "format": {
+        "fn": "formatRisk"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "note": "the next smallest E at N = 48"
+    },
+    "s01.cde.nmax": {
+      "type": "scalar",
+      "from": "s01.cloud",
+      "field": "byN.14.N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "note": "the largest N of any report with at most 3 grades for 12 units (the last row of byN)"
+    },
+    "s01.cde.rel.same": {
+      "type": "scalar",
+      "from": "s01.rel",
+      "field": "nSame",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions"
+    },
+    "s01.cde.rel.newStated": {
+      "type": "scalar",
+      "from": "s01.rel",
+      "field": "nNewDisclosed",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "note": "pairs the tertiles state and the optimum withholds"
+    },
+    "s01.cde.rel.newWithheld": {
+      "type": "scalar",
+      "from": "s01.rel",
+      "field": "nNewWithheld",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "note": "pairs the optimum states and the tertiles withhold"
+    },
+    "s01.cde.rel.reversed": {
+      "type": "scalar",
+      "from": "s01.rel",
+      "field": "nReversed",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions"
+    },
+    "s01.cde.rel.FD": {
+      "type": "scalar",
+      "from": "s01.rel",
+      "field": "pairs.3.error",
+      "format": {
+        "fn": "formatRisk"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "note": "F above D, stated by the tertiles"
+    },
+    "s01.cde.rel.FE": {
+      "type": "scalar",
+      "from": "s01.rel",
+      "field": "pairs.5.error",
+      "format": {
+        "fn": "formatRisk"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "note": "F above E, stated by the tertiles"
+    },
+    "s01.cde.rel.GI": {
+      "type": "scalar",
+      "from": "s01.rel",
+      "field": "pairs.10.error",
+      "format": {
+        "fn": "formatRisk"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "note": "G above I, stated by the tertiles"
+    },
+    "s01.cde.rel.HI": {
+      "type": "scalar",
+      "from": "s01.rel",
+      "field": "pairs.11.error",
+      "format": {
+        "fn": "formatRisk"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "note": "H above I, stated by the tertiles"
+    },
+    "s01.cde.gap.tertiles": {
+      "type": "scalar",
+      "from": "s01.gap.tertiles",
+      "field": "gap",
+      "format": {
+        "fn": "formatExpectedCount"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "note": "0: the tertiles lie on the lower hull"
+    },
+    "s01.cde.dp4.size": {
+      "type": "scalar",
+      "from": "s01.dp4",
+      "field": "family.size",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "note": "contiguous cut sets of the posterior-mean order with at most 4 grades"
+    },
+    "s01.cde.md46.N": {
+      "type": "scalar",
+      "from": "s01.md46",
+      "field": "N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions",
+      "note": "two directions below the largest disclosure"
+    },
+    "s01.cde.md46.H": {
+      "type": "scalar",
+      "from": "s01.md46",
+      "field": "H",
+      "format": {
+        "fn": "formatRisk"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions"
+    },
+    "s01.cde.md46.psi": {
+      "type": "scalar",
+      "from": "s01.md46",
+      "field": "psi",
+      "format": {
+        "fn": "formatShare"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "license_scope": "cde-source-conditions",
+      "note": "the weight on the more-disclosing vertex (N = 47)"
+    },
+    "s01.cde.md46.lower": {
+      "type": "scalar",
+      "from": "s01.md46",
+      "field": "lower.N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions"
+    },
+    "s01.cde.md46.upper": {
+      "type": "scalar",
+      "from": "s01.md46",
+      "field": "upper.N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "license_scope": "cde-source-conditions"
+    }
+  }
+}

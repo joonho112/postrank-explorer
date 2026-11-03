@@ -1,0 +1,112 @@
+{
+  "id": "1.17",
+  "name": "mc-error",
+  "part": "1",
+  "title": "Probabilities from draws carry noise",
+  "idea": "An error probability estimated from posterior draws has Monte Carlo error; pairs near τ can flip between runs, but the report need not change with them.",
+  "status": "built",
+  "from": "new concept · v1 storyboard P-09; postrank vignette m6 (pairwise MCSE and Monte Carlo fragility); picture: estimated against exact error probabilities with ±2 MCSE as the number of draws S changes, the simultaneous envelope (the package's form, the book's noted), the pairs flagged fragile, and the report chosen from the estimates beside the one from the exact values",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "math": true,
+  "credit": "After the postrank vignette m6, “Monte Carlo uncertainty and diagnostics”, and the postrank theory book, ch. 15.",
+  "caption": "Six fictional sites from the postrank tutorial; their normal law is set by hand, and the draws are simulated in this browser.",
+  "presets": [
+    {
+      "id": "s1000",
+      "label": "S 1,000",
+      "query": "S=1000&seed=1&criteria=A&tau=.20&pair=A,B&cap=3"
+    },
+    {
+      "id": "all1000",
+      "label": "All reports",
+      "query": "S=1000&seed=1&criteria=A&tau=.20&pair=A,B&cap=none"
+    },
+    {
+      "id": "s100",
+      "label": "S 100",
+      "query": "S=100&seed=1&criteria=A&tau=.20&pair=A,B&cap=3"
+    },
+    {
+      "id": "s4000",
+      "label": "S 4,000",
+      "query": "S=4000&seed=1&criteria=A&tau=.20&pair=A,B&cap=3"
+    },
+    {
+      "id": "cd35",
+      "label": "C–D at τ .35",
+      "query": "S=400&seed=1&criteria=A&tau=.35&pair=C,D&cap=3"
+    },
+    {
+      "id": "both",
+      "label": "Both scores",
+      "query": "S=1000&seed=4&criteria=AB&tau=.20&pair=E,F&cap=3"
+    }
+  ],
+  "try": [
+    {
+      "preset": "s1000",
+      "shows": [
+        ".198",
+        ".188",
+        ".0126",
+        ".0247",
+        "100 of the 100 runs",
+        "0 of the 18 runs"
+      ]
+    },
+    {
+      "preset": "all1000",
+      "shows": [
+        "18 of the 18 runs",
+        "5 more runs",
+        "2 reports share the smallest risk",
+        "82 of 100"
+      ]
+    },
+    {
+      "preset": "s100",
+      "shows": [
+        ".0402",
+        ".0782",
+        ".1788",
+        ".188"
+      ]
+    },
+    {
+      "preset": "s4000",
+      "shows": [
+        ".0283",
+        ".203",
+        ".0064",
+        ".0116",
+        ".0124",
+        "54 of 100"
+      ]
+    },
+    {
+      "preset": "cd35",
+      "shows": [
+        ".362",
+        ".360",
+        ".0240",
+        "0 of the 35 runs",
+        "35 of the 35 runs"
+      ]
+    },
+    {
+      "preset": "both",
+      "shows": [
+        ".202"
+      ]
+    },
+    {
+      "query": "S=1000&seed=1&criteria=AB&tau=.20&pair=E,F&cap=3",
+      "shows": [
+        ".192"
+      ]
+    }
+  ]
+}

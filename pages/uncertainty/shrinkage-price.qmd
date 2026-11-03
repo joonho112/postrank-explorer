@@ -1,0 +1,53 @@
+---
+title: "Sensitivity to the prior standard deviation"
+subtitle: "1.6 · the prior SD of a teaching posterior, after Walters' teaching slides"
+description: "Repeated-sampling squared error and pairwise posterior probabilities across prior standard deviations."
+---
+
+The prior standard deviation determines the amount of shrinkage in the normal–normal model. It may be specified by
+the analyst or estimated from the data by an empirical Bayes procedure. Four panels evaluate the simulated league
+from [normal–normal posterior shrinkage](shrinkage.qmd) over prior standard deviations from .01 to 1 on a logarithmic scale.
+With the prior centred on the average true value, the posterior means have the smallest average squared error near
+the standard deviation of those values. Pairwise posterior probabilities also vary with the prior specification;
+[Pairwise posterior direction probabilities](two-units.qmd) defines the probability used in these comparisons.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/shrinkage-price.js"></script>
+<script>window.__prxApp = PRX["shrinkage-price"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Near the true spread.** At prior SD .15 both distance curves are at their lowest point among the slider's
+  settings: .0096 in this draw (the estimates: .0163) and .0075 over many draws. A finer search puts the closed form's
+  lowest point at about .146, next to the true spread, .149.
+- **Much too narrow.** At .02 the posterior means end farther from the true values than the estimates: .0197 against
+  .0163 in this draw, .0191 against .0175 over many draws. In this draw the posterior puts one direction above .90 in
+  only 6 of the 435 pairs.
+- **Too narrow.** At .05 the expected pairs against the true order are 87.45, against 88.12 for the estimates and
+  80.66 at their fewest; in this draw 17 units end farther than their estimates were.
+- **Too wide.** At .45 the expected distance is .0133, as at .05, yet in this draw the posterior puts one direction
+  above .90 in 159 pairs instead of 66. These are the posterior's own probabilities; whether such directions are right
+  under the true values is checked in [Reported error and reference-law evaluation](../grades/reported-and-realized.qmd). In this draw 13 units end farther, as
+  at every prior SD from about .23 on.
+- **Another draw.** With seed 20261031 this draw's distance is lowest at .12 (.0092); over many draws it stays lowest
+  at .15 (.0075).
+
+::: {.callout-note appearance="simple"}
+"Over many draws" means the closed form: the expectation over draws of the estimates with the true values fixed, not
+over true values drawn from the prior. The postrank theory book (ch. 18) calls this a fixed-parameter experiment.
+postrank fits no model and reads the posterior it is given (ch. 18, "Hyperparameters, precision and represented
+uncertainty"). The best report at each prior SD and the error share it claims are shown in
+[Reported error and reference-law evaluation](../grades/reported-and-realized.qmd). The
+normal–normal shrinkage follows Walters' Mixtape slides (p. 27).
+:::
+
+Standalone: [embed/shrinkage-price.html](../../embed/shrinkage-price.html), for example `?priorSd=.30` or
+`?preset=another-draw&theme=dark`.
+
+Related applications: [Normal–normal posterior shrinkage](shrinkage.qmd) (1.5) ·
+[Selection bias at the extremes of a ranking](winners-curse.qmd) (1.4) ·
+[Reported error and reference-law evaluation](../grades/reported-and-realized.qmd) (2.9).

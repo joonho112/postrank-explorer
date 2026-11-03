@@ -1,0 +1,73 @@
+{
+  "id": "3.12",
+  "name": "stability",
+  "part": "3",
+  "title": "Measure again, grade again",
+  "idea": "Measuring again and grading again changes some pair relations; stability has to be read beside disclosure, because withholding every pair is perfectly stable.",
+  "status": "built",
+  "from": "new concept · theory book ch. 17 (stability needs its own repeated-data law); picture: two replications of the league side by side with their relation changes, and a replay histogram of the share of changed relations beside N/M and E/N for several rules",
+  "data": [
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 17.",
+  "caption": "Fixed-truth paired measurement experiment; every observation refits its stipulated posterior.",
+  "presets": [
+    {
+      "id": "cuts",
+      "label": "Optimal cuts",
+      "query": "G=3&tau=.2&priorSd=.15&seed=20261030&replays=20&pair=1&rule=pm-cuts"
+    },
+    {
+      "id": "raw",
+      "label": "Estimate tiers",
+      "query": "G=3&tau=.2&priorSd=.15&seed=20261030&replays=20&pair=1&rule=est-tiers"
+    },
+    {
+      "id": "narrow",
+      "label": "Prior SD .05",
+      "query": "G=3&tau=.2&priorSd=.05&seed=20261030&replays=20&pair=1&rule=pm-cuts"
+    },
+    {
+      "id": "silent",
+      "label": "Withhold every pair",
+      "query": "G=3&tau=.2&priorSd=.15&seed=20261030&replays=20&pair=1&rule=withheld"
+    },
+    {
+      "id": "low-cost",
+      "label": "τ .05",
+      "query": "G=3&tau=.05&priorSd=.15&seed=20261030&replays=20&pair=1&rule=pm-cuts"
+    }
+  ],
+  "try": [
+    {
+      "preset": "cuts",
+      "shows": [
+        "251"
+      ]
+    },
+    {
+      "preset": "raw",
+      "shows": [
+        "300"
+      ]
+    },
+    {
+      "preset": "narrow",
+      "shows": [
+        ".05"
+      ]
+    },
+    {
+      "preset": "silent",
+      "shows": [
+        "NA: no disclosure"
+      ]
+    },
+    {
+      "preset": "low-cost",
+      "shows": [
+        ".05"
+      ]
+    }
+  ]
+}

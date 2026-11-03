@@ -1,0 +1,1263 @@
+{
+  "app": "one-correction",
+  "catalog": "2.20",
+  "about": "Four independent base-R correction/drop pins, including input-ordered grade vectors, frame and family sizes, and the unchanged untouched-unit pair-error matrices. Full relation counts are validated by the corresponding oracle parity group. Accepted population-change and tied-report combinations are pinned by independently generated R27 rows.",
+  "cases": [
+    {
+      "id": "one-correction-mean-low",
+      "preset": "mean",
+      "about": "Independent base-R grades, family sizes, common untouched-pair frame and unchanged coefficient submatrices. Relation-count components are also checked in the oracle parity adapter.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"beforeGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-mean-low",
+            "field": "beforeGrade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "index": 0,
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-mean-low",
+            "field": "beforeFamilySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-mean-low",
+            "field": "afterGrade"
+          },
+          "value": [
+            1,
+            1,
+            3,
+            2,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "index": 1,
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-mean-low",
+            "field": "afterFamilySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherPairs\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-mean-low",
+            "field": "untouched.M"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"coefficientGap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-mean-low",
+            "field": "untouchedEpsilon"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "one-correction-none",
+      "preset": "none",
+      "about": "Independent base-R grades, family sizes, common untouched-pair frame and unchanged coefficient submatrices. Relation-count components are also checked in the oracle parity adapter.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"beforeGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-none",
+            "field": "beforeGrade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "index": 0,
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-none",
+            "field": "beforeFamilySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-none",
+            "field": "afterGrade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "index": 1,
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-none",
+            "field": "afterFamilySize"
+          },
+          "value": 603,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherPairs\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-none",
+            "field": "untouched.M"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"coefficientGap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-none",
+            "field": "untouchedEpsilon"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "one-correction-sd",
+      "preset": "uncertain",
+      "about": "Independent base-R grades, family sizes, common untouched-pair frame and unchanged coefficient submatrices. Relation-count components are also checked in the oracle parity adapter.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"beforeGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-sd",
+            "field": "beforeGrade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "index": 0,
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-sd",
+            "field": "beforeFamilySize"
+          },
+          "value": 63,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-sd",
+            "field": "afterGrade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "index": 1,
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-sd",
+            "field": "afterFamilySize"
+          },
+          "value": 63,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherPairs\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-sd",
+            "field": "untouched.M"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"coefficientGap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-sd",
+            "field": "untouchedEpsilon"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "one-correction-drop",
+      "preset": "drop",
+      "about": "Independent base-R grades, family sizes, common untouched-pair frame and unchanged coefficient submatrices. Relation-count components are also checked in the oracle parity adapter.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"beforeGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-drop",
+            "field": "beforeGrade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "index": 0,
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-drop",
+            "field": "beforeFamilySize"
+          },
+          "value": 2163,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-drop",
+            "field": "afterGrade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "index": 1,
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-drop",
+            "field": "afterFamilySize"
+          },
+          "value": 421,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherPairs\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-drop",
+            "field": "untouched.M"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"coefficientGap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "one-correction-drop",
+            "field": "untouchedEpsilon"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "correction-league-drop-u15",
+      "preset": "league-drop",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"beforeGrade\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "beforeGrade"
+          },
+          "value": [
+            2,
+            3,
+            2,
+            3,
+            4,
+            2,
+            3,
+            2,
+            3,
+            2,
+            3,
+            3,
+            2,
+            3,
+            3,
+            2,
+            3,
+            4,
+            3,
+            3,
+            2,
+            3,
+            3,
+            2,
+            3,
+            1,
+            2,
+            3,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterGrade\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "afterGrade"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2,
+            2,
+            2,
+            3,
+            2,
+            3,
+            1,
+            2,
+            2,
+            1,
+            2,
+            1,
+            2,
+            2,
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"beforeSizes\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "beforeSizes"
+          },
+          "value": [
+            1,
+            12,
+            15,
+            2
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterSizes\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "afterSizes"
+          },
+          "value": [
+            9,
+            17,
+            3
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"beforeN\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "beforeN"
+          },
+          "value": 263,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterN\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "afterN"
+          },
+          "value": 231,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"beforeRisk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "beforeRisk"
+          },
+          "value": 0.157784030324618,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterRisk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "afterRisk"
+          },
+          "value": 0.159962788916062,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"beforeFamilySize\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "beforeFamilySize"
+          },
+          "value": 536870912,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterFamilySize\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "afterFamilySize"
+          },
+          "value": 268435456,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "changed"
+          },
+          "value": 107,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"commonPairs\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "commonPairs"
+          },
+          "value": 406,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "nNewWithheld"
+          },
+          "value": 62,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"newDisclosed\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "nNewDisclosed"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherChanged\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "untouchedChanged"
+          },
+          "value": 107,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherPairs\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "untouchedPairs"
+          },
+          "value": 406,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"coefficientGap\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "coefficientGap"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"coefficientGap-0\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-v3p2-correction",
+            "row": "correction-league-drop-U15",
+            "field": "coefficientGap"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "correction-six-ab-drop-c",
+      "preset": "two-score-drop",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"beforeGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "beforeGrade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterGrade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "afterGrade"
+          },
+          "value": [
+            1,
+            2,
+            2,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"beforeSizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "beforeSizes"
+          },
+          "value": [
+            4,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterSizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "afterSizes"
+          },
+          "value": [
+            1,
+            2,
+            1,
+            1
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"beforeN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "beforeN"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "afterN"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"beforeRisk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "beforeRisk"
+          },
+          "value": 0.093343186075059,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterRisk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "afterRisk"
+          },
+          "value": 0.0745464389411965,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"beforeFamilySize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "beforeFamilySize"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterFamilySize\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "afterFamilySize"
+          },
+          "value": 541,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"changed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "changed"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"commonPairs\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "commonPairs"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"newWithheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "nNewWithheld"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"newDisclosed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "nNewDisclosed"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherChanged\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "untouchedChanged"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"otherPairs\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "untouchedPairs"
+          },
+          "value": 10,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"coefficientGap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "coefficientGap"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"coefficientGap-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "coefficientGap"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"coefficientGap-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-AB-drop-C",
+            "field": "coefficientGap"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "correction-six-a-mean-c-equals-d",
+      "query": "?unit=C&mode=mean&mean=.15&tau=.5&cap=6",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"beforeTieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "beforeTieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"afterTieCount\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "afterTieCount"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-beforeGrade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.0.beforeGrade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-afterGrade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.0.afterGrade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-commonChanged-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.0.changed"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-untouchedChanged-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.0.untouchedChanged"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-beforeGrade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.1.beforeGrade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-afterGrade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.1.afterGrade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-commonChanged-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.1.changed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-untouchedChanged-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.1.untouchedChanged"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-beforeGrade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.2.beforeGrade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-afterGrade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.2.afterGrade"
+          },
+          "value": [
+            1,
+            2,
+            4,
+            3,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-commonChanged-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.2.changed"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-untouchedChanged-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-correction",
+            "row": "correction-six-A-mean-C-equals-D",
+            "field": "comparisons.2.untouchedChanged"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    }
+  ]
+}

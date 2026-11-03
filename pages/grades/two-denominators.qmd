@@ -1,0 +1,45 @@
+---
+title: "Error rates under two denominators"
+subtitle: "2.14 · after Kline, Rose and Walters (2024), Section II and slides 22 and 25–26"
+description: "Relation between expected errors per possible pair and expected errors per stated pair."
+---
+
+Two error rates use the same expected wrong count E but different denominators. KRW's discordance rate, DR, divides
+by all M unordered pairs, whereas $E/N$ divides by the N pairs whose directions the report states. For positive N,
+$\mathrm{DR}=(N/M)\times E/N$. The factor N/M is the disclosure share. The paired displays evaluate this identity
+for a synthetic example and KRW's archived race card. They show how a low rate over all pairs can coexist with a
+substantially higher error share among the directions disclosed.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/two-denominators.js"></script>
+<script>window.__prxApp = PRX["two-denominators"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **τ .25.** The synthetic best report states 14 of 15 pairs, a share .933. DR is .0238, while the expected share wrong among stated pairs is .0255. The two rates are close because almost all pairs are stated.
+- **KRW setting.** The race card states 1,324 of 4,656 pairs, a share .284. DR .0387 divides the expected wrong count by all pairs; E/N .136 divides it by the stated pairs. Its KRW risk is −.0227 and its postrank risk is .1818, evaluated on the released probabilities.
+- **All pairs stated.** The synthetic report states all 15 pairs. Both rates are .0480 because their denominators coincide. The race card remains fixed as the controls change; its title records the costs at which it was chosen.
+
+The rounded identity uses an approximation sign because multiplying rounded rates need not reproduce the rounded product exactly. A small rate over all pairs can accompany a much larger rate among the pairs a report actually states. Neither rate describes the chance that any error occurs somewhere in the report.
+
+::: {.callout-note appearance="simple"}
+KRW's archived card statistics and the evaluation on released pair probabilities agree at the displayed digits. The released probabilities differ slightly from KRW's archived probabilities. The card is evaluated here as a fixed report; no claim is made that it minimises postrank's risk. Its risk below the cost of withholding every pair implies that its expected error share is below that cost at this setting.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+ev <- postrank_evaluate(c(A=1,B=2,C=3,D=3,E=4,F=5),pr_tutorial$one,weights=c(score_A=1),tau=.25)
+ev[c("N","M","E_over_M","E_over_N")]
+```
+:::
+
+Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; replication deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. Adapted in postrank 1.1.0 (`pr_case_krw`), changes noted: archived card statistics retained, risks recomputed on released probabilities. No endorsement is implied. The data describe KRW's correspondence experiment, not any firm's current conduct.
+
+Standalone: [open the app](../../embed/two-denominators.html), for example `?tau=.25`.
+
+Related applications: [Expected and realised errors among stated directions](disclosed-errors.qmd) · [Posterior summaries in a grade report](report-card.qmd).

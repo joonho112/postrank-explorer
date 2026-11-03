@@ -1,0 +1,37 @@
+---
+title: "Quantities not identified by pairwise probabilities"
+subtitle: "4.13 · after the postrank theory book, chapters 11 and 19, and vignettes m2/m3"
+description: "Limits of pairwise probabilities for composite targets and joint-correctness events."
+---
+
+Pairwise probabilities determine the additive expected risk of a fixed report. They do not generally identify the
+probability that all statements are correct, or the direction of a composite based on target magnitudes. The finite
+examples vary the coupling between complete criterion states while preserving each criterion's entire two-unit law.
+Consequently, additive risks remain fixed while composite and joint-event probabilities can change. Evaluation of a
+selected fixed report separates these effects from report optimisation. Additional joint-law information is required
+to interpret such events from marginal or pairwise releases.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/pairs-leave-open.js"></script>
+<script>window.__prxApp = PRX["pairs-leave-open"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Together**: each disclosed direction has additive risk .5000. For A above B, the probability that both criteria are right is .5. The displayed state masses belong to entire arrays; they do not describe independently drawn criterion columns.
+- **Opposite**: the additive risk stays .5000, while both the forward composite error and the probability of being right on every criterion become 0. The composite is always positive, although the criteria point opposite ways within each state. The full table retains all reporting actions.
+- **Halfway**: the all-criteria probability is .25. The wrong-count distribution changes with the coupling even though its expectation and every report’s additive risk stay fixed. Error weights and withholding cost remain separate controls; changing them changes the loss.
+- **One zero error weight**: the probability of zero weighted wrong count is .5, while all-criteria correctness is 0. A criterion given zero error weight still belongs to the all-criteria event. The two event labels therefore cannot be exchanged.
+- **Select withholding**: the wrong or correct fraction reads “NA: no disclosure.” The joint no-error events hold vacuously because the report makes no statements. This supplies no accuracy claim.
+- **Five statements**: the fixed report’s mean weighted fraction correct is .87, but the probability all its statements are right on every criterion is .75. It makes 5 statements. The second state has weighted wrong count 2.6; the criterion grid gives its whole-state probability and contribution to the average.
+
+::: {.callout-note}
+These are stipulated finite teaching laws, with larger oriented target values meaning higher reporting priority. The joint-law editor preserves the claimed marginal laws by construction. Pair arrays alone do not identify a missing coupling, composite posterior or joint event; marginal-only empirical releases cannot supply those quantities. The best-report and full cross-loss views below provide separate optimisation context for the selected fixed report.
+:::
+
+[Open standalone](../../embed/pairs-leave-open.html), for example `?preset=opposite&theme=dark`.
+
+Related applications: [Composite targets and criterion directions](composite-or-criterion.qmd), [Opposing criterion directions](conflict-pairs.qmd).

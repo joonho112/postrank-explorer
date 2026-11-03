@@ -1,0 +1,93 @@
+{
+  "id": "T.2",
+  "name": "report-designer",
+  "part": "T",
+  "title": "Grade a case and report it",
+  "idea": "Choose a case and settings, and get the card with what the report states and leaves unsaid, from the engine's results.",
+  "status": "built",
+  "from": "new concept · v1 storyboards S-05 and P-14; postrank vignette a6; picture: a case's report card with its family label, budget rows as a feasibility check, relation changes against the archived report, and a sentence of what the report states and leaves unsaid",
+  "data": [
+    "data/released/case-krw.json",
+    "data/released/case-cde.json",
+    "data/released/case-alabama.json"
+  ],
+  "credit": "Data: California Department of Education · source conditions apply.",
+  "caption": "Released case probabilities and supplied marginal intervals; the browser reports its actual computation family. Each case retains its source conditions and rights.",
+  "presets": [
+    {
+      "id": "cde",
+      "label": "CDE: three-grade family",
+      "query": "case=cde&tau=0.2&cap=3&w=1&qa=off&qb=off&view=card&criterion=0&focus=auto"
+    },
+    {
+      "id": "krw",
+      "label": "KRW: equal weights",
+      "query": "case=krw&tau=0.25&cap=4&w=0.5&qa=off&qb=off&view=card&criterion=0&focus=auto"
+    },
+    {
+      "id": "alabama",
+      "label": "Alabama: equal weights",
+      "query": "case=alabama&tau=0.2&cap=5&w=0.5&qa=off&qb=off&view=card&criterion=0&focus=auto"
+    },
+    {
+      "id": "cde-budget",
+      "label": "Check CDE budget .10",
+      "query": "case=cde&tau=0.2&cap=3&w=1&qa=.1&qb=off&view=card&criterion=0&focus=auto"
+    },
+    {
+      "id": "cde-cap2",
+      "label": "CDE: cap two",
+      "query": "case=cde&tau=0.2&cap=2&w=1&qa=.1&qb=off&view=card&criterion=0&focus=auto"
+    },
+    {
+      "id": "cde-cap4",
+      "label": "CDE: mean-order cap four",
+      "query": "case=cde&tau=0.2&cap=4&w=1&qa=.1&qb=off&view=card&criterion=0&focus=auto"
+    },
+    {
+      "id": "cde-withheld",
+      "label": "CDE: all withheld",
+      "query": "case=cde&tau=0.2&cap=1&w=1&qa=.1&qb=off&view=card&criterion=0&focus=auto"
+    }
+  ],
+  "try": [
+    {
+      "preset": "cde",
+      "shows": [
+        "45",
+        "523,251"
+      ]
+    },
+    {
+      "preset": "krw",
+      "shows": [
+        "636",
+        "optimal within this order"
+      ]
+    },
+    {
+      "preset": "alabama",
+      "shows": [
+        "1,249"
+      ]
+    },
+    {
+      "preset": "cde-cap2",
+      "shows": [
+        "4,095"
+      ]
+    },
+    {
+      "preset": "cde-cap4",
+      "shows": [
+        "posterior-mean order"
+      ]
+    },
+    {
+      "preset": "cde-withheld",
+      "shows": [
+        "no disclosure"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+---
+title: "Ranking noisy estimates"
+subtitle: "1.3 · a simulated league, after Walters' teaching slides"
+description: "Effects of unequal sampling precision on the extreme positions of a ranking."
+---
+
+Thirty simulated units are ranked by their estimates, with the largest first. Each estimate is a fixed true value
+plus sampling error; units with fewer observations have larger standard errors (SEs). Less precise units tend to be
+overrepresented at both extremes. The initial dataset and twenty repetitions illustrate this effect and its
+variation between datasets. The true values remain fixed.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/noisy-league.js"></script>
+<script>window.__prxApp = PRX["noisy-league"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **First draw.** Of the 10 extreme positions by estimate, small units hold 5, medium units 4 and large units 1 in this
+  draw; by true value they hold 3 small, 4 medium and 3 large units.
+- **True values.** In the first draw, of the top 10 by estimate, 9 are in the true top 10 (7.45 on average over the
+  twenty replays). U19, a small unit with true rank 11, is the first of the bottom five: this displacement is due to sampling error.
+  U18, a large unit with true rank 30, sits two rows above them: noisier small and medium units fell past it, and its
+  own estimate came out above its true value.
+- **Twenty replays.** The draw menu brings any replay into the table. On average over the 20 replays, small units hold
+  4.35 of the 10 extreme positions and large units 2.00, and the estimates order 83.90 of the 435 pairs the wrong way,
+  against 88.12 expected over many draws.
+- **Replay 11.** The effect varies between repetitions: here small units hold 2, medium units 5 and large units 3, as many large
+  units as by true value. The stated effect concerns average positions across repetitions.
+- **Extremes highlighted.** When true values are hidden, the shaded rows do not identify which units have genuinely extreme values. In the replay chart, against the truth, 3 small and 3 large units (dashed line), small units sit
+  above it in most replays and large units on it or below.
+
+::: {.callout-note appearance="simple"}
+Real units have unknown true values, so this check is not possible. The firms of Kline, Rose and Walters
+(2024), KRW, came with SEs of very different sizes: the race estimates have SEs from .025 to .444 (Section V.B; talk
+slides 47–49). Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700, and deposit doi:10.3886/E198284V1;
+CC-BY-NC as stated by the deposit (no version), noncommercial use only; as adapted in postrank 1.1.0 (pr_case_krw),
+changes noted; no endorsement by the authors is implied. The data describe KRW's correspondence experiment, not any
+firm's current conduct. postrank's input is a posterior, not a list of estimates.
+:::
+
+Standalone: [embed/noisy-league.html](../../embed/noisy-league.html), for example `?seed=20261031&reveal=1` or
+`?preset=replay20&theme=dark`.
+
+Related applications: [Selection bias at the extremes of a ranking](winners-curse.qmd) ·
+[Normal–normal posterior shrinkage](shrinkage.qmd) · [Expected errors in a strict ranking](ranking-claims.qmd).

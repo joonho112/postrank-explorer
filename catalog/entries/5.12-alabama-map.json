@@ -1,0 +1,90 @@
+{
+  "id": "5.12",
+  "name": "alabama-map",
+  "part": "5",
+  "title": "Alabama counties on two outcomes",
+  "idea": "On the map one common grade serves both outcomes, yet each outcome keeps its own share of stated directions expected wrong, and the two shares can differ several-fold.",
+  "status": "built",
+  "from": "v2 refill · v2 alabama rebuilt from v1 storyboard S-04; adds the panel of what each outcome gives up (the archived commonality table at most five grades and τ .20, with status and gap)",
+  "data": [
+    "data/released/case-alabama.json",
+    "data/released/census-geojson.json"
+  ],
+  "credit": "Opportunity Atlas data as adapted in postrank 1.1.0 (pr_case_alabama).",
+  "caption": "67 Alabama counties (Opportunity Atlas). Default live search: τ = .20, at most 5 grades. Historical outcomes, not current conditions, effects of places or need.",
+  "presets": [
+    {
+      "id": "w50",
+      "label": "Equal weights",
+      "query": "w=.5"
+    },
+    {
+      "id": "w100",
+      "label": "Income only",
+      "query": "w=1"
+    },
+    {
+      "id": "w80",
+      "label": "Income .80",
+      "query": "w=.8"
+    },
+    {
+      "id": "w0",
+      "label": "Incarceration only",
+      "query": "w=0"
+    },
+    {
+      "id": "income-report",
+      "label": "Fixed income D1",
+      "query": "w=.5&report=D1&overlay=income"
+    },
+    {
+      "id": "incarceration-report",
+      "label": "Fixed incarceration D2",
+      "query": "w=.5&report=D2&overlay=incarceration"
+    }
+  ],
+  "try": [
+    {
+      "preset": "w100",
+      "shows": [
+        "1,769 of 2,211",
+        ".349"
+      ]
+    },
+    {
+      "preset": "w80",
+      "shows": [
+        ".305",
+        ".0305"
+      ]
+    },
+    {
+      "preset": "w50",
+      "shows": [
+        "Crenshaw County",
+        ".0520",
+        ".172"
+      ]
+    },
+    {
+      "preset": "w0",
+      "shows": [
+        ".312",
+        ".0873"
+      ]
+    },
+    {
+      "preset": "income-report",
+      "shows": [
+        ".1906"
+      ]
+    },
+    {
+      "preset": "incarceration-report",
+      "shows": [
+        ".1998"
+      ]
+    }
+  ]
+}

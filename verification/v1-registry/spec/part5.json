@@ -1,0 +1,37 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part5",
+  "description": "Part 5 (pages/cases): browser evaluations of fixed reports and fixed-order DPs on the released KRW (97 x 97 x 2) and Alabama (67 x 67 x 2) arrays. Archived analyses (status, bound, gap, cached risks) are case values in data/numbers-cases.json.",
+  "license_scope": "author",
+  "inputs": {
+    "krw.race.card.rgw50.tau25": {"fn":"evaluateReport","args":[{"$data":"case-krw","path":"tables.reports.race_card"},{"$data":"case-krw","path":"arrays.error"},{"tau":{"$setting":"settings.tau25"},"w":{"$setting":"settings.w.equal2"}}],"note":"KRW's race card evaluated under the common loss (tau = .25, w = (1/2, 1/2)): evaluation of a fixed report"},
+    "krw.gender.card.rgw50.tau25": {"fn":"evaluateReport","args":[{"$data":"case-krw","path":"tables.reports.gender_card"},{"$data":"case-krw","path":"arrays.error"},{"tau":{"$setting":"settings.tau25"},"w":{"$setting":"settings.w.equal2"}}],"note":"KRW's gender card evaluated under the common loss (tau = .25, w = (1/2, 1/2)): evaluation of a fixed report"},
+    "krw.rg.w50.exprank": {"fn":"expectedRank","args":[{"$data":"case-krw","path":"arrays.error"},{"w":{"$setting":"settings.w.equal2"}}]},
+    "krw.rg.w50.exprank.cap4.tau25": {"fn":"fixedOrderDP","args":[{"$data":"case-krw","path":"arrays.error"},{"scores":{"$input":"krw.rg.w50.exprank"},"direction":"ascending","G":{"$setting":"settings.cap4"},"tau":{"$setting":"settings.tau25"},"w":{"$setting":"settings.w.equal2"}}],"note":"weighted expected-rank order, at most 4 grades"},
+    "krw.rg.w80.exprank": {"fn":"expectedRank","args":[{"$data":"case-krw","path":"arrays.error"},{"w":{"$setting":"settings.w80"}}]},
+    "krw.rg.w80.exprank.cap4.tau25": {"fn":"fixedOrderDP","args":[{"$data":"case-krw","path":"arrays.error"},{"scores":{"$input":"krw.rg.w80.exprank"},"direction":"ascending","G":{"$setting":"settings.cap4"},"tau":{"$setting":"settings.tau25"},"w":{"$setting":"settings.w80"}}],"note":"weighted expected-rank order, at most 4 grades"},
+    "alabama.ic.w50.exprank": {"fn":"expectedRank","args":[{"$data":"case-alabama","path":"arrays.error"},{"w":{"$setting":"settings.w.equal2"}}]},
+    "alabama.ic.w50.exprank.cap5.tau20": {"fn":"fixedOrderDP","args":[{"$data":"case-alabama","path":"arrays.error"},{"scores":{"$input":"alabama.ic.w50.exprank"},"direction":"ascending","G":{"$setting":"settings.cap5"},"tau":{"$setting":"settings.tau20"},"w":{"$setting":"settings.w.equal2"}}],"note":"weighted expected-rank order, at most 5 grades"},
+    "alabama.ic.w80.exprank": {"fn":"expectedRank","args":[{"$data":"case-alabama","path":"arrays.error"},{"w":{"$setting":"settings.w80"}}]},
+    "alabama.ic.w80.exprank.cap5.tau20": {"fn":"fixedOrderDP","args":[{"$data":"case-alabama","path":"arrays.error"},{"scores":{"$input":"alabama.ic.w80.exprank"},"direction":"ascending","G":{"$setting":"settings.cap5"},"tau":{"$setting":"settings.tau20"},"w":{"$setting":"settings.w80"}}],"note":"weighted expected-rank order, at most 5 grades"}
+  },
+  "keys": {
+    "krw.race.card.rgw50.tau25.risk": {"type":"scalar","from":"krw.race.card.rgw50.tau25","field":"risk","format":{"fn":"formatRisk","options":{"digits":6}},"tolerance":{"abs":1e-12,"rel":1e-12},"license_scope":"cc-by-nc-krw"},
+    "krw.race.card.rgw50.tau25.EoverN": {"type":"vector","from":"krw.race.card.rgw50.tau25","field":"EoverN","format":{"fn":"formatTuple","item":{"fn":"formatEoverN","options":{"digits":3}}},"tolerance":{"abs":1e-12,"rel":1e-12},"license_scope":"cc-by-nc-krw"},
+    "krw.race.card.rgw50.tau25.Rk": {"type":"vector","from":"krw.race.card.rgw50.tau25","field":"Rk","format":{"fn":"formatTuple","item":{"fn":"formatRisk"}},"tolerance":{"abs":1e-12,"rel":1e-12},"license_scope":"cc-by-nc-krw"},
+    "krw.race.card.rg.tau25.wstar": {"type":"scalar","fn":"weightCrossing","args":[{"$data":"case-krw","path":"tables.reports.race_card"},{"$data":"case-krw","path":"arrays.error"},{"tau":{"$setting":"settings.tau25"}}],"format":{"fn":"formatProb"},"tolerance":{"abs":1e-12,"rel":1e-12},"license_scope":"cc-by-nc-krw","note":"race weight at which the card's risk equals tau = .25"},
+    "krw.gender.card.rgw50.tau25.risk": {"type":"scalar","from":"krw.gender.card.rgw50.tau25","field":"risk","format":{"fn":"formatRisk","options":{"digits":6}},"tolerance":{"abs":1e-12,"rel":1e-12},"license_scope":"cc-by-nc-krw"},
+    "krw.gender.card.rgw50.tau25.EoverN": {"type":"vector","from":"krw.gender.card.rgw50.tau25","field":"EoverN","format":{"fn":"formatTuple","item":{"fn":"formatEoverN","options":{"digits":3}}},"tolerance":{"abs":1e-12,"rel":1e-12},"license_scope":"cc-by-nc-krw"},
+    "krw.gender.card.rgw50.tau25.Rk": {"type":"vector","from":"krw.gender.card.rgw50.tau25","field":"Rk","format":{"fn":"formatTuple","item":{"fn":"formatRisk"}},"tolerance":{"abs":1e-12,"rel":1e-12},"license_scope":"cc-by-nc-krw"},
+    "krw.gender.card.rg.tau25.wstar": {"type":"scalar","fn":"weightCrossing","args":[{"$data":"case-krw","path":"tables.reports.gender_card"},{"$data":"case-krw","path":"arrays.error"},{"tau":{"$setting":"settings.tau25"}}],"format":{"fn":"formatProb"},"tolerance":{"abs":1e-12,"rel":1e-12},"license_scope":"cc-by-nc-krw","note":"race weight at which the card's risk equals tau = .25"},
+    "krw.rg.conflicts": {"type":"scalar","fn":"conflictPairs","args":[{"$data":"case-krw","path":"arrays.error"},{}],"field":"count","format":{"fn":"formatCount"},"tolerance":0,"license_scope":"cc-by-nc-krw"},
+    "krw.rg.w50.exprank.cap4.tau25.sizes": {"type":"vector","fn":"disclosure","args":[{"$input":"krw.rg.w50.exprank.cap4.tau25","path":"grade"}],"field":"sizes","format":{"fn":"formatSizes"},"tolerance":0,"license_scope":"cc-by-nc-krw"},
+    "krw.rg.w50.exprank.cap4.tau25.N": {"type":"scalar","from":"krw.rg.w50.exprank.cap4.tau25","field":"N","format":{"fn":"formatCount"},"tolerance":0,"license_scope":"cc-by-nc-krw"},
+    "krw.rg.w80.exprank.cap4.tau25.sizes": {"type":"vector","fn":"disclosure","args":[{"$input":"krw.rg.w80.exprank.cap4.tau25","path":"grade"}],"field":"sizes","format":{"fn":"formatSizes"},"tolerance":0,"license_scope":"cc-by-nc-krw"},
+    "krw.rg.w80.exprank.cap4.tau25.N": {"type":"scalar","from":"krw.rg.w80.exprank.cap4.tau25","field":"N","format":{"fn":"formatCount"},"tolerance":0,"license_scope":"cc-by-nc-krw"},
+    "alabama.ic.w50.exprank.cap5.tau20.sizes": {"type":"vector","fn":"disclosure","args":[{"$input":"alabama.ic.w50.exprank.cap5.tau20","path":"grade"}],"field":"sizes","format":{"fn":"formatSizes"},"tolerance":0,"license_scope":"cc-by-4.0-atlas"},
+    "alabama.ic.w80.exprank.cap5.tau20.sizes": {"type":"vector","fn":"disclosure","args":[{"$input":"alabama.ic.w80.exprank.cap5.tau20","path":"grade"}],"field":"sizes","format":{"fn":"formatSizes"},"tolerance":0,"license_scope":"cc-by-4.0-atlas"},
+    "alabama.ic.w80.exprank.cap5.tau20.N": {"type":"scalar","from":"alabama.ic.w80.exprank.cap5.tau20","field":"N","format":{"fn":"formatCount"},"tolerance":0,"license_scope":"cc-by-4.0-atlas"},
+    "alabama.ic.w80.exprank.cap5.tau20.risk": {"type":"scalar","from":"alabama.ic.w80.exprank.cap5.tau20","field":"risk","format":{"fn":"formatRisk"},"tolerance":{"abs":1e-12,"rel":1e-12},"license_scope":"cc-by-4.0-atlas"}
+  }
+}

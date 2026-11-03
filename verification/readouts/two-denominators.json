@@ -1,0 +1,563 @@
+{
+  "app": "two-denominators",
+  "catalog": "2.14",
+  "from": "postrank-explorer-v1 verification/readouts/krw-bridge.json, tau25-grid denominator expectations",
+  "about": "All 19 original denominator and fixed-card risk expectations, preserved against base-R, postrank golden rows and frozen archived values.",
+  "cases": [
+    {
+      "id": "tau25-denominators",
+      "preset": "tau25",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"den-six-N\"]",
+          "about": "denominators: N of the six-site optimum at tau = .25",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "N"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-M\"]",
+          "about": "denominators: M",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-s\"]",
+          "about": "denominators: s = N/M",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "s"
+          },
+          "value": 0.933333333333333
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-dr\"]",
+          "about": "denominators: DR = E/M",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "EoverM.0"
+          },
+          "value": 0.023838422750756
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-en\"]",
+          "about": "denominators: E/N",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "EoverN.0"
+          },
+          "value": 0.0255411672329528
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-sizes\"]",
+          "about": "race card: sizes",
+          "source": "registry",
+          "ref": "krw.race.card.sizes",
+          "value": [
+            2,
+            81,
+            14
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-lambda\"]",
+          "about": "race card: chosen at lambda .25",
+          "source": "registry",
+          "ref": "krw.card.lambda",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-tau\"]",
+          "about": "race card: tau .20",
+          "source": "registry",
+          "ref": "krw.card.tau",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-N\"]",
+          "about": "race card: N",
+          "source": "registry",
+          "ref": "krw.race.card.N",
+          "value": 1324
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-M\"]",
+          "about": "race card: M",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-s\"]",
+          "about": "race card: s",
+          "source": "registry",
+          "ref": "krw.race.card.s",
+          "value": 0.284364261168385
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-dr\"]",
+          "about": "race card: DR (KRW's archive)",
+          "source": "registry",
+          "ref": "krw.race.card.DR",
+          "value": 0.0386755598195876
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-en\"]",
+          "about": "race card: E/N (KRW's conditional DR)",
+          "source": "registry",
+          "ref": "krw.race.card.EoverN",
+          "value": 0.136007104622356
+        },
+        {
+          "select": "[data-prx-readout=\"card-taubar\"]",
+          "about": "race card: Kendall's tau-bar (KRW)",
+          "source": "registry",
+          "ref": "krw.race.card.taubar",
+          "value": 0.20701314152921
+        },
+        {
+          "select": "[data-prx-readout=\"card-krwrisk\"]",
+          "about": "race card: KRW's risk at lambda .25 on the released array",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "krwCard-race-lambda.25-tau.2",
+            "field": "krwCard.krwRisk"
+          },
+          "value": -0.0227464784007242
+        },
+        {
+          "select": "[data-prx-readout=\"card-krwrisk\"]",
+          "about": "race card: the same in the registry",
+          "source": "registry",
+          "ref": "krw.race.card.lambda25.krwrisk",
+          "value": -0.02274647840072419
+        },
+        {
+          "select": "[data-prx-readout=\"card-risk\"]",
+          "about": "race card: postrank's risk at tau .20 (postrank_evaluate)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "krwCard-race-lambda.25-tau.2",
+            "field": "krwCard.risk"
+          },
+          "value": 0.181802817279421
+        },
+        {
+          "select": "[data-prx-readout=\"card-risk\"]",
+          "about": "race card: the same in the registry",
+          "source": "registry",
+          "ref": "krw.race.card.tau20.risk",
+          "value": 0.181802817279432
+        },
+        {
+          "select": "[data-prx-readout=\"card-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-krw-race-card-released-tau.2",
+            "field": "risk"
+          },
+          "format": {
+            "fn": "formatRisk"
+          },
+          "value": 0.181802817279421,
+          "about": "postrank's risk of the race card at tau .20, base-R oracle on the released array"
+        }
+      ]
+    },
+    {
+      "id": "lambda-takes-priority",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"den-six-N\"]",
+          "about": "denominators: N of the six-site optimum at tau = .25",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "N"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-M\"]",
+          "about": "denominators: M",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-s\"]",
+          "about": "denominators: s = N/M",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "s"
+          },
+          "value": 0.933333333333333
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-dr\"]",
+          "about": "denominators: DR = E/M",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "EoverM.0"
+          },
+          "value": 0.023838422750756
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-en\"]",
+          "about": "denominators: E/N",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "EoverN.0"
+          },
+          "value": 0.0255411672329528
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-sizes\"]",
+          "about": "race card: sizes",
+          "source": "registry",
+          "ref": "krw.race.card.sizes",
+          "value": [
+            2,
+            81,
+            14
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-lambda\"]",
+          "about": "race card: chosen at lambda .25",
+          "source": "registry",
+          "ref": "krw.card.lambda",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-tau\"]",
+          "about": "race card: tau .20",
+          "source": "registry",
+          "ref": "krw.card.tau",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-N\"]",
+          "about": "race card: N",
+          "source": "registry",
+          "ref": "krw.race.card.N",
+          "value": 1324
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-M\"]",
+          "about": "race card: M",
+          "source": "registry",
+          "ref": "krw.frame.M",
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-s\"]",
+          "about": "race card: s",
+          "source": "registry",
+          "ref": "krw.race.card.s",
+          "value": 0.284364261168385
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-dr\"]",
+          "about": "race card: DR (KRW's archive)",
+          "source": "registry",
+          "ref": "krw.race.card.DR",
+          "value": 0.0386755598195876
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-en\"]",
+          "about": "race card: E/N (KRW's conditional DR)",
+          "source": "registry",
+          "ref": "krw.race.card.EoverN",
+          "value": 0.136007104622356
+        },
+        {
+          "select": "[data-prx-readout=\"card-taubar\"]",
+          "about": "race card: Kendall's tau-bar (KRW)",
+          "source": "registry",
+          "ref": "krw.race.card.taubar",
+          "value": 0.20701314152921
+        },
+        {
+          "select": "[data-prx-readout=\"card-krwrisk\"]",
+          "about": "race card: KRW's risk at lambda .25 on the released array",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "krwCard-race-lambda.25-tau.2",
+            "field": "krwCard.krwRisk"
+          },
+          "value": -0.0227464784007242
+        },
+        {
+          "select": "[data-prx-readout=\"card-krwrisk\"]",
+          "about": "race card: the same in the registry",
+          "source": "registry",
+          "ref": "krw.race.card.lambda25.krwrisk",
+          "value": -0.02274647840072419
+        },
+        {
+          "select": "[data-prx-readout=\"card-risk\"]",
+          "about": "race card: postrank's risk at tau .20 (postrank_evaluate)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "krwCard-race-lambda.25-tau.2",
+            "field": "krwCard.risk"
+          },
+          "value": 0.181802817279421
+        },
+        {
+          "select": "[data-prx-readout=\"card-risk\"]",
+          "about": "race card: the same in the registry",
+          "source": "registry",
+          "ref": "krw.race.card.tau20.risk",
+          "value": 0.181802817279432
+        },
+        {
+          "select": "[data-prx-readout=\"card-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-krw-race-card-released-tau.2",
+            "field": "risk"
+          },
+          "format": {
+            "fn": "formatRisk"
+          },
+          "value": 0.181802817279421,
+          "about": "postrank's risk of the race card at tau .20, base-R oracle on the released array"
+        },
+        {
+          "select": "[data-prx-readout=\"den-tau\"]",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        }
+      ],
+      "query": "?lambda=.25&tau=.25"
+    },
+    {
+      "id": "equal-risk-different-denominators",
+      "query": "tau=.188379558905791",
+      "about": "Exact URL price preserves the boundary. Independent R enumeration pins every equal-risk report and its two error shares.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"den-tie-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"den-tie-tolerance\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"den-tie-0-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            4
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"den-tie-0-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "Ns.0"
+          },
+          "value": 13,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"den-tie-0-dr\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "EoverMs.0"
+          },
+          "value": 0.0112797854903699,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"den-tie-0-en\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "EoverNs.0"
+          },
+          "value": 0.013015137104273,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"den-tie-1-grades\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "grades.1"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"den-tie-1-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "Ns.1"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"den-tie-1-dr\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "EoverMs.1"
+          },
+          "value": 0.023838422750756,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"den-tie-1-en\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "denominator-tie-boundary",
+            "field": "EoverNs.1"
+          },
+          "value": 0.0255411672329529,
+          "format": {
+            "fn": "formatShare"
+          }
+        }
+      ]
+    }
+  ]
+}

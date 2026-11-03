@@ -1,0 +1,89 @@
+{
+  "id": "3.10",
+  "name": "naive-thresholding",
+  "part": "3",
+  "title": "Pairwise thresholds no report can print",
+  "idea": "Thresholding each pair on its own leaves triples of firms that no grade report can print; the card's grade blocks repair them by withholding some confident pairs and stating some doubtful ones.",
+  "status": "built",
+  "from": "new angle · v1 S-02 heat map, second stage (pairs past the threshold), and KRW section V.E (naive thresholding); adds the unprintable triples among the 97 firms (including two pairs left unsaid with the third stated; the race baseline has no strict 3-cycles, while the signed gender target has one at λ=1), their change with λ and their overlap with the card's blocks",
+  "data": [
+    "data/released/case-krw.json",
+    "data/released/krw-lambda-grid.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), section V.E, and the postrank theory book, ch. 10. Firms as adapted in postrank 1.1.0 (pr_case_krw). Cards computed with KRW's code (KRW replication companion) under KRW's archived pair probabilities.",
+  "caption": "Strict isolated pair thresholds on the released KRW law, compared with the current archived card; shared grades make no equality claim.",
+  "presets": [
+    {
+      "id": "race25",
+      "label": "Race λ .25",
+      "query": "criterion=race&lambda=.25&sort=mean&blocks=false&triple=0"
+    },
+    {
+      "id": "race10",
+      "label": "Race λ .10",
+      "query": "criterion=race&lambda=.10&sort=mean&blocks=false&triple=0"
+    },
+    {
+      "id": "race50",
+      "label": "Race λ .50",
+      "query": "criterion=race&lambda=.50&sort=mean&blocks=false&triple=0"
+    },
+    {
+      "id": "race75",
+      "label": "Race λ .75",
+      "query": "criterion=race&lambda=.75&sort=mean&blocks=false&triple=0"
+    },
+    {
+      "id": "raceblocks",
+      "label": "Race λ .25, card blocks",
+      "query": "criterion=race&lambda=.25&sort=mean&blocks=true&triple=0"
+    },
+    {
+      "id": "gender25",
+      "label": "Gender λ .25",
+      "query": "criterion=gender&lambda=.25&sort=mean&blocks=false&triple=0"
+    },
+    {
+      "id": "gender100",
+      "label": "Gender λ 1.00",
+      "query": "criterion=gender&lambda=1&sort=mean&blocks=false&triple=0"
+    }
+  ],
+  "try": [
+    {
+      "preset": "race25",
+      "shows": [
+        "1,575",
+        "32,773",
+        "147,440",
+        "575",
+        "324"
+      ]
+    },
+    {
+      "preset": "race10",
+      "shows": [
+        "24,278"
+      ]
+    },
+    {
+      "preset": "race50",
+      "shows": [
+        "15,107"
+      ]
+    },
+    {
+      "preset": "race75",
+      "shows": [
+        "3,108"
+      ]
+    },
+    {
+      "preset": "gender100",
+      "shows": [
+        "4,656",
+        "1"
+      ]
+    }
+  ]
+}

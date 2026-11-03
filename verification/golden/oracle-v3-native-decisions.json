@@ -1,0 +1,2299 @@
+{
+ "group": "oracle-v3-native-decisions",
+ "generator": "r-export/31_v3_native_decisions.R",
+ "uses_postrank": false,
+ "rows": [
+  {
+   "id": "native-tb19-default",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb19",
+    "tau": 0.25,
+    "budget": 1,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4, 3],
+    "pTop": [0.3, 0.7, 0],
+    "pAbove": [0.3, 1, 0],
+    "n": 3,
+    "M": 3,
+    "reports": {
+     "mean": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 0, 0],
+       "expectedValue": 6,
+       "expectedOverlap": 0.3,
+       "overlapShare": 0.3,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 1,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     },
+     "top": {
+      "grade": [2, 1, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1,
+       "EoverN": 0.333333333333333,
+       "risk": 0.333333333333333,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.3,
+       "meanCost": 0.1
+      }
+     },
+     "optimal": {
+      "grade": [2, 1, 2],
+      "evaluation": {
+       "M": 3,
+       "N": 2,
+       "Ew": 0.3,
+       "EoverN": 0.15,
+       "risk": 0.183333333333333,
+       "disclosure": 0.666666666666667
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.3,
+       "meanCost": 0.1
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1],
+      "evaluation": {
+       "M": 3,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.333333333333333, 0.333333333333333, 0.333333333333333],
+       "expectedValue": 4.33333333333333,
+       "expectedOverlap": 0.333333333333333,
+       "overlapShare": 0.333333333333333,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1, 2],
+       "boundarySize": 3,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [false, true, false],
+     "bayesPositive": [false, true, false],
+     "positiveCount": 1,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 0, 1],
+     "negativeCost": [0.3, 1, 0],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.1
+    },
+    "optimalFamilySize": 13,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-tb17-tau25",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb17",
+    "tau": 0.25,
+    "budget": 1,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4],
+    "pTop": [0.3, 0.7],
+    "pAbove": [0.3, 1],
+    "n": 2,
+    "M": 1,
+    "reports": {
+     "mean": {
+      "grade": [1, 2],
+      "evaluation": {
+       "M": 1,
+       "N": 1,
+       "Ew": 0.7,
+       "EoverN": 0.7,
+       "risk": 0.7,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 0],
+       "expectedValue": 6,
+       "expectedOverlap": 0.3,
+       "overlapShare": 0.3,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, false],
+       "bayesPositive": [false, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0],
+       "negativeCost": [0.3, 1],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 1,
+       "totalCost": 1.7,
+       "meanCost": 0.85
+      }
+     },
+     "top": {
+      "grade": [2, 1],
+      "evaluation": {
+       "M": 1,
+       "N": 1,
+       "Ew": 0.3,
+       "EoverN": 0.3,
+       "risk": 0.3,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 1],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true],
+       "bayesPositive": [false, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0],
+       "negativeCost": [0.3, 1],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.3,
+       "meanCost": 0.15
+      }
+     },
+     "optimal": {
+      "grade": [1, 1],
+      "evaluation": {
+       "M": 1,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.5, 0.5],
+       "expectedValue": 5,
+       "expectedOverlap": 0.5,
+       "overlapShare": 0.5,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1],
+       "boundarySize": 2,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true],
+       "bayesPositive": [false, true],
+       "positiveCount": 2,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0],
+       "negativeCost": [0.3, 1],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 0.7,
+       "meanCost": 0.35
+      }
+     },
+     "withheld": {
+      "grade": [1, 1],
+      "evaluation": {
+       "M": 1,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.5, 0.5],
+       "expectedValue": 5,
+       "expectedOverlap": 0.5,
+       "overlapShare": 0.5,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1],
+       "boundarySize": 2,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true],
+       "bayesPositive": [false, true],
+       "positiveCount": 2,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0],
+       "negativeCost": [0.3, 1],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 0.7,
+       "meanCost": 0.35
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [false, true],
+     "bayesPositive": [false, true],
+     "positiveCount": 1,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 0],
+     "negativeCost": [0.3, 1],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.15
+    },
+    "optimalFamilySize": 3,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-tb17-tau40",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb17",
+    "tau": 0.4,
+    "budget": 1,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4],
+    "pTop": [0.3, 0.7],
+    "pAbove": [0.3, 1],
+    "n": 2,
+    "M": 1,
+    "reports": {
+     "mean": {
+      "grade": [1, 2],
+      "evaluation": {
+       "M": 1,
+       "N": 1,
+       "Ew": 0.7,
+       "EoverN": 0.7,
+       "risk": 0.7,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 0],
+       "expectedValue": 6,
+       "expectedOverlap": 0.3,
+       "overlapShare": 0.3,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, false],
+       "bayesPositive": [false, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0],
+       "negativeCost": [0.3, 1],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 1,
+       "totalCost": 1.7,
+       "meanCost": 0.85
+      }
+     },
+     "top": {
+      "grade": [2, 1],
+      "evaluation": {
+       "M": 1,
+       "N": 1,
+       "Ew": 0.3,
+       "EoverN": 0.3,
+       "risk": 0.3,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 1],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true],
+       "bayesPositive": [false, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0],
+       "negativeCost": [0.3, 1],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.3,
+       "meanCost": 0.15
+      }
+     },
+     "optimal": {
+      "grade": [2, 1],
+      "evaluation": {
+       "M": 1,
+       "N": 1,
+       "Ew": 0.3,
+       "EoverN": 0.3,
+       "risk": 0.3,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 1],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true],
+       "bayesPositive": [false, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0],
+       "negativeCost": [0.3, 1],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.3,
+       "meanCost": 0.15
+      }
+     },
+     "withheld": {
+      "grade": [1, 1],
+      "evaluation": {
+       "M": 1,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.4,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.5, 0.5],
+       "expectedValue": 5,
+       "expectedOverlap": 0.5,
+       "overlapShare": 0.5,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1],
+       "boundarySize": 2,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true],
+       "bayesPositive": [false, true],
+       "positiveCount": 2,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0],
+       "negativeCost": [0.3, 1],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 0.7,
+       "meanCost": 0.35
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [false, true],
+     "bayesPositive": [false, true],
+     "positiveCount": 1,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 0],
+     "negativeCost": [0.3, 1],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.15
+    },
+    "optimalFamilySize": 3,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-tb19-budget0",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb19",
+    "tau": 0.25,
+    "budget": 0,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4, 3],
+    "pTop": [0, 0, 0],
+    "pAbove": [0.3, 1, 0],
+    "n": 3,
+    "M": 3,
+    "reports": {
+     "mean": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 0, 0],
+       "expectedValue": 0,
+       "expectedOverlap": 0,
+       "overlapShare": null,
+       "selectedCount": 0,
+       "budget": 0,
+       "boundaryGrade": null,
+       "boundaryMembers": [],
+       "boundarySize": 0,
+       "remaining": 0,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 1,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     },
+     "top": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 0, 0],
+       "expectedValue": 0,
+       "expectedOverlap": 0,
+       "overlapShare": null,
+       "selectedCount": 0,
+       "budget": 0,
+       "boundaryGrade": null,
+       "boundaryMembers": [],
+       "boundarySize": 0,
+       "remaining": 0,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 1,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     },
+     "optimal": {
+      "grade": [2, 1, 2],
+      "evaluation": {
+       "M": 3,
+       "N": 2,
+       "Ew": 0.3,
+       "EoverN": 0.15,
+       "risk": 0.183333333333333,
+       "disclosure": 0.666666666666667
+      },
+      "allocation": {
+       "inclusion": [0, 0, 0],
+       "expectedValue": 0,
+       "expectedOverlap": 0,
+       "overlapShare": null,
+       "selectedCount": 0,
+       "budget": 0,
+       "boundaryGrade": null,
+       "boundaryMembers": [],
+       "boundarySize": 0,
+       "remaining": 0,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.3,
+       "meanCost": 0.1
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1],
+      "evaluation": {
+       "M": 3,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0, 0, 0],
+       "expectedValue": 0,
+       "expectedOverlap": 0,
+       "overlapShare": null,
+       "selectedCount": 0,
+       "budget": 0,
+       "boundaryGrade": null,
+       "boundaryMembers": [],
+       "boundarySize": 0,
+       "remaining": 0,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [false, true, false],
+     "bayesPositive": [false, true, false],
+     "positiveCount": 1,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 0, 1],
+     "negativeCost": [0.3, 1, 0],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.1
+    },
+    "optimalFamilySize": 13,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-tb19-budget2",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb19",
+    "tau": 0.25,
+    "budget": 2,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4, 3],
+    "pTop": [0.3, 1, 0.7],
+    "pAbove": [0.3, 1, 0],
+    "n": 3,
+    "M": 3,
+    "reports": {
+     "mean": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 1, 0],
+       "expectedValue": 10,
+       "expectedOverlap": 1.3,
+       "overlapShare": 0.65,
+       "selectedCount": 2,
+       "budget": 2,
+       "boundaryGrade": 2,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 1
+      },
+      "classification": {
+       "positive": [true, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 1,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     },
+     "top": {
+      "grade": [3, 1, 2],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 0.6,
+       "EoverN": 0.2,
+       "risk": 0.2,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 1, 1],
+       "expectedValue": 7,
+       "expectedOverlap": 1.7,
+       "overlapShare": 0.85,
+       "selectedCount": 2,
+       "budget": 2,
+       "boundaryGrade": 2,
+       "boundaryMembers": [2],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 1
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.3,
+       "meanCost": 0.1
+      }
+     },
+     "optimal": {
+      "grade": [2, 1, 2],
+      "evaluation": {
+       "M": 3,
+       "N": 2,
+       "Ew": 0.3,
+       "EoverN": 0.15,
+       "risk": 0.183333333333333,
+       "disclosure": 0.666666666666667
+      },
+      "allocation": {
+       "inclusion": [0.5, 1, 0.5],
+       "expectedValue": 8.5,
+       "expectedOverlap": 1.5,
+       "overlapShare": 0.75,
+       "selectedCount": 2,
+       "budget": 2,
+       "boundaryGrade": 2,
+       "boundaryMembers": [0, 2],
+       "boundarySize": 2,
+       "remaining": 1,
+       "aboveCount": 1
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.3,
+       "meanCost": 0.1
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1],
+      "evaluation": {
+       "M": 3,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.666666666666667, 0.666666666666667, 0.666666666666667],
+       "expectedValue": 8.66666666666667,
+       "expectedOverlap": 1.33333333333333,
+       "overlapShare": 0.666666666666667,
+       "selectedCount": 2,
+       "budget": 2,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1, 2],
+       "boundarySize": 3,
+       "remaining": 2,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [false, true, false],
+     "bayesPositive": [false, true, false],
+     "positiveCount": 1,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 0, 1],
+     "negativeCost": [0.3, 1, 0],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.1
+    },
+    "optimalFamilySize": 13,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-tb19-budget3",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb19",
+    "tau": 0.25,
+    "budget": 3,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4, 3],
+    "pTop": [1, 1, 1],
+    "pAbove": [0.3, 1, 0],
+    "n": 3,
+    "M": 3,
+    "reports": {
+     "mean": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 1, 1],
+       "expectedValue": 13,
+       "expectedOverlap": 3,
+       "overlapShare": 1,
+       "selectedCount": 3,
+       "budget": 3,
+       "boundaryGrade": 3,
+       "boundaryMembers": [2],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 2
+      },
+      "classification": {
+       "positive": [true, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 1,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     },
+     "top": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 1, 1],
+       "expectedValue": 13,
+       "expectedOverlap": 3,
+       "overlapShare": 1,
+       "selectedCount": 3,
+       "budget": 3,
+       "boundaryGrade": 3,
+       "boundaryMembers": [2],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 2
+      },
+      "classification": {
+       "positive": [true, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 1,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     },
+     "optimal": {
+      "grade": [2, 1, 2],
+      "evaluation": {
+       "M": 3,
+       "N": 2,
+       "Ew": 0.3,
+       "EoverN": 0.15,
+       "risk": 0.183333333333333,
+       "disclosure": 0.666666666666667
+      },
+      "allocation": {
+       "inclusion": [1, 1, 1],
+       "expectedValue": 13,
+       "expectedOverlap": 3,
+       "overlapShare": 1,
+       "selectedCount": 3,
+       "budget": 3,
+       "boundaryGrade": 2,
+       "boundaryMembers": [0, 2],
+       "boundarySize": 2,
+       "remaining": 2,
+       "aboveCount": 1
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.3,
+       "meanCost": 0.1
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1],
+      "evaluation": {
+       "M": 3,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [1, 1, 1],
+       "expectedValue": 13,
+       "expectedOverlap": 3,
+       "overlapShare": 1,
+       "selectedCount": 3,
+       "budget": 3,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1, 2],
+       "boundarySize": 3,
+       "remaining": 3,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [false, true, false],
+     "bayesPositive": [false, true, false],
+     "positiveCount": 1,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 0, 1],
+     "negativeCost": [0.3, 1, 0],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.1
+    },
+    "optimalFamilySize": 13,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-tb19-threshold4",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb19",
+    "tau": 0.25,
+    "budget": 1,
+    "threshold": 4,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4, 3],
+    "pTop": [0.3, 0.7, 0],
+    "pAbove": [0.3, 0, 0],
+    "n": 3,
+    "M": 3,
+    "reports": {
+     "mean": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 0, 0],
+       "expectedValue": 6,
+       "expectedOverlap": 0.3,
+       "overlapShare": 0.3,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, false, false],
+       "bayesPositive": [false, false, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 1, 1],
+       "negativeCost": [0.3, 0, 0],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 0.7,
+       "meanCost": 0.233333333333333
+      }
+     },
+     "top": {
+      "grade": [2, 1, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1,
+       "EoverN": 0.333333333333333,
+       "risk": 0.333333333333333,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [false, false, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 1, 1],
+       "negativeCost": [0.3, 0, 0],
+       "expectedFalsePositives": 1,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 1.3,
+       "meanCost": 0.433333333333333
+      }
+     },
+     "optimal": {
+      "grade": [2, 1, 2],
+      "evaluation": {
+       "M": 3,
+       "N": 2,
+       "Ew": 0.3,
+       "EoverN": 0.15,
+       "risk": 0.183333333333333,
+       "disclosure": 0.666666666666667
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [false, false, false],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 1, 1],
+       "negativeCost": [0.3, 0, 0],
+       "expectedFalsePositives": 1,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 1.3,
+       "meanCost": 0.433333333333333
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1],
+      "evaluation": {
+       "M": 3,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.333333333333333, 0.333333333333333, 0.333333333333333],
+       "expectedValue": 4.33333333333333,
+       "expectedOverlap": 0.333333333333333,
+       "overlapShare": 0.333333333333333,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1, 2],
+       "boundarySize": 3,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, false, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 1, 1],
+       "negativeCost": [0.3, 0, 0],
+       "expectedFalsePositives": 2.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 2.7,
+       "meanCost": 0.9
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [false, false, false],
+     "bayesPositive": [false, false, false],
+     "positiveCount": 0,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 1, 1],
+     "negativeCost": [0.3, 0, 0],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.1
+    },
+    "optimalFamilySize": 13,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-tb19-asymmetric-FP1-FN3",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb19",
+    "tau": 0.25,
+    "budget": 1,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 3,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4, 3],
+    "pTop": [0.3, 0.7, 0],
+    "pAbove": [0.3, 1, 0],
+    "n": 3,
+    "M": 3,
+    "reports": {
+     "mean": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 0, 0],
+       "expectedValue": 6,
+       "expectedOverlap": 0.3,
+       "overlapShare": 0.3,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, false, false],
+       "bayesPositive": [true, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.25,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.9, 3, 0],
+       "expectedFalsePositives": 0.7,
+       "expectedFalseNegatives": 1,
+       "totalCost": 3.7,
+       "meanCost": 1.23333333333333
+      }
+     },
+     "top": {
+      "grade": [2, 1, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1,
+       "EoverN": 0.333333333333333,
+       "risk": 0.333333333333333,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [true, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.25,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.9, 3, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.9,
+       "meanCost": 0.3
+      }
+     },
+     "optimal": {
+      "grade": [2, 1, 2],
+      "evaluation": {
+       "M": 3,
+       "N": 2,
+       "Ew": 0.3,
+       "EoverN": 0.15,
+       "risk": 0.183333333333333,
+       "disclosure": 0.666666666666667
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, true, false],
+       "bayesPositive": [true, true, false],
+       "positiveCount": 1,
+       "cutoff": 0.25,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.9, 3, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 0.3,
+       "totalCost": 0.9,
+       "meanCost": 0.3
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1],
+      "evaluation": {
+       "M": 3,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.333333333333333, 0.333333333333333, 0.333333333333333],
+       "expectedValue": 4.33333333333333,
+       "expectedOverlap": 0.333333333333333,
+       "overlapShare": 0.333333333333333,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1, 2],
+       "boundarySize": 3,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [true, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.25,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.9, 3, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [true, true, false],
+     "bayesPositive": [true, true, false],
+     "positiveCount": 2,
+     "cutoff": 0.25,
+     "positiveCost": [0.7, 0, 1],
+     "negativeCost": [0.9, 3, 0],
+     "expectedFalsePositives": 0.7,
+     "expectedFalseNegatives": 0,
+     "totalCost": 0.7,
+     "meanCost": 0.233333333333333
+    },
+    "optimalFamilySize": 13,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-tb19-positiveGrade0",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb19",
+    "tau": 0.25,
+    "budget": 1,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 0,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4, 3],
+    "pTop": [0.3, 0.7, 0],
+    "pAbove": [0.3, 1, 0],
+    "n": 3,
+    "M": 3,
+    "reports": {
+     "mean": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 0, 0],
+       "expectedValue": 6,
+       "expectedOverlap": 0.3,
+       "overlapShare": 0.3,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 0,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 1.3,
+       "totalCost": 1.3,
+       "meanCost": 0.433333333333333
+      }
+     },
+     "top": {
+      "grade": [2, 1, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1,
+       "EoverN": 0.333333333333333,
+       "risk": 0.333333333333333,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 0,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 1.3,
+       "totalCost": 1.3,
+       "meanCost": 0.433333333333333
+      }
+     },
+     "optimal": {
+      "grade": [2, 1, 2],
+      "evaluation": {
+       "M": 3,
+       "N": 2,
+       "Ew": 0.3,
+       "EoverN": 0.15,
+       "risk": 0.183333333333333,
+       "disclosure": 0.666666666666667
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 0,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 1.3,
+       "totalCost": 1.3,
+       "meanCost": 0.433333333333333
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1],
+      "evaluation": {
+       "M": 3,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.333333333333333, 0.333333333333333, 0.333333333333333],
+       "expectedValue": 4.33333333333333,
+       "expectedOverlap": 0.333333333333333,
+       "overlapShare": 0.333333333333333,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1, 2],
+       "boundarySize": 3,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, false, false],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 0,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 0,
+       "expectedFalseNegatives": 1.3,
+       "totalCost": 1.3,
+       "meanCost": 0.433333333333333
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [false, true, false],
+     "bayesPositive": [false, true, false],
+     "positiveCount": 1,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 0, 1],
+     "negativeCost": [0.3, 1, 0],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.1
+    },
+    "optimalFamilySize": 13,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-tb19-positiveGrade3",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "tb19",
+    "tau": 0.25,
+    "budget": 1,
+    "threshold": 3.5,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 3,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [6, 4, 3],
+    "pTop": [0.3, 0.7, 0],
+    "pAbove": [0.3, 1, 0],
+    "n": 3,
+    "M": 3,
+    "reports": {
+     "mean": {
+      "grade": [1, 2, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1.4,
+       "EoverN": 0.466666666666667,
+       "risk": 0.466666666666667,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [1, 0, 0],
+       "expectedValue": 6,
+       "expectedOverlap": 0.3,
+       "overlapShare": 0.3,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     },
+     "top": {
+      "grade": [2, 1, 3],
+      "evaluation": {
+       "M": 3,
+       "N": 3,
+       "Ew": 1,
+       "EoverN": 0.333333333333333,
+       "risk": 0.333333333333333,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     },
+     "optimal": {
+      "grade": [2, 1, 2],
+      "evaluation": {
+       "M": 3,
+       "N": 2,
+       "Ew": 0.3,
+       "EoverN": 0.15,
+       "risk": 0.183333333333333,
+       "disclosure": 0.666666666666667
+      },
+      "allocation": {
+       "inclusion": [0, 1, 0],
+       "expectedValue": 4,
+       "expectedOverlap": 0.7,
+       "overlapShare": 0.7,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [1],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1],
+      "evaluation": {
+       "M": 3,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.25,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.333333333333333, 0.333333333333333, 0.333333333333333],
+       "expectedValue": 4.33333333333333,
+       "expectedOverlap": 0.333333333333333,
+       "overlapShare": 0.333333333333333,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1, 2],
+       "boundarySize": 3,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true],
+       "bayesPositive": [false, true, false],
+       "positiveCount": 3,
+       "cutoff": 0.5,
+       "positiveCost": [0.7, 0, 1],
+       "negativeCost": [0.3, 1, 0],
+       "expectedFalsePositives": 1.7,
+       "expectedFalseNegatives": 0,
+       "totalCost": 1.7,
+       "meanCost": 0.566666666666667
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [false, true, false],
+     "bayesPositive": [false, true, false],
+     "positiveCount": 1,
+     "cutoff": 0.5,
+     "positiveCost": [0.7, 0, 1],
+     "negativeCost": [0.3, 1, 0],
+     "expectedFalsePositives": 0,
+     "expectedFalseNegatives": 0.3,
+     "totalCost": 0.3,
+     "meanCost": 0.1
+    },
+    "optimalFamilySize": 13,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-league-budget1",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "league",
+    "tau": 0.2,
+    "budget": 1,
+    "threshold": 0,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [0.0101914814336071, -0.115984739070089, 0.0759251752344836, -0.0142849708230163, -0.259995218793419, 0.0590956533731638, -0.0731983673528359, 0.106922574708192, -0.021067671782809, 0.0618087606613161, -0.100571470726125, -0.0830157682918031, 0.0687616263655014, -0.0553489501658377, -0.108048961237472, 0.021221431125944, -0.031017733148882, -0.182563675380114, -0.0774951537362427, -0.157980865011593, 0.12222418178784, -0.0622084934847254, -0.051060081567806, 0.0521670844610025, -0.0783202050492905, 0.164095056140652, 0.00818176634002922, -0.135476120221427, 0.0888827506163051, 0.0254282578414209],
+    "pTop": [0.039, 0, 0.013, 0.0305, 0, 0.002, 0.009, 0.114, 0, 0.1135, 0, 0, 0.1115, 0.0005, 0, 0.054, 0.002, 0, 0.0075, 0, 0.0665, 0.0125, 0.0015, 0.0025, 0.006, 0.3255, 0.0005, 0.002, 0.0855, 0.001],
+    "pAbove": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+    "n": 30,
+    "M": 435,
+    "reports": {
+     "mean": {
+      "grade": [12, 26, 5, 14, 30, 8, 20, 3, 15, 7, 24, 23, 6, 18, 25, 11, 16, 29, 21, 28, 2, 19, 17, 9, 22, 1, 13, 27, 4, 10],
+      "evaluation": {
+       "M": 435,
+       "N": 435,
+       "Ew": 94.4777383139179,
+       "EoverN": 0.217190203020501,
+       "risk": 0.217190203020501,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+       "expectedValue": 0.164095056140652,
+       "expectedOverlap": 0.3255,
+       "overlapShare": 0.3255,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [25],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 0.0242946947447571,
+       "expectedFalseNegatives": 12.3993493562798,
+       "totalCost": 12.4236440510246,
+       "meanCost": 0.414121468367486
+      }
+     },
+     "top": {
+      "grade": [8, 23, 10, 9, 24, 16, 12, 2, 25, 3, 26, 27, 4, 21, 28, 7, 17, 29, 13, 30, 6, 11, 19, 15, 14, 1, 22, 18, 5, 20],
+      "evaluation": {
+       "M": 435,
+       "N": 435,
+       "Ew": 125.092001369712,
+       "EoverN": 0.287567819240718,
+       "risk": 0.287567819240718,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+       "expectedValue": 0.164095056140652,
+       "expectedOverlap": 0.3255,
+       "overlapShare": 0.3255,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [25],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 0.0242946947447571,
+       "expectedFalseNegatives": 12.3993493562798,
+       "totalCost": 12.4236440510246,
+       "meanCost": 0.414121468367486
+      }
+     },
+     "optimal": {
+      "grade": [1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 2, 1, 2, 2, 1, 2, 3, 2, 2, 1, 2, 2, 1, 2, 1, 1, 2, 1, 1],
+      "evaluation": {
+       "M": 435,
+       "N": 251,
+       "Ew": 31.9595683001462,
+       "EoverN": 0.1273289573711,
+       "risk": 0.158067973103784,
+       "disclosure": 0.577011494252874
+      },
+      "allocation": {
+       "inclusion": [0.0769230769230769, 0, 0.0769230769230769, 0, 0, 0.0769230769230769, 0, 0.0769230769230769, 0, 0.0769230769230769, 0, 0, 0.0769230769230769, 0, 0, 0.0769230769230769, 0, 0, 0, 0, 0.0769230769230769, 0, 0, 0.0769230769230769, 0, 0.0769230769230769, 0.0769230769230769, 0, 0.0769230769230769, 0.0769230769230769],
+       "expectedValue": 0.0665312153914968,
+       "expectedOverlap": 0.0714230769230769,
+       "overlapShare": 0.0714230769230769,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 2, 5, 7, 9, 12, 15, 20, 23, 25, 26, 28, 29],
+       "boundarySize": 13,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 13,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 2.77825238765195,
+       "expectedFalseNegatives": 3.15330704918702,
+       "totalCost": 5.93155943683897,
+       "meanCost": 0.197718647894632
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      "evaluation": {
+       "M": 435,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.2,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333, 0.0333333333333333],
+       "expectedValue": -0.0247577548584676,
+       "expectedOverlap": 0.0333333333333333,
+       "overlapShare": 0.0333333333333333,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+       "boundarySize": 30,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 30,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 16.6249453384649,
+       "expectedFalseNegatives": 0,
+       "totalCost": 16.6249453384649,
+       "meanCost": 0.554164844615498
+      }
+     },
+     "raw": {
+      "grade": [11, 22, 7, 15, 29, 8, 25, 4, 14, 3, 21, 19, 2, 18, 20, 9, 16, 24, 26, 28, 5, 23, 17, 10, 27, 1, 13, 30, 6, 12],
+      "evaluation": {
+       "M": 435,
+       "N": 435,
+       "Ew": 102.165368044608,
+       "EoverN": 0.234862915045076,
+       "risk": 0.234862915045076,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+       "expectedValue": 0.164095056140652,
+       "expectedOverlap": 0.3255,
+       "overlapShare": 0.3255,
+       "selectedCount": 1,
+       "budget": 1,
+       "boundaryGrade": 1,
+       "boundaryMembers": [25],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 0.0242946947447571,
+       "expectedFalseNegatives": 12.3993493562798,
+       "totalCost": 12.4236440510246,
+       "meanCost": 0.414121468367486
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+     "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+     "positiveCount": 13,
+     "cutoff": 0.5,
+     "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+     "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+     "expectedFalsePositives": 2.77825238765195,
+     "expectedFalseNegatives": 3.15330704918702,
+     "totalCost": 5.93155943683897,
+     "meanCost": 0.197718647894632
+    },
+    "optimalFamilySize": 436,
+    "optimalTieCount": 1
+   }
+  },
+  {
+   "id": "native-league-budget5",
+   "args": {
+    "fn": "nativeDecisionExperiment",
+    "law": "league",
+    "tau": 0.2,
+    "budget": 5,
+    "threshold": 0,
+    "falsePositiveCost": 1,
+    "falseNegativeCost": 1,
+    "positiveGrade": 1,
+    "measurementSeed": 20261030,
+    "seed": 1,
+    "S": 2000,
+    "priorSd": 0.15,
+    "cap": 3
+   },
+   "expect": {
+    "means": [0.0101914814336071, -0.115984739070089, 0.0759251752344836, -0.0142849708230163, -0.259995218793419, 0.0590956533731638, -0.0731983673528359, 0.106922574708192, -0.021067671782809, 0.0618087606613161, -0.100571470726125, -0.0830157682918031, 0.0687616263655014, -0.0553489501658377, -0.108048961237472, 0.021221431125944, -0.031017733148882, -0.182563675380114, -0.0774951537362427, -0.157980865011593, 0.12222418178784, -0.0622084934847254, -0.051060081567806, 0.0521670844610025, -0.0783202050492905, 0.164095056140652, 0.00818176634002922, -0.135476120221427, 0.0888827506163051, 0.0254282578414209],
+    "pTop": [0.2115, 0.007, 0.2965, 0.1575, 0, 0.1955, 0.061, 0.534, 0.0055, 0.383, 0.007, 0, 0.3885, 0.0265, 0, 0.2535, 0.0515, 0, 0.069, 0, 0.6765, 0.0715, 0.033, 0.168, 0.065, 0.7835, 0.0285, 0.022, 0.4425, 0.062],
+    "pAbove": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+    "n": 30,
+    "M": 435,
+    "reports": {
+     "mean": {
+      "grade": [12, 26, 5, 14, 30, 8, 20, 3, 15, 7, 24, 23, 6, 18, 25, 11, 16, 29, 21, 28, 2, 19, 17, 9, 22, 1, 13, 27, 4, 10],
+      "evaluation": {
+       "M": 435,
+       "N": 435,
+       "Ew": 94.4777383139179,
+       "EoverN": 0.217190203020501,
+       "risk": 0.217190203020501,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0],
+       "expectedValue": 0.558049738487474,
+       "expectedOverlap": 2.733,
+       "overlapShare": 0.5466,
+       "selectedCount": 5,
+       "budget": 5,
+       "boundaryGrade": 5,
+       "boundaryMembers": [2],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 4
+      },
+      "classification": {
+       "positive": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 0.0242946947447571,
+       "expectedFalseNegatives": 12.3993493562798,
+       "totalCost": 12.4236440510246,
+       "meanCost": 0.414121468367486
+      }
+     },
+     "top": {
+      "grade": [9, 23, 7, 12, 26, 10, 17, 3, 25, 6, 24, 27, 5, 21, 28, 8, 18, 29, 14, 30, 2, 13, 19, 11, 15, 1, 20, 22, 4, 16],
+      "evaluation": {
+       "M": 435,
+       "N": 435,
+       "Ew": 110.526929990669,
+       "EoverN": 0.254084896530274,
+       "risk": 0.254084896530274,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0],
+       "expectedValue": 0.550886189618492,
+       "expectedOverlap": 2.825,
+       "overlapShare": 0.565,
+       "selectedCount": 5,
+       "budget": 5,
+       "boundaryGrade": 5,
+       "boundaryMembers": [12],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 4
+      },
+      "classification": {
+       "positive": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 0.0242946947447571,
+       "expectedFalseNegatives": 12.3993493562798,
+       "totalCost": 12.4236440510246,
+       "meanCost": 0.414121468367486
+      }
+     },
+     "optimal": {
+      "grade": [1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 2, 1, 2, 2, 1, 2, 3, 2, 2, 1, 2, 2, 1, 2, 1, 1, 2, 1, 1],
+      "evaluation": {
+       "M": 435,
+       "N": 251,
+       "Ew": 31.9595683001462,
+       "EoverN": 0.1273289573711,
+       "risk": 0.158067973103784,
+       "disclosure": 0.577011494252874
+      },
+      "allocation": {
+       "inclusion": [0.384615384615385, 0, 0.384615384615385, 0, 0, 0.384615384615385, 0, 0.384615384615385, 0, 0.384615384615385, 0, 0, 0.384615384615385, 0, 0, 0.384615384615385, 0, 0, 0, 0, 0.384615384615385, 0, 0, 0.384615384615385, 0, 0.384615384615385, 0.384615384615385, 0, 0.384615384615385, 0.384615384615385],
+       "expectedValue": 0.332656076957484,
+       "expectedOverlap": 1.70134615384615,
+       "overlapShare": 0.340269230769231,
+       "selectedCount": 5,
+       "budget": 5,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 2, 5, 7, 9, 12, 15, 20, 23, 25, 26, 28, 29],
+       "boundarySize": 13,
+       "remaining": 5,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 13,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 2.77825238765195,
+       "expectedFalseNegatives": 3.15330704918702,
+       "totalCost": 5.93155943683897,
+       "meanCost": 0.197718647894632
+      }
+     },
+     "withheld": {
+      "grade": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      "evaluation": {
+       "M": 435,
+       "N": 0,
+       "Ew": 0,
+       "EoverN": null,
+       "risk": 0.2,
+       "disclosure": 0
+      },
+      "allocation": {
+       "inclusion": [0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667, 0.166666666666667],
+       "expectedValue": -0.123788774292338,
+       "expectedOverlap": 0.833333333333333,
+       "overlapShare": 0.166666666666667,
+       "selectedCount": 5,
+       "budget": 5,
+       "boundaryGrade": 1,
+       "boundaryMembers": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+       "boundarySize": 30,
+       "remaining": 5,
+       "aboveCount": 0
+      },
+      "classification": {
+       "positive": [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 30,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 16.6249453384649,
+       "expectedFalseNegatives": 0,
+       "totalCost": 16.6249453384649,
+       "meanCost": 0.554164844615498
+      }
+     },
+     "raw": {
+      "grade": [11, 22, 7, 15, 29, 8, 25, 4, 14, 3, 21, 19, 2, 18, 20, 9, 16, 24, 26, 28, 5, 23, 17, 10, 27, 1, 13, 30, 6, 12],
+      "evaluation": {
+       "M": 435,
+       "N": 435,
+       "Ew": 102.165368044608,
+       "EoverN": 0.234862915045076,
+       "risk": 0.234862915045076,
+       "disclosure": 1
+      },
+      "allocation": {
+       "inclusion": [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+       "expectedValue": 0.523812199663503,
+       "expectedOverlap": 2.7655,
+       "overlapShare": 0.5531,
+       "selectedCount": 5,
+       "budget": 5,
+       "boundaryGrade": 5,
+       "boundaryMembers": [20],
+       "boundarySize": 1,
+       "remaining": 1,
+       "aboveCount": 4
+      },
+      "classification": {
+       "positive": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false],
+       "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+       "positiveCount": 1,
+       "cutoff": 0.5,
+       "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+       "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+       "expectedFalsePositives": 0.0242946947447571,
+       "expectedFalseNegatives": 12.3993493562798,
+       "totalCost": 12.4236440510246,
+       "meanCost": 0.414121468367486
+      }
+     }
+    },
+    "bayesClassification": {
+     "positive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+     "bayesPositive": [true, false, true, false, false, true, false, true, false, true, false, false, true, false, false, true, false, false, false, false, true, false, false, true, false, true, true, false, true, true],
+     "positiveCount": 13,
+     "cutoff": 0.5,
+     "positiveCost": [0.466158913454413, 0.918335623010015, 0.0547279800676039, 0.547378731067965, 0.999110229858137, 0.106410512511063, 0.729064589892392, 0.0993875076822467, 0.671531310716736, 0.303251002691622, 0.886614522649266, 0.959951718349177, 0.283317758712901, 0.747042416678091, 0.988632900760458, 0.429814968720346, 0.645346420302742, 0.999940646273301, 0.740793272116512, 0.971197619667417, 0.00498725097537789, 0.697911826970309, 0.730281906213735, 0.135714276357719, 0.743014952725649, 0.0242946947447571, 0.431527427031718, 0.870544263561081, 0.142706647811481, 0.295953446890698],
+     "negativeCost": [0.533841086545587, 0.0816643769899854, 0.945272019932396, 0.452621268932035, 0.000889770141862678, 0.893589487488937, 0.270935410107608, 0.900612492317753, 0.328468689283264, 0.696748997308378, 0.113385477350734, 0.0400482816508233, 0.716682241287099, 0.252957583321909, 0.0113670992395423, 0.570185031279654, 0.354653579697258, 5.93537266990566e-05, 0.259206727883488, 0.0288023803325829, 0.995012749024622, 0.302088173029691, 0.269718093786265, 0.864285723642281, 0.256985047274351, 0.975705305255243, 0.568472572968282, 0.129455736438919, 0.857293352188519, 0.704046553109302],
+     "expectedFalsePositives": 2.77825238765195,
+     "expectedFalseNegatives": 3.15330704918702,
+     "totalCost": 5.93155943683897,
+     "meanCost": 0.197718647894632
+    },
+    "optimalFamilySize": 436,
+    "optimalTieCount": 1
+   }
+  }
+ ]
+}

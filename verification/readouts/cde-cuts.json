@@ -1,0 +1,1295 @@
+{
+  "$schema": "./_schema.json",
+  "app": "cde-cuts",
+  "catalog": "5.8",
+  "about": "Full S-01 split view. All original substantive checks plus independent R46 complete case projections.",
+  "cases": [
+    {
+      "id": "tertiles",
+      "preset": "tertiles",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.evaluation.N"
+          },
+          "value": 48,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.evaluation.M"
+          },
+          "value": 66,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.evaluation.s"
+          },
+          "value": 0.7272727272727273,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.evaluation.Ew"
+          },
+          "value": 1.8288378703574169,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.evaluation.EoverN.0"
+          },
+          "value": 0.038100788965779515,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.evaluation.risk"
+          },
+          "value": 0.08225511924783965,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"err\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.evaluation.errorTerm"
+          },
+          "value": 0.027709664702385103,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"wh\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.evaluation.withholdingTerm"
+          },
+          "value": 0.05454545454545455,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.3"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.4"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.5"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-6\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.6"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-7\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.7"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-8\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.8"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-9\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.9"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-10\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.10"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-11\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.0.grade.11"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"opt-ties\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-choice-tau0.2",
+            "field": "optimum.tieCount"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"opt-tolerance\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-choice-tau0.2",
+            "field": "optimum.tieTol"
+          },
+          "value": 1e-12,
+          "format": {
+            "fn": "formatSci"
+          }
+        }
+      ]
+    },
+    {
+      "id": "archived",
+      "preset": "archived",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.evaluation.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.evaluation.M"
+          },
+          "value": 66,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.evaluation.s"
+          },
+          "value": 0.6818181818181818,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.evaluation.Ew"
+          },
+          "value": 0.0091147408975858,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.evaluation.EoverN.0"
+          },
+          "value": 0.0002025497977241289,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.evaluation.risk"
+          },
+          "value": 0.06377446577117556,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"err\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.evaluation.errorTerm"
+          },
+          "value": 0.00013810213481190608,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"wh\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.evaluation.withholdingTerm"
+          },
+          "value": 0.06363636363636364,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.3"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.4"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.5"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-6\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.6"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-7\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.7"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-8\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.8"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-9\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.9"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-10\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.10"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-11\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.1.grade.11"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "one-cut",
+      "preset": "one-cut",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.evaluation.N"
+          },
+          "value": 36,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.evaluation.M"
+          },
+          "value": 66,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"s\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.evaluation.s"
+          },
+          "value": 0.5454545454545454,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.evaluation.Ew"
+          },
+          "value": 0.02534837442550129,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.evaluation.EoverN.0"
+          },
+          "value": 0.0007041215118194803,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.evaluation.risk"
+          },
+          "value": 0.09129315718826517,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"err\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.evaluation.errorTerm"
+          },
+          "value": 0.00038406627917426196,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"wh\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.evaluation.withholdingTerm"
+          },
+          "value": 0.09090909090909091,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.3"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-4\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.4"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.5"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-6\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.6"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-7\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.7"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-8\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.8"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-9\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.9"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-10\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.10"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"school-grade-11\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-cut-reports",
+            "field": "reports.3.grade.11"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tau45",
+      "preset": "tau45",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"opt-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-choice-tau0.45",
+            "field": "optimum.evaluation.N"
+          },
+          "value": 47,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"opt-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "cde-choice-tau0.45",
+            "field": "optimum.risk"
+          },
+          "value": 0.14319748054188128,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "preset-tertiles",
+      "about": "deck preset: the tertiles (cuts 4 | 8 of the posterior-mean order) at tau .20; the result box, the exact optimum within at most 3 grades, the archived solve and the relation changes from the optimum to the tertiles",
+      "preset": "tertiles",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-cde-cap3-N48",
+            "field": "pkg.mixN"
+          },
+          "value": 48,
+          "format": {
+            "fn": "formatCount"
+          },
+          "about": "the tertiles state 48 pairs (case key cde.tertiles.tau20.N too)"
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "registry",
+          "ref": "cde.frame.M",
+          "value": 66
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-cde-cap3-N48",
+            "field": "pkg.best.Ew"
+          },
+          "value": 1.82883787035742,
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "about": "E of the tertiles, the best report at N = 48"
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "registry",
+          "ref": "cde.tertiles.tau20.EoverN",
+          "value": 0.0381007889657796
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "registry",
+          "ref": "cde.tertiles.tau20.risk",
+          "value": 0.0822551192478397
+        },
+        {
+          "select": "[data-prx-readout=\"sizes\"]",
+          "source": "registry",
+          "ref": "s01.cde.tertiles.sizes",
+          "value": [
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"opt-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-cde-cap3-tau.20",
+            "field": "pkg.risk"
+          },
+          "value": 0.0637744657711756,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"opt-N\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "exactOptimumArchived-case_cde_12-tau.20",
+            "field": "pkg.N"
+          },
+          "value": 45,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"opt-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-cde-cap3",
+            "field": "pkg.Ew.2"
+          },
+          "value": 0.0091147408975858,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"opt-sizes\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.sizes",
+          "value": [
+            3,
+            6,
+            3
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"opt-EoverN\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.EoverN",
+          "value": 0.000202549797724129,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"arch-risk\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.risk",
+          "value": 0.0637744657711756
+        },
+        {
+          "select": "[data-prx-readout=\"arch-bound\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.bound",
+          "value": 0.0637744657711755
+        },
+        {
+          "select": "[data-prx-readout=\"arch-gap\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.gap",
+          "value": 1.38777878078145e-17
+        },
+        {
+          "select": "[data-prx-readout=\"arch-sizes\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.sizes",
+          "value": [
+            3,
+            6,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"rel-new-stated\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "relationChange-cde-archived-to-tertiles",
+            "field": "nNewDisclosed"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"rel-new-withheld\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "relationChange-cde-archived-to-tertiles",
+            "field": "nNewWithheld"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"rel-reversed\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "relationChange-cde-archived-to-tertiles",
+            "field": "nReversed"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"rel-same\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-part3",
+            "row": "relationChange-case_cde_12-to-observed_rate_tertiles",
+            "field": "nSame"
+          },
+          "value": 51,
+          "format": {
+            "fn": "formatCount"
+          },
+          "about": "postrank_compare relations on case_cde_12"
+        },
+        {
+          "select": "[data-prx-readout=\"rel-error-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "relationChange-cde-archived-to-tertiles",
+            "field": "error.3"
+          },
+          "value": 0.438905537679851,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 4
+            }
+          },
+          "about": "F above D"
+        },
+        {
+          "select": "[data-prx-readout=\"rel-error-5\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "relationChange-cde-archived-to-tertiles",
+            "field": "error.5"
+          },
+          "value": 0.452014572531846,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 4
+            }
+          },
+          "about": "F above E"
+        },
+        {
+          "select": "[data-prx-readout=\"rel-error-10\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "relationChange-cde-archived-to-tertiles",
+            "field": "error.10"
+          },
+          "value": 0.477909981948625,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 4
+            }
+          },
+          "about": "G above I"
+        },
+        {
+          "select": "[data-prx-readout=\"rel-error-11\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "relationChange-cde-archived-to-tertiles",
+            "field": "error.11"
+          },
+          "value": 0.446765942166475,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 4
+            }
+          },
+          "about": "H above I"
+        },
+        {
+          "select": "[data-prx-label=\"exact-within-family\"]",
+          "source": "literal",
+          "ref": "6.2",
+          "kind": "text",
+          "value": "exact optimum within 𝒜_≤3"
+        },
+        {
+          "select": "[data-prx-label=\"optimal-within-solver-tolerances\"]",
+          "source": "literal",
+          "ref": "6.2",
+          "kind": "text",
+          "value": "optimal within solver tolerances"
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "source": "literal",
+          "ref": "6.5",
+          "kind": "text",
+          "value": "evaluation of a fixed report"
+        },
+        {
+          "select": "[data-prx-caption=\"different-disclosure\"]",
+          "source": "literal",
+          "ref": "6.5",
+          "kind": "text",
+          "value": "these reports disclose different amounts"
+        }
+      ]
+    },
+    {
+      "id": "preset-archived",
+      "about": "the archived grades (cuts 3 | 9): the browser optimum at tau .20 is the same report, so no relation changes",
+      "preset": "archived",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.N",
+          "value": 45
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.risk",
+          "value": 0.0637744657711756
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.E",
+          "value": 0.00911474089758579,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.EoverN",
+          "value": 0.000202549797724129
+        },
+        {
+          "select": "[data-prx-readout=\"sizes\"]",
+          "source": "registry",
+          "ref": "cde.cap3.tau20.sizes",
+          "value": [
+            3,
+            6,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"opt-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-part3",
+            "row": "bestReports-case_cde_12-archived",
+            "field": "pkg.risk.0"
+          },
+          "value": 0.0637744657711756,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "cuts-tau45",
+      "about": "the cuts view at tau .45: the optimum is 4/5/3, and the archived solve is named only at tau .20",
+      "query": "?cuts=4,8&tau=.45&n=48&pair=F,I&full=false",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"opt-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-cde-cap3-tau.45",
+            "field": "pkg.risk"
+          },
+          "value": 0.143197480541881,
+          "format": {
+            "fn": "formatRisk",
+            "options": {
+              "digits": 6
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"opt-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "supportingVertex-cde-cap3-tau.45",
+            "field": "pkg.N.0"
+          },
+          "value": 47,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    }
+  ],
+  "from": "postrank-explorer-v1 verification/readouts/case-cde.json (all ten substantive cases; prediction apparatus removed)"
+}

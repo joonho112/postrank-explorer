@@ -1,0 +1,50 @@
+---
+title: "Expected and state-specific reporting loss"
+subtitle: "3.11 · after the postrank theory book, ch. 16–18 and vignette m2"
+description: "Comparison of minimum expected loss with realised losses in paired posterior draws."
+---
+
+A report that minimises posterior expected loss need not have the smallest loss in every latent state. The display
+holds an optimal report and a comparator fixed, then evaluates both on the same complete posterior draws. The
+probability that the comparator has smaller realised loss and the mean magnitude of the loss difference describe
+different properties. The finite-state example provides exact probabilities; the simulations additionally show
+Monte Carlo variation. The optimality comparison requires a common law and loss, and membership of the comparator
+in the optimised family.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/better-on-average.js"></script>
+<script>window.__prxApp = PRX["better-on-average"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Inside the family.** Among 63 reports with at most two grades, the best has conditional risk .0940; the two
+  posterior-mean tiers have .1046. Yet that common rule wins 57 of these 100 paired draws. Loss magnitudes matter,
+  not just how often a report wins. Below the dashed diagonal the common rule has smaller realised loss.
+- **Outside the family.** The comparison retains the two-grade family but uses a three-tier comparator. Its conditional
+  risk .0417 is below .0940. It was excluded from the family optimised here, so the earlier guarantee does not
+  cover it. The law and the optimised family have stayed fixed.
+- **Two-state law.** The best report withholds at risk .2500; the expected-rank order has risk .3000. Nevertheless
+  the rule wins with exact probability .700 and wins 65 of these 100 sampled draws. The state table gives exact
+  probabilities and losses; the scatter remains a sample.
+- **A short run.** The rule wins 9 of 10 draws, and the paired mean difference is −.00667, favoring it in this
+  finite sample. The exact conditional difference is positive; the paired Monte Carlo SE quantifies numerical sampling variation.
+- **A silent common rule.** Its risk is .2000 and its disclosed-error fraction is “NA: no disclosure.” Silence
+  costs τ per pair, so a report that states nothing does not have zero reporting loss.
+- **Identical reports.** The summary reads “ties 100”: both reports have the same loss in every drawn state.
+  Draw selection gives the corresponding state, grades and wrong counts.
+
+::: {.callout-note appearance="simple"}
+Total reporting loss includes wrong stated directions and the withholding cost, divided by all pairs. A wrong
+fraction divides by stated pairs instead. Conditional dominance requires the same law, loss and optimisation
+family, including comparator membership; it does not establish superiority at every state or under fixed-truth
+remeasurement. The paired SE measures sampling of the difference, not uncertainty about the supplied model.
+:::
+
+Standalone: [embed/better-on-average.html](../../embed/better-on-average.html), for example `?preset=short&theme=dark`.
+
+Related applications: [Comparison at matched disclosure](rule-comparison.qmd) and
+[Selection and evaluation using posterior draws](../grades/chosen-and-judged.qmd), which selects from estimated coefficients.

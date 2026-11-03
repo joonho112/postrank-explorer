@@ -1,0 +1,535 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part3-r01",
+  "description": "Part 3, Fixed tiers (R-01): tiers of the frozen league estimates (data/precomputed/league-30.json) at the package's quantile positions and the league's teaching posterior (prior SD .15). The three- and ten-tier N, E, E/N and risk at tau = .20 are league.default.prior15.tiers{3,10}.tau20.* keys and the shares cf.tiers.n30.* keys in part3.json; this fragment adds the shares at three significant digits (same_as those keys), the share of three tiers as a fraction, the partners of one unit, the stated pairs whose error exceeds tau and the largest stated error of three and ten tiers, the four-tier E/N, E and risk, the three-tier report with sizes 1, 1, 28 (N and E, a counterexample to 'balanced tiers make the fewest expected wrong directions') and the tolerance of the typed prediction.",
+  "license_scope": "author",
+  "inputs": {
+    "r01.post": {
+      "fn": "normalPosterior",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        {
+          "$data": "league-30",
+          "path": "tables.units.se"
+        },
+        {
+          "priorSd": {
+            "$setting": "settings.prior15"
+          }
+        }
+      ],
+      "note": "the league's teaching posterior (prior mean 0, prior SD .15), as league.default.post"
+    },
+    "r01.E": {
+      "fn": "errorArray",
+      "args": [
+        {
+          "$input": "r01.post",
+          "path": "mean"
+        },
+        {
+          "$input": "r01.post",
+          "path": "sd"
+        },
+        {
+          "ids": {
+            "$data": "league-30",
+            "path": "tables.units.id"
+          },
+          "criteria": [
+            "theta"
+          ]
+        }
+      ],
+      "note": "its error array, as league.default.E"
+    },
+    "r01.tiers2": {
+      "fn": "tierGrades",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        2
+      ],
+      "note": "2 tiers of the frozen estimates at the package's quantile positions"
+    },
+    "r01.tiers3": {
+      "fn": "tierGrades",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        3
+      ],
+      "note": "3 tiers of the frozen estimates at the package's quantile positions"
+    },
+    "r01.tiers4": {
+      "fn": "tierGrades",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        4
+      ],
+      "note": "4 tiers of the frozen estimates at the package's quantile positions"
+    },
+    "r01.tiers5": {
+      "fn": "tierGrades",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        5
+      ],
+      "note": "5 tiers of the frozen estimates at the package's quantile positions"
+    },
+    "r01.tiers10": {
+      "fn": "tierGrades",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        10
+      ],
+      "note": "10 tiers of the frozen estimates at the package's quantile positions"
+    },
+    "r01.order": {
+      "fn": "scoreOrder",
+      "args": [
+        {
+          "$data": "league-30",
+          "path": "tables.units.estimate"
+        },
+        {
+          "direction": "descending"
+        }
+      ],
+      "note": "the estimate order, largest first"
+    },
+    "r01.top2": {
+      "fn": "cutGrade",
+      "args": [
+        30,
+        [
+          1,
+          2
+        ],
+        {
+          "order": {
+            "$input": "r01.order",
+            "path": "order"
+          }
+        }
+      ],
+      "note": "three tiers of sizes 1, 1 and 28 along the estimate order: the two largest estimates in tiers of their own"
+    }
+  },
+  "keys": {
+    "r01.share.G2": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r01.tiers2"
+        }
+      ],
+      "field": "s",
+      "format": {
+        "fn": "formatShare"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "same_as": "cf.tiers.n30.G2.share",
+      "note": "share stated N/M by 2 tiers of 30 units, at three significant digits"
+    },
+    "r01.share.G3": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r01.tiers3"
+        }
+      ],
+      "field": "s",
+      "format": {
+        "fn": "formatShare"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "same_as": "cf.tiers.n30.G3.share",
+      "note": "share stated N/M by 3 tiers of 30 units, at three significant digits"
+    },
+    "r01.share.G4": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r01.tiers4"
+        }
+      ],
+      "field": "s",
+      "format": {
+        "fn": "formatShare"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "same_as": "cf.tiers.n30.G4.share",
+      "note": "share stated N/M by 4 tiers of 30 units, at three significant digits"
+    },
+    "r01.share.G5": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r01.tiers5"
+        }
+      ],
+      "field": "s",
+      "format": {
+        "fn": "formatShare"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "same_as": "cf.tiers.n30.G5.share",
+      "note": "share stated N/M by 5 tiers of 30 units, at three significant digits"
+    },
+    "r01.share.G10": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r01.tiers10"
+        }
+      ],
+      "field": "s",
+      "format": {
+        "fn": "formatShare"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "same_as": "cf.tiers.n30.G10.share",
+      "note": "share stated N/M by 10 tiers of 30 units, at three significant digits"
+    },
+    "r01.share.G3.fraction": {
+      "type": "fraction",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r01.tiers3"
+        }
+      ],
+      "field": "s",
+      "format": {
+        "fn": "formatRational"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "the same share as a fraction: 300/435 = 20/29"
+    },
+    "r01.tiers10.N": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        {
+          "$input": "r01.tiers10"
+        }
+      ],
+      "field": "N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "same_as": "league.default.prior15.tiers10.tau20.N",
+      "note": "pairs stated by ten tiers of 3"
+    },
+    "r01.partners.n30": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "field": "N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "the pairs that contain one given unit of 30 (one unit above the other 29): each unit has 29 partners"
+    },
+    "r01.tiers3.tau20.over": {
+      "type": "scalar",
+      "fn": "statedAbove",
+      "args": [
+        {
+          "$input": "r01.tiers3"
+        },
+        {
+          "$input": "r01.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "field": "count",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "stated pairs of the 3-tier report whose error exceeds tau = .20"
+    },
+    "r01.tiers3.tau20.maxstated": {
+      "type": "scalar",
+      "fn": "statedAbove",
+      "args": [
+        {
+          "$input": "r01.tiers3"
+        },
+        {
+          "$input": "r01.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "field": "max",
+      "format": {
+        "fn": "formatProb"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "the largest error among the stated directions of the 3-tier report"
+    },
+    "r01.tiers10.tau20.over": {
+      "type": "scalar",
+      "fn": "statedAbove",
+      "args": [
+        {
+          "$input": "r01.tiers10"
+        },
+        {
+          "$input": "r01.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "field": "count",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "stated pairs of the 10-tier report whose error exceeds tau = .20"
+    },
+    "r01.tiers10.tau20.maxstated": {
+      "type": "scalar",
+      "fn": "statedAbove",
+      "args": [
+        {
+          "$input": "r01.tiers10"
+        },
+        {
+          "$input": "r01.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "field": "max",
+      "format": {
+        "fn": "formatProb"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "the largest error among the stated directions of the 10-tier report"
+    },
+    "r01.tiers4.tau20.EoverN": {
+      "type": "scalar",
+      "fn": "evaluateReport",
+      "args": [
+        {
+          "$input": "r01.tiers4"
+        },
+        {
+          "$input": "r01.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "field": "EoverN.0",
+      "format": {
+        "fn": "formatShare"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "E/N of four tiers (8/7/8/7) under the teaching posterior"
+    },
+    "r01.tiers4.tau20.E": {
+      "type": "scalar",
+      "fn": "evaluateReport",
+      "args": [
+        {
+          "$input": "r01.tiers4"
+        },
+        {
+          "$input": "r01.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "field": "Ew",
+      "format": {
+        "fn": "formatExpectedCount"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "E of four tiers"
+    },
+    "r01.tiers4.tau20.risk": {
+      "type": "scalar",
+      "fn": "evaluateReport",
+      "args": [
+        {
+          "$input": "r01.tiers4"
+        },
+        {
+          "$input": "r01.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "field": "risk",
+      "format": {
+        "fn": "formatRisk"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "risk of four tiers at tau = .20"
+    },
+    "r01.top2.tau20.N": {
+      "type": "scalar",
+      "fn": "evaluateReport",
+      "args": [
+        {
+          "$input": "r01.top2"
+        },
+        {
+          "$input": "r01.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "field": "N",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "pairs stated by the three-tier report with sizes 1, 1, 28"
+    },
+    "r01.top2.tau20.E": {
+      "type": "scalar",
+      "fn": "evaluateReport",
+      "args": [
+        {
+          "$input": "r01.top2"
+        },
+        {
+          "$input": "r01.E"
+        },
+        {
+          "tau": {
+            "$setting": "settings.tau20"
+          }
+        }
+      ],
+      "field": "Ew",
+      "format": {
+        "fn": "formatExpectedCount"
+      },
+      "tolerance": {
+        "abs": 1e-12,
+        "rel": 1e-12
+      },
+      "note": "its expected wrong directions: fewer than the balanced tiers' (a counterexample for misreading 2)"
+    }
+  }
+}

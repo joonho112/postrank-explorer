@@ -1,0 +1,88 @@
+{
+  "id": "1.5",
+  "name": "shrinkage",
+  "part": "1",
+  "title": "What a posterior adds",
+  "idea": "With one prior shared by all units, the posterior mean pulls imprecise estimates further toward the prior mean than precise ones, so it can reorder units, and only units whose precisions differ.",
+  "status": "built",
+  "from": "v1 whole · v1 L-04 shrinkage (both views)",
+  "data": [
+    "engine"
+  ],
+  "math": true,
+  "credit": "After Kline, Rose and Walters (2024), sections III, V.B and V.E and slide 49; the postrank theory book, ch. 20; and Walters, Mixtape slides p. 27.",
+  "caption": "a posterior set by hand for teaching; postrank does not fit it. In plain words: this prior was chosen for teaching, and this browser computes the posterior from it.",
+  "presets": [
+    {
+      "id": "prior15",
+      "label": "Prior SD .15",
+      "query": "priorSd=.15&equalSe=0&seed=20261030&view=1"
+    },
+    {
+      "id": "prior05",
+      "label": "Prior SD .05",
+      "query": "priorSd=.05&equalSe=0&seed=20261030&view=1"
+    },
+    {
+      "id": "equal-se",
+      "label": "Every SE .10",
+      "query": "priorSd=.15&equalSe=1&seed=20261030&view=1"
+    },
+    {
+      "id": "truth",
+      "label": "Against the true values",
+      "query": "priorSd=.15&equalSe=0&seed=20261030&view=2"
+    },
+    {
+      "id": "too-narrow",
+      "label": "Too narrow a prior",
+      "query": "priorSd=.02&equalSe=0&seed=20261030&view=2"
+    }
+  ],
+  "try": [
+    {
+      "preset": "prior15",
+      "shows": [
+        ".64",
+        ".31",
+        ".10",
+        "37 of the 435"
+      ]
+    },
+    {
+      "preset": "prior05",
+      "shows": [
+        ".94",
+        ".50",
+        "71 of the 435"
+      ]
+    },
+    {
+      "preset": "equal-se",
+      "shows": [
+        ".69",
+        "0 of the 435"
+      ]
+    },
+    {
+      "preset": "truth",
+      "shows": [
+        ".0163",
+        ".0096",
+        ".162",
+        ".098",
+        ".149",
+        "14 of 30"
+      ]
+    },
+    {
+      "preset": "too-narrow",
+      "shows": [
+        ".0197",
+        ".0163",
+        ".0191",
+        ".0175"
+      ]
+    }
+  ]
+}

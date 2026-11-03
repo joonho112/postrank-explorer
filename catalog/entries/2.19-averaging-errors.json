@@ -1,0 +1,82 @@
+{
+  "id": "2.19",
+  "name": "averaging-errors",
+  "part": "2",
+  "title": "Three ways to average a wrong share",
+  "idea": "Over datasets, or outcomes of a randomized report, the wrong share of stated directions has three averages that generally differ: a ratio of expected counts, a mean over datasets that state something, and a mean counting silent ones as zero.",
+  "status": "built",
+  "from": "new concept · theory book ch. 8 and 16 (disclosed-error estimands) and App. B; v1 storyboard P-11, the error view; picture: three dataset cards with editable (wrong, stated) counts and the three averages as bars beside Pr(N > 0) and the mean disclosure; modes for a randomized report and for replicated leagues",
+  "data": [
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 8 and 16.",
+  "caption": "Three-outcome evaluation, a lottery over fixed reports, and simulated repeated datasets; the three averaging conventions answer different questions.",
+  "presets": [
+    {
+      "id": "three",
+      "label": "Three outcomes",
+      "query": "mode=kernel"
+    },
+    {
+      "id": "weighted",
+      "label": "More weight on errors",
+      "query": "mode=kernel&w1=2"
+    },
+    {
+      "id": "lottery",
+      "label": "A complete-report lottery",
+      "query": "mode=mixture&psi=.25"
+    },
+    {
+      "id": "silent",
+      "label": "All silent",
+      "query": "mode=kernel&a1=0&a2=0&a3=0&n1=0&n2=0&n3=0"
+    },
+    {
+      "id": "league",
+      "label": "Twenty datasets",
+      "query": "mode=replays&replays=20&seed=20261030&priorSd=.15&tau=.2&cap=3"
+    }
+  ],
+  "try": [
+    {
+      "preset": "three",
+      "shows": [
+        "2/5",
+        "1/2",
+        "1/3",
+        "2/3",
+        "5/9"
+      ]
+    },
+    {
+      "preset": "weighted",
+      "shows": [
+        "4/7",
+        "2/3",
+        "1/2"
+      ]
+    },
+    {
+      "preset": "lottery",
+      "shows": [
+        "1/8",
+        "49/400"
+      ]
+    },
+    {
+      "preset": "silent",
+      "shows": [
+        "NA: no disclosure",
+        "0"
+      ]
+    },
+    {
+      "preset": "league",
+      "shows": [
+        ".0892",
+        ".0891"
+      ]
+    }
+  ]
+}

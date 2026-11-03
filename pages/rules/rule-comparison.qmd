@@ -1,0 +1,55 @@
+---
+title: "Comparison at matched disclosure"
+subtitle: "3.7 · eight simulated units; frontier after the postrank theory book, ch. 16"
+description: "Excess expected wrong counts relative to a frontier at each rule's disclosure."
+---
+
+Rules that disclose different numbers of pairs need not be comparable by expected wrong count alone. At each rule's
+own disclosure, the frontier gives the smallest expected count attained by a report in the family or by a mixture
+of two complete reports. The vertical difference measures excess expected errors at that disclosure. The display
+also identifies the best single report when the same count is attainable without randomisation. A rule outside the
+specified family retains its evaluated risk but receives no frontier comparison within that family.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/rule-comparison.js"></script>
+<script>window.__prxApp = PRX["rule-comparison"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Same N, τ .20.** Posterior-mean tiers state 21 pairs with E 3.114. The frontier is 2.951, a gap of .1634.
+  The mixture prints the more-disclosing report with chance .667; the best single report at that N has E 3.013.
+- **Estimate tiers.** Three tiers from the estimates also state 21 pairs, but their gap is .6429.
+- **Flags.** The flag report states 19 pairs and lies on the frontier: gap 0.
+- **Strict order, τ .05.** Stating all 28 pairs leaves a gap of .2305. The cross marks risk above all-withheld at
+  this τ; changing τ does not change this rule's gap.
+- **At most three grades.** Among 6,051 reports, the estimate tiers' gap becomes .4796. The posterior-mean tiers
+  reach the capped frontier, where only balanced reports with sizes three, three and two attain the endpoint.
+- **Four tiers outside the cap.** The rule is outside this family and receives no benchmark. The all-withheld
+  rule remains available in the select, at N 0.
+
+::: {.callout-note appearance="simple"}
+Every rule uses one supplied teaching posterior; postrank does not fit it. The flags use the mean of all thirty
+league estimates, even on these eight units. A frontier mixture averages complete reports: each realised report
+states one endpoint's N. Its error fraction is a ratio of expected counts, not an average of realised fractions.
+The gap assesses this loss and disclosure, not the purpose for which a rule was designed.
+:::
+
+::: {.callout-note collapse="true" title="In postrank"}
+
+The package's synthetic `pr_example_gaussian` poverty example uses its own thirty sites. At τ .25 with at most four
+grades, this prints quantile cuts with N 337 and risk .1758, versus optimal cuts with N 303 and risk .1603. The risks correspond to different N; H(m) is not a package output.
+
+```r
+w <- c(poverty=1, frl=0, snap=0); s <- postrank_settings(weights=w, tau=.25, G_max=4L); sc <- pr_example_gaussian$means[, "poverty"]
+sapply(c("quantile", "optimal"), function(r) unlist(postrank_cuts(sc, pr_example_gaussian, s, direction="descending", rule=r)$evaluation[c("N", "primary_risk")]))
+```
+
+:::
+
+Standalone: [open this app](../../embed/rule-comparison.html), for example `?preset=cap3&theme=dark`.
+
+Related applications: [The error–disclosure frontier](../grades/frontier.html) · [Common withholding cost and matched disclosure](same-tau-or-same-n.html).

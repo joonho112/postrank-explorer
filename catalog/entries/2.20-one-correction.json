@@ -1,0 +1,91 @@
+{
+  "id": "2.20",
+  "name": "one-correction",
+  "part": "2",
+  "title": "One correction moves other grades",
+  "idea": "Grades are chosen together, so correcting one unit's input, or dropping a unit, can change the relation between two other units.",
+  "status": "built",
+  "from": "new concept · theory book ch. 17 (information sets) and ch. 21 (transparency, appeal, documentation); postrank_compare() relations; picture: the card before and after the reader corrects one unit's mean or SD, or drops a unit, with the relation-change matrix and the count of changed pairs between units the reader did not touch",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 17 and 21.",
+  "caption": "Independent normal teaching posteriors. Six-site reports are optimized in their named full or capped family; the frozen league uses best cuts of a recomputed expected-rank order. Removed units are excluded, not graded last.",
+  "presets": [
+    {
+      "id": "mean",
+      "label": "Correct a mean",
+      "query": "unit=C&mode=mean&mean=-1&sd=1&tau=.2&cap=3&data=six&score=A"
+    },
+    {
+      "id": "none",
+      "label": "No correction",
+      "query": "unit=C&mode=mean&mean=.25&sd=1&tau=.2&cap=3&data=six&score=A"
+    },
+    {
+      "id": "uncertain",
+      "label": "More uncertainty",
+      "query": "unit=A&mode=sd&mean=1.2&sd=1&tau=.2&cap=2&data=six&score=A"
+    },
+    {
+      "id": "drop",
+      "label": "Drop a unit",
+      "query": "unit=E&mode=drop&mean=-.5&sd=.2&tau=.2&cap=4&data=six&score=A"
+    },
+    {
+      "id": "league-drop",
+      "label": "Drop U15 from the league",
+      "query": "data=league&score=A&unit=U15&mode=drop&mean=-1&sd=1&tau=.2&cap=all"
+    },
+    {
+      "id": "two-score-drop",
+      "label": "Two scores, drop C",
+      "query": "data=six&score=AB&unit=C&mode=drop&mean=-1&sd=1&tau=.2&cap=all"
+    }
+  ],
+  "try": [
+    {
+      "preset": "mean",
+      "shows": [
+        "2 of 10"
+      ]
+    },
+    {
+      "preset": "none",
+      "shows": [
+        "0 of 10"
+      ]
+    },
+    {
+      "preset": "uncertain",
+      "shows": [
+        "6 of 10"
+      ]
+    },
+    {
+      "preset": "drop",
+      "shows": [
+        "1 of 10"
+      ]
+    },
+    {
+      "preset": "league-drop",
+      "shows": [
+        "107 of 406",
+        "62 newly withheld",
+        "45 newly stated",
+        "sizes 1, 12, 15, 2",
+        "sizes 9, 17, 3"
+      ]
+    },
+    {
+      "preset": "two-score-drop",
+      "shows": [
+        "2 of 10",
+        "A–B",
+        "A–D"
+      ]
+    }
+  ]
+}

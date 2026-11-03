@@ -1,0 +1,626 @@
+{
+  "$schema": "./_schema.json",
+  "app": "posterior-pipeline",
+  "catalog": "1.7",
+  "from": "postrank-explorer-v1 verification/readouts/posterior-pipeline.json",
+  "about": "The diagram of four box buttons (Data, Model, Posterior, Decision) joined by three arrows, the panel of the open box (key box), and the two-unit chain under them. The diagram's expectations are structural strings, as in v1: the open box's accessible name and panel title, who makes the box and the arrow labels (postrank reads a supplied posterior and does not create it), and the diagram's text alternative. The box selector names the box buttons (.prx-pp-box), because the preset row has pressed buttons too. The chain's numbers are checked against base-R oracle rows at two settings: two units of the simulated league (U13 as A and U05 as B, the frozen draw of seed 20261030, prior SD .15), whose posterior and direction probability the league's oracle rows hold, and two equal units at τ .50, where the three actions tie.",
+  "cases": [
+    {
+      "id": "default",
+      "about": "The app's defaults: box 1 (Data) open; the diagram's accessible name and text alternative (the prediction wording of v1 is gone and the answer sentence is always there); the first arrow's label; the chain's read-out at the defaults.",
+      "query": "",
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box: its accessible name (box number, name and its postrank tag)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 1: Data"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-title",
+          "kind": "text",
+          "about": "the panel title inside the panel's live part",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 1: Data"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-who",
+          "kind": "text",
+          "about": "who makes the open box; postrank reads a supplied posterior and does not create it",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Who makes this box: whoever collected the data. postrank never reads Y itself, only a posterior computed from it."
+        },
+        {
+          "select": ".prx-pp-flow",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the diagram's accessible name; its description is the visually hidden paragraph",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The four boxes, from data to a decision"
+        },
+        {
+          "select": "[data-prx-part~=\"chart\"] > p.prx-sr-only",
+          "kind": "text",
+          "about": "the diagram's text alternative in words, with the answer sentence",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Four boxes joined by three arrows, in order: Data (Y), Model (a prior for the true values), Posterior (the posterior of the true values given Y) and Decision (grades). Press a box to open its explanation below the boxes. The first two arrows, choosing and fitting the model and computing the posterior, are the analyst's work, done outside postrank and before it; postrank computes only the third arrow: it reads the posterior and makes the grades. A dashed frame holds the two boxes postrank touches."
+        },
+        {
+          "select": "[data-prx-arrow=\"1\"] .prx-pp-arrow-label",
+          "kind": "text",
+          "about": "the first arrow (choosing and fitting the model) is the analyst's, before postrank",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "the analyst"
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "slots": true,
+          "about": "the chain's read-out at the defaults: the likelier direction is wrong less often than τ, so the report states it",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B is wrong with probability ⟨e⟩, below τ = ⟨tau⟩, so postrank states it: {A} > {B}."
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "about": "Preset data (the first preset, the app's defaults): box 1 open; the app caption, the line under the preset row, the chain's teaching-posterior caption and its gloss, and the routes table's first note.",
+      "preset": "data",
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 1: Data"
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "about": "the chain's scope caption: its posterior comes from estimates and a prior set by hand, and postrank does not fit it",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "[data-prx-part~=\"caption\"]",
+          "kind": "text",
+          "about": "the app caption (catalog): the boxes' sources, and that the diagram shows no computed numbers while the chain computes its numbers in this browser",
+          "source": "literal",
+          "ref": "6.1",
+          "value": "Each box names its source in the theory book or the package documentation. The diagram shows no computed numbers; the chain under it computes its numbers in this browser."
+        },
+        {
+          "select": ".prx-pp-preset-note",
+          "kind": "text",
+          "about": "the line under the preset row: a preset is a whole setting of the chain, the box buttons only open a box",
+          "source": "literal",
+          "ref": "10.4",
+          "value": "A preset sets the chain's sliders as well as the open box; the box buttons below open a box and leave the sliders as they are."
+        },
+        {
+          "select": ".prx-pp-chain-caption",
+          "kind": "text",
+          "about": "the chain's caption line: the teaching-posterior caption (labels.js, checked on its own above) and its gloss, which says what is set by hand and that this browser, not postrank, computes the posterior",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "a posterior set by hand for teaching; postrank does not fit it. In plain words: the estimates, SEs and prior are set by hand for teaching; this browser computes the posterior from them."
+        },
+        {
+          "select": ".prx-pp-routes-notes > li",
+          "index": 0,
+          "kind": "text",
+          "about": "the routes table's first note: validation checks the form of the input, not jointness, convergence or the model",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Every route checks the form of its input, such as unit names, sizes and declarations, not that the draws are joint or have converged. Whether the posterior is the intended joint law, and whether the model behind it is right, stays with the analysis that made it."
+        }
+      ]
+    },
+    {
+      "id": "model",
+      "about": "Preset model: box 2 open.",
+      "preset": "model",
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 2: Model"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-title",
+          "kind": "text",
+          "about": "the panel title inside the panel's live part",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 2: Model"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-who",
+          "kind": "text",
+          "about": "who makes the open box; postrank fits no model",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Who makes this box: the analyst, who chooses the model and fits it with other software; postrank fits no model."
+        }
+      ]
+    },
+    {
+      "id": "posterior",
+      "about": "Preset posterior: box 3 open, with its see-also line: the input routes in the table of this app, and the two laws (2.17, in quotes while it is not built).",
+      "preset": "posterior",
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 3: Posterior, read by postrank"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-title",
+          "kind": "text",
+          "about": "the panel title inside the panel's live part",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 3: Posterior"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-who",
+          "kind": "text",
+          "about": "who makes the open box; postrank reads a supplied posterior and does not create it",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Who makes this box: the analyst, with other software, from the first two boxes. postrank starts here: it takes the posterior as given and checks the form of its input, such as unit names and sizes; whether the model is right stays with the analysis that made it."
+        },
+        {
+          "select": ".prx-pp-more",
+          "kind": "text",
+          "about": "box 3 points to the input routes (the table of this app) and to the app on the two laws App2.17 is now built, so appLink renders an anchor title without the planned-app quotation marks.",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "See also. The six input routes, with the package functions that read them, are in the table below. How to judge grades under a second distribution, other than the posterior that chose them, is the subject of Judging a report under another law."
+        }
+      ]
+    },
+    {
+      "id": "precise",
+      "about": "Preset precise (B more precise): box 3 open and B's SE .10, A's: both posterior means keep the same share of their estimates, and A's direction is likelier than at the defaults, so the report still states it.",
+      "preset": "precise",
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 3: Posterior, read by postrank"
+        },
+        {
+          "select": "[data-prx-readout=\"report\"]",
+          "kind": "text",
+          "about": "the best report states the likelier direction",
+          "source": "literal",
+          "ref": "3.3",
+          "value": "{A} > {B}"
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "slots": true,
+          "about": "the chain's read-out: the likelier direction is wrong less often than τ, so the report states it",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B is wrong with probability ⟨e⟩, below τ = ⟨tau⟩, so postrank states it: {A} > {B}."
+        }
+      ]
+    },
+    {
+      "id": "decision",
+      "about": "Preset decision: box 4 open, the postrank step; the third arrow is labeled postrank.",
+      "preset": "decision",
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 4: Decision, made by postrank"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-title",
+          "kind": "text",
+          "about": "the panel title inside the panel's live part",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 4: Decision"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-who",
+          "kind": "text",
+          "about": "who makes the open box",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Who makes this box: postrank. This is the postrank step: it takes box 3 as given and makes box 4."
+        },
+        {
+          "select": "[data-prx-arrow=\"3\"] .prx-pp-arrow-label",
+          "kind": "text",
+          "about": "the third arrow is the step postrank computes",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "postrank"
+        }
+      ]
+    },
+    {
+      "id": "tau10",
+      "about": "Preset tau10 (τ .10): box 4 open, the default posterior; silence now costs less than the likelier direction's chance of being wrong, so the report withholds the pair.",
+      "preset": "tau10",
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 4: Decision, made by postrank"
+        },
+        {
+          "select": "[data-prx-readout=\"report\"]",
+          "kind": "text",
+          "about": "the best report: one grade, so no direction is stated",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "{A, B}"
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "slots": true,
+          "about": "the chain's read-out: withholding says no direction",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B would be wrong with probability ⟨e⟩, above τ = ⟨tau⟩, so postrank withholds the pair: {A, B}, one grade."
+        }
+      ]
+    },
+    {
+      "id": "narrow",
+      "about": "Preset narrow: box 2 open and prior SD .05; the same estimates and τ give a posterior whose likelier direction is wrong more often than τ, so the report withholds the pair.",
+      "preset": "narrow",
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 2: Model"
+        },
+        {
+          "select": "[data-prx-readout=\"report\"]",
+          "kind": "text",
+          "about": "the best report: one grade, so no direction is stated",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "{A, B}"
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "slots": true,
+          "about": "the chain's read-out: withholding says no direction",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B would be wrong with probability ⟨e⟩, above τ = ⟨tau⟩, so postrank withholds the pair: {A, B}, one grade."
+        }
+      ]
+    },
+    {
+      "id": "clamp-high",
+      "about": "A box above 4 is clamped to 4.",
+      "query": "?box=9",
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 4: Decision, made by postrank"
+        }
+      ]
+    },
+    {
+      "id": "clamp-low",
+      "about": "A box below 1 is clamped to 1. v1 gave it as ?box=0; here it is the spec, because a query value that clamps to the default is reported as unread.",
+      "query": "",
+      "spec": {
+        "box": 0
+      },
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 1: Data"
+        }
+      ]
+    },
+    {
+      "id": "update",
+      "about": "Mounted at box 1, then update({ box: 3 }): the panel follows.",
+      "query": "?box=1",
+      "update": [
+        {
+          "box": 3
+        }
+      ],
+      "expect": [
+        {
+          "select": ".prx-pp-box[aria-pressed=\"true\"]",
+          "attr": "aria-label",
+          "kind": "text",
+          "about": "the one open box",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 3: Posterior, read by postrank"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-title",
+          "kind": "text",
+          "about": "the panel title inside the panel's live part",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 3: Posterior"
+        },
+        {
+          "select": "[data-prx-part~=\"readout\"] .prx-pp-who",
+          "kind": "text",
+          "about": "who makes the open box",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Who makes this box: the analyst, with other software, from the first two boxes. postrank starts here: it takes the posterior as given and checks the form of its input, such as unit names and sizes; whether the model is right stays with the analysis that made it."
+        }
+      ]
+    },
+    {
+      "id": "league-pair",
+      "about": "Two units of the simulated league as A and B: U13 (estimate .191004517681948, SE .2) and U05 (estimate −.375548649368271, SE .1) of the frozen draw (seed 20261030), prior SD .15. Their posterior means, SDs and kept shares are elements 12 and 4 of the league's normalPosterior oracle row, and π is the overlapping pair with the largest direction probability in the league's interval-overlap oracle row (U13 over U05).",
+      "query": "?estA=0.191004517681948&seA=.2&estB=-0.375548649368271&seB=.1&priorSd=.15&tau=.20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"meanA\"]",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "about": "A's posterior mean (U13)",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.12"
+          },
+          "value": 0.0687616263655014
+        },
+        {
+          "select": "[data-prx-readout=\"sdA\"]",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "about": "A's posterior SD",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.12"
+          },
+          "value": 0.12
+        },
+        {
+          "select": "[data-prx-readout=\"keepA\"]",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "about": "the share of its estimate A's posterior mean keeps",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "shrink.12"
+          },
+          "value": 0.36
+        },
+        {
+          "select": "[data-prx-readout=\"meanB\"]",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "about": "B's posterior mean (U05)",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.4"
+          },
+          "value": -0.259995218793419
+        },
+        {
+          "select": "[data-prx-readout=\"sdB\"]",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "about": "B's posterior SD",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.4"
+          },
+          "value": 0.0832050294337844
+        },
+        {
+          "select": "[data-prx-readout=\"keepB\"]",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "about": "the share of its estimate B's posterior mean keeps",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "shrink.4"
+          },
+          "value": 0.692307692307692
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "about": "π = Pr(θ_A > θ_B ∣ Y): U13 over U05 under the league's posterior at prior SD .15",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "best.pi"
+          },
+          "value": 0.98781943458425
+        },
+        {
+          "select": "[data-prx-readout=\"report\"]",
+          "kind": "text",
+          "about": "the best report states the likelier direction: A (grade 1) above B",
+          "source": "literal",
+          "ref": "3.3",
+          "value": "{A} > {B}"
+        }
+      ]
+    },
+    {
+      "id": "equal-units",
+      "about": "Two units with equal estimates and SEs at τ .50: π is one half, both directions are wrong with probability one half, and so is the price of silence, so the three actions tie; the read-out says so with the equal-risk tolerance and shows the first of the tied reports, one grade.",
+      "query": "?estA=.20&seA=.10&estB=.20&seB=.10&tau=.50",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "about": "equal posterior means give π = 1/2 whatever the SDs",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-eq-means",
+            "field": "pi"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"costAB\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "about": "the cost of stating A above B",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"costBA\"]",
+          "format": {
+            "fn": "formatProb"
+          },
+          "about": "the cost of stating B above A",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"costWithhold\"]",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "about": "the cost of withholding the pair: τ",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"report\"]",
+          "kind": "text",
+          "about": "the first of the tied reports in the engine's order: one grade",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "{A, B}"
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "slots": true,
+          "about": "ties are said in words, with the equal-risk tolerance",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B is wrong with probability ⟨e⟩, equal to τ = ⟨tau⟩: ⟨n⟩ reports share the smallest risk (equal-risk tolerance ⟨tol⟩); the read-out shows the first, {A, B}."
+        }
+      ]
+    }
+  ]
+}

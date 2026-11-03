@@ -1,0 +1,57 @@
+---
+title: "Restrictions on the report family"
+subtitle: "2.12 · postrank's report families; four-unit example after the theory book, chapter 14"
+description: "Consequences of grade caps, exact grade counts and fixed-order restrictions for minimum risk."
+---
+
+An optimum is defined relative to a specified family of reports. A grade cap, an exact number of occupied grades
+and contiguous cuts of a declared order impose different restrictions. The rows compare each family's minimum risk
+at a common withholding cost and on a common scale. Reordering the units changes the fixed-order family, while
+leaving the unrestricted family unchanged. The examples identify when a restricted optimum coincides with the
+unrestricted optimum and when the restriction raises risk. Each result is accompanied by the family over which it
+was obtained.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/families.js"></script>
+<script>window.__prxApp = PRX["families"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Exactly six.** The family contains 720 strict rankings. Its best report costs .0480, while the unrestricted
+  reference costs .0372. Requiring every site to have its own grade forces the report to state an uncertain direction.
+  The selected row identifies this direction and its error probability.
+- **At most three.** The capped family contains 603 reports, including reports that use fewer grades. Exactly the
+  required number gives a smaller family of 540. Here both best risks are .0417; the shared scale makes that
+  equality visible. Further grade restrictions can change the minimum at this fixed cost.
+- **B before A.** The declared order allows 32 contiguous reports. Its best cut costs .0379, above the unrestricted
+  .0372. The unit arrows modify the declared order. The dynamic program searches cuts of the declared order, and the row checks its answer against enumeration of those same cuts.
+- **Two criteria.** The four-unit example has 24 reports with every grade distinct, 75 in the unrestricted family,
+  and 8 contiguous cuts. The exact-count row costs 7/40. The law's table gives the criterion-specific errors and their weighted average: the orange segment now measures expected weighted wrong directions.
+
+- **A dominating set.** At τ = 4/9, every unrestricted best report separates {A, B} above {X, Y}, at risk 4/15.
+  The best report with the grade cap costs 17/54 and puts X with A. The cap can make the separating rearrangement
+  infeasible. The law panel checks the strict cross-set premise again whenever you change the price.
+
+::: {.callout-note appearance="simple"}
+Every optimum belongs to a declared family. Enlarging a family cannot increase its smallest risk at a fixed
+price, but changing the price changes the decision problem. The dashed mark is the all-withheld risk; an
+exact-count family need not contain that report. Equal-risk reports are identified in the rows, and the order
+family states its tie rule. All examples are specified for teaching.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+sc <- postrank_expected_rank(pr_tutorial$one)
+postrank_cuts(sc, pr_tutorial$one, postrank_settings(weights=c(score_A=1), tau=.2, G_max=6L, exact_G=6L), rule="optimal")$risk
+```
+This cuts the expected-rank order; its result agrees with the exact-count optimum here.
+:::
+
+Standalone: [families](../../embed/families.html), for example `?family=exact&G=2&tau=.40`.
+
+Related applications: [Reporting risk and withholding cost](price-of-silence.qmd), [Grade reports as pairwise decisions](report-builder.qmd).

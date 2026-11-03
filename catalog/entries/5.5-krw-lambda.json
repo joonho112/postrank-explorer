@@ -1,0 +1,116 @@
+{
+  "id": "5.5",
+  "name": "krw-lambda",
+  "part": "5",
+  "title": "KRW's cards along λ",
+  "idea": "Along KRW's λ grid, cards with larger λ tend to state more pairs, with a larger share of them expected wrong.",
+  "status": "built",
+  "from": "v1 view · v1 S-02 case-krw-race, the λ-grid view (and v2's krw-race)",
+  "data": [
+    "data/released/case-krw.json",
+    "data/released/krw-lambda-grid.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), section V.E (Figures 5A and 6), section VI (Figure 7), section VI.B (Figure 10A), and slides 53–63. Firms as adapted in postrank 1.1.0 (pr_case_krw).",
+  "caption": "All 97 firms; exact released contact-gap pair probabilities and supplied central 90% intervals. The data describe KRW’s historical experiment, not any firm’s current conduct.",
+  "presets": [
+    {
+      "id": "lam25",
+      "label": "λ .25: published race card",
+      "query": "criterion=race&lambda=.25&sort=mean"
+    },
+    {
+      "id": "lam08",
+      "label": "λ .08: first race split",
+      "query": "criterion=race&lambda=.08&sort=mean"
+    },
+    {
+      "id": "lam01",
+      "label": "λ .01: one grade",
+      "query": "criterion=race&lambda=.01&sort=mean"
+    },
+    {
+      "id": "lam10",
+      "label": "λ .10: next split",
+      "query": "criterion=race&lambda=.10&sort=mean"
+    },
+    {
+      "id": "lam30",
+      "label": "λ .30: statements and silence",
+      "query": "criterion=race&lambda=.30&sort=mean"
+    },
+    {
+      "id": "lam97",
+      "label": "λ .97",
+      "query": "criterion=race&lambda=.97&sort=mean"
+    },
+    {
+      "id": "lam98",
+      "label": "λ .98: disclosure dip",
+      "query": "criterion=race&lambda=.98&sort=mean"
+    },
+    {
+      "id": "lam99",
+      "label": "λ .99",
+      "query": "criterion=race&lambda=.99&sort=mean"
+    },
+    {
+      "id": "lam100",
+      "label": "λ 1: end of grid",
+      "query": "criterion=race&lambda=1&sort=mean"
+    },
+    {
+      "id": "gender",
+      "label": "Gender grid",
+      "query": "criterion=gender&lambda=.25&sort=mean"
+    }
+  ],
+  "try": [
+    {
+      "preset": "lam25",
+      "shows": [
+        "1,324",
+        ".136"
+      ]
+    },
+    {
+      "preset": "lam08",
+      "shows": [
+        "Genuine Parts",
+        "96",
+        ".07406"
+      ]
+    },
+    {
+      "preset": "lam01",
+      "shows": [
+        ".01",
+        "first positive λ"
+      ]
+    },
+    {
+      "preset": "lam30",
+      "shows": [
+        "830",
+        "92"
+      ]
+    },
+    {
+      "preset": "lam97",
+      "shows": [
+        "4,620"
+      ]
+    },
+    {
+      "preset": "lam98",
+      "shows": [
+        "4,614"
+      ]
+    },
+    {
+      "preset": "lam100",
+      "shows": [
+        ".268"
+      ]
+    }
+  ]
+}

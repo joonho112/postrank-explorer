@@ -1,0 +1,767 @@
+{
+  "app": "deciles-quartiles",
+  "catalog": "3.9",
+  "from": "Independent base-R R29: exact quantile vectors and scalar coordinates under the released law.",
+  "cases": [
+    {
+      "id": "race-four",
+      "preset": "race-four",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"tier-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G4",
+            "field": "N"
+          },
+          "value": 3528,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-DR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G4",
+            "field": "DR"
+          },
+          "value": 0.169598275494473,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-I\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G4",
+            "field": "information"
+          },
+          "value": 0.418535407773941,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G4",
+            "field": "EoverN"
+          },
+          "value": 0.223823574462093,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-sizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G4",
+            "field": "sizes"
+          },
+          "value": [
+            25,
+            24,
+            24,
+            24
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.60",
+            "field": "N"
+          },
+          "value": 3581,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-DR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.60",
+            "field": "DR"
+          },
+          "value": 0.167779953902087,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-I\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.60",
+            "field": "information"
+          },
+          "value": 0.433555212470739,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.60",
+            "field": "EoverN"
+          },
+          "value": 0.218146737047785,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-sizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.60",
+            "field": "sizes"
+          },
+          "value": [
+            2,
+            21,
+            29,
+            29,
+            2,
+            10,
+            4
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-tiers\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "fixed tiers, not optimized"
+        },
+        {
+          "select": "[data-prx-caption=\"krw-card\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances)"
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        }
+      ]
+    },
+    {
+      "id": "race-ten",
+      "preset": "race-ten",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"tier-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G10",
+            "field": "N"
+          },
+          "value": 4233,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-DR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G10",
+            "field": "DR"
+          },
+          "value": 0.227084282327252,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-I\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G10",
+            "field": "information"
+          },
+          "value": 0.454980919881578,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G10",
+            "field": "EoverN"
+          },
+          "value": 0.249776616705808,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-sizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-quantile-G10",
+            "field": "sizes"
+          },
+          "value": [
+            10,
+            10,
+            10,
+            9,
+            10,
+            10,
+            9,
+            10,
+            10,
+            9
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.82",
+            "field": "N"
+          },
+          "value": 4225,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-DR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.82",
+            "field": "DR"
+          },
+          "value": 0.224283783450475,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-I\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.82",
+            "field": "information"
+          },
+          "value": 0.458863704576714,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.82",
+            "field": "EoverN"
+          },
+          "value": 0.247163383608381,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-sizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-race-card-lambda0.82",
+            "field": "sizes"
+          },
+          "value": [
+            1,
+            1,
+            4,
+            9,
+            10,
+            13,
+            14,
+            6,
+            16,
+            7,
+            2,
+            5,
+            4,
+            1,
+            2,
+            2
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-tiers\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "fixed tiers, not optimized"
+        },
+        {
+          "select": "[data-prx-caption=\"krw-card\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances)"
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        }
+      ]
+    },
+    {
+      "id": "gender-four",
+      "preset": "gender-four",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"tier-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G4",
+            "field": "N"
+          },
+          "value": 3528,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-DR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G4",
+            "field": "DR"
+          },
+          "value": 0.1977938627437,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-I\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G4",
+            "field": "information"
+          },
+          "value": 0.362144233275487,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G4",
+            "field": "EoverN"
+          },
+          "value": 0.261034077362434,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-sizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G4",
+            "field": "sizes"
+          },
+          "value": [
+            25,
+            24,
+            24,
+            24
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.64",
+            "field": "N"
+          },
+          "value": 3581,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-DR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.64",
+            "field": "DR"
+          },
+          "value": 0.190806833203964,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-I\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.64",
+            "field": "information"
+          },
+          "value": 0.387501453866985,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.64",
+            "field": "EoverN"
+          },
+          "value": 0.248086181345339,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-sizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.64",
+            "field": "sizes"
+          },
+          "value": [
+            1,
+            1,
+            3,
+            16,
+            3,
+            36,
+            2,
+            25,
+            6,
+            3,
+            1
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-tiers\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "fixed tiers, not optimized"
+        },
+        {
+          "select": "[data-prx-caption=\"krw-card\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances)"
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        }
+      ]
+    },
+    {
+      "id": "gender-ten",
+      "preset": "gender-ten",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"tier-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G10",
+            "field": "N"
+          },
+          "value": 4233,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-DR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G10",
+            "field": "DR"
+          },
+          "value": 0.252468403108427,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-I\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G10",
+            "field": "information"
+          },
+          "value": 0.404212678319228,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G10",
+            "field": "EoverN"
+          },
+          "value": 0.277697350548745,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tier-sizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-quantile-G10",
+            "field": "sizes"
+          },
+          "value": [
+            10,
+            10,
+            10,
+            9,
+            10,
+            10,
+            9,
+            10,
+            10,
+            9
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.80",
+            "field": "N"
+          },
+          "value": 4108,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-DR\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.80",
+            "field": "DR"
+          },
+          "value": 0.237272809162514,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-I\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.80",
+            "field": "information"
+          },
+          "value": 0.407756787173255,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.80",
+            "field": "EoverN"
+          },
+          "value": 0.268924586042031,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"card-sizes\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p3",
+            "row": "krw-gender-card-lambda0.80",
+            "field": "sizes"
+          },
+          "value": [
+            1,
+            1,
+            3,
+            7,
+            9,
+            18,
+            17,
+            6,
+            18,
+            7,
+            2,
+            4,
+            3,
+            1
+          ],
+          "format": {
+            "fn": "formatSizes"
+          }
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-tiers\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "fixed tiers, not optimized"
+        },
+        {
+          "select": "[data-prx-caption=\"krw-card\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances)"
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "id": "1.18",
+  "name": "chain-draws",
+  "part": "1",
+  "title": "Draws that remember",
+  "idea": "Successive MCMC draws are usually positively correlated, so a pair probability estimated from them carries more Monte Carlo error than the iid formula says, and an iid error bound can fail far more often than its α.",
+  "status": "built",
+  "from": "new concept · theory book ch. 15 (dependent Monte Carlo; the two-state chain); postrank vignette m6 (loss traces, MCMC diagnostics) and pr_toy_mcmc; picture: a two-state trace with its running estimate and, under it, the spread of the estimate over many chains against the iid reference, the iid ±2 MCSE band and radius; the reader sets the stay probability, S and the number of chains",
+  "data": [
+    "engine",
+    "data/released/toy-mcmc.json"
+  ],
+  "credit": "After the postrank theory book, ch. 15, and the postrank vignette m6.",
+  "caption": "Two units, one criterion: the posterior gives A above B and A below B one half each, after the postrank theory book, chapter 15; a posterior set by hand for teaching; postrank does not fit it. Every chain's first draw is A above B or A below B with chance one half each; the chains are simulated in this browser.",
+  "presets": [
+    {
+      "id": "book",
+      "label": "Stay .99",
+      "query": "stay=.99&draws=100&chains=2000&chain=1&seed=20261030&mode=iid&toy=pair"
+    },
+    {
+      "id": "aware",
+      "label": "Stay .99, chain-aware",
+      "query": "stay=.99&draws=100&chains=2000&chain=1&seed=20261030&mode=chain&toy=pair"
+    },
+    {
+      "id": "stuck",
+      "label": "A stuck chain",
+      "query": "stay=.99&draws=100&chains=2000&chain=7&seed=20261030&mode=iid&toy=pair"
+    },
+    {
+      "id": "independent",
+      "label": "Stay .50",
+      "query": "stay=.5&draws=100&chains=2000&chain=1&seed=20261030&mode=iid&toy=pair"
+    },
+    {
+      "id": "longer",
+      "label": "1,000 draws",
+      "query": "stay=.99&draws=1000&chains=2000&chain=1&seed=20261030&mode=iid&toy=pair"
+    },
+    {
+      "id": "toy",
+      "label": "postrank's chains",
+      "query": "stay=.99&draws=100&chains=2000&chain=1&seed=20261030&mode=iid&toy=loss"
+    }
+  ],
+  "try": [
+    {
+      "preset": "book",
+      "shows": [
+        ".0500",
+        ".376",
+        ".148",
+        ".05",
+        ".801",
+        "1,602",
+        ".804",
+        ".370"
+      ]
+    },
+    {
+      "preset": "aware",
+      "shows": [
+        ".376",
+        ".1412",
+        ".002500",
+        "1.77",
+        "1.01"
+      ]
+    },
+    {
+      "preset": "stuck",
+      "shows": [
+        "Chain 7",
+        "720"
+      ]
+    },
+    {
+      "preset": "independent",
+      "shows": [
+        "10 of the 2,000",
+        ".005",
+        ".004"
+      ]
+    },
+    {
+      "preset": "longer",
+      "shows": [
+        "10.6",
+        ".047",
+        ".777",
+        ".770"
+      ]
+    },
+    {
+      "preset": "toy",
+      "shows": [
+        ".172",
+        ".0576",
+        ".00835",
+        "1.0905",
+        "42.95",
+        ".248",
+        "4/15",
+        ".191",
+        ".296"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "3.3",
+  "name": "evidence-flags",
+  "part": "3",
+  "title": "Flags from standardized evidence",
+  "idea": "A flag rule on standardized evidence is a report with at most three grades (flagged above, not flagged, flagged below), and precision moves units across the flags.",
+  "status": "built",
+  "from": "v1 view · v1 R-02 evidence-flags, the two-unit view",
+  "data": [
+    "engine"
+  ],
+  "credit": "Two-unit example after the postrank theory book, ch. 2.",
+  "caption": "Two units against the reference 0; independent normal posteriors price the stated direction.",
+  "presets": [
+    {
+      "id": "two-units",
+      "label": "Two units, flat prior",
+      "query": "estA=.20&seA=.05&estB=.30&seB=.20&crit=1.96&prior=flat&tau=.20"
+    },
+    {
+      "id": "pair-teaching",
+      "label": "Same flags, teaching prior",
+      "query": "estA=.20&seA=.05&estB=.30&seB=.20&crit=1.96&prior=teaching&tau=.20"
+    },
+    {
+      "id": "se15",
+      "label": "B’s SE .15",
+      "query": "estA=.20&seA=.05&estB=.30&seB=.15&crit=1.96&prior=flat&tau=.20"
+    },
+    {
+      "id": "crit2576",
+      "label": "Cutoff 2.576",
+      "query": "estA=.20&seA=.05&estB=.30&seB=.15&crit=2.576&prior=flat&tau=.20"
+    }
+  ],
+  "try": [
+    {
+      "preset": "two-units",
+      "shows": [
+        "4.00",
+        "1.50",
+        ".686",
+        ".6862"
+      ]
+    },
+    {
+      "preset": "pair-teaching",
+      "shows": [
+        ".288",
+        ".180",
+        ".108"
+      ]
+    },
+    {
+      "preset": "se15",
+      "shows": [
+        "2.00",
+        "0",
+        ".2000"
+      ]
+    },
+    {
+      "preset": "crit2576",
+      "shows": [
+        "2.576",
+        ".736"
+      ]
+    }
+  ],
+  "math": true
+}

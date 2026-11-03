@@ -1,0 +1,95 @@
+{
+  "id": "1.1",
+  "name": "case-zero",
+  "part": "1",
+  "title": "A league table and a report card",
+  "idea": "The same 97 firms in a league table and in KRW's report card: the two reports say different things about pairs of firms.",
+  "status": "built",
+  "from": "v1 whole · v1 L-01 case-zero",
+  "data": [
+    "data/released/case-krw.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), Introduction and section VI (Figure 7), and slides 4–5 and 61–63 (card layout); the gender card, section VIII (Figure 14). Firms as adapted in postrank 1.1.0 (pr_case_krw).",
+  "caption": "Posterior means and central 90% intervals come from a smoothed version of KRW's posteriors (continuous cells with central intervals in place of KRW's posterior grids; the pr_case_krw data); KRW's Figure 7 caption says 95%.",
+  "presets": [
+    {
+      "id": "race-card",
+      "label": "Race card",
+      "query": "card=race"
+    },
+    {
+      "id": "second-place",
+      "label": "Second place",
+      "query": "card=race&firm=42"
+    },
+    {
+      "id": "last-place",
+      "label": "Last place",
+      "query": "card=race&firm=35"
+    },
+    {
+      "id": "race-by-mean",
+      "label": "By posterior mean",
+      "query": "card=race&sort=mean"
+    },
+    {
+      "id": "gender-card",
+      "label": "Gender card",
+      "query": "card=gender"
+    }
+  ],
+  "try": [
+    {
+      "preset": "race-card",
+      "shows": [
+        "4,656",
+        "1,324",
+        ".284",
+        "1,219 run as the table does and 105 the other way",
+        "3,332"
+      ]
+    },
+    {
+      "preset": "second-place",
+      "shows": [
+        ".402",
+        ".216",
+        "80 other firms",
+        "other 96 firms",
+        "16",
+        "15 as the table does and 1 the other way"
+      ]
+    },
+    {
+      "preset": "last-place",
+      "shows": [
+        "−.544",
+        ".444",
+        "rank 14 by posterior mean",
+        ".155",
+        "16",
+        "2 as the table does and 14 the other way"
+      ]
+    },
+    {
+      "preset": "race-by-mean",
+      "shows": [
+        ".250",
+        ".330",
+        ".071",
+        ".433",
+        "1,324"
+      ]
+    },
+    {
+      "preset": "gender-card",
+      "shows": [
+        "sizes 1, 3, 89, 4",
+        "731",
+        ".157",
+        "730 run as the table does and 1 the other way",
+        "96"
+      ]
+    }
+  ]
+}

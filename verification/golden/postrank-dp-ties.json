@@ -1,0 +1,628 @@
+{
+ "group": "postrank-dp-ties",
+ "generator": "r-export/13_dp_ties.R",
+ "uses_postrank": true,
+ "rows": [
+  {
+   "id": "fixedOrderDP-pkg-tb10-ABC-cap3-tau1/5",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.25, 0.1],
+       [0.75, null, 0.25],
+       [0.9, 0.75, null]
+      ]
+     ]
+    },
+    "order": [0, 1, 2],
+    "tau": 0.2,
+    "w": [1],
+    "G": 3
+   },
+   "expect": {
+    "grade": [1, 2, 2],
+    "risk": 0.183333333333333,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-tb10-ABC-cap2-tau1/5",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.25, 0.1],
+       [0.75, null, 0.25],
+       [0.9, 0.75, null]
+      ]
+     ]
+    },
+    "order": [0, 1, 2],
+    "tau": 0.2,
+    "w": [1],
+    "G": 2
+   },
+   "expect": {
+    "grade": [1, 2, 2],
+    "risk": 0.183333333333333,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-tb10-ABC-cap3-tau1/5-tieTol0",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.25, 0.1],
+       [0.75, null, 0.25],
+       [0.9, 0.75, null]
+      ]
+     ]
+    },
+    "order": [0, 1, 2],
+    "tau": 0.2,
+    "w": [1],
+    "tieTol": 0,
+    "G": 3
+   },
+   "expect": {
+    "grade": [1, 2, 2],
+    "risk": 0.183333333333333,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-fewer-grades-ABCD-cap4-tau1/4",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C", "D"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.125, 0.125, 0.125],
+       [0.875, null, 0.25, 0.25],
+       [0.875, 0.75, null, 0.25],
+       [0.875, 0.75, 0.75, null]
+      ]
+     ]
+    },
+    "order": [0, 1, 2, 3],
+    "tau": 0.25,
+    "w": [1],
+    "G": 4
+   },
+   "expect": {
+    "grade": [1, 2, 2, 2],
+    "risk": 0.1875,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-fewer-grades-ABCD-cap4-tau1/4-tieTol0",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C", "D"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.125, 0.125, 0.125],
+       [0.875, null, 0.25, 0.25],
+       [0.875, 0.75, null, 0.25],
+       [0.875, 0.75, 0.75, null]
+      ]
+     ]
+    },
+    "order": [0, 1, 2, 3],
+    "tau": 0.25,
+    "w": [1],
+    "tieTol": 0,
+    "G": 4
+   },
+   "expect": {
+    "grade": [1, 2, 2, 2],
+    "risk": 0.1875,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-fewer-grades-ABCD-eq3-tau1/4",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C", "D"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.125, 0.125, 0.125],
+       [0.875, null, 0.25, 0.25],
+       [0.875, 0.75, null, 0.25],
+       [0.875, 0.75, 0.75, null]
+      ]
+     ]
+    },
+    "order": [0, 1, 2, 3],
+    "tau": 0.25,
+    "w": [1],
+    "exact": 3
+   },
+   "expect": {
+    "grade": [1, 2, 3, 3],
+    "risk": 0.1875,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-fewer-grades-ABCD-eq4-tau1/4",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C", "D"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.125, 0.125, 0.125],
+       [0.875, null, 0.25, 0.25],
+       [0.875, 0.75, null, 0.25],
+       [0.875, 0.75, 0.75, null]
+      ]
+     ]
+    },
+    "order": [0, 1, 2, 3],
+    "tau": 0.25,
+    "w": [1],
+    "exact": 4
+   },
+   "expect": {
+    "grade": [1, 2, 3, 4],
+    "risk": 0.1875,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-fewer-grades-DCBA-cap4-tau1/4",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C", "D"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.125, 0.125, 0.125],
+       [0.875, null, 0.25, 0.25],
+       [0.875, 0.75, null, 0.25],
+       [0.875, 0.75, 0.75, null]
+      ]
+     ]
+    },
+    "order": [3, 2, 1, 0],
+    "tau": 0.25,
+    "w": [1],
+    "G": 4
+   },
+   "expect": {
+    "grade": [1, 1, 1, 1],
+    "risk": 0.25,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-all-withheld-tie-ABC-cap3-tau1/4",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.25, 0.25],
+       [0.75, null, 0.5],
+       [0.75, 0.5, null]
+      ]
+     ]
+    },
+    "order": [0, 1, 2],
+    "tau": 0.25,
+    "w": [1],
+    "G": 3
+   },
+   "expect": {
+    "grade": [1, 1, 1],
+    "risk": 0.25,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-ulp-eAB.1+.2-tieTol0",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [
+        null,
+        {
+         "$sum": [0.1, 0.2]
+        },
+        0.05
+       ],
+       [
+        0.7,
+        null,
+        0.3
+       ],
+       [
+        0.95,
+        0.7,
+        null
+       ]
+      ]
+     ]
+    },
+    "order": [0, 1, 2],
+    "tau": 0.25,
+    "w": [1],
+    "tieTol": 0,
+    "G": 3
+   },
+   "expect": {
+    "grade": [1, 1, 2],
+    "risk": 0.2,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-pkg-ulp-eBC.1+.2-tieTol0",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [
+        null,
+        0.3,
+        0.05
+       ],
+       [
+        0.7,
+        null,
+        {
+         "$sum": [0.1, 0.2]
+        }
+       ],
+       [
+        0.95,
+        0.7,
+        null
+       ]
+      ]
+     ]
+    },
+    "order": [0, 1, 2],
+    "tau": 0.25,
+    "w": [1],
+    "tieTol": 0,
+    "G": 3
+   },
+   "expect": {
+    "grade": [1, 2, 2],
+    "risk": 0.2,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "exactOptimum-pkg-tb10-orderABC-tau1/5",
+   "args": {
+    "fn": "exactOptimum",
+    "E": {
+     "ids": ["A", "B", "C"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.25, 0.1],
+       [0.75, null, 0.25],
+       [0.9, 0.75, null]
+      ]
+     ]
+    },
+    "tau": 0.2,
+    "w": [1],
+    "family": {
+     "kind": "order",
+     "order": [0, 1, 2]
+    }
+   },
+   "expect": {
+    "grade": [1, 2, 2],
+    "risk": 0.183333333333333
+   }
+  },
+  {
+   "id": "exactOptimum-pkg-fewer-grades-orderABCD-tau1/4",
+   "args": {
+    "fn": "exactOptimum",
+    "E": {
+     "ids": ["A", "B", "C", "D"],
+     "criteria": ["score"],
+     "e": [
+      [
+       [null, 0.125, 0.125, 0.125],
+       [0.875, null, 0.25, 0.25],
+       [0.875, 0.75, null, 0.25],
+       [0.875, 0.75, 0.75, null]
+      ]
+     ]
+    },
+    "tau": 0.25,
+    "w": [1],
+    "family": {
+     "kind": "order",
+     "order": [0, 1, 2, 3]
+    }
+   },
+   "expect": {
+    "grade": [1, 2, 2, 2],
+    "risk": 0.1875
+   }
+  },
+  {
+   "id": "scoreOrder-mixed-ids-desc",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [1, 2, 2, 1, 3, 2],
+    "direction": "descending",
+    "ids": ["b", "a", "C", "B", "10", "9"]
+   },
+   "expect": {
+    "order": [4, 5, 2, 1, 3, 0],
+    "blocks": [1, 3, 2]
+   }
+  },
+  {
+   "id": "scoreOrder-mixed-ids-asc",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [1, 2, 2, 1, 3, 2],
+    "direction": "ascending",
+    "ids": ["b", "a", "C", "B", "10", "9"]
+   },
+   "expect": {
+    "order": [3, 0, 5, 2, 1, 4],
+    "blocks": [2, 3, 1]
+   }
+  },
+  {
+   "id": "scoreOrder-six-tied112234-asc",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [1, 1, 2, 2, 3, 4],
+    "direction": "ascending",
+    "ids": ["A", "B", "C", "D", "E", "F"]
+   },
+   "expect": {
+    "order": [0, 1, 2, 3, 4, 5],
+    "blocks": [2, 2, 1, 1]
+   }
+  },
+  {
+   "id": "scoreOrder-six-tied533311-desc",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [5, 3, 3, 3, 1, 1],
+    "direction": "descending",
+    "ids": ["A", "B", "C", "D", "E", "F"]
+   },
+   "expect": {
+    "order": [0, 1, 2, 3, 4, 5],
+    "blocks": [1, 3, 2]
+   }
+  },
+  {
+   "id": "scoreOrder-all-equal",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [2, 2, 2, 2],
+    "direction": "descending",
+    "ids": ["d", "c", "b", "a"]
+   },
+   "expect": {
+    "order": [3, 2, 1, 0],
+    "blocks": [4]
+   }
+  },
+  {
+   "id": "scoreOrder-strict-desc",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [0.3, -1.2, 2.5, 0.31],
+    "direction": "descending",
+    "ids": ["u1", "u2", "u3", "u4"]
+   },
+   "expect": {
+    "order": [2, 3, 0, 1],
+    "blocks": [1, 1, 1, 1]
+   }
+  },
+  {
+   "id": "scoreOrder-float-near-tie-desc",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [
+     0.3,
+     {
+      "$sum": [0.1, 0.2]
+     },
+     0.3
+    ],
+    "direction": "descending",
+    "ids": ["x", "y", "w"]
+   },
+   "expect": {
+    "order": [1, 2, 0],
+    "blocks": [1, 2]
+   }
+  },
+  {
+   "id": "scoreOrder-float-near-tie-asc",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [
+     0.3,
+     {
+      "$sum": [0.1, 0.2]
+     },
+     0.3
+    ],
+    "direction": "ascending",
+    "ids": ["x", "y", "w"]
+   },
+   "expect": {
+    "order": [2, 0, 1],
+    "blocks": [2, 1]
+   }
+  },
+  {
+   "id": "scoreOrder-non-ascii-ids",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [1, 1, 1],
+    "direction": "descending",
+    "ids": ["Ä", "z", "Z"]
+   },
+   "expect": {
+    "order": [2, 1, 0],
+    "blocks": [3]
+   }
+  },
+  {
+   "id": "scoreOrder-tutorial-two-exprank-asc",
+   "args": {
+    "fn": "scoreOrder",
+    "scores": [1.7276970303011, 2.69934155498369, 2.39080569492292, 3.19021738878481, 5.18429795258715, 5.80764037842032],
+    "direction": "ascending",
+    "ids": ["A", "B", "C", "D", "E", "F"]
+   },
+   "expect": {
+    "order": [0, 2, 1, 3, 4, 5],
+    "blocks": [1, 1, 1, 1, 1, 1]
+   }
+  },
+  {
+   "id": "fixedOrderDP-scores-six-A-tied112234-asc-cap3-tau.20",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C", "D", "E", "F"],
+     "criteria": ["score_A"],
+     "e": [
+      [
+       [null, 0.188379558905791, 0.000391469108945561, 0.000102687868070609, 9.25287068693378e-10, 7.68729897214026e-13],
+       [0.811620441094209, null, 0.00666416439040879, 0.00233886749052364, 1.47570096255786e-07, 3.06241647678471e-10],
+       [0.999608530891054, 0.993335835609591, null, 0.361836804915882, 0.00400497116494002, 0.000102687868070609],
+       [0.999897312131929, 0.997661132509476, 0.638163195084118, null, 0.0107781333800082, 0.00039146910894556],
+       [0.999999999074713, 0.999999852429904, 0.99599502883506, 0.989221866619992, null, 0.144422183173242],
+       [0.999999999999231, 0.999999999693758, 0.999897312131929, 0.999608530891054, 0.855577816826758, null]
+      ]
+     ]
+    },
+    "tau": 0.2,
+    "w": [1],
+    "scores": [1, 1, 2, 2, 3, 4],
+    "direction": "ascending",
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "G": 3
+   },
+   "expect": {
+    "grade": [1, 1, 2, 2, 3, 3],
+    "risk": 0.0416516399454871,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-scores-six-AB-tied533311-desc-cap3-tau.40",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C", "D", "E", "F"],
+     "criteria": ["score_A", "score_B"],
+     "e": [
+      [
+       [null, 0.188379558905791, 0.000391469108945561, 0.000102687868070609, 9.25287068693378e-10, 7.68729897214026e-13],
+       [0.811620441094209, null, 0.00666416439040879, 0.00233886749052364, 1.47570096255786e-07, 3.06241647678471e-10],
+       [0.999608530891054, 0.993335835609591, null, 0.361836804915882, 0.00400497116494002, 0.000102687868070609],
+       [0.999897312131929, 0.997661132509476, 0.638163195084118, null, 0.0107781333800082, 0.00039146910894556],
+       [0.999999999074713, 0.999999852429904, 0.99599502883506, 0.989221866619992, null, 0.144422183173242],
+       [0.999999999999231, 0.999999999693758, 0.999897312131929, 0.999608530891054, 0.855577816826758, null]
+      ],
+      [
+       [null, 0.144422183173243, 0.760249938906523, 0.361836804915882, 1.10452484992928e-05, 3.71549186170708e-07],
+       [0.855577816826757, null, 0.961450064128229, 0.760249938906523, 0.000731358293340577, 5.03109610598185e-05],
+       [0.239750061093477, 0.0385499358717709, null, 0.144422183173242, 3.71549186170708e-07, 7.70862895014003e-09],
+       [0.638163195084118, 0.239750061093477, 0.855577816826758, null, 5.03109610598185e-05, 2.15138973183757e-06],
+       [0.999988954751501, 0.999268641706659, 0.999999628450814, 0.99994968903894, null, 0.239750061093477],
+       [0.999999628450814, 0.99994968903894, 0.999999992291371, 0.999997848610268, 0.760249938906523, null]
+      ]
+     ]
+    },
+    "tau": 0.4,
+    "w": [0.5, 0.5],
+    "scores": [5, 3, 3, 3, 1, 1],
+    "direction": "descending",
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "G": 3
+   },
+   "expect": {
+    "grade": [1, 2, 2, 2, 3, 3],
+    "risk": 0.155716866028784,
+    "label": "optimal-within-order"
+   }
+  },
+  {
+   "id": "fixedOrderDP-scores-six-A-tied112234-asc-eq3-tau.20",
+   "args": {
+    "fn": "fixedOrderDP",
+    "E": {
+     "ids": ["A", "B", "C", "D", "E", "F"],
+     "criteria": ["score_A"],
+     "e": [
+      [
+       [null, 0.188379558905791, 0.000391469108945561, 0.000102687868070609, 9.25287068693378e-10, 7.68729897214026e-13],
+       [0.811620441094209, null, 0.00666416439040879, 0.00233886749052364, 1.47570096255786e-07, 3.06241647678471e-10],
+       [0.999608530891054, 0.993335835609591, null, 0.361836804915882, 0.00400497116494002, 0.000102687868070609],
+       [0.999897312131929, 0.997661132509476, 0.638163195084118, null, 0.0107781333800082, 0.00039146910894556],
+       [0.999999999074713, 0.999999852429904, 0.99599502883506, 0.989221866619992, null, 0.144422183173242],
+       [0.999999999999231, 0.999999999693758, 0.999897312131929, 0.999608530891054, 0.855577816826758, null]
+      ]
+     ]
+    },
+    "tau": 0.2,
+    "w": [1],
+    "scores": [1, 1, 2, 2, 3, 4],
+    "direction": "ascending",
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "exact": 3
+   },
+   "expect": {
+    "grade": [1, 1, 2, 2, 3, 3],
+    "risk": 0.0416516399454871,
+    "label": "optimal-within-order"
+   }
+  }
+ ]
+}

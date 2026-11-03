@@ -1,0 +1,1803 @@
+{
+  "$schema": "./_schema.json",
+  "app": "winners-curse",
+  "catalog": "1.4",
+  "about": "The k units at one end of the simulated league by estimate, replay by replay (engine leagueOvershoot, replay r uses seed + r), with the teaching posterior of 1.5 (prior mean 0). Expected values: the base-R oracle rows of oracle-v3 (leagueOvershoot at seed 20261029 over 2,000 replays, the run engine/API.md documents; leagueOvershoot at seed 20261030 over 20 replays; topKOvershoot of the first draw, seed 20261030, at k 3 top and bottom and k 10), the league's SEs from oracle-simulate, and the frozen v1 registry for the league's sizes, the true values' spread, the prior SD settings and the seeds. The Monte Carlo SEs and the 2,000-replay averages at other settings have no oracle row and are checked as shown numbers (data-num read back). Literals: the teaching-posterior and Monte Carlo captions (6.5, v3 wording) and the lead that follows the two averages (9.4). Part 1 review: the lead under the histograms gives both averages and chooses its words by what is left of the gap against the gap (about the whole gap, and slightly more, up to a tenth past it; more than the gap beyond; nearly the whole gap, most of it or part of it on the estimates' side); the replay slider's hint names the seed key ('Replay r of R (seed s + r)').",
+  "cases": [
+    {
+      "id": "top3",
+      "about": "Preset top3 (the app loads on it): the top 3 by estimate over 2,000 replays at seed 20261029, prior SD .15, replay 1 shown. The 2,000 replays are leagueOvershoot(20261029, { replays: 2000 }) (seeds 20261030 to 20263029), the run engine/API.md documents; replay 1 (seed 20261030) is the first draw of 1.3 and 1.5, so its numbers are the oracle's topKOvershoot rows of that draw.",
+      "preset": "top3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-est\"]",
+          "about": "read-out: estimate minus true value, averaged over the replays (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"avg-est\"]",
+          "about": "table: the same average (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"mean-est\"]",
+          "about": "upper histogram heading: the mean at the dashed line (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"read-post\"]",
+          "about": "read-out: posterior mean minus true value, averaged over the replays (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": -0.00684786152594296
+        },
+        {
+          "select": "[data-prx-readout=\"avg-post\"]",
+          "about": "table: the same average (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": -0.00684786152594296
+        },
+        {
+          "select": "[data-prx-readout=\"mean-post\"]",
+          "about": "lower histogram heading: the mean at the dashed line (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": -0.00684786152594296
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "overshoot"
+          },
+          "value": 0.070853102767947
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "overshoot"
+          },
+          "value": 0.070853102767947
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-post\"]",
+          "about": "read-out: the replay shown, posterior mean minus true value (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "posteriorOvershoot"
+          },
+          "value": -0.0308323200835969
+        },
+        {
+          "select": "[data-prx-readout=\"shown-post\"]",
+          "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "posteriorOvershoot"
+          },
+          "value": -0.0308323200835969
+        },
+        {
+          "select": "[data-prx-readout=\"read-replays\"]",
+          "about": "read-out: the number of replays",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "replays"
+          },
+          "value": 2000
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 0,
+          "about": "Monte Carlo caption: S, the replays run",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "replays"
+          },
+          "value": 2000
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 1,
+          "about": "Monte Carlo caption: the seed (replay r uses seed + r)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "seed"
+          },
+          "value": 20261029
+        },
+        {
+          "select": "[data-prx-readout=\"caption-seed\"]",
+          "about": "caption: the seed in 'replay r uses seed s + r'",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "seed"
+          },
+          "value": 20261029
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: replay 1 uses seed 20261029 + 1, the league's first draw",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "replay slider hint: the seed key in 'seed s + r'",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "seed"
+          },
+          "value": 20261029,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"line-seed\"]",
+          "about": "league table: the draw line's seed",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"read-prior-sd\"]",
+          "about": "read-out: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "lower histogram heading: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"spread\"]",
+          "about": "prior SD hint: the spread (SD) of the true values",
+          "source": "registry",
+          "ref": "league.spec.theta.sd",
+          "value": 0.14937466480710787
+        },
+        {
+          "select": "[data-prx-readout=\"obs-small\"]",
+          "about": "dot sizes: observations per small unit",
+          "source": "registry",
+          "ref": "league.size.small",
+          "value": 16
+        },
+        {
+          "select": "[data-prx-readout=\"obs-medium\"]",
+          "about": "dot sizes: observations per medium unit",
+          "source": "registry",
+          "ref": "league.size.medium",
+          "value": 64
+        },
+        {
+          "select": "[data-prx-readout=\"obs-large\"]",
+          "about": "dot sizes: observations per large unit",
+          "source": "registry",
+          "ref": "league.size.large",
+          "value": 256
+        },
+        {
+          "select": "[data-prx-readout=\"se-small\"]",
+          "about": "dot sizes: SE of a small unit (base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.0"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"se-medium\"]",
+          "about": "dot sizes: SE of a medium unit (base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.1"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"se-large\"]",
+          "about": "dot sizes: SE of a large unit (base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.2"
+          },
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "about": "the teaching-posterior caption, v3 wording",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"]",
+          "kind": "text",
+          "about": "the Monte Carlo caption, word for word with its numbers as slots",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "Monte Carlo, ⟨S⟩ draws, seed ⟨seed⟩",
+          "slots": true
+        },
+        {
+          "select": ".prx-wc-lead",
+          "kind": "text",
+          "about": "the lead: what is left of the gap, −.007, is under a tenth of the .160 gap and on the other side, so the posterior means take back about the whole gap, and slightly more (both averages in the sentence)",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD the posterior means take back about the whole gap, and slightly more: on average over these replays, the gap of ⟨e⟩ between estimate and true value becomes ⟨p⟩.",
+          "slots": true
+        },
+        {
+          "select": "[data-prx-readout=\"lead-est\"]",
+          "about": "the lead: the gap of the estimates over the 2,000 replays (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"lead-post\"]",
+          "about": "the lead: what is left of it for the posterior means (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": -0.00684786152594296
+        },
+        {
+          "select": ".prx-wc-draw .prx-hint",
+          "kind": "text",
+          "about": "the replay slider's hint: 'Replay 1 of 2,000 (seed 20261029 + 1)', so it matches the seed box",
+          "source": "literal",
+          "ref": "11.4",
+          "slots": true,
+          "value": "Replay ⟨r⟩ of ⟨R⟩ (seed ⟨seed⟩ + ⟨r2⟩)."
+        },
+        {
+          "select": ".prx-wc-size-lead",
+          "kind": "text",
+          "about": "the dot-size sentence of 1.3's size card, now in the league key on the plot panel",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Dot size shows how noisy a unit's estimate is: the larger the SE, the larger the dot, so the small units, with the fewest observations, have the largest dots. Size says nothing about the true value."
+        }
+      ]
+    },
+    {
+      "id": "defaults",
+      "about": "No query: the setting of the first preset (top 3, 2,000 replays, seed 20261029, prior SD .15, replay 1).",
+      "query": "",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-est\"]",
+          "about": "read-out: estimate minus true value, averaged over the replays (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"avg-est\"]",
+          "about": "table: the same average (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "overshoot"
+          },
+          "value": 0.070853102767947
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "overshoot"
+          },
+          "value": 0.070853102767947
+        }
+      ]
+    },
+    {
+      "id": "replay9",
+      "about": "Preset replay9: the same 2,000 replays with replay 9 (seed 20261038) in the league table, a replay whose top 3 by estimate sit below their true values on average. Seed 20261038 is replay 8 of the oracle's leagueOvershoot run at seed 20261030 (index 7 of its arrays).",
+      "preset": "replay9",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-est\"]",
+          "about": "read-out: estimate minus true value, averaged over the replays (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"avg-est\"]",
+          "about": "table: the same average (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"mean-est\"]",
+          "about": "upper histogram heading: the mean at the dashed line (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"read-post\"]",
+          "about": "read-out: posterior mean minus true value, averaged over the replays (2,000 replays, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": -0.00684786152594296
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "overshoot.7"
+          },
+          "value": -0.0429347363453337
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "overshoot.7"
+          },
+          "value": -0.0429347363453337
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-post\"]",
+          "about": "read-out: the replay shown, posterior mean minus true value (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "posteriorOvershoot.7"
+          },
+          "value": -0.117301271104131
+        },
+        {
+          "select": "[data-prx-readout=\"shown-post\"]",
+          "about": "table: the same (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "posteriorOvershoot.7"
+          },
+          "value": -0.117301271104131
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the seed of the replay shown (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seeds.7"
+          },
+          "value": 20261038
+        },
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "replay slider hint: the seed key in 'seed s + r'",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "seed"
+          },
+          "value": 20261029
+        },
+        {
+          "select": "[data-prx-readout=\"line-seed\"]",
+          "about": "league table: the draw line's seed (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seeds.7"
+          },
+          "value": 20261038
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the seed of the replay shown equals the registry's seed 20261038",
+          "source": "registry",
+          "ref": "settings.seed.replay08",
+          "value": 20261038
+        }
+      ]
+    },
+    {
+      "id": "bottom3",
+      "about": "Preset bottom3: the mirror, the bottom 3 by estimate, replay 1 (seed 20261030). The replay-1 numbers are the oracle's bottom row of that draw; the 2,000-replay averages of the bottom 3 have no oracle row and are checked as shown numbers.",
+      "preset": "bottom3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, bottom 3, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-bottom-k3-prior.15",
+            "field": "overshoot"
+          },
+          "value": -0.158899757779075
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same, replay shown (seed 20261030, bottom 3, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-bottom-k3-prior.15",
+            "field": "overshoot"
+          },
+          "value": -0.158899757779075
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-post\"]",
+          "about": "read-out: the replay shown, posterior mean minus true value (seed 20261030, bottom 3, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-bottom-k3-prior.15",
+            "field": "posteriorOvershoot"
+          },
+          "value": -0.0166952296767463
+        },
+        {
+          "select": "[data-prx-readout=\"shown-post\"]",
+          "about": "table: the same, replay shown (seed 20261030, bottom 3, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-bottom-k3-prior.15",
+            "field": "posteriorOvershoot"
+          },
+          "value": -0.0166952296767463
+        },
+        {
+          "select": ".prx-wc-lead",
+          "kind": "text",
+          "about": "the lead: −.013 is left of the −.150 gap, under a tenth of it and on the estimates' side: nearly the whole gap",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD the posterior means take back nearly the whole gap: on average over these replays, the gap of ⟨e⟩ between estimate and true value shrinks to ⟨p⟩.",
+          "slots": true
+        }
+      ]
+    },
+    {
+      "id": "prior05",
+      "about": "Preset prior05: a prior narrower than the true spread. The estimates' average does not depend on the prior SD, so it equals the 2,000-replay oracle mean; the posterior means end on the other side of the true values (the lead).",
+      "preset": "prior05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-est\"]",
+          "about": "read-out: estimate minus true value, averaged over the replays (2,000 replays, base-R oracle; independent of the prior SD)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"avg-est\"]",
+          "about": "table: the same average (2,000 replays, base-R oracle; independent of the prior SD)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"mean-est\"]",
+          "about": "upper histogram heading: the mean at the dashed line (2,000 replays, base-R oracle; independent of the prior SD)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-spec-2000-draws-seeds20261030-to-20263029",
+            "field": "mean.overshoot"
+          },
+          "value": 0.159577748633195
+        },
+        {
+          "select": "[data-prx-readout=\"read-prior-sd\"]",
+          "about": "read-out: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior05",
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "lower histogram heading: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior05",
+          "value": 0.05
+        },
+        {
+          "select": ".prx-wc-lead",
+          "kind": "text",
+          "about": "the lead: −.131 is left of the .160 gap, on the other side and more than a tenth of it: more than the gap",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD the posterior means take back more than the gap: on average over these replays, the gap of ⟨e⟩ between estimate and true value becomes ⟨p⟩, on the other side of the true values.",
+          "slots": true
+        }
+      ]
+    },
+    {
+      "id": "replays20",
+      "about": "Twenty replays at the default seed 20261029: the posterior means' average reads .000, so the lead says the whole gap is taken back (to three decimals) rather than turning on a digit not shown. Replay 1 is still seed 20261030. These twenty averages have no oracle row and are checked as shown numbers.",
+      "query": "?replays=20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "overshoot"
+          },
+          "value": 0.070853102767947
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "overshoot"
+          },
+          "value": 0.070853102767947
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-post\"]",
+          "about": "read-out: the replay shown, posterior mean minus true value (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "posteriorOvershoot"
+          },
+          "value": -0.0308323200835969
+        },
+        {
+          "select": "[data-prx-readout=\"shown-post\"]",
+          "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k3-prior.15",
+            "field": "posteriorOvershoot"
+          },
+          "value": -0.0308323200835969
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 0,
+          "about": "Monte Carlo caption: S = 20 replays (the replay count of the oracle's twenty-replay run)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "replays"
+          },
+          "value": 20
+        },
+        {
+          "select": ".prx-wc-lead",
+          "kind": "text",
+          "about": "the lead when the posterior means' average reads .000: the whole gap, with the estimates' average in the sentence",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "At this prior SD the posterior means are on target to three decimals, on average over these replays: they take back the whole gap of ⟨e⟩ between estimate and true value.",
+          "slots": true
+        }
+      ]
+    },
+    {
+      "id": "seed20261030-r20",
+      "about": "Twenty replays at seed 20261030 (seeds 20261031 to 20261050, the replays of 1.3): the oracle's leagueOvershoot defaults; replay 1 (seed 20261031) shown.",
+      "query": "?seed=20261030&replays=20&k=3&side=top&priorSd=.15&draw=1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-est\"]",
+          "about": "read-out: estimate minus true value, averaged over the replays (20 replays at seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "mean.overshoot"
+          },
+          "value": 0.188313455681617
+        },
+        {
+          "select": "[data-prx-readout=\"avg-est\"]",
+          "about": "table: the same average (20 replays at seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "mean.overshoot"
+          },
+          "value": 0.188313455681617
+        },
+        {
+          "select": "[data-prx-readout=\"mean-est\"]",
+          "about": "upper histogram heading: the mean at the dashed line (20 replays at seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "mean.overshoot"
+          },
+          "value": 0.188313455681617
+        },
+        {
+          "select": "[data-prx-readout=\"read-post\"]",
+          "about": "read-out: posterior mean minus true value, averaged over the replays (20 replays at seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": 0.000940003556852331
+        },
+        {
+          "select": "[data-prx-readout=\"avg-post\"]",
+          "about": "table: the same average (20 replays at seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": 0.000940003556852331
+        },
+        {
+          "select": "[data-prx-readout=\"mean-post\"]",
+          "about": "lower histogram heading: the mean at the dashed line (20 replays at seed 20261030, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": 0.000940003556852331
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "overshoot.0"
+          },
+          "value": 0.262653588529821
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "overshoot.0"
+          },
+          "value": 0.262653588529821
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-post\"]",
+          "about": "read-out: the replay shown, posterior mean minus true value (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "posteriorOvershoot.0"
+          },
+          "value": 0.103815400979702
+        },
+        {
+          "select": "[data-prx-readout=\"shown-post\"]",
+          "about": "table: the same (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "posteriorOvershoot.0"
+          },
+          "value": 0.103815400979702
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the seed of the replay shown (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seeds.0"
+          },
+          "value": 20261031
+        },
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "replay slider hint: the seed key in 'seed s + r'",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seed"
+          },
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"line-seed\"]",
+          "about": "league table: the draw line's seed (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seeds.0"
+          },
+          "value": 20261031
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 0,
+          "about": "Monte Carlo caption: S",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "replays"
+          },
+          "value": 20
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 1,
+          "about": "Monte Carlo caption: the seed",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seed"
+          },
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"read-replays\"]",
+          "about": "read-out: the number of replays",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "replays"
+          },
+          "value": 20
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the seed of replay 1 at seed 20261030",
+          "source": "registry",
+          "ref": "settings.seed.replay01",
+          "value": 20261031
+        }
+      ]
+    },
+    {
+      "id": "seed20261030-r20-draw8",
+      "about": "The same twenty replays with replay 8 (seed 20261038) shown: the replay of preset replay9 reached from another seed.",
+      "query": "?seed=20261030&replays=20&draw=8",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "overshoot.7"
+          },
+          "value": -0.0429347363453337
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "overshoot.7"
+          },
+          "value": -0.0429347363453337
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-post\"]",
+          "about": "read-out: the replay shown, posterior mean minus true value (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "posteriorOvershoot.7"
+          },
+          "value": -0.117301271104131
+        },
+        {
+          "select": "[data-prx-readout=\"shown-post\"]",
+          "about": "table: the same (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "posteriorOvershoot.7"
+          },
+          "value": -0.117301271104131
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the seed of the replay shown (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seeds.7"
+          },
+          "value": 20261038
+        },
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "replay slider hint: the seed key in 'seed s + r'",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seed"
+          },
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"line-seed\"]",
+          "about": "league table: the draw line's seed (seed 20261038, base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seeds.7"
+          },
+          "value": 20261038
+        },
+        {
+          "select": "[data-prx-readout=\"read-replay\"]",
+          "about": "read-out: the replay shown",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "r.7"
+          },
+          "value": 8
+        },
+        {
+          "select": "[data-prx-readout=\"draw-replay\"]",
+          "about": "replay slider hint: the replay shown",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "r.7"
+          },
+          "value": 8
+        }
+      ]
+    },
+    {
+      "id": "top1-prior05-r20",
+      "about": "The top 1 at prior SD .05 over the twenty replays at seed 20261030 (oracle row leagueOvershoot-seed20261030-R20-k1-top-prior.05).",
+      "query": "?seed=20261030&replays=20&k=1&priorSd=.05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-est\"]",
+          "about": "read-out: estimate minus true value, averaged over the replays (top 1, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "mean.overshoot"
+          },
+          "value": 0.215438753101759
+        },
+        {
+          "select": "[data-prx-readout=\"avg-est\"]",
+          "about": "table: the same average (top 1, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "mean.overshoot"
+          },
+          "value": 0.215438753101759
+        },
+        {
+          "select": "[data-prx-readout=\"mean-est\"]",
+          "about": "upper histogram heading: the mean at the dashed line (top 1, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "mean.overshoot"
+          },
+          "value": 0.215438753101759
+        },
+        {
+          "select": "[data-prx-readout=\"read-post\"]",
+          "about": "read-out: posterior mean minus true value, averaged over the replays (top 1, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": -0.185497224657024
+        },
+        {
+          "select": "[data-prx-readout=\"avg-post\"]",
+          "about": "table: the same average (top 1, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": -0.185497224657024
+        },
+        {
+          "select": "[data-prx-readout=\"mean-post\"]",
+          "about": "lower histogram heading: the mean at the dashed line (top 1, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "mean.posteriorOvershoot"
+          },
+          "value": -0.185497224657024
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "overshoot.0"
+          },
+          "value": 0.162165956710837
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "overshoot.0"
+          },
+          "value": 0.162165956710837
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-post\"]",
+          "about": "read-out: the replay shown, posterior mean minus true value (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "posteriorOvershoot.0"
+          },
+          "value": -0.164949243892009
+        },
+        {
+          "select": "[data-prx-readout=\"shown-post\"]",
+          "about": "table: the same (seed 20261031, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "posteriorOvershoot.0"
+          },
+          "value": -0.164949243892009
+        },
+        {
+          "select": "[data-prx-readout=\"read-k\"]",
+          "about": "read-out: k",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-seed20261030-R20-k1-top-prior.05",
+            "field": "k"
+          },
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "top10-prior05",
+      "about": "The top 10 at prior SD .05, replay 1 (seed 20261030) of the default 2,000 replays: the oracle's topKOvershoot row of that draw.",
+      "query": "?k=10&priorSd=.05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, top 10, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k10-prior.05",
+            "field": "overshoot"
+          },
+          "value": -0.00539941658812053
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same, replay shown (seed 20261030, top 10, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k10-prior.05",
+            "field": "overshoot"
+          },
+          "value": -0.00539941658812053
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-post\"]",
+          "about": "read-out: the replay shown, posterior mean minus true value (seed 20261030, top 10, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k10-prior.05",
+            "field": "posteriorOvershoot"
+          },
+          "value": -0.103861601403117
+        },
+        {
+          "select": "[data-prx-readout=\"shown-post\"]",
+          "about": "table: the same, replay shown (seed 20261030, top 10, prior SD .05, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k10-prior.05",
+            "field": "posteriorOvershoot"
+          },
+          "value": -0.103861601403117
+        },
+        {
+          "select": "[data-prx-readout=\"read-k\"]",
+          "about": "read-out: k",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "topKOvershoot-league-seed20261030-top-k10-prior.05",
+            "field": "k"
+          },
+          "value": 10
+        }
+      ]
+    },
+    {
+      "id": "draw-beyond-replays",
+      "about": "A draw beyond the replays run is set back to the last replay: draw=50 with 20 replays shows replay 20 (seed 20261050 at seed 20261030).",
+      "query": "?seed=20261030&replays=20&draw=50",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"read-shown-est\"]",
+          "about": "read-out: the replay shown, estimate minus true value (replay 20, seed 20261050, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "overshoot.19"
+          },
+          "value": 0.198954841539764
+        },
+        {
+          "select": "[data-prx-readout=\"shown-est\"]",
+          "about": "table: the same (replay 20, seed 20261050, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "overshoot.19"
+          },
+          "value": 0.198954841539764
+        },
+        {
+          "select": "[data-prx-readout=\"read-shown-post\"]",
+          "about": "read-out: the replay shown, posterior mean minus true value (replay 20, seed 20261050, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "posteriorOvershoot.19"
+          },
+          "value": -0.0217812660375241
+        },
+        {
+          "select": "[data-prx-readout=\"shown-post\"]",
+          "about": "table: the same (replay 20, seed 20261050, base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "posteriorOvershoot.19"
+          },
+          "value": -0.0217812660375241
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the seed of the replay shown (replay 20, seed 20261050, base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seeds.19"
+          },
+          "value": 20261050
+        },
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "replay slider hint: the seed key in 'seed s + r'",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seed"
+          },
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"line-seed\"]",
+          "about": "league table: the draw line's seed (replay 20, seed 20261050, base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "seeds.19"
+          },
+          "value": 20261050
+        },
+        {
+          "select": "[data-prx-readout=\"read-replay\"]",
+          "about": "read-out: the replay shown is the last replay run",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "r.19"
+          },
+          "value": 20
+        },
+        {
+          "select": "[data-prx-readout=\"line-replay\"]",
+          "about": "league table: the draw line names replay 20",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueOvershoot-defaults",
+            "field": "r.19"
+          },
+          "value": 20
+        }
+      ]
+    }
+  ]
+}

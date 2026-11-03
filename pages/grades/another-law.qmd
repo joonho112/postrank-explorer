@@ -1,0 +1,55 @@
+---
+title: "Evaluation under an alternative posterior law"
+subtitle: "2.17 · after the postrank theory book, ch. 16 and 18"
+description: "Fixed-report risk and regret under distinct selection and evaluation laws."
+---
+
+The posterior used to choose a report may differ from the law used to evaluate it. Here the selection law remains
+fixed while the evaluation mean of one site, or all evaluation standard deviations, are varied. The selected report
+is held fixed and scored under both laws. Its evaluation risk is also compared with the minimum under the evaluation
+law over the same report family. This separates a change in the risk of a given report from regret relative to an
+alternative report. Neither specified law is assumed to describe an external population exactly.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/another-law.js"></script>
+<script>window.__prxApp = PRX["another-law"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Same laws.** The selected report has risk .0417 under either law, and evaluation regret is 0. The plotted
+  intervals and means coincide; the largest pair-error gap is also 0. This is the point from which each
+  disagreement can be read.
+- **Move C upward.** The frozen report's evaluation risk rises to .1360, while the evaluation-best report has
+  risk .0542. Their difference, .0817, is the regret. The chosen reports change 3 pair decisions. The table separates the two evaluations of each report.
+- **Wider evaluation law.** The frozen report now has risk .0779, yet regret remains 0. It is still best in the
+  family under the evaluation law. A change in the risk of a report does not by itself imply that another
+  report should replace it.
+- **C +.40, no cap.** Evaluation regret is .0108. Both optimisations now search the larger family; the family
+  tags identify their common comparison domain. The bound keeps this family fixed while changing the law.
+- **Small change, new report.** A pair-error radius of .0132 accompanies 1 changed pair decision. Regret is
+  only .0008, beneath the uniform bound .0263. A small objective gap can coexist with different grade vectors.
+
+::: {.callout-note appearance="simple"}
+The laws here are independent normals specified for teaching. Neither is asserted to be the true law of an
+external population. The general bound is twice a justified uniform risk-discrepancy bound plus a valid optimiser
+gap over the whole common family. That gap concerns selection-law optimisation and is zero here; evaluation
+regret concerns the other law. Exact enumeration supplies the selection-law minimum; more posterior draws cannot
+establish agreement between the laws.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+g <- c(A=1L,B=1L,C=2L,D=2L,E=3L,F=3L)
+postrank_evaluate(g, pr_tutorial$one, weights=c(score_A=1), tau=.2)$weighted_risk # .04165164
+```
+:::
+
+Standalone: [two evaluation laws](../../embed/another-law.html), for example `?shift=1&unit=C`.
+
+Related applications: [Reporting risk and withholding cost](price-of-silence.qmd),
+[Monte Carlo error in pairwise probabilities](../uncertainty/mc-error.qmd).

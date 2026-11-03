@@ -1,0 +1,1647 @@
+{
+  "$schema": "./_schema.json",
+  "app": "which-ranking",
+  "catalog": "1.14",
+  "from": "postrank-explorer-v1 verification/readouts/which-ranking.json",
+  "about": "One posterior ranked three ways (posterior mean, expected rank, probability of being in the top k) for the theory book's ch. 19 three-unit law and the simulated league. Ported from v1 without the two cases that scripted a prediction and without the eleven expectations on the ch. 10 law on orders (v1's Deeper box, now app 1.15); the query key prior_sd is priorSd (v3 preset keys are plain words) and the teaching-posterior caption is in its v3 wording. Added: the scale switch on both data sets (√θ: base-R oracle row transformedMeans-spec-tb19-sqrt; exp(10θ): the unchanged expected rank, top-group probability and rank interval of U13), the unit key (B, U06, and an update to U24), the league ranked by first place (default unit U21) and a clamped prior SD. Three-unit numbers are rows of the base-R oracles (oracle-simulate rankSummaries-tb19-law3: means, expected ranks, pFirst, pTop; oracle-rules expectedRank-tb19-law3; oracle-summaries rankIntervals-tb19-law3-level.9) or keys of v1's frozen registry (tb19.law3.*). League posterior means and SDs are oracle rows (normalPosterior at prior SD .15 and .05); the league's exact expected ranks, its Monte Carlo top-group probabilities (4,000 draws, seed 1) and the count of pairs the posterior-mean and expected-rank orders put differently are registry keys (cross-checked in base R in v1); the rank-interval ends in the card are rows of oracle-summaries. Not covered by expectations (data-num only): the rank-interval ends in the hidden tables and row titles, the league's posterior means on the exp(kθ) scale, the count of pairs a scale moves, the league's count of units with probability 0, the tick labels.",
+  "cases": [
+    {
+      "id": "puzzle-mean",
+      "about": "Load preset: the three-unit law ranked by posterior mean; the read-out lists the posterior means and the pairs that the posterior mean and the expected rank order differently; the default unit is A (first by posterior mean, last by expected rank), whose card and worked formula are checked number by number. v1's expectations on the law on orders moved with that box to app 1.15.",
+      "preset": "puzzle-mean",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "about": "read-out: A first by posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.0"
+          },
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "about": "the same value in the registry (the page's prose)",
+          "source": "registry",
+          "ref": "tb19.law3.mean.A",
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"list-2\"]",
+          "about": "read-out: B second",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.1"
+          },
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"list-3\"]",
+          "about": "read-out: C third",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.2"
+          },
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"misordered\"]",
+          "about": "read-out: pairs the posterior mean and the expected rank order differently",
+          "source": "registry",
+          "ref": "tb19.law3.misordered",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "read-out: pairs of three units",
+          "source": "registry",
+          "ref": "tb19.law3.M",
+          "value": 3
+        },
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out word for word, each number a slot",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Three-unit law, ranked by posterior mean: A (⟨a⟩), B (⟨b⟩), C (⟨c⟩). Posterior mean and expected rank order ⟨mis⟩ of the ⟨M⟩ pairs differently."
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "about": "unit card: A's posterior mean",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.0"
+          },
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "about": "unit card: A's expected rank (base-R oracle, rules)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb19-law3",
+            "field": "rank.0"
+          },
+          "value": 2.4
+        },
+        {
+          "select": "[data-prx-readout=\"card-top\"]",
+          "about": "unit card: A's probability of being first",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.0"
+          },
+          "value": 0.3
+        },
+        {
+          "select": ".prx-wr-card-line .prx-num",
+          "index": 3,
+          "about": "unit card: the rank interval's level",
+          "source": "registry",
+          "ref": "settings.level90",
+          "value": 0.9
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "index": 1,
+          "about": "worked formula: A is 1st with probability .3",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.0"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "index": 3,
+          "about": "worked formula: A is 2nd with probability 0",
+          "source": "registry",
+          "ref": "tb19.law3.rank2.A",
+          "value": 0
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "index": 5,
+          "about": "worked formula: A is 3rd with probability .7",
+          "source": "registry",
+          "ref": "tb19.law3.rank3.A",
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "index": 8,
+          "about": "worked formula: Pr(theta_B > theta_A | Y)",
+          "source": "registry",
+          "ref": "tb19.law3.pi.BA",
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "index": 9,
+          "about": "worked formula: Pr(theta_C > theta_A | Y)",
+          "source": "registry",
+          "ref": "tb19.law3.pi.CA",
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "index": 10,
+          "about": "worked formula: A's expected rank",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb19-law3",
+            "field": "rank.0"
+          },
+          "value": 2.4
+        },
+        {
+          "select": "[data-prx-readout=\"law-p-high\"]",
+          "about": "posterior table: probability of the state with a large A",
+          "source": "registry",
+          "ref": "tb19.law3.prob.high",
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"law-p-low\"]",
+          "about": "posterior table: probability of the state with a small A",
+          "source": "registry",
+          "ref": "tb19.law3.prob.low",
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"law-high-a\"]",
+          "about": "posterior table: A's true value in the state with a large A",
+          "source": "registry",
+          "ref": "tb19.law3.state.high.A",
+          "value": 20
+        },
+        {
+          "select": "[data-prx-readout=\"law-mean-a\"]",
+          "about": "posterior table: A's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.0"
+          },
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"law-mean-b\"]",
+          "about": "posterior table: B's posterior mean",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.1"
+          },
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"law-mean-c\"]",
+          "about": "posterior table: C's posterior mean",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.2"
+          },
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-lo\"]",
+          "about": "A: best end of the 90% rank interval (1-based rank; independent oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-tb19-law3-level.9",
+            "field": "lower.0"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-hi\"]",
+          "about": "A: worst end",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-tb19-law3-level.9",
+            "field": "upper.0"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-wr-law .prx-wr-caption",
+          "about": "the states table's caption, verbatim, now a paragraph above the table's scroll box (it names the table)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "The posterior of the three-unit law: each row is one state of the three true values"
+        }
+      ]
+    },
+    {
+      "id": "puzzle-top1",
+      "about": "The three-unit law ranked by the probability of being first: B, A, C with .7, .3 and 0 (base-R oracle pFirst); the posterior mean ranks A first instead.",
+      "preset": "puzzle-top1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "about": "read-out: B first with probability .7 (base-R oracle)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.1"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "about": "the same value in the registry (the page's Check and explain)",
+          "source": "registry",
+          "ref": "tb19.law3.top1.B",
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"list-2\"]",
+          "about": "read-out: A with .3",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.0"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"list-3\"]",
+          "about": "read-out: C with 0",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.2"
+          },
+          "value": 0
+        },
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out word for word",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Three-unit law, ranked by the probability of being first: B (⟨b⟩), A (⟨a⟩), C (⟨c⟩). The posterior mean ranks A first instead."
+        },
+        {
+          "select": "[data-prx-readout=\"card-top\"]",
+          "about": "unit card (A, the default unit): probability of being first",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.0"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "about": "unit card: A's expected rank (base-R oracle, simulate)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "expectedRank.0"
+          },
+          "value": 2.4
+        }
+      ]
+    },
+    {
+      "id": "league-er",
+      "about": "The simulated league at prior SD .15 ranked by the exact expected rank; the default unit is U13 (6th by posterior mean, 8th by expected rank). Posterior mean and SD of U13 are base-R oracle rows; expected ranks, the Monte Carlo probability and the count of differently ordered pairs come from the registry (cross-checked in base R: pnorm sums and the reimplemented stream).",
+      "preset": "league-er",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "read-out: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "about": "read-out: U26 first by expected rank",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U26",
+          "value": 3.7892373460258706
+        },
+        {
+          "select": "[data-prx-readout=\"list-2\"]",
+          "about": "read-out: U21 second",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U21",
+          "value": 4.811758595863299
+        },
+        {
+          "select": "[data-prx-readout=\"misordered\"]",
+          "about": "read-out: pairs the two orders put differently",
+          "source": "registry",
+          "ref": "league.default.prior15.misordered.mean.exprank",
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "read-out: pairs of 30 units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "index": 0,
+          "kind": "text",
+          "about": "read-out: the unit first by expected rank",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U26"
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "about": "unit card: U13's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.12"
+          },
+          "value": 0.0687616263655014
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "about": "the same value in the registry (the page's prose)",
+          "source": "registry",
+          "ref": "league.default.prior15.mean.U13",
+          "value": 0.06876162636550127
+        },
+        {
+          "select": "[data-prx-readout=\"card-sd\"]",
+          "about": "unit card: U13's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.12"
+          },
+          "value": 0.12
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "about": "unit card: U13's expected rank",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U13",
+          "value": 9.587866070102827
+        },
+        {
+          "select": "[data-prx-readout=\"card-top\"]",
+          "about": "unit card: U13's probability of being first (Monte Carlo)",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top1.U13",
+          "value": 0.1135
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "about": "the default unit: the highest by posterior mean whose expected-rank place differs",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U13"
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "index": 1,
+          "about": "worked formula: U13's expected rank",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U13",
+          "value": 9.587866070102827
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 0,
+          "about": "Monte Carlo caption: the number of draws",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.draws",
+          "value": 4000
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 1,
+          "about": "Monte Carlo caption: the seed",
+          "source": "registry",
+          "ref": "settings.seed.s1",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "about": "the teaching-posterior caption in its v3 wording (js/shared/labels.js)",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-lo\"]",
+          "about": "U13 (Monte Carlo, 4,000 draws, seed 1): best end of the 90% rank interval (1-based rank; independent oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-league-seed20261030-prior.15-mc4000-seed1-level.9",
+            "field": "lower.12"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-hi\"]",
+          "about": "U13 (Monte Carlo, 4,000 draws, seed 1): worst end",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-league-seed20261030-prior.15-mc4000-seed1-level.9",
+            "field": "upper.12"
+          },
+          "value": 24
+        },
+        {
+          "select": ".prx-wr-law .prx-app-link",
+          "about": "the league note names app 1.5 by its title, a link to its page (base.js appLink), so the title never runs into the sentence as plain words",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "What a posterior adds"
+        }
+      ]
+    },
+    {
+      "id": "league-top10",
+      "about": "The league ranked by the Monte Carlo probability of being in the top ten: U21 (a large unit) leads U26, which has the largest posterior mean and is the default unit. Monte Carlo shares and expected ranks come from the registry (cross-checked in base R); U26's posterior mean is a base-R oracle row.",
+      "preset": "league-top10",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "about": "read-out: U21 most often in the top ten",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top10.U21",
+          "value": 0.957
+        },
+        {
+          "select": "[data-prx-readout=\"list-2\"]",
+          "about": "read-out: U26 second",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top10.U26",
+          "value": 0.942
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "index": 0,
+          "kind": "text",
+          "about": "read-out: the unit first by this probability",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U21"
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "about": "unit card: U26's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.25"
+          },
+          "value": 0.164095056140652
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "about": "unit card: U26's expected rank",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U26",
+          "value": 3.7892373460258706
+        },
+        {
+          "select": "[data-prx-readout=\"card-top\"]",
+          "about": "unit card: U26's probability of being in the top ten",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top10.U26",
+          "value": 0.942
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 0,
+          "about": "Monte Carlo caption: the number of draws",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.draws",
+          "value": 4000
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 1,
+          "about": "Monte Carlo caption: the seed",
+          "source": "registry",
+          "ref": "settings.seed.s1",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-lo\"]",
+          "about": "U26 (Monte Carlo, 4,000 draws, seed 1): best end of the 90% rank interval (1-based rank; independent oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-league-seed20261030-prior.15-mc4000-seed1-level.9",
+            "field": "lower.25"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-hi\"]",
+          "about": "U26 (Monte Carlo, 4,000 draws, seed 1): worst end",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-league-seed20261030-prior.15-mc4000-seed1-level.9",
+            "field": "upper.25"
+          },
+          "value": 11
+        }
+      ]
+    },
+    {
+      "id": "league-mean-prior05",
+      "about": "Raw query: the league at prior SD .05 ranked by posterior mean. The five listed posterior means are base-R oracle rows (normalPosterior at prior SD .05); the default unit is U08 (5th by posterior mean, 6th by expected rank).",
+      "query": "?data=league&summary=mean&k=1&priorSd=.05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "read-out: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior05",
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "about": "read-out: U21 first by posterior mean",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.20"
+          },
+          "value": 0.0679023232154668
+        },
+        {
+          "select": "[data-prx-readout=\"list-2\"]",
+          "about": "read-out: U26 second",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.25"
+          },
+          "value": 0.0474052384406329
+        },
+        {
+          "select": "[data-prx-readout=\"list-3\"]",
+          "about": "read-out: U03 third",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.2"
+          },
+          "value": 0.0421806529080464
+        },
+        {
+          "select": "[data-prx-readout=\"list-4\"]",
+          "about": "read-out: U06 fourth",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.5"
+          },
+          "value": 0.0328309185406465
+        },
+        {
+          "select": "[data-prx-readout=\"list-5\"]",
+          "about": "read-out: U08 fifth",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.7"
+          },
+          "value": 0.0308887438045889
+        },
+        {
+          "select": "[data-prx-readout=\"misordered\"]",
+          "about": "read-out: pairs the two orders put differently at prior SD .05",
+          "source": "registry",
+          "ref": "league.default.prior05.misordered.mean.exprank",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "about": "unit card: U08's posterior mean",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.7"
+          },
+          "value": 0.0308887438045889
+        },
+        {
+          "select": "[data-prx-readout=\"card-sd\"]",
+          "about": "unit card: U08's posterior SD",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.7"
+          },
+          "value": 0.0447213595499958
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "about": "the default unit at prior SD .05",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U08"
+        }
+      ]
+    },
+    {
+      "id": "puzzle-top-clamped",
+      "about": "Raw query: the three-unit law with k = 9, clamped to the top two (three units). Pr(top two) = .3, 1, .7 (base-R oracle pTop row 1) orders B, C, A, the same order as the expected rank.",
+      "query": "?data=puzzle&summary=top&k=9&priorSd=.15",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "about": "read-out: B in the top two with probability 1",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pTop.1.1"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"list-2\"]",
+          "about": "read-out: C with .7",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pTop.1.2"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"list-3\"]",
+          "about": "read-out: A with .3",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pTop.1.0"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"list-2\"]",
+          "about": "the same value in the registry",
+          "source": "registry",
+          "ref": "tb19.law3.top2.C",
+          "value": 0.7
+        },
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out word for word: k is clamped to two",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Three-unit law, ranked by the probability of being in the top two: B (⟨b⟩), C (⟨c⟩), A (⟨a⟩). The posterior mean ranks A first instead."
+        }
+      ]
+    },
+    {
+      "id": "puzzle-sqrt",
+      "about": "The scale switch on the three-unit law (√θ, engine transformedMeans): the posterior-mean column now reads B, C, A with means 2.00, 1.73 and 1.34 (base-R oracle row transformedMeans-spec-tb19-sqrt), while A's expected rank (2.4), its probability of being first (.3) and its rank interval stay those of θ. The table keeps the posterior means of θ beside those of √θ, and the card works out A's mean on the new scale.",
+      "preset": "puzzle-sqrt",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "transformedMeans-spec-tb19-sqrt",
+            "field": "means.1"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "read-out: B first by the posterior mean of √θ"
+        },
+        {
+          "select": "[data-prx-readout=\"list-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "transformedMeans-spec-tb19-sqrt",
+            "field": "means.2"
+          },
+          "value": 1.73205080756888,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "read-out: C second"
+        },
+        {
+          "select": "[data-prx-readout=\"list-3\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "transformedMeans-spec-tb19-sqrt",
+            "field": "means.0"
+          },
+          "value": 1.34164078649987,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "read-out: A third"
+        },
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Three-unit law, ranked by the posterior mean of √θ: B (⟨b⟩), C (⟨c⟩), A (⟨a⟩). The posterior mean of √θ and the expected rank order ⟨mis⟩ of the ⟨M⟩ pairs differently.",
+          "slots": true,
+          "about": "the read-out word for word, each number a slot"
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "source": "registry",
+          "ref": "tb19.law3.M",
+          "value": 3,
+          "about": "read-out: pairs of three units"
+        },
+        {
+          "select": "[data-prx-readout=\"law-scale-a\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "transformedMeans-spec-tb19-sqrt",
+            "field": "means.0"
+          },
+          "value": 1.34164078649987,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "posterior table: A's posterior mean of √θ"
+        },
+        {
+          "select": "[data-prx-readout=\"law-scale-b\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "transformedMeans-spec-tb19-sqrt",
+            "field": "means.1"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "posterior table: B's posterior mean of √θ"
+        },
+        {
+          "select": "[data-prx-readout=\"law-scale-c\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "transformedMeans-spec-tb19-sqrt",
+            "field": "means.2"
+          },
+          "value": 1.73205080756888,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "posterior table: C's posterior mean of √θ"
+        },
+        {
+          "select": "[data-prx-readout=\"law-mean-a\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.0"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "about": "posterior table: A's posterior mean of θ stays in view"
+        },
+        {
+          "select": "[data-prx-readout=\"card-scale\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "transformedMeans-spec-tb19-sqrt",
+            "field": "means.0"
+          },
+          "value": 1.34164078649987,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "card: A's posterior mean on the √θ scale"
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.0"
+          },
+          "value": 6,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "about": "card: A's posterior mean of θ"
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb19-law3",
+            "field": "rank.0"
+          },
+          "value": 2.4,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          },
+          "about": "card: A's expected rank does not move"
+        },
+        {
+          "select": "[data-prx-readout=\"card-top\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.0"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "about": "card: A's probability of being first does not move"
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-lo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-tb19-law3-level.9",
+            "field": "lower.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "about": "card: rank interval, best end"
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-hi\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-tb19-law3-level.9",
+            "field": "upper.0"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          },
+          "about": "card: rank interval, worst end"
+        },
+        {
+          "select": "[data-prx-tex=\"scale-mean\"] mtext",
+          "source": "registry",
+          "ref": "tb19.law3.prob.high",
+          "value": 0.3,
+          "index": 0,
+          "about": "worked mean on √θ: the probability of the state with a large A"
+        },
+        {
+          "select": "[data-prx-tex=\"scale-mean\"] mtext",
+          "source": "registry",
+          "ref": "tb19.law3.state.high.A",
+          "value": 20,
+          "index": 1,
+          "about": "worked mean on √θ: A's value in that state"
+        },
+        {
+          "select": "[data-prx-tex=\"scale-mean\"] mtext",
+          "source": "registry",
+          "ref": "tb19.law3.prob.low",
+          "value": 0.7,
+          "index": 2,
+          "about": "worked mean on √θ: the probability of the state with a small A"
+        },
+        {
+          "select": "[data-prx-tex=\"scale-mean\"] mtext",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "transformedMeans-spec-tb19-sqrt",
+            "field": "means.0"
+          },
+          "value": 1.34164078649987,
+          "index": 4,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "about": "worked mean on √θ: the result"
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb19-law3",
+            "field": "rank.0"
+          },
+          "value": 2.4,
+          "index": 10,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          },
+          "about": "worked expected rank: unchanged"
+        }
+      ]
+    },
+    {
+      "id": "puzzle-unit-b",
+      "about": "The unit key selects B in the three-unit law: its card and worked expected rank (1 + .3 + 0 = 1.3) follow the selection; base-R oracle rows.",
+      "query": "?data=puzzle&summary=mean&k=1&priorSd=.15&unit=B",
+      "expect": [
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "B",
+          "about": "the selected unit"
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.1"
+          },
+          "value": 4,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "about": "card: B's posterior mean"
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb19-law3",
+            "field": "rank.1"
+          },
+          "value": 1.3,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          },
+          "about": "card: B's expected rank"
+        },
+        {
+          "select": "[data-prx-readout=\"card-top\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.1"
+          },
+          "value": 0.7,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "about": "card: B's probability of being first"
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-lo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-tb19-law3-level.9",
+            "field": "lower.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "about": "card: rank interval, best end"
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-hi\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-tb19-law3-level.9",
+            "field": "upper.1"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          },
+          "about": "card: rank interval, worst end"
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb19-law3",
+            "field": "rank.1"
+          },
+          "value": 1.3,
+          "index": 10,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          },
+          "about": "worked formula: B's expected rank"
+        }
+      ]
+    },
+    {
+      "id": "league-exp",
+      "about": "The scale switch on the league (exp(10θ), engine transformedMeans): the posterior-mean column now starts U26, U08, U13, while U13's expected rank, probability of being first, rank interval and posterior SD stay those of θ (registry and base-R oracle rows) and the Monte Carlo caption names its draws and seed. The transformed means themselves have no oracle row for the league; they are checked as shown numbers (data-num read back).",
+      "preset": "league-exp",
+      "expect": [
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U26",
+          "index": 0,
+          "about": "read-out: U26 first by the posterior mean of exp(10θ)"
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U08",
+          "index": 1,
+          "about": "read-out: U08 second"
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U13",
+          "index": 2,
+          "about": "read-out: U13 third (sixth by the posterior mean of θ)"
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435,
+          "about": "read-out: pairs of 30 units"
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U13",
+          "about": "the default unit stays U13 on the other scale"
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mean.U13",
+          "value": 0.06876162636550127,
+          "about": "card: U13's posterior mean of θ"
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U13",
+          "value": 9.587866070102827,
+          "about": "card: U13's expected rank does not move"
+        },
+        {
+          "select": "[data-prx-readout=\"card-top\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top1.U13",
+          "value": 0.1135,
+          "about": "card: U13's probability of being first does not move"
+        },
+        {
+          "select": "[data-prx-readout=\"card-sd\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.12"
+          },
+          "value": 0.12,
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "about": "card: U13's posterior SD"
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-lo\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-league-seed20261030-prior.15-mc4000-seed1-level.9",
+            "field": "lower.12"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          },
+          "about": "card: rank interval, best end"
+        },
+        {
+          "select": "[data-prx-readout=\"card-ri-hi\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "rankIntervals-league-seed20261030-prior.15-mc4000-seed1-level.9",
+            "field": "upper.12"
+          },
+          "value": 24,
+          "format": {
+            "fn": "formatCount"
+          },
+          "about": "card: rank interval, worst end"
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.draws",
+          "value": 4000,
+          "index": 0,
+          "about": "caption: Monte Carlo draws"
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "source": "registry",
+          "ref": "settings.seed.s1",
+          "value": 1,
+          "index": 1,
+          "about": "caption: Monte Carlo seed"
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it",
+          "about": "the teaching-posterior caption in its v3 wording"
+        }
+      ]
+    },
+    {
+      "id": "league-unit-u06",
+      "about": "The unit key selects U06, a large unit that passes U13 by expected rank: 8th by posterior mean (.059) but 6th by expected rank (8.98), posterior SD .047 (registry).",
+      "query": "?data=league&summary=expected_rank&k=1&priorSd=.15&unit=U06",
+      "expect": [
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U06",
+          "about": "the selected unit"
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mean.U06",
+          "value": 0.05909565337316378,
+          "about": "card: U06's posterior mean"
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U06",
+          "value": 8.981311638690201,
+          "about": "card: U06's expected rank"
+        },
+        {
+          "select": "[data-prx-readout=\"card-sd\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.sd.U06",
+          "value": 0.047434164902525694,
+          "about": "card: U06's posterior SD"
+        },
+        {
+          "select": "[data-prx-tex=\"expected-rank\"] mtext",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U06",
+          "value": 8.981311638690201,
+          "index": 1,
+          "about": "worked formula: U06's expected rank"
+        }
+      ]
+    },
+    {
+      "id": "league-unit-update",
+      "about": "Mounted at the league's expected-rank preset, then update({ unit: \"U24\" }) as a click does: the card follows (registry).",
+      "preset": "league-er",
+      "update": [
+        {
+          "unit": "U24"
+        }
+      ],
+      "expect": [
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U24",
+          "about": "the selected unit"
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U24",
+          "value": 9.520010847470179,
+          "about": "card: U24's expected rank"
+        },
+        {
+          "select": "[data-prx-readout=\"card-sd\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.sd.U24",
+          "value": 0.047434164902525694,
+          "about": "card: U24's posterior SD"
+        },
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U26",
+          "value": 3.7892373460258706,
+          "about": "the read-out does not change with the selection"
+        }
+      ]
+    },
+    {
+      "id": "league-first-place",
+      "about": "The league ranked by the probability of being first (Monte Carlo): U26 (.32), U08 (.12), U13 (.11); the default unit is U21, 2nd by posterior mean but first only in .06 of the draws (registry).",
+      "query": "?data=league&summary=top&k=1&priorSd=.15",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top1.U26",
+          "value": 0.3245,
+          "about": "read-out: U26 first"
+        },
+        {
+          "select": "[data-prx-readout=\"list-2\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top1.U08",
+          "value": 0.11925,
+          "about": "read-out: U08 second"
+        },
+        {
+          "select": "[data-prx-readout=\"list-3\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top1.U13",
+          "value": 0.1135,
+          "about": "read-out: U13 third"
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U21",
+          "about": "the default unit for first place"
+        },
+        {
+          "select": "[data-prx-readout=\"card-top\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top1.U21",
+          "value": 0.06375,
+          "about": "card: U21's probability of being first"
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U21",
+          "value": 4.811758595863299,
+          "about": "card: U21's expected rank"
+        }
+      ]
+    },
+    {
+      "id": "prior-clamped",
+      "about": "A prior SD beyond the slider is clamped to .60.",
+      "query": "?data=league&summary=mean&k=1&priorSd=9",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "source": "registry",
+          "ref": "settings.prior60",
+          "value": 0.6,
+          "about": "read-out: the prior SD, clamped"
+        }
+      ]
+    }
+  ]
+}

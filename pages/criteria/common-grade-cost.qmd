@@ -1,0 +1,52 @@
+---
+title: "Criterion-specific excess risk of a common report"
+subtitle: "4.5 · commonality costs from postrank, with live and archived examples"
+description: "Increase in each criterion's risk relative to its own optimum in the same report family."
+---
+
+Requiring a common report can raise each criterion's risk relative to the report it would select separately.
+The commonality cost is this difference, evaluated within the same family and at the same withholding cost. The
+connectors compare each criterion's separate minimum with its risk under the common report. Equal error weights
+need not imply equal commonality costs. The live examples calculate the relevant reports directly; the larger
+archived examples retain the recorded optimisation bounds. These costs concern reporting risk and do not have an
+intrinsic welfare interpretation.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/common-grade-cost.js"></script>
+<script>window.__prxApp = PRX["common-grade-cost"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Equal weights.** The excess risks are .0490 on score A and .0145 on score B. Each connector joins the criterion-specific optimum to its common-report evaluation. The comparison table keeps each criterion’s risk separate from its wrong share.
+- **Score A only.** The common report is score A’s own best, so score A has zero excess risk and score B has excess risk .1481.
+  Score B still has its own comparison; a zero error weight does not remove that criterion from the display.
+- **w .70.** The common report becomes {A} > {B, C, D} > {E, F}: the excess risks are .0253 on score A and .0563 on score B.
+  Moving a weight changes the objective used to select the common report.
+- **Score B only.** Two common reports tie. Score A has excess risk .1580 under one and .1697 under the other; score B has zero excess risk. Both common reports and both of score B’s own optima are shown, with their equal-risk tolerance.
+- **Thirty sites, higher price.** The archived common report states 276 pairs. Snap’s cost is .4455, and its
+  expected wrong share among those stated directions is .784. The cost interval comes from optimisation bounds.
+- **Thirty sites, lower price.** The common report withholds every direction, yet each criterion could prefer a
+  report of its own. Costs are .0895, .0749 and .1022 for poverty, frl and snap, respectively.
+
+::: {.callout-note appearance="simple"}
+The cost is a postrank package quantity, $\Delta_k$: it carries no welfare meaning, and a large cost does not by
+itself say that a weight is wrong. The thirty-site results are fixed draw-based archives with their recorded
+settings, statuses and bounds. They are separate from the Gaussian marginal example. Their intervals describe
+optimisation accuracy, not posterior uncertainty; missing own-report grade vectors are not reconstructed.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+cc <- postrank_commonality_cost(postrank(pr_tutorial$two, weights=c(score_A=.5,score_B=.5), tau=.2, G_max=3, backend="highs", report_card=FALSE, fragility=FALSE), backend="highs")
+cc$table[, c("criterion_id", "cost_lower", "cost_upper")]
+```
+:::
+
+Standalone: [common-grade-cost](../../embed/common-grade-cost.html), for example `?preset=w0&theme=dark`.
+
+Related applications: [A common grade report for two scores](two-scores.qmd) and [Criterion-specific expected-error budgets](error-budgets.qmd).

@@ -1,0 +1,47 @@
+---
+title: "Selection bias at the extremes of a ranking"
+subtitle: "1.4 · the simulated league, after Walters (2024) and Andrews, Kitagawa and McCloskey (2024)"
+description: "Repeated-sampling bias of selected extreme estimates and its dependence on the prior used for shrinkage."
+---
+
+Selection by an extreme estimate also selects on sampling error. In a simulation of thirty units, the estimates of
+the highest-ranked units therefore exceed their true values on average. The corresponding bias for the lowest-ranked
+units has the opposite sign. Repeated datasets quantify these differences for the selected k units. Under a normal
+prior centred on the average true value, with a standard deviation near their spread, posterior means substantially
+reduce the average upward bias of the highest estimates; the remaining average difference is −.007 in this example.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/winners-curse.js"></script>
+<script>window.__prxApp = PRX["winners-curse"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Top 3.** Over the 2,000 replays, estimate minus true value averages .160 for the top 3 by estimate; for their
+  posterior means at prior SD .15, near the true values' spread of .149, it averages −.007. Replay 1 is the draw that
+  1.3 and 1.5 show first: .071 and −.031.
+- **Replay 9.** The repeated-sampling result does not hold in every dataset: here the top 3 sit below their true values (−.043, averaged over the
+  three), and their posterior means further below (−.117). This bias is defined by the average over repeated datasets.
+- **Top 1.** Over the replays, the largest estimate overshoots most: .220 above its unit's true value on average,
+  against .081 for the top 10 (set k to 10). Its posterior mean averages −.024.
+- **Bottom 3.** The lower-tail comparison has the opposite sign: on average over the replays the bottom 3 sit below their true values, −.150, and their posterior means have average difference −.013.
+- **Prior SD .05.** A prior narrower than the true spread induces excessive shrinkage: on average over the replays the top
+  3's posterior means end at −.131, below their true values (at prior SD .10, −.063).
+
+::: {.callout-note appearance="simple"}
+Walters (2024, Handbook of Labor Economics, section 3.5) points to the upward bias of the largest estimate that the
+ranking step creates. Andrews, Kitagawa and McCloskey (2024, "Inference on Winners") give inference on the top unit's
+value that accounts for it. The posterior here comes from one normal prior set by hand for teaching; postrank does not
+fit it, and postrank's input is a posterior, not a list of estimates. With real units the true values are unknown, so
+this check is not possible.
+:::
+
+Standalone: [embed/winners-curse.html](../../embed/winners-curse.html), for example `?k=5&side=bottom` or
+`?preset=prior05&theme=dark`.
+
+Related applications: [Ranking noisy estimates](noisy-league.qmd) (1.3), the same league and its replays;
+[Normal–normal posterior shrinkage](shrinkage.qmd) (1.5), the posterior that pulls these estimates in; and
+[Sensitivity to the prior standard deviation](shrinkage-price.qmd) (1.6), the prior SD over its whole range.

@@ -1,0 +1,69 @@
+{
+  "id": "2.4",
+  "name": "price-of-silence",
+  "part": "2",
+  "title": "The price of silence",
+  "idea": "With a price \u03c4 on silence, risk is E/M + \u03c4(M \u2212 N)/M, and the best report moves with \u03c4; your own report can be scored beside it.",
+  "status": "built",
+  "from": "v1 whole \u00b7 v1 G-03 price-of-silence (with the your-report bar)",
+  "data": [
+    "data/released/six-sites.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), slides 23\u201325, re-expressed as postrank risk.",
+  "caption": "Six fictional sites from the postrank tutorial, score A only; their normal posteriors are specified for teaching and taken as given. Every report in the family is evaluated in this browser.",
+  "presets": [
+    {
+      "id": "tau20-cap3",
+      "label": "\u03c4 .20, at most 3 grades",
+      "query": "tau=.20&cap=3"
+    },
+    {
+      "id": "tau20-nocap",
+      "label": "\u03c4 .20, no cap",
+      "query": "tau=.20&cap=none"
+    },
+    {
+      "id": "tau40-nocap",
+      "label": "\u03c4 .40, no cap",
+      "query": "tau=.40&cap=none"
+    },
+    {
+      "id": "tau30-nocap",
+      "label": "\u03c4 .30, no cap",
+      "query": "tau=.30&cap=none"
+    }
+  ],
+  "try": [
+    {
+      "preset": "tau20-cap3",
+      "shows": [
+        "12 of 15",
+        ".0417",
+        "603",
+        "2 (A and B; E and F)"
+      ]
+    },
+    {
+      "preset": "tau20-nocap",
+      "shows": [
+        "14 of 15",
+        ".0372",
+        "4,683"
+      ]
+    },
+    {
+      "preset": "tau40-nocap",
+      "shows": [
+        "15 of 15",
+        ".0480"
+      ]
+    },
+    {
+      "preset": "tau30-nocap",
+      "shows": [
+        ".0438"
+      ]
+    }
+  ],
+  "math": true
+}

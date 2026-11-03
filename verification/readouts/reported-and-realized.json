@@ -1,0 +1,579 @@
+{
+  "app": "reported-and-realized",
+  "catalog": "2.9",
+  "about": "Fixed-report claims and realized shares pinned to original oracle-v3 league rows; reference-law comparisons and posterior draws pinned to the independent base-R oracle-v3p2-league supplement. Fixed report inputs in the supplement are the original independent oracle grades, not an app or engine output.",
+  "cases": [
+    {
+      "id": "same",
+      "preset": "same",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"claimed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-defaults",
+            "field": "EoverN.0"
+          },
+          "value": 0.0631792200183697,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"realized-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-defaults",
+            "field": "DoverN.0"
+          },
+          "value": 0.0526315789473684,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"stated-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-defaults",
+            "field": "N.0"
+          },
+          "value": 152,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"realized-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-defaults",
+            "field": "D.0"
+          },
+          "value": 8,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"reference-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-same-r1",
+            "field": "referenceShare"
+          },
+          "value": 0.0631792200183697,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-same-r1",
+            "field": "delta"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"draw-expected\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-same-r1",
+            "field": "drawExpected"
+          },
+          "value": 9.60324144279219,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"draw-average\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-same-r1",
+            "field": "drawAverage"
+          },
+          "value": 9.67,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-same-r1",
+            "field": "shareGap"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "narrow",
+      "preset": "narrow",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"claimed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R5-prior.05-tau.3-cap5",
+            "field": "EoverN.0"
+          },
+          "value": 0.139975593371454,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"realized-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R5-prior.05-tau.3-cap5",
+            "field": "DoverN.0"
+          },
+          "value": 0.0808080808080808,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"stated-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R5-prior.05-tau.3-cap5",
+            "field": "N.0"
+          },
+          "value": 198,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"realized-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R5-prior.05-tau.3-cap5",
+            "field": "D.0"
+          },
+          "value": 16,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"reference-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-narrow-r1",
+            "field": "referenceShare"
+          },
+          "value": 0.115157874360021,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-narrow-r1",
+            "field": "delta"
+          },
+          "value": 0.498103250430226,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"draw-expected\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-narrow-r1",
+            "field": "drawExpected"
+          },
+          "value": 22.8012591232841,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"draw-average\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-narrow-r1",
+            "field": "drawAverage"
+          },
+          "value": 22.34,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-narrow-r1",
+            "field": "shareGap"
+          },
+          "value": 0.0248177190114333,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "fewer",
+      "preset": "fewer",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"claimed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R5-prior.15-tau.1-cap2",
+            "field": "EoverN.0"
+          },
+          "value": 0.0253663827669218,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"realized-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R5-prior.15-tau.1-cap2",
+            "field": "DoverN.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"stated-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R5-prior.15-tau.1-cap2",
+            "field": "N.0"
+          },
+          "value": 56,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"realized-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R5-prior.15-tau.1-cap2",
+            "field": "D.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"reference-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-fewer-r1",
+            "field": "referenceShare"
+          },
+          "value": 0.0253663827669218,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-fewer-r1",
+            "field": "delta"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"draw-expected\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-fewer-r1",
+            "field": "drawExpected"
+          },
+          "value": 1.42051743494762,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"draw-average\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-fewer-r1",
+            "field": "drawAverage"
+          },
+          "value": 1.68,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-fewer-r1",
+            "field": "shareGap"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "silent",
+      "preset": "silent",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"claimed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R3-cap1-nothing-stated",
+            "field": "EoverN.0"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"realized-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R3-cap1-nothing-stated",
+            "field": "DoverN.0"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"stated-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R3-cap1-nothing-stated",
+            "field": "N.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"realized-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "leagueGradingReplays-seed20261030-R3-cap1-nothing-stated",
+            "field": "D.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"reference-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-silent-r1",
+            "field": "referenceShare"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-silent-r1",
+            "field": "delta"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 4
+            }
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"draw-expected\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-silent-r1",
+            "field": "drawExpected"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"draw-average\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-silent-r1",
+            "field": "drawAverage"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "draw-law",
+      "preset": "narrow",
+      "update": [
+        {
+          "drawLaw": "assumed"
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-average\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-narrow-r1-assumed",
+            "field": "drawAverage"
+          },
+          "value": 27.3,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "clear-draws",
+      "preset": "same",
+      "update": [
+        {
+          "draws": 0
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-average\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-same-r1-zero-draws",
+            "field": "drawAverage"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "one-draw",
+      "preset": "same",
+      "update": [
+        {
+          "draws": 1
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-average\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-league",
+            "row": "reported-realized-same-r1-one-draw",
+            "field": "drawAverage"
+          },
+          "value": 14,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
+    }
+  ]
+}

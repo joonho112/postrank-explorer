@@ -1,0 +1,2387 @@
+{
+  "$schema": "./_schema.json",
+  "catalog": "2.8",
+  "about": "Full v1 non-prediction regression cases. Gate-only cases removed; fixed report, exact optimum scope, simulations and NA values retained. Gap V1 adds an exact all-right event and union lower bound without changing the original cases.",
+  "cases": [
+    {
+      "id": "question-setting",
+      "about": "the widget defaults, the question's setting: report 1/2/3/3/4/5 of the six sites, all reports, tau = .20, no draws; the badge applies (exact optimum within A_6, which includes the all-withheld report)",
+      "query": "",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "directions stated, N",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.20",
+            "field": "N"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "about": "all pairs, M",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.20",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "expected wrong directions, E",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.20",
+            "field": "Ew"
+          },
+          "value": 0.35757634126134
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "expected share wrong, E/N",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.20",
+            "field": "EoverN.0"
+          },
+          "value": 0.0255411672329528
+        },
+        {
+          "select": "[data-prx-readout=\"boundE\"]",
+          "about": "E in the bound line (registry)",
+          "source": "registry",
+          "ref": "six.A.all.tau20.E",
+          "value": 0.3575763412613397
+        },
+        {
+          "select": "[data-prx-readout=\"tauN\"]",
+          "about": "tau N = .20 x 14 (registry; budgetCheck q N)",
+          "source": "registry",
+          "ref": "six.A.all.tau20.tauN",
+          "value": 2.8
+        },
+        {
+          "select": "[data-prx-readout=\"boundEN\"]",
+          "about": "E/N in the bound line",
+          "source": "registry",
+          "ref": "six.A.all.tau20.EoverN",
+          "value": 0.025541167232952838
+        },
+        {
+          "select": "[data-prx-readout=\"maxStated\"]",
+          "about": "the largest stated error, A above B",
+          "source": "registry",
+          "ref": "g05.six.r123345.tau20.maxstated",
+          "value": 0.188379558905791
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau beside E/N",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "the exact optimum within A_6 at tau .20",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "select": "[data-prx-bound] [data-prx-family-size]",
+          "about": "size of A_6 shown with the bound's label",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "about": "the bound is shown: the report is the exact optimum of the family shown, a family with the all-withheld report",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "applies",
+          "attr": "data-prx-bound"
+        },
+        {
+          "select": "[data-prx-bound] [data-prx-label]",
+          "kind": "text",
+          "about": "the bound's label from the engine return value, the family by its symbol",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "best of all 4,683 reports"
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "about": "the read-outs evaluate the report shown",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        }
+      ]
+    },
+    {
+      "id": "preset-optimum-draws",
+      "about": "deck preset: 100 draws with seed 1; the average, its share, the count in draw 100 (registry keys from gaussianDraws, drawErrors, evaluateReport and realizedWrong); E and N from the base-R evaluation",
+      "preset": "optimum-draws",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"S\"]",
+          "about": "draws so far, S",
+          "source": "registry",
+          "ref": "settings.S100",
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"mean\"]",
+          "about": "average wrong stated directions over the 100 draws",
+          "source": "registry",
+          "ref": "g05.six.r123345.mc.seed1.S100.mean",
+          "value": 0.36
+        },
+        {
+          "select": "[data-prx-readout=\"meanShare\"]",
+          "about": "the average divided by N = 14",
+          "source": "registry",
+          "ref": "g05.six.r123345.mc.seed1.S100.share",
+          "value": 0.025714285714285714
+        },
+        {
+          "select": "[data-prx-readout=\"last\"]",
+          "about": "wrong stated directions in draw 100",
+          "source": "registry",
+          "ref": "g05.six.r123345.mc.seed1.S100.last",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"drawIndex\"]",
+          "about": "the draw shown is the last one",
+          "source": "registry",
+          "ref": "settings.S100",
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "E beside the draws",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.20",
+            "field": "Ew"
+          },
+          "value": 0.35757634126134
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"]",
+          "kind": "text",
+          "about": "the Monte Carlo caption in its screen form; check_states checks the slots against the exposed result",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "Monte Carlo, \u27e8S\u27e9 draws, seed \u27e8seed\u27e9",
+          "slots": true
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 0,
+          "about": "caption slot S",
+          "source": "registry",
+          "ref": "settings.S100",
+          "value": 100
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 1,
+          "about": "caption slot seed",
+          "source": "registry",
+          "ref": "settings.seed.s1",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "about": "the bound still applies at the question's setting",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "applies",
+          "attr": "data-prx-bound"
+        },
+        {
+          "select": "[data-prx-readout=\"mean\"]",
+          "about": "average wrong count over the 100 draws of seed 1 (base-R evaluation under the draws' empirical law)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-draws-S100-seed1-tau.2-r123345",
+            "field": "Ew"
+          },
+          "value": 0.36
+        },
+        {
+          "select": "[data-prx-readout=\"meanShare\"]",
+          "about": "that average divided by N = 14 (base-R)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-draws-S100-seed1-tau.2-r123345",
+            "field": "EoverN.0"
+          },
+          "value": 0.0257142857142857
+        },
+        {
+          "select": "[data-prx-readout=\"last\"]",
+          "about": "wrong stated directions in draw 100 of seed 1 (base-R realizedWrong)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "realizedWrong-six-S100-seed1-draw100-r123345",
+            "field": "D.0"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"lastShare\"]",
+          "about": "its share of the 14 stated directions (base-R realizedWrong)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "realizedWrong-six-S100-seed1-draw100-r123345",
+            "field": "DoverN.0"
+          },
+          "value": 0.0714285714285714
+        }
+      ]
+    },
+    {
+      "id": "preset-all-withheld",
+      "about": "all-withheld preset: N = 0, so E/N, the share in the last draw, the average share and the bound line's E/N all read NA: no disclosure, never 0 (CONTRACT 3.5, 5; the vocabulary rule flags 'E/N = 0'); the report is not the optimum within A_6, so no bound",
+      "preset": "all-withheld",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "nothing is stated",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-tau.2-all_withheld",
+            "field": "N"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "E = 0",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-tau.2-all_withheld",
+            "field": "Ew"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N: NA: no disclosure",
+          "source": "registry",
+          "ref": "six.A.r111111.tau20.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"boundEN\"]",
+          "about": "E/N beside tau (postrank 1.1.0: NA)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-all_withheld",
+            "field": "EoverN.0"
+          },
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"lastShare\"]",
+          "about": "share wrong in the last draw: NA: no disclosure",
+          "source": "registry",
+          "ref": "six.A.r111111.tau20.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"meanShare\"]",
+          "about": "average share over the draws: NA: no disclosure",
+          "source": "registry",
+          "ref": "six.A.r111111.tau20.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "about": "no bound for a report that is not the exact optimum of the family shown",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "not-shown",
+          "attr": "data-prx-bound"
+        },
+        {
+          "select": ".prx-de-tile-note",
+          "kind": "text",
+          "about": "the NA tile names N/M = 0 (theory book ch. 16)",
+          "source": "literal",
+          "ref": "3.5",
+          "value": "(N/M = \u27e8s\u27e9: none of the pairs is stated)",
+          "slots": true
+        },
+        {
+          "select": ".prx-de-tile-note .prx-num",
+          "about": "N/M = 0",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-tau.2-all_withheld",
+            "field": "s"
+          },
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "preset-finite-112",
+      "about": "three-unit law preset: report 1/1/2, one of the two exact optima within A_3 at tau .20; E = 7/20, E/N = 7/40, tau N = 2/5 and the stated error 1/4 above tau (theory book ch. 10)",
+      "preset": "finite-112",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "E = 7/20",
+          "source": "registry",
+          "ref": "tb10.law3.tau20.r112.E",
+          "value": 0.35
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N = 7/40",
+          "source": "registry",
+          "ref": "tb10.law3.tau20.r112.EoverN",
+          "value": 0.175
+        },
+        {
+          "select": "[data-prx-readout=\"tauN\"]",
+          "about": "tau N = 2/5",
+          "source": "registry",
+          "ref": "g05.law3.r112.tau20.tauN",
+          "value": 0.4
+        },
+        {
+          "select": "[data-prx-readout=\"maxStated\"]",
+          "about": "B above C: error 1/4, above tau",
+          "source": "registry",
+          "ref": "tb10.law3.tau20.maxstated",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-bound] [data-prx-family-size]",
+          "about": "the 13 reports of A_3",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "familySize"
+          },
+          "value": 13
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "first optimum",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "grades.0"
+          },
+          "value": [
+            1,
+            1,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"optimum1\"]",
+          "about": "second optimum",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-tb10-all-tau1/5",
+            "field": "grades.1"
+          },
+          "value": [
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "about": "the bound applies",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "applies",
+          "attr": "data-prx-bound"
+        },
+        {
+          "select": "[data-prx-bound] [data-prx-label]",
+          "kind": "text",
+          "about": "the label names A_3",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "best of all 13 reports"
+        },
+        {
+          "select": "[data-prx-readout=\"order3.wrong\"]",
+          "about": "order CBA makes both stated directions wrong",
+          "source": "registry",
+          "ref": "g05.law3.r112.CBA.wrong",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"order1.wrong\"]",
+          "about": "order ACB makes B above C wrong",
+          "source": "registry",
+          "ref": "g05.law3.r112.ACB.wrong",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "seed424242-five",
+      "about": "five draws with seed 424242: the drawn values of draw 5 against the base-R draws (oracle-stream gaussianDraws-six-scoreA-sd.2-S5-seed424242); the counts from registry keys (by hand from the base-R values: 1, 1, 1, 2, 1 wrong, average 1.2)",
+      "query": "?seed=424242&draws=5",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"theta.A\"]",
+          "about": "draw 5, site A",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.0.0"
+          },
+          "value": 0.959724889589758
+        },
+        {
+          "select": "[data-prx-readout=\"theta.B\"]",
+          "about": "draw 5, site B",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.1.0"
+          },
+          "value": 1.03248921176983
+        },
+        {
+          "select": "[data-prx-readout=\"theta.C\"]",
+          "about": "draw 5, site C",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.2.0"
+          },
+          "value": 0.498897379220774
+        },
+        {
+          "select": "[data-prx-readout=\"theta.D\"]",
+          "about": "draw 5, site D",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.3.0"
+          },
+          "value": 0.217308917776297
+        },
+        {
+          "select": "[data-prx-readout=\"theta.E\"]",
+          "about": "draw 5, site E",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.4.0"
+          },
+          "value": -0.522342782799832
+        },
+        {
+          "select": "[data-prx-readout=\"theta.F\"]",
+          "about": "draw 5, site F",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.5.0"
+          },
+          "value": -1.04686480855855
+        },
+        {
+          "select": "[data-prx-readout=\"mean\"]",
+          "about": "average over the five draws",
+          "source": "registry",
+          "ref": "g05.six.r123345.mc.seed424242.S5.mean",
+          "value": 1.2000000000000002
+        },
+        {
+          "select": "[data-prx-readout=\"last\"]",
+          "about": "wrong in draw 5 (A above B)",
+          "source": "registry",
+          "ref": "g05.six.r123345.mc.seed424242.S5.last",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"lastShare\"]",
+          "about": "its share of the 14 stated directions",
+          "source": "registry",
+          "ref": "g05.six.r123345.mc.seed424242.S5.lastshare",
+          "value": 0.07142857142857142
+        }
+      ]
+    },
+    {
+      "id": "capped-optimum-cap3",
+      "about": "the capped optimum 1/1/2/2/3/3 with the family A_<=3 shown: the bound applies (exact optimum within A_<=3, which includes the all-withheld report)",
+      "query": "?grades=1,1,2,2,3,3&cap=3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "E (postrank 1.1.0)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112233",
+            "field": "Ew"
+          },
+          "value": 0.0247745991823067
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N (postrank 1.1.0)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112233",
+            "field": "EoverN.0"
+          },
+          "value": 0.00206454993185889
+        },
+        {
+          "select": "[data-prx-readout=\"tauN\"]",
+          "about": "tau N = .20 x 12",
+          "source": "registry",
+          "ref": "g05.six.r112233.tau20.tauN",
+          "value": 2.4000000000000004
+        },
+        {
+          "select": "[data-prx-readout=\"maxStated\"]",
+          "about": "the largest stated error, D above E",
+          "source": "registry",
+          "ref": "g05.six.r112233.tau20.maxstated",
+          "value": 0.0107781333800082
+        },
+        {
+          "select": "[data-prx-bound] [data-prx-family-size]",
+          "about": "the 603 reports of A_<=3",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603
+        },
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "about": "the bound applies within A_<=3",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "applies",
+          "attr": "data-prx-bound"
+        },
+        {
+          "select": "[data-prx-bound] [data-prx-label]",
+          "kind": "text",
+          "about": "the label names A_<=3",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "best of the 603 reports with at most 3 grades"
+        }
+      ]
+    },
+    {
+      "id": "capped-optimum-all",
+      "about": "the same report with A_6 shown: not the exact optimum within A_6, so E/N and tau side by side, no bound",
+      "query": "?grades=1,1,2,2,3,3&cap=none",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"boundEN\"]",
+          "about": "E/N beside tau",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-cap3-tau.20",
+            "field": "EoverN.0"
+          },
+          "value": 0.00206454993185889
+        },
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "about": "no bound",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "not-shown",
+          "attr": "data-prx-bound"
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "the best report of A_6 is shown instead",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "strict-order",
+      "about": "the strict order: E/N below tau but not the optimum of the family shown, so no bound; it states C above D, whose error is above tau Its risk is below tau, so the widget says that E <= tau N holds for this report without calling it a bound.",
+      "query": "?grades=1,2,3,4,5,6",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "about": "E of the strict order",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-tau.2-strict",
+            "field": "Ew"
+          },
+          "value": 0.719413146177222
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N of the strict order",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-tau.2-strict",
+            "field": "EoverN.0"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-readout=\"boundEN\"]",
+          "about": "E/N beside tau",
+          "source": "registry",
+          "ref": "six.A.r123456.tau20.EoverN",
+          "value": 0.04796087641181478
+        },
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "about": "no bound",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "not-shown",
+          "attr": "data-prx-bound"
+        },
+        {
+          "select": "[data-prx-readout=\"ownRisk\"]",
+          "about": "risk of the strict order at tau .20 (base-R evaluation)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-tau.2-strict",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
+        },
+        {
+          "select": "[data-prx-own]",
+          "kind": "text",
+          "attr": "data-prx-own",
+          "about": "risk <= tau: E <= tau N holds for this report",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "holds"
+        }
+      ]
+    },
+    {
+      "id": "c-on-top-fails-baseline",
+      "about": "A fixed report whose risk exceeds withholding all pairs.",
+      "query": "?grades=2,2,1,2,2,2",
+      "expect": [
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "attr": "data-prx-bound",
+          "about": "no bound for a report that is not the optimum",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "not-shown"
+        },
+        {
+          "select": "[data-prx-own]",
+          "kind": "text",
+          "attr": "data-prx-own",
+          "about": "risk > tau: E > tau N",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "fails"
+        }
+      ]
+    },
+    {
+      "id": "finite-all-withheld-tau05",
+      "about": "the law's all-withheld report at tau = .05, where it is the exact optimum within A_3: the bound applies with N = 0, and E/N reads NA: no disclosure in every place",
+      "query": "?law=finite&grades=1,1,1&tau=.05&draws=3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N: NA: no disclosure",
+          "source": "registry",
+          "ref": "g05.law3.r111.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"boundEN\"]",
+          "about": "the bound line's E/N: NA: no disclosure",
+          "source": "registry",
+          "ref": "g05.law3.r111.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"lastShare\"]",
+          "about": "share in the last draw: NA",
+          "source": "registry",
+          "ref": "g05.law3.r111.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"meanShare\"]",
+          "about": "average share: NA",
+          "source": "registry",
+          "ref": "g05.law3.r111.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau .05",
+          "source": "registry",
+          "ref": "settings.tau05",
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "about": "the all-withheld report is the exact optimum here, so the bound applies (0 <= 0)",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "applies",
+          "attr": "data-prx-bound"
+        }
+      ]
+    },
+    {
+      "id": "clamped",
+      "about": "Query labels longer than six are cut; a different specification ensures ignoring the query would fail the N expectation.",
+      "query": "?tau=.90&grades=1,2,3,3,4,5,6,7",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau clamped to .50",
+          "source": "registry",
+          "ref": "settings.tau50",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "the seventh and eighth labels are cut",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.20",
+            "field": "N"
+          },
+          "value": 14
+        }
+      ],
+      "spec": {
+        "grades": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "no-disclosure-fresh-values-at-mount",
+      "about": "A zero-disclosure report retains fresh drawn values and NA shares; stale-strip regression.",
+      "query": "?seed=424242&draws=5&grades=1,1,1,1,1,1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"theta.A\"]",
+          "about": "draw 5, site A",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.0.0"
+          },
+          "value": 0.959724889589758
+        },
+        {
+          "select": "[data-prx-readout=\"theta.B\"]",
+          "about": "draw 5, site B",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.1.0"
+          },
+          "value": 1.03248921176983
+        },
+        {
+          "select": "[data-prx-readout=\"theta.C\"]",
+          "about": "draw 5, site C",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.2.0"
+          },
+          "value": 0.498897379220774
+        },
+        {
+          "select": "[data-prx-readout=\"theta.D\"]",
+          "about": "draw 5, site D",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.3.0"
+          },
+          "value": 0.217308917776297
+        },
+        {
+          "select": "[data-prx-readout=\"theta.E\"]",
+          "about": "draw 5, site E",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.4.0"
+          },
+          "value": -0.522342782799832
+        },
+        {
+          "select": "[data-prx-readout=\"theta.F\"]",
+          "about": "draw 5, site F",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.5.0"
+          },
+          "value": -1.04686480855855
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N: NA: no disclosure",
+          "source": "registry",
+          "ref": "six.A.r111111.tau20.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"lastShare\"]",
+          "about": "share wrong in the last draw: NA: no disclosure",
+          "source": "registry",
+          "ref": "six.A.r111111.tau20.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"meanShare\"]",
+          "about": "average share over the draws: NA: no disclosure",
+          "source": "registry",
+          "ref": "six.A.r111111.tau20.EoverN",
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "no-disclosure-fresh-values-after-update",
+      "about": "A zero-disclosure report retains fresh drawn values and NA shares; stale-strip regression.",
+      "query": "?seed=424242&draws=5",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"theta.A\"]",
+          "about": "draw 5, site A",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.0.0"
+          },
+          "value": 0.959724889589758
+        },
+        {
+          "select": "[data-prx-readout=\"theta.B\"]",
+          "about": "draw 5, site B",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.1.0"
+          },
+          "value": 1.03248921176983
+        },
+        {
+          "select": "[data-prx-readout=\"theta.C\"]",
+          "about": "draw 5, site C",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.2.0"
+          },
+          "value": 0.498897379220774
+        },
+        {
+          "select": "[data-prx-readout=\"theta.D\"]",
+          "about": "draw 5, site D",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.3.0"
+          },
+          "value": 0.217308917776297
+        },
+        {
+          "select": "[data-prx-readout=\"theta.E\"]",
+          "about": "draw 5, site E",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.4.0"
+          },
+          "value": -0.522342782799832
+        },
+        {
+          "select": "[data-prx-readout=\"theta.F\"]",
+          "about": "draw 5, site F",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-stream",
+            "row": "gaussianDraws-six-scoreA-sd.2-S5-seed424242",
+            "field": "draws.4.5.0"
+          },
+          "value": -1.04686480855855
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N: NA: no disclosure",
+          "source": "registry",
+          "ref": "six.A.r111111.tau20.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"lastShare\"]",
+          "about": "share wrong in the last draw: NA: no disclosure",
+          "source": "registry",
+          "ref": "six.A.r111111.tau20.EoverN",
+          "value": null
+        },
+        {
+          "select": "[data-prx-readout=\"meanShare\"]",
+          "about": "average share over the draws: NA: no disclosure",
+          "source": "registry",
+          "ref": "six.A.r111111.tau20.EoverN",
+          "value": null
+        }
+      ],
+      "update": [
+        {
+          "grades": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "finite-joint-event",
+      "query": "?law=finite&grades=1,1,2&coupling=0&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "wrongCountDistribution-tb10-report112",
+            "field": "pNone"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "wrongCountDistribution-tb10-report112",
+            "field": "unionBound"
+          },
+          "value": 0.65,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-g112",
+      "query": "?law=finite&grades=1,1,2&coupling=0&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g112",
+            "field": "N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g112",
+            "field": "E"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g112",
+            "field": "EoverN"
+          },
+          "value": 0.175,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g112",
+            "field": "pNone"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g112",
+            "field": "unionBound"
+          },
+          "value": 0.65,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g112",
+            "field": "pairErrors.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g112",
+            "field": "pairErrors.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.BC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g112",
+            "field": "pairErrors.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-g123",
+      "query": "?law=finite&grades=1,2,3&coupling=0&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g123",
+            "field": "N"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g123",
+            "field": "E"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g123",
+            "field": "EoverN"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g123",
+            "field": "pNone"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g123",
+            "field": "unionBound"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g123",
+            "field": "pairErrors.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g123",
+            "field": "pairErrors.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.BC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g123",
+            "field": "pairErrors.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-g111",
+      "query": "?law=finite&grades=1,1,1&coupling=0&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g111",
+            "field": "N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g111",
+            "field": "E"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g111",
+            "field": "EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g111",
+            "field": "pNone"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g111",
+            "field": "unionBound"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g111",
+            "field": "pairErrors.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g111",
+            "field": "pairErrors.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.BC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g111",
+            "field": "pairErrors.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"diagnosticRisk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r111",
+            "field": "risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"diagnosticE\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0-g111",
+            "field": "E"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-05-g112",
+      "query": "?law=finite&grades=1,1,2&coupling=0.05&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g112",
+            "field": "N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g112",
+            "field": "E"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g112",
+            "field": "EoverN"
+          },
+          "value": 0.175,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g112",
+            "field": "pNone"
+          },
+          "value": 0.7,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g112",
+            "field": "unionBound"
+          },
+          "value": 0.65,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g112",
+            "field": "pairErrors.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g112",
+            "field": "pairErrors.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.BC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g112",
+            "field": "pairErrors.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-05-g123",
+      "query": "?law=finite&grades=1,2,3&coupling=0.05&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g123",
+            "field": "N"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g123",
+            "field": "E"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g123",
+            "field": "EoverN"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g123",
+            "field": "pNone"
+          },
+          "value": 0.55,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g123",
+            "field": "unionBound"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g123",
+            "field": "pairErrors.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g123",
+            "field": "pairErrors.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.BC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g123",
+            "field": "pairErrors.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-05-g111",
+      "query": "?law=finite&grades=1,1,1&coupling=0.05&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g111",
+            "field": "N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g111",
+            "field": "E"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g111",
+            "field": "EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g111",
+            "field": "pNone"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g111",
+            "field": "unionBound"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g111",
+            "field": "pairErrors.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g111",
+            "field": "pairErrors.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.BC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g111",
+            "field": "pairErrors.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"diagnosticRisk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r111",
+            "field": "risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"diagnosticE\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.05-g111",
+            "field": "E"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-1-g112",
+      "query": "?law=finite&grades=1,1,2&coupling=0.1&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112",
+            "field": "N"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112",
+            "field": "E"
+          },
+          "value": 0.35,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112",
+            "field": "EoverN"
+          },
+          "value": 0.175,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112",
+            "field": "pNone"
+          },
+          "value": 0.65,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112",
+            "field": "unionBound"
+          },
+          "value": 0.65,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112",
+            "field": "pairErrors.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112",
+            "field": "pairErrors.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.BC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112",
+            "field": "pairErrors.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-1-g123",
+      "query": "?law=finite&grades=1,2,3&coupling=0.1&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g123",
+            "field": "N"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g123",
+            "field": "E"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g123",
+            "field": "EoverN"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g123",
+            "field": "pNone"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g123",
+            "field": "unionBound"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g123",
+            "field": "pairErrors.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g123",
+            "field": "pairErrors.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.BC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g123",
+            "field": "pairErrors.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-1-g111",
+      "query": "?law=finite&grades=1,1,1&coupling=0.1&draws=0&tau=.2",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g111",
+            "field": "N"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g111",
+            "field": "E"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g111",
+            "field": "EoverN"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"allRight\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g111",
+            "field": "pNone"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"unionLower\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g111",
+            "field": "unionBound"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AB\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g111",
+            "field": "pairErrors.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.AC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g111",
+            "field": "pairErrors.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"pairError.BC\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g111",
+            "field": "pairErrors.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"diagnosticRisk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-tb10-law3-tau.2-r111",
+            "field": "risk"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRational"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"diagnosticE\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g111",
+            "field": "E"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRational"
+          }
+        }
+      ]
+    },
+    {
+      "id": "coupling-u0-1-g112-s100-seed1",
+      "preset": "finite-coupled",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"zeroFrequency\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112-S100-seed1",
+            "field": "pNone"
+          },
+          "value": 0.65,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"last\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "coupling-u0.1-g112-S100-seed1",
+            "field": "wrongCounts.99"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    }
+  ],
+  "app": "disclosed-errors",
+  "from": "postrank-explorer-v1 verification/readouts/disclosed-errors.json"
+}

@@ -1,0 +1,92 @@
+{
+  "id": "1.6",
+  "name": "shrinkage-price",
+  "part": "1",
+  "title": "How much to shrink",
+  "idea": "The prior SD is set or estimated by the producer: over many draws the distance to the true values is smallest near the true spread (prior centered on their average), and the pair probabilities postrank reads move with it.",
+  "status": "built",
+  "from": "new angle · builds on v1 L-04 view 2; adds curves over the whole prior-SD range: the distance to the true values (with its closed-form expectation) and what postrank reads from the posterior, its pair probabilities (how many directions are near certain); the report and the share it claims are 2.9's",
+  "data": [
+    "engine"
+  ],
+  "credit": "Built for this site; normal-normal shrinkage after Walters, Mixtape slides p. 27; a producer's hyperparameters and a fixed-parameter experiment, after the postrank theory book, ch. 18.",
+  "caption": "a posterior set by hand for teaching; postrank does not fit it. In plain words: this prior was chosen for teaching, and this browser computes the posterior from it.",
+  "presets": [
+    {
+      "id": "spread",
+      "label": "Near the true spread",
+      "query": "priorSd=.15&seed=20261030"
+    },
+    {
+      "id": "much-too-narrow",
+      "label": "Much too narrow",
+      "query": "priorSd=.02&seed=20261030"
+    },
+    {
+      "id": "too-narrow",
+      "label": "Too narrow",
+      "query": "priorSd=.05&seed=20261030"
+    },
+    {
+      "id": "too-wide",
+      "label": "Too wide",
+      "query": "priorSd=.45&seed=20261030"
+    },
+    {
+      "id": "another-draw",
+      "label": "Another draw",
+      "query": "priorSd=.15&seed=20261031"
+    }
+  ],
+  "try": [
+    {
+      "preset": "spread",
+      "shows": [
+        ".0096",
+        ".0163",
+        ".0075",
+        ".146",
+        ".149"
+      ]
+    },
+    {
+      "preset": "much-too-narrow",
+      "shows": [
+        ".0197",
+        ".0163",
+        ".0191",
+        ".0175",
+        "6 of the 435 pairs"
+      ]
+    },
+    {
+      "preset": "too-narrow",
+      "shows": [
+        "87.45",
+        "88.12",
+        "80.66",
+        "17"
+      ]
+    },
+    {
+      "preset": "too-wide",
+      "shows": [
+        ".0133",
+        "159",
+        "66",
+        "13",
+        ".23"
+      ]
+    },
+    {
+      "preset": "another-draw",
+      "shows": [
+        "20261031",
+        ".12",
+        ".0092",
+        ".15",
+        ".0075"
+      ]
+    }
+  ]
+}

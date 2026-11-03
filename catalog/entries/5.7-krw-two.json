@@ -1,0 +1,52 @@
+{
+  "id": "5.7",
+  "name": "krw-two",
+  "part": "5",
+  "title": "Race and gender: one common grade",
+  "idea": "At the default loss, a common grade beats withholding every pair while each fixed KRW card does so only when its own gap receives enough weight.",
+  "status": "built",
+  "from": "v2 refill · v2 krw-two rebuilt from v1 storyboard S-03",
+  "data": [
+    "data/released/case-krw.json",
+    "data/released/krw-absolute-gender.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024); archived common report at original settings from postrank 1.1.0 (case_krw_signed97, optimal within solver tolerances); live searches are within the recomputed weighted expected-rank order.",
+  "caption": "97 firms of Kline, Rose and Walters (2024). Default live search: τ = .25, at most 4 grades. The data describe KRW's experiment, not any firm's current conduct.",
+  "presets": [
+    {
+      "id": "w50",
+      "label": "Equal weights",
+      "query": "w=.5"
+    },
+    {
+      "id": "w80",
+      "label": "Race .80",
+      "query": "w=.8"
+    },
+    {
+      "id": "w20",
+      "label": "Gender .80",
+      "query": "w=.2"
+    }
+  ],
+  "try": [
+    {
+      "preset": "w50",
+      "shows": [
+        ".2455"
+      ]
+    },
+    {
+      "preset": "w80",
+      "shows": [
+        ".69"
+      ]
+    },
+    {
+      "preset": "w20",
+      "shows": [
+        ".29"
+      ]
+    }
+  ]
+}

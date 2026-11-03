@@ -1,0 +1,355 @@
+/*
+ * postrank Explorer · design tokens
+ *
+ * One source for every colour a page, widget, embed, catalog card or deck uses (CONTRACT 11).
+ * Validate after any change:   node scripts/validate_palette.mjs
+ *
+ * Families
+ *   chrome   page and control colours: postrank pkgdown ivory #fdfbf6, teal #17645E, link #3c6657.
+ *            A skin may change these and only these.
+ *   figure   the plot panel and its ink (panel, axis, grid, cell outline, hatch, label inks, focus).
+ *   data     colours that carry a meaning (table below). Data marks are theme-invariant: they keep
+ *            the postrank package values in every theme and skin, so a widget and the figure a
+ *            learner makes in R read alike.
+ *   formula  text forms of data colours for \class{prx-…}{…} in formulas (CONTRACT 4.4). Each is
+ *            the same hue as its mark, adjusted per theme to reach text contrast.
+ *
+ * Theme and skin selection (attributes on <html>; embeds map ?theme= and ?skin= to them)
+ *   default                      light tokens
+ *   OS dark mode                 dark tokens, unless <html data-theme="light">
+ *   <html data-theme="dark">     dark tokens regardless of the OS
+ *   <html data-skin="jhl">       jhl seminar chrome (teal and coral) over either theme
+ * Site pages are light; they set data-theme="light" so an OS in dark mode never paints a dark
+ * widget on a light page. Each dark block appears twice (media query and [data-theme="dark"]);
+ * the validator requires the two copies to be identical.
+ *
+ * Dark theme and the plot panel
+ *   The grade ramp and the relation colours are designed for a light panel (the package draws
+ *   figures on white for this reason; see theme_postrank()). In the dark theme the chrome turns
+ *   dark and the plot panel (--prx-plot-bg) stays a dimmed paper, so every data colour keeps its
+ *   meaning and its validated contrast. Data marks, legends and direct labels are drawn inside
+ *   the plot panel; SVG text uses --prx-plot-fg / --prx-plot-muted, never --prx-fg.
+ *
+ * Colour meanings (one colour, one meaning inside a widget; CONTRACT 11.2)
+ *   --prx-est        vermillion #D55E00   a raw estimate (Part 1; Part 3 case pages)
+ *   --prx-post       navy #1f3a5f         a posterior summary (Part 1)
+ *   --prx-rel-above  #0072B2              the row unit is disclosed above the column unit
+ *   --prx-rel-withheld grey80 #cccccc     the pair is withheld
+ *   --prx-rel-below  #E69F00              the row unit is disclosed below the column unit
+ *   --prx-err        vermillion #D55E00   the error term E/M (Part 2 onward, where no raw estimate is drawn)
+ *   --prx-wh         grey #6b6b6b         the withholding term τ(M−N)/M (the withheld colour at text contrast)
+ *   --prx-blues-1…7  Blues               Pr(row truly higher), π; legend title "Pr(row truly higher)"
+ *   --prx-purples-1…7 Purples            Pr(stating row above column is wrong), e; legend title
+ *                                        "Pr(stating row above column is wrong)"
+ *   --prx-neutral-1…7 Greys              the probability layer of a staged view once relation colours appear
+ *   --prx-grade-1…8  #153653 → #4F879E    grade 1 … grade G (grade 1 = highest priority)
+ *   --prx-crit-1…3   #009E73 #CC79A7 #8C564B   criteria k = 1, 2, 3
+ *   --prx-chg-*      package change palette   a pair's relation changed between two reports
+ * Formula text forms (.prx-est, .prx-err, .prx-post, .prx-wh): vermillion #b04800 light / #ff8f4a dark
+ * (#D55E00 itself is 3.74:1 on ivory, below text contrast), navy #1f3a5f / #a9c1e0, grey #6b6b6b / #a3a3a3.
+ *
+ * Grades. --prx-grade-1…8 are postrank_palette(8). A view with G < 8 grades interpolates its own
+ * G colours between --prx-grade-1 and --prx-grade-8 with the package rule
+ * channel = floor(a + (b − a)·(g − 1)/(G − 1) + 0.5) in sRGB 0–255 (G = 1 uses --prx-grade-1);
+ * the validator checks that rule for G = 1…64.
+ *
+ * Roles. Every token's comment starts with its role in brackets; the validator reads the role:
+ *   [surface]           chrome background; text is checked against every chrome surface
+ *   [text]              chrome text, ≥ 4.5:1 on every chrome surface
+ *   [text-on --prx-x]   text drawn on the fill --prx-x, ≥ 4.5:1 on it
+ *   [ui]                control boundary, accent or focus ring, ≥ 3:1 on every chrome surface
+ *   [deco]              decorative hairline, not needed to use the page (WCAG 1.4.11 exempt)
+ *   [plot-surface]      the plot panel
+ *   [plot-text]         text inside the plot panel, ≥ 4.5:1 on the panel
+ *   [plot-ui]           axis, cell outline, hatch or focus ink inside the panel, ≥ 3:1 on it
+ *   [plot-deco]         grid line, not needed to read the figure (exempt)
+ *   [label]             ink for direct labels on data fills (the better of the two is used)
+ *   [halo]              inner ring of the two-tone plot focus ring
+ *   [mark]              data colour, ≥ 3:1 on the panel or covered by a declared supplement
+ *   [data-text]         formula colour, ≥ 4.5:1 on every chrome surface
+ *   [font] [size]       non-colour tokens (not colour-checked)
+ */
+
+/*
+ * Validator declarations (one per line; read by scripts/validate_palette.mjs)
+ *
+ * Categorical sets: every pair must stay apart under normal vision and simulated CVD.
+ * @set relation: --prx-rel-above, --prx-rel-withheld, --prx-rel-below
+ * @set criteria: --prx-crit-1, --prx-crit-2, --prx-crit-3
+ * @set part1: --prx-est, --prx-post
+ * @set risk: --prx-err, --prx-wh
+ * @set change: --prx-chg-unchanged, --prx-chg-disclosed, --prx-chg-withheld, --prx-chg-reversed
+ * @set risk-text: --prx-err-text, --prx-wh-text
+ * @set part1-text: --prx-est-text, --prx-post-text
+ *
+ * Sequential ramps: "down" = lightness falls with the step number, "up" = it rises.
+ * @ramp blues down: --prx-blues-1, --prx-blues-2, --prx-blues-3, --prx-blues-4, --prx-blues-5, --prx-blues-6, --prx-blues-7
+ * @ramp purples down: --prx-purples-1, --prx-purples-2, --prx-purples-3, --prx-purples-4, --prx-purples-5, --prx-purples-6, --prx-purples-7
+ * @ramp neutral down: --prx-neutral-1, --prx-neutral-2, --prx-neutral-3, --prx-neutral-4, --prx-neutral-5, --prx-neutral-6, --prx-neutral-7
+ * @ramp grade up: --prx-grade-1, --prx-grade-2, --prx-grade-3, --prx-grade-4, --prx-grade-5, --prx-grade-6, --prx-grade-7, --prx-grade-8
+ *
+ * Supplements: a data colour below 3:1 on the panel (or a ramp whose neighbouring steps are close)
+ * is legal only with a non-colour channel. Kinds: border (1px --prx-cell-border outline), pattern
+ * (45° hatch in --prx-hatch), label (direct label in the better label ink), linetype (solid,
+ * dashed, dotted, with point shapes).
+ * @supplement --prx-rel-withheld: pattern, border — withheld cells are hatched and outlined, so they never read as a light probability step
+ * @supplement --prx-rel-below: border, label — #E69F00 is 2.25:1 on white; below cells are outlined and carry their direction label
+ * @supplement --prx-chg-unchanged: border, label — unchanged cells are outlined and labelled
+ * @supplement --prx-chg-withheld: border, label — newly withheld cells are outlined and labelled
+ * @supplement blues: border, label — every matrix cell has an outline and its value as a direct label (CONTRACT 11.2)
+ * @supplement purples: border, label — every matrix cell has an outline and its value as a direct label (CONTRACT 11.2)
+ * @supplement neutral: border, label — every matrix cell has an outline and its value as a direct label (CONTRACT 11.2)
+ * @supplement grade: label — neighbouring grades differ little in lightness; every grade mark or band carries its grade number
+ * @supplement criteria: linetype, label — criterion lines are solid, dashed, dotted (k = 1, 2, 3) and labelled at the line end
+ *
+ * One colour, one meaning: colours with different meanings that are close (normal ΔE < 15 or CVD
+ * ΔE < 8) are either never in one widget (@exclusive) or kept apart by a named channel (@separated).
+ * @exclusive part1 | risk — a raw estimate and the error term are never drawn in one widget (CONTRACT 11 colour table)
+ * @exclusive part1 | change — change views draw no raw estimate or posterior summary
+ * @exclusive risk | change — change views draw no risk split
+ * @exclusive relation | change — a change view replaces the relation view
+ * @exclusive relation | blues — once relation colours appear the probability layer switches to the neutral ramp (CONTRACT 11.2)
+ * @exclusive relation | purples — once relation colours appear the probability layer switches to the neutral ramp (CONTRACT 11.2)
+ * @exclusive change | blues — a change view shows no probability layer
+ * @exclusive change | purples — a change view shows no probability layer
+ * @exclusive change | neutral — a change view shows no probability layer
+ * @exclusive change | grade — a change view compares relations, not grade colours
+ * @exclusive part1 | neutral — the neutral ramp belongs to staged relation views (Part 2 onward)
+ * @exclusive criteria | change — change views are drawn for one criterion at a time
+ * @separated relation | neutral by label — neutral cells show their probability value, relation cells their direction; withheld cells are also hatched
+ * @separated risk | neutral by marktype — G-03: the risk split is a labelled bar beside the staged matrix; the withholding bar (#6b6b6b) and neutral step 5 (#737373) are nearly the same grey, so the bar always carries its label
+ * @separated relation | risk by marktype — relation colours fill matrix cells; the risk split is a labelled bar
+ * @separated relation | grade by marktype — relation colours fill matrix cells; grades colour unit marks and bands with grade numbers
+ * @separated blues | purples by panel — π and e sit in separate matrices, each with its legend title
+ * @separated blues | neutral by panel — a staged view shows one probability layer at a time
+ * @separated purples | neutral by panel — a staged view shows one probability layer at a time
+ * @separated blues | grade by marktype — matrix cells against grade-coloured unit marks with grade numbers
+ * @separated purples | grade by marktype — matrix cells against grade-coloured unit marks with grade numbers
+ * @separated neutral | grade by marktype — matrix cells against grade-coloured unit marks with grade numbers
+ * @separated part1 | grade by marktype — L-01: posterior means and intervals are navy points and lines over grade bands that carry grade numbers
+ * @separated part1 | blues by marktype — estimates and posteriors are points and intervals; π is a matrix
+ * @separated part1 | purples by marktype — estimates and posteriors are points and intervals; e is a matrix
+ * @separated risk | blues by marktype — the risk split is a labelled bar; π is a matrix
+ * @separated risk | purples by marktype — the risk split is a labelled bar; e is a matrix
+ * @separated risk | grade by marktype — the risk split is a labelled bar; grades colour unit marks
+ * @separated criteria | blues by marktype — criteria colour lines and points; π is a matrix
+ * @separated criteria | purples by marktype — criteria colour lines and points; e is a matrix
+ * @separated criteria | neutral by marktype — criteria colour lines and points; the neutral layer is a matrix
+ * @separated criteria | grade by marktype — criteria colour lines and points; grades colour unit marks with grade numbers
+ * @separated criteria | part1 by marktype — criteria colour lines between linked panels; estimates and posteriors are points and intervals
+ * @separated criteria | risk by marktype — criteria colour lines and points; the risk split is a labelled bar
+ */
+
+:root {
+  color-scheme: light;
+
+  /* --- chrome (postrank pkgdown: ivory and teal) --- */
+  --prx-bg: #fdfbf6;            /* [surface] page background, postrank pkgdown ivory */
+  --prx-bg-raised: #f3f1e8;     /* [surface] widget frame, card and navbar surface */
+  --prx-bg-sunken: #f3f2eb;     /* [surface] code blocks, read-out wells and text inputs */
+  --prx-fg: #343b36;            /* [text] body text */
+  --prx-fg-heading: #3e5148;    /* [text] headings and widget titles */
+  --prx-fg-muted: #5c6560;      /* [text] captions, hints, secondary read-out text */
+  --prx-link: #3c6657;          /* [text] link text */
+  --prx-link-hover: #2c4b40;    /* [text] links on hover and focus */
+  --prx-accent: #17645E;        /* [ui] primary accent: buttons, slider fill and thumb, selected state */
+  --prx-on-accent: #ffffff;     /* [text-on --prx-accent] text and icons on an accent fill */
+  --prx-border: #dfdfd3;        /* [deco] hairline between regions, never the only boundary of a control */
+  --prx-border-strong: #7f857e; /* [ui] boundary of controls: inputs, slider track, toggles */
+  --prx-focus: #17645E;         /* [ui] keyboard focus ring for chrome controls (outline, 2px offset) */
+
+  /* --- figure (plot panel; the package draws on white) --- */
+  --prx-plot-bg: #ffffff;       /* [plot-surface] plot panel; every data mark, legend and direct label sits on it */
+  --prx-plot-fg: #1f2421;       /* [plot-text] axis titles, direct labels and annotations in a figure */
+  --prx-plot-muted: #4d4d4d;    /* [plot-text] tick labels and secondary figure text (R grey30) */
+  --prx-plot-axis: #333333;     /* [plot-ui] axis lines and ticks (R grey20) */
+  --prx-plot-grid: #e5e5e5;     /* [plot-deco] grid lines (R grey90) */
+  --prx-cell-border: #767676;   /* [plot-ui] the border supplement: 1px outline of a cell or bar below 3:1 */
+  --prx-hatch: #6b6b6b;         /* [plot-ui] the pattern supplement: 45° hatch over withheld cells */
+  --prx-label-dark: #111111;    /* [label] dark ink for direct labels on light fills */
+  --prx-label-light: #ffffff;   /* [label] light ink for direct labels on dark fills */
+  --prx-plot-focus: #111111;    /* [plot-ui] focus ring on a focusable mark or cell, outer ring */
+  --prx-plot-focus-halo: #ffffff; /* [halo] inner ring of the plot focus ring, so focus shows on any fill */
+
+  /* --- data: Part 1 --- */
+  --prx-est: #D55E00;           /* [mark] a raw estimate: dot, tick, "± 1 SE" bar (Okabe–Ito vermillion) */
+  --prx-post: #1f3a5f;          /* [mark] a posterior summary: posterior mean, interval, density (ebrecipe navy) */
+
+  /* --- data: relations (postrank_palette(which = "relation")) --- */
+  --prx-rel-above: #0072B2;     /* [mark] the row unit is disclosed above the column unit */
+  --prx-rel-withheld: #cccccc;  /* [mark] the pair is withheld (R grey80) */
+  --prx-rel-below: #E69F00;     /* [mark] the row unit is disclosed below the column unit */
+
+  /* --- data: risk split --- */
+  --prx-err: #D55E00;           /* [mark] the error term E/M in bars (Part 2 onward) */
+  --prx-wh: #6b6b6b;            /* [mark] the withholding term τ(M−N)/M in bars */
+
+  /* --- data: direction probability π, Pr(row truly higher) (ColorBrewer Blues 7 = postrank sequential) --- */
+  --prx-blues-1: #EFF3FF;       /* [mark] π step 1 (lowest) */
+  --prx-blues-2: #C6DBEF;       /* [mark] π step 2 */
+  --prx-blues-3: #9ECAE1;       /* [mark] π step 3 */
+  --prx-blues-4: #6BAED6;       /* [mark] π step 4 */
+  --prx-blues-5: #4292C6;       /* [mark] π step 5 */
+  --prx-blues-6: #2171B5;       /* [mark] π step 6 */
+  --prx-blues-7: #084594;       /* [mark] π step 7 (highest) */
+
+  /* --- data: error probability e, Pr(stating row above column is wrong) (ColorBrewer Purples 7) --- */
+  --prx-purples-1: #F2F0F7;     /* [mark] e step 1 (lowest) */
+  --prx-purples-2: #DADAEB;     /* [mark] e step 2 */
+  --prx-purples-3: #BCBDDC;     /* [mark] e step 3 */
+  --prx-purples-4: #9E9AC8;     /* [mark] e step 4 */
+  --prx-purples-5: #807DBA;     /* [mark] e step 5 */
+  --prx-purples-6: #6A51A3;     /* [mark] e step 6 */
+  --prx-purples-7: #4A1486;     /* [mark] e step 7 (highest) */
+
+  /* --- data: neutral probability layer of a staged relation view (ColorBrewer Greys 7) --- */
+  --prx-neutral-1: #F7F7F7;     /* [mark] neutral probability step 1 (lowest) */
+  --prx-neutral-2: #D9D9D9;     /* [mark] neutral probability step 2 */
+  --prx-neutral-3: #BDBDBD;     /* [mark] neutral probability step 3 */
+  --prx-neutral-4: #969696;     /* [mark] neutral probability step 4 */
+  --prx-neutral-5: #737373;     /* [mark] neutral probability step 5 */
+  --prx-neutral-6: #525252;     /* [mark] neutral probability step 6 */
+  --prx-neutral-7: #252525;     /* [mark] neutral probability step 7 (highest) */
+
+  /* --- data: grades (postrank_palette(8); grade 1 = highest priority) --- */
+  --prx-grade-1: #153653;       /* [mark] grade 1 of 8, and the ramp's dark end */
+  --prx-grade-2: #1D425E;       /* [mark] grade 2 of 8 */
+  --prx-grade-3: #264D68;       /* [mark] grade 3 of 8 */
+  --prx-grade-4: #2E5973;       /* [mark] grade 4 of 8 */
+  --prx-grade-5: #36647E;       /* [mark] grade 5 of 8 */
+  --prx-grade-6: #3E7089;       /* [mark] grade 6 of 8 */
+  --prx-grade-7: #477B93;       /* [mark] grade 7 of 8 */
+  --prx-grade-8: #4F879E;       /* [mark] grade 8 of 8, and the ramp's light end */
+
+  /* --- data: criteria (Okabe–Ito, plus the brown of the package's third criterion) --- */
+  --prx-crit-1: #009E73;        /* [mark] criterion k = 1 */
+  --prx-crit-2: #CC79A7;        /* [mark] criterion k = 2 */
+  --prx-crit-3: #8C564B;        /* [mark] criterion k = 3 */
+  --prx-crit-ink-1: #006B4F;    /* [plot-text] same-hue criterion 1 text on plot paper */
+  --prx-crit-ink-2: #963F73;    /* [plot-text] same-hue criterion 2 text on plot paper */
+  --prx-crit-ink-3: #8C564B;    /* [plot-text] same-hue criterion 3 text on plot paper */
+
+  /* --- data: change between two reports (postrank_palette(which = "change")) --- */
+  --prx-chg-unchanged: #ebebeb; /* [mark] the pair's relation is unchanged (R grey92) */
+  --prx-chg-disclosed: #0072B2; /* [mark] the pair is newly disclosed */
+  --prx-chg-withheld: #999999;  /* [mark] the pair is newly withheld */
+  --prx-chg-reversed: #D55E00;  /* [mark] the pair's direction is reversed */
+
+  /* --- formula colours (\class{prx-…}{…}; text forms of the data colours) --- */
+  --prx-est-text: #b04800;      /* [data-text] .prx-est: a raw estimate in a formula (vermillion at text contrast) */
+  --prx-post-text: #1f3a5f;     /* [data-text] .prx-post: a posterior summary in a formula (navy) */
+  --prx-err-text: #b04800;      /* [data-text] .prx-err: the error term E/M in a formula (vermillion at text contrast) */
+  --prx-wh-text: #6b6b6b;       /* [data-text] .prx-wh: the withholding term τ(M−N)/M in a formula */
+
+  /* --- type and focus geometry --- */
+  --prx-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* [font] interface and widget text (system fonts only, CONTRACT 2.4) */
+  --prx-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; /* [font] R code and numbers in read-outs */
+  --prx-radius: 6px;            /* [size] corner radius of frames, buttons and inputs */
+  --prx-focus-width: 2px;       /* [size] width of every focus ring */
+  --prx-focus-offset: 2px;      /* [size] gap between a control and its focus ring */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --prx-bg: #161b19;
+    --prx-bg-raised: #1f2623;
+    --prx-bg-sunken: #111513;
+    --prx-fg: #e7ebe6;
+    --prx-fg-heading: #cbd9cf;
+    --prx-fg-muted: #a7b2ab;
+    --prx-link: #8fc7b5;
+    --prx-link-hover: #b9e0d2;
+    --prx-accent: #5fb0a5;
+    --prx-on-accent: #0e1412;
+    --prx-border: #2f3934;
+    --prx-border-strong: #7b8981;
+    --prx-focus: #8fd3c6;
+    --prx-plot-bg: #f0eee8;
+    --prx-plot-grid: #dcdad3;
+    --prx-est-text: #ff8f4a;
+    --prx-post-text: #a9c1e0;
+    --prx-err-text: #ff8f4a;
+    --prx-wh-text: #a3a3a3;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --prx-bg: #161b19;
+  --prx-bg-raised: #1f2623;
+  --prx-bg-sunken: #111513;
+  --prx-fg: #e7ebe6;
+  --prx-fg-heading: #cbd9cf;
+  --prx-fg-muted: #a7b2ab;
+  --prx-link: #8fc7b5;
+  --prx-link-hover: #b9e0d2;
+  --prx-accent: #5fb0a5;
+  --prx-on-accent: #0e1412;
+  --prx-border: #2f3934;
+  --prx-border-strong: #7b8981;
+  --prx-focus: #8fd3c6;
+  --prx-plot-bg: #f0eee8;
+  --prx-plot-grid: #dcdad3;
+  --prx-est-text: #ff8f4a;
+  --prx-post-text: #a9c1e0;
+  --prx-err-text: #ff8f4a;
+  --prx-wh-text: #a3a3a3;
+}
+
+/* jhl skin (jhl-seminar: teal and coral). Chrome colours only; figure and data tokens are untouched. */
+:root[data-skin="jhl"] {
+  --prx-bg: #FCFBF8;
+  --prx-bg-raised: #F5F3EC;
+  --prx-bg-sunken: #F1EEE6;
+  --prx-fg: #232A33;
+  --prx-fg-heading: #10605B;
+  --prx-fg-muted: #5B6673;
+  --prx-link: #10605B;
+  --prx-link-hover: #B54A31;
+  --prx-accent: #10605B;
+  --prx-on-accent: #ffffff;
+  --prx-border: #D8D4CC;
+  --prx-border-strong: #857f75;
+  --prx-focus: #B54A31;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-skin="jhl"]:not([data-theme="light"]) {
+    --prx-bg: #101817;
+    --prx-bg-raised: #182321;
+    --prx-bg-sunken: #0b1110;
+    --prx-fg: #e9eeec;
+    --prx-fg-heading: #8ad0c6;
+    --prx-fg-muted: #a8b5b2;
+    --prx-link: #86cfc4;
+    --prx-link-hover: #f2a088;
+    --prx-accent: #4fb3a8;
+    --prx-on-accent: #0b1110;
+    --prx-border: #2b3836;
+    --prx-border-strong: #7a8d89;
+    --prx-focus: #f2a088;
+  }
+}
+
+:root[data-skin="jhl"][data-theme="dark"] {
+  --prx-bg: #101817;
+  --prx-bg-raised: #182321;
+  --prx-bg-sunken: #0b1110;
+  --prx-fg: #e9eeec;
+  --prx-fg-heading: #8ad0c6;
+  --prx-fg-muted: #a8b5b2;
+  --prx-link: #86cfc4;
+  --prx-link-hover: #f2a088;
+  --prx-accent: #4fb3a8;
+  --prx-on-accent: #0b1110;
+  --prx-border: #2b3836;
+  --prx-border-strong: #7a8d89;
+  --prx-focus: #f2a088;
+}
+
+/* Formula colour classes (CONTRACT 4.4: \class{prx-…}{…} in TeX, never \textcolor or inline hex). */
+.prx-est { color: var(--prx-est-text); }
+.prx-post { color: var(--prx-post-text); }
+.prx-err { color: var(--prx-err-text); }
+.prx-wh { color: var(--prx-wh-text); }

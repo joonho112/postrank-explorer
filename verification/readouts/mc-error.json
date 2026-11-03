@@ -1,0 +1,788 @@
+{
+  "$schema": "./_schema.json",
+  "app": "mc-error",
+  "catalog": "1.17",
+  "about": "Error probabilities of the six tutorial sites estimated from S draws simulated in the browser (engine gaussianDraws, seeded), beside their exact values (errorArray). Expected values: the frozen v1 registry, whose P-09 keys were written for exactly these settings (six.A.mcse.AB.S1000: the MCSE of A–B from the trace of the S = 1,000 draws at seed 1, τ .20; cf.envelope.*: the envelope radii at M 15 and failure chance .05, postrank's form and the book's; six.A.e.*: exact error probabilities; six.A.cap3.tau20.*, six.A.all.tau20.* and six.AB.w50.cap3.tau20.*: the exact report with at most 3 grades or among all reports, as the cap key sets); postrank 1.1.0 golden rows (postrank_mc_fragility() on the engine's own draws at seeds 20261030 and 20261031, given in the rows to nine decimals, and postrank_iid_bounds() at S 1,000); and base-R oracle rows (fragility at S 200, seed 424242; the envelope radii, the book's form over two scores; the exact optimum's family size). The ordinary runs-panel sentences on flips and ties are checked word for word; independent base-R oracle-v3-review-a rows now pin both boundary-seed rerun sets, their spread, coverage, pair actions and report tallies. oracle-v3p1 rows pin the exact-e approximation (binomialMcse at A–B's exact error, S 100, 1,000 and 4,000). Literals: the teaching-posterior and Monte Carlo captions (6.5, v3 wording).",
+  "cases": [
+    {
+      "id": "s1000",
+      "about": "Preset s1000 (the app loads on it): score A, 1,000 draws at seed 1, τ .20, A–B followed. A–B is fragile; the reports agree.",
+      "preset": "s1000",
+      "expect": [
+        { "select": "[data-prx-readout=\"read-S\"]", "about": "read-out: the number of draws", "format": { "fn": "formatCount" }, "source": "registry", "ref": "settings.S1000", "value": 1000 },
+        { "select": "[data-prx-readout=\"run-seed\"]", "about": "run panel heading: the seed", "format": { "fn": "formatSetting" }, "source": "registry", "ref": "settings.seed.s1", "value": 1 },
+        { "select": "[data-prx-readout=\"read-exact\"]", "about": "read-out: the exact error of A above B", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.AB", "value": 0.18837955890579108 },
+        { "select": "[data-prx-readout=\"same-e\"]", "about": "ledger note: the exact error is the same at every S", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.AB", "value": 0.18837955890579108 },
+        { "select": "[data-prx-readout=\"read-mcse\"]", "about": "read-out: the MCSE of A–B from the trace of this run (sample SD over √S, as postrank_mc_fragility())", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "registry", "ref": "six.A.mcse.AB.S1000", "value": 0.012607733934175311 },
+        { "select": "[data-prx-readout=\"led-mcse\"]", "about": "ledger: the same MCSE", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "registry", "ref": "six.A.mcse.AB.S1000", "value": 0.012607733934175311 },
+        { "select": "[data-prx-readout=\"runs-mcse\"]", "about": "runs panel: the MCSE of the run shown beside the spread of the runs", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "registry", "ref": "six.A.mcse.AB.S1000", "value": 0.012607733934175311 },
+        { "select": "[data-prx-readout=\"key-radius\"]", "about": "key: the envelope radius (postrank_iid_bounds() at S 1,000, M 15, failure chance .05)", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "envelopeRadius-postrank_iid_bounds-six-scoreA-S1000-score_A", "field": "radius" }, "value": 0.0565549717320067 },
+        { "select": "[data-prx-readout=\"led-radius\"]", "about": "ledger: the same radius", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "registry", "ref": "cf.envelope.M15.S1000.package", "value": 0.056554971732006666 },
+        { "select": "[data-prx-readout=\"formula-radius\"]", "about": "formula: the radius with its numbers", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "registry", "ref": "cf.envelope.M15.S1000.package", "value": 0.056554971732006666 },
+        { "select": "[data-prx-readout=\"book-radius\"]", "about": "note: the theory book's form (4M)", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "registry", "ref": "cf.envelope.M15.S1000.book", "value": 0.05954022520857681 },
+        { "select": "[data-prx-readout=\"exact-N\"]", "about": "card: the exact report states 12 of 15 pairs", "format": { "fn": "formatCount" }, "source": "registry", "ref": "six.A.cap3.tau20.N", "value": 12 },
+        { "select": "[data-prx-readout=\"est-N\"]", "about": "card: the report chosen from the estimates is the exact report here, so it states the same 12 pairs", "format": { "fn": "formatCount" }, "source": "registry", "ref": "six.A.cap3.tau20.N", "value": 12 },
+        { "select": "[data-prx-family-size]", "index": 0, "about": "tag of the report from the estimates: the family size", "format": { "fn": "formatCount" }, "source": "oracle", "ref": { "group": "oracle-optimize", "row": "exactOptimum-six-A-cap3-tau.20", "field": "familySize" }, "value": 603 },
+        { "select": "[data-prx-family-size]", "index": 1, "about": "tag of the exact report: the family size", "format": { "fn": "formatCount" }, "source": "oracle", "ref": { "group": "oracle-optimize", "row": "exactOptimum-six-A-cap3-tau.20", "field": "familySize" }, "value": 603 },
+        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior set by hand for teaching; postrank does not fit it" },
+        { "select": "[data-prx-caption=\"monte-carlo\"]", "about": "the Monte Carlo caption with S and the seed as slots", "kind": "text", "slots": true, "source": "literal", "ref": "6.5", "value": "Monte Carlo, ⟨S⟩ draws, seed ⟨seed⟩" },
+        { "select": "[data-prx-readout=\"exact-se\"]", "about": "ledger note: the exact-e approximation at S 1,000 (binomialMcse at A–B's exact error)", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "oracle", "ref": { "group": "oracle-v3p1", "row": "binomialMcse-pin-1.17-released-eAB-S1000", "field": "mcse" }, "value": 0.012364978798698 },
+        { "select": ".prx-readout", "about": "read-out: this run's estimate and MCSE, scoped to the run shown (CR-038), word for word", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "A–B, this run of ⟨S⟩ draws: estimated ⟨est⟩ (MCSE ⟨m⟩), exact ⟨exact⟩ at every S. τ ⟨tau⟩ lies within ⟨z⟩ MCSE of the estimate: fragile." },
+        { "select": "[data-prx-note=\"family\"]", "about": "the line on what holds A–B in one grade: strict flips only (ties of A–B's own choice are counted on their own), and the cap read from the same flipped runs with any number of grades", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "With at most ⟨G⟩ grades, A and B share a grade in the report from the estimates in ⟨k⟩ of the ⟨R⟩ runs, and the report changed in ⟨c⟩ of the ⟨f⟩ runs where A–B's own choice flips. The cap holds them together: with any number of grades the report changes in ⟨cAll⟩ of the ⟨f2⟩ runs where the choice flips, and the exact best report states A above B." },
+        { "select": "[data-prx-note=\"ties\"]", "about": "the runs whose estimate of A–B equals τ: a tie of stating and withholding (CR-030), said with the equal-risk tolerance (CR-021)", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "In ⟨t⟩ more runs A–B's estimate equals τ (equal-risk tolerance ⟨tol⟩), a tie of stating and withholding; the report changed in ⟨ct⟩ of them." },
+        { "select": "[data-prx-note=\"tally-ties\"] th", "about": "tally row: the ties of A–B's own choice, counted on their own", "kind": "text", "source": "literal", "ref": "1.1", "value": "A–B's estimate equal to τ, a tie of stating and withholding" },
+        { "select": "[data-prx-note=\"holds-env\"]", "about": "ledger: the envelope's premise, S and the failure chance fixed before sampling", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "with chance at least ⟨p⟩ over runs of S independent draws, with S and the failure chance fixed before sampling" },
+        { "select": "[data-prx-note=\"doubling\"]", "about": "ledger: doubling S divides the radius by √2 exactly and the MCSE estimated from a run only about", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "divides the radius by √⟨two⟩ and the MCSE by about √⟨two2⟩" },
+        { "select": "[data-prx-part~=\"caption\"]", "about": "caption: the draws are a what-if (the storyboard's label), with the Monte Carlo caption (CR-015)", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "Six fictional sites from the postrank tutorial, score A; their normal law is a posterior set by hand for teaching; postrank does not fit it. Their error probabilities are estimated here, as a what-if, from posterior draws simulated in this browser (Monte Carlo, ⟨S⟩ draws, seed ⟨seed⟩); the ⟨R⟩ runs use seeds ⟨from⟩ to ⟨to⟩." }
+      ]
+    },
+    {
+      "id": "all1000",
+      "about": "Preset all1000: the setting of s1000 with all reports (cap none). The best of all 4,683 reports states A above B ({A} > {B} > {C, D} > {E} > {F}, 14 pairs), and at seed 1 the report from the estimates is the same report.",
+      "preset": "all1000",
+      "expect": [
+        { "select": "[data-prx-readout=\"exact-N\"]", "about": "card: the exact best of all reports states 14 of 15 pairs", "format": { "fn": "formatCount" }, "source": "registry", "ref": "six.A.all.tau20.N", "value": 14 },
+        { "select": "[data-prx-readout=\"est-N\"]", "about": "card: the report chosen from the estimates is the exact report here, so it states the same 14 pairs", "format": { "fn": "formatCount" }, "source": "registry", "ref": "six.A.all.tau20.N", "value": 14 },
+        { "select": "[data-prx-family-size]", "index": 0, "about": "tag of the report from the estimates: all 4,683 reports", "format": { "fn": "formatCount" }, "source": "oracle", "ref": { "group": "oracle-optimize", "row": "exactOptimum-six-A-all-tau.20", "field": "familySize" }, "value": 4683 },
+        { "select": "[data-prx-family-size]", "index": 1, "about": "tag of the exact report: all 4,683 reports", "format": { "fn": "formatCount" }, "source": "oracle", "ref": { "group": "oracle-optimize", "row": "exactOptimum-six-A-all-tau.20", "field": "familySize" }, "value": 4683 },
+        { "select": "[data-prx-readout=\"read-exact\"]", "about": "read-out: the exact error of A above B", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.AB", "value": 0.18837955890579108 },
+        { "select": "[data-prx-readout=\"read-mcse\"]", "about": "read-out: the MCSE of A–B in this run, unchanged by the family", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "registry", "ref": "six.A.mcse.AB.S1000", "value": 0.012607733934175311 },
+        { "select": "[data-prx-note=\"family\"]", "about": "the line on what holds A–B: with any number of grades the report changes in every strict flip", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "With any number of grades, A and B share a grade in the report from the estimates in ⟨k⟩ of the ⟨R⟩ runs, and the report changed in ⟨c⟩ of the ⟨f⟩ runs where A–B's own choice flips." },
+        { "select": "[data-prx-note=\"ties\"]", "about": "ties over the runs: A–B's estimate equal to τ, and the runs whose estimates give tied optima, with the counting rule", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "In ⟨t⟩ more runs A–B's estimate equals τ (equal-risk tolerance ⟨tol⟩), a tie of stating and withholding; the report changed in ⟨ct⟩ of them. In ⟨u⟩ runs ⟨n⟩ reports share the smallest risk for the estimates; a run keeps the exact report when it is among them." },
+        { "select": "[data-prx-note=\"tally-report\"] th", "about": "tally row: a run keeps the exact report when the exact report is among its optima", "kind": "text", "source": "literal", "ref": "1.1", "value": "The exact report among the optima for the estimates" }
+      ]
+    },
+    {
+      "id": "tied-estimates",
+      "about": "All reports on score A, 1,000 draws at seed 25, τ .20, A–B followed: this run's estimate of A–B equals τ, so its estimates give two tied optima, {A, B} > {C, D} > {E} > {F} (13 pairs) and the exact best report {A} > {B} > {C, D} > {E} > {F} (14 pairs). The card gives the number of pairs stated for each tied report (CR-022), and the comparison says that the exact report is one of the optima for the estimates (the mirror of the case where the exact optima tie).",
+      "query": "?S=1000&seed=25&criteria=A&tau=.20&pair=A,B&cap=none",
+      "expect": [
+        { "select": "[data-prx-readout=\"exact-N\"]", "about": "card: the exact best of all reports states 14 of 15 pairs", "format": { "fn": "formatCount" }, "source": "registry", "ref": "six.A.all.tau20.N", "value": 14 },
+        { "select": "[data-prx-readout=\"est-N-tied\"]", "about": "card of the estimates: the tied report is the exact best report, 14 pairs", "format": { "fn": "formatCount" }, "source": "registry", "ref": "six.A.all.tau20.N", "value": 14 },
+        { "select": "[data-prx-readout=\"read-exact\"]", "about": "read-out: the exact error of A above B", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.AB", "value": 0.18837955890579108 },
+        { "select": "[data-prx-note=\"est-states\"]", "about": "card of the estimates: the pairs stated by the first optimum and by the tied one", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "States ⟨N⟩ of ⟨M⟩ pairs (⟨N2⟩ for the tied report)." },
+        { "select": "[data-prx-note=\"compare\"]", "about": "the comparison: the exact report is among the optima for the estimates", "kind": "text", "source": "literal", "ref": "1.1", "value": "The exact report is one of the optima for the estimates." },
+        { "select": "[data-prx-caption=\"different-disclosure\"]", "about": "card: the tied reports disclose different amounts (CR-027 a: with the tie sentence)", "kind": "text", "source": "literal", "ref": "6.5", "value": "these reports disclose different amounts" }
+      ]
+    },
+    {
+      "id": "cap-none-tau35",
+      "about": "All reports at τ .35 on score A (a raw query): the exact best report is {A} > {B} > {C, D} > {E} > {F} again, 14 pairs; its tag names all 4,683 reports.",
+      "query": "?S=400&seed=1&criteria=A&tau=.35&pair=C,D&cap=none",
+      "expect": [
+        { "select": "[data-prx-family-size]", "index": 1, "about": "tag of the exact report: all 4,683 reports", "format": { "fn": "formatCount" }, "source": "oracle", "ref": { "group": "oracle-optimize", "row": "exactOptimum-six-A-all-tau.20", "field": "familySize" }, "value": 4683 },
+        { "select": "[data-prx-readout=\"read-exact\"]", "about": "read-out: the exact error of C above D", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.CD", "value": 0.36183680491588155 }
+      ]
+    },
+    {
+      "id": "s100",
+      "about": "Preset s100: ten times fewer draws; the radius grows, the exact value stays.",
+      "preset": "s100",
+      "expect": [
+        { "select": "[data-prx-readout=\"read-S\"]", "about": "read-out: the number of draws", "format": { "fn": "formatCount" }, "source": "registry", "ref": "settings.S100", "value": 100 },
+        { "select": "[data-prx-readout=\"key-radius\"]", "about": "key: the envelope radius at S 100 (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "oracle", "ref": { "group": "oracle-simulate", "row": "envelopeRadius-M15-S100-alpha0.05-package", "field": "radius" }, "value": 0.178842523679579 },
+        { "select": "[data-prx-readout=\"led-radius\"]", "about": "ledger: the same radius", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "registry", "ref": "cf.envelope.M15.S100.package", "value": 0.17884252367957887 },
+        { "select": "[data-prx-readout=\"book-radius\"]", "about": "note: the theory book's form at S 100", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "registry", "ref": "cf.envelope.M15.S100.book", "value": 0.18828272405847665 },
+        { "select": "[data-prx-readout=\"read-exact\"]", "about": "read-out: the exact error of A above B, unchanged", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.AB", "value": 0.18837955890579108 },
+        { "select": "[data-prx-readout=\"exact-N\"]", "about": "card: the exact report", "format": { "fn": "formatCount" }, "source": "registry", "ref": "six.A.cap3.tau20.N", "value": 12 },
+        { "select": "[data-prx-readout=\"exact-se\"]", "about": "ledger note: the exact-e approximation at S 100 (binomialMcse at A–B's exact error)", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "oracle", "ref": { "group": "oracle-v3p1", "row": "binomialMcse-pin-1.17-released-eAB-S100", "field": "mcse" }, "value": 0.0391014962235783 }
+      ]
+    },
+    {
+      "id": "s4000",
+      "about": "Preset s4000: four times the draws of s1000; A–B stays fragile. The radius at S 4,000 has no source row and is checked as a shown number.",
+      "preset": "s4000",
+      "expect": [
+        { "select": "[data-prx-readout=\"read-S\"]", "about": "read-out: the number of draws", "format": { "fn": "formatCount" }, "source": "registry", "ref": "settings.S4000", "value": 4000 },
+        { "select": "[data-prx-readout=\"read-exact\"]", "about": "read-out: the exact error of A above B", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.AB", "value": 0.18837955890579108 },
+        { "select": "[data-prx-readout=\"same-e\"]", "about": "ledger note: the same exact error at every S", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.AB", "value": 0.18837955890579108 },
+        { "select": "[data-prx-readout=\"exact-se\"]", "about": "ledger note: the exact-e approximation at S 4,000 (binomialMcse at A–B's exact error)", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "oracle", "ref": { "group": "oracle-v3p1", "row": "binomialMcse-pin-1.17-released-eAB-S4000", "field": "mcse" }, "value": 0.00618248939934899 }
+      ]
+    },
+    {
+      "id": "cd35",
+      "about": "Preset cd35: 400 draws, τ .35, C–D followed (exact .362).",
+      "preset": "cd35",
+      "expect": [
+        { "select": "[data-prx-readout=\"read-S\"]", "about": "read-out: the number of draws", "format": { "fn": "formatCount" }, "source": "registry", "ref": "settings.S400", "value": 400 },
+        { "select": "[data-prx-readout=\"read-exact\"]", "about": "read-out: the exact error of C above D", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.CD", "value": 0.36183680491588155 },
+        { "select": "[data-prx-readout=\"same-e\"]", "about": "ledger note: the exact error of C above D", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.CD", "value": 0.36183680491588155 },
+        { "select": "[data-prx-readout=\"exact-N\"]", "about": "card: the exact report at τ .35 is the same as at τ .20 on score A with at most 3 grades", "format": { "fn": "formatCount" }, "source": "registry", "ref": "six.A.cap3.tau20.N", "value": 12 },
+        { "select": "[data-prx-note=\"family\"]", "about": "the cap clause read from the runs: with any number of grades the report changes in every flipped run, though the exact report withholds C–D either way", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "With at most ⟨G⟩ grades, C and D share a grade in the report from the estimates in ⟨k⟩ of the ⟨R⟩ runs, and the report changed in ⟨c⟩ of the ⟨f⟩ runs where C–D's own choice flips. The cap holds them together: with any number of grades the report changes in ⟨cAll⟩ of the ⟨f2⟩ runs where the choice flips." },
+        { "select": "[data-prx-note=\"ties\"]", "about": "the runs whose estimate of C–D equals τ .35, counted on their own", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "In ⟨t⟩ more runs C–D's estimate equals τ (equal-risk tolerance ⟨tol⟩), a tie of stating and withholding; the report changed in ⟨ct⟩ of them." }
+      ]
+    },
+    {
+      "id": "both",
+      "about": "Preset both: both scores with equal weights, 1,000 draws at seed 4, τ .20, E–F followed. The report from the estimates withholds E–F (8 pairs stated, no source row); the exact report states 9.",
+      "preset": "both",
+      "expect": [
+        { "select": "[data-prx-readout=\"exact-N\"]", "about": "card: the exact report, both scores with equal weights, at most 3 grades, τ .20", "format": { "fn": "formatCount" }, "source": "registry", "ref": "six.AB.w50.cap3.tau20.N", "value": 9 },
+        { "select": "[data-prx-family-size]", "index": 1, "about": "tag of the exact report: the family size", "format": { "fn": "formatCount" }, "source": "oracle", "ref": { "group": "oracle-optimize", "row": "exactOptimum-six-AB-w.5.5-cap3-tau.20", "field": "familySize" }, "value": 603 },
+        { "select": "[data-prx-readout=\"book-radius\"]", "about": "note: the theory book's form over both scores (4MK, K = 2) at failure chance .05", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "oracle", "ref": { "group": "oracle-simulate", "row": "envelopeRadius-M15-S1000-alpha0.05-book-K2", "field": "radius" }, "value": 0.0623827861526561 },
+        { "select": "[data-prx-readout=\"key-radius\"]", "about": "key: the weighted radius; each score's postrank radius at failure chance .025 is √(log(2M/.025)/(2S)) = √(log(4M/.05)/(2S)), the book's one-score form at .05 (oracle row), and equal weights keep it", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "oracle", "ref": { "group": "oracle-simulate", "row": "envelopeRadius-M15-S1000-alpha0.05-book-K1", "field": "radius" }, "value": 0.0595402252085768 },
+        { "select": "[data-prx-note=\"book\"]", "about": "note: the theory book's form over both scores, with its failure chance", "kind": "text", "source": "literal", "ref": "1.1", "slots": true, "value": "The theory book's form for both scores at once, ⟨four⟩MK in place of ⟨two⟩M with K = ⟨K⟩, at failure chance ⟨a⟩ for both: ⟨b⟩." }
+      ]
+    },
+    {
+      "id": "golden-seed20261030",
+      "about": "Score A, 1,000 draws at seed 20261030, τ .20: postrank_mc_fragility() on the same draws (golden row; the draws are the engine's, written to nine decimals) flags A–B with estimated error .203 and MCSE .0127.",
+      "query": "?S=1000&seed=20261030&criteria=A&tau=.20&pair=A,B",
+      "expect": [
+        { "select": "[data-prx-readout=\"read-est\"]", "about": "read-out: the estimated error of the better direction, A above B", "format": { "fn": "formatProb" }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "fragilePairs-six-scoreA-S1000-seed20261030-tau.2", "field": "weightedError.0" }, "value": 0.203 },
+        { "select": "[data-prx-readout=\"read-mcse\"]", "about": "read-out: its MCSE", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "fragilePairs-six-scoreA-S1000-seed20261030-tau.2", "field": "mcseTraced.0" }, "value": 0.0127260737445983 },
+        { "select": "[data-prx-readout=\"led-mcse\"]", "about": "ledger: the same MCSE", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "fragilePairs-six-scoreA-S1000-seed20261030-tau.2", "field": "mcseTraced.0" }, "value": 0.0127260737445983 },
+        { "select": "[data-prx-readout=\"frag-count\"]", "about": "the number of fragile pairs", "format": { "fn": "formatCount" }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "fragilePairs-six-scoreA-S1000-seed20261030-tau.2", "field": "summary.fragile" }, "value": 1 },
+        { "select": "[data-prx-readout=\"frag-M\"]", "about": "of the 15 pairs", "format": { "fn": "formatCount" }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "fragilePairs-six-scoreA-S1000-seed20261030-tau.2", "field": "summary.pairs" }, "value": 15 },
+        { "select": "[data-prx-readout=\"run-seed\"]", "about": "run panel heading: the seed", "format": { "fn": "formatSetting" }, "source": "registry", "ref": "settings.seed.league", "value": 20261030 },
+        { "select": "[data-prx-readout=\"key-radius\"]", "about": "key: the envelope radius at S 1,000", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "envelopeRadius-postrank_iid_bounds-six-scoreA-S1000-score_A", "field": "radius" }, "value": 0.0565549717320067 }
+      ]
+    },
+    {
+      "id": "golden-both-s500",
+      "about": "Both scores with equal weights, 500 draws at seed 20261031, τ .20, E–F followed: postrank_mc_fragility() on the same draws (golden row) flags E–F, whose weighted estimated error equals τ.",
+      "query": "?S=500&seed=20261031&criteria=AB&tau=.20&pair=E,F",
+      "expect": [
+        { "select": "[data-prx-readout=\"read-est\"]", "about": "read-out: the weighted estimated error of E above F", "format": { "fn": "formatProb" }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "fragilePairs-six-K2-S500-seed20261031-w.5.5-tau.2", "field": "weightedError.3" }, "value": 0.2 },
+        { "select": "[data-prx-readout=\"read-mcse\"]", "about": "read-out: the MCSE of the weighted trace", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "fragilePairs-six-K2-S500-seed20261031-w.5.5-tau.2", "field": "mcseTraced.3" }, "value": 0.0125823937812537 },
+        { "select": "[data-prx-readout=\"frag-count\"]", "about": "the number of fragile pairs", "format": { "fn": "formatCount" }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "fragilePairs-six-K2-S500-seed20261031-w.5.5-tau.2", "field": "summary.fragile" }, "value": 1 },
+        { "select": "[data-prx-readout=\"frag-M\"]", "about": "of the 15 pairs", "format": { "fn": "formatCount" }, "source": "golden", "ref": { "group": "postrank-simulate", "row": "fragilePairs-six-K2-S500-seed20261031-w.5.5-tau.2", "field": "summary.pairs" }, "value": 15 }
+      ]
+    },
+    {
+      "id": "oracle-s200",
+      "about": "Score A, 200 draws at seed 424242, τ .20: the base-R oracle's fragility on the same draws flags A–B (estimated .205, MCSE .0286).",
+      "query": "?S=200&seed=424242&criteria=A&tau=.20&pair=A,B",
+      "expect": [
+        { "select": "[data-prx-readout=\"read-est\"]", "about": "read-out: the estimated error of A above B", "format": { "fn": "formatProb" }, "source": "oracle", "ref": { "group": "oracle-simulate", "row": "fragilePairs-six-scoreA-S200-seed424242-tau.2", "field": "weightedError.0" }, "value": 0.205 },
+        { "select": "[data-prx-readout=\"read-mcse\"]", "about": "read-out: its MCSE", "format": { "fn": "formatDecimal", "options": { "digits": 4 } }, "source": "oracle", "ref": { "group": "oracle-simulate", "row": "fragilePairs-six-scoreA-S200-seed424242-tau.2", "field": "mcseTraced.0" }, "value": 0.0286176492613602 },
+        { "select": "[data-prx-readout=\"frag-count\"]", "about": "the number of fragile pairs", "format": { "fn": "formatCount" }, "source": "oracle", "ref": { "group": "oracle-simulate", "row": "fragilePairs-six-scoreA-S200-seed424242-tau.2", "field": "summary.fragile" }, "value": 1 },
+        { "select": "[data-prx-readout=\"read-exact\"]", "about": "read-out: the exact error of A above B", "format": { "fn": "formatProb" }, "source": "registry", "ref": "six.A.e.AB", "value": 0.18837955890579108 }
+      ]
+    },
+    {
+      "id": "mc-seed-max",
+      "about": "A-CLR-001/A-COR-001: independent base-R Gaussian streams and canonical report enumeration at S100, scoreA, tau.2, cap3; the full supported seed sequence wraps max to min instead of duplicating the endpoint. Across-run SD and shown-run trace MCSE are pinned separately.",
+      "query": "?S=100&seed=4294967295&criteria=A&tau=.20&pair=A,B&cap=3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"runs-R\"]",
+          "about": "Independent base-R boundary pin: distinctSeeds.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "distinctSeeds"
+          },
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"runs-from\"]",
+          "about": "Independent base-R boundary pin: seedFirst.",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "seedFirst"
+          },
+          "value": 4294967295
+        },
+        {
+          "select": "[data-prx-readout=\"runs-to\"]",
+          "about": "Independent base-R boundary pin: seedLast.",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "seedLast"
+          },
+          "value": 99
+        },
+        {
+          "select": "[data-prx-readout=\"read-est\"]",
+          "about": "Independent base-R boundary pin: eHatAB.0.",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "eHatAB.0"
+          },
+          "value": 0.19
+        },
+        {
+          "select": "[data-prx-readout=\"read-exact\"]",
+          "about": "Independent base-R boundary pin: exactEAB.",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "exactEAB"
+          },
+          "value": 0.188379558905791
+        },
+        {
+          "select": "[data-prx-readout=\"runs-sd\"]",
+          "about": "Independent base-R boundary pin: acrossRunSd.",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "acrossRunSd"
+          },
+          "value": 0.03784217624596
+        },
+        {
+          "select": "[data-prx-readout=\"read-mcse\"]",
+          "about": "Independent base-R boundary pin: shownMcse.",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "shownMcse"
+          },
+          "value": 0.0394277244403662
+        },
+        {
+          "select": "[data-prx-readout=\"runs-mcse\"]",
+          "about": "Independent base-R boundary pin: shownMcse.",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "shownMcse"
+          },
+          "value": 0.0394277244403662
+        },
+        {
+          "select": "[data-prx-readout=\"runs-within\"]",
+          "about": "Independent base-R boundary pin: withinCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "withinCount"
+          },
+          "value": 96
+        },
+        {
+          "select": "[data-prx-readout=\"runs-fragile\"]",
+          "about": "Independent base-R boundary pin: fragileCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "fragileCount"
+          },
+          "value": 92
+        },
+        {
+          "select": "[data-prx-readout=\"runs-choice\"]",
+          "about": "Independent base-R boundary pin: sameCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "sameCount"
+          },
+          "value": 51
+        },
+        {
+          "select": "[data-prx-readout=\"runs-flips\"]",
+          "about": "Independent base-R boundary pin: flipCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "flipCount"
+          },
+          "value": 35
+        },
+        {
+          "select": "[data-prx-readout=\"runs-ties\"]",
+          "about": "Independent base-R boundary pin: tieCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "tieCount"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"runs-held\"]",
+          "about": "Independent base-R boundary pin: envelopeHeldCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "envelopeHeldCount"
+          },
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"runs-same\"]",
+          "about": "Independent base-R boundary pin: reportKept.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "reportKept"
+          },
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"runs-together\"]",
+          "about": "Independent base-R boundary pin: together.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "together"
+          },
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"runs-changed\"]",
+          "about": "Independent base-R boundary pin: flipChanged.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "flipChanged"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"runs-ties-changed\"]",
+          "about": "Independent base-R boundary pin: tieChanged.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "tieChanged"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"runs-changed-all\"]",
+          "about": "Independent base-R boundary pin: flipChangedAll.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-max",
+            "field": "flipChangedAll"
+          },
+          "value": 35
+        },
+        {
+          "select": "[data-prx-note=\"seed-wrap\"]",
+          "index": 0,
+          "about": "The histogram heading, tally caption and app caption all state the same max-to-min wrap.",
+          "kind": "text",
+          "source": "literal",
+          "ref": "1.1",
+          "slots": true,
+          "value": ", wrapping from ⟨max⟩ to ⟨min⟩"
+        },
+        {
+          "select": "[data-prx-note=\"seed-wrap\"]",
+          "index": 1,
+          "about": "The histogram heading, tally caption and app caption all state the same max-to-min wrap.",
+          "kind": "text",
+          "source": "literal",
+          "ref": "1.1",
+          "slots": true,
+          "value": ", wrapping from ⟨max⟩ to ⟨min⟩"
+        },
+        {
+          "select": "[data-prx-note=\"seed-wrap\"]",
+          "index": 2,
+          "about": "The histogram heading, tally caption and app caption all state the same max-to-min wrap.",
+          "kind": "text",
+          "source": "literal",
+          "ref": "1.1",
+          "slots": true,
+          "value": ", wrapping from ⟨max⟩ to ⟨min⟩"
+        }
+      ]
+    },
+    {
+      "id": "mc-seed-near-max",
+      "about": "A-CLR-001/A-COR-001: independent base-R Gaussian streams and canonical report enumeration at S100, scoreA, tau.2, cap3; the full supported seed sequence wraps max to min instead of duplicating the endpoint. Across-run SD and shown-run trace MCSE are pinned separately.",
+      "query": "?S=100&seed=4294967246&criteria=A&tau=.20&pair=A,B&cap=3",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"runs-R\"]",
+          "about": "Independent base-R boundary pin: distinctSeeds.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "distinctSeeds"
+          },
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"runs-from\"]",
+          "about": "Independent base-R boundary pin: seedFirst.",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "seedFirst"
+          },
+          "value": 4294967246
+        },
+        {
+          "select": "[data-prx-readout=\"runs-to\"]",
+          "about": "Independent base-R boundary pin: seedLast.",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "seedLast"
+          },
+          "value": 50
+        },
+        {
+          "select": "[data-prx-readout=\"read-est\"]",
+          "about": "Independent base-R boundary pin: eHatAB.0.",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "eHatAB.0"
+          },
+          "value": 0.22
+        },
+        {
+          "select": "[data-prx-readout=\"read-exact\"]",
+          "about": "Independent base-R boundary pin: exactEAB.",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "exactEAB"
+          },
+          "value": 0.188379558905791
+        },
+        {
+          "select": "[data-prx-readout=\"runs-sd\"]",
+          "about": "Independent base-R boundary pin: acrossRunSd.",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "acrossRunSd"
+          },
+          "value": 0.0377994441731354
+        },
+        {
+          "select": "[data-prx-readout=\"read-mcse\"]",
+          "about": "Independent base-R boundary pin: shownMcse.",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "shownMcse"
+          },
+          "value": 0.0416333199893227
+        },
+        {
+          "select": "[data-prx-readout=\"runs-mcse\"]",
+          "about": "Independent base-R boundary pin: shownMcse.",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 4
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "shownMcse"
+          },
+          "value": 0.0416333199893227
+        },
+        {
+          "select": "[data-prx-readout=\"runs-within\"]",
+          "about": "Independent base-R boundary pin: withinCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "withinCount"
+          },
+          "value": 97
+        },
+        {
+          "select": "[data-prx-readout=\"runs-fragile\"]",
+          "about": "Independent base-R boundary pin: fragileCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "fragileCount"
+          },
+          "value": 94
+        },
+        {
+          "select": "[data-prx-readout=\"runs-choice\"]",
+          "about": "Independent base-R boundary pin: sameCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "sameCount"
+          },
+          "value": 49
+        },
+        {
+          "select": "[data-prx-readout=\"runs-flips\"]",
+          "about": "Independent base-R boundary pin: flipCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "flipCount"
+          },
+          "value": 39
+        },
+        {
+          "select": "[data-prx-readout=\"runs-ties\"]",
+          "about": "Independent base-R boundary pin: tieCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "tieCount"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"runs-held\"]",
+          "about": "Independent base-R boundary pin: envelopeHeldCount.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "envelopeHeldCount"
+          },
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"runs-same\"]",
+          "about": "Independent base-R boundary pin: reportKept.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "reportKept"
+          },
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"runs-together\"]",
+          "about": "Independent base-R boundary pin: together.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "together"
+          },
+          "value": 100
+        },
+        {
+          "select": "[data-prx-readout=\"runs-changed\"]",
+          "about": "Independent base-R boundary pin: flipChanged.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "flipChanged"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"runs-ties-changed\"]",
+          "about": "Independent base-R boundary pin: tieChanged.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "tieChanged"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"runs-changed-all\"]",
+          "about": "Independent base-R boundary pin: flipChangedAll.",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3-review-a",
+            "row": "mc-seed-near-max",
+            "field": "flipChangedAll"
+          },
+          "value": 39
+        },
+        {
+          "select": "[data-prx-note=\"seed-wrap\"]",
+          "index": 0,
+          "about": "The histogram heading, tally caption and app caption all state the same max-to-min wrap.",
+          "kind": "text",
+          "source": "literal",
+          "ref": "1.1",
+          "slots": true,
+          "value": ", wrapping from ⟨max⟩ to ⟨min⟩"
+        },
+        {
+          "select": "[data-prx-note=\"seed-wrap\"]",
+          "index": 1,
+          "about": "The histogram heading, tally caption and app caption all state the same max-to-min wrap.",
+          "kind": "text",
+          "source": "literal",
+          "ref": "1.1",
+          "slots": true,
+          "value": ", wrapping from ⟨max⟩ to ⟨min⟩"
+        },
+        {
+          "select": "[data-prx-note=\"seed-wrap\"]",
+          "index": 2,
+          "about": "The histogram heading, tally caption and app caption all state the same max-to-min wrap.",
+          "kind": "text",
+          "source": "literal",
+          "ref": "1.1",
+          "slots": true,
+          "value": ", wrapping from ⟨max⟩ to ⟨min⟩"
+        }
+      ]
+    }
+  ]
+}

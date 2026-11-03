@@ -1,0 +1,52 @@
+---
+title: "School tertiles and minimum-risk grades"
+subtitle: "5.8 · the public twelve-school CDE example"
+description: "Fixed cuts and unrestricted three-grade reporting for a twelve-school chronic-absence example."
+---
+
+Two boundaries partition the posterior-mean order of twelve schools into a grade report. The display evaluates
+this fixed report and compares it with the minimum-risk report over all assignments using at most three grades at
+the same τ. Grade 1 states lower chronic absence under the supplied posterior. Boundary changes alter both the
+number and identity of the stated directions. The comparison therefore separates a conventional grouping along one
+order from optimisation over the full capped family, while preserving the same posterior and reporting loss.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/cde-cuts.js"></script>
+<script>window.__prxApp = PRX["cde-cuts"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Tertiles** splits the schools into three groups of four. It states 48 pairs, expects 1.829 wrong directions and has risk .082255; the browser optimum states 45 pairs with risk .063774.
+- **Archived grades** puts the cuts after positions 3 and 9. These reproduce the archived three-grade report: 45 stated pairs and risk .063774. The relation-change table has no changed pairs.
+- **One boundary** puts both controls at position 6. One distinct boundary gives two grades, 36 stated pairs and risk .091293.
+- **Higher withholding cost** raises τ to .45. The optimum now states 47 pairs and has risk .143197. The changed-pair table identifies the resulting relation changes.
+
+The cut positions describe a fixed report along one order. The comparison enumerates every report with at most three grades, including other orders. Its average-error bound belongs to that exact optimum at the displayed τ; it is not a per-pair certainty threshold for the tertiles. Reports can disclose different amounts while being evaluated under the same loss.
+
+The dots and intervals summarize the supplied school posterior. A shared grade withholds directions and does not assert equal chronic-absence probabilities. Rows inside a grade remain in posterior-mean order for reading, with no additional reported comparisons.
+
+Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (`pr_case_cde`). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply; the data are not relicensed, are provided as is without warranty, and imply no CDE endorsement.
+
+The analysis concerns directional reporting of chronic absence within this subset. It neither computes Dashboard status-and-change colours nor establishes school quality, causal effects, statewide optimality or calibration. Shared grades do not imply equal absence probabilities.
+
+::: {.callout-note collapse="true"}
+## In postrank
+
+The following call evaluates the fixed tertiles at τ .20 without model fitting or optimisation.
+
+```r
+library(postrank)
+g <- pr_case_cde$reference$actions$observed_rate_tertiles
+postrank_evaluate(g, pr_case_cde$input, weights = c(negative_chronic_absence = 1), tau = .2)[c("N", "E", "primary_risk")]
+```
+:::
+
+[Open the standalone app](../../embed/cde-cuts.html).
+
+Related applications: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
+
+Related school analyses: [School reports at matched disclosure](cde-one-disclosure.qmd) · [A high-probability school comparison withheld](cde-pair.qmd) · [School-report changes along the withholding-cost path](cde-tau-path.qmd).

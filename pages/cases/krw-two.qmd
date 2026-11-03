@@ -1,0 +1,48 @@
+---
+title: "A common report for race and gender gaps"
+subtitle: "5.7 · after Kline, Rose and Walters (2024), one report for two criteria"
+description: "Weighted expected-risk evaluation of a common report and two fixed KRW cards."
+---
+
+A common report can state directions for the same firms on both race and gender contact gaps. The race weight
+sets the relative contribution of the two criteria's wrong-direction counts. The scatter displays the selected
+grades, and the risk chart compares the common report with KRW's two fixed cards under the current loss. The live
+search uses contiguous cuts of the weighted expected-rank order. At the original settings, its result agrees with
+the archived common solve; this agreement does not establish unrestricted optimality at other settings.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/krw-two.js"></script>
+<script>window.__prxApp = PRX["krw-two"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **“Equal weights.”** At the original cost, the common report’s risk .2455 is below the all-withheld risk; neither published card does.
+- **“Race .80.”** The race card crosses the withholding line near race weight .69. **“Gender .80”** shows the opposite crossing near .29.
+- **“Color firms by this report.”** The selected archived card is evaluated at the current cost. Its grades stay fixed while its evaluation changes. Firm selection in the scatter, selector or table gives both supplied marginal intervals.
+- **“Most grades allowed in the live order search.”** The family size and complete returned equal-risk sets are reported for each cap. Grade one is stated highest; sharing a grade withholds a comparison.
+
+The live report minimises loss along the weighted expected-rank order: posterior average positions combined using the current weights. The order changes with those weights. At the original equal weights, cost and cap, it reproduces the archived common solve over all capped reports. Its status, bound and gap remain visible. Each published KRW card retains its own original selection setting; a larger current risk is a comparison under a different loss, without reassessing KRW's selection under its original objective. See [the original report card](../uncertainty/case-zero.qmd) for that card’s interpretation.
+
+::: {.callout-note appearance="simple"}
+The separate criterion fits supply marginal intervals and criterionwise expected loss; they do not supply a joint posterior across gaps. Across-firm correlation is not such a posterior. These experimental data do not describe firms’ current conduct. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC as stated by the deposit (no version), noncommercial use only; as adapted in postrank 1.1.0. Changes: continuous cells with central intervals in place of KRW’s posterior grids, supplied comparison probabilities, archived common report and browser order searches. No endorsement implied. Provided as is, without warranty.
+:::
+
+<details class="prx-recipe">
+<summary>In postrank</summary>
+
+This uses the released cached analysis and evaluates the published cards under its common loss.
+
+```r
+library(postrank); source(system.file("scripts", "_vignette-setup.R", package = "postrank"))
+krw <- load_or_compute("case_krw_signed97"); cards <- pr_case_krw$reference$single_criterion$grade
+postrank_compare(krw, race_card = cards$race, gender_card = cards$gender, baselines = character())$table
+```
+</details>
+
+Standalone: [embed/krw-two.html](../../embed/krw-two.html), for example `?w=.8&report=race`.
+
+Related applications: [KRW's race and gender report cards](krw-card.qmd) · [Optimal reports along the criterion-weight path](../criteria/weight-path.qmd).

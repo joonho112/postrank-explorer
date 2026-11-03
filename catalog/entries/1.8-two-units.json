@@ -1,0 +1,68 @@
+{
+  "id": "1.8",
+  "name": "two-units",
+  "part": "1",
+  "title": "Two units, one probability",
+  "idea": "One number, π = Pr(θ_A > θ_B ∣ Y), says how sure we are of a direction between two units.",
+  "status": "built",
+  "from": "v1 whole · v1 L-07 two-units (core views)",
+  "data": [
+    "engine"
+  ],
+  "credit": "π for two independent normal posteriors; the case with both SDs equal to 1 is Kline, Rose and Walters (2024), section II.E, Example 1, and slide 27.",
+  "math": true,
+  "caption": "a posterior set by hand for teaching; postrank does not fit it",
+  "presets": [
+    {
+      "id": "gap20",
+      "label": "Means .30 and .10, SDs .20 and .20",
+      "query": "muA=.30&sdA=.20&muB=.10&sdB=.20"
+    },
+    {
+      "id": "wide-b",
+      "label": "Means .30 and .10, SDs .20 and .60 (B much less precise)",
+      "query": "muA=.30&sdA=.20&muB=.10&sdB=.60"
+    },
+    {
+      "id": "equal-means",
+      "label": "Means .20 and .20, SDs .20 and .40",
+      "query": "muA=.20&sdA=.20&muB=.20&sdB=.40"
+    },
+    {
+      "id": "sites-ab",
+      "label": "Means 1.20 and .95, SDs .20 and .20 (tutorial sites A and B)",
+      "query": "muA=1.20&sdA=.20&muB=.95&sdB=.20"
+    }
+  ],
+  "try": [
+    {
+      "preset": "gap20",
+      "shows": [
+        ".760",
+        ".283",
+        ".707"
+      ]
+    },
+    {
+      "preset": "wide-b",
+      "shows": [
+        ".632",
+        ".316",
+        ".624"
+      ]
+    },
+    {
+      "preset": "equal-means",
+      "shows": [
+        ".500",
+        ".447"
+      ]
+    },
+    {
+      "preset": "sites-ab",
+      "shows": [
+        ".812"
+      ]
+    }
+  ]
+}

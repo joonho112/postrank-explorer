@@ -1,0 +1,28 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part3-r03",
+  "description": "R-03 (Tiers from posterior means and expected ranks, pages/rules/posterior-tiers.qmd): the theory book's ch. 19 three-unit law cut along its expected-rank order B, C, A, against the exact optimum within all 13 reports and the cuts of the posterior-mean order A, B, C, at tau = 1/4 and 1/2; the sizes of the two families. League, eight-unit and 30-site values are already in part3.json (league.default.prior15.*, league8.*, thirty.poverty.*) and are not repeated.",
+  "license_scope": "author",
+  "inputs": {
+    "r03.tb19.e": {"fn":"finiteLawPairwise","args":[[[[20],[4],[3]],[[0],[4],[3]]],[0.3,0.7],{"ids":["A","B","C"]}],"note":"theory book ch. 19 three-unit law (the same input as tb19.law3.e in part3.json)"},
+    "r03.tb19.er": {"fn":"expectedRank","args":[{"$input":"r03.tb19.e"},{}],"note":"expected ranks (2.4, 1.3, 2.3): the order B, C, A"},
+    "r03.tb19.ercuts.tau25": {"fn":"fixedOrderDP","args":[{"$input":"r03.tb19.e"},{"scores":{"$input":"r03.tb19.er"},"direction":"ascending","tau":{"$setting":"settings.tau25"}}],"note":"optimal cuts of the expected-rank order at tau = 1/4"},
+    "r03.tb19.all.tau25": {"fn":"exactOptimum","args":[{"$input":"r03.tb19.e"},{"tau":{"$setting":"settings.tau25"},"family":{"kind":"all"}}],"note":"the exact optimum within all 13 reports at tau = 1/4"},
+    "r03.tb19.ercuts.tau50": {"fn":"fixedOrderDP","args":[{"$input":"r03.tb19.e"},{"scores":{"$input":"r03.tb19.er"},"direction":"ascending","tau":{"$setting":"settings.tau50"}}],"note":"optimal cuts of the expected-rank order at tau = 1/2"},
+    "r03.tb19.pmcuts.tau50": {"fn":"fixedOrderDP","args":[{"$input":"r03.tb19.e"},{"order":[0,1,2],"tau":{"$setting":"settings.tau50"}}],"note":"optimal cuts of the posterior-mean order A, B, C at tau = 1/2"},
+    "r03.tb19.all.tau50": {"fn":"exactOptimum","args":[{"$input":"r03.tb19.e"},{"tau":{"$setting":"settings.tau50"},"family":{"kind":"all"}}],"note":"the exact optimum within all 13 reports at tau = 1/2"}
+  },
+  "keys": {
+    "r03.tb19.family.all.size": {"type":"scalar","fn":"familySize","args":[3,{"kind":"all"}],"format":{"fn":"formatCount"},"tolerance":0,"same_as":"six.reports.n3","note":"every report of three units"},
+    "r03.tb19.family.order.size": {"type":"scalar","fn":"familySize","args":[3,{"kind":"order","order":[0,1,2]}],"format":{"fn":"formatCount"},"tolerance":0,"note":"the contiguous cuts of one declared order of three units"},
+    "r03.tb19.ercuts.tau25.grades": {"type":"vector","from":"r03.tb19.ercuts.tau25","field":"grade","format":{"fn":"formatGrades"},"tolerance":0,"note":"the cuts of B, C, A at tau = 1/4: B above A and C"},
+    "r03.tb19.ercuts.tau25.risk": {"type":"fraction","from":"r03.tb19.ercuts.tau25","field":"risk","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12},"same_as":"tb19.law3.tau25.r212.risk"},
+    "r03.tb19.all.tau25.grades": {"type":"vector","from":"r03.tb19.all.tau25","field":"grade","format":{"fn":"formatGrades"},"tolerance":0,"note":"the exact optimum within all 13 reports at tau = 1/4"},
+    "r03.tb19.all.tau25.risk": {"type":"fraction","from":"r03.tb19.all.tau25","field":"risk","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12},"same_as":"tb19.law3.tau25.r212.risk"},
+    "r03.tb19.ercuts.tau50.grades": {"type":"vector","from":"r03.tb19.ercuts.tau50","field":"grade","format":{"fn":"formatGrades"},"tolerance":0,"note":"the cuts of B, C, A at tau = 1/2: the full order B, C, A"},
+    "r03.tb19.ercuts.tau50.risk": {"type":"fraction","from":"r03.tb19.ercuts.tau50","field":"risk","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12}},
+    "r03.tb19.all.tau50.grades": {"type":"vector","from":"r03.tb19.all.tau50","field":"grade","format":{"fn":"formatGrades"},"tolerance":0},
+    "r03.tb19.pmcuts.tau50.grades": {"type":"vector","from":"r03.tb19.pmcuts.tau50","field":"grade","format":{"fn":"formatGrades"},"tolerance":0,"note":"the cuts of A, B, C at tau = 1/2"},
+    "r03.tb19.pmcuts.tau50.risk": {"type":"fraction","from":"r03.tb19.pmcuts.tau50","field":"risk","format":{"fn":"formatRational"},"tolerance":{"abs":1e-12,"rel":1e-12}}
+  }
+}

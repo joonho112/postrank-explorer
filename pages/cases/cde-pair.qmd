@@ -1,0 +1,52 @@
+---
+title: "A high-probability school comparison withheld"
+subtitle: "5.10 · the public twelve-school CDE example"
+description: "Full-report cost of requiring the F-above-I direction under declared family restrictions."
+---
+
+Schools F and I share a grade in the three-grade optimum, although F above I has high posterior probability.
+Requiring a specified direction and reoptimising the complete report measures its additional risk within the same
+family. That difference includes the effects on all other stated and withheld comparisons. The tertiles and a
+fixed-order four-grade comparison provide further reports that state the direction. Their results identify the
+roles of the particular grouping and search restrictions without assigning an exclusive cause to the withheld pair.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/cde-pair.js"></script>
+<script>window.__prxApp = PRX["cde-pair"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **F above I** shows direction probability .9999. Of 175,099 three-grade reports that state it, the least-risk one has risk .064087, slightly above the overall optimum .063774.
+- **I above F** reverses the required statement. The best report stating this direction has risk .112261; the posterior probability alone does not summarize its full-report cost.
+- **The tertiles state it** uses the two tertile cuts. This fixed report states 48 pairs with risk .082255, so stating F above I does not require a fourth grade.
+- **The higher-cost optimum** sets τ to .45. The optimum itself now states F above I and has risk .143197.
+
+The table ranks the three best reports in the same three-grade family. The report stating F above I is second, while the next displayed report is third. The input check excludes self-comparisons.
+
+The four-grade comparison keeps the posterior-mean order and changes the allowed family. Its risk is comparable under the same law, τ and weight, but its order-based optimum is not a global optimum over every four-grade report. The two compared families are not nested. Withholding can reflect several interacting restrictions; the page does not assign a single exclusive cause to every shared-grade pair.
+
+Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (`pr_case_cde`). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply; the data are not relicensed, are provided as is without warranty, and imply no CDE endorsement.
+
+The analysis concerns directional reporting of chronic absence within this subset. It neither computes Dashboard status-and-change colours nor establishes school quality, causal effects, statewide optimality or calibration. Shared grades do not imply equal absence probabilities.
+
+::: {.callout-note collapse="true"}
+## In postrank
+
+The following call extracts the F-above-I probability in the original case-study input order.
+
+```r
+library(postrank)
+e <- postrank_pairwise(pr_case_cde$input)$e
+1 - e[6, 9, 1]
+```
+:::
+
+[Open the standalone app](../../embed/cde-pair.html).
+
+Related applications: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
+
+Related school analyses: [School tertiles and minimum-risk grades](cde-cuts.qmd) · [School reports at matched disclosure](cde-one-disclosure.qmd) · [School-report changes along the withholding-cost path](cde-tau-path.qmd).

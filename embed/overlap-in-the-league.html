@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<!-- 1.12 overlap-in-the-league. Build inputs: catalog.json; do not edit. -->
+<title>435 pairs: overlap against direction · postrank Explorer</title>
+<script>
+  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  (function () {
+    var t = new URLSearchParams(location.search).get("theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/app.css">
+</head>
+<body class="prx-embed">
+<main>
+<h1 class="prx-embed-title">435 pairs: overlap against direction</h1>
+<div id="app"><p>This app needs JavaScript.</p></div>
+<p class="prx-embed-credit">postrank Explorer · 1.12 · Built for this site; interval reading after Kline, Rose and Walters (2024), section IV.C. · <a href="../pages/uncertainty/overlap-in-the-league.html">page</a></p>
+</main>
+<!-- classic scripts only, so this page works from file:// -->
+<script src="../js/vendor/d3.min.js"></script>
+<script src="../js/vendor/plot.min.js"></script>
+<script src="../js/bundles/overlap-in-the-league.js"></script>
+<script>window.__prxApp = PRX["overlap-in-the-league"].mountWidget(document.getElementById("app"), {});</script>
+</body>
+</html>

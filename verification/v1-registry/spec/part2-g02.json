@@ -1,0 +1,211 @@
+{
+  "$schema": "../schema.json",
+  "spec": "part2-g02",
+  "description": "G-02 (A report is many pair decisions, pages/grades/report-builder.qmd): disclosure counts of the fixed reports the page names, beyond the N keys part2.json holds (six.r122223.N, six.r112233.N, six.u4.r1222.N, six.u4.r1122.N) and the family sizes six.reports.n2 to six.reports.n6. The reports are grade vectors in site order; disclosure needs no probabilities. 1/2/2/2/2/3 is {A} > {B, C, D, E} > {F}, 1/1/2/2/3/3 is {A, B} > {C, D} > {E, F}; four sites are A to D.",
+  "license_scope": "author",
+  "inputs": {},
+  "keys": {
+    "six.r122223.grades": {
+      "type": "vector",
+      "fn": "canonicalGrade",
+      "args": [
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          3
+        ]
+      ],
+      "format": {
+        "fn": "formatGrades"
+      },
+      "tolerance": 0,
+      "note": "the first report of the prediction, {A} > {B, C, D, E} > {F}"
+    },
+    "six.r112233.grades": {
+      "type": "vector",
+      "fn": "canonicalGrade",
+      "args": [
+        [
+          1,
+          1,
+          2,
+          2,
+          3,
+          3
+        ]
+      ],
+      "format": {
+        "fn": "formatGrades"
+      },
+      "tolerance": 0,
+      "note": "the second report of the prediction, {A, B} > {C, D} > {E, F}"
+    },
+    "six.r122223.sizes": {
+      "type": "vector",
+      "fn": "disclosure",
+      "args": [
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          3
+        ]
+      ],
+      "field": "sizes",
+      "format": {
+        "fn": "formatSizes"
+      },
+      "tolerance": 0
+    },
+    "six.r112233.sizes": {
+      "type": "vector",
+      "fn": "disclosure",
+      "args": [
+        [
+          1,
+          1,
+          2,
+          2,
+          3,
+          3
+        ]
+      ],
+      "field": "sizes",
+      "format": {
+        "fn": "formatSizes"
+      },
+      "tolerance": 0
+    },
+    "six.r122223.s": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          3
+        ]
+      ],
+      "field": "s",
+      "format": {
+        "fn": "formatShare"
+      },
+      "tolerance": 1e-12,
+      "note": "share stated N/M"
+    },
+    "six.r112233.s": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        [
+          1,
+          1,
+          2,
+          2,
+          3,
+          3
+        ]
+      ],
+      "field": "s",
+      "format": {
+        "fn": "formatShare"
+      },
+      "tolerance": 1e-12,
+      "note": "share stated N/M"
+    },
+    "six.r122223.G": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          3
+        ]
+      ],
+      "field": "G",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "number of grades"
+    },
+    "six.r112233.G": {
+      "type": "scalar",
+      "fn": "disclosure",
+      "args": [
+        [
+          1,
+          1,
+          2,
+          2,
+          3,
+          3
+        ]
+      ],
+      "field": "G",
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "number of grades"
+    },
+    "six.u4.M": {
+      "type": "scalar",
+      "fn": "pairCount",
+      "args": [
+        4
+      ],
+      "format": {
+        "fn": "formatCount"
+      },
+      "tolerance": 0,
+      "note": "pairs of the four sites A to D"
+    },
+    "six.u4.r1222.grades": {
+      "type": "vector",
+      "fn": "canonicalGrade",
+      "args": [
+        [
+          1,
+          2,
+          2,
+          2
+        ]
+      ],
+      "format": {
+        "fn": "formatGrades"
+      },
+      "tolerance": 0,
+      "note": "four sites: {A} > {B, C, D}"
+    },
+    "six.u4.r1122.grades": {
+      "type": "vector",
+      "fn": "canonicalGrade",
+      "args": [
+        [
+          1,
+          1,
+          2,
+          2
+        ]
+      ],
+      "format": {
+        "fn": "formatGrades"
+      },
+      "tolerance": 0,
+      "note": "four sites: {A, B} > {C, D}"
+    }
+  }
+}

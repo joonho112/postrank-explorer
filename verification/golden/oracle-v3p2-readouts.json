@@ -1,0 +1,1307 @@
+{
+ "group": "oracle-v3p2-readouts",
+ "generator": "r-export/19_v3_part2_readouts.R",
+ "uses_postrank": false,
+ "rows": [
+  {
+   "id": "pair-no-equality",
+   "args": {
+    "kind": "pair-equality",
+    "t": 0,
+    "tau": 0.25,
+    "certain": false
+   },
+   "expect": {
+    "weakCosts": [0.1, 0.9, 0.25],
+    "neutralCosts": [0.1, 0.9, 0.25],
+    "weakBest": [0],
+    "neutralBest": [0],
+    "N": [1, 1, 0],
+    "strict": [0.1, 0.9, 0],
+    "Q": [1, 1, 0],
+    "T": 1,
+    "R0": 0.25,
+    "EoverN": [0.1, 0.9, null],
+    "EoverQ": [0.1, 0.9, null],
+    "weakSwitch": [0.15],
+    "neutralSwitch": [0.6, 0.866666666666667],
+    "familySize": 3,
+    "guardAdmissible": [true, true, true]
+   }
+  },
+  {
+   "id": "pair-weak-boundary",
+   "args": {
+    "kind": "pair-equality",
+    "t": 0.15,
+    "tau": 0.25,
+    "certain": false
+   },
+   "expect": {
+    "weakCosts": [0.25, 0.9, 0.25],
+    "neutralCosts": [0.1, 0.75, 0.2125],
+    "weakBest": [0, 2],
+    "neutralBest": [0],
+    "N": [1, 1, 0],
+    "strict": [0.1, 0.75, 0],
+    "Q": [0.85, 0.85, 0],
+    "T": 0.85,
+    "R0": 0.2125,
+    "EoverN": [0.1, 0.75, null],
+    "EoverQ": [0.117647058823529, 0.882352941176471, null],
+    "weakSwitch": [0.15],
+    "neutralSwitch": [0.6, 0.866666666666667],
+    "familySize": 3,
+    "guardAdmissible": [true, true, true]
+   }
+  },
+  {
+   "id": "pair-m4",
+   "args": {
+    "kind": "pair-equality",
+    "t": 0.4,
+    "tau": 0.25,
+    "certain": false
+   },
+   "expect": {
+    "weakCosts": [0.5, 0.9, 0.25],
+    "neutralCosts": [0.1, 0.5, 0.15],
+    "weakBest": [2],
+    "neutralBest": [0],
+    "N": [1, 1, 0],
+    "strict": [0.1, 0.5, 0],
+    "Q": [0.6, 0.6, 0],
+    "T": 0.6,
+    "R0": 0.15,
+    "EoverN": [0.1, 0.5, null],
+    "EoverQ": [0.166666666666667, 0.833333333333333, null],
+    "weakSwitch": [0.15],
+    "neutralSwitch": [0.6, 0.866666666666667],
+    "familySize": 3,
+    "guardAdmissible": [true, true, true]
+   }
+  },
+  {
+   "id": "pair-neutral-first-boundary",
+   "args": {
+    "kind": "pair-equality",
+    "t": 0.6,
+    "tau": 0.25,
+    "certain": false
+   },
+   "expect": {
+    "weakCosts": [0.7, 0.9, 0.25],
+    "neutralCosts": [0.1, 0.3, 0.1],
+    "weakBest": [2],
+    "neutralBest": [0, 2],
+    "N": [1, 1, 0],
+    "strict": [0.1, 0.3, 0],
+    "Q": [0.4, 0.4, 0],
+    "T": 0.4,
+    "R0": 0.1,
+    "EoverN": [0.1, 0.3, null],
+    "EoverQ": [0.25, 0.75, null],
+    "weakSwitch": [0.15],
+    "neutralSwitch": [0.6, 0.866666666666667],
+    "familySize": 3,
+    "guardAdmissible": [true, true, true]
+   }
+  },
+  {
+   "id": "pair-neutral-second-boundary",
+   "args": {
+    "kind": "pair-equality",
+    "t": 0.866666666666667,
+    "tau": 0.25,
+    "certain": false
+   },
+   "expect": {
+    "weakCosts": [0.966666666666667, 0.9, 0.25],
+    "neutralCosts": [0.1, 0.0333333333333333, 0.0333333333333333],
+    "weakBest": [2],
+    "neutralBest": [1, 2],
+    "N": [1, 1, 0],
+    "strict": [0.1, 0.0333333333333333, 0],
+    "Q": [0.133333333333333, 0.133333333333333, 0],
+    "T": 0.133333333333333,
+    "R0": 0.0333333333333333,
+    "EoverN": [0.1, 0.0333333333333333, null],
+    "EoverQ": [0.75, 0.25, null],
+    "weakSwitch": [0.15],
+    "neutralSwitch": [0.6, 0.866666666666667],
+    "familySize": 3,
+    "guardAdmissible": [true, true, true]
+   }
+  },
+  {
+   "id": "pair-high-equality",
+   "args": {
+    "kind": "pair-equality",
+    "t": 0.9,
+    "tau": 0.25,
+    "certain": false
+   },
+   "expect": {
+    "weakCosts": [1, 0.9, 0.25],
+    "neutralCosts": [0.1, 0, 0.025],
+    "weakBest": [2],
+    "neutralBest": [1],
+    "N": [1, 1, 0],
+    "strict": [0.1, 0, 0],
+    "Q": [0.1, 0.1, 0],
+    "T": 0.1,
+    "R0": 0.025,
+    "EoverN": [0.1, 0, null],
+    "EoverQ": [1, 0, null],
+    "weakSwitch": [0.15],
+    "neutralSwitch": [0.6, 0.866666666666667],
+    "familySize": 3,
+    "guardAdmissible": [true, true, true]
+   }
+  },
+  {
+   "id": "pair-certain-equality",
+   "args": {
+    "kind": "pair-equality",
+    "t": 1,
+    "tau": 0.25,
+    "certain": true
+   },
+   "expect": {
+    "weakCosts": [1, 1, 0.25],
+    "neutralCosts": [0, 0, 0],
+    "weakBest": [2],
+    "neutralBest": [0, 1, 2],
+    "N": [1, 1, 0],
+    "strict": [0, 0, 0],
+    "Q": [0, 0, 0],
+    "T": 0,
+    "R0": 0,
+    "EoverN": [0, 0, null],
+    "EoverQ": [null, null, null],
+    "weakSwitch": [],
+    "neutralSwitch": [],
+    "familySize": 3,
+    "guardAdmissible": [false, false, true]
+   }
+  },
+  {
+   "id": "pair-neutral-triple-boundary",
+   "args": {
+    "kind": "pair-equality",
+    "t": 0.8,
+    "tau": 0.5,
+    "certain": false
+   },
+   "expect": {
+    "weakCosts": [0.9, 0.9, 0.5],
+    "neutralCosts": [0.1, 0.1, 0.1],
+    "weakBest": [2],
+    "neutralBest": [0, 1, 2],
+    "N": [1, 1, 0],
+    "strict": [0.1, 0.1, 0],
+    "Q": [0.2, 0.2, 0],
+    "T": 0.2,
+    "R0": 0.1,
+    "EoverN": [0.1, 0.1, null],
+    "EoverQ": [0.5, 0.5, null],
+    "weakSwitch": [0.4],
+    "neutralSwitch": [0.8],
+    "familySize": 3,
+    "guardAdmissible": [true, true, true]
+   }
+  },
+  {
+   "id": "dominance-all",
+   "args": {
+    "kind": "dominance",
+    "states": [
+     [
+      [4],
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [2],
+      [1],
+      [4],
+      [3]
+     ]
+    ],
+    "probs": [0.6, 0.4],
+    "ids": ["A", "B", "X", "Y"],
+    "tau": 0.444444444444444,
+    "family": {
+     "kind": "all"
+    }
+   },
+   "expect": {
+    "grade": [1, 2, 3, 4],
+    "risk": 0.266666666666667,
+    "N": 6,
+    "Ew": 1.6,
+    "EoverN": 0.266666666666667,
+    "familySize": 75,
+    "tieCount": 1,
+    "crossProbabilities": [0.6, 0.6, 0.6, 0.6],
+    "threshold": 0.555555555555556,
+    "separatingRisk": 0.414814814814815,
+    "separatingN": 4,
+    "separatingEw": 1.6,
+    "separatingEoverN": 0.4
+   }
+  },
+  {
+   "id": "dominance-atMost",
+   "args": {
+    "kind": "dominance",
+    "states": [
+     [
+      [4],
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [2],
+      [1],
+      [4],
+      [3]
+     ]
+    ],
+    "probs": [0.6, 0.4],
+    "ids": ["A", "B", "X", "Y"],
+    "tau": 0.444444444444444,
+    "family": {
+     "kind": "atMost",
+     "G": 2
+    }
+   },
+   "expect": {
+    "grade": [1, 2, 1, 2],
+    "risk": 0.314814814814815,
+    "N": 4,
+    "Ew": 1,
+    "EoverN": 0.25,
+    "familySize": 15,
+    "tieCount": 1,
+    "crossProbabilities": [0.6, 0.6, 0.6, 0.6],
+    "threshold": 0.555555555555556,
+    "separatingRisk": 0.414814814814815,
+    "separatingN": 4,
+    "separatingEw": 1.6,
+    "separatingEoverN": 0.4
+   }
+  },
+  {
+   "id": "dominance-exactly",
+   "args": {
+    "kind": "dominance",
+    "states": [
+     [
+      [4],
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [2],
+      [1],
+      [4],
+      [3]
+     ]
+    ],
+    "probs": [0.6, 0.4],
+    "ids": ["A", "B", "X", "Y"],
+    "tau": 0.444444444444444,
+    "family": {
+     "kind": "exactly",
+     "G": 2
+    }
+   },
+   "expect": {
+    "grade": [1, 2, 1, 2],
+    "risk": 0.314814814814815,
+    "N": 4,
+    "Ew": 1,
+    "EoverN": 0.25,
+    "familySize": 14,
+    "tieCount": 1,
+    "crossProbabilities": [0.6, 0.6, 0.6, 0.6],
+    "threshold": 0.555555555555556,
+    "separatingRisk": 0.414814814814815,
+    "separatingN": 4,
+    "separatingEw": 1.6,
+    "separatingEoverN": 0.4
+   }
+  },
+  {
+   "id": "another-law-same",
+   "args": {
+    "kind": "another-law",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "unit": 2,
+    "shift": 0,
+    "scale": 1,
+    "tau": 0.2,
+    "family": {
+     "kind": "atMost",
+     "G": 3
+    }
+   },
+   "expect": {
+    "selectedGrade": [1, 1, 2, 2, 3, 3],
+    "evaluationGrade": [1, 1, 2, 2, 3, 3],
+    "selectionFamilySize": 603,
+    "evaluationFamilySize": 603,
+    "selectedN": 12,
+    "evaluationN": 12,
+    "r00": 0.0416516399454871,
+    "r01": 0.0416516399454871,
+    "r10": 0.0416516399454871,
+    "r11": 0.0416516399454871,
+    "candidateShift": 0,
+    "candidateDiscrepancy": 0,
+    "regret": 0,
+    "delta": 0,
+    "deltaW": 0,
+    "candidateBound": 0,
+    "regretBound": 0,
+    "uniformBound": 0
+   }
+  },
+  {
+   "id": "another-law-move",
+   "args": {
+    "kind": "another-law",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "unit": 2,
+    "shift": 1,
+    "scale": 1,
+    "tau": 0.2,
+    "family": {
+     "kind": "atMost",
+     "G": 3
+    }
+   },
+   "expect": {
+    "selectedGrade": [1, 1, 2, 2, 3, 3],
+    "evaluationGrade": [1, 1, 1, 2, 3, 3],
+    "selectionFamilySize": 603,
+    "evaluationFamilySize": 603,
+    "selectedN": 12,
+    "evaluationN": 11,
+    "r00": 0.0416516399454871,
+    "r01": 0.135956481745588,
+    "r10": 0.0786370513732556,
+    "r11": 0.0542441078611637,
+    "candidateShift": 0.0943048418001008,
+    "candidateDiscrepancy": 0.0943048418001008,
+    "regret": 0.0817123738844243,
+    "delta": 0.848913652436349,
+    "deltaW": 0.848913652436349,
+    "candidateBound": 0.679130921949079,
+    "regretBound": 1.3016676004024,
+    "uniformBound": 1.6978273048727
+   }
+  },
+  {
+   "id": "another-law-spread",
+   "args": {
+    "kind": "another-law",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "unit": 2,
+    "shift": 0,
+    "scale": 2,
+    "tau": 0.2,
+    "family": {
+     "kind": "atMost",
+     "G": 3
+    }
+   },
+   "expect": {
+    "selectedGrade": [1, 1, 2, 2, 3, 3],
+    "evaluationGrade": [1, 1, 2, 2, 3, 3],
+    "selectionFamilySize": 603,
+    "evaluationFamilySize": 603,
+    "selectedN": 12,
+    "evaluationN": 12,
+    "r00": 0.0416516399454871,
+    "r01": 0.0779028325716426,
+    "r10": 0.0416516399454871,
+    "r11": 0.0779028325716426,
+    "candidateShift": 0.0362511926261555,
+    "candidateDiscrepancy": 0.0362511926261555,
+    "regret": 0,
+    "delta": 0.153519362109346,
+    "deltaW": 0.153519362109346,
+    "candidateBound": 0.122815489687477,
+    "regretBound": 0.245630979374954,
+    "uniformBound": 0.307038724218693
+   }
+  },
+  {
+   "id": "another-law-uncapped",
+   "args": {
+    "kind": "another-law",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "unit": 2,
+    "shift": 0.4,
+    "scale": 1,
+    "tau": 0.2,
+    "family": {
+     "kind": "all"
+    }
+   },
+   "expect": {
+    "selectedGrade": [1, 2, 3, 3, 4, 5],
+    "evaluationGrade": [1, 2, 3, 4, 5, 6],
+    "selectionFamilySize": 4683,
+    "evaluationFamilySize": 4683,
+    "selectedN": 14,
+    "evaluationN": 15,
+    "r00": 0.0371717560840893,
+    "r01": 0.0477849513667427,
+    "r10": 0.0479608764118148,
+    "r11": 0.0370216137581941,
+    "candidateShift": 0.0106131952826534,
+    "candidateDiscrepancy": 0.0106131952826534,
+    "regret": 0.0107633376085486,
+    "delta": 0.323286869044111,
+    "deltaW": 0.323286869044111,
+    "candidateBound": 0.301734411107837,
+    "regretBound": 0.625021280151947,
+    "uniformBound": 0.646573738088221
+   }
+  },
+  {
+   "id": "another-law-small",
+   "args": {
+    "kind": "another-law",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "unit": 2,
+    "shift": 0.01,
+    "scale": 1,
+    "tau": 0.36,
+    "family": {
+     "kind": "all"
+    }
+   },
+   "expect": {
+    "selectedGrade": [1, 2, 3, 3, 4, 5],
+    "evaluationGrade": [1, 2, 3, 4, 5, 6],
+    "selectionFamilySize": 4683,
+    "evaluationFamilySize": 4683,
+    "selectedN": 14,
+    "evaluationN": 15,
+    "r00": 0.047838422750756,
+    "r01": 0.0478603425632561,
+    "r10": 0.0479608764118148,
+    "r11": 0.0471051313707548,
+    "candidateShift": 2.19198125001319e-05,
+    "candidateDiscrepancy": 2.19198125001319e-05,
+    "regret": 0.00075521119250134,
+    "delta": 0.0131649728034019,
+    "deltaW": 0.0131649728034019,
+    "candidateBound": 0.0122873079498418,
+    "regretBound": 0.0254522807532437,
+    "uniformBound": 0.0263299456068038
+   }
+  },
+  {
+   "id": "one-correction-mean-low",
+   "args": {
+    "kind": "one-correction",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "mode": "mean",
+    "unit": 2,
+    "value": -1,
+    "cap": 3,
+    "tau": 0.2
+   },
+   "expect": {
+    "beforeGrade": [1, 1, 2, 2, 3, 3],
+    "afterGrade": [1, 1, 3, 2, 2, 3],
+    "commonBeforeGrade": [1, 1, 2, 2, 3, 3],
+    "commonAfterGrade": [1, 1, 3, 2, 2, 3],
+    "commonIds": ["A", "B", "C", "D", "E", "F"],
+    "beforeRisk": 0.0416516399454871,
+    "afterRisk": 0.0523886146491686,
+    "beforeN": 12,
+    "afterN": 12,
+    "beforeEw": 0.0247745991823067,
+    "afterEw": 0.185829219737529,
+    "beforeEoverN": 0.00206454993185889,
+    "afterEoverN": 0.0154857683114608,
+    "beforeFamilySize": 603,
+    "afterFamilySize": 603,
+    "beforeTieCount": 1,
+    "afterTieCount": 1,
+    "overall": {
+     "M": 15,
+     "nSame": 10,
+     "nNewDisclosed": 2,
+     "nNewWithheld": 2,
+     "nReversed": 1
+    },
+    "overallAgreement": 0.666666666666667,
+    "untouched": {
+     "M": 10,
+     "nSame": 8,
+     "nNewDisclosed": 1,
+     "nNewWithheld": 1,
+     "nReversed": 0
+    },
+    "untouchedAgreement": 0.8,
+    "untouchedEpsilon": 0
+   }
+  },
+  {
+   "id": "one-correction-none",
+   "args": {
+    "kind": "one-correction",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "mode": "mean",
+    "unit": 2,
+    "value": 0.25,
+    "cap": 3,
+    "tau": 0.2
+   },
+   "expect": {
+    "beforeGrade": [1, 1, 2, 2, 3, 3],
+    "afterGrade": [1, 1, 2, 2, 3, 3],
+    "commonBeforeGrade": [1, 1, 2, 2, 3, 3],
+    "commonAfterGrade": [1, 1, 2, 2, 3, 3],
+    "commonIds": ["A", "B", "C", "D", "E", "F"],
+    "beforeRisk": 0.0416516399454871,
+    "afterRisk": 0.0416516399454871,
+    "beforeN": 12,
+    "afterN": 12,
+    "beforeEw": 0.0247745991823067,
+    "afterEw": 0.0247745991823067,
+    "beforeEoverN": 0.00206454993185889,
+    "afterEoverN": 0.00206454993185889,
+    "beforeFamilySize": 603,
+    "afterFamilySize": 603,
+    "beforeTieCount": 1,
+    "afterTieCount": 1,
+    "overall": {
+     "M": 15,
+     "nSame": 15,
+     "nNewDisclosed": 0,
+     "nNewWithheld": 0,
+     "nReversed": 0
+    },
+    "overallAgreement": 1,
+    "untouched": {
+     "M": 10,
+     "nSame": 10,
+     "nNewDisclosed": 0,
+     "nNewWithheld": 0,
+     "nReversed": 0
+    },
+    "untouchedAgreement": 1,
+    "untouchedEpsilon": 0
+   }
+  },
+  {
+   "id": "one-correction-sd",
+   "args": {
+    "kind": "one-correction",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "mode": "sd",
+    "unit": 0,
+    "value": 1,
+    "cap": 2,
+    "tau": 0.2
+   },
+   "expect": {
+    "beforeGrade": [1, 1, 2, 2, 2, 2],
+    "afterGrade": [1, 1, 1, 1, 2, 2],
+    "commonBeforeGrade": [1, 1, 2, 2, 2, 2],
+    "commonAfterGrade": [1, 1, 1, 1, 2, 2],
+    "commonIds": ["A", "B", "C", "D", "E", "F"],
+    "beforeRisk": 0.0939664891773562,
+    "afterRisk": 0.0991977327619819,
+    "beforeN": 8,
+    "afterN": 8,
+    "beforeEw": 0.0094973376603423,
+    "afterEw": 0.0879659914297278,
+    "beforeEoverN": 0.00118716720754279,
+    "afterEoverN": 0.010995748928716,
+    "beforeFamilySize": 63,
+    "afterFamilySize": 63,
+    "beforeTieCount": 1,
+    "afterTieCount": 1,
+    "overall": {
+     "M": 15,
+     "nSame": 7,
+     "nNewDisclosed": 4,
+     "nNewWithheld": 4,
+     "nReversed": 0
+    },
+    "overallAgreement": 0.466666666666667,
+    "untouched": {
+     "M": 10,
+     "nSame": 4,
+     "nNewDisclosed": 4,
+     "nNewWithheld": 2,
+     "nReversed": 0
+    },
+    "untouchedAgreement": 0.4,
+    "untouchedEpsilon": 0
+   }
+  },
+  {
+   "id": "one-correction-drop",
+   "args": {
+    "kind": "one-correction",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "mode": "drop",
+    "unit": 4,
+    "value": 0,
+    "cap": 4,
+    "tau": 0.2
+   },
+   "expect": {
+    "beforeGrade": [1, 1, 2, 2, 3, 4],
+    "afterGrade": [1, 2, 3, 3, 4],
+    "commonBeforeGrade": [1, 1, 2, 2, 3],
+    "commonAfterGrade": [1, 2, 3, 3, 4],
+    "commonIds": ["A", "B", "C", "D", "F"],
+    "beforeRisk": 0.0379464521570366,
+    "afterRisk": 0.0398370905047766,
+    "beforeN": 13,
+    "afterN": 9,
+    "beforeEw": 0.169196782355549,
+    "afterEw": 0.198370905047766,
+    "beforeEoverN": 0.013015137104273,
+    "afterEoverN": 0.022041211671974,
+    "beforeFamilySize": 2163,
+    "afterFamilySize": 421,
+    "beforeTieCount": 1,
+    "afterTieCount": 1,
+    "overall": {
+     "M": 10,
+     "nSame": 9,
+     "nNewDisclosed": 1,
+     "nNewWithheld": 0,
+     "nReversed": 0
+    },
+    "overallAgreement": 0.9,
+    "untouched": {
+     "M": 10,
+     "nSame": 9,
+     "nNewDisclosed": 1,
+     "nNewWithheld": 0,
+     "nReversed": 0
+    },
+    "untouchedAgreement": 0.9,
+    "untouchedEpsilon": 0
+   }
+  },
+  {
+   "id": "coupling-u0-g112",
+   "args": {
+    "kind": "coupling",
+    "u": 0,
+    "g": [1, 1, 2],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.6, 0.15, 0.15, 0, 0.1]
+   },
+   "expect": {
+    "N": 2,
+    "E": 0.35,
+    "EoverN": 0.175,
+    "pNone": 0.75,
+    "unionBound": 0.65,
+    "values": [0, 1, 2],
+    "probs": [0.75, 0.15, 0.1],
+    "pairErrors": [0.25, 0.25, 0.1]
+   }
+  },
+  {
+   "id": "coupling-u0-g123",
+   "args": {
+    "kind": "coupling",
+    "u": 0,
+    "g": [1, 2, 3],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.6, 0.15, 0.15, 0, 0.1]
+   },
+   "expect": {
+    "N": 3,
+    "E": 0.6,
+    "EoverN": 0.2,
+    "pNone": 0.6,
+    "unionBound": 0.4,
+    "values": [0, 1, 2, 3],
+    "probs": [0.6, 0.3, 0, 0.1],
+    "pairErrors": [0.25, 0.25, 0.1]
+   }
+  },
+  {
+   "id": "coupling-u0-g111",
+   "args": {
+    "kind": "coupling",
+    "u": 0,
+    "g": [1, 1, 1],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.6, 0.15, 0.15, 0, 0.1]
+   },
+   "expect": {
+    "N": 0,
+    "E": 0,
+    "EoverN": null,
+    "pNone": 1,
+    "unionBound": 1,
+    "values": [0],
+    "probs": [1],
+    "pairErrors": [0.25, 0.25, 0.1]
+   }
+  },
+  {
+   "id": "coupling-u0.05-g112",
+   "args": {
+    "kind": "coupling",
+    "u": 0.05,
+    "g": [1, 1, 2],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.55, 0.2, 0.15, 0.05, 0.05]
+   },
+   "expect": {
+    "N": 2,
+    "E": 0.35,
+    "EoverN": 0.175,
+    "pNone": 0.7,
+    "unionBound": 0.65,
+    "values": [0, 1, 2],
+    "probs": [0.7, 0.25, 0.05],
+    "pairErrors": [0.25, 0.25, 0.1]
+   }
+  },
+  {
+   "id": "coupling-u0.05-g123",
+   "args": {
+    "kind": "coupling",
+    "u": 0.05,
+    "g": [1, 2, 3],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.55, 0.2, 0.15, 0.05, 0.05]
+   },
+   "expect": {
+    "N": 3,
+    "E": 0.6,
+    "EoverN": 0.2,
+    "pNone": 0.55,
+    "unionBound": 0.4,
+    "values": [0, 1, 2, 3],
+    "probs": [0.55, 0.35, 0.05, 0.05],
+    "pairErrors": [0.25, 0.25, 0.1]
+   }
+  },
+  {
+   "id": "coupling-u0.05-g111",
+   "args": {
+    "kind": "coupling",
+    "u": 0.05,
+    "g": [1, 1, 1],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.55, 0.2, 0.15, 0.05, 0.05]
+   },
+   "expect": {
+    "N": 0,
+    "E": 0,
+    "EoverN": null,
+    "pNone": 1,
+    "unionBound": 1,
+    "values": [0],
+    "probs": [1],
+    "pairErrors": [0.25, 0.25, 0.1]
+   }
+  },
+  {
+   "id": "coupling-u0.1-g112",
+   "args": {
+    "kind": "coupling",
+    "u": 0.1,
+    "g": [1, 1, 2],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.5, 0.25, 0.15, 0.1, 0]
+   },
+   "expect": {
+    "N": 2,
+    "E": 0.35,
+    "EoverN": 0.175,
+    "pNone": 0.65,
+    "unionBound": 0.65,
+    "values": [0, 1, 2],
+    "probs": [0.65, 0.35, 0],
+    "pairErrors": [0.25, 0.25, 0.1]
+   }
+  },
+  {
+   "id": "coupling-u0.1-g123",
+   "args": {
+    "kind": "coupling",
+    "u": 0.1,
+    "g": [1, 2, 3],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.5, 0.25, 0.15, 0.1, 0]
+   },
+   "expect": {
+    "N": 3,
+    "E": 0.6,
+    "EoverN": 0.2,
+    "pNone": 0.5,
+    "unionBound": 0.4,
+    "values": [0, 1, 2, 3],
+    "probs": [0.5, 0.4, 0.1, 0],
+    "pairErrors": [0.25, 0.25, 0.1]
+   }
+  },
+  {
+   "id": "coupling-u0.1-g111",
+   "args": {
+    "kind": "coupling",
+    "u": 0.1,
+    "g": [1, 1, 1],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.5, 0.25, 0.15, 0.1, 0]
+   },
+   "expect": {
+    "N": 0,
+    "E": 0,
+    "EoverN": null,
+    "pNone": 1,
+    "unionBound": 1,
+    "values": [0],
+    "probs": [1],
+    "pairErrors": [0.25, 0.25, 0.1]
+   }
+  },
+  {
+   "id": "coupling-u0.1-g112-S100-seed1",
+   "args": {
+    "kind": "coupling-mc",
+    "u": 0.1,
+    "g": [1, 1, 2],
+    "states": [
+     [
+      [3],
+      [2],
+      [1]
+     ],
+     [
+      [3],
+      [1],
+      [2]
+     ],
+     [
+      [2],
+      [3],
+      [1]
+     ],
+     [
+      [1],
+      [3],
+      [2]
+     ],
+     [
+      [1],
+      [2],
+      [3]
+     ]
+    ],
+    "probs": [0.5, 0.25, 0.15, 0.1, 0],
+    "S": 100,
+    "seed": 1
+   },
+   "expect": {
+    "N": 2,
+    "E": 0.35,
+    "EoverN": 0.175,
+    "pNone": 0.65,
+    "unionBound": 0.65,
+    "values": [0, 1],
+    "probs": [0.65, 0.35],
+    "wrongCounts": [1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1]
+   }
+  },
+  {
+   "id": "coherence-boundary-omega81",
+   "args": {
+    "kind": "normal-pair-boundary",
+    "meanA": 2,
+    "sdA": 1,
+    "meanB": 0.81,
+    "sdB": 1
+   },
+   "expect": {
+    "error": 0.200045962832684,
+    "pi": 0.799954037167316
+   }
+  },
+  {
+   "id": "tau-family-counterpart-boundary",
+   "args": {
+    "kind": "tau-family-boundary",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "tau": 0.144422183173242,
+    "tieTol": 1e-12
+   },
+   "expect": {
+    "all": {
+     "familySize": 4683,
+     "tieCount": 2,
+     "grades": [
+      [1, 1, 2, 2, 3, 3],
+      [1, 1, 2, 2, 3, 4]
+     ],
+     "Ns": [12, 13]
+    },
+    "cap3": {
+     "familySize": 603,
+     "tieCount": 1,
+     "grades": [
+      [1, 1, 2, 2, 3, 3]
+     ],
+     "Ns": [12]
+    },
+    "tieTol": 1e-12,
+    "allRisk": 0.0305360765801355,
+    "cap3Risk": 0.0305360765801355
+   }
+  },
+  {
+   "id": "families-tb14-tau10-ties",
+   "args": {
+    "kind": "finite-family-ties",
+    "states": [
+     [
+      [4, 4],
+      [3, 2],
+      [2, 3],
+      [1, 1]
+     ],
+     [
+      [3, 1],
+      [4, 2],
+      [2, 3],
+      [1, 4]
+     ]
+    ],
+    "probs": [0.75, 0.25],
+    "w": [0.6, 0.4],
+    "tau": 0.1,
+    "tieTol": 1e-12
+   },
+   "expect": {
+    "all": {
+     "familySize": 75,
+     "tieCount": 2,
+     "grades": [
+      [1, 1, 1, 1],
+      [1, 1, 1, 2]
+     ],
+     "Ns": [0, 3]
+    },
+    "cap3": {
+     "familySize": 51,
+     "tieCount": 2,
+     "grades": [
+      [1, 1, 1, 1],
+      [1, 1, 1, 2]
+     ],
+     "Ns": [0, 3]
+    },
+    "order": {
+     "familySize": 8,
+     "tieCount": 2,
+     "grades": [
+      [1, 1, 1, 1],
+      [1, 1, 1, 2]
+     ],
+     "Ns": [0, 3]
+    },
+    "tieTol": 1e-12
+   }
+  },
+  {
+   "id": "denominator-tie-boundary",
+   "args": {
+    "kind": "denominator-tie",
+    "means": [1.2, 0.95, 0.25, 0.15, -0.5, -0.8],
+    "sds": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+    "ids": ["A", "B", "C", "D", "E", "F"],
+    "tau": 0.188379558905791
+   },
+   "expect": {
+    "tieCount": 2,
+    "tieTol": 1e-12,
+    "grades": [
+     [1, 1, 2, 2, 3, 4],
+     [1, 2, 3, 3, 4, 5]
+    ],
+    "Ns": [13, 14],
+    "EoverMs": [0.0112797854903699, 0.023838422750756],
+    "EoverNs": [0.013015137104273, 0.0255411672329529]
+   }
+  }
+ ]
+}

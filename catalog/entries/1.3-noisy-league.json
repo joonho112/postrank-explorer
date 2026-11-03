@@ -1,0 +1,85 @@
+{
+  "id": "1.3",
+  "name": "noisy-league",
+  "part": "1",
+  "title": "Ranking noisy estimates",
+  "idea": "Ranking noisy estimates sends more of the noisiest units to the top and bottom places than their true values would, and replays show it is not one draw's luck.",
+  "status": "built",
+  "from": "v1 whole · v1 L-03 noisy-league",
+  "data": [
+    "engine"
+  ],
+  "credit": "A simulated league built for this site; idea after the ebrecipe README and Walters (CCPR handout, p. 92; Mixtape slides, pp. 43–44).",
+  "caption": "A simulated league built for this site: thirty fictional units with fixed true values; each draw adds noise of the unit's SE to every true value, computed in this browser.",
+  "presets": [
+    {
+      "id": "first-draw",
+      "label": "First draw",
+      "query": "seed=20261030&reveal=0&replays=0&highlight=none&draw=0"
+    },
+    {
+      "id": "reveal",
+      "label": "True values",
+      "query": "seed=20261030&reveal=1&replays=0&highlight=none&draw=0"
+    },
+    {
+      "id": "replay20",
+      "label": "Twenty replays",
+      "query": "seed=20261030&replays=20&reveal=1&highlight=none&draw=0"
+    },
+    {
+      "id": "replay11",
+      "label": "Replay 11",
+      "query": "seed=20261030&replays=20&reveal=1&highlight=none&draw=11"
+    },
+    {
+      "id": "extremes",
+      "label": "Extremes highlighted",
+      "query": "seed=20261030&replays=20&reveal=0&highlight=extremes&draw=0"
+    }
+  ],
+  "try": [
+    {
+      "preset": "first-draw",
+      "shows": [
+        "10 extreme positions",
+        "small units hold 5",
+        "medium units 4 and large units 1",
+        "3 small, 4 medium and 3 large units"
+      ]
+    },
+    {
+      "preset": "reveal",
+      "shows": [
+        "the top 10 by estimate, 9 are in the true top 10",
+        "11",
+        "30"
+      ]
+    },
+    {
+      "preset": "replay20",
+      "shows": [
+        "20 replays",
+        "small units hold 4.35 of the 10 extreme positions",
+        "large units 2.00",
+        "83.90 of the 435 pairs",
+        "88.12",
+        "7.45"
+      ]
+    },
+    {
+      "preset": "replay11",
+      "shows": [
+        "Replay 11",
+        "small units hold 2",
+        "medium units 5 and large units 3"
+      ]
+    },
+    {
+      "preset": "extremes",
+      "shows": [
+        "the truth, 3 small and 3 large units"
+      ]
+    }
+  ]
+}

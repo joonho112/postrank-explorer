@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "verification/readouts/_schema.json",
+  "title": "Read-out cases of one app",
+  "description": "verification/readouts/<app>.json: settings an app is mounted at in jsdom, and for each the numbers and fixed strings it must show, each matched to a source that is not the app's own code. verification/check_readouts.mjs validates every case file against this schema, then checks the rules the schema cannot express (named in the descriptions below). Files whose name starts with _ are not case files. From postrank Explorer v1's schema, without predict: v3 apps have no prediction gate, so a case that scripts a prediction is an error (rule predict).",
+  "type": "object",
+  "required": ["app", "catalog", "cases"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "app": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "The app's v3 name: js/apps/<app>.js, the name of its catalog entry (catalog.json apps[].name). The file name is <app>.json. v1 called this field widget."
+    },
+    "catalog": {
+      "type": ["string", "null"],
+      "pattern": "^(?:[1-9][0-9]*|T)\\.[1-9][0-9]*$",
+      "description": "The app's v3 catalog id (catalog.json apps[].id, such as \"1.3\"); its presets are the case presets and its caption is the caption line base.js writes. null only for a test fixture, which then gives its module."
+    },
+    "module": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Project-relative path of the ES module that exports mountWidget. Only fixtures (catalog null) set it; a catalog app is js/apps/<app>.js."
+    },
+    "from": {
+      "type": "string",
+      "description": "Where the cases came from, for a port: the v1 case file (\"postrank-explorer-v1 verification/readouts/noisy-league.json\")."
+    },
+    "about": { "type": "string" },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/case" }
+    }
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "description": "One mount. Exactly one of preset and query (the check enforces this; the app's defaults are written as query \"\"). A query that sets predict is an error (rule predict), and so is a raw query that sets preset. Every key the query, the preset, the spec or the updates name must be a key of the app, and every query value one the app takes (rule query), so a key renamed in the port or a value it cannot read is reported, not silently ignored.",
+      "required": ["id", "expect"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "Unique within the file; a port may keep v1's case ids." },
+        "about": { "type": "string" },
+        "preset": { "type": "string", "minLength": 1, "description": "A preset of the app's catalog entry, by its v3 id (catalog.json apps[].presets[].id). The app is mounted at ?preset=<id>, as a reader's link reaches it, and base.js applies the preset; the preset row must then show it pressed (rule preset)." },
+        "query": { "type": "string", "description": "A raw query such as \"?tau=.30&cap=3\" (or \"\" for the defaults), given to the app as window.__PRX_QUERY. It may set theme; not predict and not preset." },
+        "spec": { "type": "object", "description": "Optional spec object passed to mountWidget(el, spec). As on a page, base.js applies a preset first, then the spec, then the query's keys." },
+        "update": {
+          "type": "array",
+          "items": { "type": "object" },
+          "description": "Partial specs passed to handle.update() in order after the first render, each one settled (aria-busy included); the expectations read the final state. An update may name a preset by its v3 id ({ \"preset\": \"tau40\" })."
+        },
+        "expect": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/expectation" }
+        }
+      }
+    },
+    "expectation": {
+      "type": "object",
+      "description": "One element and where its value comes from. kind number (default unless source is literal): the element itself carries data-num; its raw value must equal the source value within tol, and its text must equal format(raw). kind text: the element text (or the attribute named by attr) must equal value exactly.",
+      "required": ["select", "source", "ref", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "select": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A CSS selector inside the app's mount element. Without index it must match exactly one element. Hooks: [data-prx-readout=\"<name>\"] on a read-out number (keep v1's hook names when porting), [data-prx-label], [data-prx-caption=\"<id>\"], [data-prx-family-size], [data-prx-part~=\"caption\"] for the caption line."
+        },
+        "index": { "type": "integer", "minimum": 0, "description": "Pick the n-th match (document order, from 0) when the selector matches several elements." },
+        "attr": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$", "description": "kind text only: compare this attribute (aria-label, title) instead of the text." },
+        "slots": {
+          "type": "boolean",
+          "description": "A literal text of an element only (not an attribute): compare the text with each outermost data-num element written as a slot, as in \"Monte Carlo, ⟨S⟩ draws, seed ⟨seed⟩\". Any ⟨name⟩ is one slot; the value writes no digit outside its slots. The numbers in the slots are checked by their own expectations (and all of them by the general rules), so a sentence is checked word for word without writing a number into a literal."
+        },
+        "about": { "type": "string" },
+        "kind": { "enum": ["number", "text"] },
+        "format": {
+          "$ref": "#/$defs/format",
+          "description": "The engine formatter of the element's kind (fn, options, item, spread), as in v1's numbers/spec. Default for registry: the key's own format (verification/v1-registry/spec; settings use formatSetting; case keys their display_format), and then the text must also equal the registry's display string. Required for golden and oracle numbers."
+        },
+        "source": {
+          "enum": ["golden", "registry", "oracle", "literal"],
+          "description": "golden: a postrank 1.1.0 golden row (verification/golden, uses_postrank true); oracle: an independent base-R oracle row (uses_postrank false); registry: a key of v1's frozen numbers registry (verification/v1-registry/numbers.json or numbers-cases.json; the registry is a source of expected values only, never of shown numbers); literal: a fixed string (a label, caption, legend, heading or table caption) only, never a number, whose ref is the row label of the v1 contract rule that fixes it."
+        },
+        "ref": {
+          "anyOf": [
+            { "type": "string", "minLength": 1 },
+            { "$ref": "#/$defs/goldenRef" }
+          ],
+          "description": "registry: the v1 key (\"six.A.cap3.tau20.risk\"); golden and oracle: { group, row, field }; literal: a row id of verification/v1-registry/contract-rows.json such as \"6.2\" or \"11.4\" (a 6.2 literal must be a result label and a 6.5 literal a caption of js/shared/labels.js, in their v3 wording)."
+        },
+        "value": {
+          "description": "The expected value written out (a number, an array, null for NA, a decimal string for a count above 2^53, or the exact string for text). It must agree with the source within tol, so a stale case file fails."
+        },
+        "tol": {
+          "$ref": "#/$defs/tolerance",
+          "description": "Default: the registry entry's tolerance; for golden and oracle the parity tolerance of the group and field (verification/parity.d); 0 otherwise."
+        }
+      }
+    },
+    "goldenRef": {
+      "type": "object",
+      "required": ["group", "row", "field"],
+      "additionalProperties": false,
+      "properties": {
+        "group": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "verification/golden/<group>.json" },
+        "row": { "type": "string", "minLength": 1, "description": "The row id." },
+        "field": { "type": "string", "minLength": 1, "description": "A dot path inside the row's expect object (\"pi\", \"E.0\", \"krwCard.risk\")." }
+      }
+    },
+    "format": {
+      "type": "object",
+      "required": ["fn"],
+      "additionalProperties": false,
+      "properties": {
+        "fn": { "type": "string", "pattern": "^format[A-Z][A-Za-z]*$", "description": "An engine formatter (js/pr-core.js) or a named format of js/shared/format.js (formatShare, formatExpectedCount; no options)." },
+        "options": { "type": "object" },
+        "item": { "$ref": "#/$defs/format" },
+        "spread": { "type": "boolean" }
+      }
+    },
+    "tolerance": {
+      "anyOf": [
+        { "type": "number", "minimum": 0 },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": { "abs": { "type": "number", "minimum": 0 }, "rel": { "type": "number", "minimum": 0 } }
+        },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "type": "number", "minimum": 0 },
+              { "type": "object", "additionalProperties": false, "properties": { "abs": { "type": "number", "minimum": 0 }, "rel": { "type": "number", "minimum": 0 } } }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "id": "2.9",
+  "name": "reported-and-realized",
+  "part": "2",
+  "title": "Reported and realized error",
+  "idea": "For a fixed report, its claimed wrong share and its expectation under an explicit reference law differ by at most the largest pair-error probability gap; a single fixed-truth realization can lie on either side.",
+  "status": "built",
+  "from": "new concept \u00b7 theory book ch. 18 (reported and realized loss; a producer's model); builds on v1 G-05; a prior-SD control (from 1.6) sets the claim against realized shares at fixed true values, which is not the calibration identity of ch. 18; picture: a fixed report's claimed E/N under an assumed prior SD (the reader's control) beside its expected share under another law and the realized shares over replays of the simulated league",
+  "data": [
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 18.",
+  "caption": "Simulated league of 30 units with deterministic true values and SEs .20, .10 and .05. Independent normal-normal teaching laws with prior mean 0; the reference prior SD is .15. Fixed-truth observation replays are not the conditional calibration identity.",
+  "presets": [
+    {
+      "id": "same",
+      "label": "Same conditional laws",
+      "query": "priorSd=.15&tau=.2&cap=3&replays=20&replay=1&drawLaw=reference&draws=100&seed=1"
+    },
+    {
+      "id": "narrow",
+      "label": "Narrow prior, five grades",
+      "query": "priorSd=.05&tau=.3&cap=5&replays=5&replay=1&drawLaw=reference&draws=100&seed=1"
+    },
+    {
+      "id": "fewer",
+      "label": "Lower cost, two grades",
+      "query": "priorSd=.15&tau=.1&cap=2&replays=5&replay=1&drawLaw=reference&draws=100&seed=1"
+    },
+    {
+      "id": "silent",
+      "label": "One grade, no disclosure",
+      "query": "priorSd=.15&tau=.2&cap=1&replays=3&replay=1&drawLaw=reference&draws=100&seed=1"
+    }
+  ],
+  "try": [
+    {
+      "preset": "same",
+      "shows": [
+        ".0632",
+        ".0526",
+        "152"
+      ]
+    },
+    {
+      "preset": "narrow",
+      "shows": [
+        ".140",
+        ".115",
+        ".4981"
+      ]
+    },
+    {
+      "preset": "fewer",
+      "shows": [
+        "56",
+        ".0254"
+      ]
+    },
+    {
+      "preset": "silent",
+      "shows": [
+        "NA: no disclosure",
+        "0"
+      ]
+    }
+  ]
+}

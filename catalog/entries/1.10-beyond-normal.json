@@ -1,0 +1,83 @@
+{
+  "id": "1.10",
+  "name": "beyond-normal",
+  "part": "1",
+  "title": "Same means, different directions",
+  "idea": "Two posteriors with the same margins can give opposite directions (1/3 against 2/3), and a two-bump posterior can have the larger mean but the smaller chance of being higher.",
+  "status": "built",
+  "from": "new angle · v1 L-07 Deeper boxes 2 and 3 (joint laws Q1 and Q2; the mixture); adds an editable 3 x 3 joint law",
+  "data": [
+    "engine"
+  ],
+  "credit": "Joint laws after the postrank theory book, ch. 9 (Fig. f09b).",
+  "caption": "a posterior set by hand for teaching; postrank does not fit it",
+  "presets": [
+    {
+      "id": "law1",
+      "label": "Law 1",
+      "query": "cells=010001100"
+    },
+    {
+      "id": "law2",
+      "label": "Law 2",
+      "query": "cells=001100010"
+    },
+    {
+      "id": "independent",
+      "label": "Independent",
+      "query": "cells=111111111"
+    },
+    {
+      "id": "equal",
+      "label": "Always equal",
+      "query": "cells=100010001"
+    },
+    {
+      "id": "w50",
+      "label": "w .50",
+      "query": "mixW=.50"
+    }
+  ],
+  "try": [
+    {
+      "preset": "law1",
+      "shows": [
+        "1/3",
+        "2/3",
+        "1.00",
+        ".20",
+        ".120",
+        "0",
+        ".392"
+      ]
+    },
+    {
+      "preset": "law2",
+      "shows": [
+        "2/3"
+      ]
+    },
+    {
+      "preset": "independent",
+      "shows": [
+        "1/3",
+        "2/3"
+      ]
+    },
+    {
+      "preset": "equal",
+      "shows": [
+        "0"
+      ]
+    },
+    {
+      "preset": "w50",
+      "shows": [
+        ".450",
+        ".620",
+        ".10",
+        ".30"
+      ]
+    }
+  ]
+}

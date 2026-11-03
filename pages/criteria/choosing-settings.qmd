@@ -1,0 +1,55 @@
+---
+title: "Sensitivity to costs, weights and grade restrictions"
+subtitle: "4.10 · settings and sensitivity after the postrank vignette a7"
+description: "Separate effects of changing the reporting loss and the feasible report family."
+---
+
+Withholding costs and error weights specify the reporting loss. A grade cap specifies the feasible family. The
+exact path varies the withholding cost while holding the posterior, weights and family fixed. A separate grid
+evaluates every combination of the declared costs, caps and weights. These displays distinguish changes in the
+objective from changes in admissible reports. Criterion profiles and disclosure describe the consequences without
+assuming that risks under different losses are directly comparable. The archived examples retain their recorded
+settings and provide discrete sensitivity comparisons rather than continuous change points.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/choosing-settings.js"></script>
+<script>window.__prxApp = PRX["choosing-settings"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Equal weights.** The best report states 9 of 15 pairs. Its wrong shares are .0177 and .0267 on scores A and B.
+  The exact path gives its interval and all returned equal-risk alternatives at the boundary costs.
+- **A higher price.** The report states 11 pairs; score B’s wrong share is .115. A larger withholding cost can favour additional statements, even though some statements are less certain.
+- **A still higher price.** The report states 12 pairs, while score B’s wrong share falls to .0575. Disclosure
+  cannot fall along this fixed-family exact path; a criterion-specific wrong share can move either way.
+- **At most two grades.** The best report states 8 pairs with risk .0939. The table that changes only the cap
+  keeps the same price and weights, making its risks comparable; the smallest risk cannot rise as the family expands.
+- **Thirty-site archive.** Recorded disclosures include 131, 276, 305 and 312 pairs. These dots describe the saved
+  solves at their recorded prices. Their spacing does not locate the exact transitions of a continuous path.
+- **Tutorial archive.** The package’s prepared sensitivity analysis has 7 settings, changing one setting at a time.
+  The live view instead evaluates the full Cartesian grid with a fixed reference grade.
+
+::: {.callout-note appearance="simple"}
+Every row’s comparison reevaluates the same reference grade under that row’s loss. A reference excluded by a cap
+remains a fixed-report comparator; it does not become an admissible solution. Across changed prices or weights,
+risk values measure different losses. The thirty-site archives use joint draws and fixed settings, separately
+from the Gaussian marginal example. Intervals and boundary tables belong to the live exact path; archived dots
+carry their saved statuses and gaps. The R block below reads the prepared one-at-a-time tutorial archive.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+s <- readRDS(system.file("extdata/cached/tutorial_sensitivity.rds", package="postrank", mustWork=TRUE))$value
+s$table[, c("setting_id", "risk", "N")]
+```
+:::
+
+Standalone: [choosing-settings](../../embed/choosing-settings.html), for example `?preset=tau40&theme=dark`.
+
+Related applications: [A common grade report for two scores](two-scores.qmd), [Minimising the largest criterion risk](worst-criterion.qmd),
+and [Optimal reports along the withholding-cost path](../grades/tau-path.qmd).

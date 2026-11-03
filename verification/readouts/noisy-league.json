@@ -1,0 +1,4527 @@
+{
+  "$schema": "./_schema.json",
+  "app": "noisy-league",
+  "catalog": "1.3",
+  "from": "postrank-explorer-v1 verification/readouts/noisy-league.json",
+  "about": "The simulated league ranked by estimate. Numbers of the first draw at seed 20261030 and at 20261031-20261033 come from base-R oracle rows (oracle-simulate: drawLeague, extremeCounts top and bottom, topKOverlap, misorderedPairs, expectedMisorderedPairs, league30); group totals, truth counts, true ranks and the twenty-replay averages come from the registry (numbers/spec/part1-l03.json and part1.json league.* keys). Per-replay counts (group totals among the 10 extreme positions, top-10 overlap, pairs in the wrong order) and the twenty-replay averages come from the registry keys of the engine's leagueReplays (league.replay.rNN.*, league.replay20.avg.*; base-R oracle rows pending, Step 5.14). Port to v3 1.3: v1's seven cases unchanged (none scripted a prediction; the presets keep their v1 ids and queries), the reveal case extended with the U18 and U19 rows (positions 24 and 26, true ranks 30 and 11), and four cases for the draw key: the first preset, replay 11, a draw beyond the replays run, and an outside change of the replays. Part 1 review: the expected count prints at four significant digits (88.12, formatExpectedCount, register CR-002), checked against the oracle row in place of the registry's one-decimal 88.1; the read-out keeps v1's three sentences, checked word for word at Twenty replays.",
+  "cases": [
+    {
+      "id": "first-draw",
+      "about": "Preset first-draw (the app loads on it): the first draw at seed 20261030, true values hidden, no replays.",
+      "preset": "first-draw",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "draw line: the seed of the first draw",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the seed of the first draw",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"read-small\"]",
+          "about": "read-out: small units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"read-medium\"]",
+          "about": "read-out: medium units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"read-large\"]",
+          "about": "read-out: large units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"card-true-small\"]",
+          "about": "size card: small units among the true extreme positions",
+          "source": "registry",
+          "ref": "league.truth.ext10small",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"card-true-medium\"]",
+          "about": "size card: medium units among the true extreme positions",
+          "source": "registry",
+          "ref": "league.truth.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"card-true-large\"]",
+          "about": "size card: large units among the true extreme positions",
+          "source": "registry",
+          "ref": "league.truth.ext10large",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "defaults",
+      "about": "No query: the first draw at seed 20261030, true values hidden, no replays (the setting of the first preset).",
+      "query": "",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "draw line: the seed of the first draw",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the seed of the first draw",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"obs-small\"]",
+          "about": "size card: observations per small unit",
+          "source": "registry",
+          "ref": "league.size.small",
+          "value": 16
+        },
+        {
+          "select": "[data-prx-readout=\"se-small\"]",
+          "about": "size card: SE of a small unit (base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.0"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"obs-medium\"]",
+          "about": "size card: observations per medium unit",
+          "source": "registry",
+          "ref": "league.size.medium",
+          "value": 64
+        },
+        {
+          "select": "[data-prx-readout=\"se-medium\"]",
+          "about": "size card: SE of a medium unit (base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.1"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"obs-large\"]",
+          "about": "size card: observations per large unit",
+          "source": "registry",
+          "ref": "league.size.large",
+          "value": 256
+        },
+        {
+          "select": "[data-prx-readout=\"se-large\"]",
+          "about": "size card: SE of a large unit (base-R oracle)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "se.2"
+          },
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"card-true-small\"]",
+          "about": "size card: small units among the true ten extreme positions",
+          "source": "registry",
+          "ref": "league.truth.ext10small",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"card-true-medium\"]",
+          "about": "size card: medium units among the true ten extreme positions",
+          "source": "registry",
+          "ref": "league.truth.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"card-true-large\"]",
+          "about": "size card: large units among the true ten extreme positions",
+          "source": "registry",
+          "ref": "league.truth.ext10large",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"top-small\"]",
+          "about": "tallies: small units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "top.small"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-small\"]",
+          "about": "tallies: small units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "bottom.small"
+          },
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"top-medium\"]",
+          "about": "tallies: medium units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "top.medium"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-medium\"]",
+          "about": "tallies: medium units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "bottom.medium"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"top-large\"]",
+          "about": "tallies: large units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "top.large"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-large\"]",
+          "about": "tallies: large units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "bottom.large"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"ext-small\"]",
+          "about": "tallies: small units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"read-small\"]",
+          "about": "read-out: small units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"ext-medium\"]",
+          "about": "tallies: medium units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"read-medium\"]",
+          "about": "read-out: medium units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"ext-large\"]",
+          "about": "tallies: large units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"read-large\"]",
+          "about": "read-out: large units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"truth-small\"]",
+          "about": "tallies: small units among the true ten extreme positions",
+          "source": "registry",
+          "ref": "league.truth.ext10small",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"truth-medium\"]",
+          "about": "tallies: medium units among the true ten extreme positions",
+          "source": "registry",
+          "ref": "league.truth.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"truth-large\"]",
+          "about": "tallies: large units among the true ten extreme positions",
+          "source": "registry",
+          "ref": "league.truth.ext10large",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"read-true-small\"]",
+          "about": "read-out: truly, small units",
+          "source": "registry",
+          "ref": "league.truth.ext10small",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"read-true-large\"]",
+          "about": "read-out: truly, large units",
+          "source": "registry",
+          "ref": "league.truth.ext10large",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "reveal",
+      "about": "Preset reveal: the first draw with the true values shown.",
+      "preset": "reveal",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "draw line: the seed of the first draw",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"top-small\"]",
+          "about": "tallies: small units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "top.small"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-small\"]",
+          "about": "tallies: small units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "bottom.small"
+          },
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"top-medium\"]",
+          "about": "tallies: medium units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "top.medium"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-medium\"]",
+          "about": "tallies: medium units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "bottom.medium"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"top-large\"]",
+          "about": "tallies: large units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "top.large"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-large\"]",
+          "about": "tallies: large units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "bottom.large"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"ext-small\"]",
+          "about": "tallies: small units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"read-small\"]",
+          "about": "read-out: small units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"ext-medium\"]",
+          "about": "tallies: medium units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"read-medium\"]",
+          "about": "read-out: medium units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"ext-large\"]",
+          "about": "tallies: large units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"read-large\"]",
+          "about": "read-out: large units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"read-top\"]",
+          "about": "read-out: top 10 by estimate in the true top 10 (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261030-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 9
+        },
+        {
+          "select": "[data-prx-readout=\"read-top\"]",
+          "about": "read-out: the same count equals the page's registry value",
+          "source": "registry",
+          "ref": "league.default.top10overlap",
+          "value": 9
+        },
+        {
+          "select": "[data-prx-readout=\"read-wrong\"]",
+          "about": "read-out: pairs the estimates order the wrong way (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"read-wrong\"]",
+          "about": "read-out: the same count equals the page's registry value",
+          "source": "registry",
+          "ref": "league.default.raw.misordered",
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"read-expected\"]",
+          "about": "read-out: expected pairs in the wrong order, closed form (base-R oracle), four significant digits",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(3) th",
+          "about": "league table (hidden table): U10 is third by estimate in the first draw",
+          "source": "registry",
+          "ref": "league.default.U10.estpos",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(3) td",
+          "index": 3,
+          "about": "league table: U10's estimate in the first draw (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.9"
+          },
+          "value": 0.171691001836989
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(3) td",
+          "index": 4,
+          "about": "league table: U10's true value (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "theta.9"
+          },
+          "value": -0.178772425752209
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(3) td",
+          "index": 5,
+          "about": "league table: U10's true rank",
+          "source": "registry",
+          "ref": "league.default.U10.truerank",
+          "value": 27
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(24) th",
+          "about": "league table (hidden table): U18, a large unit, is 24th by estimate in the first draw",
+          "source": "registry",
+          "ref": "league.default.U18.estpos",
+          "value": 24
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(24) td",
+          "index": 3,
+          "about": "league table: U18's estimate in the first draw (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.17"
+          },
+          "value": -0.202848528200127
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(24) td",
+          "index": 4,
+          "about": "league table: U18's true value, the lowest of the league (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "theta.17"
+          },
+          "value": -0.319206785127748
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(24) td",
+          "index": 5,
+          "about": "league table: U18's true rank",
+          "source": "registry",
+          "ref": "league.default.U18.truerank",
+          "value": 30
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(26) th",
+          "about": "league table (hidden table): U19, a small unit, is 26th by estimate, the first of the bottom five",
+          "source": "registry",
+          "ref": "league.default.U19.estpos",
+          "value": 26
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(26) td",
+          "index": 3,
+          "about": "league table: U19's estimate in the first draw (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "drawLeague-seed20261030",
+            "field": "estimate.18"
+          },
+          "value": -0.215264315934008
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(26) td",
+          "index": 4,
+          "about": "league table: U19's true value (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "theta.18"
+          },
+          "value": 0.0577980699611351
+        },
+        {
+          "select": ".prx-nl-league-chart table tbody tr:nth-child(26) td",
+          "index": 5,
+          "about": "league table: U19's true rank",
+          "source": "registry",
+          "ref": "league.default.U19.truerank",
+          "value": 11
+        }
+      ]
+    },
+    {
+      "id": "replay20",
+      "about": "Preset replay20 (deck): twenty replays with the true values shown; the league table still shows the first draw. Replays 1-3 use seeds 20261031-20261033, rows of the base-R oracle.",
+      "preset": "replay20",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"ext-small\"]",
+          "about": "tallies: small units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"read-small\"]",
+          "about": "read-out: small units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"ext-medium\"]",
+          "about": "tallies: medium units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"read-medium\"]",
+          "about": "read-out: medium units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"ext-large\"]",
+          "about": "tallies: large units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"read-large\"]",
+          "about": "read-out: large units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"read-top\"]",
+          "about": "read-out: top 10 by estimate in the true top 10 (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261030-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 9
+        },
+        {
+          "select": "[data-prx-readout=\"read-top\"]",
+          "about": "read-out: the same count equals the page's registry value",
+          "source": "registry",
+          "ref": "league.default.top10overlap",
+          "value": 9
+        },
+        {
+          "select": "[data-prx-readout=\"read-wrong\"]",
+          "about": "read-out: pairs the estimates order the wrong way (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"read-wrong\"]",
+          "about": "read-out: the same count equals the page's registry value",
+          "source": "registry",
+          "ref": "league.default.raw.misordered",
+          "value": 93
+        },
+        {
+          "select": "[data-prx-readout=\"read-expected\"]",
+          "about": "read-out: expected pairs in the wrong order, closed form (base-R oracle), four significant digits",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        },
+        {
+          "select": "[data-prx-readout=\"avg-small\"]",
+          "about": "tallies: average of the twenty replays, small units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-small\"]",
+          "about": "tallies: average of the twenty replays, small units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.small"
+          },
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-small\"]",
+          "about": "replay summary: average of the twenty replays, small units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-small\"]",
+          "about": "replay summary: average of the twenty replays, small units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.small"
+          },
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-medium\"]",
+          "about": "tallies: average of the twenty replays, medium units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10medium",
+          "value": 3.65
+        },
+        {
+          "select": "[data-prx-readout=\"avg-medium\"]",
+          "about": "tallies: average of the twenty replays, medium units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.medium"
+          },
+          "value": 3.65
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-medium\"]",
+          "about": "replay summary: average of the twenty replays, medium units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10medium",
+          "value": 3.65
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-medium\"]",
+          "about": "replay summary: average of the twenty replays, medium units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.medium"
+          },
+          "value": 3.65
+        },
+        {
+          "select": "[data-prx-readout=\"avg-large\"]",
+          "about": "tallies: average of the twenty replays, large units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10large",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"avg-large\"]",
+          "about": "tallies: average of the twenty replays, large units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.large"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-large\"]",
+          "about": "replay summary: average of the twenty replays, large units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10large",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-large\"]",
+          "about": "replay summary: average of the twenty replays, large units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.large"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"avg-small\"]",
+          "about": "tallies: the same average equals the storyboard key (shown with two decimals)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "registry",
+          "ref": "league.replay20.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-large\"]",
+          "about": "tallies: the same average equals the storyboard key (shown with two decimals)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "registry",
+          "ref": "league.replay20.ext10large",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"read-avg-small\"]",
+          "about": "read-out: average of the twenty replays, small units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"read-avg-small\"]",
+          "about": "read-out: average of the twenty replays, small units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.small"
+          },
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"read-avg-large\"]",
+          "about": "read-out: average of the twenty replays, large units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10large",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"read-avg-large\"]",
+          "about": "read-out: average of the twenty replays, large units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.large"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 1,
+          "about": "Monte Carlo caption: the seed (replay r uses seed + r)",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"avg-top\"]",
+          "about": "replay summary: average top-10 overlap",
+          "source": "registry",
+          "ref": "league.replay20.avg.top10overlap",
+          "value": 7.45
+        },
+        {
+          "select": "[data-prx-readout=\"avg-top\"]",
+          "about": "replay summary: average top-10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.topOverlap"
+          },
+          "value": 7.45
+        },
+        {
+          "select": "[data-prx-readout=\"avg-top\"]",
+          "about": "replay summary: the same average equals the storyboard key (shown with two decimals)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "registry",
+          "ref": "league.replay20.top10overlap",
+          "value": 7.45
+        },
+        {
+          "select": "[data-prx-readout=\"avg-wrong\"]",
+          "about": "replay summary: average pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay20.avg.misordered",
+          "value": 83.9
+        },
+        {
+          "select": "[data-prx-readout=\"avg-wrong\"]",
+          "about": "replay summary: average pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.misordered"
+          },
+          "value": 83.9
+        },
+        {
+          "select": "[data-prx-readout=\"expected-wrong\"]",
+          "about": "replay summary: expected pairs in the wrong order, closed form (base-R oracle), four significant digits",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 4,
+          "about": "replay table: replay 1 (seed 20261031), top 10 overlap (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261031-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 5,
+          "about": "replay table: replay 1 (seed 20261031), pairs in the wrong order (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261031-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 116
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 4,
+          "about": "replay table: replay 2 (seed 20261032), top 10 overlap (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261032-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 5,
+          "about": "replay table: replay 2 (seed 20261032), pairs in the wrong order (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261032-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 90
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 4,
+          "about": "replay table: replay 3 (seed 20261033), top 10 overlap (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261033-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 5,
+          "about": "replay table: replay 3 (seed 20261033), pairs in the wrong order (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261033-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 80
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 0,
+          "about": "replay table: replay 1 uses seed + 1",
+          "source": "registry",
+          "ref": "settings.seed.replay01",
+          "value": 20261031
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 0,
+          "about": "replay table: replay 20 uses seed + 20",
+          "source": "registry",
+          "ref": "settings.seed.replay20",
+          "value": 20261050
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 1,
+          "about": "replay table: replay 1 (seed 20261031), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r01.ext10small",
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 1,
+          "about": "replay table: replay 1 (seed 20261031), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.0.small"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 2,
+          "about": "replay table: replay 1 (seed 20261031), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r01.ext10medium",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 2,
+          "about": "replay table: replay 1 (seed 20261031), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.0.medium"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 3,
+          "about": "replay table: replay 1 (seed 20261031), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r01.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 3,
+          "about": "replay table: replay 1 (seed 20261031), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.0.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 4,
+          "about": "replay table: replay 1 (seed 20261031), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r01.top10overlap",
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 5,
+          "about": "replay table: replay 1 (seed 20261031), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r01.misordered",
+          "value": 116
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 1,
+          "about": "replay table: replay 2 (seed 20261032), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r02.ext10small",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 1,
+          "about": "replay table: replay 2 (seed 20261032), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.1.small"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 2,
+          "about": "replay table: replay 2 (seed 20261032), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r02.ext10medium",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 2,
+          "about": "replay table: replay 2 (seed 20261032), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.1.medium"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 3,
+          "about": "replay table: replay 2 (seed 20261032), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r02.ext10large",
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 3,
+          "about": "replay table: replay 2 (seed 20261032), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.1.large"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 4,
+          "about": "replay table: replay 2 (seed 20261032), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r02.top10overlap",
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 5,
+          "about": "replay table: replay 2 (seed 20261032), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r02.misordered",
+          "value": 90
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 1,
+          "about": "replay table: replay 3 (seed 20261033), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r03.ext10small",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 1,
+          "about": "replay table: replay 3 (seed 20261033), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.2.small"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 2,
+          "about": "replay table: replay 3 (seed 20261033), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r03.ext10medium",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 2,
+          "about": "replay table: replay 3 (seed 20261033), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.2.medium"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 3,
+          "about": "replay table: replay 3 (seed 20261033), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r03.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 3,
+          "about": "replay table: replay 3 (seed 20261033), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.2.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 4,
+          "about": "replay table: replay 3 (seed 20261033), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r03.top10overlap",
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 5,
+          "about": "replay table: replay 3 (seed 20261033), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r03.misordered",
+          "value": 80
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 1,
+          "about": "replay table: replay 4 (seed 20261034), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r04.ext10small",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 1,
+          "about": "replay table: replay 4 (seed 20261034), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.3.small"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 2,
+          "about": "replay table: replay 4 (seed 20261034), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r04.ext10medium",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 2,
+          "about": "replay table: replay 4 (seed 20261034), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.3.medium"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 3,
+          "about": "replay table: replay 4 (seed 20261034), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r04.ext10large",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 3,
+          "about": "replay table: replay 4 (seed 20261034), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.3.large"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 4,
+          "about": "replay table: replay 4 (seed 20261034), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r04.top10overlap",
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 4,
+          "about": "replay table: replay 4 (seed 20261034), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.3"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 5,
+          "about": "replay table: replay 4 (seed 20261034), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r04.misordered",
+          "value": 76
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 5,
+          "about": "replay table: replay 4 (seed 20261034), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.3"
+          },
+          "value": 76
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 1,
+          "about": "replay table: replay 5 (seed 20261035), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r05.ext10small",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 1,
+          "about": "replay table: replay 5 (seed 20261035), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.4.small"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 2,
+          "about": "replay table: replay 5 (seed 20261035), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r05.ext10medium",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 2,
+          "about": "replay table: replay 5 (seed 20261035), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.4.medium"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 3,
+          "about": "replay table: replay 5 (seed 20261035), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r05.ext10large",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 3,
+          "about": "replay table: replay 5 (seed 20261035), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.4.large"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 4,
+          "about": "replay table: replay 5 (seed 20261035), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r05.top10overlap",
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 4,
+          "about": "replay table: replay 5 (seed 20261035), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.4"
+          },
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 5,
+          "about": "replay table: replay 5 (seed 20261035), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r05.misordered",
+          "value": 98
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(5) td",
+          "index": 5,
+          "about": "replay table: replay 5 (seed 20261035), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.4"
+          },
+          "value": 98
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 1,
+          "about": "replay table: replay 6 (seed 20261036), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r06.ext10small",
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 1,
+          "about": "replay table: replay 6 (seed 20261036), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.5.small"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 2,
+          "about": "replay table: replay 6 (seed 20261036), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r06.ext10medium",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 2,
+          "about": "replay table: replay 6 (seed 20261036), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.5.medium"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 3,
+          "about": "replay table: replay 6 (seed 20261036), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r06.ext10large",
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 3,
+          "about": "replay table: replay 6 (seed 20261036), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.5.large"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 4,
+          "about": "replay table: replay 6 (seed 20261036), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r06.top10overlap",
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 4,
+          "about": "replay table: replay 6 (seed 20261036), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.5"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 5,
+          "about": "replay table: replay 6 (seed 20261036), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r06.misordered",
+          "value": 82
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(6) td",
+          "index": 5,
+          "about": "replay table: replay 6 (seed 20261036), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.5"
+          },
+          "value": 82
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 1,
+          "about": "replay table: replay 7 (seed 20261037), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r07.ext10small",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 1,
+          "about": "replay table: replay 7 (seed 20261037), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.6.small"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 2,
+          "about": "replay table: replay 7 (seed 20261037), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r07.ext10medium",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 2,
+          "about": "replay table: replay 7 (seed 20261037), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.6.medium"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 3,
+          "about": "replay table: replay 7 (seed 20261037), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r07.ext10large",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 3,
+          "about": "replay table: replay 7 (seed 20261037), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.6.large"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 4,
+          "about": "replay table: replay 7 (seed 20261037), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r07.top10overlap",
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 4,
+          "about": "replay table: replay 7 (seed 20261037), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.6"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 5,
+          "about": "replay table: replay 7 (seed 20261037), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r07.misordered",
+          "value": 87
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(7) td",
+          "index": 5,
+          "about": "replay table: replay 7 (seed 20261037), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.6"
+          },
+          "value": 87
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 1,
+          "about": "replay table: replay 8 (seed 20261038), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r08.ext10small",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 1,
+          "about": "replay table: replay 8 (seed 20261038), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.7.small"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 2,
+          "about": "replay table: replay 8 (seed 20261038), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r08.ext10medium",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 2,
+          "about": "replay table: replay 8 (seed 20261038), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.7.medium"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 3,
+          "about": "replay table: replay 8 (seed 20261038), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r08.ext10large",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 3,
+          "about": "replay table: replay 8 (seed 20261038), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.7.large"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 4,
+          "about": "replay table: replay 8 (seed 20261038), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r08.top10overlap",
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 4,
+          "about": "replay table: replay 8 (seed 20261038), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.7"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 5,
+          "about": "replay table: replay 8 (seed 20261038), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r08.misordered",
+          "value": 65
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(8) td",
+          "index": 5,
+          "about": "replay table: replay 8 (seed 20261038), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.7"
+          },
+          "value": 65
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 1,
+          "about": "replay table: replay 9 (seed 20261039), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r09.ext10small",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 1,
+          "about": "replay table: replay 9 (seed 20261039), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.8.small"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 2,
+          "about": "replay table: replay 9 (seed 20261039), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r09.ext10medium",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 2,
+          "about": "replay table: replay 9 (seed 20261039), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.8.medium"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 3,
+          "about": "replay table: replay 9 (seed 20261039), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r09.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 3,
+          "about": "replay table: replay 9 (seed 20261039), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.8.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 4,
+          "about": "replay table: replay 9 (seed 20261039), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r09.top10overlap",
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 4,
+          "about": "replay table: replay 9 (seed 20261039), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.8"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 5,
+          "about": "replay table: replay 9 (seed 20261039), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r09.misordered",
+          "value": 73
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(9) td",
+          "index": 5,
+          "about": "replay table: replay 9 (seed 20261039), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.8"
+          },
+          "value": 73
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 1,
+          "about": "replay table: replay 10 (seed 20261040), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r10.ext10small",
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 1,
+          "about": "replay table: replay 10 (seed 20261040), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.9.small"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 2,
+          "about": "replay table: replay 10 (seed 20261040), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r10.ext10medium",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 2,
+          "about": "replay table: replay 10 (seed 20261040), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.9.medium"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 3,
+          "about": "replay table: replay 10 (seed 20261040), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r10.ext10large",
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 3,
+          "about": "replay table: replay 10 (seed 20261040), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.9.large"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 4,
+          "about": "replay table: replay 10 (seed 20261040), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r10.top10overlap",
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 4,
+          "about": "replay table: replay 10 (seed 20261040), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.9"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 5,
+          "about": "replay table: replay 10 (seed 20261040), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r10.misordered",
+          "value": 94
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(10) td",
+          "index": 5,
+          "about": "replay table: replay 10 (seed 20261040), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.9"
+          },
+          "value": 94
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 1,
+          "about": "replay table: replay 11 (seed 20261041), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r11.ext10small",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 1,
+          "about": "replay table: replay 11 (seed 20261041), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.10.small"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 2,
+          "about": "replay table: replay 11 (seed 20261041), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r11.ext10medium",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 2,
+          "about": "replay table: replay 11 (seed 20261041), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.10.medium"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 3,
+          "about": "replay table: replay 11 (seed 20261041), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r11.ext10large",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 3,
+          "about": "replay table: replay 11 (seed 20261041), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.10.large"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 4,
+          "about": "replay table: replay 11 (seed 20261041), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r11.top10overlap",
+          "value": 9
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 4,
+          "about": "replay table: replay 11 (seed 20261041), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.10"
+          },
+          "value": 9
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 5,
+          "about": "replay table: replay 11 (seed 20261041), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r11.misordered",
+          "value": 62
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(11) td",
+          "index": 5,
+          "about": "replay table: replay 11 (seed 20261041), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.10"
+          },
+          "value": 62
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 1,
+          "about": "replay table: replay 12 (seed 20261042), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r12.ext10small",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 1,
+          "about": "replay table: replay 12 (seed 20261042), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.11.small"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 2,
+          "about": "replay table: replay 12 (seed 20261042), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r12.ext10medium",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 2,
+          "about": "replay table: replay 12 (seed 20261042), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.11.medium"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 3,
+          "about": "replay table: replay 12 (seed 20261042), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r12.ext10large",
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 3,
+          "about": "replay table: replay 12 (seed 20261042), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.11.large"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 4,
+          "about": "replay table: replay 12 (seed 20261042), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r12.top10overlap",
+          "value": 9
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 4,
+          "about": "replay table: replay 12 (seed 20261042), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.11"
+          },
+          "value": 9
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 5,
+          "about": "replay table: replay 12 (seed 20261042), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r12.misordered",
+          "value": 73
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(12) td",
+          "index": 5,
+          "about": "replay table: replay 12 (seed 20261042), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.11"
+          },
+          "value": 73
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 1,
+          "about": "replay table: replay 13 (seed 20261043), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r13.ext10small",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 1,
+          "about": "replay table: replay 13 (seed 20261043), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.12.small"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 2,
+          "about": "replay table: replay 13 (seed 20261043), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r13.ext10medium",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 2,
+          "about": "replay table: replay 13 (seed 20261043), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.12.medium"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 3,
+          "about": "replay table: replay 13 (seed 20261043), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r13.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 3,
+          "about": "replay table: replay 13 (seed 20261043), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.12.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 4,
+          "about": "replay table: replay 13 (seed 20261043), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r13.top10overlap",
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 4,
+          "about": "replay table: replay 13 (seed 20261043), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.12"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 5,
+          "about": "replay table: replay 13 (seed 20261043), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r13.misordered",
+          "value": 97
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(13) td",
+          "index": 5,
+          "about": "replay table: replay 13 (seed 20261043), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.12"
+          },
+          "value": 97
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 1,
+          "about": "replay table: replay 14 (seed 20261044), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r14.ext10small",
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 1,
+          "about": "replay table: replay 14 (seed 20261044), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.13.small"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 2,
+          "about": "replay table: replay 14 (seed 20261044), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r14.ext10medium",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 2,
+          "about": "replay table: replay 14 (seed 20261044), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.13.medium"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 3,
+          "about": "replay table: replay 14 (seed 20261044), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r14.ext10large",
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 3,
+          "about": "replay table: replay 14 (seed 20261044), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.13.large"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 4,
+          "about": "replay table: replay 14 (seed 20261044), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r14.top10overlap",
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 4,
+          "about": "replay table: replay 14 (seed 20261044), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.13"
+          },
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 5,
+          "about": "replay table: replay 14 (seed 20261044), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r14.misordered",
+          "value": 86
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(14) td",
+          "index": 5,
+          "about": "replay table: replay 14 (seed 20261044), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.13"
+          },
+          "value": 86
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 1,
+          "about": "replay table: replay 15 (seed 20261045), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r15.ext10small",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 1,
+          "about": "replay table: replay 15 (seed 20261045), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.14.small"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 2,
+          "about": "replay table: replay 15 (seed 20261045), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r15.ext10medium",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 2,
+          "about": "replay table: replay 15 (seed 20261045), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.14.medium"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 3,
+          "about": "replay table: replay 15 (seed 20261045), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r15.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 3,
+          "about": "replay table: replay 15 (seed 20261045), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.14.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 4,
+          "about": "replay table: replay 15 (seed 20261045), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r15.top10overlap",
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 4,
+          "about": "replay table: replay 15 (seed 20261045), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.14"
+          },
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 5,
+          "about": "replay table: replay 15 (seed 20261045), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r15.misordered",
+          "value": 105
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(15) td",
+          "index": 5,
+          "about": "replay table: replay 15 (seed 20261045), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.14"
+          },
+          "value": 105
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 1,
+          "about": "replay table: replay 16 (seed 20261046), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r16.ext10small",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 1,
+          "about": "replay table: replay 16 (seed 20261046), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.15.small"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 2,
+          "about": "replay table: replay 16 (seed 20261046), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r16.ext10medium",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 2,
+          "about": "replay table: replay 16 (seed 20261046), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.15.medium"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 3,
+          "about": "replay table: replay 16 (seed 20261046), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r16.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 3,
+          "about": "replay table: replay 16 (seed 20261046), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.15.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 4,
+          "about": "replay table: replay 16 (seed 20261046), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r16.top10overlap",
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 4,
+          "about": "replay table: replay 16 (seed 20261046), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.15"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 5,
+          "about": "replay table: replay 16 (seed 20261046), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r16.misordered",
+          "value": 79
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(16) td",
+          "index": 5,
+          "about": "replay table: replay 16 (seed 20261046), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.15"
+          },
+          "value": 79
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 1,
+          "about": "replay table: replay 17 (seed 20261047), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r17.ext10small",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 1,
+          "about": "replay table: replay 17 (seed 20261047), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.16.small"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 2,
+          "about": "replay table: replay 17 (seed 20261047), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r17.ext10medium",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 2,
+          "about": "replay table: replay 17 (seed 20261047), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.16.medium"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 3,
+          "about": "replay table: replay 17 (seed 20261047), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r17.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 3,
+          "about": "replay table: replay 17 (seed 20261047), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.16.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 4,
+          "about": "replay table: replay 17 (seed 20261047), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r17.top10overlap",
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 4,
+          "about": "replay table: replay 17 (seed 20261047), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.16"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 5,
+          "about": "replay table: replay 17 (seed 20261047), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r17.misordered",
+          "value": 97
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(17) td",
+          "index": 5,
+          "about": "replay table: replay 17 (seed 20261047), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.16"
+          },
+          "value": 97
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 1,
+          "about": "replay table: replay 18 (seed 20261048), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r18.ext10small",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 1,
+          "about": "replay table: replay 18 (seed 20261048), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.17.small"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 2,
+          "about": "replay table: replay 18 (seed 20261048), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r18.ext10medium",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 2,
+          "about": "replay table: replay 18 (seed 20261048), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.17.medium"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 3,
+          "about": "replay table: replay 18 (seed 20261048), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r18.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 3,
+          "about": "replay table: replay 18 (seed 20261048), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.17.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 4,
+          "about": "replay table: replay 18 (seed 20261048), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r18.top10overlap",
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 4,
+          "about": "replay table: replay 18 (seed 20261048), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.17"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 5,
+          "about": "replay table: replay 18 (seed 20261048), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r18.misordered",
+          "value": 70
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(18) td",
+          "index": 5,
+          "about": "replay table: replay 18 (seed 20261048), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.17"
+          },
+          "value": 70
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 1,
+          "about": "replay table: replay 19 (seed 20261049), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r19.ext10small",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 1,
+          "about": "replay table: replay 19 (seed 20261049), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.18.small"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 2,
+          "about": "replay table: replay 19 (seed 20261049), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r19.ext10medium",
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 2,
+          "about": "replay table: replay 19 (seed 20261049), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.18.medium"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 3,
+          "about": "replay table: replay 19 (seed 20261049), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r19.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 3,
+          "about": "replay table: replay 19 (seed 20261049), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.18.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 4,
+          "about": "replay table: replay 19 (seed 20261049), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r19.top10overlap",
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 4,
+          "about": "replay table: replay 19 (seed 20261049), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.18"
+          },
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 5,
+          "about": "replay table: replay 19 (seed 20261049), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r19.misordered",
+          "value": 77
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(19) td",
+          "index": 5,
+          "about": "replay table: replay 19 (seed 20261049), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.18"
+          },
+          "value": 77
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 1,
+          "about": "replay table: replay 20 (seed 20261050), small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r20.ext10small",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 1,
+          "about": "replay table: replay 20 (seed 20261050), small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.19.small"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 2,
+          "about": "replay table: replay 20 (seed 20261050), medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r20.ext10medium",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 2,
+          "about": "replay table: replay 20 (seed 20261050), medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.19.medium"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 3,
+          "about": "replay table: replay 20 (seed 20261050), large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r20.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 3,
+          "about": "replay table: replay 20 (seed 20261050), large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.19.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 4,
+          "about": "replay table: replay 20 (seed 20261050), top 10 overlap",
+          "source": "registry",
+          "ref": "league.replay.r20.top10overlap",
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 4,
+          "about": "replay table: replay 20 (seed 20261050), top 10 overlap (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "topOverlap.19"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 5,
+          "about": "replay table: replay 20 (seed 20261050), pairs in the wrong order",
+          "source": "registry",
+          "ref": "league.replay.r20.misordered",
+          "value": 71
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 5,
+          "about": "replay table: replay 20 (seed 20261050), pairs in the wrong order (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "misordered.19"
+          },
+          "value": 71
+        },
+        {
+          "select": ".prx-nl-key-sizes",
+          "kind": "text",
+          "about": "the replay chart's key: mark size there shows the group, not the SE",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "here a mark's size shows the group, not the SE"
+        },
+        {
+          "select": ".prx-readout",
+          "kind": "text",
+          "about": "the read-out word for word: v1's three sentences (the first draw, its truth line, and the replays' averages)",
+          "source": "literal",
+          "ref": "9.4",
+          "slots": true,
+          "value": "First draw, seed ⟨seed⟩: of the ⟨ext⟩ extreme positions by estimate, small units hold ⟨small⟩, medium units ⟨medium⟩ and large units ⟨large⟩; truly they hold ⟨ts⟩, ⟨tm⟩ and ⟨tl⟩. Of the top ⟨k⟩ by estimate, ⟨top⟩ are in the true top ⟨k2⟩, and the estimates order ⟨wrong⟩ of the ⟨M⟩ pairs the wrong way (expected over many draws: ⟨expected⟩). Over ⟨R⟩ replays, small units hold ⟨avgSmall⟩ and large units ⟨avgLarge⟩ of the extreme positions on average."
+        }
+      ]
+    },
+    {
+      "id": "extremes",
+      "about": "Preset extremes: twenty replays, true values hidden, extreme positions highlighted.",
+      "preset": "extremes",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"top-small\"]",
+          "about": "tallies: small units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "top.small"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-small\"]",
+          "about": "tallies: small units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "bottom.small"
+          },
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"top-medium\"]",
+          "about": "tallies: medium units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "top.medium"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-medium\"]",
+          "about": "tallies: medium units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "bottom.medium"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"top-large\"]",
+          "about": "tallies: large units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "top.large"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-large\"]",
+          "about": "tallies: large units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261030-estimate-k5",
+            "field": "bottom.large"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"ext-small\"]",
+          "about": "tallies: small units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"read-small\"]",
+          "about": "read-out: small units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"ext-medium\"]",
+          "about": "tallies: medium units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"read-medium\"]",
+          "about": "read-out: medium units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"ext-large\"]",
+          "about": "tallies: large units among the ten extreme positions by estimate, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"read-large\"]",
+          "about": "read-out: large units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"avg-small\"]",
+          "about": "tallies: average of the twenty replays, small units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-small\"]",
+          "about": "tallies: average of the twenty replays, small units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.small"
+          },
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-small\"]",
+          "about": "replay summary: average of the twenty replays, small units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-small\"]",
+          "about": "replay summary: average of the twenty replays, small units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.small"
+          },
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-medium\"]",
+          "about": "tallies: average of the twenty replays, medium units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10medium",
+          "value": 3.65
+        },
+        {
+          "select": "[data-prx-readout=\"avg-medium\"]",
+          "about": "tallies: average of the twenty replays, medium units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.medium"
+          },
+          "value": 3.65
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-medium\"]",
+          "about": "replay summary: average of the twenty replays, medium units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10medium",
+          "value": 3.65
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-medium\"]",
+          "about": "replay summary: average of the twenty replays, medium units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.medium"
+          },
+          "value": 3.65
+        },
+        {
+          "select": "[data-prx-readout=\"avg-large\"]",
+          "about": "tallies: average of the twenty replays, large units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10large",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"avg-large\"]",
+          "about": "tallies: average of the twenty replays, large units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.large"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-large\"]",
+          "about": "replay summary: average of the twenty replays, large units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10large",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-large\"]",
+          "about": "replay summary: average of the twenty replays, large units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.large"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"avg-small\"]",
+          "about": "tallies: the same average equals the storyboard key (shown with two decimals)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "registry",
+          "ref": "league.replay20.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-large\"]",
+          "about": "tallies: the same average equals the storyboard key (shown with two decimals)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "registry",
+          "ref": "league.replay20.ext10large",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"read-avg-small\"]",
+          "about": "read-out: average of the twenty replays, small units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"read-avg-small\"]",
+          "about": "read-out: average of the twenty replays, small units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.small"
+          },
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"read-avg-large\"]",
+          "about": "read-out: average of the twenty replays, large units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10large",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"read-avg-large\"]",
+          "about": "read-out: average of the twenty replays, large units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.large"
+          },
+          "value": 2
+        },
+        {
+          "select": "[data-prx-caption=\"monte-carlo\"] .prx-num",
+          "index": 1,
+          "about": "Monte Carlo caption: the seed (replay r uses seed + r)",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        }
+      ]
+    },
+    {
+      "id": "seed-replay1",
+      "about": "Raw query: the seed 20261031 (replay 1 of the default league) as the first draw, true values shown; base-R oracle rows for that seed.",
+      "query": "?seed=20261031&reveal=1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "draw line: the seed 20261031",
+          "source": "registry",
+          "ref": "settings.seed.replay01",
+          "value": 20261031
+        },
+        {
+          "select": "[data-prx-readout=\"top-small\"]",
+          "about": "tallies: small units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261031-estimate-k5",
+            "field": "top.small"
+          },
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-small\"]",
+          "about": "tallies: small units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261031-estimate-k5",
+            "field": "bottom.small"
+          },
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"top-medium\"]",
+          "about": "tallies: medium units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261031-estimate-k5",
+            "field": "top.medium"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-medium\"]",
+          "about": "tallies: medium units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261031-estimate-k5",
+            "field": "bottom.medium"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"top-large\"]",
+          "about": "tallies: large units in the top 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261031-estimate-k5",
+            "field": "top.large"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"bottom-large\"]",
+          "about": "tallies: large units in the bottom 5 by estimate (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "extremeCounts-league-seed20261031-estimate-k5",
+            "field": "bottom.large"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"read-top\"]",
+          "about": "read-out: top 10 overlap at seed 20261031 (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261031-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 6
+        },
+        {
+          "select": "[data-prx-readout=\"read-wrong\"]",
+          "about": "read-out: pairs in the wrong order at seed 20261031 (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261031-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 116
+        },
+        {
+          "select": "[data-prx-readout=\"read-expected\"]",
+          "about": "read-out: the expectation does not depend on the seed (base-R oracle), four significant digits",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "expectedMisorderedPairs-league-raw",
+            "field": "expected"
+          },
+          "value": 88.1225704369945
+        }
+      ]
+    },
+    {
+      "id": "replays-from-earlier-seed",
+      "about": "Raw query: first draw at seed 20261029 and four replays, so replays 1-4 use seeds 20261030-20261033 (base-R oracle rows); no averages line until all twenty are in.",
+      "query": "?seed=20261029&replays=4&reveal=1",
+      "expect": [
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 4,
+          "about": "replay table: replay 1 (seed 20261030), top 10 overlap (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261030-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 9
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 5,
+          "about": "replay table: replay 1 (seed 20261030), pairs in the wrong order (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261030-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 93
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 4,
+          "about": "replay table: replay 2 (seed 20261031), top 10 overlap (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261031-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 5,
+          "about": "replay table: replay 2 (seed 20261031), pairs in the wrong order (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261031-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 116
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 4,
+          "about": "replay table: replay 3 (seed 20261032), top 10 overlap (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261032-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 8
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 5,
+          "about": "replay table: replay 3 (seed 20261032), pairs in the wrong order (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261032-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 90
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 4,
+          "about": "replay table: replay 4 (seed 20261033), top 10 overlap (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "topKOverlap-league-seed20261033-estimate-vs-theta-k10",
+            "field": "count"
+          },
+          "value": 7
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 5,
+          "about": "replay table: replay 4 (seed 20261033), pairs in the wrong order (base-R oracle)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "misorderedPairs-league-seed20261033-estimate-vs-theta",
+            "field": "count"
+          },
+          "value": 80
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 0,
+          "about": "replay table: replay 1 of seed 20261029 uses seed 20261030",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 1,
+          "about": "replay table row 1 (seed 20261030, the frozen draw): small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 1,
+          "about": "replay table row 2 (seed 20261031): small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r01.ext10small",
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 1,
+          "about": "replay table row 2 (seed 20261031): small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.0.small"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 1,
+          "about": "replay table row 3 (seed 20261032): small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r02.ext10small",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 1,
+          "about": "replay table row 3 (seed 20261032): small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.1.small"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 1,
+          "about": "replay table row 4 (seed 20261033): small units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r03.ext10small",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 1,
+          "about": "replay table row 4 (seed 20261033): small units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.2.small"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 2,
+          "about": "replay table row 1 (seed 20261030, the frozen draw): medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.default.ext10medium",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 2,
+          "about": "replay table row 2 (seed 20261031): medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r01.ext10medium",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 2,
+          "about": "replay table row 2 (seed 20261031): medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.0.medium"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 2,
+          "about": "replay table row 3 (seed 20261032): medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r02.ext10medium",
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 2,
+          "about": "replay table row 3 (seed 20261032): medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.1.medium"
+          },
+          "value": 5
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 2,
+          "about": "replay table row 4 (seed 20261033): medium units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r03.ext10medium",
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 2,
+          "about": "replay table row 4 (seed 20261033): medium units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.2.medium"
+          },
+          "value": 4
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(1) td",
+          "index": 3,
+          "about": "replay table row 1 (seed 20261030, the frozen draw): large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.default.ext10large",
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 3,
+          "about": "replay table row 2 (seed 20261031): large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r01.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(2) td",
+          "index": 3,
+          "about": "replay table row 2 (seed 20261031): large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.0.large"
+          },
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 3,
+          "about": "replay table row 3 (seed 20261032): large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r02.ext10large",
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(3) td",
+          "index": 3,
+          "about": "replay table row 3 (seed 20261032): large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.1.large"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 3,
+          "about": "replay table row 4 (seed 20261033): large units among the 10 extreme positions",
+          "source": "registry",
+          "ref": "league.replay.r03.ext10large",
+          "value": 2
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(4) td",
+          "index": 3,
+          "about": "replay table row 4 (seed 20261033): large units among the 10 extreme positions (independent base-R oracle row)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "extremeTotal.2.large"
+          },
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "clamped-words",
+      "about": "Raw query: replays=99 is clamped to 20 and reveal=yes reads as true; the values equal the replay20 preset.",
+      "query": "?seed=20261030&replays=99&reveal=yes",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"avg-ends-small\"]",
+          "about": "replays clamped to twenty: average, small units",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-small\"]",
+          "about": "replays clamped to twenty: average, small units (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.small"
+          },
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"avg-wrong\"]",
+          "about": "replays clamped to twenty: true values shown (reveal=yes)",
+          "source": "registry",
+          "ref": "league.replay20.avg.misordered",
+          "value": 83.9
+        },
+        {
+          "select": "[data-prx-readout=\"avg-wrong\"]",
+          "about": "replays clamped to twenty: true values shown (reveal=yes) (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.misordered"
+          },
+          "value": 83.9
+        },
+        {
+          "select": ".prx-nl-ends-chart table tbody tr:nth-child(20) td",
+          "index": 0,
+          "about": "the twentieth replay exists",
+          "source": "registry",
+          "ref": "settings.seed.replay20",
+          "value": 20261050
+        }
+      ]
+    },
+    {
+      "id": "replay11",
+      "about": "Preset replay11: twenty replays with the true values shown and the draw key at replay 11 (seed 20261041), where small units hold fewer extreme positions than by true value; the league table, the draw line, the tallies and the read-out all describe replay 11, and the averages stay those of all twenty replays.",
+      "preset": "replay11",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "draw line: the seed of replay 11",
+          "source": "registry",
+          "ref": "settings.seed.replay11",
+          "value": 20261041
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the seed of replay 11",
+          "source": "registry",
+          "ref": "settings.seed.replay11",
+          "value": 20261041
+        },
+        {
+          "select": "[data-prx-readout=\"ext-small\"]",
+          "about": "tallies: small units among the ten extreme positions, replay 11",
+          "source": "registry",
+          "ref": "league.replay.r11.ext10small",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"ext-medium\"]",
+          "about": "tallies: medium units among the ten extreme positions, replay 11",
+          "source": "registry",
+          "ref": "league.replay.r11.ext10medium",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"ext-large\"]",
+          "about": "tallies: large units among the ten extreme positions, replay 11",
+          "source": "registry",
+          "ref": "league.replay.r11.ext10large",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"read-small\"]",
+          "about": "read-out: small units among the ten extreme positions, replay 11",
+          "source": "registry",
+          "ref": "league.replay.r11.ext10small",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"read-medium\"]",
+          "about": "read-out: medium units among the ten extreme positions, replay 11",
+          "source": "registry",
+          "ref": "league.replay.r11.ext10medium",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"read-large\"]",
+          "about": "read-out: large units among the ten extreme positions, replay 11",
+          "source": "registry",
+          "ref": "league.replay.r11.ext10large",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"read-top\"]",
+          "about": "read-out: top 10 by estimate in the true top 10, replay 11",
+          "source": "registry",
+          "ref": "league.replay.r11.top10overlap",
+          "value": 9
+        },
+        {
+          "select": "[data-prx-readout=\"read-wrong\"]",
+          "about": "read-out: pairs in the wrong order, replay 11",
+          "source": "registry",
+          "ref": "league.replay.r11.misordered",
+          "value": 62
+        },
+        {
+          "select": "[data-prx-readout=\"avg-ends-small\"]",
+          "about": "averages line: small units over all twenty replays",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"read-avg-large\"]",
+          "about": "read-out: large units over the twenty replays",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10large",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "draw-clamped",
+      "about": "Raw query: draw=9 with only 4 replays run; the draw shown is replay 4 (seed 20261034), the last replay run.",
+      "query": "?seed=20261030&replays=4&draw=9&reveal=1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "draw line: the seed of replay 4",
+          "source": "registry",
+          "ref": "settings.seed.replay04",
+          "value": 20261034
+        },
+        {
+          "select": "[data-prx-readout=\"ext-small\"]",
+          "about": "tallies: small units among the ten extreme positions, replay 4",
+          "source": "registry",
+          "ref": "league.replay.r04.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"ext-medium\"]",
+          "about": "tallies: medium units, replay 4",
+          "source": "registry",
+          "ref": "league.replay.r04.ext10medium",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"ext-large\"]",
+          "about": "tallies: large units, replay 4",
+          "source": "registry",
+          "ref": "league.replay.r04.ext10large",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"read-wrong\"]",
+          "about": "read-out: pairs in the wrong order, replay 4",
+          "source": "registry",
+          "ref": "league.replay.r04.misordered",
+          "value": 76
+        }
+      ]
+    },
+    {
+      "id": "outside-replays",
+      "about": "Raw query: replay 7 shown after twenty replays; an update then sets only the replays (5), a change from outside, so the league table goes back to the first draw (seed 20261030).",
+      "query": "?seed=20261030&replays=20&draw=7&reveal=1",
+      "update": [
+        {
+          "replays": 5
+        }
+      ],
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"draw-seed\"]",
+          "about": "draw line: the first draw again",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"read-seed\"]",
+          "about": "read-out: the first draw again",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"ext-small\"]",
+          "about": "tallies: small units among the ten extreme positions, first draw",
+          "source": "registry",
+          "ref": "league.default.ext10small",
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"read-wrong\"]",
+          "about": "read-out: pairs in the wrong order, first draw",
+          "source": "registry",
+          "ref": "league.default.raw.misordered",
+          "value": 93
+        }
+      ]
+    }
+  ]
+}

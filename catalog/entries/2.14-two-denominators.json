@@ -1,0 +1,63 @@
+{
+  "id": "2.14",
+  "name": "two-denominators",
+  "part": "2",
+  "title": "Wrong among stated, wrong among all",
+  "idea": "KRW's DR divides expected wrong directions by all pairs and E/N by the stated pairs, so a card that states few pairs can show a small DR beside a large E/N: DR = (N/M) \u00d7 E/N.",
+  "status": "built",
+  "from": "v1 view \u00b7 v1 G-09 krw-bridge, denominators view",
+  "data": [
+    "data/released/six-sites.json",
+    "data/released/case-krw.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), slides 22 and 25\u201326. Firms as adapted in postrank 1.1.0 (pr_case_krw).",
+  "caption": "The six-site posterior is given for teaching; the race card retains archived statistics and is evaluated on released probabilities.",
+  "presets": [
+    {
+      "id": "tau25",
+      "label": "\u03c4 .25",
+      "query": "tau=.25"
+    },
+    {
+      "id": "race-setting",
+      "label": "KRW setting",
+      "query": "lambda=.25&tau=auto"
+    },
+    {
+      "id": "all-stated",
+      "label": "All pairs stated",
+      "query": "lambda=1&tau=auto"
+    }
+  ],
+  "try": [
+    {
+      "preset": "tau25",
+      "shows": [
+        "14",
+        "15",
+        ".933",
+        ".0238",
+        ".0255"
+      ]
+    },
+    {
+      "preset": "race-setting",
+      "shows": [
+        "1,324",
+        "4,656",
+        ".284",
+        ".0387",
+        ".136",
+        "\u2212.0227",
+        ".1818"
+      ]
+    },
+    {
+      "preset": "all-stated",
+      "shows": [
+        "15",
+        ".0480"
+      ]
+    }
+  ]
+}

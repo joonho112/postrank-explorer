@@ -1,0 +1,3146 @@
+{
+  "$schema": "./_schema.json",
+  "app": "ties-and-withholding",
+  "catalog": "2.15",
+  "about": "Existing package pins plus independent base-R oracle edge, boundary, count and denominator pins. Certain-equality strict rows retain N=1,Q=0 and undefined Errors/Q as no distinct mass; withheld rows retain no disclosure.",
+  "cases": [
+    {
+      "id": "m4-weak",
+      "preset": "weak",
+      "about": "The m4 complete law: each displayed pair-action risk and strict/distinct coefficient is checked against independent R or package rows.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-m4-weak-tau.25-12",
+            "field": "risk"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "equalityNeutralRisk-m4-vignette-tau.25-12",
+            "field": "risk"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-m4-weak-tau.25-21",
+            "field": "risk"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "equalityNeutralRisk-m4-vignette-tau.25-21",
+            "field": "risk"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-m4-weak-tau.25-11",
+            "field": "risk"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "equalityNeutralRisk-m4-vignette-tau.25-11",
+            "field": "risk"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "b.0.0.1"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "b.0.1.0"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "d.0.0.1"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "d.0.0.1"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "d.0.0.1"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "equalityNeutralRisk-m4-vignette-tau.25-11",
+            "field": "R0"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "m4-neutral",
+      "preset": "neutral",
+      "about": "The m4 complete law: each displayed pair-action risk and strict/distinct coefficient is checked against independent R or package rows.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-m4-weak-tau.25-12",
+            "field": "risk"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "equalityNeutralRisk-m4-vignette-tau.25-12",
+            "field": "risk"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-m4-weak-tau.25-21",
+            "field": "risk"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "equalityNeutralRisk-m4-vignette-tau.25-21",
+            "field": "risk"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-m4-weak-tau.25-11",
+            "field": "risk"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "equalityNeutralRisk-m4-vignette-tau.25-11",
+            "field": "risk"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "b.0.0.1"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "b.0.1.0"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "d.0.0.1"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "d.0.0.1"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "tieLawPairwise-m4-law",
+            "field": "d.0.0.1"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "equalityNeutralRisk-m4-vignette-tau.25-11",
+            "field": "R0"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-no-equality",
+      "query": "?t=0&tau=0.25&loss=neutral&scenario=m4",
+      "about": "Base-R finite-law evaluation and exact denominator edge cases.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "weakCosts.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "neutralCosts.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "N.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "strict.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "Q.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "EoverN.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "EoverQ.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "weakCosts.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "neutralCosts.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "N.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "strict.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "Q.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "EoverN.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "EoverQ.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "weakCosts.2"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "neutralCosts.2"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "N.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "strict.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "Q.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "EoverN.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "EoverQ.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "T"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseline-T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "T"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "R0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "weakSwitch.0"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "neutralSwitch.0"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-no-equality",
+            "field": "neutralSwitch.1"
+          },
+          "value": 0.866666666666667,
+          "format": {
+            "fn": "formatProb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-weak-boundary",
+      "query": "?t=0.15&tau=0.25&loss=neutral&scenario=m4",
+      "about": "Base-R finite-law evaluation and exact denominator edge cases.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "weakCosts.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "neutralCosts.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "N.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "strict.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "Q.0"
+          },
+          "value": 0.85,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "EoverN.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "EoverQ.0"
+          },
+          "value": 0.117647058823529,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "weakCosts.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "neutralCosts.1"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "N.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "strict.1"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "Q.1"
+          },
+          "value": 0.85,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "EoverN.1"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "EoverQ.1"
+          },
+          "value": 0.882352941176471,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "weakCosts.2"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "neutralCosts.2"
+          },
+          "value": 0.2125,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "N.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "strict.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "Q.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "EoverN.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "EoverQ.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "T"
+          },
+          "value": 0.85,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseline-T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "T"
+          },
+          "value": 0.85,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "R0"
+          },
+          "value": 0.2125,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "weakSwitch.0"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "neutralSwitch.0"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-weak-boundary",
+            "field": "neutralSwitch.1"
+          },
+          "value": 0.866666666666667,
+          "format": {
+            "fn": "formatProb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-m4",
+      "query": "?t=0.4&tau=0.25&loss=neutral&scenario=m4",
+      "about": "Base-R finite-law evaluation and exact denominator edge cases.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "weakCosts.0"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "neutralCosts.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "N.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "strict.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "Q.0"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "EoverN.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "EoverQ.0"
+          },
+          "value": 0.166666666666667,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "weakCosts.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "neutralCosts.1"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "N.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "strict.1"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "Q.1"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "EoverN.1"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "EoverQ.1"
+          },
+          "value": 0.833333333333333,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "weakCosts.2"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "neutralCosts.2"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "N.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "strict.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "Q.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "EoverN.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "EoverQ.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "T"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseline-T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "T"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "R0"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "weakSwitch.0"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "neutralSwitch.0"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-m4",
+            "field": "neutralSwitch.1"
+          },
+          "value": 0.866666666666667,
+          "format": {
+            "fn": "formatProb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-neutral-first-boundary",
+      "query": "?t=0.6&tau=0.25&loss=neutral&scenario=m4",
+      "about": "Base-R finite-law evaluation and exact denominator edge cases.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "weakCosts.0"
+          },
+          "value": 0.7,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "neutralCosts.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "N.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "strict.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "Q.0"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "EoverN.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "EoverQ.0"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "weakCosts.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "neutralCosts.1"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "N.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "strict.1"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "Q.1"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "EoverN.1"
+          },
+          "value": 0.3,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "EoverQ.1"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "weakCosts.2"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "neutralCosts.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "N.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "strict.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "Q.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "EoverN.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "EoverQ.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "T"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseline-T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "T"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "R0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "weakSwitch.0"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "neutralSwitch.0"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-first-boundary",
+            "field": "neutralSwitch.1"
+          },
+          "value": 0.866666666666667,
+          "format": {
+            "fn": "formatProb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-neutral-second-boundary",
+      "query": "?t=0.866666666666667&tau=0.25&loss=neutral&scenario=m4",
+      "about": "Base-R finite-law evaluation and exact denominator edge cases.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "weakCosts.0"
+          },
+          "value": 0.966666666666667,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "neutralCosts.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "N.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "strict.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "Q.0"
+          },
+          "value": 0.133333333333333,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "EoverN.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "EoverQ.0"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "weakCosts.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "neutralCosts.1"
+          },
+          "value": 0.0333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "N.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "strict.1"
+          },
+          "value": 0.0333333333333333,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "Q.1"
+          },
+          "value": 0.133333333333333,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "EoverN.1"
+          },
+          "value": 0.0333333333333333,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "EoverQ.1"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "weakCosts.2"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "neutralCosts.2"
+          },
+          "value": 0.0333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "N.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "strict.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "Q.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "EoverN.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "EoverQ.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "T"
+          },
+          "value": 0.133333333333333,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseline-T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "T"
+          },
+          "value": 0.133333333333333,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "R0"
+          },
+          "value": 0.0333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "weakSwitch.0"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "neutralSwitch.0"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-second-boundary",
+            "field": "neutralSwitch.1"
+          },
+          "value": 0.866666666666667,
+          "format": {
+            "fn": "formatProb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-high-equality",
+      "query": "?t=0.9&tau=0.25&loss=neutral&scenario=m4",
+      "about": "Base-R finite-law evaluation and exact denominator edge cases.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "weakCosts.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "neutralCosts.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "N.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "strict.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "Q.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "EoverN.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "EoverQ.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "weakCosts.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "neutralCosts.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "N.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "strict.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "Q.1"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "EoverN.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "EoverQ.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "weakCosts.2"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "neutralCosts.2"
+          },
+          "value": 0.025,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "N.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "strict.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "Q.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "EoverN.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "EoverQ.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "T"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseline-T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "T"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "R0"
+          },
+          "value": 0.025,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "weakSwitch.0"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "neutralSwitch.0"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-high-equality",
+            "field": "neutralSwitch.1"
+          },
+          "value": 0.866666666666667,
+          "format": {
+            "fn": "formatProb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-certain-equality",
+      "query": "?t=0.4&tau=0.25&loss=neutral&scenario=certain",
+      "about": "Base-R finite-law evaluation and exact denominator edge cases.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "weakCosts.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "neutralCosts.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "N.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "strict.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "Q.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "EoverN.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "EoverQ.0"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "weakCosts.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "neutralCosts.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "N.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "strict.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "Q.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "EoverN.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "EoverQ.1"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "weakCosts.2"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "neutralCosts.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "N.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "strict.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "Q.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "EoverN.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "EoverQ.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "T"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseline-T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "T"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-certain-equality",
+            "field": "R0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pair-neutral-triple-boundary",
+      "query": "?t=0.8&tau=0.5&loss=neutral&scenario=m4",
+      "about": "Base-R finite-law evaluation and exact denominator edge cases.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"weak-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "weakCosts.0"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "neutralCosts.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "N.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "strict.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "Q.0"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "EoverN.0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "EoverQ.0"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "weakCosts.1"
+          },
+          "value": 0.9,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "neutralCosts.1"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "N.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "strict.1"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "Q.1"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "EoverN.1"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "EoverQ.1"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "weakCosts.2"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "neutralCosts.2"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "N.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"strict-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "strict.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Q-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "Q.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "EoverN.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"EoverQ-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "EoverQ.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "T"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"baseline-T\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "T"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"R0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "R0"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weak-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "weakSwitch.0"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"neutral-switch-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "pair-neutral-triple-boundary",
+            "field": "neutralSwitch.0"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatProb"
+          }
+        }
+      ]
+    }
+  ]
+}

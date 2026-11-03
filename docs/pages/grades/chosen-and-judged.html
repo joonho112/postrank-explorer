@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Discrepancy between risk estimated on selection draws and risk under the exact posterior law.">
+
+<title>Selection and evaluation using posterior draws – postrank Explorer</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../media/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5be8e64b570d4824bd296b124c7eebe3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>document.documentElement.setAttribute("data-theme", "light");</script>
+
+
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/app.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">postrank Explorer</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-uncertainty" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">1 · Uncertainty</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-uncertainty">    
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/case-zero.html">
+ <span class="dropdown-text">League tables and report cards</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/noisy-estimate.html">
+ <span class="dropdown-text">Estimates and sampling error</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/noisy-league.html">
+ <span class="dropdown-text">Ranking noisy estimates</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/winners-curse.html">
+ <span class="dropdown-text">Selection bias at the extremes of a ranking</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/shrinkage.html">
+ <span class="dropdown-text">Normal–normal posterior shrinkage</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/shrinkage-price.html">
+ <span class="dropdown-text">Sensitivity to the prior standard deviation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/posterior-pipeline.html">
+ <span class="dropdown-text">From data to posterior decisions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/two-units.html">
+ <span class="dropdown-text">Pairwise posterior direction probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/correlated-units.html">
+ <span class="dropdown-text">Posterior dependence and pairwise comparisons</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/beyond-normal.html">
+ <span class="dropdown-text">Marginal summaries and joint direction probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/interval-overlap.html">
+ <span class="dropdown-text">Marginal interval overlap and direction probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/overlap-in-the-league.html">
+ <span class="dropdown-text">Interval overlap across 435 pairs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/pairwise-matrix.html">
+ <span class="dropdown-text">The matrix of pairwise posterior probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/which-ranking.html">
+ <span class="dropdown-text">Alternative rankings from a posterior distribution</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/majority-wins.html">
+ <span class="dropdown-text">Majority comparisons and expected ranks</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/ranking-claims.html">
+ <span class="dropdown-text">Expected errors in a strict ranking</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/mc-error.html">
+ <span class="dropdown-text">Monte Carlo error in pairwise probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/uncertainty/chain-draws.html">
+ <span class="dropdown-text">Monte Carlo error with dependent draws</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-grade-reports" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">2 · Grade reports</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-grade-reports">    
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/one-pair.html">
+ <span class="dropdown-text">The decision for an isolated pair</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/report-builder.html">
+ <span class="dropdown-text">Grade reports as pairwise decisions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/how-many-reports.html">
+ <span class="dropdown-text">The number of ordered grade reports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/price-of-silence.html">
+ <span class="dropdown-text">Reporting risk and withholding cost</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/tau-path.html">
+ <span class="dropdown-text">Optimal reports along the withholding-cost path</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/coherence.html">
+ <span class="dropdown-text">Coherence constraints on pairwise decisions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/coherence-finite.html">
+ <span class="dropdown-text">Coherence in a finite three-unit example</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/disclosed-errors.html">
+ <span class="dropdown-text">Expected and realised errors among stated directions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/reported-and-realized.html">
+ <span class="dropdown-text">Reported error and reference-law evaluation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/frontier.html">
+ <span class="dropdown-text">The error–disclosure frontier</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/frontier-mixtures.html">
+ <span class="dropdown-text">Mixtures of frontier reports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/families.html">
+ <span class="dropdown-text">Restrictions on the report family</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/report-card.html">
+ <span class="dropdown-text">Posterior summaries in a grade report</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/two-denominators.html">
+ <span class="dropdown-text">Error rates under two denominators</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/ties-and-withholding.html">
+ <span class="dropdown-text">Posterior equality and withholding</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/computing-grades.html">
+ <span class="dropdown-text">Computation of optimal grade reports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/another-law.html">
+ <span class="dropdown-text">Evaluation under an alternative posterior law</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/chosen-and-judged.html">
+ <span class="dropdown-text">Selection and evaluation using posterior draws</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/averaging-errors.html">
+ <span class="dropdown-text">Averaging error shares across reports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/grades/one-correction.html">
+ <span class="dropdown-text">Sensitivity to corrections and unit removal</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-reporting-rules" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">3 · Reporting rules</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-reporting-rules">    
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/fixed-tiers.html">
+ <span class="dropdown-text">Fixed quantile tiers</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/tier-sizes.html">
+ <span class="dropdown-text">Disclosure determined by tier sizes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/evidence-flags.html">
+ <span class="dropdown-text">Grades based on standardised evidence</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/flags-in-the-league.html">
+ <span class="dropdown-text">Standardised-evidence flags in a league</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/posterior-tiers.html">
+ <span class="dropdown-text">Tiers and optimised cuts of posterior rankings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/order-misses.html">
+ <span class="dropdown-text">Restrictions imposed by a fixed order</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/rule-comparison.html">
+ <span class="dropdown-text">Comparison at matched disclosure</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/same-tau-or-same-n.html">
+ <span class="dropdown-text">Common withholding cost and matched disclosure</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/deciles-quartiles.html">
+ <span class="dropdown-text">Deciles and quartiles of posterior means</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/naive-thresholding.html">
+ <span class="dropdown-text">Coherence of pairwise threshold decisions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/better-on-average.html">
+ <span class="dropdown-text">Expected and state-specific reporting loss</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/stability.html">
+ <span class="dropdown-text">Report stability under repeated measurement</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/rules/one-place.html">
+ <span class="dropdown-text">Reporting, allocation and classification</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-multiple-criteria" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">4 · Multiple criteria</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-multiple-criteria">    
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/several-criteria.html">
+ <span class="dropdown-text">Posterior profiles on multiple criteria</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/conflict-pairs.html">
+ <span class="dropdown-text">Opposing criterion directions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/two-scores.html">
+ <span class="dropdown-text">A common grade report for two scores</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/weight-path.html">
+ <span class="dropdown-text">Optimal reports along the criterion-weight path</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/common-grade-cost.html">
+ <span class="dropdown-text">Criterion-specific excess risk of a common report</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/composite-or-criterion.html">
+ <span class="dropdown-text">Composite targets and criterion directions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/error-budgets.html">
+ <span class="dropdown-text">Criterion-specific expected-error budgets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/criterion-mixture.html">
+ <span class="dropdown-text">A random-criterion representation of weighted risk</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/worst-criterion.html">
+ <span class="dropdown-text">Minimising the largest criterion risk</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/choosing-settings.html">
+ <span class="dropdown-text">Sensitivity to costs, weights and grade restrictions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/draws-to-errors.html">
+ <span class="dropdown-text">Pairwise errors from joint posterior draws</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/why-withheld.html">
+ <span class="dropdown-text">Reasons for a withheld comparison</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/pairs-leave-open.html">
+ <span class="dropdown-text">Quantities not identified by pairwise probabilities</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/criteria/estimated-budgets.html">
+ <span class="dropdown-text">Error budgets under estimated pairwise probabilities</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-cases" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">5 · Cases</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-cases">    
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/lambda-tau.html">
+ <span class="dropdown-text">KRW’s reward and postrank’s withholding cost</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/krw-axes.html">
+ <span class="dropdown-text">Equivalent reporting-loss scales</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/krw-card.html">
+ <span class="dropdown-text">KRW’s race and gender report cards</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/krw-heatmap.html">
+ <span class="dropdown-text">Firm-pair probabilities and report-card blocks</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/krw-lambda.html">
+ <span class="dropdown-text">KRW’s archived reward path</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/signed-or-absolute.html">
+ <span class="dropdown-text">Signed and absolute gender-gap targets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/krw-two.html">
+ <span class="dropdown-text">A common report for race and gender gaps</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/cde-cuts.html">
+ <span class="dropdown-text">School tertiles and minimum-risk grades</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/cde-one-disclosure.html">
+ <span class="dropdown-text">School reports at matched disclosure</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/cde-pair.html">
+ <span class="dropdown-text">A high-probability school comparison withheld</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/cde-tau-path.html">
+ <span class="dropdown-text">School-report changes along the withholding-cost path</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/cases/alabama-map.html">
+ <span class="dropdown-text">A common report for Alabama county outcomes</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tools" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Tools</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-tools">    
+        <li>
+    <a class="dropdown-item" href="../../pages/tools/index.html">
+ <span class="dropdown-text">Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/tools/your-data.html">
+ <span class="dropdown-text">Reports from supplied posterior summaries</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/tools/report-designer.html">
+ <span class="dropdown-text">Case-report specification and export</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../catalog.html"> 
+<span class="menu-text">Catalogue</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pages/words.html"> 
+<span class="menu-text">Terminology</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Selection and evaluation using posterior draws</h1>
+<p class="subtitle lead">2.18 · after the postrank vignette m6 and theory book, chapter 15</p>
+</div>
+
+<div>
+  <div class="description">
+    Discrepancy between risk estimated on selection draws and risk under the exact posterior law.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Each repetition draws from a specified posterior distribution, selects a grade report using estimated pairwise probabilities, and evaluates that fixed report twice. The first evaluation uses the selection draws; the second uses the exact law. Their signed difference can be positive or negative in an individual repetition. The selected point identifies the report held fixed in this comparison. Separate discrepancy and regret bounds distinguish error in its risk estimate from excess risk relative to the exact-law optimum in the same family.</p>
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/chosen-and-judged.js"></script>
+<script>window.__prxApp = PRX["chosen-and-judged"].mountWidget(document.getElementById("app"));</script>
+<section id="what-to-try" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
+<ul>
+<li><strong>Own draws.</strong> Among these reruns, 33 look worse on their own draws. The followed run instead has gap −.00061: its selection draws make its chosen report look slightly better than the exact law does.</li>
+<li><strong>Looks worse.</strong> Another selected report from the same experiment has a positive discrepancy. Its gap is +.00072, even though it minimises risk for its own estimated probabilities. A single run need not look optimistic.</li>
+<li><strong>More draws.</strong> With 4,000 draws per run, the followed gap is −.00025. The cloud and coefficient radius describe the remaining numerical variation. Realized errors need not shrink on every step.</li>
+<li><strong>Tighter family.</strong> Search the 603 reports with at most three grades. The followed gap is +.00102. Both evaluations still refer to that run’s same selected report. The grey intervals show how loose the discrepancy bounds can be.</li>
+<li><strong>Both scores.</strong> The two scores receive equal weights. The followed gap is −.00322. The discrepancy radius now averages each score’s largest pair-error discrepancy with those same weights.</li>
+</ul>
+<p>The grey intervals bound the absolute gap of each selected report. The regret readout asks a different question: how much worse its exact-law risk is than the exact-law minimum in the same family. Its bound includes an allowance for numerical optimisation. A small risk difference does not require identical grades.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>These are independent draws from fictional normal posteriors, not repeated observed datasets. “Exact” refers to the declared law. The separate package toy table evaluates each fold’s selected report on the other fold; it neither corrects the full-data risk nor checks the fitted model against new observations.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>In postrank
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(postrank)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>cf <span class="ot">&lt;-</span> <span class="fu">postrank_crossfit</span>(postrank_toy, <span class="at">settings=</span><span class="fu">postrank_settings</span>(<span class="at">weights=</span><span class="fu">c</span>(<span class="at">need_A=</span>.<span class="dv">6</span>,<span class="at">need_B=</span>.<span class="dv">4</span>),<span class="at">tau=</span>.<span class="dv">25</span>,<span class="at">G_max=</span><span class="dv">3</span>L), <span class="at">backend=</span><span class="st">"highs"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cf[<span class="fu">c</span>(<span class="st">"mean_optimism"</span>, <span class="st">"mean_abs_optimism"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This reproduces the separate package fold example, not the browser’s six-site draws.</p>
+</div>
+</div>
+</div>
+<p>Standalone: <a href="../../embed/chosen-and-judged.html">open the app</a>, for example <code>?S=100&amp;seed=1&amp;run=6</code>.</p>
+<p>Related applications: <a href="../../pages/uncertainty/mc-error.html">Monte Carlo error in pairwise probabilities</a> · <a href="../../pages/grades/another-law.html">Evaluation under an alternative posterior law</a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="prx-recipe-keyboard">
+(() => {
+  // Quarto's collapsed callout header is a div. Keep Bootstrap in charge of its
+  // collapse state while giving the existing click target button semantics.
+  const enhance = () => {
+    for (const header of document.querySelectorAll('.callout-header[data-bs-toggle="collapse"]')) {
+      if (header.hasAttribute('data-prx-recipe-keyboard') || header.closest('details') ||
+          header.matches('button, input, select, textarea, a[href], summary')) continue;
+      const title = header.querySelector('.callout-title-container')?.cloneNode(true);
+      title?.querySelectorAll('.screen-reader-only, .visually-hidden, [aria-hidden="true"]').forEach(node => node.remove());
+      const name = title?.textContent.replace(/\s+/g, ' ').trim();
+      if (name) header.setAttribute('aria-label', name);
+      header.setAttribute('role', 'button');
+      header.setAttribute('tabindex', '0');
+      header.setAttribute('data-prx-recipe-keyboard', '');
+      header.addEventListener('keydown', event => {
+        if (event.target !== header || (event.key !== 'Enter' && event.key !== ' ')) return;
+        event.preventDefault();
+        if (!event.repeat) header.click();
+      });
+    }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', enhance, { once: true });
+  else enhance();
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>postrank Explorer v3 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built on postrank 1.1.0</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

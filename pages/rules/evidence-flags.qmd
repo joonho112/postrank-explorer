@@ -1,0 +1,52 @@
+---
+title: "Grades based on standardised evidence"
+subtitle: "3.3 · a constructed comparator after the postrank theory book, ch. 2 and 17"
+description: "Directional statements induced by flags constructed from estimates and standard errors."
+---
+
+A standardised-evidence rule compares an estimate with a reference using
+$z_i = (\widehat\theta_i-r)/SE_i$. Here the reference r is zero. Values above the upper cutoff receive the highest
+flag, values below the lower cutoff receive the lowest, and the remainder receive the middle flag. Interpreting
+these flags as ordered grades can place a smaller estimate above a larger one, since the classification also
+depends on sampling precision. The example evaluates the resulting pairwise statement under alternative normal
+posterior specifications while keeping the flag rule explicit.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/evidence-flags.js"></script>
+<script>window.__prxApp = PRX["evidence-flags"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Two units, flat prior.** A has z = 4.00 and B has z = 1.50. The flags state A above B, although B's estimate
+  is larger. Taking each true value as normal around its estimate, with its SE, gives error probability .686 and
+  risk .6862. The estimate bars and standardised positions display the source of the reversed order.
+- **Same flags, teaching prior.** The error falls to .288; the posterior means are .180 for A and .108 for B.
+  The flags stay put: they use estimates and SEs, while the selected posterior prices their stated direction.
+- **B’s SE .15.** B reaches z = 2.00. Both units now receive the same flag, so the report states 0 pairs and has
+  risk .2000. A shared grade withholds a direction; it does not assert that the true values are equal.
+- **Cutoff 2.576.** The stricter cutoff separates the flags again. The stated direction has error .736. Changing an estimate or SE can change its flag; changing τ affects only the withholding cost.
+
+::: {.callout-note appearance="simple" title="In practice"}
+The rule flags a unit above or below the reference when $|z_i|$ is more than 1.96, that is, when its difference
+from the reference is statistically significant at the .05 level.
+
+This constructed comparator follows the postrank theory book, ch. 17 (the Tennessee
+procedure in ch. 2 uses a related index with other cutoffs).
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+p <- pnorm((.30-.20)/sqrt(.05^2+.20^2))
+x <- postrank::postrank_probabilities(array(c(NA,1-p,p,NA),c(2,2,1),dimnames=list(c("A","B"),c("A","B"),"score")), event="directional_error", zero_ties=TRUE, margin=0, source=list(kind="analytic_reference",description="Two-unit example",conditioning="Independent flat-prior normals"), targets=c(score="True value; larger is higher priority"))
+postrank::postrank_evaluate(c(A=1L,B=2L),x,weights=c(score=1),tau=.2)[c("N","E_over_N","primary_risk")]
+```
+:::
+
+Standalone: [evidence-flags](../../embed/evidence-flags.html), for example `?seB=.15&crit=2.576`.
+
+Related applications: [Standardised-evidence flags in a league](flags-in-the-league.qmd), [The decision for an isolated pair](../grades/one-pair.qmd).

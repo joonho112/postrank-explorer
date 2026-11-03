@@ -1,0 +1,1772 @@
+{
+  "$schema": "./_schema.json",
+  "app": "lambda-tau",
+  "catalog": "5.1",
+  "about": "Full G-09 converter/payoff source hooks. Scientific expectations are closed independent base-R R44 and R46 rows; pure gate assertions are removed and axes/denominator assertions belong to 5.2/2.14.",
+  "cases": [
+    {
+      "id": "default",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"lambda\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.lambda"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.cut"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.cut"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"correct-payoff\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.lambda"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-cost\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-map\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"payoff-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.cut"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.cut"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "postrank.grades.0"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "family.size"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".kb-verdict",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The two sets of best reports are the same."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ],
+      "query": ""
+    },
+    {
+      "id": "lambda25",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"lambda\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.lambda"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.cut"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.cut"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"correct-payoff\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.lambda"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-cost\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-map\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.tau"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"payoff-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.cut"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.cut"
+          },
+          "value": 0.8,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "postrank.grades.0"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "family.size"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".kb-verdict",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The two sets of best reports are the same."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ],
+      "preset": "lambda25"
+    },
+    {
+      "id": "lambda1",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"lambda\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.lambda"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.tau"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.cut"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.tau"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.cut"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.informedShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"correct-payoff\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.lambda"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-cost\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.tau"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-map\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.tau"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"payoff-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.cut"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.cut"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "postrank.grades.0"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "family.size"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".kb-verdict",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The two sets of best reports are the same."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ],
+      "preset": "lambda1"
+    },
+    {
+      "id": "lambda50",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"lambda\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.lambda"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.tau"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.cut"
+          },
+          "value": 0.6666666666666666,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.tau"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.cut"
+          },
+          "value": 0.6666666666666666,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.33333333333333337,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"correct-payoff\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.lambda"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-cost\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.tau"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-map\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.tau"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"payoff-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.cut"
+          },
+          "value": 0.6666666666666666,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.cut"
+          },
+          "value": 0.6666666666666666,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "postrank.grades.0"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "family.size"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".kb-verdict",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The two sets of best reports are the same."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ],
+      "preset": "lambda50"
+    },
+    {
+      "id": "tau25",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"lambda\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.lambda"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.tau"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.cut"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.tau"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.cut"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"correct-payoff\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.lambda"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-cost\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.tau"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-map\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.tau"
+          },
+          "value": 0.25,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"payoff-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.cut"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.cut"
+          },
+          "value": 0.75,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "postrank.grades.0"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            3,
+            4,
+            5
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "family.size"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".kb-verdict",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The two sets of best reports are the same."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ],
+      "query": "?lambda=auto&tau=.25"
+    },
+    {
+      "id": "tau40",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"lambda\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.lambda"
+          },
+          "value": 0.6666666666666667,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.tau"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.cut"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.tau"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.cut"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.19999999999999996,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"correct-payoff\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.lambda"
+          },
+          "value": 0.6666666666666667,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-cost\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.tau"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-map\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.tau"
+          },
+          "value": 0.4,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"payoff-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.cut"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.cut"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "postrank.grades.0"
+          },
+          "value": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "family.size"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".kb-verdict",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The two sets of best reports are the same."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ],
+      "preset": "tau40"
+    },
+    {
+      "id": "lambda-min",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"lambda\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.lambda"
+          },
+          "value": 0.01,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.tau"
+          },
+          "value": 0.009900990099009901,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.cut"
+          },
+          "value": 0.9900990099009901,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.tau"
+          },
+          "value": 0.009900990099009901,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.cut"
+          },
+          "value": 0.9900990099009901,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.9801980198019802,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"correct-payoff\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.lambda"
+          },
+          "value": 0.01,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-cost\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.tau"
+          },
+          "value": 0.009900990099009901,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-map\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.tau"
+          },
+          "value": 0.009900990099009901,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"payoff-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.cut"
+          },
+          "value": 0.9900990099009901,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.cut"
+          },
+          "value": 0.9900990099009901,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "postrank.grades.0"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "family.size"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".kb-verdict",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The two sets of best reports are the same."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ],
+      "query": "?lambda=.01&tau=auto"
+    },
+    {
+      "id": "retained-lambda10-full-set",
+      "preset": "lambda10",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"lambda\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.lambda"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.tau"
+          },
+          "value": 0.09090909090909091,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.cut"
+          },
+          "value": 0.9090909090909091,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.tau"
+          },
+          "value": 0.09090909090909091,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.cut"
+          },
+          "value": 0.9090909090909091,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.8181818181818181,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"correct-payoff\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.lambda"
+          },
+          "value": 0.1,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-cost\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.tau"
+          },
+          "value": 0.09090909090909091,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-map\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.tau"
+          },
+          "value": 0.09090909090909091,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"payoff-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.cut"
+          },
+          "value": 0.9090909090909091,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.cut"
+          },
+          "value": 0.9090909090909091,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "postrank.grades.0"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "family.size"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".kb-verdict",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The two sets of best reports are the same."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "lambda08",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"lambda\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.lambda"
+          },
+          "value": 0.08,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.tau"
+          },
+          "value": 0.07407407407407407,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.cut"
+          },
+          "value": 0.9259259259259258,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-tau\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.tau"
+          },
+          "value": 0.07407407407407407,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.cut"
+          },
+          "value": 0.9259259259259258,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"conv-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.8518518518518519,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"correct-payoff\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.lambda"
+          },
+          "value": 0.08,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-cost\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.tau"
+          },
+          "value": 0.07407407407407407,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"withheld-map\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.tau"
+          },
+          "value": 0.07407407407407407,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"payoff-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.cut"
+          },
+          "value": 0.9259259259259258,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-cut\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.cut"
+          },
+          "value": 0.9259259259259258,
+          "format": {
+            "fn": "formatSetting"
+          }
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "family.size"
+          },
+          "value": 4683,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".kb-verdict",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "The two sets of best reports are the same."
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "[data-prx-readout=\"best-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "postrank.grades.0"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        }
+      ],
+      "preset": "lambda08"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+---
+title: "Estimates and sampling error"
+subtitle: "1.2 · one simulated unit, after Kline, Rose and Walters (2024) and Walters' teaching slides"
+description: "Sampling variation of a normally distributed estimate with a fixed true value and known standard error."
+---
+
+Consider an estimate equal to a fixed true value plus normally distributed sampling error. Repeated data collection
+produces different estimates of the same quantity. The standard error (SE) is the standard deviation of this
+sampling distribution; approximately two-thirds of the estimates fall within one SE of the true value. The
+simulation displays successive estimates and decomposes the most recent estimate into its true value and sampling
+error. The **Draw** control generates a further observation from this distribution.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/noisy-estimate.js"></script>
+<script>window.__prxApp = PRX["noisy-estimate"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **SE .20.** Twenty estimates of a unit whose true value is .50: 12 of 20 fall within one SE (the filled dots),
+  against 13.65 expected on average. The ringed latest estimate, .229, is the true value plus noise −.271.
+- **200 draws.** With ten times as many draws, the count within one SE moves from 12 of 20 to 132 of 200, against 136.54
+  expected, while the share expected on average stays .6827.
+- **Seed 2.** The same unit with other data: this time 18 of 20 estimates fall within one SE. The count moves from one
+  set of data to the next; the expected 13.65 does not.
+- **SE .10.** Seed 1 again with half the SE: every estimate moves halfway toward the true value and the noise arrow
+  halves to −.136, yet each draw keeps its noise in SEs (−1.36), so the count stays 12 of 20.
+- **SE .05.** Halving the SE again gives the same standardised errors: the noise is −.068, and still 12 of 20 fall within one SE. The three SEs are
+  those of the small, medium and large units in [Ranking noisy estimates](noisy-league.qmd).
+
+::: {.callout-note appearance="simple"}
+The simulation specifies a fixed true value for one unit. Each estimate is the true value plus the SE times a draw from the normal
+curve, taken from a seeded stream, so a seed always gives the same estimates. This is the model of Kline, Rose and
+Walters (2024), Section III, Assumption 1 (stated before Section III.A), and talk slide 17. Walters' Mixtape slides
+(pp. 5–6) set it up the same way, and the postrank theory book, ch. 2, "Teacher growth categories: evidence,
+precision, and the choice of assessment", reads estimates together with their standard errors.
+:::
+
+Standalone: [embed/noisy-estimate.html](../../embed/noisy-estimate.html), for example `?se=.10&draws=50` or
+`?preset=seed2&theme=dark`.
+
+Related applications: [Ranking noisy estimates](noisy-league.qmd) · [Normal–normal posterior shrinkage](shrinkage.qmd).

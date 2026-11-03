@@ -1,0 +1,63 @@
+---
+title: "Case-report specification and export"
+subtitle: "T.2 · after the postrank theory book, chapter 21, and the reading/exporting vignette"
+description: "Reports accompanied by target definitions, computation scope, error-budget checks and source information."
+---
+
+Reports are calculated from released probabilities under declared targets, losses and families.
+Error-budget rows evaluate the displayed report without selecting a constrained alternative. The reporting view
+retains assumptions, computation scope and conditioning, with drafting and download controls.
+Browser results are distinguished from archived statuses and bounds.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/report-designer.js"></script>
+<script>window.__prxApp = PRX["report-designer"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **CDE: three-grade family.** The browser enumerates all 523,251 capped reports. The chosen report states
+  45 pairs. The family label, criterion profile and fixed-archive comparison define the reported computation scope.
+  These twelve schools are a deliberately spread teaching subset, not a representative statewide sample.
+- **KRW: equal weights.** The report states 636 pairs and is optimal within this order: the weighted expected-rank
+  order. The order and its report family are recomputed when the error weight changes. The supplied marginal intervals describe
+  individual targets; no joint race–gender posterior or Gaussian replacement is created.
+- **Alabama: equal weights.** The report states 1,249 pairs. Grade 1 means favourable historical outcomes,
+  including lower incarceration, rather than greatest need. Source conditioning and the supplied interval level
+  stay attached to the case and its model TXT.
+- **CDE: cap two.** The family contains 4,095 reports. Its risk and the archived risk use the same withholding cost. Changing a cap changes the family; it does not make same-loss evaluations incomparable.
+- **CDE: mean-order cap four.** The computation switches to the posterior-mean order. It is optimal only among
+  cuts of that order. The budget rows still evaluate the displayed report and show signed count-form slack.
+- **CDE: all withheld.** E/N reads NA: no disclosure. A homogeneous budget passes without stating anything,
+  so passing alone is not evidence of informative or error-free reporting. The reporting view retains these qualifications in the download.
+
+::: {.callout-note appearance="simple"}
+Current and archived settings appear together; the old status, bound and gap never certify a new browser DP. Shared grades
+withhold directions, not assert equality; expected error shares do not give joint correctness. Allocation needs
+another decision rule. Draft text remains in component memory, outside the URL, iframe state and storage.
+
+CDE's prior conditions on the statewide fit. KRW uses historical contact-gap targets from
+[Kline, Rose and Walters](https://doi.org/10.1257/aer.20230700) and their
+[data deposit](https://doi.org/10.3886/E198284V1), under the deposit’s CC-BY-NC terms (no version stated); this extraction does not describe current conduct.
+Alabama uses [Opportunity Atlas](https://doi.org/10.7910/DVN/NKCQM1) historical outcomes under CC BY 4.0.
+Each case retains its complete attribution, changes and conditioning below the app and in downloads.
+:::
+
+::: {.callout-note collapse="true" title="In postrank"}
+The mean-order cap-four result states 54 pairs, with risk .0368858. With postrank 1.1.0 loaded:
+
+```r
+x <- pr_case_cde$input; s <- postrank_settings(weights = c(negative_chronic_absence = 1), tau = .2, G_max = 4)
+a <- postrank_cuts(x$summaries$means[, 1], x, s, direction = "descending", rule = "optimal")
+a$evaluation[c("N", "E_over_N", "primary_risk")]
+```
+:::
+
+Standalone: [report-designer](../../embed/report-designer.html).
+
+Related applications: [Posterior summaries in a grade report](../grades/report-card.qmd), [Restrictions on the report family](../grades/families.qmd).
+
+Further reporting considerations: [Criterion-specific excess risk of a common report](../criteria/common-grade-cost.qmd), [Comparison at matched disclosure](../rules/rule-comparison.qmd), [Mixtures of frontier reports](../grades/frontier-mixtures.qmd), [Selection and evaluation using posterior draws](../grades/chosen-and-judged.qmd), [Averaging error shares across reports](../grades/averaging-errors.qmd).

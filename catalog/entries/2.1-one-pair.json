@@ -1,0 +1,69 @@
+{
+  "id": "2.1",
+  "name": "one-pair",
+  "part": "2",
+  "title": "One pair: state or withhold",
+  "idea": "For a pair on its own, state a direction only when its chance of being wrong is below the withholding cost \u03c4.",
+  "status": "built",
+  "from": "v1 whole \u00b7 v1 G-01 one-pair",
+  "data": [
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 10 (Fig. f10a), and Kline, Rose and Walters (2024), slides 18\u201320.",
+  "caption": "One pair on its own: a wrong stated direction costs 1, silence costs \u03c4, and the two true values are never equal.",
+  "presets": [
+    {
+      "id": "pi85-tau10",
+      "label": "\u03c0 .85, \u03c4 .10",
+      "query": "?pi=.85&tau=.10"
+    },
+    {
+      "id": "pi85",
+      "label": "\u03c0 .85, \u03c4 .20",
+      "query": "?pi=.85&tau=.20"
+    },
+    {
+      "id": "pi80",
+      "label": "\u03c0 .80, \u03c4 .20",
+      "query": "?pi=.80&tau=.20"
+    },
+    {
+      "id": "pi50-tau50",
+      "label": "\u03c0 .50, \u03c4 .50",
+      "query": "?pi=.50&tau=.50"
+    }
+  ],
+  "try": [
+    {
+      "preset": "pi85-tau10",
+      "shows": [
+        ".15",
+        ".10",
+        "withhold"
+      ]
+    },
+    {
+      "preset": "pi85",
+      "shows": [
+        ".15",
+        ".20",
+        "state A above B"
+      ]
+    },
+    {
+      "preset": "pi80",
+      "shows": [
+        ".20",
+        "equally good"
+      ]
+    },
+    {
+      "preset": "pi50-tau50",
+      "shows": [
+        ".50",
+        "all three actions are equally good"
+      ]
+    }
+  ],
+  "math": true
+}

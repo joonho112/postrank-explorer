@@ -1,0 +1,1843 @@
+{
+ "group": "oracle-v3p4-joint-accuracy",
+ "generator": "r-export/41_v3_part4_joint_accuracy.R",
+ "uses_postrank": false,
+ "rows": [
+  {
+   "id": "coupling-all-lambda0-w0.5-0.5",
+   "args": {
+    "fn": "couplingAllPart4",
+    "lambda": 0,
+    "w": [0.5, 0.5],
+    "tau": 0.20000000000000001
+   },
+   "expect": {
+    "criterionE": {
+     "ids": ["A", "B"],
+     "criteria": ["criterion 1", "criterion 2"],
+     "e": [
+      [
+       [null, 0.5],
+       [0.5, null]
+      ],
+      [
+       [null, 0.5],
+       [0.5, null]
+      ]
+     ]
+    },
+    "compositeE": {
+     "ids": ["A", "B"],
+     "criteria": ["composite"],
+     "e": [
+      [
+       [null, 0],
+       [1, null]
+      ]
+     ]
+    },
+    "criterionOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "compositeOptimum": {
+     "grade": [1, 2],
+     "grades": [
+      [1, 2]
+     ],
+     "tieCount": 1,
+     "risk": 0
+    },
+    "reports": [
+     {
+      "grade": [1, 1],
+      "criterion": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0, 0],
+       "EoverN": [
+        null,
+        null
+       ],
+       "EoverM": [0, 0],
+       "Rk": [0.20000000000000001, 0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "composite": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0],
+       "EoverN": [
+        null
+       ],
+       "EoverM": [0],
+       "Rk": [0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "wrong": {
+       "N": 0,
+       "values": [0],
+       "probs": [1],
+       "expected": 0,
+       "pNone": 1,
+       "pAllCriteriaRight": 1,
+       "unionBound": 1
+      },
+      "states": [
+       {
+        "prob": 0,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 0,
+        "D": [0, 0]
+       }
+      ],
+      "meanCorrectFraction": null
+     },
+     {
+      "grade": [1, 2],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0],
+       "EoverN": [0],
+       "EoverM": [0],
+       "Rk": [0],
+       "Ew": 0,
+       "risk": 0,
+       "errorTerm": 0,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 0.5, 1],
+       "probs": [0, 1, 0],
+       "expected": 0.5,
+       "pNone": 0,
+       "pAllCriteriaRight": 0,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [0, 1]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [1, 0]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     },
+     {
+      "grade": [2, 1],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [1],
+       "EoverN": [1],
+       "EoverM": [1],
+       "Rk": [1],
+       "Ew": 1,
+       "risk": 1,
+       "errorTerm": 1,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 0.5, 1],
+       "probs": [0, 1, 0],
+       "expected": 0.5,
+       "pNone": 0,
+       "pAllCriteriaRight": 0,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [1, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [0, 1]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "coupling-all-lambda0.3-w0.5-0.5",
+   "args": {
+    "fn": "couplingAllPart4",
+    "lambda": 0.29999999999999999,
+    "w": [0.5, 0.5],
+    "tau": 0.20000000000000001
+   },
+   "expect": {
+    "criterionE": {
+     "ids": ["A", "B"],
+     "criteria": ["criterion 1", "criterion 2"],
+     "e": [
+      [
+       [null, 0.5],
+       [0.5, null]
+      ],
+      [
+       [null, 0.5],
+       [0.5, null]
+      ]
+     ]
+    },
+    "compositeE": {
+     "ids": ["A", "B"],
+     "criteria": ["composite"],
+     "e": [
+      [
+       [null, 0.14999999999999999],
+       [0.84999999999999998, null]
+      ]
+     ]
+    },
+    "criterionOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "compositeOptimum": {
+     "grade": [1, 2],
+     "grades": [
+      [1, 2]
+     ],
+     "tieCount": 1,
+     "risk": 0.14999999999999999
+    },
+    "reports": [
+     {
+      "grade": [1, 1],
+      "criterion": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0, 0],
+       "EoverN": [
+        null,
+        null
+       ],
+       "EoverM": [0, 0],
+       "Rk": [0.20000000000000001, 0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "composite": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0],
+       "EoverN": [
+        null
+       ],
+       "EoverM": [0],
+       "Rk": [0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "wrong": {
+       "N": 0,
+       "values": [0],
+       "probs": [0.99999999999999989],
+       "expected": 0,
+       "pNone": 0.99999999999999989,
+       "pAllCriteriaRight": 0.99999999999999989,
+       "unionBound": 1
+      },
+      "states": [
+       {
+        "prob": 0.14999999999999999,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.14999999999999999,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.34999999999999998,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.34999999999999998,
+        "N": 0,
+        "D": [0, 0]
+       }
+      ],
+      "meanCorrectFraction": null
+     },
+     {
+      "grade": [1, 2],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.14999999999999999],
+       "EoverN": [0.14999999999999999],
+       "EoverM": [0.14999999999999999],
+       "Rk": [0.14999999999999999],
+       "Ew": 0.14999999999999999,
+       "risk": 0.14999999999999999,
+       "errorTerm": 0.14999999999999999,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 0.5, 1],
+       "probs": [0.14999999999999999, 0.69999999999999996, 0.14999999999999999],
+       "expected": 0.49999999999999994,
+       "pNone": 0.14999999999999999,
+       "pAllCriteriaRight": 0.14999999999999999,
+       "unionBound": 1.1102230246251565e-16
+      },
+      "states": [
+       {
+        "prob": 0.14999999999999999,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.14999999999999999,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.34999999999999998,
+        "N": 1,
+        "D": [0, 1]
+       },
+       {
+        "prob": 0.34999999999999998,
+        "N": 1,
+        "D": [1, 0]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     },
+     {
+      "grade": [2, 1],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.84999999999999998],
+       "EoverN": [0.84999999999999998],
+       "EoverM": [0.84999999999999998],
+       "Rk": [0.84999999999999998],
+       "Ew": 0.84999999999999998,
+       "risk": 0.84999999999999998,
+       "errorTerm": 0.84999999999999998,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 0.5, 1],
+       "probs": [0.14999999999999999, 0.69999999999999996, 0.14999999999999999],
+       "expected": 0.49999999999999994,
+       "pNone": 0.14999999999999999,
+       "pAllCriteriaRight": 0.14999999999999999,
+       "unionBound": 1.1102230246251565e-16
+      },
+      "states": [
+       {
+        "prob": 0.14999999999999999,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.14999999999999999,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.34999999999999998,
+        "N": 1,
+        "D": [1, 0]
+       },
+       {
+        "prob": 0.34999999999999998,
+        "N": 1,
+        "D": [0, 1]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "coupling-all-lambda0.5-w0.5-0.5",
+   "args": {
+    "fn": "couplingAllPart4",
+    "lambda": 0.5,
+    "w": [0.5, 0.5],
+    "tau": 0.20000000000000001
+   },
+   "expect": {
+    "criterionE": {
+     "ids": ["A", "B"],
+     "criteria": ["criterion 1", "criterion 2"],
+     "e": [
+      [
+       [null, 0.5],
+       [0.5, null]
+      ],
+      [
+       [null, 0.5],
+       [0.5, null]
+      ]
+     ]
+    },
+    "compositeE": {
+     "ids": ["A", "B"],
+     "criteria": ["composite"],
+     "e": [
+      [
+       [null, 0.25],
+       [0.75, null]
+      ]
+     ]
+    },
+    "criterionOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "compositeOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "reports": [
+     {
+      "grade": [1, 1],
+      "criterion": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0, 0],
+       "EoverN": [
+        null,
+        null
+       ],
+       "EoverM": [0, 0],
+       "Rk": [0.20000000000000001, 0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "composite": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0],
+       "EoverN": [
+        null
+       ],
+       "EoverM": [0],
+       "Rk": [0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "wrong": {
+       "N": 0,
+       "values": [0],
+       "probs": [1],
+       "expected": 0,
+       "pNone": 1,
+       "pAllCriteriaRight": 1,
+       "unionBound": 1
+      },
+      "states": [
+       {
+        "prob": 0.25,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 0,
+        "D": [0, 0]
+       }
+      ],
+      "meanCorrectFraction": null
+     },
+     {
+      "grade": [1, 2],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.25],
+       "EoverN": [0.25],
+       "EoverM": [0.25],
+       "Rk": [0.25],
+       "Ew": 0.25,
+       "risk": 0.25,
+       "errorTerm": 0.25,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 0.5, 1],
+       "probs": [0.25, 0.5, 0.25],
+       "expected": 0.5,
+       "pNone": 0.25,
+       "pAllCriteriaRight": 0.25,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [0, 1]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [1, 0]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     },
+     {
+      "grade": [2, 1],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.75],
+       "EoverN": [0.75],
+       "EoverM": [0.75],
+       "Rk": [0.75],
+       "Ew": 0.75,
+       "risk": 0.75,
+       "errorTerm": 0.75,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 0.5, 1],
+       "probs": [0.25, 0.5, 0.25],
+       "expected": 0.5,
+       "pNone": 0.25,
+       "pAllCriteriaRight": 0.25,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [1, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [0, 1]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "coupling-all-lambda1-w0.5-0.5",
+   "args": {
+    "fn": "couplingAllPart4",
+    "lambda": 1,
+    "w": [0.5, 0.5],
+    "tau": 0.20000000000000001
+   },
+   "expect": {
+    "criterionE": {
+     "ids": ["A", "B"],
+     "criteria": ["criterion 1", "criterion 2"],
+     "e": [
+      [
+       [null, 0.5],
+       [0.5, null]
+      ],
+      [
+       [null, 0.5],
+       [0.5, null]
+      ]
+     ]
+    },
+    "compositeE": {
+     "ids": ["A", "B"],
+     "criteria": ["composite"],
+     "e": [
+      [
+       [null, 0.5],
+       [0.5, null]
+      ]
+     ]
+    },
+    "criterionOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "compositeOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "reports": [
+     {
+      "grade": [1, 1],
+      "criterion": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0, 0],
+       "EoverN": [
+        null,
+        null
+       ],
+       "EoverM": [0, 0],
+       "Rk": [0.20000000000000001, 0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "composite": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0],
+       "EoverN": [
+        null
+       ],
+       "EoverM": [0],
+       "Rk": [0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "wrong": {
+       "N": 0,
+       "values": [0],
+       "probs": [1],
+       "expected": 0,
+       "pNone": 1,
+       "pAllCriteriaRight": 1,
+       "unionBound": 1
+      },
+      "states": [
+       {
+        "prob": 0.5,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 0,
+        "D": [0, 0]
+       }
+      ],
+      "meanCorrectFraction": null
+     },
+     {
+      "grade": [1, 2],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5],
+       "EoverN": [0.5],
+       "EoverM": [0.5],
+       "Rk": [0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 0.5, 1],
+       "probs": [0.5, 0, 0.5],
+       "expected": 0.5,
+       "pNone": 0.5,
+       "pAllCriteriaRight": 0.5,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [0, 1]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [1, 0]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     },
+     {
+      "grade": [2, 1],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5],
+       "EoverN": [0.5],
+       "EoverM": [0.5],
+       "Rk": [0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 0.5, 1],
+       "probs": [0.5, 0, 0.5],
+       "expected": 0.5,
+       "pNone": 0.5,
+       "pAllCriteriaRight": 0.5,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [1, 0]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [0, 1]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "coupling-all-lambda0-w1-0",
+   "args": {
+    "fn": "couplingAllPart4",
+    "lambda": 0,
+    "w": [1, 0],
+    "tau": 0.20000000000000001
+   },
+   "expect": {
+    "criterionE": {
+     "ids": ["A", "B"],
+     "criteria": ["criterion 1", "criterion 2"],
+     "e": [
+      [
+       [null, 0.5],
+       [0.5, null]
+      ],
+      [
+       [null, 0.5],
+       [0.5, null]
+      ]
+     ]
+    },
+    "compositeE": {
+     "ids": ["A", "B"],
+     "criteria": ["composite"],
+     "e": [
+      [
+       [null, 0],
+       [1, null]
+      ]
+     ]
+    },
+    "criterionOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "compositeOptimum": {
+     "grade": [1, 2],
+     "grades": [
+      [1, 2]
+     ],
+     "tieCount": 1,
+     "risk": 0
+    },
+    "reports": [
+     {
+      "grade": [1, 1],
+      "criterion": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0, 0],
+       "EoverN": [
+        null,
+        null
+       ],
+       "EoverM": [0, 0],
+       "Rk": [0.20000000000000001, 0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "composite": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0],
+       "EoverN": [
+        null
+       ],
+       "EoverM": [0],
+       "Rk": [0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "wrong": {
+       "N": 0,
+       "values": [0],
+       "probs": [1],
+       "expected": 0,
+       "pNone": 1,
+       "pAllCriteriaRight": 1,
+       "unionBound": 1
+      },
+      "states": [
+       {
+        "prob": 0,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 0,
+        "D": [0, 0]
+       }
+      ],
+      "meanCorrectFraction": null
+     },
+     {
+      "grade": [1, 2],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0],
+       "EoverN": [0],
+       "EoverM": [0],
+       "Rk": [0],
+       "Ew": 0,
+       "risk": 0,
+       "errorTerm": 0,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 1],
+       "probs": [0.5, 0.5],
+       "expected": 0.5,
+       "pNone": 0.5,
+       "pAllCriteriaRight": 0,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [0, 1]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [1, 0]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     },
+     {
+      "grade": [2, 1],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [1],
+       "EoverN": [1],
+       "EoverM": [1],
+       "Rk": [1],
+       "Ew": 1,
+       "risk": 1,
+       "errorTerm": 1,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 1],
+       "probs": [0.5, 0.5],
+       "expected": 0.5,
+       "pNone": 0.5,
+       "pAllCriteriaRight": 0,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [1, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [0, 1]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "coupling-all-lambda0.5-w1-0",
+   "args": {
+    "fn": "couplingAllPart4",
+    "lambda": 0.5,
+    "w": [1, 0],
+    "tau": 0.20000000000000001
+   },
+   "expect": {
+    "criterionE": {
+     "ids": ["A", "B"],
+     "criteria": ["criterion 1", "criterion 2"],
+     "e": [
+      [
+       [null, 0.5],
+       [0.5, null]
+      ],
+      [
+       [null, 0.5],
+       [0.5, null]
+      ]
+     ]
+    },
+    "compositeE": {
+     "ids": ["A", "B"],
+     "criteria": ["composite"],
+     "e": [
+      [
+       [null, 0.25],
+       [0.75, null]
+      ]
+     ]
+    },
+    "criterionOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "compositeOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "reports": [
+     {
+      "grade": [1, 1],
+      "criterion": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0, 0],
+       "EoverN": [
+        null,
+        null
+       ],
+       "EoverM": [0, 0],
+       "Rk": [0.20000000000000001, 0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "composite": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0],
+       "EoverN": [
+        null
+       ],
+       "EoverM": [0],
+       "Rk": [0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "wrong": {
+       "N": 0,
+       "values": [0],
+       "probs": [1],
+       "expected": 0,
+       "pNone": 1,
+       "pAllCriteriaRight": 1,
+       "unionBound": 1
+      },
+      "states": [
+       {
+        "prob": 0.25,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 0,
+        "D": [0, 0]
+       }
+      ],
+      "meanCorrectFraction": null
+     },
+     {
+      "grade": [1, 2],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.25],
+       "EoverN": [0.25],
+       "EoverM": [0.25],
+       "Rk": [0.25],
+       "Ew": 0.25,
+       "risk": 0.25,
+       "errorTerm": 0.25,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 1],
+       "probs": [0.5, 0.5],
+       "expected": 0.5,
+       "pNone": 0.5,
+       "pAllCriteriaRight": 0.25,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [0, 1]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [1, 0]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     },
+     {
+      "grade": [2, 1],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.75],
+       "EoverN": [0.75],
+       "EoverM": [0.75],
+       "Rk": [0.75],
+       "Ew": 0.75,
+       "risk": 0.75,
+       "errorTerm": 0.75,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 1],
+       "probs": [0.5, 0.5],
+       "expected": 0.5,
+       "pNone": 0.5,
+       "pAllCriteriaRight": 0.25,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [1, 0]
+       },
+       {
+        "prob": 0.25,
+        "N": 1,
+        "D": [0, 1]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "coupling-all-lambda1-w1-0",
+   "args": {
+    "fn": "couplingAllPart4",
+    "lambda": 1,
+    "w": [1, 0],
+    "tau": 0.20000000000000001
+   },
+   "expect": {
+    "criterionE": {
+     "ids": ["A", "B"],
+     "criteria": ["criterion 1", "criterion 2"],
+     "e": [
+      [
+       [null, 0.5],
+       [0.5, null]
+      ],
+      [
+       [null, 0.5],
+       [0.5, null]
+      ]
+     ]
+    },
+    "compositeE": {
+     "ids": ["A", "B"],
+     "criteria": ["composite"],
+     "e": [
+      [
+       [null, 0.5],
+       [0.5, null]
+      ]
+     ]
+    },
+    "criterionOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "compositeOptimum": {
+     "grade": [1, 1],
+     "grades": [
+      [1, 1]
+     ],
+     "tieCount": 1,
+     "risk": 0.20000000000000001
+    },
+    "reports": [
+     {
+      "grade": [1, 1],
+      "criterion": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0, 0],
+       "EoverN": [
+        null,
+        null
+       ],
+       "EoverM": [0, 0],
+       "Rk": [0.20000000000000001, 0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "composite": {
+       "M": 1,
+       "N": 0,
+       "s": 0,
+       "G": 1,
+       "E": [0],
+       "EoverN": [
+        null
+       ],
+       "EoverM": [0],
+       "Rk": [0.20000000000000001],
+       "Ew": 0,
+       "risk": 0.20000000000000001,
+       "errorTerm": 0,
+       "withholdingTerm": 0.20000000000000001
+      },
+      "wrong": {
+       "N": 0,
+       "values": [0],
+       "probs": [1],
+       "expected": 0,
+       "pNone": 1,
+       "pAllCriteriaRight": 1,
+       "unionBound": 1
+      },
+      "states": [
+       {
+        "prob": 0.5,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 0,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 0,
+        "D": [0, 0]
+       }
+      ],
+      "meanCorrectFraction": null
+     },
+     {
+      "grade": [1, 2],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5],
+       "EoverN": [0.5],
+       "EoverM": [0.5],
+       "Rk": [0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 1],
+       "probs": [0.5, 0.5],
+       "expected": 0.5,
+       "pNone": 0.5,
+       "pAllCriteriaRight": 0.5,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [0, 1]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [1, 0]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     },
+     {
+      "grade": [2, 1],
+      "criterion": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5, 0.5],
+       "EoverN": [0.5, 0.5],
+       "EoverM": [0.5, 0.5],
+       "Rk": [0.5, 0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "composite": {
+       "M": 1,
+       "N": 1,
+       "s": 1,
+       "G": 2,
+       "E": [0.5],
+       "EoverN": [0.5],
+       "EoverM": [0.5],
+       "Rk": [0.5],
+       "Ew": 0.5,
+       "risk": 0.5,
+       "errorTerm": 0.5,
+       "withholdingTerm": 0
+      },
+      "wrong": {
+       "N": 1,
+       "values": [0, 1],
+       "probs": [0.5, 0.5],
+       "expected": 0.5,
+       "pNone": 0.5,
+       "pAllCriteriaRight": 0.5,
+       "unionBound": 0
+      },
+      "states": [
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [1, 1]
+       },
+       {
+        "prob": 0.5,
+        "N": 1,
+        "D": [0, 0]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [1, 0]
+       },
+       {
+        "prob": 0,
+        "N": 1,
+        "D": [0, 1]
+       }
+      ],
+      "meanCorrectFraction": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "ch19-fixed1223-joint-accuracy",
+   "args": {
+    "fn": "lawWrongDisplayPart4",
+    "data": "ch19",
+    "grade": [1, 2, 2, 3],
+    "w": [0.59999999999999998, 0.40000000000000002],
+    "tau": 0.20000000000000001
+   },
+   "expect": {
+    "criterionE": {
+     "ids": ["A", "B", "C", "D"],
+     "criteria": ["criterion 1", "criterion 2"],
+     "e": [
+      [
+       [null, 0.25, 0, 0],
+       [0.75, null, 0, 0],
+       [1, 1, null, 0],
+       [1, 1, 1, null]
+      ],
+      [
+       [null, 0.25, 0.25, 0.25],
+       [0.75, null, 1, 0.25],
+       [0.75, 0, null, 0.25],
+       [0.75, 0.75, 0.75, null]
+      ]
+     ]
+    },
+    "evaluation": {
+     "M": 6,
+     "N": 5,
+     "s": 0.83333333333333337,
+     "G": 3,
+     "E": [0.25, 1.25],
+     "EoverN": [0.050000000000000003, 0.25],
+     "EoverM": [0.041666666666666664, 0.20833333333333334],
+     "Rk": [0.074999999999999997, 0.24166666666666667],
+     "Ew": 0.65000000000000002,
+     "risk": 0.14166666666666666,
+     "errorTerm": 0.10833333333333334,
+     "withholdingTerm": 0.033333333333333333
+    },
+    "wrong": {
+     "N": 5,
+     "values": [0, 2.6000000000000001],
+     "probs": [0.75, 0.25],
+     "expected": 0.65000000000000002,
+     "pNone": 0.75,
+     "pAllCriteriaRight": 0.75,
+     "unionBound": 0
+    },
+    "states": [
+     {
+      "prob": 0.75,
+      "N": 5,
+      "D": [0, 0]
+     },
+     {
+      "prob": 0.25,
+      "N": 5,
+      "D": [1, 5]
+     }
+    ],
+    "meanCorrectFraction": 0.87
+   }
+  },
+  {
+   "id": "settings-six-tau40-cap3-equal",
+   "args": {
+    "fn": "settingsPointPart4",
+    "tau": 0.40000000000000002,
+    "w": [0.5, 0.5],
+    "family": {
+     "kind": "atMost",
+     "G": 3
+    }
+   },
+   "expect": {
+    "optimum": {
+     "grade": [1, 2, 1, 2, 3, 3],
+     "grades": [
+      [1, 2, 1, 2, 3, 3]
+     ],
+     "tieCount": 1,
+     "risk": 0.15496697774728413
+    },
+    "profiles": [
+     {
+      "grade": [1, 2, 1, 2, 3, 3],
+      "evaluation": {
+       "M": 15,
+       "N": 12,
+       "s": 0.80000000000000004,
+       "G": 3,
+       "E": [1.5589322976236923, 0.69007703479483051],
+       "EoverN": [0.12991102480197436, 0.057506419566235874],
+       "EoverM": [0.10392881984157949, 0.0460051356529887],
+       "Rk": [0.18392881984157949, 0.12600513565298871],
+       "Ew": 1.1245046662092615,
+       "risk": 0.15496697774728413,
+       "errorTerm": 0.0749669777472841,
+       "withholdingTerm": 0.080000000000000016
+      }
+     }
+    ]
+   }
+  }
+ ]
+}

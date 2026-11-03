@@ -1,0 +1,83 @@
+{
+  "id": "2.15",
+  "name": "ties-and-withholding",
+  "part": "2",
+  "title": "When true values can be equal",
+  "idea": "When true values can be exactly equal, a shared grade still claims no equality, and postrank's equality-neutral risk prices stated and withheld pairs differently from the weak loss.",
+  "status": "built",
+  "from": "new concept \u00b7 v1 storyboard P-10; postrank vignette m4 (the m4 tie law, equality-neutral risk); picture: the three action risks for a pair whose true values can be equal, under the weak loss and the equality-neutral risk, with the all-withheld baseline R\u2080 beside \u03c4 and the switch points (vignette m4's law)",
+  "data": [
+    "data/released/m4-tie-law.json"
+  ],
+  "credit": "After the postrank vignette m4.",
+  "math": true,
+  "caption": "Complete synthetic law after postrank vignette m4; weak-error and equality-neutral loss are different decision conventions.",
+  "presets": [
+    {
+      "id": "weak",
+      "label": "Equality .40, weak loss",
+      "query": "t=.40&tau=.25&loss=weak&scenario=m4"
+    },
+    {
+      "id": "neutral",
+      "label": "Equality .40, neutral loss",
+      "query": "t=.40&tau=.25&loss=neutral&scenario=m4"
+    },
+    {
+      "id": "none",
+      "label": "No equality",
+      "query": "t=0&tau=.25&loss=neutral&scenario=m4"
+    },
+    {
+      "id": "high",
+      "label": "Equality .90",
+      "query": "t=.90&tau=.25&loss=neutral&scenario=m4"
+    },
+    {
+      "id": "certain",
+      "label": "Certain equality",
+      "query": "t=.40&tau=.25&loss=neutral&scenario=certain"
+    }
+  ],
+  "try": [
+    {
+      "preset": "weak",
+      "shows": [
+        ".2500",
+        ".5000",
+        ".9000"
+      ]
+    },
+    {
+      "preset": "neutral",
+      "shows": [
+        ".1000",
+        ".1500",
+        ".150",
+        ".600",
+        ".867"
+      ]
+    },
+    {
+      "preset": "none",
+      "shows": [
+        ".2500"
+      ]
+    },
+    {
+      "preset": "high",
+      "shows": [
+        "0",
+        ".0250"
+      ]
+    },
+    {
+      "preset": "certain",
+      "shows": [
+        "0",
+        "only withholding",
+        "NA: no distinct mass"
+      ]
+    }
+  ]
+}

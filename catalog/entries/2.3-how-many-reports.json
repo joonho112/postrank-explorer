@@ -1,0 +1,80 @@
+{
+  "id": "2.3",
+  "name": "how-many-reports",
+  "part": "2",
+  "title": "How many grade reports are there?",
+  "idea": "Grade reports far outnumber strict rankings (13 for three units, 4,683 for six, 545,835 for eight), while a cap or a fixed order leaves far fewer (for eight units, 6,051 with at most three grades, 128 along one order).",
+  "status": "built",
+  "from": "new angle \u00b7 builds on v1 G-02 and G-08; adds the count of reports by n and family (ordered set partitions)",
+  "data": [
+    "engine"
+  ],
+  "credit": "After the postrank theory book, ch. 14, and the postrank vignette m5.",
+  "caption": "Exact counts of ordered grade reports from the postrank engine; counts only, with no posterior or optimization.",
+  "presets": [
+    {
+      "id": "three",
+      "label": "Three units",
+      "query": "n=3&G=3&family=all&report=1"
+    },
+    {
+      "id": "six",
+      "label": "Six units",
+      "query": "n=6&G=3&family=all&report=1"
+    },
+    {
+      "id": "eight",
+      "label": "Eight units",
+      "query": "n=8&G=3&family=all&report=1"
+    },
+    {
+      "id": "twelve",
+      "label": "Twelve units",
+      "query": "n=12&G=3&family=cap&report=1"
+    },
+    {
+      "id": "empty",
+      "label": "An empty exact family",
+      "query": "n=2&G=3&family=exact&report=1"
+    }
+  ],
+  "try": [
+    {
+      "preset": "three",
+      "shows": [
+        "13",
+        "6"
+      ]
+    },
+    {
+      "preset": "six",
+      "shows": [
+        "4,683",
+        "603",
+        "540",
+        "32"
+      ]
+    },
+    {
+      "preset": "eight",
+      "shows": [
+        "545,835",
+        "6,051",
+        "128"
+      ]
+    },
+    {
+      "preset": "twelve",
+      "shows": [
+        "28,091,567,595",
+        "523,251"
+      ]
+    },
+    {
+      "preset": "empty",
+      "shows": [
+        "0 reports"
+      ]
+    }
+  ]
+}

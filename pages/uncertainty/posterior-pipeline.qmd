@@ -1,0 +1,56 @@
+---
+title: "From data to posterior decisions"
+subtitle: "1.7 · after Walters (Mixtape slides) and Kline, Rose and Walters (2024)"
+description: "Separation of model fitting, posterior calculation and grade-report selection."
+---
+
+Posterior reporting involves four stages: observed data $Y$, a model and prior, the posterior distribution
+$\Pr(\theta \mid Y)$, and a decision expressed as a grade report. The analyst specifies the model and computes the
+posterior using other software. postrank takes this posterior as input and selects the report. The diagram identifies
+the quantities and responsibilities at each stage. A two-unit example provides the corresponding calculations, and
+the table describes the operations available for the different posterior representations accepted by postrank.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/posterior-pipeline.js"></script>
+<script>window.__prxApp = PRX["posterior-pipeline"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Box 1 (Data).** $Y$ holds the estimates and their SEs: .25 (SE .10) for A and .05 (SE .20) for B. postrank never
+  reads $Y$ itself, only a posterior computed from it.
+- **Box 2 (Model).** The prior SD, .15, is the analyst's choice, set by hand here. With each SE it sets how much of its
+  estimate each posterior mean keeps: .692 for A, .360 for the noisier B.
+- **Box 3 (Posterior).** The posterior is the input to postrank. The posterior means are .173 and .018, and $\pi$ = .856 is the
+  probability that A is truly higher. **B more precise** (SE .10, as for A): B keeps .692 too, its mean is .035, and
+  $\pi$ rises to .880.
+- **Box 4 (Decision).** The postrank step: stating A above B is wrong with probability .144, less than τ = .20, so
+  postrank states it, {A} > {B}, the best of all 3 reports. At **τ .10** withholding costs less than .144, so
+  postrank withholds the pair: {A, B}.
+- **Prior SD .05.** With a narrower prior, A's posterior mean falls to .050 and $\pi$ to .762.
+  Stating A above B would now be wrong with probability .238, so postrank withholds the pair: {A, B}. The change in grades results from the altered model specification and its posterior probabilities.
+
+::: {.callout-note appearance="simple"}
+Kline, Rose and Walters (2024), Section III.A–B, set out the empirical Bayes posteriors behind their firm grades (KRW
+call them beliefs). In their talk, slides 34 and 37 show the model for first names, not for the firms; slides 43 to 52
+set out the empirical Bayes model for the firms. Walters' Mixtape slides on empirical Bayes (p. 13) set out the same
+recipe. The two units here are set by hand, and the browser computes their posterior; postrank fits no model.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+validate_postrank_draws(postrank_toy)[c("valid", "jointness_verified", "convergence_verified")]  # TRUE, FALSE, FALSE: the form is checked, jointness and convergence are not
+postrank_coefficient_capabilities(pr_tutorial$one)[c("weighted_at_most_G_problem", "minimax_problem")]  # TRUE, FALSE: row "A normal law", first column yes, minimax no
+```
+:::
+
+Standalone: [embed/posterior-pipeline.html](../../embed/posterior-pipeline.html), for example `?box=3` or
+`?preset=narrow&theme=dark`.
+
+Related applications: [Normal–normal posterior shrinkage](shrinkage.qmd) (1.5), [Pairwise posterior direction probabilities](two-units.qmd)
+(1.8) and [The decision for an isolated pair](../grades/one-pair.qmd) (2.1).

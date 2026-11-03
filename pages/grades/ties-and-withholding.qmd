@@ -1,0 +1,56 @@
+---
+title: "Posterior equality and withholding"
+subtitle: "2.15 · after postrank vignette m4 and the postrank theory book, ch. 11"
+description: "Effect of equality mass on weak-error and equality-neutral reporting losses."
+---
+
+Posterior probability of exact equality affects the expected loss of a strict direction. Weak-error loss counts an
+equal pair as an incorrect directional statement. Equality-neutral loss instead assigns no cost to that state.
+The same joint posterior can therefore give different optimal actions under the two losses. The display evaluates
+both directions and withholding as the equality probability varies, and identifies the boundaries at which actions
+have equal expected cost. Sharing a grade remains a withholding decision under either loss; it does not assert that
+the true values are equal.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/ties-and-withholding.js"></script>
+<script>window.__prxApp = PRX["ties-and-withholding"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **Equality .40, weak loss.** Withholding costs .2500; stating A above B costs .5000 and stating the reverse costs
+  .9000. Equality counts against both strict directions. The grey action is minimum-cost even though A is more likely
+  to be above B than below it.
+- **Equality .40, neutral loss.** The same law now gives A above B cost .1000 and withholding cost .1500. The
+  difference comes from consequences at equality. Along the equality slider, weak loss changes its minimum-cost action
+  at .150; neutral loss changes at .600 and approximately .867. The open circles mark the boundaries, where
+  competing actions have equal cost.
+- **No equality.** Both loss columns agree, and the all-withheld baseline returns to .2500. Under this law the two
+  targets are always distinct, so charging only for distinct states changes nothing.
+- **Equality .90.** B above A has neutral cost 0, while withholding costs .0250. This zero cost does not establish
+  strict superiority: the targets can be equal even though a strict reversal is impossible.
+- **Certain equality.** Every neutral action costs 0. Here the targets are identical in every state, so the
+  same-grade guard admits **only withholding**. The raw disclosed-pair count and the distinct mass are different
+  quantities. A strict row has N = 1 but Q = 0: its Errors / Q reads “NA: no distinct mass”. “No disclosure” is reserved for N = 0.
+
+::: {.callout-note appearance="simple"}
+A shared grade withholds a direction and asserts no equality. The probability of exact equality concerns the joint
+law, rather than equal posterior means or rounded observations. Comparing the two losses compares different decision
+problems; a smaller neutral risk is not an improvement under weak-error loss. The all-withheld risks coincide only
+with no equality mass on every positive-weight criterion and a common action family.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+The opt-in tie-aware route uses `postrank_tie_pairwise()` and `postrank_tie_evaluate()` after the law's targets and
+equality declarations are supplied. Vignette m4 gives the full constructor. Its field `D` is the distinct mass called
+$Q^s_w$ here, and `R0` is the neutral all-withheld baseline. The ordinary route requires tie-free input.
+:::
+
+Standalone: [embed/ties-and-withholding.html](../../embed/ties-and-withholding.html), for example `?preset=neutral`.
+
+Related applications: [The decision for an isolated pair](one-pair.qmd) · [Reporting risk and withholding cost](price-of-silence.qmd) ·
+[Mixtures of frontier reports](frontier-mixtures.qmd).

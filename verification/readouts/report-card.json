@@ -1,0 +1,1408 @@
+{
+  "$schema": "./_schema.json",
+  "catalog": "2.13",
+  "about": "Original non-prediction report-card regressions: both datasets, all sort orders, reveal, between-grade errors, grade means, and result scope. Three gate-only cases removed.",
+  "cases": [
+    {
+      "id": "preset-six-grade",
+      "about": "deck preset: six sites, tau .20, at most 3 grades, grade order; the card 1/1/2/2/3/3 and every number of the header, the read-out and the between-grade table",
+      "preset": "six-grade",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "about": "row order of postrank_plot_report_card(order = 'grade'): the stored card order (golden 'grade' row: input order within grade, which equals the stored expected-rank order on this card)",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-card",
+            "row": "reportCardRows-tutorial_one-grade",
+            "field": "rows"
+          },
+          "format": {
+            "fn": "formatTuple",
+            "item": {
+              "fn": "formatCount"
+            }
+          },
+          "value": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"G\"]",
+          "source": "registry",
+          "ref": "g07.six.cap3.tau20.G",
+          "value": 3,
+          "about": "G(g) of 1/1/2/2/3/3"
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.N",
+          "value": 12,
+          "about": "pairs stated"
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15,
+          "about": "all pairs of six units"
+        },
+        {
+          "select": "[data-prx-readout=\"s\"]",
+          "about": "s = N/M of the card, a share at three significant digits (base-R evaluation)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-cap3-tau.20",
+            "field": "s"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"cap\"]",
+          "source": "registry",
+          "ref": "settings.cap3",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.risk",
+          "value": 0.04165163994548712
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.EoverN",
+          "value": 0.002064549931858891
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "registry",
+          "ref": "six.family.cap3.size",
+          "value": 603,
+          "about": "reports with at most 3 grades, every one evaluated"
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "best of the 603 reports with at most 3 grades",
+          "about": "the label from exactOptimum's return value"
+        },
+        {
+          "select": "[data-prx-readout=\"level\"]",
+          "source": "registry",
+          "ref": "settings.level90",
+          "value": 0.9,
+          "about": "interval level in the caption"
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-card\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.grades",
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ],
+          "about": "the card in the read-out"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-tau\"]",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"ro-cap\"]",
+          "source": "registry",
+          "ref": "settings.cap3",
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"ro-risk\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.risk",
+          "value": 0.04165163994548712
+        },
+        {
+          "select": "[data-prx-readout=\"between-1-2\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.between12",
+          "value": 0.00237429721448715,
+          "about": "grades 1 and 2 (adjacent)"
+        },
+        {
+          "select": "[data-prx-readout=\"between-2-3\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.between23",
+          "value": 0.0038193153804910976,
+          "about": "grades 2 and 3 (adjacent)"
+        },
+        {
+          "select": "[data-prx-readout=\"between-1-3\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.between13",
+          "value": 3.7200598425513765e-08,
+          "about": "grades 1 and 3"
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-1-2\"]",
+          "source": "registry",
+          "ref": "g07.six.cap3.tau20.pairs12",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-1-3\"]",
+          "source": "registry",
+          "ref": "g07.six.cap3.tau20.pairs13",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-2-3\"]",
+          "source": "registry",
+          "ref": "g07.six.cap3.tau20.pairs23",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-1\"]",
+          "source": "registry",
+          "ref": "g07.six.cap3.tau20.gmean1",
+          "value": 1.075,
+          "about": "grade 1's average posterior mean (A, B)"
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-2\"]",
+          "source": "registry",
+          "ref": "g07.six.cap3.tau20.gmean2",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-3\"]",
+          "source": "registry",
+          "ref": "g07.six.cap3.tau20.gmean3",
+          "value": -0.65
+        },
+        {
+          "select": "[data-prx-readout=\"sum-1-2\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.between12",
+          "value": 0.00237429721448715,
+          "about": "summary line"
+        },
+        {
+          "select": "[data-prx-readout=\"sum-2-3\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.between23",
+          "value": 0.0038193153804910976,
+          "about": "summary line"
+        },
+        {
+          "select": "[data-prx-readout=\"sum-1-3\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.between13",
+          "value": 3.7200598425513765e-08,
+          "about": "summary line"
+        },
+        {
+          "select": "[data-prx-readout=\"largest\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.maxadjacent",
+          "value": 0.0107781333800082,
+          "about": "D above E, between adjacent grades"
+        },
+        {
+          "select": ".prx-rc-summary",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Adjacent grades: ⟨a⟩ (grades ⟨h⟩ and ⟨hp⟩) and ⟨b⟩ (grades ⟨h⟩ and ⟨hp⟩). Grades two or more apart: ⟨c⟩ (grades ⟨h⟩ and ⟨hp⟩). The largest single stated error, ⟨d⟩ (Site D above Site E), is between adjacent grades.",
+          "about": "the summary sentence word for word",
+          "slots": true
+        },
+        {
+          "select": ".prx-data-table tbody tr:nth-child(1) td:nth-child(6)",
+          "about": "expected rank of site A in the hidden table",
+          "source": "registry",
+          "ref": "six.A.exprank.A",
+          "value": 1.188873716808863
+        },
+        {
+          "select": ".prx-data-table tbody tr:nth-child(2) td:nth-child(6)",
+          "about": "expected rank of site B in the hidden table",
+          "source": "registry",
+          "ref": "six.A.exprank.B",
+          "value": 1.8206236208514794
+        },
+        {
+          "select": ".prx-data-table tbody tr:nth-child(3) td:nth-child(6)",
+          "about": "expected rank of site C in the hidden table",
+          "source": "registry",
+          "ref": "six.A.exprank.C",
+          "value": 3.358888830449538
+        },
+        {
+          "select": ".prx-data-table tbody tr:nth-child(4) td:nth-child(6)",
+          "about": "expected rank of site D in the hidden table",
+          "source": "registry",
+          "ref": "six.A.exprank.D",
+          "value": 3.6468912422144766
+        },
+        {
+          "select": ".prx-data-table tbody tr:nth-child(5) td:nth-child(6)",
+          "about": "expected rank of site E in the hidden table",
+          "source": "registry",
+          "ref": "six.A.exprank.E",
+          "value": 5.129638930132911
+        },
+        {
+          "select": ".prx-data-table tbody tr:nth-child(6) td:nth-child(6)",
+          "about": "expected rank of site F in the hidden table",
+          "source": "registry",
+          "ref": "six.A.exprank.F",
+          "value": 5.85508365954273
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N of the card (base-R evaluation)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-cap3-tau.20",
+            "field": "EoverN.0"
+          },
+          "value": 0.00206454993185889
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-1\"]",
+          "about": "grade 1 average posterior mean (base-R summaryStats)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-six-scoreA-card112233-grade1",
+            "field": "mean"
+          },
+          "value": 1.075
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-2\"]",
+          "about": "grade 2 average posterior mean (base-R summaryStats)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-six-scoreA-card112233-grade2",
+            "field": "mean"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-3\"]",
+          "about": "grade 3 average posterior mean (base-R summaryStats)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-six-scoreA-card112233-grade3",
+            "field": "mean"
+          },
+          "value": -0.65
+        },
+        {
+          "select": ".prx-rc-between-scroll",
+          "kind": "text",
+          "attr": "tabindex",
+          "about": "the box that may scroll sideways is reachable by keyboard",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "0"
+        },
+        {
+          "select": ".prx-rc-between-scroll",
+          "kind": "text",
+          "attr": "aria-label",
+          "about": "and labelled",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Between-grade expected wrong shares, with grade-average posterior means on the diagonal"
+        },
+        {
+          "select": ".prx-rc-card [role=\"heading\"]",
+          "kind": "text",
+          "attr": "aria-level",
+          "about": "the panel title is a heading",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "4"
+        }
+      ]
+    },
+    {
+      "id": "six-expected-rank",
+      "about": "six sites, expected-rank sort",
+      "query": "?data=six&tau=.20&cap=3&order=expected_rank&reveal=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "about": "row order of postrank_report_card() with order expected_rank",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-card",
+            "row": "reportCardRows-tutorial_one-expected_rank",
+            "field": "rows"
+          },
+          "format": {
+            "fn": "formatTuple",
+            "item": {
+              "fn": "formatCount"
+            }
+          },
+          "value": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "six-mean",
+      "about": "six sites, posterior-mean sort",
+      "query": "?data=six&tau=.20&cap=3&order=mean&reveal=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "about": "row order with order mean (score A)",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-card",
+            "row": "reportCardRows-tutorial_one-mean-score_A",
+            "field": "rows"
+          },
+          "format": {
+            "fn": "formatTuple",
+            "item": {
+              "fn": "formatCount"
+            }
+          },
+          "value": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "six-label",
+      "about": "six sites, label sort",
+      "query": "?data=six&tau=.20&cap=3&order=label&reveal=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "about": "row order with order label",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-card",
+            "row": "reportCardRows-tutorial_one-label",
+            "field": "rows"
+          },
+          "format": {
+            "fn": "formatTuple",
+            "item": {
+              "fn": "formatCount"
+            }
+          },
+          "value": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "id": "preset-six-rank-reveal",
+      "about": "six sites revealed by grade: only grade 1 is drawn and compared; the order still covers every row",
+      "preset": "six-rank-reveal",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "about": "the full display order",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-card",
+            "row": "reportCardRows-tutorial_one-expected_rank",
+            "field": "rows"
+          },
+          "format": {
+            "fn": "formatTuple",
+            "item": {
+              "fn": "formatCount"
+            }
+          },
+          "value": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"ro-card\"]",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.grades",
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-1\"]",
+          "source": "registry",
+          "ref": "g07.six.cap3.tau20.gmean1",
+          "value": 1.075,
+          "about": "the one grade shown"
+        },
+        {
+          "select": ".prx-rc-summary",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With one grade shown there is nothing to compare yet."
+        },
+        {
+          "select": "[data-prx-readout=\"ro-shown\"]",
+          "about": "grades shown so far",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "literal",
+          "ref": "9.1",
+          "value": "1",
+          "kind": "text"
+        }
+      ]
+    },
+    {
+      "id": "preset-thirty",
+      "about": "30-site example, poverty, tau .25, at most 4 grades, expected-rank sort: the card 5/11/12/2 (fixedOrderDP; postrank_cuts and postrank() give the same grades) with its header and between-grade table",
+      "preset": "thirty",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.order.expected_rank",
+          "value": [
+            28,
+            27,
+            2,
+            9,
+            26,
+            18,
+            29,
+            20,
+            11,
+            4,
+            24,
+            22,
+            7,
+            10,
+            17,
+            16,
+            12,
+            23,
+            13,
+            3,
+            25,
+            1,
+            14,
+            21,
+            19,
+            15,
+            5,
+            0,
+            6,
+            8
+          ],
+          "about": "row order; equals postrank_plot_report_card(order = 'expected_rank') in R"
+        },
+        {
+          "select": "[data-prx-readout=\"G\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.G",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.N",
+          "value": 303
+        },
+        {
+          "select": "[data-prx-readout=\"M\"]",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"s\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.s",
+          "value": 0.696551724137931
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "source": "registry",
+          "ref": "settings.tau25",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"cap\"]",
+          "source": "registry",
+          "ref": "settings.cap4",
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.risk",
+          "value": 0.16029380995624715
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.EoverN",
+          "value": 0.12121388558075086
+        },
+        {
+          "select": "[data-prx-family-size]",
+          "source": "registry",
+          "ref": "thirty.poverty.order.cap4.size",
+          "value": 4090,
+          "about": "contiguous reports of the expected-rank order with at most 4 grades"
+        },
+        {
+          "select": "[data-prx-label]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "best along the expected-rank order (4,090 reports)",
+          "about": "the label from fixedOrderDP's return value"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-sizes\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.sizes",
+          "value": [
+            5,
+            11,
+            12,
+            2
+          ],
+          "about": "sizes in the read-out (30 units: sizes, not the vector)"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-risk\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.risk",
+          "value": 0.16029380995624715
+        },
+        {
+          "select": ".prx-data-table tbody tr:nth-child(1) td:nth-child(4)",
+          "about": "site029's interval lower end (first row)",
+          "source": "registry",
+          "ref": "g07.thirty.site029.interval90.lower",
+          "value": -0.08289034452224009
+        },
+        {
+          "select": ".prx-data-table tbody tr:nth-child(1) td:nth-child(5)",
+          "about": "site029's interval upper end",
+          "source": "registry",
+          "ref": "g07.thirty.site029.interval90.upper",
+          "value": 2.0287913584712562
+        },
+        {
+          "select": "[data-prx-readout=\"between-1-2\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.between12",
+          "value": 0.20192642338615996
+        },
+        {
+          "select": "[data-prx-readout=\"between-1-3\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.between13",
+          "value": 0.03084633337356765
+        },
+        {
+          "select": "[data-prx-readout=\"between-1-4\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.between14",
+          "value": 0.00014444868656359296
+        },
+        {
+          "select": "[data-prx-readout=\"between-2-3\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.between23",
+          "value": 0.16724501535180603
+        },
+        {
+          "select": "[data-prx-readout=\"between-2-4\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.between24",
+          "value": 0.007115592160864323
+        },
+        {
+          "select": "[data-prx-readout=\"between-3-4\"]",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.between34",
+          "value": 0.06403102089465003
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-1-2\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.pairs12",
+          "value": 55
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-1-3\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.pairs13",
+          "value": 60
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-1-4\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.pairs14",
+          "value": 10
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-2-3\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.pairs23",
+          "value": 132
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-2-4\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.pairs24",
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-3-4\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.pairs34",
+          "value": 24
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-1\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.gmean1",
+          "value": 0.8480756540905822
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-2\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.gmean2",
+          "value": 0.08992609352210451
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-3\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.gmean3",
+          "value": -0.8362642138030891
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-4\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.gmean4",
+          "value": -2.221637507750155
+        },
+        {
+          "select": "[data-prx-readout=\"largest\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.largest",
+          "value": 0.446365501992277
+        },
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "about": "pairs the card states (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-thirty-poverty-card-cap4-tau.25",
+            "field": "N"
+          },
+          "value": 303
+        },
+        {
+          "select": "[data-prx-readout=\"s\"]",
+          "about": "s = N/M (base-R disclosure)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-thirty-poverty-card-cap4-tau.25",
+            "field": "s"
+          },
+          "value": 0.696551724137931
+        },
+        {
+          "select": "[data-prx-readout=\"G\"]",
+          "about": "grades used (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-thirty-poverty-card-cap4-tau.25",
+            "field": "G"
+          },
+          "value": 4
+        },
+        {
+          "select": "[data-prx-readout=\"ro-sizes\"]",
+          "about": "grade sizes (base-R disclosure)",
+          "format": {
+            "fn": "formatSizes"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-thirty-poverty-card-cap4-tau.25",
+            "field": "sizes"
+          },
+          "value": [
+            5,
+            11,
+            12,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"risk\"]",
+          "about": "risk of the card at tau .25 (base-R evaluation)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-thirty-poverty-card-cap4-tau.25",
+            "field": "risk"
+          },
+          "value": 0.160293809956247
+        },
+        {
+          "select": "[data-prx-readout=\"EoverN\"]",
+          "about": "E/N of the card (base-R evaluation)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-thirty-poverty-card-cap4-tau.25",
+            "field": "EoverN.0"
+          },
+          "value": 0.121213885580751
+        },
+        {
+          "select": "[data-prx-readout=\"largest\"]",
+          "about": "the largest single stated error (base-R statedAbove)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "statedAbove-thirty-poverty-card-cap4-tau.25",
+            "field": "max"
+          },
+          "value": 0.446365501992277
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-1\"]",
+          "about": "grade 1 average posterior mean (base-R summaryStats)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-thirty-poverty-card-cap4-tau.25-grade1",
+            "field": "mean"
+          },
+          "value": 0.848075654090582
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-2\"]",
+          "about": "grade 2 average posterior mean (base-R summaryStats)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-thirty-poverty-card-cap4-tau.25-grade2",
+            "field": "mean"
+          },
+          "value": 0.0899260935221045
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-3\"]",
+          "about": "grade 3 average posterior mean (base-R summaryStats)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-thirty-poverty-card-cap4-tau.25-grade3",
+            "field": "mean"
+          },
+          "value": -0.836264213803089
+        },
+        {
+          "select": "[data-prx-readout=\"gmean-4\"]",
+          "about": "grade 4 average posterior mean (base-R summaryStats)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "summaryStats-thirty-poverty-card-cap4-tau.25-grade4",
+            "field": "mean"
+          },
+          "value": -2.22163750775016
+        },
+        {
+          "select": "[data-prx-readout=\"between-1-2\"]",
+          "about": "between-grade share of grades 1 and 2 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.0.meanError"
+          },
+          "value": 0.20192642338616
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-1-2\"]",
+          "about": "stated pairs between grades 1 and 2 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.0.pairs"
+          },
+          "value": 55
+        },
+        {
+          "select": "[data-prx-readout=\"between-1-3\"]",
+          "about": "between-grade share of grades 1 and 3 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.1.meanError"
+          },
+          "value": 0.0308463333735677
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-1-3\"]",
+          "about": "stated pairs between grades 1 and 3 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.1.pairs"
+          },
+          "value": 60
+        },
+        {
+          "select": "[data-prx-readout=\"between-1-4\"]",
+          "about": "between-grade share of grades 1 and 4 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.2.meanError"
+          },
+          "value": 0.000144448686563593
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-1-4\"]",
+          "about": "stated pairs between grades 1 and 4 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.2.pairs"
+          },
+          "value": 10
+        },
+        {
+          "select": "[data-prx-readout=\"between-2-3\"]",
+          "about": "between-grade share of grades 2 and 3 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.3.meanError"
+          },
+          "value": 0.167245015351806
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-2-3\"]",
+          "about": "stated pairs between grades 2 and 3 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.3.pairs"
+          },
+          "value": 132
+        },
+        {
+          "select": "[data-prx-readout=\"between-2-4\"]",
+          "about": "between-grade share of grades 2 and 4 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.4.meanError"
+          },
+          "value": 0.00711559216086432
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-2-4\"]",
+          "about": "stated pairs between grades 2 and 4 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.4.pairs"
+          },
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"between-3-4\"]",
+          "about": "between-grade share of grades 3 and 4 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.5.meanError"
+          },
+          "value": 0.06403102089465
+        },
+        {
+          "select": "[data-prx-readout=\"pairs-3-4\"]",
+          "about": "stated pairs between grades 3 and 4 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.5.pairs"
+          },
+          "value": 24
+        },
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "about": "row order, sort expected_rank (postrank 1.1.0 report card on the postrank_cuts grade)",
+          "format": {
+            "fn": "formatTuple",
+            "item": {
+              "fn": "formatCount"
+            }
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-card",
+            "row": "reportCardRows-thirty-poverty-card-cap4-tau.25-expected_rank",
+            "field": "rows"
+          },
+          "value": [
+            28,
+            27,
+            2,
+            9,
+            26,
+            18,
+            29,
+            20,
+            11,
+            4,
+            24,
+            22,
+            7,
+            10,
+            17,
+            16,
+            12,
+            23,
+            13,
+            3,
+            25,
+            1,
+            14,
+            21,
+            19,
+            15,
+            5,
+            0,
+            6,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "id": "thirty-grade",
+      "query": "?data=thirty&tau=.25&cap=4&order=grade&reveal=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.order.grade",
+          "value": [
+            28,
+            27,
+            2,
+            9,
+            26,
+            18,
+            29,
+            20,
+            11,
+            4,
+            24,
+            22,
+            7,
+            10,
+            17,
+            16,
+            12,
+            23,
+            13,
+            3,
+            25,
+            1,
+            14,
+            21,
+            19,
+            15,
+            5,
+            0,
+            6,
+            8
+          ],
+          "about": "the stored order (expected rank within grades)"
+        }
+      ]
+    },
+    {
+      "id": "thirty-mean",
+      "query": "?data=thirty&tau=.25&cap=4&order=mean&reveal=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.order.mean",
+          "value": [
+            28,
+            27,
+            2,
+            9,
+            26,
+            18,
+            29,
+            20,
+            11,
+            4,
+            24,
+            22,
+            7,
+            10,
+            17,
+            16,
+            12,
+            23,
+            13,
+            3,
+            25,
+            1,
+            21,
+            14,
+            19,
+            5,
+            15,
+            0,
+            6,
+            8
+          ],
+          "about": "larger posterior mean first within grades"
+        },
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "about": "row order, sort mean (postrank 1.1.0 report card on the postrank_cuts grade)",
+          "format": {
+            "fn": "formatTuple",
+            "item": {
+              "fn": "formatCount"
+            }
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-card",
+            "row": "reportCardRows-thirty-poverty-card-cap4-tau.25-mean",
+            "field": "rows"
+          },
+          "value": [
+            28,
+            27,
+            2,
+            9,
+            26,
+            18,
+            29,
+            20,
+            11,
+            4,
+            24,
+            22,
+            7,
+            10,
+            17,
+            16,
+            12,
+            23,
+            13,
+            3,
+            25,
+            1,
+            21,
+            14,
+            19,
+            5,
+            15,
+            0,
+            6,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "id": "thirty-label",
+      "query": "?data=thirty&tau=.25&cap=4&order=label&reveal=0",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "source": "registry",
+          "ref": "g07.thirty.cap4.tau25.order.label",
+          "value": [
+            2,
+            9,
+            26,
+            27,
+            28,
+            4,
+            7,
+            10,
+            11,
+            16,
+            17,
+            18,
+            20,
+            22,
+            24,
+            29,
+            0,
+            1,
+            3,
+            5,
+            12,
+            13,
+            14,
+            15,
+            19,
+            21,
+            23,
+            25,
+            6,
+            8
+          ],
+          "about": "unit id within grades"
+        },
+        {
+          "select": "[data-prx-readout=\"order\"]",
+          "about": "row order, sort label (postrank 1.1.0 report card on the postrank_cuts grade)",
+          "format": {
+            "fn": "formatTuple",
+            "item": {
+              "fn": "formatCount"
+            }
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-card",
+            "row": "reportCardRows-thirty-poverty-card-cap4-tau.25-label",
+            "field": "rows"
+          },
+          "value": [
+            2,
+            9,
+            26,
+            27,
+            28,
+            4,
+            7,
+            10,
+            11,
+            16,
+            17,
+            18,
+            20,
+            22,
+            24,
+            29,
+            0,
+            1,
+            3,
+            5,
+            12,
+            13,
+            14,
+            15,
+            19,
+            21,
+            23,
+            25,
+            6,
+            8
+          ]
+        }
+      ]
+    }
+  ],
+  "app": "report-card",
+  "from": "postrank-explorer-v1 verification/readouts/report-card.json"
+}

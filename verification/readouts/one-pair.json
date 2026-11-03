@@ -1,0 +1,4627 @@
+{
+  "$schema": "./_schema.json",
+  "catalog": "2.1",
+  "about": "Ported from v1: costs, bridge formulas, rule sentences, slider clamping, boundaries, and update-after-mount; all five scripted prediction cases removed. Expected values retain independent base-R oracle and frozen registry sources. Default mount uses the pi85-tau10 setting under CR-156; explicit presets retain all original settings.",
+  "cases": [
+    {
+      "id": "pi85",
+      "about": "The prediction's setting (deck preset): pi .85, tau .20. Stating A above B is the unique best action (oracle row pairDecision-0.15-0.85-tau0.2); the page's registry keys agree.",
+      "preset": "pi85",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (iAboveJ); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Stating A above B is the unique best action: its expected cost \u27e8c\u27e9 is below \u03c4."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB is the setting",
+          "source": "registry",
+          "ref": "settings.pi85",
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State A above B"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and \u03c0AB = \u27e8pi\u27e9 exceeds it: disclose A above B."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau, the boundary direction probability (registry setting of the boundary preset at this tau)",
+          "source": "registry",
+          "ref": "settings.pi80",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.2-0.8-tau0.2 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "rule box: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the falling line meets the flat line at e_AB = 1 - tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: e_AB equals the page's registry value",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.eAB",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: e_BA equals the page's registry value",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.eBA",
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: the withholding cost equals the page's registry value",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.wh",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "pi85-tau10",
+      "about": "The preset pi .85, tau .10 (What to try): both errors are above tau, so withholding is the unique best action. e_AB and e_BA come from the oracle row pairDecision-0.15-0.85-tau0.2 (the costs do not depend on tau), the withholding cost and 1 - tau = .90 from pairDecision-0.1-0.9-tau0.1 (costs.withhold = .10, costs.jAboveI = .90); the page's registry keys agree.",
+      "preset": "pi85-tau10",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out names withholding as the unique best action",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Both errors are above \u03c4, so withholding is the unique best action, with expected cost \u27e8c\u27e9."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "pi_AB = e_BA",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "pi_AB",
+          "source": "registry",
+          "ref": "settings.pi85",
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau",
+          "source": "registry",
+          "ref": "settings.tau10",
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "the best action's cost is tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "the page's e_AB",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.eAB",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "the page's e_BA",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.eBA",
+          "value": 0.85
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "about": "the marked row of the cost table",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Withhold"
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "the rule applied to the pair",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9. Neither \u03c0AB = \u27e8pi\u27e9 nor \u03c0BA = \u27e8piRev\u27e9 exceeds it: withhold."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "1 - tau = .90",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.9
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "pi_AB in the rule box",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi-ba\"]",
+          "about": "pi_BA = e_AB in the rule box",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "hidden table: the rising line crosses the flat line at e = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "hidden table: the falling line crosses the flat line at e = 1 - tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.9
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "hidden table: the current pair",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        }
+      ]
+    },
+    {
+      "id": "pi80",
+      "about": "The boundary preset pi .80, tau .20: e_AB = tau, so stating A above B and withholding are equally good (oracle row pairDecision-0.2-0.8-tau0.2; the engine's equal-cost tolerance 1e-12 absorbs 1 - .80 in floating point, which the widget rounds away).",
+      "preset": "pi80",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (iAboveJ, withhold); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. The error of A above B equals \u03c4, so stating A above B and withholding are equally good, each with expected cost \u27e8c\u27e9."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB is the setting",
+          "source": "registry",
+          "ref": "settings.pi80",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 2 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State A above B"
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 1,
+          "about": "cost table: the marked row 2 of 2 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Withhold"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and \u03c0AB = \u27e8pi\u27e9 equals it: disclosing A above B and withholding are equally good."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau, the boundary direction probability (registry setting of the boundary preset at this tau)",
+          "source": "registry",
+          "ref": "settings.pi80",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.2-0.8-tau0.2 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "rule box: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the falling line meets the flat line at e_AB = 1 - tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: e_AB equals the page's registry value",
+          "source": "registry",
+          "ref": "cf.onepair.pi80.eAB",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "id": "pi50-tau50",
+      "about": "pi .50, tau .50: the three lines meet in one point and all three actions are equally good (oracle row pairDecision-0.5-0.5-tau0.5).",
+      "preset": "pi50-tau50",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (iAboveJ, jAboveI, withhold); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Both errors equal \u03c4, so all three actions are equally good, each with expected cost \u27e8c\u27e9."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB is the setting",
+          "source": "registry",
+          "ref": "settings.pi50",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau50",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 3 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State A above B"
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 1,
+          "about": "cost table: the marked row 2 of 3 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State B above A"
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 2,
+          "about": "cost table: the marked row 3 of 3 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Withhold"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and both \u03c0AB and \u03c0BA equal it: all three actions are equally good."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.5-0.5-tau0.5 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: e_AB equals the page's registry value",
+          "source": "registry",
+          "ref": "cf.onepair.pi50.tau50.e",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "withhold-pi70",
+      "about": "pi .70, tau .20: both errors are above tau and withholding is the unique best action (oracle row pairDecision-0.3-0.7-tau0.2).",
+      "query": "?pi=.70&tau=.20",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (withhold); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Both errors are above \u03c4, so withholding is the unique best action, with expected cost \u27e8c\u27e9."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Withhold"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9. Neither \u03c0AB = \u27e8pi\u27e9 nor \u03c0BA = \u27e8piBA\u27e9 exceeds it: withhold."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau, the boundary direction probability (registry setting of the boundary preset at this tau)",
+          "source": "registry",
+          "ref": "settings.pi80",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.2-0.8-tau0.2 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "rule box: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi-ba\"]",
+          "about": "rule box: pi_BA = 1 - pi_AB = e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the falling line meets the flat line at e_AB = 1 - tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "reverse-pi15",
+      "about": "pi .15, tau .20: stating B above A is the unique best action (oracle row pairDecision-0.85-0.15-tau0.2).",
+      "query": "?pi=.15&tau=.20",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (jAboveI); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Stating B above A is the unique best action: its expected cost \u27e8c\u27e9 is below \u03c4."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State B above A"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and \u03c0BA = \u27e8piBA\u27e9 exceeds it: disclose B above A."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau, the boundary direction probability (registry setting of the boundary preset at this tau)",
+          "source": "registry",
+          "ref": "settings.pi80",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.2-0.8-tau0.2 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi-ba\"]",
+          "about": "rule box: pi_BA = 1 - pi_AB = e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the falling line meets the flat line at e_AB = 1 - tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        }
+      ]
+    },
+    {
+      "id": "half-pi55",
+      "about": "pi .55, tau .50: at tau = 1/2 a direction with error below one half is still the unique best (oracle row pairDecision-0.45-0.55-tau0.5).",
+      "query": "?pi=.55&tau=.50",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (iAboveJ); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Stating A above B is the unique best action: its expected cost \u27e8c\u27e9 is below \u03c4."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.55
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau50",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.45
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.55
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.45
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.45
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.55
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State A above B"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.55
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.45
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.55
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.55
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and \u03c0AB = \u27e8pi\u27e9 exceeds it: disclose A above B."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.5-0.5-tau0.5 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "rule box: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.55
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.45-0.55-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.45
+        }
+      ]
+    },
+    {
+      "id": "certain-pi1",
+      "about": "pi 1, tau .50: stating A above B costs 0 (oracle row pairDecision-0-1-tau0.5).",
+      "query": "?pi=1&tau=.50",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (iAboveJ); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Stating A above B is the unique best action: its expected cost \u27e8c\u27e9 is below \u03c4."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau50",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State A above B"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and \u03c0AB = \u27e8pi\u27e9 exceeds it: disclose A above B."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.5-0.5-tau0.5 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "rule box: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "clamped-pi0",
+      "about": "Clamp pi below its range; tau .10 is explicit. Snapping is independently covered by snapped-grid.",
+      "query": "?pi=-.30&tau=.10",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (jAboveI); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Stating B above A is the unique best action: its expected cost \u27e8c\u27e9 is below \u03c4."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau10",
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.iAboveJ"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.iAboveJ"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State B above A"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.iAboveJ"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and \u03c0BA = \u27e8piBA\u27e9 exceeds it: disclose B above A."
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi-ba\"]",
+          "about": "rule box: pi_BA = 1 - pi_AB = e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.iAboveJ"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-1-0-tau0.1",
+            "field": "costs.iAboveJ"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "1 - tau = .90 in the rule box",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.9
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "hidden table: the falling line crosses the flat line at 1 - tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.9
+        }
+      ]
+    },
+    {
+      "id": "clamped-high",
+      "about": "pi 1.4 and tau .73 in the query: both are clamped, to 1 and .50 (oracle row pairDecision-0-1-tau0.5).",
+      "query": "?pi=1.4&tau=.73",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (iAboveJ); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Stating A above B is the unique best action: its expected cost \u27e8c\u27e9 is below \u03c4."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau50",
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State A above B"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and \u03c0AB = \u27e8pi\u27e9 exceeds it: disclose A above B."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.5-0.5-tau0.5 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.5-0.5-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "rule box: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.jAboveI"
+          },
+          "value": 1
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.withhold"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0-1-tau0.5",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "update-after-mount",
+      "about": "Mounted at the deck preset, then update({ pi: .70 }): the read-outs follow the new setting (oracle row pairDecision-0.3-0.7-tau0.2).",
+      "preset": "pi85",
+      "update": [
+        {
+          "pi": 0.7
+        }
+      ],
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (withhold); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Both errors are above \u03c4, so withholding is the unique best action, with expected cost \u27e8c\u27e9."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Withhold"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9. Neither \u03c0AB = \u27e8pi\u27e9 nor \u03c0BA = \u27e8piBA\u27e9 exceeds it: withhold."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau, the boundary direction probability (registry setting of the boundary preset at this tau)",
+          "source": "registry",
+          "ref": "settings.pi80",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "rule box: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.7
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi-ba\"]",
+          "about": "rule box: pi_BA = 1 - pi_AB = e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.3-0.7-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "id": "snapped-grid",
+      "about": "tau snaps from .204 to .20. This keeps v1 snapping coverage after the initial setting changes to tau .10 (CR-156).",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (iAboveJ); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Stating A above B is the unique best action: its expected cost \u27e8c\u27e9 is below \u03c4."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB is the setting",
+          "source": "registry",
+          "ref": "settings.pi85",
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State A above B"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and \u03c0AB = \u27e8pi\u27e9 exceeds it: disclose A above B."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau, the boundary direction probability (registry setting of the boundary preset at this tau)",
+          "source": "registry",
+          "ref": "settings.pi80",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.2-0.8-tau0.2 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "rule box: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the falling line meets the flat line at e_AB = 1 - tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: e_AB equals the page's registry value",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.eAB",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: e_BA equals the page's registry value",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.eBA",
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: the withholding cost equals the page's registry value",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.wh",
+          "value": 0.2
+        }
+      ],
+      "query": "?pi=.85&tau=.204"
+    },
+    {
+      "id": "snapped-pi-grid",
+      "about": "pi snaps from .153 to .15, independently of the initial pi .85.",
+      "query": "?pi=.153&tau=.20",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out's words for the oracle row's best actions (jAboveI); each slot is one data-num element, checked below",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Stating B above A is the unique best action: its expected cost \u27e8c\u27e9 is below \u03c4."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "read-out: pi_AB, which is e_BA when latent equality has probability zero (oracle eJI)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "read-out: tau is the setting",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "read-out: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "read-out: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "read-out: the expected cost of the best action(s)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B costs e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A costs e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding costs tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "index": 0,
+          "about": "cost table: the marked row 1 of 1 is a best action of the oracle row",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "State B above A"
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 2,
+          "about": "bridge: pi_AB in 1 - pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 3,
+          "about": "bridge: e_AB = 1 - pi_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-tex=\"bridge\"] mtext",
+          "index": 5,
+          "about": "bridge: e_BA = 1 - e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 0,
+          "about": "slider: pi_AB",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.15
+        },
+        {
+          "select": ".prx-slider output",
+          "index": 1,
+          "about": "slider: tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "rule box: the rule applied to the oracle row's best actions; each slot is one data-num element",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9, and \u03c0BA = \u27e8piBA\u27e9 exceeds it: disclose B above A."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau, the boundary direction probability (registry setting of the boundary preset at this tau)",
+          "source": "registry",
+          "ref": "settings.pi80",
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "rule box: 1 - tau; at the boundary row pairDecision-0.2-0.8-tau0.2 (e_AB = tau) the reverse error e_BA = pi_AB = 1 - tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi-ba\"]",
+          "about": "rule box: pi_BA = 1 - pi_AB = e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "figure table: the rising line meets the flat line at e_AB = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.withhold"
+          },
+          "value": 0.2
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "figure table: the falling line meets the flat line at e_AB = 1 - tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.2-0.8-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "figure table: the current pair's e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.85-0.15-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.85
+        }
+      ]
+    },
+    {
+      "id": "initial-withholding",
+      "about": "At a bare mount CR-156 starts with pi .85 and tau .10, withholding at cost .10. All views agree with the oracle row for that setting.",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "slots": true,
+          "about": "the read-out names withholding as the unique best action",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "With \u03c0AB = \u27e8pi\u27e9 and \u03c4 = \u27e8tau\u27e9, the error of stating A above B is eAB = \u27e8e\u27e9 and the error of stating B above A is eBA = \u27e8eRev\u27e9. Both errors are above \u03c4, so withholding is the unique best action, with expected cost \u27e8c\u27e9."
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "pi_AB = e_BA",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "pi_AB",
+          "source": "registry",
+          "ref": "settings.pi85",
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau, the cost of withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"tau\"]",
+          "about": "tau",
+          "source": "registry",
+          "ref": "settings.tau10",
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"e-ab\"]",
+          "about": "e_AB",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"e-ba\"]",
+          "about": "e_BA",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"best-cost\"]",
+          "about": "the best action's cost is tau",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "cost table: stating A above B",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "cost table: stating B above A",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"cost-wh\"]",
+          "about": "cost table: withholding",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ab\"]",
+          "about": "the page's e_AB",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.eAB",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"cost-ba\"]",
+          "about": "the page's e_BA",
+          "source": "registry",
+          "ref": "cf.onepair.pi85.eBA",
+          "value": 0.85
+        },
+        {
+          "select": ".prx-one-pair-best th",
+          "kind": "text",
+          "about": "the marked row of the cost table",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Withhold"
+        },
+        {
+          "select": ".prx-one-pair-rule-here",
+          "kind": "text",
+          "slots": true,
+          "about": "the rule applied to the pair",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Here \u27e8one\u27e9 \u2212 \u03c4 = \u27e8cut\u27e9. Neither \u03c0AB = \u27e8pi\u27e9 nor \u03c0BA = \u27e8piRev\u27e9 exceeds it: withhold."
+        },
+        {
+          "select": "[data-prx-readout=\"cut\"]",
+          "about": "1 - tau = .90",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.9
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi\"]",
+          "about": "pi_AB in the rule box",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.85
+        },
+        {
+          "select": "[data-prx-readout=\"rule-pi-ba\"]",
+          "about": "pi_BA = e_AB in the rule box",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 0,
+          "about": "hidden table: the rising line crosses the flat line at e = tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.withhold"
+          },
+          "value": 0.1
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 2,
+          "about": "hidden table: the falling line crosses the flat line at e = 1 - tau",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.1-0.9-tau0.1",
+            "field": "costs.jAboveI"
+          },
+          "value": 0.9
+        },
+        {
+          "select": ".prx-one-pair-chart .prx-data-table tbody td",
+          "index": 4,
+          "about": "hidden table: the current pair",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairDecision-0.15-0.85-tau0.2",
+            "field": "costs.iAboveJ"
+          },
+          "value": 0.15
+        }
+      ],
+      "query": ""
+    }
+  ],
+  "app": "one-pair",
+  "from": "postrank-explorer-v1 verification/readouts/one-pair.json"
+}

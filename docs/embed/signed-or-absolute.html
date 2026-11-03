@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<!-- 5.6 signed-or-absolute. Build inputs: catalog.json; do not edit. -->
+<title>Signed or absolute gender gap · postrank Explorer</title>
+<script>
+  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  (function () {
+    var t = new URLSearchParams(location.search).get("theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/app.css">
+</head>
+<body class="prx-embed">
+<main>
+<h1 class="prx-embed-title">Signed or absolute gender gap</h1>
+<div id="app"><p>This app needs JavaScript.</p></div>
+<p class="prx-embed-credit">postrank Explorer · 5.6 · Signed and absolute targets after the postrank theory book, ch. 4 and 20, and the postrank vignette a3; gender gaps after Kline, Rose and Walters (2024), section VIII (gender target). Firms as adapted in postrank 1.1.0 (pr_case_krw). · Kline, Rose and Walters (2024) · doi:10.1257/aer.20230700 · doi:10.3886/E198284V1 · CC-BY-NC · Noncommercial · No endorsement · Changes: continuous midpoint-cell comparison probabilities and matching central 90% marginal intervals replace KRW’s posterior grids (postrank adaptation). · <a href="../pages/cases/signed-or-absolute.html">page</a></p>
+</main>
+<!-- classic scripts only, so this page works from file:// -->
+<script src="../js/vendor/d3.min.js"></script>
+<script src="../js/vendor/plot.min.js"></script>
+<script src="../js/bundles/signed-or-absolute.js"></script>
+<script>window.__prxApp = PRX["signed-or-absolute"].mountWidget(document.getElementById("app"), {});</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+{
+  "id": "1.16",
+  "name": "ranking-claims",
+  "part": "1",
+  "title": "A ranking makes many claims",
+  "idea": "A strict ranking of n units makes n(n − 1)/2 claims, and the posterior expects many of them to be wrong.",
+  "status": "built",
+  "from": "v1 whole · v1 L-10 ranking-claims (with both More boxes as panels)",
+  "data": [
+    "data/released/six-sites.json",
+    "data/released/case-krw.json",
+    "data/released/case-cde.json",
+    "engine"
+  ],
+  "credit": "Firms from Kline, Rose and Walters (2024), ranked here by posterior mean; the school count from the California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, via postrank 1.1.0 (pr_case_cde); six fictional sites from the postrank tutorial.",
+  "math": true,
+  "caption": "Counts and expected counts are computed in this browser from each data set's pair probabilities: the six sites of the postrank tutorial, a simulated league whose posterior is set by hand, and KRW's 97 firms.",
+  "presets": [
+    {
+      "id": "krw",
+      "label": "97 firms",
+      "query": "data=krw&n=97"
+    },
+    {
+      "id": "top10",
+      "label": "Top 10 by posterior mean",
+      "query": "data=krw&n=10"
+    },
+    {
+      "id": "six",
+      "label": "Six sites",
+      "query": "data=six&n=6"
+    },
+    {
+      "id": "league",
+      "label": "League of 30",
+      "query": "data=league&n=30"
+    }
+  ],
+  "try": [
+    {
+      "preset": "krw",
+      "shows": [
+        "4,656",
+        "1,249",
+        "1,395",
+        "639",
+        "35"
+      ]
+    },
+    {
+      "preset": "top10",
+      "shows": [
+        "45",
+        "18.22",
+        "17,014,861",
+        "5,834"
+      ]
+    },
+    {
+      "preset": "six",
+      "shows": [
+        "15",
+        ".7194",
+        "C above D",
+        ".362"
+      ]
+    },
+    {
+      "preset": "league",
+      "shows": [
+        "435",
+        "94.48",
+        "102.2",
+        "37",
+        "88",
+        "80.69"
+      ]
+    }
+  ]
+}

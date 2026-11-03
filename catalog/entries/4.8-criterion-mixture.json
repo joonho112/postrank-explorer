@@ -1,0 +1,109 @@
+{
+  "id": "4.8",
+  "name": "criterion-mixture",
+  "part": "4",
+  "title": "Weights as a randomly chosen criterion",
+  "idea": "Choosing one auxiliary criterion for an entire fixed report reproduces its weighted risk. Opposing criteria can make both strict directions costly, while a coherent report can still state either.",
+  "status": "built",
+  "from": "new concept \u00b7 v1 storyboard P-06; theory book ch. 11 (the mixture reading) and ch. 12 (when stating an isolated conflicting pair costs at least \u03c4); picture: the weighted risk computed both ways, the three costs of the conflicting pair against \u03c4, and, at \u03c4 .35 with no cap, the six-site optimum 1/2/2/3/4/5, which states two such pairs",
+  "data": [
+    "data/released/six-sites.json"
+  ],
+  "credit": "Mixture reading after the postrank theory book, ch. 11.",
+  "caption": "Synthetic supplied laws after the postrank theory book, ch. 11\u201312. One auxiliary criterion selects an entire unit vector after the report is fixed.",
+  "presets": [
+    {
+      "id": "mixture",
+      "label": "Weighted report",
+      "query": "data=six&w=.5&tau=.2&cap=3&criterion=0&report=1&pair=A,C"
+    },
+    {
+      "id": "opposition",
+      "label": "Certain opposition",
+      "query": "data=opposition&w=.5&tau=.3&cap=all&criterion=0&report=1&pair=A,B"
+    },
+    {
+      "id": "all-actions",
+      "label": "Three actions tie",
+      "query": "data=opposition&w=.5&tau=.5&cap=all&criterion=1&report=2&pair=A,B"
+    },
+    {
+      "id": "majority",
+      "label": "Two against one",
+      "query": "data=majority&w=.5&tau=.4&cap=all&criterion=2&report=1&pair=A,B"
+    },
+    {
+      "id": "third-boundary",
+      "label": "The one-third boundary",
+      "query": "data=majority&w=.5&tau=.3333333333333333&cap=all&criterion=2&report=2&pair=A,B"
+    },
+    {
+      "id": "zero-weight",
+      "label": "Zero error weight",
+      "query": "data=opposition&w=1&tau=.3&cap=all&criterion=1&report=1&pair=A,B"
+    },
+    {
+      "id": "coherence",
+      "label": "No-cap coherence",
+      "query": "data=six&w=.5&tau=.35&cap=all&criterion=1&report=1&pair=A,C"
+    },
+    {
+      "id": "b-only",
+      "label": "Score B only",
+      "query": "data=six&w=0&tau=.2&cap=3&criterion=0&report=2&pair=B,C"
+    }
+  ],
+  "try": [
+    {
+      "preset": "mixture",
+      "shows": [
+        ".0933",
+        ".0453",
+        ".0480",
+        "1/1/1/1/2/3"
+      ]
+    },
+    {
+      "preset": "opposition",
+      "shows": [
+        ".5000",
+        ".3000"
+      ]
+    },
+    {
+      "preset": "all-actions",
+      "shows": [
+        "3",
+        ".5000"
+      ]
+    },
+    {
+      "preset": "majority",
+      "shows": [
+        ".3333",
+        ".6667",
+        ".4000"
+      ]
+    },
+    {
+      "preset": "zero-weight",
+      "shows": [
+        ".0000",
+        "1.0000",
+        "0"
+      ]
+    },
+    {
+      "preset": "coherence",
+      "shows": [
+        "4,683",
+        "1/2/2/3/4/5",
+        "14",
+        ".1275",
+        ".3803",
+        ".3813",
+        ".35"
+      ]
+    }
+  ]
+}

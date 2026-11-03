@@ -1,0 +1,92 @@
+{
+  "id": "1.4",
+  "name": "winners-curse",
+  "part": "1",
+  "title": "Too good to be true at the top",
+  "idea": "Units that reach the top by their estimates have estimates above their true values on average; a posterior mean whose prior matches the true values' center and spread takes back about all of it.",
+  "status": "built",
+  "from": "new angle · builds on v1 L-03's league; adds the top-k overshoot of estimates over true values, replay by replay, and its correction by the posterior mean",
+  "data": [
+    "engine"
+  ],
+  "credit": "Built for this site; the upward bias of the top estimates after Walters (2024, Handbook of Labor Economics), section 3.5, and Andrews, Kitagawa and McCloskey (2024).",
+  "caption": "A simulated league built for this site: thirty fictional units with fixed true values; every replay adds noise of the unit's SE to each true value, computed in this browser. The posterior means come from a posterior set by hand for teaching; postrank does not fit it.",
+  "presets": [
+    {
+      "id": "top3",
+      "label": "Top 3",
+      "query": "seed=20261029&replays=2000&k=3&side=top&priorSd=.15&draw=1"
+    },
+    {
+      "id": "replay9",
+      "label": "Replay 9",
+      "query": "seed=20261029&replays=2000&k=3&side=top&priorSd=.15&draw=9"
+    },
+    {
+      "id": "top1",
+      "label": "Top 1",
+      "query": "seed=20261029&replays=2000&k=1&side=top&priorSd=.15&draw=1"
+    },
+    {
+      "id": "bottom3",
+      "label": "Bottom 3",
+      "query": "seed=20261029&replays=2000&k=3&side=bottom&priorSd=.15&draw=1"
+    },
+    {
+      "id": "prior05",
+      "label": "Prior SD .05",
+      "query": "seed=20261029&replays=2000&k=3&side=top&priorSd=.05&draw=1"
+    }
+  ],
+  "try": [
+    {
+      "preset": "top3",
+      "shows": [
+        ".160",
+        "−.007",
+        ".149",
+        ".071",
+        "−.031"
+      ]
+    },
+    {
+      "preset": "replay9",
+      "shows": [
+        "−.043",
+        "−.117"
+      ]
+    },
+    {
+      "preset": "top1",
+      "shows": [
+        ".220",
+        "−.024"
+      ]
+    },
+    {
+      "query": "seed=20261029&replays=2000&k=10&side=top&priorSd=.15&draw=1",
+      "shows": [
+        ".081"
+      ]
+    },
+    {
+      "preset": "bottom3",
+      "shows": [
+        "−.150",
+        "−.013"
+      ]
+    },
+    {
+      "preset": "prior05",
+      "shows": [
+        "−.131"
+      ]
+    },
+    {
+      "query": "seed=20261029&replays=2000&k=3&side=top&priorSd=.10&draw=1",
+      "shows": [
+        "−.063"
+      ]
+    }
+  ]
+}

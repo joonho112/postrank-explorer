@@ -1,0 +1,57 @@
+---
+title: "Monte Carlo error in pairwise probabilities"
+subtitle: "1.17 · the six tutorial sites, after the postrank vignette m6 and the postrank theory book, ch. 15"
+description: "Monte Carlo uncertainty in estimated pairwise errors and its implications for report selection."
+---
+
+Pairwise error probabilities are estimated by the proportion of posterior draws in which a proposed direction is
+wrong. Independent draws from the six tutorial sites' normal distribution give estimates and intervals of ±2 Monte
+Carlo standard errors (MCSE), displayed beside the exact probabilities. More draws reduce numerical uncertainty.
+A comparison is marked fragile when its interval includes the withholding cost τ. Such isolated-pair sensitivity
+need not change the optimal coherent report.
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/vendor/temml/temml.min.js"></script>
+<script src="../../js/bundles/mc-error.js"></script>
+<script>window.__prxApp = PRX["mc-error"].mountWidget(document.getElementById("app"));</script>
+```
+
+## Numerical illustrations {#what-to-try}
+
+- **S 1,000.** In this run (seed 1), A–B is estimated .198 against the exact .188, MCSE .0126 (2 MCSE ≈ .0247
+  with the exact e), so τ .20 makes it fragile. With at most 3 grades A and B share a grade in 100 of the 100 runs:
+  the report changed in 0 of the 18 runs where A–B's choice flips.
+- **All reports.** The report changed in 18 of the 18 runs where A–B's choice flips; in 5 more runs its estimate
+  equals τ and 2 reports share the smallest risk. The exact report is among the optima in 82 of 100.
+- **S 100.** MCSE .0402 in this run (2 MCSE ≈ .0782 with the exact e), radius .1788; the exact .188 stays.
+- **S 4,000.** Radius .0283. This run still flags A–B (estimate .203, MCSE .0064): its exact value lies .0116 from
+  τ, inside 2 MCSE (≈ .0124 with the exact e); 54 of 100 runs flag it.
+- **C–D at τ .35.** In this run (seed 1) of 400 draws C–D (exact .362) is flagged: estimated .360, MCSE .0240. Its
+  choice flips in 35 runs; the report changed in 0 of the 35 runs with at most 3 grades, in 35 of the 35 runs with
+  any number.
+- **Both scores.** At seed 4, E–F's estimate .202 lands above τ, so the report from the estimates withholds it,
+  unlike the exact report; at seed 1, E–F is fragile at .192 yet stated.
+
+::: {.callout-note appearance="simple"}
+The radius is postrank's (`postrank_iid_bounds()`, no ties); the theory book's form allows ties (4M for 2M). The
+envelope needs independent whole-state draws and an S fixed before drawing (an effective sample size cannot replace S
+in it); the MCSE shown is the IID one, as `postrank_mc_fragility()` computes it for independent draws (for chains it
+uses an MCMC MCSE).
+The reruns use consecutive seeds, wrapping from 4,294,967,295 back to 1 at the supported endpoint.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+```r
+library(postrank)
+pr_tutorial$one$e["A", "B", "score_A"]   # 0.1883796: chance that A above B is wrong, .188 in the app
+pr_tutorial$one$e["C", "D", "score_A"]   # 0.3618368: chance that C above D is wrong, .362
+```
+:::
+
+Standalone: [embed/mc-error.html](../../embed/mc-error.html), for example `?preset=all1000&theme=dark`.
+
+Related applications: [Pairwise posterior direction probabilities](two-units.qmd) (1.8), [The matrix of pairwise posterior probabilities](pairwise-matrix.qmd) (1.13) and [Monte Carlo error with dependent draws](chain-draws.qmd) (1.18), with Markov chain
+draws; [The decision for an isolated pair](../grades/one-pair.qmd) (2.1) and [Reporting risk and withholding cost](../grades/price-of-silence.qmd) (2.4), where τ prices a withheld pair.

@@ -1,0 +1,103 @@
+{
+  "id": "1.14",
+  "name": "which-ranking",
+  "part": "1",
+  "title": "Three rankings from one posterior",
+  "idea": "One posterior can rank units differently by posterior mean, by expected rank and by the chance of being on top when the posteriors differ in width or shape, and each unit's own rank is uncertain.",
+  "status": "built",
+  "from": "v1 whole · v1 L-09 which-ranking; adds a scale switch (θ or √θ on the ch. 19 law, θ or exp(kθ) on the league) under which only the posterior-mean ranking moves",
+  "data": [
+    "engine"
+  ],
+  "math": true,
+  "credit": "Built for this site; the three-unit law after the postrank theory book, ch. 19; expected ranks after ch. 5; the scale switch after ch. 4 and 12; rankings by posterior means after Kline, Rose and Walters (2024), Section IV.B and the notes to Figure 2C, and talk slide 59.",
+  "caption": "The three-unit law after the postrank theory book, ch. 19, and a simulated league built for this site; every summary is computed in this browser.",
+  "presets": [
+    {
+      "id": "puzzle-mean",
+      "label": "Three-unit law, posterior mean",
+      "query": "data=puzzle&summary=mean&k=1&priorSd=.15"
+    },
+    {
+      "id": "puzzle-top1",
+      "label": "Three-unit law, first place",
+      "query": "data=puzzle&summary=top&k=1&priorSd=.15"
+    },
+    {
+      "id": "puzzle-sqrt",
+      "label": "Three-unit law, √θ",
+      "query": "data=puzzle&summary=mean&k=1&priorSd=.15&scale=sqrt"
+    },
+    {
+      "id": "league-er",
+      "label": "League, expected rank",
+      "query": "data=league&summary=expected_rank&k=1&priorSd=.15"
+    },
+    {
+      "id": "league-top10",
+      "label": "League, top ten",
+      "query": "data=league&summary=top&k=10&priorSd=.15"
+    },
+    {
+      "id": "league-exp",
+      "label": "League, exp(10θ)",
+      "query": "data=league&summary=mean&k=1&priorSd=.15&scale=exp&expK=10"
+    }
+  ],
+  "try": [
+    {
+      "preset": "puzzle-mean",
+      "shows": [
+        "2.4",
+        ".3",
+        "2 of the 3 pairs"
+      ]
+    },
+    {
+      "preset": "puzzle-top1",
+      "shows": [
+        ".7"
+      ]
+    },
+    {
+      "preset": "puzzle-sqrt",
+      "shows": [
+        "1.34",
+        "2.00",
+        "1.73",
+        "0 of the 3 pairs"
+      ]
+    },
+    {
+      "preset": "league-er",
+      "shows": [
+        ".120",
+        "6th",
+        "8th",
+        "9.59",
+        "U06",
+        "U24",
+        "6 of the 435 pairs",
+        "from rank 1 to rank 24"
+      ]
+    },
+    {
+      "preset": "league-top10",
+      "shows": [
+        "4,000",
+        ".96",
+        ".94",
+        "Two units are never in the top ten"
+      ]
+    },
+    {
+      "preset": "league-exp",
+      "shows": [
+        "6th",
+        "3rd",
+        "4.09",
+        "40 of the 435 pairs"
+      ]
+    }
+  ]
+}

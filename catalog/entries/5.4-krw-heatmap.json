@@ -1,0 +1,82 @@
+{
+  "id": "5.4",
+  "name": "krw-heatmap",
+  "part": "5",
+  "title": "Which firm pairs the card states",
+  "idea": "Laying the card's blocks over the 4,656 pair probabilities shows the pairs it states and the confident pairs it leaves unsaid.",
+  "status": "built",
+  "from": "v1 view · v1 S-02 case-krw-race, the heat-map view",
+  "data": [
+    "data/released/case-krw.json",
+    "data/released/krw-lambda-grid.json"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), section V.E (Figure 5A) and slides 54–56. Firms as adapted in postrank 1.1.0 (pr_case_krw). Cards computed with KRW's code (KRW replication companion) under KRW's archived pair probabilities.",
+  "caption": "All 97 firms; exact released contact-gap pair probabilities and supplied central 90% intervals. The data describe KRW’s historical experiment, not any firm’s current conduct.",
+  "presets": [
+    {
+      "id": "stage1",
+      "label": "All direction probabilities",
+      "query": "criterion=race&lambda=.25&sort=mean&stage=1"
+    },
+    {
+      "id": "stage2",
+      "label": "Above the threshold",
+      "query": "criterion=race&lambda=.25&sort=mean&stage=2"
+    },
+    {
+      "id": "stage3",
+      "label": "Add the card blocks",
+      "query": "criterion=race&lambda=.25&sort=mean&stage=3"
+    },
+    {
+      "id": "lambda50",
+      "label": "λ .50 blocks",
+      "query": "criterion=race&lambda=.50&sort=mean&stage=3"
+    },
+    {
+      "id": "lambda08",
+      "label": "λ .08 blocks",
+      "query": "criterion=race&lambda=.08&sort=mean&stage=3"
+    },
+    {
+      "id": "gender",
+      "label": "Gender blocks",
+      "query": "criterion=gender&lambda=.25&sort=mean&stage=3"
+    }
+  ],
+  "try": [
+    {
+      "preset": "stage1",
+      "shows": [
+        "Pr(row truly higher)"
+      ]
+    },
+    {
+      "preset": "stage2",
+      "shows": [
+        "1,575"
+      ]
+    },
+    {
+      "preset": "stage3",
+      "shows": [
+        "575",
+        "324"
+      ]
+    },
+    {
+      "preset": "lambda50",
+      "shows": [
+        "2,994",
+        "49",
+        "545"
+      ]
+    },
+    {
+      "preset": "gender",
+      "shows": [
+        "male-name"
+      ]
+    }
+  ]
+}

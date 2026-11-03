@@ -1,0 +1,86 @@
+{
+  "id": "2.11",
+  "name": "frontier-mixtures",
+  "part": "2",
+  "title": "Mixtures between frontier corners",
+  "idea": "Between two vertices the frontier is a mixture of two complete reports (on the six sites no report lies there); with all reports and no latent ties it ends at a strict ranking, on a line of slope 1/2.",
+  "status": "built",
+  "from": "v1 view \u00b7 v1 G-06 frontier, the mixture view",
+  "data": [
+    "data/released/six-sites.json",
+    "engine"
+  ],
+  "credit": "Four-unit law after the postrank theory book, ch. 16.",
+  "caption": "Six fictional sites and stipulated finite laws; complete reports are randomized at a specified mean disclosure.",
+  "presets": [
+    {
+      "id": "m10",
+      "label": "Six sites, mean 10",
+      "query": "tau=.20&family=all&example=six&view=near&m=10"
+    },
+    {
+      "id": "m9",
+      "label": "Six sites, mean 9",
+      "query": "tau=.20&family=all&example=six&view=near&m=9"
+    },
+    {
+      "id": "m12",
+      "label": "Six sites, mean 12",
+      "query": "tau=.20&family=all&example=six&view=near&m=12"
+    },
+    {
+      "id": "tb16",
+      "label": "Four units, mean 4",
+      "query": "tau=.20&family=all&example=tb16&view=near&m=4"
+    },
+    {
+      "id": "cap3",
+      "label": "At most 3 grades, mean 9",
+      "query": "tau=.20&family=cap3&example=six&view=near&m=9"
+    }
+  ],
+  "try": [
+    {
+      "preset": "m10",
+      "shows": [
+        "8",
+        "12",
+        ".50",
+        ".01714"
+      ]
+    },
+    {
+      "preset": "m9",
+      "shows": [
+        ".25",
+        ".01332",
+        ".1597",
+        ".1464"
+      ]
+    },
+    {
+      "preset": "m12",
+      "shows": [
+        ".02477",
+        "no mixture is needed"
+      ]
+    },
+    {
+      "preset": "tb16",
+      "shows": [
+        "19/40",
+        "7/10",
+        "9/40",
+        "1/2"
+      ]
+    },
+    {
+      "preset": "cap3",
+      "shows": [
+        "603",
+        "12",
+        "not guaranteed for this family"
+      ]
+    }
+  ]
+}

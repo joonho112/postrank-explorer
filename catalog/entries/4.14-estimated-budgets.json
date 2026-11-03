@@ -1,0 +1,93 @@
+{
+  "id": "4.14",
+  "name": "estimated-budgets",
+  "part": "4",
+  "title": "A budget met on estimated probabilities",
+  "idea": "With pair probabilities estimated from draws, a report can meet an error budget on the estimates yet fail it under the exact law; when the draws' error bound holds, inner and outer families bracket the compliant reports.",
+  "status": "built",
+  "from": "new concept \u00b7 theory book ch. 15 (estimated protections; the bound holds with probability at least 1 \u2212 \u03b1); postrank vignette m6; postrank_protection_envelopes(); picture: a membership grid of reports against inner, estimated, exact and outer families, and a number line per report with the estimated and exact E/N, q and q \u00b1 \u03b5; the reader sets t, \u03b5 and the exact-count switch",
+  "data": [
+    "engine",
+    "data/released/six-sites.json"
+  ],
+  "credit": "After the postrank theory book, ch. 15.",
+  "caption": "After the postrank theory book, ch. 15; supplied-law expected-error protections, with signed inner and outer thresholds.",
+  "presets": [
+    {
+      "id": "nominal",
+      "label": "Estimated pass",
+      "query": "mode=book&t=0.2&epsilon=0.1&exact=false&S=1000&qb=0.03&soft=true&report=1/2"
+    },
+    {
+      "id": "negative",
+      "label": "Negative inner",
+      "query": "mode=book&t=0&epsilon=0.1&exact=false&S=1000&qb=0.03&soft=true&report=1/2"
+    },
+    {
+      "id": "exact-two",
+      "label": "Exactly two",
+      "query": "mode=book&t=0.2&epsilon=0.1&exact=true&S=1000&qb=0.03&soft=true&report=1/2"
+    },
+    {
+      "id": "small-radius",
+      "label": "Radius too small",
+      "query": "mode=book&t=0.2&epsilon=0.05&exact=false&S=1000&qb=0.03&soft=true&report=1/2"
+    },
+    {
+      "id": "zero-tolerance",
+      "label": "Raw comparisons",
+      "query": "mode=book&t=0.2&epsilon=0.1&exact=false&S=1000&qb=0.03&soft=false&report=1/2"
+    },
+    {
+      "id": "iid",
+      "label": "Fixed-S IID",
+      "query": "mode=iid&t=0.2&epsilon=0.1&exact=false&S=1000&qb=0.03&soft=true&report=1/1/1/1/2/2"
+    }
+  ],
+  "try": [
+    {
+      "preset": "nominal",
+      "shows": [
+        ".200",
+        ".300",
+        ".15",
+        ".25",
+        ".35"
+      ]
+    },
+    {
+      "preset": "negative",
+      "shows": [
+        "\u2212.05",
+        "0"
+      ]
+    },
+    {
+      "preset": "exact-two",
+      "shows": [
+        "0 reports"
+      ]
+    },
+    {
+      "preset": "small-radius",
+      "shows": [
+        ".05",
+        "no"
+      ]
+    },
+    {
+      "preset": "zero-tolerance",
+      "shows": [
+        "no"
+      ]
+    },
+    {
+      "preset": "iid",
+      "shows": [
+        "1,000",
+        "0",
+        ".03"
+      ]
+    }
+  ]
+}

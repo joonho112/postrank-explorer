@@ -1,0 +1,2019 @@
+{
+  "$schema": "./_schema.json",
+  "app": "overlap-in-the-league",
+  "catalog": "1.12",
+  "from": "postrank-explorer-v1 verification/readouts/interval-overlap.json",
+  "about": "The league view of v1 L-06: the simulated league (frozen draw, seed 20261030) under the teaching posterior (prior mean 0), thirty 90% or 95% posterior intervals, a chosen pair and the tally of the 435 pairs. Ported from v1's four league cases (league-overlap, league-wide, league-pick95, league-reversed), with the touch-view keys dropped from the queries (mode, gap: the touch view is app 1.11), prior_sd renamed priorSd (a preset key is one plain word), the caption in its v3 wording, and v1's registry keys and base-R oracle rows as sources. New in v3: the apart row's bound at three decimals (.950 and .975), the tally's line on the highest probability among overlapping pairs, the note's seed and prior SD, the chosen-row marking, the key's third item (which follows the pair), an apart pair as probable as the overlapping pick (U06 and U20, from the oracle direction matrix), prior SD .05 (oracle tally and posterior rows), a nested pair, and the pick following the level. The overlap amounts have no independent source in these files: the general rules read their displays back.",
+  "cases": [
+    {
+      "id": "league-overlap",
+      "about": "The first preset, v1's default: the engine's pick at prior SD .15 and 90%, U13 above U05.",
+      "preset": "league-overlap",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"level\"]",
+          "about": "interval level in the read-out",
+          "source": "registry",
+          "ref": "settings.level90",
+          "value": 0.9
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.first",
+          "value": "U13"
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.second",
+          "value": "U05"
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "probability that the first unit's true value is larger than the second's (read-out)",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.pi",
+          "value": 0.98781943458425
+        },
+        {
+          "select": "[data-prx-readout=\"card-pi\"]",
+          "about": "the same probability in the pair card",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.pi",
+          "value": 0.98781943458425
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-mean\"]",
+          "about": "first unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.12"
+          },
+          "value": 0.0687616263655014
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-sd\"]",
+          "about": "first unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.12"
+          },
+          "value": 0.12
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-mean\"]",
+          "about": "second unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.4"
+          },
+          "value": -0.259995218793419
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-sd\"]",
+          "about": "second unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.4"
+          },
+          "value": 0.0832050294337844
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-lower\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.level90.first.lower",
+          "value": -0.12862080886867527
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-upper\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.level90.first.upper",
+          "value": 0.26614406159967785
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-lower\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.level90.second.lower",
+          "value": -0.39685531323818257
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-upper\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.level90.second.upper",
+          "value": -0.12313512434865417
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "pairs whose intervals do not overlap",
+          "source": "registry",
+          "ref": "league.default.prior15.apart90.pairs",
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "pairs with neither direction above .90 (all overlap)",
+          "source": "registry",
+          "ref": "league.default.prior15.pi90.atmost",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "tally: pairs whose intervals do not overlap (intervalOverlapTally)",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.apart",
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"apart\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.apart",
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"tally-high\"]",
+          "about": "tally: overlapping pairs with one direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.high",
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"high\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.high",
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "tally: overlapping pairs with neither direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"low\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"overlap\"]",
+          "about": "read-out: pairs whose intervals overlap",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.overlapping",
+          "value": 399
+        },
+        {
+          "select": "[data-prx-readout=\"tally-best\"]",
+          "about": "tally: the highest probability among the overlapping pairs (the engine's pick)",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.best.pi",
+          "value": 0.98781943458425
+        },
+        {
+          "select": "[data-prx-readout=\"tally-all\"]",
+          "about": "all pairs of thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "all pairs in the read-out",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "intervals apart (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "apart"
+          },
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"apart\"]",
+          "about": "intervals apart, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "apart"
+          },
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"tally-high\"]",
+          "about": "overlap, one direction above .90 (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "high"
+          },
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"high\"]",
+          "about": "the same, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "high"
+          },
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "overlap, neither above .90 (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "low"
+          },
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"low\"]",
+          "about": "the same, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "low"
+          },
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"overlap\"]",
+          "about": "overlapping pairs, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "overlapping"
+          },
+          "value": 399
+        },
+        {
+          "select": "[data-prx-readout=\"tally-best\"]",
+          "about": "the highest probability among overlapping pairs (base-R oracle tally)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "best.pi"
+          },
+          "value": 0.98781943458425
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "the pick's probability from intervalOverlapTally",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.best.pi",
+          "value": 0.98781943458425
+        },
+        {
+          "select": "[data-prx-readout=\"bound\"]",
+          "about": "the apart row's bound, Phi(z) at 90%, now at three decimals (.950; v1 printed .95)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "registry",
+          "ref": "cf.apart.level90.bound",
+          "value": 0.9499999999999998
+        },
+        {
+          "select": ".prx-iol-best [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the tally's line on the highest probability",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.first",
+          "value": "U13"
+        },
+        {
+          "select": ".prx-iol-best [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the tally's line on the highest probability",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.second",
+          "value": "U05"
+        },
+        {
+          "select": "[data-prx-readout=\"note-seed\"]",
+          "about": "the league's seed in the note",
+          "source": "registry",
+          "ref": "settings.seed.league",
+          "value": 20261030
+        },
+        {
+          "select": "[data-prx-readout=\"note-prior\"]",
+          "about": "the prior SD in the note",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption (labels.js, v3 wording)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "[data-prx-status]",
+          "about": "the status of the pair card",
+          "kind": "text",
+          "attr": "data-prx-status",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "overlap"
+        },
+        {
+          "select": "[data-prx-status]",
+          "about": "the status line, word for word",
+          "kind": "text",
+          "slots": true,
+          "source": "literal",
+          "ref": "11.4",
+          "value": "They overlap by ⟨card-amount⟩."
+        },
+        {
+          "select": ".prx-iol-chosen-row th > span:first-child",
+          "about": "the chosen pair's row is the overlapping, above-.90 row",
+          "kind": "text",
+          "slots": true,
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Intervals overlap, and one direction has a probability above ⟨thr⟩"
+        },
+        {
+          "select": ".prx-iol-chosen-row .prx-iol-tag",
+          "about": "the tag of the chosen pair's row",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "the chosen pair"
+        },
+        {
+          "select": ".prx-io-key-item",
+          "about": "the league key's third item, v1's wording (the intervals overlap, neither inside the other)",
+          "kind": "text",
+          "index": 2,
+          "source": "literal",
+          "ref": "11.4",
+          "value": "dashed lines and gray band: the lower end of the higher unit, the upper end of the lower unit, and their overlap"
+        },
+        {
+          "select": "[data-prx-part~=\"caption\"]",
+          "kind": "text",
+          "about": "the caption line: the teaching-posterior caption and its gloss (CR-016), as in 1.5 and 1.9",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "a posterior set by hand for teaching; postrank does not fit it. In plain words: this prior was chosen for teaching, and this browser computes the posterior from it."
+        },
+        {
+          "select": ".prx-iol-note a.prx-io-app",
+          "index": 0,
+          "kind": "text",
+          "about": "the league line names app 1.3 as a link where page links work",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Ranking noisy estimates"
+        },
+        {
+          "select": ".prx-iol-note a.prx-io-app",
+          "index": 1,
+          "kind": "text",
+          "about": "and app 1.5, whose teaching posterior the league uses",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "What a posterior adds"
+        },
+        {
+          "select": ".prx-io-key-item",
+          "index": 0,
+          "kind": "text",
+          "about": "the league key's first item: the units not chosen are light navy (opacity .6)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "light navy lines: each unit's 90% posterior interval, with a dot at its posterior mean"
+        }
+      ]
+    },
+    {
+      "id": "league-apart",
+      "about": "U06 and U20: 90% intervals that do not overlap, with a probability as high as the overlapping pick's (.988). New in v3.",
+      "preset": "league-apart",
+      "expect": [
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the pair card's probability line (league30 ids)",
+          "kind": "text",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "ids.5"
+          },
+          "value": "U06"
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the pair card's probability line (league30 ids)",
+          "kind": "text",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "ids.19"
+          },
+          "value": "U20"
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "Pr(U06's true value > U20's), base-R oracle direction matrix",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "directionMatrix-league-seed20261030-prior.15",
+            "field": "pi.5.19"
+          },
+          "value": 0.988289543604141
+        },
+        {
+          "select": "[data-prx-readout=\"card-pi\"]",
+          "about": "the same probability in the pair card",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "directionMatrix-league-seed20261030-prior.15",
+            "field": "pi.5.19"
+          },
+          "value": 0.988289543604141
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-mean\"]",
+          "about": "first unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.5"
+          },
+          "value": 0.0590956533731638
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-sd\"]",
+          "about": "first unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.5"
+          },
+          "value": 0.0474341649025257
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-mean\"]",
+          "about": "second unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.19"
+          },
+          "value": -0.157980865011593
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-sd\"]",
+          "about": "second unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.19"
+          },
+          "value": 0.0832050294337844
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "intervals apart (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "apart"
+          },
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"apart\"]",
+          "about": "intervals apart, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "apart"
+          },
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"tally-high\"]",
+          "about": "overlap, one direction above .90 (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "high"
+          },
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"high\"]",
+          "about": "the same, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "high"
+          },
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "overlap, neither above .90 (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "low"
+          },
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"low\"]",
+          "about": "the same, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "low"
+          },
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"overlap\"]",
+          "about": "overlapping pairs, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "overlapping"
+          },
+          "value": 399
+        },
+        {
+          "select": "[data-prx-readout=\"tally-best\"]",
+          "about": "the highest probability among overlapping pairs (base-R oracle tally)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.90-threshold.9",
+            "field": "best.pi"
+          },
+          "value": 0.98781943458425
+        },
+        {
+          "select": "[data-prx-status]",
+          "about": "the status of the pair card",
+          "kind": "text",
+          "attr": "data-prx-status",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "apart"
+        },
+        {
+          "select": "[data-prx-status]",
+          "about": "the apart status line, word for word",
+          "kind": "text",
+          "slots": true,
+          "source": "literal",
+          "ref": "11.4",
+          "value": "They do not overlap: ⟨card-amount⟩ lies between them."
+        },
+        {
+          "select": ".prx-iol-chosen-row th > span:first-child",
+          "about": "the chosen pair's row is the apart row",
+          "kind": "text",
+          "slots": true,
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Intervals do not overlap (in each such pair, one direction has a probability above ⟨bound⟩)"
+        },
+        {
+          "select": ".prx-io-key-item",
+          "about": "the league key's third item follows the pair: the dashed lines only, no band",
+          "kind": "text",
+          "index": 2,
+          "source": "literal",
+          "ref": "11.4",
+          "value": "dashed lines: the lower end of the higher unit and the upper end of the lower unit, with the gap between them"
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption (labels.js, v3 wording)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": ".prx-iol-table tbody tr:nth-child(3) th > span:first-child",
+          "kind": "text",
+          "about": "the third class: neither direction above .90 (not that the two are equal)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Intervals overlap, and neither direction has a probability above .90"
+        }
+      ]
+    },
+    {
+      "id": "league-wide",
+      "about": "U04 above U18: a wide overlap with a probability above .90 (v1 preset league-wide).",
+      "preset": "league-wide",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"level\"]",
+          "about": "interval level in the read-out",
+          "source": "registry",
+          "ref": "settings.level90",
+          "value": 0.9
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.first",
+          "value": "U04"
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.second",
+          "value": "U18"
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "probability that U04's true value is larger than U18's (read-out)",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.pi",
+          "value": 0.903905960652863
+        },
+        {
+          "select": "[data-prx-readout=\"card-pi\"]",
+          "about": "the same probability in the pair card",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.pi",
+          "value": 0.903905960652863
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-mean\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.first.mean",
+          "value": -0.014284970823016259
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-sd\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.first.sd",
+          "value": 0.12
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-mean\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.second.mean",
+          "value": -0.18256367538011428
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-sd\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.second.sd",
+          "value": 0.047434164902525694
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-mean\"]",
+          "about": "first unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.3"
+          },
+          "value": -0.0142849708230163
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-sd\"]",
+          "about": "first unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.3"
+          },
+          "value": 0.12
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-mean\"]",
+          "about": "second unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.17"
+          },
+          "value": -0.182563675380114
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-sd\"]",
+          "about": "second unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.17"
+          },
+          "value": 0.0474341649025257
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-lower\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.level90.first.lower",
+          "value": -0.2116674060571928
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-upper\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.level90.first.upper",
+          "value": 0.18309746441116032
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-lower\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.level90.second.lower",
+          "value": -0.2605859335614479
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-upper\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.level90.second.upper",
+          "value": -0.1045414171987807
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "tally: pairs whose intervals do not overlap (intervalOverlapTally)",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.apart",
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"apart\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.apart",
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"tally-high\"]",
+          "about": "tally: overlapping pairs with one direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.high",
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"high\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.high",
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "tally: overlapping pairs with neither direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"low\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"overlap\"]",
+          "about": "read-out: pairs whose intervals overlap",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.overlapping",
+          "value": 399
+        },
+        {
+          "select": "[data-prx-readout=\"tally-best\"]",
+          "about": "tally: the highest probability among the overlapping pairs (the engine's pick)",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.best.pi",
+          "value": 0.98781943458425
+        },
+        {
+          "select": "[data-prx-readout=\"tally-all\"]",
+          "about": "all pairs of thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "all pairs in the read-out",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption (labels.js, v3 wording)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        },
+        {
+          "select": "[data-prx-status]",
+          "about": "the status of the pair card",
+          "kind": "text",
+          "attr": "data-prx-status",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "overlap"
+        },
+        {
+          "select": ".prx-iol-chosen-row th > span:first-child",
+          "about": "the chosen pair's row",
+          "kind": "text",
+          "slots": true,
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Intervals overlap, and one direction has a probability above ⟨thr⟩"
+        }
+      ]
+    },
+    {
+      "id": "league-pick95",
+      "about": "The engine's pick with 95% intervals: U03 above U15 (v1's raw query, now the preset league-95).",
+      "preset": "league-95",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"level\"]",
+          "about": "interval level in the read-out",
+          "source": "registry",
+          "ref": "settings.level95",
+          "value": 0.95
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.first",
+          "value": "U03"
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.second",
+          "value": "U15"
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "probability that U03's true value is larger than U15's (read-out)",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.pi",
+          "value": 0.9969515549415986
+        },
+        {
+          "select": "[data-prx-readout=\"card-pi\"]",
+          "about": "the same probability in the pair card",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.pi",
+          "value": 0.9969515549415986
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-mean\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.first.mean",
+          "value": 0.0759251752344836
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-sd\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.first.sd",
+          "value": 0.047434164902525694
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-mean\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.second.mean",
+          "value": -0.1080489612374721
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-sd\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.second.sd",
+          "value": 0.047434164902525694
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-lower\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.level95.first.lower",
+          "value": -0.01704407961120062
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-upper\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.level95.first.upper",
+          "value": 0.1688944300801678
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-lower\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.level95.second.lower",
+          "value": -0.20101821608315631
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-upper\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.level95.second.upper",
+          "value": -0.015079706391787878
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "pairs whose 95% intervals do not overlap",
+          "source": "registry",
+          "ref": "league.default.prior15.apart95.pairs",
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "tally: pairs whose intervals do not overlap (intervalOverlapTally)",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.apart",
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"apart\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.apart",
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"tally-high\"]",
+          "about": "tally: overlapping pairs with one direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.high",
+          "value": 102
+        },
+        {
+          "select": "[data-prx-readout=\"high\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.high",
+          "value": 102
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "tally: overlapping pairs with neither direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"low\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"overlap\"]",
+          "about": "read-out: pairs whose intervals overlap",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.overlapping",
+          "value": 413
+        },
+        {
+          "select": "[data-prx-readout=\"tally-best\"]",
+          "about": "tally: the highest probability among the overlapping pairs (the engine's pick)",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.best.pi",
+          "value": 0.9969515549415986
+        },
+        {
+          "select": "[data-prx-readout=\"tally-all\"]",
+          "about": "all pairs of thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "all pairs in the read-out",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "intervals apart (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.95-threshold.9",
+            "field": "apart"
+          },
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"apart\"]",
+          "about": "intervals apart, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.95-threshold.9",
+            "field": "apart"
+          },
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"tally-high\"]",
+          "about": "overlap, one direction above .90 (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.95-threshold.9",
+            "field": "high"
+          },
+          "value": 102
+        },
+        {
+          "select": "[data-prx-readout=\"high\"]",
+          "about": "the same, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.95-threshold.9",
+            "field": "high"
+          },
+          "value": 102
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "overlap, neither above .90 (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.95-threshold.9",
+            "field": "low"
+          },
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"low\"]",
+          "about": "the same, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.95-threshold.9",
+            "field": "low"
+          },
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"overlap\"]",
+          "about": "overlapping pairs, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.95-threshold.9",
+            "field": "overlapping"
+          },
+          "value": 413
+        },
+        {
+          "select": "[data-prx-readout=\"tally-best\"]",
+          "about": "the highest probability among overlapping pairs (base-R oracle tally)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.15-level.95-threshold.9",
+            "field": "best.pi"
+          },
+          "value": 0.996951554941599
+        },
+        {
+          "select": "[data-prx-readout=\"bound\"]",
+          "about": "the apart row's bound, Phi(z) at 95%: .975 at three decimals (v1's two-decimal format printed .97)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "registry",
+          "ref": "cf.apart.level95.bound",
+          "value": 0.975
+        },
+        {
+          "select": ".prx-iol-best [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the tally's line on the highest probability",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.first",
+          "value": "U03"
+        },
+        {
+          "select": ".prx-iol-best [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the tally's line on the highest probability",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.second",
+          "value": "U15"
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption (labels.js, v3 wording)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "league-reversed",
+      "about": "U05 first, U13 second: the card gives Pr(first above second), the reverse of the pick's probability.",
+      "query": "?pair=U05-U13&priorSd=.15&level=90",
+      "expect": [
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.second",
+          "value": "U05"
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.first",
+          "value": "U13"
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "Pr(U05's true value > U13's), read-out",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.reverse.pi",
+          "value": 0.012180565415750019
+        },
+        {
+          "select": "[data-prx-readout=\"card-pi\"]",
+          "about": "the same probability in the pair card",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.reverse.pi",
+          "value": 0.012180565415750019
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-mean\"]",
+          "about": "the first unit is now U05",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.second.mean",
+          "value": -0.25999521879341836
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-mean\"]",
+          "about": "the second unit is now U13",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.first.mean",
+          "value": 0.06876162636550127
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-lower\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.level90.second.lower",
+          "value": -0.39685531323818257
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-upper\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.level90.first.upper",
+          "value": 0.26614406159967785
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "tally: pairs whose intervals do not overlap (intervalOverlapTally)",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.apart",
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"apart\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.apart",
+          "value": 36
+        },
+        {
+          "select": "[data-prx-readout=\"tally-high\"]",
+          "about": "tally: overlapping pairs with one direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.high",
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"high\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.high",
+          "value": 88
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "tally: overlapping pairs with neither direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"low\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"overlap\"]",
+          "about": "read-out: pairs whose intervals overlap",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.overlapping",
+          "value": 399
+        },
+        {
+          "select": "[data-prx-readout=\"tally-best\"]",
+          "about": "tally: the highest probability among the overlapping pairs (the engine's pick)",
+          "source": "registry",
+          "ref": "league.default.prior15.level90.tally.best.pi",
+          "value": 0.98781943458425
+        },
+        {
+          "select": "[data-prx-readout=\"tally-all\"]",
+          "about": "all pairs of thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "all pairs in the read-out",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption (labels.js, v3 wording)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "prior05",
+      "about": "Prior SD .05 at 90%: the engine's pick is U30 above U18, and the tally is 8 / 58 / 369. New in v3 (the inventory's value at prior SD .05).",
+      "preset": "prior05",
+      "expect": [
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the pair card's probability line (league30 ids)",
+          "kind": "text",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "ids.29"
+          },
+          "value": "U30"
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the pair card's probability line (league30 ids)",
+          "kind": "text",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "ids.17"
+          },
+          "value": "U18"
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "the pick's probability (base-R oracle tally)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "best.pi"
+          },
+          "value": 0.989584165772695
+        },
+        {
+          "select": "[data-prx-readout=\"card-pi\"]",
+          "about": "the same probability in the pair card",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "best.pi"
+          },
+          "value": 0.989584165772695
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-mean\"]",
+          "about": "first unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.29"
+          },
+          "value": 0.0141268099119005
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-sd\"]",
+          "about": "first unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.29"
+          },
+          "value": 0.0353553390593274
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-mean\"]",
+          "about": "second unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.17"
+          },
+          "value": -0.101424264100063
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-sd\"]",
+          "about": "second unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.17"
+          },
+          "value": 0.0353553390593274
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "intervals apart (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "apart"
+          },
+          "value": 8
+        },
+        {
+          "select": "[data-prx-readout=\"apart\"]",
+          "about": "intervals apart, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "apart"
+          },
+          "value": 8
+        },
+        {
+          "select": "[data-prx-readout=\"tally-high\"]",
+          "about": "overlap, one direction above .90 (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "high"
+          },
+          "value": 58
+        },
+        {
+          "select": "[data-prx-readout=\"high\"]",
+          "about": "the same, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "high"
+          },
+          "value": 58
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "overlap, neither above .90 (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "low"
+          },
+          "value": 369
+        },
+        {
+          "select": "[data-prx-readout=\"low\"]",
+          "about": "the same, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "low"
+          },
+          "value": 369
+        },
+        {
+          "select": "[data-prx-readout=\"overlap\"]",
+          "about": "overlapping pairs, read-out (base-R oracle tally)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "overlapping"
+          },
+          "value": 427
+        },
+        {
+          "select": "[data-prx-readout=\"tally-best\"]",
+          "about": "the highest probability among overlapping pairs (base-R oracle tally)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "best.pi"
+          },
+          "value": 0.989584165772695
+        },
+        {
+          "select": "[data-prx-readout=\"tally-all\"]",
+          "about": "all pairs of thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"note-prior\"]",
+          "about": "the prior SD in the note",
+          "source": "registry",
+          "ref": "settings.prior05",
+          "value": 0.05
+        },
+        {
+          "select": ".prx-iol-best [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the tally's line on the highest probability (league30 ids)",
+          "kind": "text",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "ids.29"
+          },
+          "value": "U30"
+        },
+        {
+          "select": ".prx-iol-best [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the tally's line on the highest probability (league30 ids)",
+          "kind": "text",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "league30",
+            "field": "ids.17"
+          },
+          "value": "U18"
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption (labels.js, v3 wording)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "nested",
+      "about": "U03 and U01: U03's narrow interval lies inside U01's, so the stretch they share is all of U03's interval; the key and the alt text say so. New in v3. The overlap amount has no independent source here: the general rules read it back.",
+      "query": "?pair=U03-U01&priorSd=.15&level=90",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "Pr(U03's true value > U01's), base-R oracle direction matrix",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "directionMatrix-league-seed20261030-prior.15",
+            "field": "pi.2.0"
+          },
+          "value": 0.694773094827822
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-mean\"]",
+          "about": "first unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.2"
+          },
+          "value": 0.0759251752344836
+        },
+        {
+          "select": "[data-prx-readout=\"card-a-sd\"]",
+          "about": "first unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.2"
+          },
+          "value": 0.0474341649025257
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-mean\"]",
+          "about": "second unit's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.0"
+          },
+          "value": 0.0101914814336071
+        },
+        {
+          "select": "[data-prx-readout=\"card-b-sd\"]",
+          "about": "second unit's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.0"
+          },
+          "value": 0.12
+        },
+        {
+          "select": "[data-prx-status]",
+          "about": "the status of the pair card",
+          "kind": "text",
+          "attr": "data-prx-status",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "overlap"
+        },
+        {
+          "select": "[data-prx-status]",
+          "about": "the status line, word for word",
+          "kind": "text",
+          "slots": true,
+          "source": "literal",
+          "ref": "11.4",
+          "value": "They overlap by ⟨card-amount⟩."
+        },
+        {
+          "select": ".prx-io-key-item",
+          "about": "the league key's third item when one interval lies inside the other",
+          "kind": "text",
+          "index": 2,
+          "source": "literal",
+          "ref": "11.4",
+          "value": "dashed lines and gray band: the two ends of the shorter interval, which lies inside the other, and their overlap"
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "about": "the teaching-posterior caption (labels.js, v3 wording)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "pick-follows",
+      "about": "From the first preset, switching to 95% moves the engine's pick to U03 above U15.",
+      "preset": "league-overlap",
+      "update": [
+        {
+          "level": 95
+        }
+      ],
+      "expect": [
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 0,
+          "about": "the first unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.first",
+          "value": "U03"
+        },
+        {
+          "select": ".prx-io-pi [data-prx-name]",
+          "index": 1,
+          "about": "the second unit in the pair card's probability line",
+          "kind": "text",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.second",
+          "value": "U15"
+        },
+        {
+          "select": "[data-prx-readout=\"pi\"]",
+          "about": "the pick's probability at 95%",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.pi",
+          "value": 0.9969515549415986
+        },
+        {
+          "select": "[data-prx-readout=\"level\"]",
+          "about": "interval level in the read-out",
+          "source": "registry",
+          "ref": "settings.level95",
+          "value": 0.95
+        },
+        {
+          "select": "[data-prx-readout=\"tally-apart\"]",
+          "about": "tally: pairs whose intervals do not overlap (intervalOverlapTally)",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.apart",
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"apart\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.apart",
+          "value": 22
+        },
+        {
+          "select": "[data-prx-readout=\"tally-high\"]",
+          "about": "tally: overlapping pairs with one direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.high",
+          "value": 102
+        },
+        {
+          "select": "[data-prx-readout=\"high\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.high",
+          "value": 102
+        },
+        {
+          "select": "[data-prx-readout=\"tally-low\"]",
+          "about": "tally: overlapping pairs with neither direction above .90",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"low\"]",
+          "about": "read-out: the same count",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.low",
+          "value": 311
+        },
+        {
+          "select": "[data-prx-readout=\"overlap\"]",
+          "about": "read-out: pairs whose intervals overlap",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.overlapping",
+          "value": 413
+        },
+        {
+          "select": "[data-prx-readout=\"tally-best\"]",
+          "about": "tally: the highest probability among the overlapping pairs (the engine's pick)",
+          "source": "registry",
+          "ref": "league.default.prior15.level95.tally.best.pi",
+          "value": 0.9969515549415986
+        },
+        {
+          "select": "[data-prx-readout=\"tally-all\"]",
+          "about": "all pairs of thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "all pairs in the read-out",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        }
+      ]
+    }
+  ]
+}

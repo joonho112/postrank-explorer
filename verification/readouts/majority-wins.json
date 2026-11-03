@@ -1,0 +1,831 @@
+{
+  "$schema": "./_schema.json",
+  "app": "majority-wins",
+  "catalog": "1.15",
+  "from": "postrank-explorer-v1 verification/readouts/which-ranking.json (the ten expectations on v1's Deeper box, the ch. 10 law on orders)",
+  "about": "Majority wins against expected rank and the posterior mean, on the postrank theory book's ch. 10 law on orders, the simulated league and KRW's 97 firms. The law on orders carries v1's ten expectations of the Deeper box of which-ranking (orders-er-* from the base-R oracles expectedRank-tb10-law051 and rankSummaries-tb10-law051; orders-wins-*, orders-pi-ab, orders-pi-bc, orders-p-abc and orders-p-cba from v1's frozen registry, tb10.law051.*), plus the two that v1 showed without an expectation (orders-p-bca, orders-pi-ac). League numbers are rows of the base-R oracle (normalPosterior at prior SD .15 and .05) or registry keys (exact expected ranks; the count of pairs the posterior-mean and expected-rank orders put differently, which is the expected-rank order's count against the majority because majority wins give the posterior-mean order on the league). KRW numbers are rows of the base-R oracle of the v3 helpers (majorityWins-krw-race and -gender: win counts and the cycle count), the postrank 1.1.0 golden row of KRW's lambda = 1 race card evaluated on the released race array (N, G, M), or registry keys (the posterior-mean order's stated pairs above one half, its expected wrong claims, the card's DR). Not covered by expectations (data-num only): the expected-rank order's count against the majority on KRW's gaps (62 race, 171 gender), the gender card's counts, the cycle's pair probabilities, the bars' probabilities and the formula's terms other than its results.",
+  "cases": [
+    {
+      "id": "orders",
+      "about": "The law on orders (the app's first preset): v1's Deeper box as a visible panel, the read-out naming the first unit of each order, and unit A (the default: first by majority wins, second by expected rank) in the card.",
+      "preset": "orders",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"orders-er-a\"]",
+          "about": "law panel: A's expected rank under the law on orders (base-R oracle, rules)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb10-law051",
+            "field": "rank.0"
+          },
+          "value": 1.98
+        },
+        {
+          "select": "[data-prx-readout=\"orders-er-b\"]",
+          "about": "law panel: B's expected rank (base-R oracle, simulate)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb10-law051",
+            "field": "expectedRank.1"
+          },
+          "value": 1.52
+        },
+        {
+          "select": "[data-prx-readout=\"orders-er-c\"]",
+          "about": "law panel: C's expected rank",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb10-law051",
+            "field": "expectedRank.2"
+          },
+          "value": 2.5
+        },
+        {
+          "select": "[data-prx-readout=\"orders-wins-a\"]",
+          "about": "law panel: pairs A wins with probability above one half",
+          "source": "registry",
+          "ref": "tb10.law051.wins.A",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"orders-wins-b\"]",
+          "about": "law panel: pairs B wins with probability above one half",
+          "source": "registry",
+          "ref": "tb10.law051.wins.B",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"orders-wins-c\"]",
+          "about": "law panel: pairs C wins with probability above one half",
+          "source": "registry",
+          "ref": "tb10.law051.wins.C",
+          "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"orders-pi-ab\"]",
+          "about": "law panel: A above B",
+          "source": "registry",
+          "ref": "tb10.law051.pi.AB",
+          "value": 0.51
+        },
+        {
+          "select": "[data-prx-readout=\"orders-pi-ac\"]",
+          "about": "law panel: A above C",
+          "source": "registry",
+          "ref": "tb10.law051.pi.AC",
+          "value": 0.51
+        },
+        {
+          "select": "[data-prx-readout=\"orders-pi-bc\"]",
+          "about": "law panel: B above C",
+          "source": "registry",
+          "ref": "tb10.law051.pi.BC",
+          "value": 0.99
+        },
+        {
+          "select": "[data-prx-readout=\"orders-p-abc\"]",
+          "about": "law panel: probability of the order A, B, C",
+          "source": "registry",
+          "ref": "tb10.law051.prob.ABC",
+          "value": 0.51
+        },
+        {
+          "select": "[data-prx-readout=\"orders-p-bca\"]",
+          "about": "law panel: probability of the order B, C, A",
+          "source": "registry",
+          "ref": "tb10.law051.prob.BCA",
+          "value": 0.48
+        },
+        {
+          "select": "[data-prx-readout=\"orders-p-cba\"]",
+          "about": "law panel: probability of the order C, B, A",
+          "source": "registry",
+          "ref": "tb10.law051.prob.CBA",
+          "value": 0.01
+        },
+        {
+          "select": "[data-prx-readout=\"first-wins\"]",
+          "about": "read-out: the pairs A, first by majority wins, wins",
+          "source": "registry",
+          "ref": "tb10.law051.wins.A",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"first-er\"]",
+          "about": "read-out: B's expected rank, first by expected rank",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb10-law051",
+            "field": "expectedRank.1"
+          },
+          "value": 1.52
+        },
+        {
+          "select": "[data-prx-readout=\"wins-first-er\"]",
+          "about": "read-out: A's expected rank",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb10-law051",
+            "field": "rank.0"
+          },
+          "value": 1.98
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "index": 0,
+          "kind": "text",
+          "about": "read-out: the first unit by majority wins",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "A"
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "index": 1,
+          "kind": "text",
+          "about": "read-out: the first unit by expected rank",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "B"
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "about": "card: the default unit",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "A"
+        },
+        {
+          "select": "[data-prx-readout=\"card-wins\"]",
+          "about": "card: A's majority wins",
+          "source": "registry",
+          "ref": "tb10.law051.wins.A",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "about": "card: A's expected rank",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb10-law051",
+            "field": "rank.0"
+          },
+          "value": 1.98
+        },
+        {
+          "select": "[data-prx-tex=\"majority-wins\"] mtext",
+          "index": 1,
+          "about": "formula: A's majority wins, H_A",
+          "source": "registry",
+          "ref": "tb10.law051.wins.A",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-tex=\"majority-wins\"] mtext",
+          "index": 6,
+          "about": "formula: the worked expected rank of A, its result",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb10-law051",
+            "field": "rank.0"
+          },
+          "value": 1.98
+        },
+        {
+          "select": ".prx-mw-panel .prx-wr-caption",
+          "kind": "text",
+          "about": "law panel: v1's table caption, verbatim, a paragraph above the table's scroll box (it names the table)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Majority wins and expected ranks under the law on orders"
+        }
+      ]
+    },
+    {
+      "id": "orders-unit-b",
+      "about": "Raw query: the law on orders with unit B selected (its one win is nearly sure; first by expected rank).",
+      "query": "?data=orders&unit=B",
+      "expect": [
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "about": "card: the selected unit",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "B"
+        },
+        {
+          "select": "[data-prx-readout=\"card-wins\"]",
+          "about": "card: B's majority wins",
+          "source": "registry",
+          "ref": "tb10.law051.wins.B",
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "about": "card: B's expected rank",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb10-law051",
+            "field": "expectedRank.1"
+          },
+          "value": 1.52
+        },
+        {
+          "select": "[data-prx-tex=\"majority-wins\"] mtext",
+          "index": 6,
+          "about": "formula: the worked expected rank of B",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb10-law051",
+            "field": "expectedRank.1"
+          },
+          "value": 1.52
+        }
+      ]
+    },
+    {
+      "id": "league",
+      "about": "The simulated league at prior SD .15: majority wins give the posterior-mean order (no pair differs), and the expected-rank order puts 6 pairs against the majority, the same 6 pairs on which the posterior-mean and expected-rank orders disagree (registry). Default unit U13: 6th by majority wins and posterior mean, 8th by expected rank.",
+      "preset": "league",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "read-out: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior15",
+          "value": 0.15
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "read-out: the league's 435 pairs",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"against-er\"]",
+          "about": "read-out: pairs the expected-rank order states against the majority; majority wins give the posterior-mean order here, so these are the pairs the posterior-mean and expected-rank orders put differently",
+          "source": "registry",
+          "ref": "league.default.prior15.misordered.mean.exprank",
+          "value": 6
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "about": "card: the default unit",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U13"
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "about": "card: U13's exact expected rank",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U13",
+          "value": 9.587866070102827
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "about": "card: U13's posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "mean.12"
+          },
+          "value": 0.0687616263655014
+        },
+        {
+          "select": "[data-prx-readout=\"card-sd\"]",
+          "about": "card: U13's posterior SD (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.12"
+          },
+          "value": 0.12
+        },
+        {
+          "select": "[data-prx-readout=\"law-sd-small\"]",
+          "about": "league panel: the small units' posterior SD (U01)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.15",
+            "field": "sd.0"
+          },
+          "value": 0.12
+        },
+        {
+          "select": "[data-prx-tex=\"majority-wins\"] mtext",
+          "index": 3,
+          "about": "formula: U13's expected rank, the result",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U13",
+          "value": 9.587866070102827
+        },
+        {
+          "select": "[data-prx-caption=\"teaching-posterior\"]",
+          "kind": "text",
+          "about": "caption: the league's posterior",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "a posterior set by hand for teaching; postrank does not fit it"
+        }
+      ]
+    },
+    {
+      "id": "league-prior05",
+      "about": "Raw query: the league at prior SD .05, where the expected-rank order puts 3 pairs against the majority (again the pairs the posterior-mean and expected-rank orders put differently); default unit U08.",
+      "query": "?data=league&priorSd=.05",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "read-out: the prior SD",
+          "source": "registry",
+          "ref": "settings.prior05",
+          "value": 0.05
+        },
+        {
+          "select": "[data-prx-readout=\"against-er\"]",
+          "about": "read-out: the expected-rank order's pairs against the majority at prior SD .05",
+          "source": "registry",
+          "ref": "league.default.prior05.misordered.mean.exprank",
+          "value": 3
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "about": "card: the default unit at prior SD .05",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U08"
+        },
+        {
+          "select": "[data-prx-readout=\"card-mean\"]",
+          "about": "card: U08's posterior mean at prior SD .05 (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "mean.7"
+          },
+          "value": 0.0308887438045889
+        },
+        {
+          "select": "[data-prx-readout=\"card-sd\"]",
+          "about": "card: U08's posterior SD at prior SD .05 (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 3
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "normalPosterior-league-seed20261030-prior0-sd.05",
+            "field": "sd.7"
+          },
+          "value": 0.0447213595499958
+        }
+      ]
+    },
+    {
+      "id": "league-unit-update",
+      "about": "The league preset, then an update that selects U06: the card follows (exact expected rank from the registry).",
+      "preset": "league",
+      "update": [
+        {
+          "unit": "U06"
+        }
+      ],
+      "expect": [
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "kind": "text",
+          "about": "card: the selected unit",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U06"
+        },
+        {
+          "select": "[data-prx-readout=\"card-er\"]",
+          "about": "card: U06's exact expected rank",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U06",
+          "value": 8.981311638690201
+        }
+      ]
+    },
+    {
+      "id": "prior-clamped",
+      "about": "Raw query: a prior SD above the slider's range is clamped to .60.",
+      "query": "?data=league&priorSd=9",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"prior-sd\"]",
+          "about": "read-out: the clamped prior SD",
+          "source": "registry",
+          "ref": "settings.prior60",
+          "value": 0.6
+        }
+      ]
+    },
+    {
+      "id": "krw-race",
+      "about": "KRW's 97 firms, race gaps: majority wins form a strict order; the posterior-mean order states 35 pairs above one half (against the majority); KRW's lambda = 1 race card, a full ranking of 97 grades, states none and expects the fewest wrong claims. Default firm VFC (North Face / Vans), KRW firm 105: 14th by majority wins, 15th by posterior mean, 10th by expected rank.",
+      "preset": "krw-race",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"units\"]",
+          "about": "read-out: the 97 firms (postrank golden row of the lambda = 1 race card: G)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-krw-grid-race-lambda1.00-released",
+            "field": "G"
+          },
+          "value": 97
+        },
+        {
+          "select": "[data-prx-readout=\"pairs\"]",
+          "about": "read-out: all 4,656 pairs of firms",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-krw-grid-race-lambda1.00-released",
+            "field": "M"
+          },
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"against-mean\"]",
+          "about": "read-out: the posterior-mean order's stated pairs above one half, against the majority",
+          "source": "registry",
+          "ref": "krw.race.strictpm.abovehalf",
+          "value": 35
+        },
+        {
+          "select": "[data-prx-readout=\"krw-against-mean\"]",
+          "about": "KRW table: the same count",
+          "source": "registry",
+          "ref": "krw.race.strictpm.abovehalf",
+          "value": 35
+        },
+        {
+          "select": "[data-prx-readout=\"krw-e-mean\"]",
+          "about": "KRW table: the posterior-mean order's expected wrong claims",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.strictpm.E",
+          "value": 1248.8677247027194
+        },
+        {
+          "select": "[data-prx-readout=\"krw-mean-e\"]",
+          "about": "KRW sentence (CR-140): the posterior-mean order expects 1,249",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "registry",
+          "ref": "krw.race.strictpm.E",
+          "value": 1248.8677247027194
+        },
+        {
+          "select": "[data-prx-readout=\"krw-n-card\"]",
+          "about": "KRW table: the card states every pair",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-krw-grid-race-lambda1.00-released",
+            "field": "N"
+          },
+          "value": 4656
+        },
+        {
+          "select": "[data-prx-readout=\"krw-dr-card\"]",
+          "about": "KRW table: the card's DR (expected wrong claims over all pairs)",
+          "source": "registry",
+          "ref": "krw.grid.race.lambda1.DR",
+          "value": 0.26808208708720643
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "index": 0,
+          "kind": "text",
+          "about": "card: the default firm's name",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "VFC (North Face / Vans)"
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "index": 1,
+          "kind": "text",
+          "about": "card: the default firm's KRW id",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "105"
+        },
+        {
+          "select": "[data-prx-readout=\"card-wins\"]",
+          "about": "card: the firm's majority wins (base-R oracle of majorityWins on the released race array)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "majorityWins-krw-race",
+            "field": "wins.83"
+          },
+          "value": 83
+        },
+        {
+          "select": ".prx-mw-grade1",
+          "kind": "text",
+          "about": "KRW panel: grade 1 named (CR-039)",
+          "source": "literal",
+          "ref": "3.3",
+          "value": "Grade 1 = stated highest on white-name contact advantage, as the posterior judges it."
+        },
+        {
+          "select": "[data-prx-caption=\"krw-card\"]",
+          "kind": "text",
+          "about": "KRW panel: the card caption",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances)"
+        },
+        {
+          "select": "[data-prx-caption=\"fixed-report\"]",
+          "kind": "text",
+          "about": "KRW panel: the three rankings are evaluated as given",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "evaluation of a fixed report"
+        },
+        {
+          "select": ".prx-mw-krw-table thead th",
+          "about": "KRW table: the last column says what DR is (CR-072)",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Share of pairs expected wrong (KRW's discordance rate, DR)",
+          "index": 4
+        },
+        {
+          "select": ".prx-mw-bump .prx-wr-heading",
+          "about": "KRW's firms: the chart has a column for KRW's card at lambda = 1 beside majority wins",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Four orders of the same units"
+        }
+      ]
+    },
+    {
+      "id": "krw-gender",
+      "about": "KRW's 97 firms, gender gaps: the majority relation has one 3-cycle (base-R oracle), whose three firms win 45 pairs each; KRW's lambda = 1 gender card ties two of them and states one pair fewer than the full rankings. Default firm: Jones Lang LaSalle, the top of the box of equal win counts.",
+      "preset": "krw-gender",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"cycles\"]",
+          "about": "read-out: the one cycle of the majority relation",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "majorityWins-krw-gender",
+            "field": "cycles"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"cycle-wins\"]",
+          "about": "KRW panel: the cycle's firms win 45 pairs each (Macy's)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "majorityWins-krw-gender",
+            "field": "wins.7"
+          },
+          "value": 45
+        },
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "index": 0,
+          "kind": "text",
+          "about": "card: the default firm, first in the box of equal win counts",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "Jones Lang LaSalle"
+        },
+        {
+          "select": "[data-prx-readout=\"card-wins\"]",
+          "about": "card: Jones Lang LaSalle's majority wins",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "majorityWins-krw-gender",
+            "field": "wins.87"
+          },
+          "value": 45
+        },
+        {
+          "select": ".prx-mw-grade1",
+          "kind": "text",
+          "about": "KRW panel: grade 1 named (CR-039)",
+          "source": "literal",
+          "ref": "3.3",
+          "value": "Grade 1 = stated highest on male-name contact advantage, as the posterior judges it."
+        },
+        {
+          "select": "[data-prx-caption=\"different-disclosure\"]",
+          "kind": "text",
+          "about": "KRW panel: the card states one pair fewer than the two full rankings",
+          "source": "literal",
+          "ref": "6.5",
+          "value": "these reports disclose different amounts"
+        },
+        {
+          "select": ".prx-mw-captions",
+          "about": "KRW panel: the decided captions, the last one glossed",
+          "kind": "text",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "KRW card computed by KRW's code under KRW's archived pair probabilities (KRW's solver tolerances); evaluation of a fixed report; these reports disclose different amounts (they state different numbers of pairs)."
+        }
+      ]
+    },
+    {
+      "id": "krw-gender-unit-9",
+      "about": "Raw query: the gender gaps with Macy's (KRW firm 9) selected, one of the cycle's three firms.",
+      "query": "?data=krw&criterion=gender&unit=9",
+      "expect": [
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "index": 0,
+          "kind": "text",
+          "about": "card: the selected firm",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "Macy's"
+        },
+        {
+          "select": "[data-prx-readout=\"card-wins\"]",
+          "about": "card: Macy's majority wins",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "majorityWins-krw-gender",
+            "field": "wins.7"
+          },
+          "value": 45
+        }
+      ]
+    },
+    {
+      "id": "krw-unit-by-name",
+      "about": "Raw query: a firm named in the unit key (any case) selects it: Genuine Parts (Napa Auto), KRW firm 75, the race gaps' Condorcet winner (it wins all 96 of its pairs).",
+      "query": "?data=krw&unit=genuine%20parts%20(napa%20auto)",
+      "expect": [
+        {
+          "select": ".prx-wr-card-status [data-prx-name]",
+          "index": 1,
+          "kind": "text",
+          "about": "card: the firm's KRW id",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "75"
+        },
+        {
+          "select": "[data-prx-readout=\"card-wins\"]",
+          "about": "card: its majority wins",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3",
+            "row": "majorityWins-krw-race",
+            "field": "wins.61"
+          },
+          "value": 96
+        }
+      ]
+    }
+  ]
+}

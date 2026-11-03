@@ -1,0 +1,79 @@
+{
+  "id": "2.6",
+  "name": "coherence",
+  "part": "2",
+  "title": "Why a report must be coherent",
+  "idea": "Choices made pair by pair can be impossible to print as a grade report, and the best printable report then costs more.",
+  "status": "built",
+  "from": "v1 view \u00b7 v1 G-04 coherence, the pairwise-choice view",
+  "data": [
+    "engine"
+  ],
+  "credit": "After Kline, Rose and Walters (2024), Example 1 and slide 27; coherence after the postrank theory book, ch. 10.",
+  "caption": "Independent normal posteriors in KRW\u2019s Example 1. A/B/C name their first/second/third firms; their middle mean is \u03c9\u2082.",
+  "presets": [
+    {
+      "id": "omega100",
+      "label": "Middle at 1.00",
+      "query": "omega2=1&tau=.20"
+    },
+    {
+      "id": "omega50",
+      "label": "Middle at .50",
+      "query": "omega2=.50&tau=.20"
+    },
+    {
+      "id": "omega80",
+      "label": "Middle at .80",
+      "query": "omega2=.80&tau=.20"
+    },
+    {
+      "id": "omega100-tau10",
+      "label": "Middle at 1.00, \u03c4 .10",
+      "query": "omega2=1&tau=.10"
+    },
+    {
+      "id": "omega100-tau25",
+      "label": "Middle at 1.00, \u03c4 .25",
+      "query": "omega2=1&tau=.25"
+    }
+  ],
+  "try": [
+    {
+      "preset": "omega50",
+      "shows": [
+        "{A} > {B, C}",
+        ".1410"
+      ]
+    },
+    {
+      "preset": "omega100",
+      "shows": [
+        ".921",
+        ".1728"
+      ]
+    },
+    {
+      "preset": "omega100-tau10",
+      "shows": [
+        "{A, B, C}",
+        ".1000"
+      ]
+    },
+    {
+      "preset": "omega100-tau25",
+      "shows": [
+        ".75",
+        ".760",
+        "{A} > {B} > {C}"
+      ]
+    },
+    {
+      "preset": "omega80",
+      "shows": [
+        ".1589"
+      ]
+    }
+  ],
+  "math": true
+}

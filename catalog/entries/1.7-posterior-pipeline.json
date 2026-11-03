@@ -1,0 +1,115 @@
+{
+  "id": "1.7",
+  "name": "posterior-pipeline",
+  "part": "1",
+  "title": "Where the posterior comes from",
+  "idea": "Of data, model, posterior and decision, postrank does only the last step: it reads a posterior and makes grades.",
+  "status": "built",
+  "from": "v1 whole · v1 L-05 posterior-pipeline, plus a working two-unit chain (estimate and SE, prior, posterior, π, decision at τ)",
+  "data": [
+    "engine"
+  ],
+  "credit": "After Walters, Mixtape slides p. 13, and Kline, Rose and Walters (2024), section III.A–B and slides 43–52.",
+  "math": true,
+  "caption": "Each box names its source in the theory book or the package documentation. The diagram shows no computed numbers; the chain under it computes its numbers in this browser.",
+  "presets": [
+    {
+      "id": "data",
+      "label": "Box 1 (Data)",
+      "query": "box=1"
+    },
+    {
+      "id": "model",
+      "label": "Box 2 (Model)",
+      "query": "box=2"
+    },
+    {
+      "id": "posterior",
+      "label": "Box 3 (Posterior)",
+      "query": "box=3"
+    },
+    {
+      "id": "precise",
+      "label": "B more precise",
+      "query": "box=3&seB=.10"
+    },
+    {
+      "id": "decision",
+      "label": "Box 4 (Decision)",
+      "query": "box=4"
+    },
+    {
+      "id": "tau10",
+      "label": "τ .10",
+      "query": "box=4&tau=.10"
+    },
+    {
+      "id": "narrow",
+      "label": "Prior SD .05",
+      "query": "box=2&priorSd=.05"
+    }
+  ],
+  "try": [
+    {
+      "preset": "data",
+      "shows": [
+        ".25",
+        ".05",
+        ".10",
+        ".20"
+      ]
+    },
+    {
+      "preset": "model",
+      "shows": [
+        ".15",
+        ".692",
+        ".360"
+      ]
+    },
+    {
+      "preset": "posterior",
+      "shows": [
+        ".173",
+        ".018",
+        ".856"
+      ]
+    },
+    {
+      "preset": "precise",
+      "shows": [
+        ".10",
+        ".692",
+        ".035",
+        ".880"
+      ]
+    },
+    {
+      "preset": "decision",
+      "shows": [
+        ".144",
+        ".20",
+        "{A} > {B}",
+        "best of all 3 reports"
+      ]
+    },
+    {
+      "preset": "tau10",
+      "shows": [
+        ".144",
+        ".10",
+        "{A, B}"
+      ]
+    },
+    {
+      "preset": "narrow",
+      "shows": [
+        ".05",
+        ".050",
+        ".762",
+        ".238",
+        "{A, B}"
+      ]
+    }
+  ]
+}

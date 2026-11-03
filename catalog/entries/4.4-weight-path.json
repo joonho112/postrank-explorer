@@ -1,0 +1,93 @@
+{
+  "id": "4.4",
+  "name": "weight-path",
+  "part": "4",
+  "title": "The best report along the weight",
+  "idea": "Moving the weight changes the best report a few times, and each score's error share moves in steps.",
+  "status": "built",
+  "from": "new angle \u00b7 the step figure v2 two-scores left out; adds the reports on each weight interval",
+  "data": [
+    "data/released/six-sites.json"
+  ],
+  "credit": "After the postrank theory book, ch. 11.",
+  "caption": "Six fictional sites; exact weight intervals in the displayed report family. Risks at different weights use different losses.",
+  "predecessors": [
+    "two-scores"
+  ],
+  "presets": [
+    {
+      "id": "equal",
+      "label": "Equal weights",
+      "query": "w=.5&tau=.2&cap=3"
+    },
+    {
+      "id": "low",
+      "label": "Lower A weight",
+      "query": "w=.1&tau=.2&cap=3"
+    },
+    {
+      "id": "high",
+      "label": "Higher A weight",
+      "query": "w=.8&tau=.2&cap=3"
+    },
+    {
+      "id": "w0",
+      "label": "Score B only",
+      "query": "w=0&tau=.2&cap=3"
+    },
+    {
+      "id": "nocap",
+      "label": "No cap",
+      "query": "w=.5&tau=.2&cap=all"
+    },
+    {
+      "id": "tau35",
+      "label": "Higher withholding cost",
+      "query": "w=.5&tau=.35&cap=all"
+    }
+  ],
+  "try": [
+    {
+      "preset": "equal",
+      "shows": [
+        "9",
+        ".0177",
+        ".0267"
+      ]
+    },
+    {
+      "preset": "low",
+      "shows": [
+        "12"
+      ]
+    },
+    {
+      "preset": "high",
+      "shows": [
+        "12",
+        ".237"
+      ]
+    },
+    {
+      "preset": "w0",
+      "shows": [
+        "2",
+        ".200",
+        ".215"
+      ]
+    },
+    {
+      "preset": "nocap",
+      "shows": [
+        "4,683",
+        "9"
+      ]
+    },
+    {
+      "preset": "tau35",
+      "shows": [
+        "14"
+      ]
+    }
+  ]
+}

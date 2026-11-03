@@ -1,0 +1,68 @@
+{
+  "id": "5.8",
+  "name": "cde-cuts",
+  "part": "5",
+  "title": "Twelve schools: tiers and grades",
+  "idea": "Dragging two cuts through the twelve schools' posterior order shows that at τ .20 the tertiles state three more pairs than the best report with at most three grades but expect far more wrong directions.",
+  "status": "built",
+  "from": "v1 view · v1 S-01 case-cde, the cuts view and the comparison panel",
+  "data": [
+    "data/released/case-cde.json",
+    "data/released/cde-taupath.json"
+  ],
+  "credit": "12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde).",
+  "caption": "Twelve-school CDE teaching subset; supplied posterior conditional on a statewide fitted prior. Grade 1 states lowest chronic absence; a shared grade withholds directions.",
+  "presets": [
+    {
+      "id": "tertiles",
+      "label": "Tertiles",
+      "query": "tau=.20&cuts=4,8"
+    },
+    {
+      "id": "archived",
+      "label": "Archived grades",
+      "query": "tau=.20&cuts=3,9"
+    },
+    {
+      "id": "one-cut",
+      "label": "One boundary",
+      "query": "tau=.20&cuts=6,6"
+    },
+    {
+      "id": "tau45",
+      "label": "Higher withholding cost",
+      "query": "tau=.45&cuts=4,8"
+    }
+  ],
+  "try": [
+    {
+      "preset": "tertiles",
+      "shows": [
+        "48",
+        "1.829",
+        ".082255"
+      ]
+    },
+    {
+      "preset": "archived",
+      "shows": [
+        "45",
+        ".063774"
+      ]
+    },
+    {
+      "preset": "one-cut",
+      "shows": [
+        "36",
+        ".091293"
+      ]
+    },
+    {
+      "preset": "tau45",
+      "shows": [
+        "47",
+        ".143197"
+      ]
+    }
+  ]
+}
