@@ -4,11 +4,7 @@ subtitle: "1.18 · after the postrank theory book, ch. 15, and the postrank vign
 description: "Finite-sample uncertainty of pair probabilities estimated from a stationary two-state Markov chain."
 ---
 
-Estimation of $\pi_{AB}$ from posterior draws must account for dependence. Positive serial correlation in Markov chain
-Monte Carlo (MCMC) output increases variance relative to independent sampling. The stationary two-state example has
-equally probable states, A above B and A below B, so $\pi_{AB}$ = 1/2. The probability of retaining the current
-state controls dependence. Exact finite-sample variances and failure probabilities provide references for the
-simulated chains and independence-based uncertainty measures.
+Consecutive Markov chain draws often contain less information about $\pi_{AB}$ than the same number of independent draws. The stationary example has two equally probable states, A above B and A below B, so $\pi_{AB}$ = 1/2. Increasing the chance of staying in the current state makes consecutive draws more alike and increases the variance of the estimated probability. The transition probabilities give its exact finite-sample variance and the failure rate of the independence-based bound.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -23,9 +19,7 @@ simulated chains and independence-based uncertainty measures.
 - **Stay .99.** Treated as 100 independent draws, the estimate has SD .0500 (its exact SD is .376), and the iid error
   bound (radius .148) would fail in at most .05 of runs; in these 2,000 chains it fails in .801 (1,602 chains; exact
   chance .804). A chain that never switches (chance .370) fails by itself.
-- **Stay .99, chain-aware.** The SD from the stay chance: .376 (variance .1412) against .0500 (.002500) for
-  independent draws, the variance of 1.77 independent draws (1.01 by the long-run formula, which holds only for long
-  chains). The bands now span almost all of 0 to 1.
+- **Stay .99, chain-aware.** The exact SD is .376 (variance .1412), compared with .0500 (.002500) for independent draws. This is the variance of 1.77 independent draws. The long-run formula gives 1.01, an approximation for long chains. The bands now span almost all of 0 to 1.
 - **A stuck chain.** Chain 7 never switches: its estimate is 0 and its iid MCSE is 0, yet $\pi_{AB}$ = 1/2. Of these
   2,000 chains, 720 never switch.
 - **Stay .50.** Independent draws: correlation 0, the variance of 100 independent draws, and the iid error bound
@@ -38,7 +32,7 @@ simulated chains and independence-based uncertainty measures.
 
 ::: {.callout-note appearance="simple"}
 The two-state chain is restated from the postrank theory book, ch. 15 ("Finite-sample coefficient error in a stationary
-two-state chain"); the exact numbers come from the stay chance, the counts from chains simulated in this browser. In
+two-state chain"); We calculate the exact values from the transition probability and count the outcomes of chains simulated in the browser. In
 postrank, `postrank_iid_bounds()` refuses MCMC draws, and `postrank_diagnose()` reports R-hat, ESS and an MCMC MCSE for
 them (vignette m6, "Monte Carlo uncertainty and diagnostics").
 :::

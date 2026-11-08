@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for the tie rules of the fixed-order DP and the order family (Step 2.12; review findings E-1, E-3,
 # E-6, E-8, E-11, E-12, E-15, E-22).
 #   oracle-ties       base R only: the fixedOrderDP trace (W, V, riskByG) of the theory book ch. 14 four-unit example

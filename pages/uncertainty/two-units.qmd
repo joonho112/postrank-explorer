@@ -4,11 +4,7 @@ subtitle: "1.8 · the direction probability of two independent normal posteriors
 description: "Direction probabilities from the difference of two independent normal posterior variables."
 ---
 
-Suppose that the true values of units A and B have independent normal posterior distributions. Their pairwise
-ordering is described by $\pi_{AB} = \Pr(\theta_A > \theta_B \mid Y)$. This is the posterior probability that A has
-the larger true value, obtained by integrating the distribution of A − B above zero. The figure displays this
-distribution on the same scales as the two marginal distributions. Independence implies that the variance of the
-difference is the sum of the marginal variances, so uncertainty in both true values contributes to the comparison.
+For two units A and B, $\pi_{AB} = \Pr(\theta_A > \theta_B \mid Y)$ is the posterior probability that A's true value exceeds B's. The probability is the area above zero under the posterior distribution of A − B. With independent normal posteriors, the variance of this difference equals the sum of the two marginal variances. The figure puts both marginals and their difference on the same scales so the reader can see how the two uncertainties enter the comparison.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,9 +17,7 @@ difference is the sum of the marginal variances, so uncertainty in both true val
 
 ## Numerical illustrations {#what-to-try}
 
-- **Means .30 and .10, SDs .20 and .20.** The two posteriors overlap substantially, while $\pi_{AB}$ = .760. The gap is
-  measured against the SD of the difference, .283, not against one unit's SD: A's mean is .707 SDs of the difference
-  above B's.
+- **Means .30 and .10, SDs .20 and .20.** The two posteriors overlap substantially, while $\pi_{AB}$ = .760. The SD of the difference is .283. A's mean is .707 of these SDs above B's.
 - **Means .30 and .10, SDs .20 and .60 (B much less precise).** The same gap, but the difference widens to SD .632,
   so A's mean is only .316 SDs of it above B's, and $\pi_{AB}$ falls to .624, closer to one half.
 - **Means .20 and .20, SDs .20 and .40.** With equal means each direction has probability .500, for either choice of marginal SDs; the difference keeps mean 0 and only spreads out (SD .447).
@@ -32,8 +26,7 @@ difference is the sum of the marginal variances, so uncertainty in both true val
   above B would be wrong.
 
 ::: {.callout-note appearance="simple"}
-The formula holds for two independent normal posteriors, set here by hand. For them, whatever their SDs, the larger
-posterior mean is always the more likely direction, and $\pi_{BA} = 1 - \pi_{AB}$, because the two true values have
+The example specifies two independent normal posteriors. Under this model, the unit with the larger posterior mean is more likely to have the larger true value for any positive SDs. Also, $\pi_{BA} = 1 - \pi_{AB}$, because the two true values have
 probability zero of being equal. Kline, Rose and Walters (2024), section II.E, Example 1, and slide 27 of their talk,
 use the special case of this formula with both SDs equal to 1.
 :::

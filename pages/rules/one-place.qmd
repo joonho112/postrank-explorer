@@ -1,13 +1,12 @@
 ---
 title: "Reporting, allocation and classification"
 subtitle: "3.13 · constructed examples after the postrank theory book, ch. 17 and 19"
-description: "Distinct objectives for pairwise reporting, place allocation and threshold classification."
+description: "Pairwise reporting, allocation and classification can lead to different decisions under the same posterior."
 ---
 
-Selecting the largest posterior expected value differs from selecting the most probable first-ranked unit.
-A grade report instead determines which pairwise directions to state. The examples evaluate these objectives under
-one law. Allocation from shared grades requires a further selection rule. Threshold classification depends on
-exceedance probabilities and false-positive and false-negative costs. Grades alone specify neither decision.
+The unit with the highest posterior mean can differ from the unit most likely to rank first. A grade report
+states directions between units. Allocating a place from that report requires a rule for choosing among
+units in the same grade. Classification at a threshold requires costs for false positives and false negatives.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,17 +19,15 @@ exceedance probabilities and false-positive and false-negative costs. Grades alo
 ## Numerical illustrations {#what-to-try}
 
 - **Three units, reporting objective.** The report has risk .1833. Filling a place from its highest grade selects
-  expected value 4.000 and has top-set overlap .700. The marked native-objective point and risk projections use distinct coordinates.
+  a unit with expected value 4.000 and top-set overlap .700. The figure gives each quantity its own scale.
 - **Three units, mean-value order.** Selecting A instead gives value 6.000 but top-set overlap .300; the strict
   report's risk is .4667. The top-set order in the table prefers B. Choosing a first recipient does not require
   publishing every comparison in a strict order.
 - **Two units, τ .25.** The reporting optimum withholds. The added allocation lottery still fills a place,
-  giving expected value 5.000 and overlap .500. It draws a whole subset of the required size from the boundary
-  grade, rather than independently including each unit.
-- **False-negative cost 3.** The native threshold classifier declares 2 positive, with cost .700. The convention
+  giving expected value 5.000 and overlap .500. It draws the required number of units from the boundary grade.
+- **False-negative cost 3.** The threshold rule declares 2 positive, with cost .700. The convention
   “positive through the highest grade” declares only B positive and costs .900. Neither τ nor the place budget
-  sets the probability cutoff for this decision. Under **Threshold 4**, being exactly at the substantive threshold does not count as above it. The native classifier
-  declares 0 positive, at cost .300. The grade cutoff permits both none-positive and all-positive decisions: those actions remain
+  sets the probability cutoff for this decision. Under **Threshold 4**, being exactly at the substantive threshold does not count as above it. The threshold rule declares 0 positive, at cost .300. The grade cutoff permits both none-positive and all-positive decisions: those actions remain
   distinct even if a canonical grade representation would lose the distinction.
 - **Equal reporting risk, different classifications.** Reports 2/1/2 and 3/1/2, in A/B/C order, both have risk .2000. With the same
   added grade cutoff, they declare 3 and 2 positive, at costs 1.700 and 1.300. Equal reporting risk does not
@@ -40,11 +37,10 @@ exceedance probabilities and false-positive and false-negative costs. Grades alo
   and overlap evaluation use the same draws.
 
 ::: {.callout-note appearance="simple"}
-These are synthetic conditional laws. Value is the selected target value, rather than an intervention effect.
-A grade-based allocation or classification requires a boundary lottery or an eligibility convention.
-Finite-law quantities are exact; the league's normal means and threshold probabilities are analytic, while
-membership and overlap are Monte Carlo estimates. The league reporting optimum covers only capped contiguous cuts
-of its declared posterior-mean order; the strict comparison reports lie outside that family.
+In these examples, value is the target value of a selected unit. We calculate outcomes exactly for the finite laws.
+For the league, we calculate the normal means and threshold probabilities analytically and estimate top-set
+membership and overlap from draws. The league's reporting optimum is over contiguous cuts of the posterior-mean
+order under a grade cap. The strict comparison reports do not belong to that family.
 :::
 
 Standalone: [one-place](../../embed/one-place.html), for example `?mode=threshold&falseNegativeCost=3`.

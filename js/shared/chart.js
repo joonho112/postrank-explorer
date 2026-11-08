@@ -14,12 +14,12 @@
 //   });
 //
 // plot(el, options) -> { figure, svg, area, legends, table, scale(name), palette, exportSVG(), toPNG(), destroy() }
-//   Colours. Any string "var(--prx-…[, fallback])" in the scale options, style and SVG output is resolved to a
-//     concrete colour as seen from inside the plot panel (a hidden .prx-light-panel probe in the chart: CSS custom
+//   Colors. Any string "var(--prx-…[, fallback])" in the scale options, style and SVG output is resolved to a
+//     concrete color as seen from inside the plot panel (a hidden .prx-light-panel probe in the chart: CSS custom
 //     property, then the var() fallback, then CONFIG.tokens, the light values of styles/tokens.css). The panel is
 //     light paper in every theme, so text inks (--prx-fg, --prx-fg-muted, --prx-err-text, --prx-wh-text,
 //     --prx-est-text, --prx-post-text) resolve to the panel inks of base.css there, never to dark-theme chrome inks
-//     (A2-02); data colours and --prx-plot-* are the same as seen from `el`. `marks` may be a function (palette, Plot) -> marks, so channel colours can use
+//     (A2-02); data colors and --prx-plot-* are the same as seen from `el`. `marks` may be a function (palette, Plot) -> marks, so channel colors can use
 //     the resolved palette. Plot cannot use var() itself: a ramp legend or an interpolated scale turns it into
 //     black, and canvas and PNG output have no CSS at all.
 //   Figure shape. Plot.plot returns <figure> when a legend or caption is present and <svg> otherwise; the wrapper
@@ -40,13 +40,17 @@
 //     points are given row by row), keyboard.columns = n keeps the data order and makes Up and Down move one row instead of one point;
 //     keyboard.virtual=true reads all points through one movable focus button for dense canvas matrices;
 //     keyboard.onFocus(d, i) is called when a point is shown (to link the figure to a table, for example).
+//     keyboard.pointer=true (review 044, X-23) makes the same points answer the mouse and touch: hovering shows the
+//     nearest point's tip (the same text as the keyboard reader), and a click or tap selects that point (onFocus(d, i),
+//     then onSelect(d, i)) and keeps its tip shown. Scrolling is never blocked. keyboard.pointerRadius (px) limits the
+//     hit distance (default CONFIG.pointerRadius; a grid with keyboard.columns takes the nearest cell).
 //   Formulas. options.formulas places MathML labels (math.js renderTex) in an HTML layer over the plot, in data
 //     coordinates (x, y) or in fractions of the plot (left, top).
 //   Re-drawing the same element keeps the keyboard position and gives focus back after the redraw.
 //
 // canvasLayer(chart, draw) paints large clouds on a <canvas> under the svg marks with resolved
-//   colours: draw(context2d, { x, y, palette, width, height }). exportSVG(chart) -> standalone SVG text (concrete
-//   colours, a background rect); toPNG(chart, { scale }) -> Promise of a PNG data URL (browser only).
+//   colors: draw(context2d, { x, y, palette, width, height }). exportSVG(chart) -> standalone SVG text (concrete
+//   colors, a background rect); toPNG(chart, { scale }) -> Promise of a PNG data URL (browser only).
 
 import { keepFocus, scrollRegion } from "./base.js";
 import { dataNum, formatSci, formatTuple, setNum, tickLabel } from "./format.js";
@@ -114,6 +118,7 @@ export const CONFIG = Object.freeze({
   }),
 });
 
+const POINTER_RADIUS = 28;
 const WRAPPER_KEYS = new Set(["alt", "table", "formulas", "keyboard", "marks", "className", "aspect"]);
 const isRecord = (x) => x !== null && typeof x === "object" && !Array.isArray(x) && Object.getPrototypeOf(x) === Object.prototype;
 let chartCounter = 0;
@@ -125,7 +130,7 @@ function plotGlobal(el) {
   return P;
 }
 
-// ------------------------------------------------------------------------------------------- colours
+// ------------------------------------------------------------------------------------------- colors
 
 function computed(el) {
   const win = el?.ownerDocument?.defaultView;
@@ -186,7 +191,7 @@ export function resolveDeep(el, value, cs = computed(el)) {
 
 const range = (n, f) => Array.from({ length: n }, (_, i) => f(i + 1));
 
-/** The resolved palette as seen from el (concrete colours for Plot, canvas and PNG); cs: a computed style (default:
+/** The resolved palette as seen from el (concrete colors for Plot, canvas and PNG); cs: a computed style (default:
  * the live one). */
 export function palette(el, cs = computed(el)) {
   const t = (n) => token(el, `--prx-${n}`, cs);
@@ -224,8 +229,8 @@ export function parseColor(c) {
 const hex = (rgb) => `#${rgb.map((v) => Math.round(v).toString(CONFIG.hexRadix).padStart(2, "0")).join("")}`;
 
 /**
- * G grade colours, grade 1 first, by the package rule between --prx-grade-1 and --prx-grade-8:
- * channel = floor(a + (b − a)(g − 1)/(G − 1) + 1/2); G = 1 gives grade 1's colour.
+ * G grade colors, grade 1 first, by the package rule between --prx-grade-1 and --prx-grade-8:
+ * channel = floor(a + (b − a)(g − 1)/(G − 1) + 1/2); G = 1 gives grade 1's color.
  */
 export function gradeColors(G, source) {
   const pal = source && Array.isArray(source.grades) ? source : palette(source);
@@ -249,10 +254,10 @@ function luminance(c) {
 }
 
 /**
- * G grade colours for marks without a grade number (map areas, scatter dots), grade 1 first and darkest, in clearly
+ * G grade colors for marks without a grade number (map areas, scatter dots), grade 1 first and darkest, in clearly
  * distinct lightness steps: the badge ramp (--prx-grade-1 to --prx-grade-8, as gradeColors) continued to a tint of
  * --prx-grade-8 toward the plot panel (CONFIG.gradeRampTint of the way), sampled at equal steps of CIE lightness L*.
- * G = 1 gives grade 1's colour.
+ * G = 1 gives grade 1's color.
  */
 export function gradeRamp(G, source) {
   const pal = source && Array.isArray(source.grades) ? source : palette(source);
@@ -293,7 +298,7 @@ function lightness(rgb) {
   return e.scale * f - e.shift;
 }
 
-/** WCAG contrast ratio of two colours. */
+/** WCAG contrast ratio of two colors. */
 export function contrast(a, b) {
   const x = luminance(a);
   const y = luminance(b);
@@ -307,7 +312,7 @@ export function labelOn(fill, pal) {
   return contrast(fill, pal.labelLight) > contrast(fill, pal.labelDark) ? pal.labelLight : pal.labelDark;
 }
 
-// Only the nodes that hold a var() in a colour attribute or their style are visited, and each distinct attribute
+// Only the nodes that hold a var() in a color attribute or their style are visited, and each distinct attribute
 // value is resolved once per call (a 9,000-node figure repeats a handful of fills): one call is one render, so the
 // computed style it reads cannot change in between (P-01).
 const VAR_ATTRIBUTES = [...CONFIG.colorAttributes, "style"];
@@ -553,6 +558,8 @@ function drawKeyboard(state, result, kb, size) {
   const { layer, tip, doc } = state;
   layer.replaceChildren();
   tip.hidden = true;
+  state.pointer = null;
+  state.pointerPinned = null;
   if (!kb || !kb.data) {
     layer.hidden = true;
     return;
@@ -601,6 +608,21 @@ function drawKeyboard(state, result, kb, size) {
       if (!(e.key in keys)) return;
       e.preventDefault(); active=Math.max(0,Math.min(points.length-1,keys[e.key])); show();
     });
+    if (kb.pointer === true) {
+      state.pointer = {
+        kb, points, size,
+        hover(j) { const q = points[j]; tip.textContent = String(title(q.d, q.i) ?? ""); tip.hidden = false; placePointTip(tip, q, size); },
+        select(j) {
+          active = j;
+          const q = points[j];
+          b.setAttribute("aria-label", String(title(q.d, q.i) ?? "").replace(/\s*\n\s*/g, ", "));
+          placeLabel(b, q.x, q.y, size);
+          show();
+          if (typeof kb.onSelect === "function") { try { kb.onSelect(q.d, q.i); } catch (err) { console.warn("chart.plot: keyboard.onSelect failed", err); } }
+        },
+      };
+      bindPointer(state);
+    }
     state.points=points; return;
   }
   const buttons = points.map((p, j) => {
@@ -643,7 +665,62 @@ function drawKeyboard(state, result, kb, size) {
       go(keys[e.key]);
     });
   });
+  if (kb.pointer === true) {
+    state.pointer = {
+      kb, points, size,
+      hover(j) { const q = points[j]; tip.textContent = String(title(q.d, q.i) ?? ""); tip.hidden = false; placePointTip(tip, q, size); },
+      select(j) {
+        active = j;
+        state.activeKey = points[j].key;
+        buttons.forEach((b, k) => { b.tabIndex = k === active ? 0 : -1; });
+        show(j);
+        if (typeof kb.onSelect === "function") { try { kb.onSelect(points[j].d, points[j].i); } catch (err) { console.warn("chart.plot: keyboard.onSelect failed", err); } }
+      },
+    };
+    bindPointer(state);
+  }
   state.points = points;
+}
+
+/** Mouse and touch reading of a figure's keyboard points (keyboard.pointer): bound once per chart element; each redraw
+ *  replaces state.pointer with its current points. A click or tap pins the selected point's tip. */
+function bindPointer(state) {
+  if (state.pointerBound) return;
+  state.pointerBound = true;
+  const c = state.container;
+  const nearest = (e) => {
+    const P = state.pointer;
+    if (!P || !P.points.length) return -1;
+    const area = c.querySelector(".prx-chart-area");
+    const r = area?.getBoundingClientRect?.();
+    if (!(r?.width > 0)) return -1;
+    const k = P.size.width / r.width;
+    const x = (e.clientX - r.left) * k, y = (e.clientY - r.top) * k;
+    if (x < 0 || y < 0 || x > P.size.width || y > P.size.height) return -1;
+    let best = -1, bd = Infinity;
+    P.points.forEach((q, j) => { const d = (q.x - x) ** 2 + (q.y - y) ** 2; if (d < bd) { bd = d; best = j; } });
+    const radius = Number(P.kb.pointerRadius) > 0 ? Number(P.kb.pointerRadius) : Number(P.kb.columns) > 1 ? Infinity : POINTER_RADIUS;
+    return Math.sqrt(bd) <= radius ? best : -1;
+  };
+  const rest = () => {
+    if (!state.pointer) return;
+    if (state.pointerPinned !== null && state.pointerPinned < state.pointer.points.length) state.pointer.hover(state.pointerPinned);
+    else state.tip.hidden = true;
+  };
+  c.addEventListener("pointermove", (e) => {
+    if (e.pointerType === "touch" || !state.pointer) return;
+    const j = nearest(e);
+    if (j >= 0) state.pointer.hover(j); else rest();
+  });
+  c.addEventListener("pointerleave", rest);
+  c.addEventListener("click", (e) => {
+    // a click from the keyboard (Enter or Space on a focused button inside the figure) has no pointer position
+    if (!state.pointer || e.detail === 0) return;
+    const j = nearest(e);
+    if (j < 0) return;
+    state.pointerPinned = j;
+    state.pointer.select(j);
+  });
 }
 
 function chartState(el) {
@@ -665,7 +742,7 @@ function chartState(el) {
   tip.setAttribute("aria-hidden", "true");
   tip.hidden = true;
   layer.addEventListener("focusout", (e) => { if (!layer.contains(e.relatedTarget)) tip.hidden = true; });
-  // colours are resolved as seen from inside the plot panel (see the header): a hidden light-panel probe
+  // colors are resolved as seen from inside the plot panel (see the header): a hidden light-panel probe
   const probe = doc.createElement("span");
   probe.className = `${CONFIG.panelClass} ${CONFIG.probeClass}`;
   probe.hidden = true;
@@ -796,7 +873,7 @@ export function plot(el, options = {}) {
   for (const n of legends) n.setAttribute("data-prx-part", "legend");
   svg.setAttribute("role", "img");
   svg.setAttribute("aria-label", alt || table?.caption || "");
-  // the svg is one image: Plot's labelled groups and text inside it stay out of the accessibility tree (A-08); the
+  // the svg is one image: Plot's labeled groups and text inside it stay out of the accessibility tree (A-08); the
   // figure keeps its alt text and the hidden data table
   for (const c of svg.children) c.setAttribute("aria-hidden", "true");
   resolveNodeColors(el, figure, cs);
@@ -883,7 +960,7 @@ export function canvasLayer(chart, draw) {
   };
 }
 
-/** The main svg as standalone SVG text: concrete colours, currentColor replaced, a background rect first
+/** The main svg as standalone SVG text: concrete colors, currentColor replaced, a background rect first
  * (background: false leaves it out). */
 export function exportSVG(chart, { background = true } = {}) {
   const state = chart.el.__prxChart;

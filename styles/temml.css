@@ -1,8 +1,8 @@
 /* Formula stylesheet for every page, embed, host and deck (MathML from Temml).
-   Part 1: Temml 0.14.0 Temml-Local.css (MIT licence, js/vendor/temml/LICENSE), unchanged except that Temml.woff2 is
+   Part 1: Temml 0.14.0 Temml-Local.css (MIT license, js/vendor/temml/LICENSE), unchanged except that Temml.woff2 is
    inlined as a data URI (it supplies only the script capitals, U+1D49C-1D4B5) and the math font list names the
    system math fonts STIX Two Math, Cambria Math and Latin Modern Math first. No other math font is loaded.
-   Part 2: course rules (colour classes and narrow screens), at the end of the file. */
+   Part 2: course rules (color classes and narrow screens), at the end of the file. */
 
 /*
 Temml.woff2 is a clone of KaTeX_Script-Regular, except that the code points
@@ -379,8 +379,8 @@ body {
 
 /* ---- Part 2: course rules ---- */
 
-/* Colours inside formulas come only from \class{prx-...}{...} (never \textcolor or inline colours). There are four
-   classes, one per formula colour in styles/tokens.css; each reads the text form of its data colour (text contrast,
+/* Colors inside formulas come only from \class{prx-...}{...} (never \textcolor or inline colors). There are four
+   classes, one per formula color in styles/tokens.css; each reads the text form of its data color (text contrast,
    CONTRACT 11.3), and the fallback is the light value. A new class needs a validated --prx-*-text token first. */
 math .prx-err { color: var(--prx-err-text, #b04800); }   /* the error term E/M */
 math .prx-wh { color: var(--prx-wh-text, #6b6b6b); }     /* the withholding term tau(M-N)/M */

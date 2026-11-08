@@ -1,5 +1,5 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
-# Step 6.14: shared base-R inputs for the Part 2 golden rows (engine/API.md).
+# Author: JoonHo Lee (jlee296@ua.edu).
+# Step 6.14: shared base-R inputs for the Part 2 golden rows.
 # Not a golden writer: 02_pairwise.R, 03_report_risk.R, 04_optimize.R, 05_frontier.R, 06_multi.R, 08_simulate.R,
 # 10_stream.R, 12_report_card.R and 14_summaries.R source this file and add their "Step 6.14" rows from `p2`.
 # Rules of _oracle.R: base R only (closed forms, exact rationals, full enumeration, the seeded stream of _rng.R); postrank

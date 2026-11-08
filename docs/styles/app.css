@@ -1,7 +1,7 @@
 /*
  * postrank Explorer v2 · shared app styles (js/shared/base.js, chart.js, labels.js)
  *
- * Every colour is a token from styles/tokens.css. The look follows DPprior Explorer: a light raised frame, one compact
+ * Every color is a token from styles/tokens.css. The look follows DPprior Explorer: a light raised frame, one compact
  * row of controls and presets, the figure, a one- or two-sentence read-out with an accent rule, a one-line caption.
  * An app's own rules live in its file (def.css in js/apps/<name>.js); base.js injects them once per document.
  * Sizes: an app must fit 960 x 540 CSS px (embed and host) and stay on screen at 1280 x 800 on its page.
@@ -30,6 +30,8 @@
 .prx-widget img, .prx-widget svg, .prx-widget canvas, .prx-widget table, .prx-widget math { max-width: 100%; }
 /* Quarto gives column-page tables a paper background. Match that specificity when a widget changes theme. */
 .page-columns .column-page .prx-widget table { background-color: var(--prx-bg-raised); }
+/* A table inside a disclosure takes the box's own surface (review 044 repair: PL-B request 2); light panels still win. */
+.page-columns .column-page .prx-widget .prx-disclosure table { background-color: transparent; }
 .page-columns .column-page .prx-widget .prx-light-panel table,
 .page-columns .column-page .prx-widget table.prx-light-panel { background-color: var(--prx-plot-bg); }
 /* Bootstrap tables and disclosure headings must inherit the widget's local surface palette. */
@@ -39,8 +41,8 @@
   --bs-table-border-color: var(--prx-border);
   color: var(--prx-fg);
 }
-/* Quarto's explicit caption/code colours must follow each widget surface, including paper panels. */
-.prx-widget table caption { color: var(--prx-fg-muted); }
+/* Quarto's explicit caption/code colors must follow each widget surface, including paper panels. */
+.prx-widget table caption { caption-side: top; color: var(--prx-fg-muted); }
 .prx-widget :not(pre) > code:not(.sourceCode) { color: inherit; background: transparent; }
 .prx-widget summary { color: var(--prx-fg); }
 .prx-widget a { color: var(--prx-link); }
@@ -313,10 +315,106 @@
 .prx-data-table table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .prx-data-table th, .prx-data-table td { padding: 0.2rem 0.5rem; text-align: left; border-bottom: 1px solid var(--prx-border); }
 
+/* --- result-first frame (base.js def.layout = "result-first"; review 044, X-01) ---
+   The read-out follows the controls, so it keeps a bottom margin instead of a top one. */
+.prx-widget[data-prx-layout="result-first"] > .prx-readout { margin: 0 0 0.6rem; }
+
+/* B2 (pilot review): the preset row is its own line, so a control that appears, or a Settings box that wraps,
+   never moves the preset buttons sideways */
+.prx-widget[data-prx-layout="result-first"] > .prx-controls > .prx-presets { flex-basis: 100%; }
+
+/* --- disclosures (base.js ctx.disclosure; review 044, X-14): complete secondary material, closed by default.
+   The same box as the profile apps' Settings and Data (js/shared/mdomain/visual.js): a 44 px summary. */
+.prx-disclosures { display: grid; gap: 0.5rem; min-width: 0; margin: 0.7rem 0 0; }
+.prx-disclosures:empty { display: none; }
+.prx-widget .prx-disclosure { min-width: 0; margin: 0; padding: 0 0.8rem; background: var(--prx-bg); border: 1px solid var(--prx-border); border-radius: 7px; }
+/* Quarto's Bootstrap gives <details> a 1em bottom margin on site pages (not in embeds): the frame sets its own spacing. */
+.prx-widget .prx-disclosure > summary { min-height: 44px; display: list-item; align-content: center; padding: 0.6rem 0; font-weight: 600; line-height: 1.3; cursor: pointer; }
+.prx-widget .prx-disclosure-body { min-width: 0; padding: 0.3rem 0 0.8rem; }
+/* a "Settings" box in the controls row: a compact button-like summary; open, it takes a whole row of controls */
+.prx-controls > .prx-disclosure { flex: 0 0 auto; align-self: flex-end; padding: 0 0.65rem; }
+.prx-controls > .prx-disclosure > summary { min-height: 1.9rem; padding: 0.2rem 0; font-weight: 600; }
+.prx-controls > .prx-disclosure[open] { flex-basis: 100%; }
+.prx-controls > .prx-disclosure > .prx-disclosure-body { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; align-items: flex-end; padding: 0.3rem 0 0.6rem; }
+
+/* --- layout helpers (review 044, X-01/X-16): side by side where the widget is wide enough, stacked otherwise.
+   They respond to the widget's own width (990 px on a page at 1280, 1,156 px standalone), not the viewport's. */
+.prx-split { display: flex; flex-wrap: wrap; gap: 0.8rem 1.2rem; align-items: flex-start; min-width: 0; }
+.prx-split > * { min-width: 0; }
+.prx-split > .prx-split-main { flex: 3 1 28rem; }
+.prx-split > .prx-split-side { flex: 2 1 17rem; }
+.prx-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--prx-col-min, 24rem)), 1fr)); gap: 0.8rem 1.2rem; min-width: 0; }
+.prx-cols > * { min-width: 0; }
+
+/* --- part-of-whole bar (js/shared/partbar.js; from 1.1 case-zero's pair bar): the counts sit under the track --- */
+.prx-partbar { min-width: 0; padding: 0.4rem 0.6rem 0.45rem; border-radius: 6px; font-variant-numeric: tabular-nums; }
+.prx-partbar-title { margin: 0 0 0.2rem; font-weight: 600; }
+.prx-partbar-track { display: flex; height: 1.05rem; overflow: hidden; background: var(--prx-plot-bg); border: 1px solid var(--prx-cell-border); border-radius: 3px; }
+.prx-partbar-seg { flex: 0 1 auto; min-width: 0; height: 100%; }
+.prx-partbar-seg.prx-partbar-some { min-width: 3px; }
+.prx-partbar-seg + .prx-partbar-seg { box-shadow: inset 1px 0 0 var(--prx-cell-border); }
+.prx-partbar-keys { display: flex; flex-wrap: wrap; gap: 0.1rem 1.1rem; margin: 0.3rem 0 0; padding: 0; list-style: none; }
+.prx-partbar-key { min-width: 0; margin: 0; }
+.prx-partbar-sw { display: inline-block; width: 0.95rem; height: 0.95rem; margin-right: 0.35rem; vertical-align: -0.15em; border: 1px solid var(--prx-cell-border); border-radius: 2px; }
+.prx-partbar [data-role="agree"] { background: var(--prx-rel-above); }
+.prx-partbar [data-role="against"] { background: var(--prx-rel-below); }
+.prx-partbar [data-role="silent"] { background: repeating-linear-gradient(45deg, var(--prx-hatch) 0 1px, var(--prx-rel-withheld) 1px 5px); }
+.prx-partbar [data-role="error"] { background: var(--prx-err); }
+.prx-partbar [data-role="withheld"] { background: var(--prx-wh); }
+.prx-partbar [data-role="neutral"] { background: var(--prx-grade-5); }
+.prx-partbar-compact { display: flex; flex-wrap: wrap; gap: 0.2rem 0.75rem; align-items: center; padding: 0.25rem 0.5rem; }
+.prx-partbar-compact > .prx-partbar-title { margin: 0; }
+.prx-partbar-compact > .prx-partbar-track { flex: 0 1 12rem; height: 0.8rem; }
+.prx-partbar-compact > .prx-partbar-keys { margin: 0; }
+
+/* --- wide tables (review 044, X-09): the row labels stay in view while the box scrolls sideways ---
+   The rules sit in a cascade layer, so they lose to every unlayered rule: an app's own rule for its table always
+   wins, whatever its specificity (pilot review B1/S2). They apply only while the table's scroll box overflows (base.js
+   scrollRegion sets data-prx-overflow), so a table that fits is neither shaded nor layered. prx-sticky-two also keeps
+   the second column (rank, then name) at the width the app gives the first one (--prx-sticky-first-width). */
+@layer prx-sticky {
+  [data-prx-overflow] table.prx-sticky-first > * > tr > :first-child:not([colspan]),
+  [data-prx-overflow] table.prx-sticky-two > * > tr > :first-child:not([colspan]) { position: sticky; left: 0; z-index: 1; background: var(--prx-bg-raised); }
+  [data-prx-overflow] table.prx-sticky-two > * > tr > :nth-child(2):not([colspan]) { position: sticky; left: var(--prx-sticky-first-width, 3.25rem); z-index: 1; background: var(--prx-bg-raised); }
+  /* the header's sticky cells stay above the body cells that scroll under them */
+  [data-prx-overflow] table.prx-sticky-first > thead > tr > :first-child:not([colspan]),
+  [data-prx-overflow] table.prx-sticky-two > thead > tr > :nth-child(-n+2):not([colspan]) { z-index: 3; }
+  /* inside a disclosure the row labels take the box's surface (a light panel's own token still wins) */
+  .prx-disclosure [data-prx-overflow] table.prx-sticky-first > * > tr > :first-child:not([colspan]),
+  .prx-disclosure [data-prx-overflow] table.prx-sticky-two > * > tr > :nth-child(-n+2):not([colspan]) { background: var(--prx-bg); }
+  /* scrolled sideways, the sticky labels cast a shadow instead of fading (the scroll cue fades only the right edge) */
+  [data-prx-overflow="start"] table.prx-sticky-first > * > tr > :first-child:not([colspan]),
+  [data-prx-overflow="both"] table.prx-sticky-first > * > tr > :first-child:not([colspan]),
+  [data-prx-overflow="start"] table.prx-sticky-two > * > tr > :nth-child(2):not([colspan]),
+  [data-prx-overflow="both"] table.prx-sticky-two > * > tr > :nth-child(2):not([colspan]) { box-shadow: 6px 0 6px -5px rgb(0 0 0 / 0.28); }
+}
+
 /* --- narrow screens --- */
 @media (max-width: 30em) {
   .prx-widget { padding: 0.5rem; }
   .prx-slider { max-width: none; flex-basis: 100%; }
+}
+/* result-first: the preset row is one line that scrolls sideways (X-16); its edges fade while more is past them */
+@media (max-width: 37.5em) {
+  .prx-widget[data-prx-layout="result-first"] .prx-presets .prx-seg-buttons { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; padding: 2px 2px 4px; }
+  .prx-widget[data-prx-layout="result-first"] .prx-presets .prx-seg { flex: none; white-space: nowrap; }
+  .prx-widget[data-prx-layout="result-first"] .prx-presets { max-width: 100%; }
+  /* two lines filled row by row (reading and Tab order agree), ⌈n/2⌉ columns set by base.js (Phase 3 review) */
+  .prx-widget[data-prx-layout="result-first"] .prx-presets[data-prx-preset-rows="2"] .prx-seg-buttons {
+    display: grid; grid-auto-flow: row; grid-template-columns: repeat(var(--prx-preset-cols, 4), max-content); gap: 0.3rem;
+  }
+}
+.prx-seg-buttons[data-prx-overflow="end"] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), rgb(0 0 0 / 0.12));
+  mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), rgb(0 0 0 / 0.12));
+}
+.prx-seg-buttons[data-prx-overflow="start"] {
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 2rem), rgb(0 0 0 / 0.25));
+  mask-image: linear-gradient(to left, #000 calc(100% - 2rem), rgb(0 0 0 / 0.25));
+}
+.prx-seg-buttons[data-prx-overflow="both"] {
+  -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / 0.25), #000 2rem, #000 calc(100% - 2rem), rgb(0 0 0 / 0.25));
+  mask-image: linear-gradient(to right, rgb(0 0 0 / 0.25), #000 2rem, #000 calc(100% - 2rem), rgb(0 0 0 / 0.25));
 }
 
 /* --- reduced motion --- */
@@ -365,6 +463,14 @@ body.prx-embed { margin: 0; background: var(--prx-bg); color: var(--prx-fg); fon
 .prx-scroll-region[data-prx-overflow="both"] {
   -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / 0.2), #000 2rem, #000 calc(100% - 2rem), rgb(0 0 0 / 0.2));
   mask-image: linear-gradient(to right, rgb(0 0 0 / 0.2), #000 2rem, #000 calc(100% - 2rem), rgb(0 0 0 / 0.2));
+}
+
+/* a box whose table keeps its row labels in view (base.js marks it data-prx-sticky) must not fade them: fade only the
+   right edge (review 044 repair) */
+.prx-scroll-region[data-prx-sticky][data-prx-overflow="start"] { -webkit-mask-image: none; mask-image: none; }
+.prx-scroll-region[data-prx-sticky][data-prx-overflow="both"] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), rgb(0 0 0 / 0.2));
+  mask-image: linear-gradient(to right, #000 calc(100% - 2rem), rgb(0 0 0 / 0.2));
 }
 
 /* a box that scrolls sideways is a keyboard stop (base.js scrollRegion) */

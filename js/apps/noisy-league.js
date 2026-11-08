@@ -16,12 +16,24 @@
 //   tallies        the units of each size in the top 5, the bottom 5 and all 10 extreme positions of the draw shown
 //                  (extremeCounts), beside the truth (extremeCounts on the true values) and the replays' average
 //   replays        replays 1-20 (leagueReplays, which also gives the averages over the replays run so far): small and
-//                  large units among the 10 extreme positions against the truth, and, with the true values shown, the
-//                  pairs the estimates order the wrong way (misorderedPairs) against the closed-form expectation
-//                  (expectedMisorderedPairs). "Replay ×20" steps through the replays (all at once under reduced
-//                  motion); the draw menu (the draw key) chooses the draw the league table shows.
+//                  large units among the 10 extreme positions against the truth, in the league table's size code (the
+//                  larger dot is the noisier group), with each group's average over the replays run as a line written
+//                  at the series' end, and, with the true values shown, the pairs the estimates order the wrong way
+//                  (misorderedPairs) against the closed-form expectation (expectedMisorderedPairs). "Replay ×20"
+//                  steps through the replays (all at once under reduced motion); the draw menu (the draw key) chooses
+//                  the draw the league table shows.
 // Keys: seed (integer), reveal (1 or 0, or the flag words of CONFIG.flags), replays (0-20), highlight ("none" or
 // "extremes"), draw (0 = the first draw, r = replay r; never more than the replays run).
+//
+// Layout (review 044 repair, X-01 and X-16): base.js's result-first frame, so the read-out (v1's sentences) sits
+// directly under the controls and the preset row. The highlight and the seed with its hint, the secondary controls, are
+// in a closed "Settings" box before the preset row; the draw menu keeps its place in every state (disabled before any
+// replay), so the preset row never moves. The league table is the primary graphic (ctx.primaryGraphic). The views are
+// in a phone's reading order (one column): the replay chart (with
+// the replays' heading; once replays have run), the tallies, the league table, the wrong-pairs chart, the averages and
+// their Monte Carlo caption; from a 56rem container on, two columns as before: the league table on the left, the
+// tallies and the replays (ends chart, wrong-pairs chart, averages) on the right (APP_CSS; cssFor, which 1.4 shares,
+// is unchanged).
 //
 // Exports for the apps that build on this league (1.4 winners-curse, 1.12 overlap-in-the-league):
 //   the league        LEAGUE (league30()), GROUP (observations, SE and count per size group), TRUTH (extremeCounts of
@@ -57,11 +69,9 @@ export const CONFIG = Object.freeze({
   k: 5,
   topK: 10,
   groups: Object.freeze(["small", "medium", "large"]),
-  // dot radius (px) of each size group in the league table and the size card: the noisier the estimate (the larger
-  // the SE), the larger the dot
+  // dot radius (px) of each size group in the league table, the size card and the replay chart: the noisier the
+  // estimate (the larger the SE), the larger the dot (review 044, U1-F7: the replay chart's marks follow this code)
   radius: Object.freeze({ small: 6.5, medium: 4.5, large: 3 }),
-  // the replay chart's marks (counts, not estimates): small units as small filled dots, large units as large rings
-  replayRadius: Object.freeze({ small: 3, large: 6.5 }),
   // one replay step of the animation (ms); the read-out is written once, when the last replay is in
   stepMs: 140,
   // memoized seeds (each holds the first draw and its replays)
@@ -73,9 +83,15 @@ export const CONFIG = Object.freeze({
   chart: Object.freeze({
     row: 15, marginTop: 34, marginBottom: 40, marginLeft: 42, marginRight: 40, nameDx: 6, headDy: 6,
     diamond: 3.5, link: 1.5, dash: "4,3", dimOpacity: 0.3, halo: 1, xTicks: 6,
+    // the replay charts' right margin holds the averages written at the ends of the replay chart's two series (both
+    // charts keep it, so their replays line up)
     replayHeight: 180, wrongHeight: 160, replayMarginTop: 26, replayMarginBottom: 38, replayMarginLeft: 40,
-    replayMarginRight: 14, ring: 1.75, wrongDot: 3, yTicks: 5,
+    replayMarginRight: 68, wrongDot: 3, yTicks: 5,
     replayTicks: Object.freeze([1, 5, 10, 15, 20]), half: 0.5, wrongHeadroom: 1.15, wrongStep: 20,
+    // the averages at the series' ends (review 044, U1-F7): a line across the chart at each group's average over the
+    // replays run, and in the right margin the group's dot, "average" and the number (px: the dot's and the text's
+    // offset from the plot's edge, the label's height, the least gap between the two labels)
+    avgLine: 1.5, avgDotDx: 11, avgTextDx: 22, avgLabelHeight: 26, avgLabelGap: 3,
   }),
   text: Object.freeze({
     groupWord: Object.freeze({ small: "Small", medium: "Medium", large: "Large" }),
@@ -85,6 +101,8 @@ export const CONFIG = Object.freeze({
     highlight: "Highlight the extreme positions (top {k} and bottom {k})",
     seed: "Seed of the first draw",
     seedHint: "A seed, a whole number, fixes the noise of a draw, so the same seed always gives the same draw. Replay r uses this seed plus r.",
+    // the closed box in the controls row that holds the seed (review 044, X-16)
+    settings: "Settings",
     draw: "Draw shown in the league table",
     drawFirst: "First draw",
     drawReplay: "Replay {r}",
@@ -121,7 +139,7 @@ export const CONFIG = Object.freeze({
     tTheta: "True value",
     tTrueRank: "True rank",
     // tallies
-    talliesCaption: "Units of each size at the ends of the estimate ranking. Top, bottom and all count this draw only ({draw}); the next columns give the truth and the replays' average.",
+    talliesCaption: "Units of each size at the ends of the ranking. Top, bottom, and all count the units in draw {draw}. The next columns show the counts by true value and the averages across replays.",
     talliesLabel: "Units of each size at the ends of the estimate ranking",
     hSize: "Size",
     hTop: "Top {k}",
@@ -134,13 +152,14 @@ export const CONFIG = Object.freeze({
     endsHead: "Small and large units among the {ext} extreme positions, replay by replay",
     endsY: "Units among the extreme positions",
     replayX: "Replay",
+    // the replay chart's dots tell the two groups apart by the league table's size code (review 044, U1-F7: the
+    // larger dot is the noisier group), so the key needs no caveat about size
     keySmall: "small units",
     keyLarge: "large units",
-    // the replay chart's marks count units: their size tells the two groups apart and runs the other way from the
-    // league table's dots, whose size is the SE
-    keySizes: "here a mark's size shows the group, not the SE",
+    keyAverage: "solid lines: each group's average over the replays run, written at the right",
+    average: "average",
     keyTruth: "dashed line: the truth, {trueSmall} small and {trueLarge} large units",
-    endsAlt: "Dot chart over the replays: for each replay, the number of small units (small filled dots) and of large units (large rings) among the extreme positions by estimate, with a dashed line at the true number.",
+    endsAlt: "Dot chart over the replays: for each replay, the number of small units (larger dots, as in the league table) and of large units (smaller dots) among the extreme positions by estimate, with a dashed line at the true number and a solid line at each group's average over the replays run.",
     endsTable: "Each replay: the units of each size among the extreme positions by estimate",
     endsKbd: "Replays: one point per replay",
     wrongHead: "Pairs the estimates order the wrong way, replay by replay (of {M} pairs)",
@@ -502,15 +521,52 @@ function replayAxis(shown) {
 }
 
 /**
- * The ends chart: small units (small filled dots) and large units (large rings) among the extreme positions of each
- * replay run, a dashed line at the truth, and a vertical line at the replay the league table shows.
- *   slots    { head, slot, key }; options { run (the replays of leagueSummary run so far), reveal, shown }
+ * Where the two averages are written at the series' ends: each label (the group's dot, "average" and the number) is
+ * centered at its average, and two labels closer than one label's height are moved apart, inside the y axis. Returns
+ * rows { g, v (the average), r (the group's dot radius), x (the end of the x axis), at (the label's center) }.
  */
-export function drawEndsChart(ctx, { head, slot, key }, { run, reveal = false, shown = 0 }) {
+function averageLabels({ small, large }) {
+  const unit = (C.replayHeight - C.replayMarginTop - C.replayMarginBottom) / EXT;
+  const apart = (C.avgLabelHeight + C.avgLabelGap) / unit;
+  const half = C.avgLabelHeight / 2 / unit;
+  const rows = [{ g: "small", v: small }, { g: "large", v: large }]
+    .map((d) => ({ ...d, r: CONFIG.radius[d.g], x: R + C.half, at: d.v }));
+  const [hi, lo] = rows[0].v >= rows[1].v ? rows : [rows[1], rows[0]];
+  if (hi.at - lo.at < apart) {
+    const mid = (hi.at + lo.at) / 2;
+    hi.at = mid + apart / 2;
+    lo.at = mid - apart / 2;
+  }
+  const over = hi.at - (EXT - half);
+  if (over > 0) { hi.at -= over; lo.at -= over; }
+  const under = half - lo.at;
+  if (under > 0) { hi.at += under; lo.at += under; }
+  return rows;
+}
+
+/**
+ * The ends chart: small units and large units among the extreme positions of each replay run, as dots in the league
+ * table's size code (review 044, U1-F7: the larger dot is the noisier group; the large units' smaller dots are drawn
+ * on top), a dashed line at the truth, and a vertical line at the replay the league table shows. With `averages`
+ * ({ small, large }: the averages over the replays run, engine replayAverages) a solid line at each group's average,
+ * and at the series' ends, in the right margin, the group's dot, "average" and the number (data-num; hooks
+ * chart-avg-small and chart-avg-large); without it, as before, no averages.
+ *   slots    { head, slot, key }; options { run (the replays of leagueSummary run so far), reveal, shown, averages }
+ */
+export function drawEndsChart(ctx, { head, slot, key }, { run, reveal = false, shown = 0, averages = null }) {
   const k = textKit(ctx);
   const { h } = ctx;
   const truthValues = [...new Set([TRUTH.total.small, TRUTH.total.large])];
   const axis = replayAxis(shown);
+  const avg = averages ? averageLabels(averages) : [];
+  const avgFormat = (v) => formatDecimal(v, { digits: CONFIG.digits.average });
+  // the hooks of the two numbers: chart-avg-small, chart-avg-large
+  const avgHooks = (index, scales, values, dims, context, next) => {
+    const g = next(index, scales, values, dims, context);
+    const nodes = g?.querySelectorAll ? g.querySelectorAll("text") : [];
+    Array.from(index).forEach((i, j) => nodes[j]?.setAttribute("data-prx-readout", `chart-avg-${avg[i].g}`));
+    return g;
+  };
   head.replaceChildren(...fill(T.endsHead, k.fixedNodes()));
   const columns = [
     { label: T.tReplay, value: "r", format: (v) => formatCount(v) },
@@ -534,8 +590,17 @@ export function drawEndsChart(ctx, { head, slot, key }, { run, reveal = false, s
     marks: (c, P) => [
       P.ruleY(truthValues, { stroke: c.plotAxis, strokeDasharray: C.dash }),
       P.ruleX(axis.marker, { stroke: c.plotMuted }),
-      P.dot(run, { x: "r", y: (d) => d.ext.total.large, r: CONFIG.replayRadius.large, fill: "none", stroke: c.est, strokeWidth: C.ring }),
-      P.dot(run, { x: "r", y: (d) => d.ext.total.small, r: CONFIG.replayRadius.small, fill: c.est }),
+      avg.length ? P.ruleY(avg, { y: "v", stroke: c.est, strokeWidth: C.avgLine }) : null,
+      P.dot(run, { x: "r", y: (d) => d.ext.total.small, r: CONFIG.radius.small, fill: c.est, stroke: c.plotBg, strokeWidth: C.halo }),
+      P.dot(run, { x: "r", y: (d) => d.ext.total.large, r: CONFIG.radius.large, fill: c.est, stroke: c.plotBg, strokeWidth: C.halo }),
+      ...(avg.length ? [
+        P.dot(avg, { x: "x", y: "at", r: "r", dx: C.avgDotDx, fill: c.est, stroke: c.plotBg, strokeWidth: C.halo }),
+        P.text(avg, { x: "x", y: "at", text: () => T.average, dx: C.avgTextDx, dy: -1, textAnchor: "start", lineAnchor: "bottom", fill: c.plotFg }),
+        numText(avg, {
+          x: "x", y: "at", value: "v", format: avgFormat, dx: C.avgTextDx, dy: 1, textAnchor: "start", lineAnchor: "top",
+          fill: c.plotFg, fontWeight: 600, render: avgHooks,
+        }),
+      ] : []),
     ],
     keyboard: {
       data: run, x: "r", y: (d) => d.ext.total.small, key: (d) => `r${d.r}`, sort: false, label: T.endsKbd,
@@ -545,12 +610,13 @@ export function drawEndsChart(ctx, { head, slot, key }, { run, reveal = false, s
       },
     },
   });
-  key.replaceChildren(
-    h("span", { class: "prx-nl-key-item" }, k.swatch("replay-small"), T.keySmall),
-    h("span", { class: "prx-nl-key-item" }, k.swatch("replay-large", true), T.keyLarge),
-    h("span", { class: "prx-nl-key-item prx-nl-key-sizes" }, T.keySizes),
+  // the key: the size card's swatches (the same dot sizes), the average lines, the truth line
+  key.replaceChildren(...[
+    h("span", { class: "prx-nl-key-item" }, k.swatch("small"), T.keySmall),
+    h("span", { class: "prx-nl-key-item" }, k.swatch("large"), T.keyLarge),
+    avg.length ? h("span", { class: "prx-nl-key-item prx-nl-key-avg" }, k.mark("prx-nl-swatch-avg"), T.keyAverage) : null,
     h("span", { class: "prx-nl-key-item" }, k.mark("prx-nl-swatch-dash"), h("span", {}, ...fill(T.keyTruth, k.truthNodes()))),
-  );
+  ].filter(Boolean));
 }
 
 /**
@@ -660,9 +726,11 @@ export function replayRunner(ctx, { count = R, stepMs = CONFIG.stepMs, region = 
 
 /**
  * The draw menu: "First draw", "Replay 1" … "Replay count". sync(replays, shown) hides and disables the replays not
- * yet run, hides the menu while none has run, and selects the draw shown. onChange(r) gets the chosen draw.
+ * yet run, hides the menu while none has run, and selects the draw shown. onChange(r) gets the chosen draw. With keep,
+ * the menu keeps its place while no replay has run, disabled on "First draw", so the controls and the preset row
+ * under them never move when replays appear (review 044 repair); without it, as before, it is hidden.
  */
-export function drawSelect(ctx, { onChange, count = R } = {}) {
+export function drawSelect(ctx, { onChange, count = R, keep = false } = {}) {
   const sel = ctx.select({
     label: T.draw, name: "draw", value: 0,
     options: Array.from({ length: count + 1 }, (_, r) => ({ value: r, label: r === 0 ? T.drawFirst : words(T.drawReplay, { r: formatCount(r) }) })),
@@ -677,7 +745,10 @@ export function drawSelect(ctx, { onChange, count = R } = {}) {
         opt.hidden = r > replays;
       }
       sel.set(shown);
-      sel.root.hidden = replays === 0;
+      if (keep) {
+        sel.root.hidden = false;
+        sel.input.disabled = replays === 0;
+      } else sel.root.hidden = replays === 0;
     },
   };
 }
@@ -744,6 +815,38 @@ const CSS_TEMPLATE = `
 /** The CSS of the views above, every selector under `.rootClass` (an app that shows them adds it to its own css). */
 export const cssFor = (rootClass) => CSS_TEMPLATE.replaceAll("%r", `.${rootClass}`);
 
+// This app's own layout of the views (review 044 repair, X-16 and U1-F6), after cssFor so it overrides the template's
+// two-area grid; cssFor itself, which 1.4 shares, is unchanged. One column (a phone) reads in DOM order: the replay
+// chart, the tallies, the league table, the wrong-pairs chart, the averages. From a 56rem container on, the league
+// table spans the left column and the tallies, the replay chart, the wrong-pairs chart and the averages stack on the
+// right, as before; there the parts keep their own spacing (row gap 0), so a hidden part leaves no gap.
+// The controls are one row on a page at 1280 (Reveal, Replay ×20, the draw menu with its label beside it, Settings), so
+// the draw menu, kept in every state (disabled before replays), never moves the preset row under it; on a phone its
+// label wraps above it. The league table's heading and draw line sit close above it, so the first control, the
+// read-out and the whole league table fit one screen at 1280 x 800 on the page.
+// The tallies at a phone's width: their six columns fit a 305 px column with tighter cells (the "Average" column, the
+// replays' answer, stays in view), and their row labels stay in view where a narrower column still scrolls (X-09).
+const APP_CSS = `
+.prx-nl .prx-controls .prx-nl-draw { display: flex; flex-wrap: wrap; align-items: center; column-gap: 0.45rem; }
+.prx-nl .prx-controls .prx-nl-draw > label { margin: 0; }
+.prx-nl .prx-controls .prx-nl-draw select:disabled { opacity: 0.55; cursor: default; }
+.prx-nl .prx-nl-swatch-avg { flex: none; display: inline-block; width: 1.25rem; height: 0; border-top: 1.5px solid var(--prx-est); }
+.prx-nl .prx-nl-league > .prx-nl-heading, .prx-nl .prx-nl-league > .prx-nl-drawline { margin-bottom: 0; }
+.prx-nl .prx-nl-tallies .prx-nl-table-wrap { margin-top: 0; }
+.prx-nl .prx-nl-wrong > .prx-nl-subheading:first-child { margin-top: 0; }
+@container (max-width: 24rem) {
+  .prx-nl .prx-nl-tallies .prx-nl-table th, .prx-nl .prx-nl-tallies .prx-nl-table td { padding-left: 0.15rem; padding-right: 0.15rem; }
+}
+@container (min-width: 56rem) {
+  .prx-nl .prx-nl-views { grid-template-rows: auto auto auto 1fr; row-gap: 0;
+    grid-template-areas: "league tallies" "league replays" "league wrong" "league averages"; }
+  .prx-nl .prx-nl-replays { margin-top: 1rem; }
+  .prx-nl .prx-nl-wrong { grid-area: wrong; }
+  .prx-nl .prx-nl-wrong > .prx-nl-subheading:first-child { margin-top: 0.75rem; }
+  .prx-nl .prx-nl-averages { grid-area: averages; }
+}
+`;
+
 // ---------------------------------------------------------------------------------------------- app
 
 export function mountWidget(el, spec = {}) {
@@ -752,7 +855,9 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     title: CONFIG.title,
     className: CONFIG.className,
-    css: cssFor(CONFIG.className),
+    // review 044 repair (X-01): the read-out directly under the controls and the preset row
+    layout: "result-first",
+    css: cssFor(CONFIG.className) + APP_CSS,
     keys: {
       seed: { type: "integer", min: CONFIG.seed.min, max: CONFIG.seed.max, value: CONFIG.seed.value },
       reveal: { type: "custom", value: false, parse: (v) => parseFlag(v) },
@@ -791,41 +896,57 @@ export function mountWidget(el, spec = {}) {
       seed.input.setAttribute("aria-describedby", seedHintId);
       seed.root.append(h("p", { id: seedHintId, class: "prx-hint", text: T.seedHint }));
       seed.root.classList.add("prx-nl-seed");
-      // the draw the league table shows (shown once replays have run; a control, so its option names are not read-outs)
-      const select = drawSelect(ctx, { onChange: (r) => ctx.set({ draw: r }) });
-      ctx.controls.append(h("div", { class: "prx-nl-buttons" }, revealBtn.root, replayBtn.root), select.root, highlight.root, seed.root);
+      // the draw the league table shows (a control, so its option names are not read-outs). It keeps its place in every
+      // state, disabled on "First draw" until a replay has run, so the preset row never moves (review 044 repair)
+      const select = drawSelect(ctx, { onChange: (r) => ctx.set({ draw: r }), keep: true });
+      ctx.controls.append(h("div", { class: "prx-nl-buttons" }, revealBtn.root, replayBtn.root), select.root);
+      // the secondary controls, the highlight and the seed with its hint, in a closed Settings box before the preset row
+      // (review 044, X-16), so the controls are one row at 1280 and push the result down less on a phone
+      ctx.disclosure({ name: "settings", title: T.settings, placement: "controls" }).body.append(highlight.root, seed.root);
       ctx.controls.before(card);
 
-      // --- league table (with the tallies)
+      // --- league table
       const drawLine = h("p", { class: "prx-nl-drawline", "data-prx-part": "notes" });
-      const leagueSlot = h("div", { class: "prx-nl-league-chart" });
+      // the graphic Replay ×20 steps through, directly under the read-out on a page (base.js primaryGraphic)
+      const leagueSlot = ctx.primaryGraphic(h("div", { class: "prx-nl-league-chart" }));
       const leagueKey = h("div", { class: "prx-nl-key", "data-prx-part": "legend" });
       const tallies = h("div", { class: "prx-nl-tallies", "data-prx-part": "readout" });
       const leagueBox = h("section", { class: "prx-nl-league", "aria-label": T.leagueHead },
         h("h4", { class: "prx-nl-heading", text: T.leagueHead }), drawLine, leagueSlot, leagueKey);
 
-      // --- replays
+      // --- replays, in three parts (review 044, X-16 and U1-F6): the replay chart under the replays' heading, the
+      // wrong-pairs chart, and the averages with their Monte Carlo caption; all hidden while no replay has run
       const endsSlot = h("div", { class: "prx-nl-replay-chart prx-nl-ends-chart" });
       const endsKey = h("div", { class: "prx-nl-key", "data-prx-part": "legend" });
       const wrongSlot = h("div", { class: "prx-nl-replay-chart prx-nl-wrong-chart" });
       const wrongKey = h("div", { class: "prx-nl-key", "data-prx-part": "legend" });
       const endsHead = h("h5", { class: "prx-nl-subheading", "data-prx-part": "notes" });
       const wrongHead = h("h5", { class: "prx-nl-subheading", "data-prx-part": "notes" });
-      const wrongPart = h("div", { class: "prx-nl-wrong" }, wrongHead, wrongSlot, wrongKey);
+      const wrongPart = h("div", { class: "prx-nl-wrong", hidden: true }, wrongHead, wrongSlot, wrongKey);
       const summaryLines = h("div", { class: "prx-nl-summary", "data-prx-part": "readout", hidden: true });
       const replayCaption = h("p", { class: "prx-nl-caption", "data-prx-part": "caption", hidden: true });
-      const replayInner = h("div", { class: "prx-nl-replay-inner" },
-        h("h4", { class: "prx-nl-heading", text: T.replaysHead }), endsHead, endsSlot, endsKey, wrongPart, summaryLines, replayCaption);
-      const replayBox = h("section", { class: "prx-nl-replays", "aria-label": T.replaysHead }, replayInner);
+      const replayBox = h("section", { class: "prx-nl-replays", "aria-label": T.replaysHead },
+        h("h4", { class: "prx-nl-heading", text: T.replaysHead }), endsHead, endsSlot, endsKey);
+      const averagesBox = h("div", { class: "prx-nl-averages" }, summaryLines, replayCaption);
+      const replayParts = [replayBox, wrongPart, averagesBox];
       ctx.charts.classList.add("prx-nl-charts");
-      // the tallies follow the league table (one column); in two columns they sit beside it, above the replays
-      ctx.charts.append(h("div", { class: "prx-nl-views" }, leagueBox, tallies, replayBox));
+      // a phone's reading order (one column): the replay chart (once replays have run) and the tallies, the evidence
+      // across replays, before the league table, the draw they step through; then the wrong-pairs chart and the
+      // averages. The replay chart comes first so that its top stays within one screen of "Replay ×20" under the
+      // read-out's three sentences (review 044, U1-F6). In two columns (APP_CSS) the league table is on the left and
+      // the tallies, the replay chart, the wrong-pairs chart and the averages are on the right, in that order.
+      ctx.charts.append(h("div", { class: "prx-nl-views" }, replayBox, tallies, leagueBox, wrongPart, averagesBox));
 
       // --- replays: one step per CONFIG.stepMs (each shows replay r in the league table), or all at once under
-      // reduced motion; the read-out, the averages and the caption are written when the last replay is in
+      // reduced motion; the read-out, the averages and the caption are written when the last replay is in. The
+      // replays region that carries aria-busy meanwhile is the three parts above.
+      const replayRegion = {
+        setAttribute: (name, value) => { for (const part of replayParts) part.setAttribute(name, value); },
+        removeAttribute: (name) => { for (const part of replayParts) part.removeAttribute(name); },
+      };
       const runner = replayRunner(ctx, {
         count: R,
-        region: replayInner,
+        region: replayRegion,
         onStep: (r) => {
           const now = ctx.state;
           if (now.replays === r && now.draw === r) ctx.requestRender("replay-step");
@@ -877,7 +998,12 @@ export function mountWidget(el, spec = {}) {
           highlight.set(state.highlight === CONFIG.highlight.on);
           if (Number(seed.input.value) !== state.seed) seed.set(state.seed);
           select.sync(state.replays, shown);
-          replayInner.hidden = state.replays === 0;
+          // the replays' parts are hidden while no replay has run (drawWrongChart shows its part only with the true
+          // values, drawAverages its lines once every replay is in)
+          const noReplays = state.replays === 0;
+          replayBox.hidden = noReplays;
+          averagesBox.hidden = noReplays;
+          if (noReplays) wrongPart.hidden = true;
 
           const s = summaryOf(state.seed);
           const draw = shown === 0 ? s.first : s.replays[shown - 1];
@@ -887,9 +1013,14 @@ export function mountWidget(el, spec = {}) {
             draw, domain: valueDomain(s, state.replays > 0), reveal: state.reveal, highlight: state.highlight === CONFIG.highlight.on,
           });
           drawTallies(ctx, tallies, { draw, shown, seed: s.seed, replays: state.replays });
+          // where the tallies scroll sideways (a narrow phone), their row labels stay in view (review 044, X-09)
+          tallies.querySelector("table")?.classList.add("prx-sticky-first");
           if (state.replays > 0) {
             const run = s.replays.slice(0, state.replays);
-            drawEndsChart(ctx, { head: endsHead, slot: endsSlot, key: endsKey }, { run, reveal: state.reveal, shown });
+            // the averages over the replays run so far, written at the ends of the replay chart's series (U1-F7)
+            drawEndsChart(ctx, { head: endsHead, slot: endsSlot, key: endsKey }, {
+              run, reveal: state.reveal, shown, averages: replayAverages(s.seed, state.replays),
+            });
             drawWrongChart(ctx, { part: wrongPart, head: wrongHead, slot: wrongSlot, key: wrongKey }, { run, reveal: state.reveal, shown });
             drawAverages(ctx, { lines: summaryLines, caption: replayCaption }, {
               summary: s, reveal: state.reveal, done: state.replays === R && !runner.running,

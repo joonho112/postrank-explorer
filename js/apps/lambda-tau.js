@@ -169,7 +169,7 @@ export function pairValues(pi, parameters) {
   return { pi, payoff: { above: positive(-krwRisk([1, 2], E, { lambda: parameters.lambda })), below: positive(-krwRisk([2, 1], E, { lambda: parameters.lambda })), withhold: positive(-krwRisk([1, 1], E, { lambda: parameters.lambda })) }, cost: { above: costs.iAboveJ, below: costs.jAboveI, withhold: costs.withhold } };
 }
 
-export function createPayoffView(ctx, slot) {
+export function createPayoffView(ctx, slot, { compact = false } = {}) {
   const { h } = ctx;
   const slots = [h("div", { class: "kb-chart" }), h("div", { class: "kb-chart" })];
   const outcomes = ctx.scrollRegion(h("div", { class: "kb-table", "data-prx-part": "table" }), T.outcomeCaption);
@@ -183,7 +183,8 @@ export function createPayoffView(ctx, slot) {
       const lines = name => values.filter((_, i) => i === 0 || i === values.length - 1).map(v => ({ x: v.pi, y: v[kind][name] }));
       const env = isPay ? [{ x: 0, y: values[0].payoff.below }, { x: r.tau, y: 0 }, { x: r.cut, y: 0 }, { x: 1, y: values[3].payoff.above }] : [{ x: 0, y: 0 }, { x: r.tau, y: r.tau }, { x: r.cut, y: r.tau }, { x: 1, y: 0 }];
       const whX = !isPay || r.lambda > .3 ? .02 : .5;
-      const labels = [{ x: isPay ? .88 : .12, key: "above", text: T.lineIJ }, { x: isPay ? .12 : .88, key: "below", text: T.lineJI }, { x: whX, key: "withhold", text: T.lineWH }].map(d => ({ ...d, y: pairValues(d.x, r)[kind][d.key], anchor: d.x > .5 ? "end" : d.x === .5 ? "middle" : "start", dy: d.key === "withhold" && whX === .5 ? 14 : -8 }));
+      const stagger = compact && (target.clientWidth || ctx.width()) < 380 && r.lambda <= .10;
+      const labels = [{ x: isPay ? .88 : .12, key: "above", text: T.lineIJ }, { x: isPay ? .12 : .88, key: "below", text: T.lineJI }, { x: whX, key: "withhold", text: T.lineWH }].map(d => ({ ...d, y: pairValues(d.x, r)[kind][d.key], anchor: d.x > .5 ? "end" : d.x === .5 ? "middle" : "start", dy: d.key === "withhold" && whX === .5 ? 14 : stagger && d.key === "above" ? -22 : -8 }));
       const cutTex = isPay ? `\\frac{1}{1+\\lambda}=\\text{${formatSetting(r.cut)}}` : `1-\\tau=\\text{${formatSetting(r.cut)}}`;
       const lowTex = isPay ? `\\frac{\\lambda}{1+\\lambda}=\\text{${formatSetting(r.tau)}}` : `\\tau=\\text{${formatSetting(r.tau)}}`;
       plot(target, {
@@ -231,18 +232,34 @@ export function createIdentityView(ctx, slot, { detailed = false } = {}) {
   } };
 }
 
-export function writeBridgeReadout(ctx, model, { grid = null, running = false } = {}) {
+export function writeBridgeReadout(ctx, model, { grid = null, running = false, blocks = false, residual = false } = {}) {
   const p = model.parameters;
   const same = model.sameFullSet;
-  ctx.readout.set([...fill(ctx, T.readout, { lambda: () => setting(ctx, p.lambda, "lambda"), tau: () => setting(ctx, p.tau, "tau"), cut: () => setting(ctx, p.cut, "cut") }), ...fill(ctx, same ? T.readSame : T.readDiffer, { grades: () => gradeList(ctx, same ? model.postrank.grades : [...model.postrank.grades, ...model.krw.grades], "best") }), ...(grid ? fill(ctx, T.readGrid, { same: () => num(ctx, grid.same, formatCount(grid.same), "ro-grid-same"), count: () => num(ctx, grid.count, formatCount(grid.count), "ro-grid-count") }) : running ? [T.readGridBusy] : [])]);
+  if (blocks) {
+    const grades = same ? model.postrank.grades : [...model.postrank.grades, ...model.krw.grades];
+    const one = () => num(ctx, 1, formatCount(1));
+    ctx.readout.set([
+      "λ ", setting(ctx, p.lambda, "lambda"), " ↔ τ ", setting(ctx, p.tau, "tau"), " · For one pair, state a direction above ",
+      setting(ctx, p.cut, "cut"), " = ", one(), " − τ = ", one(), "/(", one(), " + λ). ",
+      ctx.h("strong", { text: same ? "Both rules choose: " : "The best-report sets differ: " }),
+      grades.map(g => blocksText(g, IDS)).join(" and "), " among ", num(ctx, model.reportsEnumerated, formatCount(model.reportsEnumerated)), " six-site reports. ",
+      "KRW's informed share φ = ", setting(ctx, p.informedShare, "readout-informed-share"), ".",
+      ctx.h("span", { class: "prx-sr-only", "aria-hidden": "true" }, ...gradeList(ctx, grades, "best")),
+    ]);
+    return;
+  }
+  ctx.readout.set([...fill(ctx, T.readout, { lambda: () => setting(ctx, p.lambda, "lambda"), tau: () => setting(ctx, p.tau, "tau"), cut: () => setting(ctx, p.cut, "cut") }), ...fill(ctx, same ? T.readSame : T.readDiffer, { grades: () => gradeList(ctx, same ? model.postrank.grades : [...model.postrank.grades, ...model.krw.grades], "best") }), ...(grid ? fill(ctx, T.readGrid, { same: () => num(ctx, grid.same, formatCount(grid.same), "ro-grid-same"), count: () => num(ctx, grid.count, formatCount(grid.count), "ro-grid-count") }) : running ? [T.readGridBusy] : []), ...(grid && residual ? [' Largest numerical residual ', num(ctx, grid.diff, formatSci(grid.diff, { sig: 2 }), 'ro-grid-diff'), '.'] : [])]);
 }
 
 export function mountWidget(el, spec = {}) {
-  return createWidget(el, spec, { name: "lambda-tau", className: "prx-kbridge", css: BRIDGE_CSS, keys: bridgeKeys(), build(ctx) {
+  return createWidget(el, spec, { name: "lambda-tau", className: "prx-kbridge", css: BRIDGE_CSS, layout: "result-first", keys: bridgeKeys(), build(ctx) {
     const controls = createAxisControls(ctx), converterSlot = ctx.h("div"), payoffSlot = ctx.h("div"), summarySlot = ctx.h("div");
+    ctx.primaryControl(controls.lambda.input);
+    ctx.afterPresets(controls.lambda.root, controls.tau.root);
     ctx.charts.append(payoffSlot, converterSlot, summarySlot);
-    const converter = createConverterView(ctx, converterSlot), payoff = createPayoffView(ctx, payoffSlot), summary = createIdentityView(ctx, summarySlot);
+    const converter = createConverterView(ctx, converterSlot), payoff = createPayoffView(ctx, payoffSlot, { compact: true }), summary = createIdentityView(ctx, summarySlot);
+    ctx.primaryGraphic(payoff.root.querySelector(".kb-pair"));
     ctx.caption.replaceChildren("Six fictional sites: ", captionNode(ctx, "teaching-posterior"), ".");
-    return { render(state) { ctx.root.setAttribute("aria-busy", "true"); try { const model = identityAt(state); controls.render(model); converter.render(model); payoff.render(model); summary.render(model); writeBridgeReadout(ctx, model); } finally { ctx.root.removeAttribute("aria-busy"); } } };
+    return { render(state) { ctx.root.setAttribute("aria-busy", "true"); try { const model = identityAt(state); controls.render(model); converter.render(model); payoff.render(model); summary.render(model); writeBridgeReadout(ctx, model, { blocks: true }); } finally { ctx.root.removeAttribute("aria-busy"); } } };
   } });
 }

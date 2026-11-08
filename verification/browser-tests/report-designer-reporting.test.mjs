@@ -50,13 +50,13 @@ test('all public reporting presets keep their frozen results and self-contained 
         if (row.args.case === 'alabama') assert.match(model, /most favorable historical outcomes, not a measure of need/);
         if (e.N === 0) assert.match(model, /NA: no disclosure/);
         const checklist = await page.$eval('[data-prx-readout="reporting-checklist"]', e => e.textContent);
-        assert.match(checklist, /Unscored reporting checklist/);
+        assert.match(checklist, /What to include in the report/);
         assert.match(checklist, /Not computed here.*commonality cost Δ_k/);
         assert.match(checklist, /matched disclosure N.*ψ mixture/);
         for (const field of ['input$targets', 'provenance$orientation', 'input$provenance', 'input$context', 'evaluation$M', 'settings$tau', 'settings$weights', 'settings$G_max', 'settings$exact_G', 'settings$q', 'get_risk()', 'fit$objective$bound_source', 'postrank_mc_fragility()', 'evaluation$N', 'get_relations()', 'get_profile()$E_over_N', 'postrank_commonality_cost()$table', 'postrank_compare()']) assert.ok(checklist.includes(field), field);
-        assert.match(checklist, /selection posterior and is not an external calibration claim/);
-        assert.match(checklist, /Averaging realized wrong fractions over datasets is a different statistic from the ratio of expected wrong to expected stated directions/);
-        assert.match(checklist, /does not compute an external calibration study or either across-dataset average/);
+        assert.match(checklist, /case posterior selects the report and gives its expected wrong share/);
+        assert.match(checklist, /averaging the error share gives each report equal weight/);
+        assert.match(checklist, /External calibration requires an evaluation law or new data.*Dividing expected wrong counts by expected stated counts gives more weight to reports that state more pairs/);
         assert.equal(await page.$$eval('.des-export-buttons button', e => e.length), 6);
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
         if (evidence) writeFileSync(join(evidence, 'native-txt', `${surface.replace('/', '-')}-${width}-${theme}-${preset.id}.txt`), txt.text);

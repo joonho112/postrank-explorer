@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Part 2 UI pins for existing public engine operations.
 # Expected values use only base-R arithmetic, pnorm, complete finite laws and full small-family
 # enumeration, from the reviewed run-kit specification and the public book. No postrank or JS

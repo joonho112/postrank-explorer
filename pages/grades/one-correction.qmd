@@ -4,12 +4,7 @@ subtitle: "2.20 · after the postrank theory book, chapters 17 and 21"
 description: "Changes in pairwise reported relations after modifying one marginal distribution or the comparison population."
 ---
 
-A correction to one unit's posterior, or removal of a unit from the comparison population, can change reported
-relations among other units. Grades are selected jointly, so unchanged marginal distributions do not imply unchanged
-reported comparisons. The two cards use common axes, and the matrix and list identify changed relations between
-units whose inputs remain fixed. The examples distinguish corrections to a mean or standard deviation from changes
-in the population. For unit removal, only relations among retained units are compared; numerical grade labels alone
-do not define the change.
+Correcting one unit's posterior mean or standard deviation can change comparisons between units whose posteriors remain fixed. Dropping a unit can have the same effect. The report assigns grades jointly, so a change to one unit can move the boundaries between other units' grades. The two cards share the same scales. The matrix and list compare which directions the reports state or withhold. When a unit leaves the population, we compare only the pairwise decisions for the remaining units.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,17 +16,17 @@ do not define the change.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Correct a mean.** The list reports 2 of 10 pairs between untouched units changed. The correction moves one site down while rearranging boundaries among other sites. The relation table distinguishes new disclosures from new withholding decisions.
+- **Correct a mean.** The first result names 2 of 10 changed pairs between untouched units, D–E and E–F. The correction moves one site down while rearranging boundaries among other sites. The relation table distinguishes new disclosures from new withholding decisions.
 - **No correction.** The original posterior is retained and 0 of 10 untouched pairs change. The two cards describe the same report. Varying the corrected mean identifies the next boundary change.
-- **More uncertainty.** Under a tighter grade cap, raising one site's posterior SD changes 6 of 10 untouched pairs. Their distributions remain exactly as before.
+- **More uncertainty.** Under a tighter grade cap, raising one site's posterior SD changes 6 of 10 untouched pairs. The ten pairs still have the same posterior probabilities. The new grade assignment changes how the report treats six of them.
 - **Drop a unit.** Removing a site changes 1 of 10 remaining pairs. The relation comparison excludes the removed site and compares directions, rather than numerical grade labels.
 - **Drop U15 from the league.** The original card has grade sizes 1, 12, 15, 2; the new card has sizes 9, 17, 3. Among the remaining units, 107 of 406 relations change: 62 newly withheld and 45 newly stated. The expected-rank order is recomputed after removal, and each report is optimal within its own order, with no grade cap.
 - **Two scores, drop C.** Equal-weight scores A and B use all reports. Removing C changes 2 of 10 remaining pairs: A–B and A–D become stated. Both marginal-card views show the same common grades; neither score alone chose them.
 
-The unit and reporting settings define further sensitivity comparisons. Correcting a marginal is available for either single score; the two-score and league modes remove a unit. Each before/after pair keeps the same cost and grade policy.
+The two single-score views let the reader correct one marginal posterior. The two-score and league views remove a unit. Each comparison holds the withholding cost and grade policy fixed.
 
 ::: {.callout-note appearance="simple"}
-These independent normal posteriors are stipulated for teaching. A correction changes only the selected score's marginal; a real model refit might change other marginals too. Dropping a unit retains the remaining marginal distributions but changes the population, pair count and possibly the declared order. The display compares relations on common IDs and checks unchanged pair probabilities for every criterion. An excluded unit is unassessed here, not assigned the lowest grade.
+The example uses independent normal posteriors and changes only the marginal for the selected score. Refitting a model to corrected data could also change other marginals. Dropping a unit retains the remaining marginal distributions but changes the population, pair count and possibly the declared order. The display compares relations on common IDs and checks unchanged pair probabilities for every criterion. An excluded unit is unassessed here, not assigned the lowest grade.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

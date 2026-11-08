@@ -2026,6 +2026,20 @@
           "format": {
             "fn": "formatCount"
           }
+        },
+        {
+          "select": ".prx-readout .prx-result-ties .prx-num",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.tieCount"
+          },
+          "value": 2,
+          "about": "review 044 repair (X-12): the read-out names the tie of the selected family (no cap) at the bend, \"(one of 2 equal-risk best reports; showing the first)\""
         }
       ]
     },
@@ -2433,9 +2447,24 @@
         {
           "select": "[data-prx-caption=\"different-disclosure\"]",
           "source": "literal",
-          "ref": "6.5",
-          "value": "these reports disclose different amounts",
+          "ref": "9.1",
+          "about": "The shared caption displayed as an app-level sentence",
+          "value": "These reports disclose different amounts",
           "kind": "text"
+        },
+        {
+          "select": ".prx-readout .prx-result-ties .prx-num",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.tieCount"
+          },
+          "value": 2,
+          "about": "review 044 repair (X-12): with the cap selected, the read-out names the other family's tie at the bend, \"(one of 2 equal-risk best reports)\""
         }
       ],
       "about": "Both adjacent independent-R path vertices are optimum at their shared breakpoint; the all-report counterpart must expose both grade vectors and their distinct disclosure counts."

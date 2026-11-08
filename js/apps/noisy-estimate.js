@@ -13,8 +13,10 @@
 //             overlap an earlier one (greedy, in draw order; the radius shrinks until the stack fits). The true value
 //             is a solid line and the band reaches one SE on each side. Filled dots lie within one SE (evidenceFlags
 //             with ref = the true value and crit = 1: not flagged), open dots farther away. The latest estimate is
-//             ringed, and an arrow from the true value to it, above the dots, is its noise. The arrow keys read every
-//             dot in draw order, as the hidden table lists them.
+//             ringed, and an arrow from the true value to it, above the dots, is its noise, labeled "noise" and the
+//             noise itself ("noise −.271", the parts box's value) where the label fits clear of the figure's edge and
+//             of the true-value label ("noise" alone otherwise). The arrow keys read every dot in draw order, as the
+//             hidden table lists them.
 //   legend    six keys, on the plot panel like the figure, so the swatches keep their plot colors in both themes; the
 //             two dotted lines are both named (zero, muted; the guide from the latest estimate up to its arrow, ink)
 //   parts     the latest estimate split into its two parts, estimate = true value + noise, with the noise in SEs (on
@@ -27,13 +29,20 @@
 // The axis is centered on the true value and reaches max(.8, 4 SE, the farthest estimate) on each side, and always 0,
 // so the three preset SEs share one axis and the dots visibly gather as the SE shrinks.
 //
+// Layout (review 044 repair, X-01 and X-16/U1-F11): base.js's result-first frame, so the read-out sits directly under
+// the controls and the preset row, and the dot plot (the graphic Draw changes, ctx.primaryGraphic) directly under the
+// read-out. On a page and standalone the legend and the parts box follow the plot as before; at 30em and less (a
+// phone) the parts box follows the plot directly and the legend comes after it, and the full note shares one cell with
+// the draws hint (invisible below the cap, covering the hint at the cap), so the preset row never moves when the cap
+// is reached or left.
+//
 // Keys (all URL parameters): truth and se (numbers, clamped to the slider ranges), draws (an integer from 0 to 200) and
 // seed (an integer from 0 to 2³² − 1). The defaults are the first preset (true value .50, SE .20, 20 draws, seed 1).
 // The within count and the expected count are counted here from engine values (evidenceFlags labels, normalCdf).
 
 import { createWidget } from "../shared/base.js";
 import { plot } from "../shared/chart.js";
-import { formatCount, formatDecimal, formatProb, formatSetting, formatSigned } from "../shared/format.js";
+import { dataNum, formatCount, formatDecimal, formatProb, formatSetting, formatSigned } from "../shared/format.js";
 import { captionNode, exposeResult } from "../shared/labels.js";
 import { evidenceFlags, normalCdf, normals, simulateEstimates } from "../pr-core.js";
 
@@ -58,6 +67,10 @@ export const CONFIG = Object.freeze({
     header: 42, arrowY: 12, labelY: 32, lineAbove: 22, labelDx: 5, labelRoom: 40, minArrow: 6, head: 7,
     rMax: 6, rMin: 1.5, fitRounds: 6, touch: 0.94, dotStroke: 1.5, ring: 3, ringWidth: 2, line: 2,
     tickSpacing: 72, minTicks: 3, bandDash: "4,3", zeroDash: "2,3", guideDash: "2,3",
+    // the noise written after "noise" on the arrow (review 044 fix round, X-01: the decisive number on the changed
+    // mark): estimated px per character of the 10 px label, the least space between it and the true-value label, the
+    // least space between it and the figure's edge
+    noiseLabel: Object.freeze({ char: 6.2, gap: 4, edge: 2 }),
   }),
   digits: Object.freeze({ est: 3, noise: 3, z: 2, expected: 2, share: 4 }),
   text: Object.freeze({
@@ -71,7 +84,7 @@ export const CONFIG = Object.freeze({
     clear: "Clear",
     drawsHint: "Each draw collects new data once and adds its estimate.",
     seed: "Seed",
-    seedHint: "The same seed gives the same estimates, so a shared link shows the same scene.",
+    seedHint: "The same seed reproduces the same draws. To share these settings in a link, use the seed, truth, se and draws query keys.",
     full: "The app holds at most",
     fullEnd: "estimates; press Clear to start again.",
     legendIn: "estimate within one SE of the true value",
@@ -117,7 +130,7 @@ export const CONFIG = Object.freeze({
     readSes: ", or ",
     readEnd: " SEs.",
     // the caption's note; the catalog caption (catalog/entries/1.2-noisy-estimate.json) is the same sentence
-    note: "Simulated estimates: each is the true value plus the SE times a random draw from the bell-shaped normal curve, and the seed fixes the draws.",
+    note: "Each estimate adds the SE times a standard normal draw to the true value. The same seed reproduces the same draws.",
   }),
 });
 
@@ -215,10 +228,21 @@ const CSS = `
 .nse .nse-op { color: var(--prx-plot-muted); }
 .nse .nse-ses { display: block; font-size: 0.8em; color: var(--prx-plot-muted); }
 .nse .nse-parts-head, .nse .nse-parts-empty { margin: 0.25rem 0 0; font-size: 0.9em; text-align: center; color: var(--prx-plot-muted); }
+/* the full note shows at the cap only (review 044 repair: on a phone it shares the draws hint's cell, below) */
+.nse .nse-full:not([data-nse-full]) { display: none; }
 @media (max-width: 30em) {
   .nse .prx-slider, .nse .nse-draws, .nse .nse-seed { flex: 1 1 100%; }
   .nse .nse-parts { padding: 0.5rem 0.4rem; }
   .nse .nse-row { column-gap: 0.25rem; }
+  /* review 044 repair (X-16, U1-F11): the parts box directly under the dot plot, the legend after it. The draws hint
+     and the full note share one cell, so the group has the same height below and at the cap and the seed and the
+     preset row under it never move: below the cap the note is invisible, at the cap it covers the hint */
+  .nse .prx-charts { display: flex; flex-direction: column; }
+  .nse .nse-legend { order: 1; }
+  .nse .nse-draws { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .nse .nse-draws > .nse-draws-hint, .nse .nse-draws > .nse-full { grid-row: 2; grid-column: 1; }
+  .nse .nse-full:not([data-nse-full]) { display: block; visibility: hidden; }
+  .nse .nse-draws[data-nse-full] > .nse-draws-hint { visibility: hidden; }
 }
 `;
 
@@ -228,6 +252,8 @@ export function mountWidget(el, spec = {}) {
     name: CONFIG.name,
     label: CONFIG.label,
     className: CONFIG.className,
+    // review 044 repair (X-01): the read-out directly under the controls and the preset row
+    layout: "result-first",
     css: CSS,
     keys: {
       truth: { type: "number", ...CONFIG.truth, value: q.truth },
@@ -247,12 +273,17 @@ export function mountWidget(el, spec = {}) {
       se.input.setAttribute("aria-label", T.seName);
       const add = (k) => ctx.set({ draws: Math.min(CONFIG.draws.max, ctx.state.draws + k) });
       const drawOne = ctx.button({ label: T.draw, primary: true, key: "draw:one", onClick: () => add(1) });
+      // Draw is the primary control: it adds the dot, moves the arrow and changes the count (review 044 fix round: base.js
+      // primaryControl, so the probe measures the read-out and the plot from it)
+      ctx.primaryControl(drawOne.root);
       const drawMany = ctx.button({ label: `${T.drawMany} ${CONFIG.many}`, key: "draw:many", onClick: () => add(CONFIG.many) });
       const clear = ctx.button({ label: T.clear, key: "draw:clear", onClick: () => ctx.set({ draws: CONFIG.draws.min }) });
-      const fullNote = h("p", { class: "prx-hint nse-full", hidden: true });
+      // shown at the cap (data-nse-full); its words are always there, so on a phone it can share the draws hint's cell
+      // and the group keeps its height (CSS)
+      const fullNote = h("p", { class: "prx-hint nse-full" });
       const drawsBox = h("div", { class: "prx-control nse-draws", role: "group", "aria-label": T.drawsGroup },
         h("div", { class: "nse-buttons" }, drawOne.root, drawMany.root, clear.root),
-        h("p", { class: "prx-hint", text: T.drawsHint }), fullNote);
+        h("p", { class: "prx-hint nse-draws-hint", text: T.drawsHint }), fullNote);
       const seed = ctx.numberInput({
         label: T.seed, ...CONFIG.seed, step: 1, value: ctx.state.seed, name: "seed",
         // only whole numbers are read; anything else is ignored, not rounded
@@ -264,8 +295,9 @@ export function mountWidget(el, spec = {}) {
       seed.root.append(h("p", { id: seedHintId, class: "prx-hint", text: T.seedHint }));
       ctx.controls.append(truth.root, se.root, drawsBox, seed.root);
 
-      // --- figure, legend and the two parts of the latest estimate
-      const chartSlot = h("div", { class: "nse-chart" });
+      // --- figure, legend and the two parts of the latest estimate; the dot plot is the graphic Draw changes, directly
+      // under the read-out (base.js primaryGraphic)
+      const chartSlot = ctx.primaryGraphic(h("div", { class: "nse-chart" }));
       const swatch = (kind) => h("span", { class: `nse-swatch nse-swatch-${kind}`, "aria-hidden": "true" });
       const key = (kind, text) => h("span", { class: "nse-key" }, swatch(kind), h("span", { text }));
       const legend = ctx.part("legend", h("div", { class: "prx-light-panel nse-legend" },
@@ -283,6 +315,44 @@ export function mountWidget(el, spec = {}) {
       ctx.charts.append(chartSlot, legend, parts);
 
       // --- drawing
+
+      /**
+       * The arrow's label (review 044 fix round, X-01: the decisive number on the changed mark): one text, "noise" and
+       * the noise of the latest estimate (the parts box's value, fmtNoise) in a tspan with data-num and the hook
+       * chart-noise. Beyond the arrowhead on the arrow's row where it fits inside the figure (the margin counts); else
+       * above the arrowhead, inside, where it stays clear of the true-value label centered on the arrow's tail; else
+       * "noise" alone, placed as before (beyond the arrowhead with labelRoom px of room, else above it), so the number
+       * never crowds the figure. Widths are estimated at noiseLabel.char px per character.
+       */
+      function noiseMarks(c, P, { latest, arrowY, side, outward, arrowPx, head, innerW }) {
+        const C = CONFIG.chart;
+        const N = C.noiseLabel;
+        const value = fmtNoise(latest.noise);
+        const fullW = N.char * (T.noiseMark.length + 1 + value.length);
+        const roomOut = side > 0 ? innerW - head + C.marginRight - N.edge : head + C.marginLeft - N.edge;
+        const clearIn = Math.abs(arrowPx) - (N.char * T.truthMark.length) / 2 - N.gap;
+        const place = roomOut >= C.labelDx + fullW ? "out" : clearIn >= fullW ? "in" : null;
+        const out = place ? place === "out" : outward;
+        // beyond the head the label starts (arrow to the right) or ends (to the left) labelDx from it; above the head
+        // it ends (right) or starts (left) at it, so it reaches back over the arrow
+        const anchor = (side > 0) === out ? "start" : "end";
+        const mark = { x: "est", y: () => arrowY, fill: c.plotFg, dx: out ? side * C.labelDx : 0, dy: out ? 0 : -C.arrowY, textAnchor: anchor };
+        if (!place) return [P.text([latest], { ...mark, text: () => T.noiseMark })];
+        const withNumber = (index, scales, values, dims, context, next) => {
+          const g = next(index, scales, values, dims, context);
+          for (const node of g?.querySelectorAll ? g.querySelectorAll("text") : []) {
+            const tspan = node.ownerDocument.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            tspan.setAttribute("data-num", dataNum(latest.noise));
+            tspan.setAttribute("data-prx-readout", "chart-noise");
+            tspan.setAttribute("font-weight", "600");
+            tspan.textContent = value;
+            node.replaceChildren(`${T.noiseMark} `, tspan);
+          }
+          return g;
+        };
+        return [P.text([latest], { ...mark, text: () => `${T.noiseMark} ${value}`, render: withNumber })];
+      }
+
       function drawChart(r) {
         const C = CONFIG.chart;
         const width = Math.max(C.minWidth, Math.round(chartSlot.clientWidth || ctx.width()));
@@ -336,11 +406,7 @@ export function mountWidget(el, spec = {}) {
             P.dot(dots, { x: "est", y: "y", r: lay.r, fill: (d) => (d.inside ? c.est : c.plotBg), stroke: c.est, strokeWidth: C.dotStroke }),
             latest ? P.dot([latest], { x: "est", y: "y", r: lay.r + C.ring, fill: "none", stroke: c.plotFg, strokeWidth: C.ringWidth }) : null,
             arrow ? P.arrow([{ x1: r.truth, x2: latest.est, y: arrowY }], { x1: "x1", x2: "x2", y1: "y", y2: "y", stroke: c.plotFg, strokeWidth: C.line, headLength: C.head }) : null,
-            arrow ? P.text([latest], {
-              x: "est", y: () => arrowY, text: () => T.noiseMark, fill: c.plotFg,
-              dx: outward ? side * C.labelDx : 0, dy: outward ? 0 : -C.arrowY,
-              textAnchor: outward ? (side > 0 ? "start" : "end") : (side > 0 ? "end" : "start"),
-            }) : null,
+            ...(arrow ? noiseMarks(c, P, { latest, arrowY, side, outward, arrowPx, head: px(latest.est), innerW }) : []),
           ],
           keyboard: dots.length ? {
             data: dots, x: "est", y: "y", key: (d) => String(d.draw), sort: false,
@@ -391,9 +457,11 @@ export function mountWidget(el, spec = {}) {
         drawOne.setDisabled(full);
         drawMany.setDisabled(full);
         clear.setDisabled(empty);
-        fullNote.hidden = !full;
-        if (full) fullNote.replaceChildren(`${T.full} `, ctx.num(CONFIG.draws.max, formatCount(CONFIG.draws.max)), ` ${T.fullEnd}`);
-        else fullNote.replaceChildren();
+        // the note shows at the cap; below it, it is out of sight and out of the accessibility tree (display none, or
+        // on a phone visibility hidden in the cell it shares with the draws hint, which it covers at the cap)
+        fullNote.toggleAttribute("data-nse-full", full);
+        drawsBox.toggleAttribute("data-nse-full", full);
+        fullNote.replaceChildren(`${T.full} `, ctx.num(CONFIG.draws.max, formatCount(CONFIG.draws.max)), ` ${T.fullEnd}`);
         // a button that has just been disabled under the keyboard hands focus to the one that still works
         const wasHere = [drawOne, drawMany, clear].some((b) => b.root === active);
         if (wasHere && active.disabled) (full ? clear : drawOne).root.focus({ preventScroll: true });

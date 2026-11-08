@@ -28,6 +28,11 @@
 //                every selector with the app's root class (def.className) so apps never touch each other
 //   def.className  a short class on the app root (for example "pos"), used to scope def.css
 //   def.title    an optional title inside the app, above its controls (<h3 class="prx-title">; ctx.title)
+//   def.layout   "classic" (default: controls, charts, read-out, caption) or "result-first" (review 044, X-01): the
+//                read-out sits directly under the controls, so the one live sentence is next to what changes it:
+//                title, controls (primary controls, ctx.disclosure "Settings" boxes, the preset row), read-out,
+//                charts (the panel that changes first), disclosures (ctx.disclosure boxes), caption. The root carries
+//                data-prx-layout="result-first"; at <= 600 px the preset row stays one line that scrolls sideways.
 //   def.keys     { key: { type, min, max, step, value, values, snap, minLength, maxLength, parse } }; types "number",
 //                "integer", "boolean", "string", "choice" (values: [...]), "numbers" (an array of numbers; a comma list
 //                in a URL) and "custom" (parse(v, previous) -> value | undefined). Unknown keys are ignored; numbers
@@ -37,9 +42,9 @@
 //                reason }. render runs once at mount, after every update that changes a key, and (debounced) on
 //                resize and theme change. primary() is the app's main action (for example "Draw again"): Enter on a
 //                slider, radio, checkbox or text field of the app runs it (ctx.onPrimary sets it too).
-//   Spec, URL and message keys: the app's keys, plus `preset` (a preset id of the catalog entry) and `theme`
-//                ("light" | "dark"). The URL (location.search, or window.__PRX_QUERY) wins over the spec; a preset is
-//                applied first and explicit keys after it. Theme colours follow <html data-theme>: embed pages
+//   Spec, URL and message keys: the app's keys, plus `preset` (a preset id of the catalog entry), `theme`
+//                ("light" | "dark") and `open` (names of ctx.disclosure boxes to open: ?open=data,method). The URL (location.search, or window.__PRX_QUERY) wins over the spec; a preset is
+//                applied first and explicit keys after it. Theme colors follow <html data-theme>: embed pages
 //                set it from ?theme= in their head, and a { theme } message sets it on the page. postMessage({ prx: { tau: 0.4 } }) or
 //                postMessage({ prx: { preset: "tau40" } }) from the parent window reaches update() (bridge.js).
 //   A preset is a whole setting: the keys its query does not name return to their defaults. A preset button is shown
@@ -48,7 +53,7 @@
 // ctx: { el, root, frame, doc, win, h, state, set(partial), key(name), title, controls, charts, readout, caption,
 //        num(raw, display), dataNum, slider, segmented, toggle, select, button, radioGroup, numberInput, panelTitle,
 //        scrollRegion(node, label), part(name, node), presets, width(), reducedMotion, requestRender(reason),
-//        keepFocus(fn), onPrimary(fn), listen, timeout, onCleanup }
+//        keepFocus(fn), onPrimary(fn), listen, timeout, onCleanup, layout, disclosure(options), disclosures }
 //   key(name)      { min, max, step, value } of a number key (value = current), to spread into a slider
 //   readout.set(content)  the one aria-live region: strings and ctx.num nodes; an unchanged read-out is not rewritten
 //   num(raw, display)     <span class="prx-num" data-num="raw">display</span> (format.js numSpan); use it for every
@@ -58,6 +63,22 @@
 //   scrollRegion(node, label)  a box that may scroll sideways becomes a keyboard stop (tabindex 0, role region)
 //   keepFocus(fn)         runs fn and puts keyboard focus back on the control that had it (render does this already)
 //   onPrimary(fn)         sets the app's main action, run by Enter on a slider, radio, checkbox or text field
+//   disclosure({ name, title, open, placement })  a native <details> box for secondary or exhaustive material that
+//                         stays complete but closed by default (review 044, X-14): returns { root, summary, body, open }.
+//                         placement "end" (default) puts it in the disclosures group after the charts; "controls"
+//                         puts it in the controls row before the preset row (a "Settings" box); { after: node } or
+//                         { before: node } puts it next to the panel it belongs to; "none" leaves it to the app.
+//                         Opening a box renders the app once more (info.reason "disclosure", info.disclosure = its
+//                         name), so a figure inside is drawn at its real width; an app may skip costly figures outside
+//                         that box. The box is made once in build, so redraws keep it open or closed. className adds
+//                         classes to the box; its summary may be rewritten in render (a state-dependent count).
+//   primaryGraphic(node)  marks the graphic the primary control changes (data-prx-primary); measurement and reviews
+//                         read the first view against it; with several marked, the first one shown counts (review 044)
+//   primaryControl(node)  marks the control that changes that graphic (data-prx-primary-control), when it is not the
+//                         first control of the row; measurement also reports the distance from it to the read-out
+//   afterPresets(...nodes)  puts controls whose set changes with a mode after the preset row, so the preset buttons
+//                         never move when the mode changes (review 044, X-18; 1.9 is the example)
+//   disclosures           the group of "end" boxes (made by the first such box), or null
 //   Every listener, timer and observer made through ctx ends with destroy().
 //
 // Keyboard: Tab order follows the DOM (controls, preset row, figure). Sliders: arrows = one step, Shift+arrows and
@@ -68,6 +89,7 @@ import { attachBridge, CONFIG as BRIDGE, queryString, readQuery } from "./bridge
 import { dataNum, formatSetting, numSpan, setNum } from "./format.js";
 import { markLabelStarts } from "./labels.js";
 import CATALOG from "../../catalog.json" with { type: "json" };
+import SITE_COPY from "../../catalog/site-copy.json" with { type: "json" };
 
 export const CONFIG = Object.freeze({
   rootClass: "prx-widget",
@@ -90,7 +112,9 @@ export const CONFIG = Object.freeze({
     reducedMotion: "(prefers-reduced-motion: reduce)",
     dark: "(prefers-color-scheme: dark)",
   }),
-  text: Object.freeze({ presets: "Presets" }),
+  text: Object.freeze({ presets: "Presets", disclosure: "Details" }),
+  layouts: Object.freeze(["classic", "result-first"]),
+  disclosure: Object.freeze({ className: "prx-disclosure", summaryClass: "prx-disclosure-summary", bodyClass: "prx-disclosure-body", groupClass: "prx-disclosures", placements: Object.freeze(["end", "controls", "none"]) }),
 });
 
 const RESERVED = new Set(BRIDGE.reservedKeys);
@@ -109,6 +133,8 @@ export const uid = (prefix = "prx") => `${prefix}-${(counter += 1)}`;
 // ------------------------------------------------------------------------------------------------- catalog
 
 /** The catalog entry of an app (catalog.json), or null. */
+const displayName = (name) => SITE_COPY.apps[name]?.title;
+
 export function appInfo(name) {
   return CATALOG.apps.find((a) => a.name === name) ?? null;
 }
@@ -139,10 +165,10 @@ export function linkRoot(doc) {
   return L.embedPath.test(path) ? { root: L.embedRoot, newTab: true } : null;
 }
 
-/** Another app named in an app's text: its catalog title (else `title`) as a link to its page once the app is built
+/** Another app named in an app's text: its site title (else its catalog title or `title`) as a link once built
  *  and links work here, otherwise the title in quotes so it never runs into the sentence. */
 export function appLink(ctx, name, { title, className = "prx-app-link" } = {}) {
-  const text = appInfo(name)?.title ?? title ?? name;
+  const text = displayName(name) ?? appInfo(name)?.title ?? title ?? name;
   const path = builtPage(name);
   const base = linkRoot(ctx.doc);
   if (!path || !base) return ctx.h("span", { class: className }, `“${text}”`);
@@ -297,7 +323,7 @@ export function tabOrder(root) {
 }
 
 /**
- * Run fn() and give focus back to the "same" element afterwards when fn replaced it (a redraw). The element is found
+ * Run fn() and give focus back to the "same" element afterward when fn replaced it (a redraw). The element is found
  * again by data-prx-focus-key, then by id. Nothing happens when focus was not inside root.
  */
 export function keepFocus(root, fn) {
@@ -318,7 +344,7 @@ export function keepFocus(root, fn) {
 // ---------------------------------------------------------------------------------------------- controls
 
 /**
- * Labelled range slider with an <output>. The slider keeps the exact current value (a preset off the step grid stays
+ * Labeled range slider with an <output>. The slider keeps the exact current value (a preset off the step grid stays
  * exact); keyboard moves land on the grid. Returns { root, input, output, get(), set(v), setDisabled(b) }.
  * onInput(v) fires on every change (pointer input at most once per animation frame), onChange(v) when a change is
  * committed. Every move tells the scope (scope.activity), so the read-out's announcement waits until input settles.
@@ -432,7 +458,7 @@ export function button(scope, { label, onClick, primary = false, title, key, des
 }
 
 /**
- * Segmented choice (dpprior style): a labelled row of buttons with aria-pressed, one of them pressed (or none, when
+ * Segmented choice (dpprior style): a labeled row of buttons with aria-pressed, one of them pressed (or none, when
  * the value matches no option). options: [{ value, label, title? }]; a label is a string or nodes.
  * Returns { root, buttons, get(), set(v), setDisabled(b) }. onChange(value) fires on a click.
  */
@@ -465,7 +491,7 @@ export function segmented(scope, { label, options = [], value, onChange, name, c
   };
 }
 
-/** Labelled select. options: [{ value, label }]. Returns { root, input, get(), set(v) }. */
+/** Labeled select. options: [{ value, label }]. Returns { root, input, get(), set(v) }. */
 export function select(scope, { label, options = [], value, onChange, name, key } = {}) {
   const { h } = scope;
   const id = uid("prx-se");
@@ -514,7 +540,7 @@ export function toggle(scope, { label, checked = false, onChange, name, key, hin
   return { root, input, get: () => input.checked, set(b) { input.checked = Boolean(b); }, setDisabled(b) { input.disabled = Boolean(b); } };
 }
 
-/** Labelled number (or text) field. get() returns the clamped number, or undefined when unreadable. */
+/** Labeled number (or text) field. get() returns the clamped number, or undefined when unreadable. */
 export function numberInput(scope, { label, min = -Infinity, max = Infinity, step = "any", value, onInput, type = "number", name, key, ariaLabel, describedBy } = {}) {
   const { h } = scope;
   const id = uid("prx-nf");
@@ -563,9 +589,11 @@ export function panelTitle(target, content, { level = CONFIG.panelTitle.level, c
 
 /** Make a box that may scroll sideways reachable and scrollable by keyboard; returns the node. Once laid out, the box
  *  is a keyboard stop (tabindex 0, role region, its label) only while its content overflows it. */
-export function scrollRegion(node, label) {
+export function scrollRegion(node, label, { stickyLabels = false } = {}) {
   if (!node || node.nodeType !== 1) throw new TypeError("scrollRegion: an element is required");
   if (label !== undefined && label !== null && String(label).trim() !== "") node.__prxScrollLabel = String(label);
+  // a box whose own content pins its row labels (a sticky SVG column) fades only its right edge, like a sticky table
+  if (stickyLabels) node.setAttribute("data-prx-sticky-labels", "");
   setStop(node, true);
   node.classList.add(CONFIG.scrollRegion.className);
   watchOverflow(node);
@@ -587,7 +615,7 @@ function setStop(node, on) {
  *  Measured after layout, on scroll, when the box or its content resizes, and when the content is replaced. */
 const overflowControls = new WeakMap();
 const overflowNodes = new WeakSet();
-function watchOverflow(node) {
+function watchOverflow(node, { keyboardStop = true } = {}) {
   const previous = overflowControls.get(node);
   if (previous) return previous.stop;
   const { slackPx } = CONFIG.scrollRegion;
@@ -601,7 +629,10 @@ function watchOverflow(node) {
     const v = start && end ? "both" : start ? "start" : end ? "end" : null;
     if (v === null) node.removeAttribute("data-prx-overflow");
     else if (node.getAttribute("data-prx-overflow") !== v) node.setAttribute("data-prx-overflow", v);
-    setStop(node, max > slackPx);
+    // a box whose table keeps its row labels in view fades only its right edge (styles/app.css; review 044 repair)
+    const sticky = node.hasAttribute("data-prx-sticky-labels") || Boolean(node.querySelector?.("table.prx-sticky-first, table.prx-sticky-two"));
+    if (sticky !== node.hasAttribute("data-prx-sticky")) node.toggleAttribute("data-prx-sticky", sticky);
+    if (keyboardStop) setStop(node, max > slackPx);
   };
   const stop = () => {
     if (stopped) return;
@@ -786,7 +817,7 @@ export function createWidget(el, spec = {}, def = {}) {
   // --- state: defaults, then a preset (spec, then URL), then explicit keys (spec, then URL)
   const types = queryTypes(keys);
   const useQuery = def.query !== false && spec.query !== false;
-  const q = useQuery ? readQuery({ allowed: Object.keys(keys), types, window: win }) : { spec: {}, preset: null, theme: null, ignored: [] };
+  const q = useQuery ? readQuery({ allowed: Object.keys(keys), types, window: win }) : { spec: {}, preset: null, theme: null, open: null, ignored: [] };
   const state = {};
   for (const [k, d] of Object.entries(keys)) state[k] = sanitize(d, d.value, undefined) ?? d.value;
   const defaults = Object.freeze({ ...state });
@@ -821,10 +852,12 @@ export function createWidget(el, spec = {}, def = {}) {
 
   // --- frame
   const original = [...el.childNodes];
+  const name = displayName(def.name);
   const root = h("div", {
     class: `${CONFIG.rootClass}${def.className ? ` ${def.className}` : ""}`,
     role: "group",
-    "aria-label": def.label ?? info?.title ?? def.name ?? "",
+    "aria-label": name ?? def.label ?? info?.title ?? def.name ?? "",
+    "aria-description": name && def.label !== name ? def.label : undefined,
     "data-prx-widget": def.name,
   });
   const frame = h("div", { class: CONFIG.frameClass }, root);
@@ -835,8 +868,20 @@ export function createWidget(el, spec = {}, def = {}) {
   const caption = h("p", { class: "prx-caption", "data-prx-part": "caption" });
   if (info?.caption) caption.textContent = info.caption;
   const title = def.title ? h("h3", { class: "prx-title", "data-prx-part": "title", text: def.title }) : null;
-  append(root, [title, controls, charts, readout.node, caption]);
+  const layout = CONFIG.layouts.includes(def.layout) ? def.layout : "classic";
+  if (layout === "result-first") {
+    root.setAttribute("data-prx-layout", layout);
+    append(root, [title, controls, readout.node, charts, caption]);
+  } else append(root, [title, controls, charts, readout.node, caption]);
   el.replaceChildren(frame);
+  // the group of "end" disclosures, made by the first one, kept between the charts and the caption
+  let disclosureGroup = null;
+  const groupOfDisclosures = () => {
+    if (disclosureGroup) return disclosureGroup;
+    disclosureGroup = h("div", { class: CONFIG.disclosure.groupClass, "data-prx-part": "disclosures" });
+    if (caption.parentNode) caption.before(disclosureGroup); else root.append(disclosureGroup);
+    return disclosureGroup;
+  };
   // Own regions created by ctx and by the actual shared chart/card renderers.
   // Detached regions stop observing; reused regions restart when attached again.
   const overflowStops = new Map();
@@ -882,13 +927,19 @@ export function createWidget(el, spec = {}, def = {}) {
 
   // --- preset row (built after the app's controls, so it sits at the end of the controls area)
   let presetRow = null;
+  const afterPresetNodes = [];
+  // Equivalent preset queries can have different explanatory labels. Keep an explicitly
+  // requested label while it matches; scientific state and URL keys remain unchanged.
+  let preferredPresetId = typeof startPreset === "string" && presetList.some((p) => p.id === startPreset) ? startPreset : null;
   const syncPresets = () => {
     if (!presetRow) return;
-    const on = presetList.findIndex((p) => {
+    const matches = (p) => {
       const s = presetSetting(p.id);
       return s && Object.keys(keys).every((k) => sameValue(state[k], s[k]));
-    });
-    presetRow.set(on >= 0 ? presetList[on].id : null);
+    };
+    const preferred = presetList.find((p) => p.id === preferredPresetId && matches(p));
+    const on = preferred ?? presetList.find(matches);
+    presetRow.set(on?.id ?? null);
   };
 
   // --- main action (Enter on a slider, radio, checkbox or text field of the app)
@@ -930,8 +981,8 @@ export function createWidget(el, spec = {}, def = {}) {
     toggle: (o) => toggle(scope, o),
     numberInput: (o) => numberInput(scope, o),
     panelTitle: (content, opts) => panelTitle(doc, content, opts),
-    scrollRegion: (node, label) => {
-      const region = scrollRegion(node, label);
+    scrollRegion: (node, label, options) => {
+      const region = scrollRegion(node, label, options);
       overflowStops.set(region, watchOverflow(region));
       return region;
     },
@@ -939,6 +990,36 @@ export function createWidget(el, spec = {}, def = {}) {
     keepFocus: (fn) => keepFocus(root, fn),
     onPrimary(fn) { appPrimary = typeof fn === "function" ? fn : null; },
     width: () => lastWidth || Math.round(frame.getBoundingClientRect?.().width || el.clientWidth || 0) || CONFIG.defaultWidth,
+    layout,
+    get disclosures() { return disclosureGroup; },
+    primaryGraphic(node) { if (node?.nodeType === 1) node.setAttribute("data-prx-primary", ""); return node; },
+    primaryControl(node) { if (node?.nodeType === 1) node.setAttribute("data-prx-primary-control", ""); return node; },
+    afterPresets(...nodes) {
+      const list = nodes.flat().filter((n) => n?.nodeType === 1);
+      if (presetRow && presetRow.root.parentNode === controls) presetRow.root.after(...list);
+      else { controls.append(...list); afterPresetNodes.push(...list); }
+      return list[0] ?? null;
+    },
+    disclosure({ name, title: label, open = false, placement = "end", className } = {}) {
+      const D = CONFIG.disclosure;
+      const near = placement && typeof placement === "object" ? (placement.after ?? placement.before ?? null) : null;
+      const where = near?.nodeType === 1 ? (placement.after ? "after" : "before") : D.placements.includes(placement) ? placement : "end";
+      const box = h("details", { class: className ? `${D.className} ${className}` : D.className, "data-prx-disclosure": name ?? "" });
+      const summary = h("summary", { class: D.summaryClass, "data-prx-focus-key": `disclosure:${name ?? uid("d")}` }, label ?? name ?? CONFIG.text.disclosure);
+      const body = h("div", { class: D.bodyClass });
+      box.append(summary, body);
+      if (open) box.open = true;
+      if (where === "controls") {
+        box.setAttribute("data-prx-placement", "controls");
+        const row = presetRow?.root;
+        if (row && row.parentNode === controls) row.before(box); else controls.append(box);
+      } else if (where === "after") near.after(box);
+      else if (where === "before") near.before(box);
+      else if (where === "end") groupOfDisclosures().append(box);
+      // drawn while closed, a figure inside has no width: render once more when the box opens
+      scope.listen(box, "toggle", () => { if (box.open && !destroyed) render(new Set(), "disclosure", false, { disclosure: name ?? null }); });
+      return { root: box, summary, body, get open() { return box.open; }, set open(v) { box.open = Boolean(v); } };
+    },
     // a set() made while the app renders (the first render included) is applied once that render is done, as one
     // more update: so an app can correct a key it finds out of range while drawing
     set(partial) { if (rendering || !handleReady) queued.push(partial); else handle.update(partial); },
@@ -951,12 +1032,12 @@ export function createWidget(el, spec = {}, def = {}) {
   function flushQueued() {
     while (handleReady && !rendering && queued.length) handle.update(queued.shift());
   }
-  function render(changed, reason, initial = false) {
+  function render(changed, reason, initial = false, extra = null) {
     if (destroyed || !inst || typeof inst.render !== "function") return;
     const t0 = win.performance?.now?.() ?? 0;
     rendering = true;
     try {
-      keepFocus(root, () => inst.render({ ...state }, { initial, changed: [...changed], reason }));
+      keepFocus(root, () => inst.render({ ...state }, { initial, changed: [...changed], reason, ...(extra ?? {}) }));
     } finally {
       rendering = false;
       syncOverflowRegions();
@@ -979,8 +1060,28 @@ export function createWidget(el, spec = {}, def = {}) {
     });
     presetRow.root.setAttribute("data-prx-part", "presets");
     controls.append(presetRow.root);
+    // controls an app asked to follow the preset row (ctx.afterPresets) move behind it
+    if (afterPresetNodes.length) presetRow.root.after(...afterPresetNodes);
+    // result-first: at <= 600 px the row stays one line that scrolls sideways; its edges fade while more is past them
+    if (layout === "result-first") {
+      if (presetList.length >= 7) {
+        presetRow.root.setAttribute("data-prx-preset-rows", "2");
+        presetRow.root.style.setProperty("--prx-preset-cols", String(Math.ceil(presetList.length / 2)));
+      }
+      const buttons = presetRow.root.querySelector(".prx-seg-buttons");
+      if (buttons) scope.onCleanup(watchOverflow(buttons, { keyboardStop: false }));
+    }
   }
   render(new Set(Object.keys(keys)), "mount", true);
+  // ?open=data,method (or spec.open, or a { open } message) opens the named disclosures; never part of the state
+  const openBoxes = (names) => {
+    const list = Array.isArray(names) ? names : typeof names === "string" ? names.split(",") : [];
+    for (const n of list) {
+      const box = [...root.querySelectorAll("details[data-prx-disclosure]")].find((d) => d.getAttribute("data-prx-disclosure") === String(n).trim());
+      if (box && !box.open) box.open = true;
+    }
+  };
+  openBoxes(q.open ?? spec.open);
 
   // --- resize (debounced)
   let cancelResize = null;
@@ -1014,14 +1115,21 @@ export function createWidget(el, spec = {}, def = {}) {
     /** Apply a preset of the catalog entry by id (or a spec object as a whole setting). */
     applyPreset(p) {
       const s = presetSetting(p);
-      return s ? handle.update(s) : handle;
+      if (!s) return handle;
+      preferredPresetId = typeof p === "string" ? p : null;
+      const result = handle.update(s);
+      syncPresets(); // Aliases may have identical keys and therefore need no render.
+      return result;
     },
     update(partial) {
       if (destroyed || !isRecord(partial)) return handle;
       if (Object.prototype.hasOwnProperty.call(partial, "preset")) {
         const s = presetSetting(partial.preset);
         const { preset: _p, ...rest } = partial;
-        return handle.update({ ...(s ?? {}), ...rest });
+        if (s) preferredPresetId = typeof partial.preset === "string" ? partial.preset : null;
+        const result = handle.update({ ...(s ?? {}), ...rest });
+        syncPresets();
+        return result;
       }
       const changed = new Set();
       let rerender = false;
@@ -1034,6 +1142,7 @@ export function createWidget(el, spec = {}, def = {}) {
       }
       applyKeys(partial, changed);
       if (changed.size || rerender) render(changed, changed.size ? "update" : "theme");
+      if (Object.prototype.hasOwnProperty.call(partial, "open")) openBoxes(partial.open);
       return handle;
     },
     destroy() {
@@ -1050,7 +1159,7 @@ export function createWidget(el, spec = {}, def = {}) {
   handleReady = true;
   flushQueued();
   if (def.bridge !== false) {
-    const detach = attachBridge(handle, { allowed: [...Object.keys(keys), "preset", "theme"], parse: { ...types, preset: "string", theme: [...BRIDGE.themes] }, window: win });
+    const detach = attachBridge(handle, { allowed: [...Object.keys(keys), "preset", "theme", "open"], parse: { ...types, preset: "string", theme: [...BRIDGE.themes], open: "strings" }, window: win });
     scope.onCleanup(detach);
   }
   return handle;

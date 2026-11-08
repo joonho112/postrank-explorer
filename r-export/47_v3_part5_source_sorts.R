@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R public v1 S02 display-order fixtures. Authority:
 # js/widgets/case-krw-race.js keyOrder/blockOrder (lines362--378), published
 # inventory S02/F10/F25/F33, and the explicit Phase8 R47 source-sort contract.

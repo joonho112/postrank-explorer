@@ -15,7 +15,7 @@ const secret='LOCAL_ONLY 서울, "A"; system("unused")';
 const localCsv=csvText([['id','theta_mean','theta_sd'],[secret,0,1],['001',0,1]]);
 const grade=page=>page.$eval('[data-prx-readout="grade"]',n=>n.dataset.num.split(',').map(Number));
 async function clickText(page,text){for(const button of await page.$$('button'))if(await button.evaluate(n=>n.textContent)===text){await button.click();return}throw new Error(`Missing button ${text}`)}
-async function enter(page,text){await page.focus('[data-prx-input]');await page.$eval('[data-prx-input]',n=>n.select());await page.keyboard.sendCharacter(text);}
+async function enter(page,text){if(await page.$('details[data-prx-disclosure="input"]:not([open])'))await page.click('details[data-prx-disclosure="input"] summary');await page.focus('[data-prx-input]');await page.$eval('[data-prx-input]',n=>n.select());await page.keyboard.sendCharacter(text);}
 async function clearNativeNumber(page,selector){await page.focus(selector);await page.keyboard.press('a',{commands:['selectAll']});await page.keyboard.press('Backspace');assert.equal(await page.$eval(selector,n=>n.value),'','native SelectAll cleared the entire numeric field');}
 async function nativeNumber(page,selector,value){await clearNativeNumber(page,selector);await page.keyboard.type(String(value));}
 async function fileReady(path){for(let i=0;i<100;i++){if(existsSync(path))return;await new Promise(r=>setTimeout(r,20));}throw new Error(`Download did not complete: ${path}`)}
@@ -32,12 +32,12 @@ test('local input stays private and public presets restore complete examples thr
   await page.goto(`${server.origin}/${route}?theme=${theme}`);await waitForWidgetIdle(page);
   await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;document.body.dataset.bsTheme=theme;__prxApp.update({theme})},theme);
   assert.deepEqual(await grade(page),league.optimum.grade);assert.equal(await page.evaluate(()=>typeof PRX_SOLVER),'undefined');
-  await page.evaluate(()=>__prxApp.applyPreset('league8-normal'));await nativeNumber(page,'input[name="priorSd"]',.15);await waitForWidgetIdle(page);assert.equal(await page.evaluate(()=>__prxApp.state.priorSd),.15,'native fractional prior SD is not clamped during entry');assert.equal(await page.$('.yd-error'),null);
+  await page.evaluate(()=>__prxApp.applyPreset('league8-normal'));if(await page.$('details[data-prx-disclosure="input"]:not([open])'))await page.click('details[data-prx-disclosure="input"] summary');await nativeNumber(page,'input[name="priorSd"]',.15);await waitForWidgetIdle(page);assert.equal(await page.evaluate(()=>__prxApp.state.priorSd),.15,'native fractional prior SD is not clamped during entry');assert.equal(await page.$('.yd-error'),null);
   await page.evaluate(()=>__prxApp.applyPreset('league8-posterior'));
   await nativeNumber(page,'input[name="tau"]',.5);
   await enter(page,localCsv);await page.keyboard.down('Control');await page.keyboard.press('Enter');await page.keyboard.up('Control');await waitForWidgetIdle(page);
   assert.deepEqual(await grade(page),tied.postrank.grade);assert.equal(await page.$eval('[data-prx-readout="risk"]',n=>Number(n.dataset.num)),tied.postrank.risk);assert.equal(await page.$eval('[data-prx-readout="tie-count"]',n=>Number(n.dataset.num)),tied.postrank.tieCount);
-  assert.equal(await page.evaluate(()=>__prxApp.state.example),'local');assert.equal(await page.evaluate(()=>document.activeElement.hasAttribute('data-prx-input')),true,'Ctrl+Enter applies without moving native focus');
+  assert.equal(await page.evaluate(()=>__prxApp.state.example),'local');assert.equal(await page.evaluate(()=>document.activeElement.dataset.prxFocusKey),'result:applied','Ctrl+Enter focuses the completed result');
   assert.ok(await page.evaluate(s=>document.querySelector('.yd-output').textContent.includes(s),secret));
   assert.equal(await page.evaluate(s=>JSON.stringify(__prxApp.state).includes(s)||location.href.includes(encodeURIComponent(s))||Object.values(localStorage).some(x=>x.includes(s))||Object.values(sessionStorage).some(x=>x.includes(s)),secret),false);
   assert.equal(await page.$eval('[data-prx-readout="EoverN-0"]',n=>n.dataset.num),'NA');
@@ -52,6 +52,7 @@ test('local input stays private and public presets restore complete examples thr
   assert.ok(await page.$eval('[data-prx-input-status]',n=>n.textContent.includes('missing')));assert.ok(await page.$eval('.yd-output',(n,s)=>n.textContent.includes(s),secret));assert.deepEqual(await grade(page),before);
   await nativeNumber(page,'input[name="tau"]',.5);await enter(page,localCsv);await clickText(page,'Apply this input');await waitForWidgetIdle(page);
   // Exact local Blob exports: input IDs survive quoting; no data go to a server.
+  await clickText(page,'Reproduce in R');
   for(const label of['Download grades CSV','Download error probabilities CSV','Download complete analysis JSON','Download R code'])await clickText(page,label);
   for(const file of['postrank-grades.csv','postrank-errors.csv','postrank-analysis.json','postrank-analysis.R'])await fileReady(join(downloads,file));
   const exported=JSON.parse(readFileSync(join(downloads,'postrank-analysis.json')));assert.deepEqual(exported.input.ids,[secret,'001']);assert.deepEqual(exported.grade,tied.postrank.grade);assert.equal(exported.evaluation.EoverN[0],null);assert.equal(exported.settings.tau,.5);
@@ -60,6 +61,7 @@ test('local input stays private and public presets restore complete examples thr
   assert.ok(requested.every(url=>!url.includes(encodeURIComponent(secret))&&!url.includes('LOCAL_ONLY')));
   // A real tiny solve keeps the supplied scientific inputs and returns an independent member of the full set.
   await page.evaluate(()=>__prxApp.update({cap:'all',timeLimit:.2}));await waitForWidgetIdle(page);assert.equal(await page.evaluate(()=>typeof PRX_SOLVER),'undefined');
+  await clickText(page,'Search scope & ties');
   await page.focus('[data-prx-solve]');await page.keyboard.press('Enter');await page.waitForSelector('[data-prx-solver-status]');await waitForWidgetIdle(page);
   assert.equal(await page.$eval('[data-prx-solver-status]',n=>n.textContent),'optimal');assert.ok(tied.postrank.grades.some(g=>JSON.stringify(g)===JSON.stringify(exported.grade)));
   const solvedGrade=await grade(page);assert.ok(tied.postrank.grades.some(g=>JSON.stringify(g)===JSON.stringify(solvedGrade)));assert.equal(await page.$eval('[data-prx-readout="risk"]',n=>Number(n.dataset.num)),tied.postrank.risk);

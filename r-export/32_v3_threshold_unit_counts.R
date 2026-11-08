@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R oracle for the restored 97-row threshold summary in app 3.10.
 # Contract: engine/API.md thresholdViolations; new aboveCounts[i] counts j != i
 # with the supplied directional error e[i,j] strictly below tau. No tolerance.

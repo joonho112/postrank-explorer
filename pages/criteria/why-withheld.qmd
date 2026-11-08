@@ -1,15 +1,13 @@
 ---
 title: "Reasons for a withheld comparison"
 subtitle: "4.12 · after the postrank theory book, chapters 10, 12, 19 and 21"
-description: "Isolated-pair costs, criterion conflict, coherence and family restrictions in shared-grade decisions."
+description: "How the cost of ranking an isolated pair compares with the cost of ranking it in a full report."
 ---
 
-A shared grade withholds a direction without asserting equality or proximity of the true values. The pair display
-compares its isolated-pair actions with complete coherent reports under the specified family. Four diagnostics
-consider posterior uncertainty, opposing criteria, effects on other reported pairs and family restrictions. These
-conditions are not mutually exclusive. Requiring a direction and reoptimising the full report gives its additional
-risk, rather than a unique causal attribution for withholding. The empirical views retain the target definitions
-and conditioning assumptions of their released posterior inputs.
+When two units share a grade, the report leaves their direction unranked. Select a pair to see what it costs
+to state either direction on its own and what it costs to require that direction in a complete report. The
+posterior stays fixed for both comparisons. Several tests can account for the same withheld pair. The
+changed-pair table shows how requiring one direction also changes other comparisons in the report.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,15 +19,18 @@ and conditioning assumptions of their released posterior inputs.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Coherence**: the six-site report withholds A–B even though its isolated forward cost is below the withholding cost. The minimum-cost complete report stating A above B has risk .1019, an increase of .008513. Removing the cap does not remove this difference. The signed changed-pair account records the other altered statements.
-- **Certain conflict**: each criterion is certain about B–C, but they point opposite ways. Requiring B above C produces risk .1667, an increase of .025. The reverse direction is a separate search with a different full report and cost.
-- **Uncertainty**: the two criteria agree within every stipulated state. Their directional expected costs are .4000 and .6000, while each known state's smaller directional cost is zero. Uncertainty across states differs from disagreement within a state.
+- **Coherence**: the six-site report withholds A–B even though its isolated forward cost is below the withholding cost. The minimum-cost complete report stating A above B has risk .1019, with a change of +.008513. Removing the cap does not remove this difference. The table lists the other directions that change and their contributions to the risk difference.
+- **Certain conflict**: each criterion is certain about B–C, but they point opposite ways. Requiring B above C produces risk .1667, with a change of +.025000. The reverse direction is a separate search with a different full report and cost.
+- **Uncertainty**: the two criteria agree within every stipulated state. Their directional expected costs are .4000 and .6000, while each known state's smaller directional cost is zero. Here the isolated direction is costly because the states disagree about which unit is higher.
 - **Fixed order**: B above C is feasible along the declared order, but its minimum-cost report has risk .3167. The unrestricted family provides a separate comparison. Under **Indivisible block**, requiring those two units to stay together makes both directions infeasible.
-- **CDE subset**: all 523,251 reports with at most three grades belong to the declared search. Forward and reverse requirements are evaluated separately. This deliberately spread teaching subset and its fixed statewide prior do not establish a statewide optimum or a school-quality judgement.
-- **KRW fixed order**: the search contains 147,537 contiguous-cut reports. The cap relaxation keeps the very same expected-rank order; it does not search unrestricted reports. These newly produced postrank reports differ from KRW's archived cards.
+- **CDE subset**: all 523,251 reports with at most three grades belong to the declared search. Forward and reverse requirements are evaluated separately. The schools were chosen to span the range for this illustration. The result applies to these schools under the
+  fixed statewide prior.
+- **KRW fixed order**: the search contains 147,537 contiguous-cut reports. Relaxing the cap keeps the expected-rank order fixed. The reports are new postrank calculations for that order, separate from KRW's archived cards.
 
 ::: {.callout-note}
-Every probability and risk conditions on the supplied law. Case views display their full released attribution, conditioning and licence notices: CDE source conditions apply; KRW is noncommercial use only under CC-BY-NC, with no endorsement implied. A positive extra risk is a comparison within a declared family, not a unique causal explanation for withholding.
+The extra risk measures the cost of the required direction under the given posterior and report family. It
+can reflect more than one reason for withholding. The case views give the data sources and assumptions.
+CDE source conditions apply. KRW is noncommercial use only under CC-BY-NC, with no endorsement implied.
 :::
 
 [Open standalone](../../embed/why-withheld.html), for example `?preset=fixed-order`.

@@ -9,6 +9,19 @@
       "query": "data=six&w=0.5&tau=0.2&cap=3&criterion=0&report=1&pair=A,C",
       "expect": [
         {
+          "select": "[data-prx-readout=\"plot-weighted-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-equal-tau20-cap3",
+            "field": "reports.0.mixture.weightedRisk"
+          },
+          "value": 0.09334318607505901,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
           "select": "[data-prx-readout=\"selected-grade\"]",
           "source": "oracle",
           "ref": {
@@ -9638,6 +9651,19 @@
       "query": "data=opposition&w=1&tau=0.3&cap=all&criterion=1&report=1&pair=A,B",
       "expect": [
         {
+          "select": "[data-prx-readout=\"plot-weighted-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-opposition-w1-0",
+            "field": "reports.1.mixture.weightedRisk"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
           "select": "[data-prx-readout=\"selected-grade\"]",
           "source": "oracle",
           "ref": {
@@ -17762,6 +17788,19 @@
       "query": "data=majority&w=0.3333333333333333&tau=0.4&cap=all&criterion=2&report=1&pair=A,B",
       "expect": [
         {
+          "select": "[data-prx-readout=\"plot-weighted-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tau0.4",
+            "field": "reports.1.mixture.weightedRisk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
           "select": "[data-prx-readout=\"selected-grade\"]",
           "source": "oracle",
           "ref": {
@@ -18275,6 +18314,1265 @@
           }
         }
       ]
+    },
+    {
+      "id": "preset-third-boundary",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"selected-grade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.grade"
+          },
+          "value": [
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-grade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.grade"
+          },
+          "value": [
+            1,
+            2
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"mixture-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-mixture\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weighted-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.weightedRisk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-weighted\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.weightedRisk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"selected-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.evaluation.N"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"selected-M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.evaluation.M"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "optimum.tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"branch-chance\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.w.2"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"branch-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.Rk.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weight-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.w.0"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-risk-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.Rk.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"contribution-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.contributions.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weight-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.w.1"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-risk-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.Rk.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"contribution-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.contributions.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weight-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.w.2"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-risk-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.Rk.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"contribution-2\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.contributions.2"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.evaluation.E.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-0-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.evaluation.EoverN.0"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-0-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.mixture.Rk.0"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-0-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.contributions.0"
+          },
+          "value": 0.1111111111111111,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-0-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.mixture.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.evaluation.E.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-1-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.evaluation.EoverN.1"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-1-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.mixture.Rk.1"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-1-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.contributions.1"
+          },
+          "value": 0.1111111111111111,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-1-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.mixture.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-2-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.evaluation.E.2"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-2-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.evaluation.EoverN.2"
+          },
+          "value": null,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-2-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.mixture.Rk.2"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-2-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.contributions.2"
+          },
+          "value": 0.1111111111111111,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-1-2-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.mixture.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.evaluation.E.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-0-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.evaluation.EoverN.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-0-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.Rk.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-0-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.contributions.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-0-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.evaluation.E.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.evaluation.EoverN.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.Rk.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.contributions.1"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-2-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.evaluation.E.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-2-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.evaluation.EoverN.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-2-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.Rk.2"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-2-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.contributions.2"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-2-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.mixture.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.1.evaluation.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.2.evaluation.risk"
+          },
+          "value": 0.6666666666666666,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "reports.0.evaluation.risk"
+          },
+          "value": 0.3333333333333333,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"best-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-majority-tauone-third",
+            "field": "optimum.tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        }
+      ],
+      "preset": "third-boundary",
+      "about": "Named one-third boundary: the stipulated majority law always uses its declared uniform three-criterion weights; the URL w key is not an argument to that law. The report, branch, pair, tau and family match the independent R row."
+    },
+    {
+      "id": "preset-b-only",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"selected-grade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.grade"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-grade\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.grade"
+          },
+          "value": [
+            2,
+            2,
+            1,
+            2,
+            3,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"mixture-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.risk"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-mixture\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.risk"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weighted-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.weightedRisk"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-weighted\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.weightedRisk"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"selected-N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.evaluation.N"
+          },
+          "value": 11,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"selected-M\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.evaluation.M"
+          },
+          "value": 15,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tie-count\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "optimum.tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"branch-chance\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.w.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"branch-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.Rk.0"
+          },
+          "value": 0.21133723878272567,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weight-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.w.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-risk-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.Rk.0"
+          },
+          "value": 0.21133723878272567,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"contribution-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.contributions.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"weight-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.w.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatProb"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"criterion-risk-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.Rk.1"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"contribution-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.contributions.1"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.evaluation.E.0"
+          },
+          "value": 2.1946539373492158,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-0-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.evaluation.EoverN.0"
+          },
+          "value": 0.19951399430447417,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-0-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.mixture.Rk.0"
+          },
+          "value": 0.19964359582328106,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-0-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.contributions.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-0-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.mixture.risk"
+          },
+          "value": 0.08157120718661226,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.evaluation.E.1"
+          },
+          "value": 0.42356810779918375,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-1-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.evaluation.EoverN.1"
+          },
+          "value": 0.038506191618107616,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-1-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.mixture.Rk.1"
+          },
+          "value": 0.08157120718661226,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-1-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.contributions.1"
+          },
+          "value": 0.08157120718661226,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-1-2-1-1-3-3-1-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.0.mixture.risk"
+          },
+          "value": 0.08157120718661226,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-0-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.evaluation.E.0"
+          },
+          "value": 2.370058581740885,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-0-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.evaluation.EoverN.0"
+          },
+          "value": 0.21545987106735318,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-0-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.Rk.0"
+          },
+          "value": 0.21133723878272567,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-0-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.contributions.0"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-0-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.risk"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-1-E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.evaluation.E.1"
+          },
+          "value": 0.4235681077991827,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-1-fraction\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.evaluation.EoverN.1"
+          },
+          "value": 0.03850619161810752,
+          "format": {
+            "fn": "formatEoverN"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-1-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.Rk.1"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-1-contribution\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.contributions.1"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"profile-2-2-1-2-3-3-1-sum\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-mixture",
+            "row": "mixture-six-B-only-tau20-cap3",
+            "field": "reports.1.mixture.risk"
+          },
+          "value": 0.08157120718661218,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"cost-iAboveJ\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.1.eIJ"
+          },
+          "value": 0.9614500641282291,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "At weights (0,1), weighted B,C cost equals the independently computed criterion-B cost at the same tau."
+        },
+        {
+          "select": "[data-prx-readout=\"cost-jAboveI\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.1.eJI"
+          },
+          "value": 0.03854993587177092,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "At weights (0,1), weighted B,C cost equals the independently computed criterion-B cost at the same tau."
+        },
+        {
+          "select": "[data-prx-readout=\"cost-withhold\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-displays",
+            "row": "pair-cost-six-1-2",
+            "field": "criteria.1.decision.costs.withhold"
+          },
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "At weights (0,1), weighted B,C cost equals the independently computed criterion-B cost at the same tau."
+        }
+      ],
+      "preset": "b-only",
+      "about": "Named B-only preset: the fixed report/criterion/profile quantities are independent of the inspected pair. Additional B,C isolated costs use independent criterion-B errors because its weight is exactly one."
     }
   ]
 }

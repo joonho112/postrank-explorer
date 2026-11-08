@@ -1,5 +1,28 @@
-// Mixtures of complete reports at matched disclosure, with family and fixed-order endpoint examples.
-import { createWidget, uid, appLink } from "../shared/base.js";
+// frontier-mixtures (app 2.11): "Mixtures between frontier corners". At a mean number of stated pairs m, H(m) is reached
+// by a lottery between the two whole reports at the vertices around m; the app sets it beside the best single report that
+// states exactly m pairs, with family and fixed-order endpoint examples. The app uses the shared result-first frame
+// (base.js layout "result-first"; review 044 repair: X-01, G3-F1, X-14 with owner decision D-1, X-23), top to bottom:
+//   controls   the m slider (the primary control), then the preset row
+//   read-out   the lottery in words (the review's copy): its expected wrong directions, the two reports and their
+//              chances, that each draw is a printable report and the average is not, and the gap to the best single
+//              report; at a vertex, that the vertex report itself reaches H(m)
+//   stage      on wide screens (62em) two columns, the lottery strip and the choices on the left and the chart on the
+//              right; on narrow screens lottery, chart, choices (the DOM order, so phones read control, result, chart):
+//     lottery  the two whole reports as chips (grade vector and N), each with a bar of its chance, and the average
+//              point the diamond marks (at a vertex: the vertex report itself, chance 1)
+//     chart    the shared cloud renderer framed on the mixture: the near view's top is 1.25 × the largest E among the
+//              vertices around m and the columns between them, rounded up (about 0–.20 for m = 8 to 12), the mixture's
+//              own edge of H(m) heavier, the diamond, the square, a bracket labeled with the gap, the τ line and its
+//              ring in muted ink (the touched report's vector then sits in the legend); the full-height view is v1's.
+//              Under it the legend, one note on fixed τ, the vector positions, and a closed Settings box: τ with its
+//              optimum sentence and label line, and View
+//     choices  Example and Family, with the endpoint status of the family as a pill, so the capped family's "not
+//              guaranteed for this family" is visible without opening anything (G3-F1, G3-F2)
+//   boxes      owner decision D-1 (2026-11-07): "Data: vertices of H(m)" (the vertex table) and "Endpoint at τ = 1/2
+//              and a fixed order" (the four sections: mixing two complete reports, the end at τ = 1/2, a fixed order
+//              with its figure, how the criterion errors are combined), closed, their content unchanged
+// The chart answers the mouse and touch as its keyboard reader does (chart.js keyboard.pointer; X-23).
+import { createWidget, uid, appLink, roundTo } from "../shared/base.js";
 import { numText, plot } from "../shared/chart.js";
 import { blocksText, formatCount, formatGrades, formatProb, formatRational, formatSci, formatSetting } from "../shared/format.js";
 import { captionNode, familyNameNode, familySizeNode, labelNode } from "../shared/labels.js";
@@ -9,6 +32,25 @@ import { CONFIG as FRONTIER, CSS, modelOf, optimumOf, tb19Model, createCloudRend
 export const CONFIG = Object.freeze({ ...FRONTIER, name: "frontier-mixtures",
   title: "A mixture at a mean number of stated pairs",
   label: "Mixtures between frontier corners: matched disclosure, whole reports and the gap to a single report",
+  // review 044 repair (G3-F1): the near view framed on the mixture: 1.25 × the largest E around m, rounded up to a
+  // twentieth (to a tenth above one half), never above v1's near-view top; the frame's foot is inset by 10% of the plot's height, so marks at E = 0 sit off the axis
+  frame: Object.freeze({ head: 1.25, step: 0.05, coarseStep: 0.1, coarseFrom: 0.5, digits: 2, insetBottom: 0.1 }),
+  fm: Object.freeze({
+    lotteryTitle: "Lottery between two whole reports",
+    vertexTitle: "The vertex report itself",
+    lotteryLabel: "The lottery: the two whole reports, their chances and the average point",
+    chance: "chance",
+    averageMix: "Average point: N = ",
+    averageVertex: "Its point, on the vertex: N = ",
+    fixedTau: "At any fixed τ a printable vertex report is already best; a lottery matters only when the average number of stated pairs is fixed between vertices.",
+    settings: "Settings",
+    dataBox: "Data: vertices of H(m)",
+    endpointBox: Object.freeze(["Endpoint at τ = ", " and a fixed order"]),
+    pillYes: ": guaranteed (all reports, no latent ties)",
+    pillNo: ": not guaranteed for this family",
+    touching: ", touching ",
+    above: " above this view",
+  }),
 });
 const EX = { tb16: { weights: Array.from(CONFIG.tb16.w) } };
 const effectiveFamily = (state) => state.example === "tb16" ? "all" : state.family;
@@ -16,19 +58,75 @@ const niceTop = (v) => Math.ceil(v * CONFIG.yRound) / CONFIG.yRound;
 const ORDER_E = finiteLawPairwise(CONFIG.tb19.states.map(s => s.map(x => Array.from(x))), Array.from(CONFIG.tb19.probs), {ids: Array.from(CONFIG.tb19.ids)});
 const ORDER_OPT = fixedOrderDP(ORDER_E, { order: Array.from(CONFIG.tb19.order), tau: CONFIG.half });
 
+/** The top of the near view framed on the mixture (review 044, G3-F1): 1.25 × the largest E among the vertices around m
+ *  (the two a lottery mixes, or a vertex's two neighbors), H(m) and the smallest E of every column between them,
+ *  rounded up, never above v1's near-view top. */
+export function mixtureFrame(model, mix) {
+  if (!mix) return null;
+  const F = CONFIG.frame;
+  const hull = model.hull;
+  let lo = mix.lower;
+  let hi = mix.upper;
+  if (!(mix.psi > 0)) {
+    const q = hull.findIndex((v) => v.N === mix.N);
+    lo = hull[Math.max(0, q - 1)];
+    hi = hull[Math.min(hull.length - 1, q + 1)];
+  }
+  const between = model.cloud.byN.filter((r) => r.N > lo.N && r.N < hi.N).map((r) => r.minEw);
+  const top = F.head * Math.max(lo.Ew, hi.Ew, mix.H, ...between);
+  if (!(top > 0)) return null;
+  const step = top > F.coarseFrom ? F.coarseStep : F.step;
+  return Math.min(model.yNear, roundTo(Math.ceil(roundTo(top / step, 9)) * step, F.digits));
+}
+
+const FM_CSS = `
+.prx-fm .prx-app-link { color: var(--prx-link); }
+.prx-fm .prx-app-link:hover, .prx-fm .prx-app-link:focus { color: var(--prx-link-hover); }
+.prx-fm .prx-fr-vector-key { margin: .35rem 0 0; }
+.prx-fm .prx-fr-label { margin: .3rem 0 .35rem; }
+.prx-fm .prx-fr-optimum { margin: .25rem 0; font-size: .9em; color: var(--prx-fg-muted); }
+/* the stage: one column on narrow screens (lottery, chart, choices); two on wide ones, the chart on the right */
+.prx-fm .prx-fm-stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem 1.2rem; align-items: start; min-width: 0; }
+.prx-fm .prx-fm-stage > * { min-width: 0; }
+@media (min-width: 62em) {
+  .prx-fm .prx-fm-stage { grid-template-columns: minmax(15rem, 2fr) minmax(0, 3fr); grid-template-rows: auto 1fr; grid-template-areas: "lottery chart" "choices chart"; }
+  .prx-fm .prx-fm-lottery { grid-area: lottery; }
+  .prx-fm .prx-fm-chartpanel { grid-area: chart; }
+  .prx-fm .prx-fm-choices { grid-area: choices; }
+}
+.prx-fm .prx-fm-chartpanel > .prx-fr-head { margin-top: 0; }
+/* the lottery strip, on the plot's paper like the chart */
+.prx-fm .prx-fm-lottery { padding: 0.45rem 0.65rem 0.5rem; border-radius: 6px; font-variant-numeric: tabular-nums; }
+.prx-fm .prx-fm-lot-title { margin: 0 0 0.35rem; font-weight: 600; }
+.prx-fm .prx-fm-lot-rows { display: grid; gap: 0.3rem; margin: 0; padding: 0; list-style: none; }
+.prx-fm .prx-fm-lot-row { display: grid; grid-template-columns: 9.6rem minmax(2.5rem, 1fr) 2.6rem; gap: 0.6rem; align-items: center; margin: 0; }
+.prx-fm .prx-fm-chip { justify-self: start; padding: 0.05rem 0.5rem; white-space: nowrap; border: 1px solid var(--prx-border-strong); border-radius: 999px; }
+.prx-fm .prx-fm-track { display: block; height: 0.85rem; overflow: hidden; background: var(--prx-plot-bg); border: 1px solid var(--prx-cell-border); border-radius: 3px; }
+.prx-fm .prx-fm-fill { display: block; height: 100%; background: var(--prx-grade-5); }
+.prx-fm .prx-fm-share { text-align: right; font-weight: 600; }
+.prx-fm .prx-fm-lot-avg { margin: 0.4rem 0 0; }
+.prx-fm .prx-fm-diamond { display: inline-block; width: 0.6em; height: 0.6em; margin: 0 0.5em 0 0.2em; vertical-align: 0.05em; border: 2px solid var(--prx-plot-fg); background: var(--prx-plot-bg); transform: rotate(45deg); }
+/* Example and Family, with the endpoint status of the family */
+.prx-fm .prx-fm-choices { display: grid; gap: 0.5rem; font-size: 0.875rem; }
+.prx-fm .prx-fm-choices .prx-fr-family > .prx-hint { margin: 0; }
+.prx-fm .prx-fm-pill { justify-self: start; margin: 0; padding: 0.15rem 0.6rem; font-weight: 600; border: 1px solid var(--prx-border-strong); border-radius: 999px; background: var(--prx-bg); }
+.prx-fm .prx-fm-pill[data-prx-endpoint="not-guaranteed"] { border-style: dashed; }
+/* the boxes hold v1's sections unchanged; the box gives the frame */
+.prx-fm .prx-disclosure .prx-fr-deeper { margin: 0; padding: 0; border: 0; background: transparent; }
+.prx-fm .prx-disclosure .prx-fr-vertices { margin: 0.2rem 0 0; }
+.prx-fm .prx-fm-chartpanel > .prx-disclosure { margin-top: 0.6rem; }
+.prx-fm .prx-fm-chartpanel > .prx-disclosure .prx-disclosure-body > * + * { margin-top: 0.4rem; }
+`;
+
 export function mountWidget(el, spec = {}) {
   return createWidget(el, spec, {
     name: CONFIG.name,
     label: CONFIG.label,
     title: CONFIG.title,
     className: "prx-fr prx-fm",
-    css: `${CSS}
-.prx-fm .prx-app-link { color: var(--prx-link); }
-.prx-fm .prx-app-link:hover, .prx-fm .prx-app-link:focus { color: var(--prx-link-hover); }
-.prx-fm .prx-fr-vector-key { margin: .15rem 0; }
-.prx-fm .prx-fr-label { margin: .3rem 0 .35rem; }
-.prx-fm .prx-fr-optimum { margin: .25rem 0; font-size: .9em; color: var(--prx-fg-muted); }
-`,
+    css: `${CSS}${FM_CSS}`,
+    // the shared result-first frame (review 044, X-01): the m slider and the preset row, the read-out, the stage
+    layout: "result-first",
     keys: {
       tau: { type: "number", min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: CONFIG.tau.value },
       family: { type: "choice", values: CONFIG.families.slice(), value: CONFIG.family },
@@ -39,6 +137,7 @@ export function mountWidget(el, spec = {}) {
     build(ctx) {
       const { h } = ctx;
       const T = CONFIG.text;
+      const TF = CONFIG.fm;
 
       // helpers: a read-out number with its hook; nodes for a grade vector
       const ro = (name, raw, display) => {
@@ -53,7 +152,7 @@ export function mountWidget(el, spec = {}) {
       const half = () => ctx.num(CONFIG.half, formatRational(CONFIG.half));
       const point = (model, v, prefix) => ["(", ro(`${prefix}N`, v.N, formatCount(v.N)), ", ", ro(`${prefix}E`, v.Ew, model.fmt.E(v.Ew)), ")"];
 
-      // --- controls: τ, the family, the view
+      // --- settings: τ, the family, the view (τ and View go into the Settings box under the chart)
       const tau = ctx.slider({
         label: T.slider, min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: ctx.state.tau,
         name: "tau", hint: T.sliderHint, onInput: (v) => ctx.set({ tau: v }),
@@ -78,25 +177,24 @@ export function mountWidget(el, spec = {}) {
         options: [{ value: "near", label: T.viewNear }, { value: "all", label: T.viewAll }],
         value: ctx.state.view, onChange: (v) => ctx.set({ view: v }),
       });
-      ctx.controls.append(tau.root, familySwitch.root, viewSwitch.root);
 
-      // --- result headline: the live read-out, then the label with the family and its size
+      // --- the τ optimum and the label with the family and its size (in the Settings box, beside τ)
       const labelLine = h("p", { class: "prx-fr-label", "data-prx-part": "readout" });
       const vectorKey = h("p", { class: "prx-fr-vector-key", "data-prx-part": "notes" });
-      ctx.controls.after(vectorKey, ctx.readout.node);
       const optimumLine = ctx.part("readout", h("p", { class: "prx-fr-optimum" }));
-      ctx.readout.node.after(optimumLine, labelLine);
 
-      // --- the figure
+      // --- the figure: its head, the chart, the legend, a note on fixed τ and the vector positions
       const head = h("p", { class: "prx-fr-head" });
-      const chartSlot = h("div", { class: "prx-fr-chart" });
+      const chartSlot = ctx.primaryGraphic(h("div", { class: "prx-fr-chart" }));
       const legend = h("div", { class: "prx-fr-legend", "data-prx-part": "legend" });
+      const fixedNote = h("p", { class: "prx-fr-note", "data-prx-part": "notes", text: TF.fixedTau });
       const vertexBox = h("section", { class: "prx-fr-vertices", "aria-label": T.vertexHeading, "data-prx-part": "table" });
       const vertexHeadingId = uid("prx-fr-vertices");
-      ctx.charts.append(head, chartSlot, legend, vertexBox);
-      const drawChart = createCloudRenderer(ctx, chartSlot);
+      const drawChart = createCloudRenderer(ctx, chartSlot, {
+        pointer: true, frame: (state, model, mix) => mixtureFrame(model, mix), gapBracket: true, insetBottom: CONFIG.frame.insetBottom,
+      });
 
-      // --- The mixture and endpoint panels are always visible.
+      // --- the mixture and endpoint panels (owner decision D-1: unchanged, in a closed box)
       const mixBody = h("div", { class: "prx-fr-mix-out", "data-prx-part": "readout" });
       const mSliders = new Map();
       const mSlot = h("div", { class: "prx-fr-mslot", "data-prx-part": "controls" });
@@ -126,8 +224,26 @@ export function mountWidget(el, spec = {}) {
         section(T.mixHeading, mixIntro, mixBody),
         section(["The end at τ = ", half()], halfBody, h("h5", { class: "prx-fr-subheading", text: T.orderHeading }), orderBody, miniSlot),
         criterionSection));
-      ctx.controls.prepend(mSlot, exampleSwitch.root);
-      ctx.charts.after(details);
+
+      // --- the lottery strip, the choices with the endpoint pill, and the stage that holds them with the chart
+      const lotteryTitle = h("p", { class: "prx-fm-lot-title" });
+      const lotteryRows = h("ul", { class: "prx-fm-lot-rows" });
+      const lotteryAverage = h("p", { class: "prx-fm-lot-avg" });
+      const lottery = h("section", { class: "prx-fm-lottery prx-light-panel", "aria-label": TF.lotteryLabel }, lotteryTitle, lotteryRows, lotteryAverage);
+      const pill = h("p", { class: "prx-fm-pill" });
+      const choices = h("div", { class: "prx-fm-choices" }, exampleSwitch.root, familySwitch.root, pill);
+      const chartPanel = h("div", { class: "prx-fm-chartpanel" }, head, chartSlot, legend, fixedNote, vectorKey);
+      ctx.controls.append(mSlot);
+      ctx.primaryControl(mSlot);
+      ctx.charts.append(h("div", { class: "prx-fm-stage" }, lottery, chartPanel, choices));
+      // Settings under the chart (τ, its optimum and label, View); the two D-1 boxes at the end
+      const settings = ctx.disclosure({ name: "settings", title: TF.settings, placement: { after: vectorKey } });
+      settings.body.append(tau.root, optimumLine, labelLine, viewSwitch.root);
+      const dataBox = ctx.disclosure({ name: "data", title: TF.dataBox });
+      dataBox.body.append(vertexBox);
+      // its summary writes ½ as a number with data-num, as the sections inside it do
+      const endpointBox = ctx.disclosure({ name: "endpoint", title: [TF.endpointBox[0], half(), TF.endpointBox[1]] });
+      endpointBox.body.append(details);
 
       // --------------------------------------------------------------------------------------- drawing
 
@@ -140,19 +256,24 @@ export function mountWidget(el, spec = {}) {
           famNode(fam), ".");
       }
 
-      function drawLegend(state, model, mix, show) {
+      // framed (the near view on the mixture): the touched report's vector sits in the line's entry, not on the chart
+      function drawLegend(state, model, mix, show, sv, framed) {
         const key = (cls, ...text) => h("span", { class: "prx-fr-key" }, h("span", { class: `prx-fr-swatch ${cls}` }), h("span", {}, ...text));
         const items = [
           key("prx-fr-sw-dash", T.legendReport),
           key("prx-fr-sw-min", T.legendMin.replace("⟨E⟩", model.wrong)),
         ];
-        const yTop = state.view === "all" ? model.yAll : model.yNear;
+        const yTop = state.view === "all" ? model.yAll : (mixtureFrame(model, mix) ?? model.yNear);
         if (model.cloud.byN.some((r) => r.maxEw > yTop)) items.push(key("prx-fr-sw-above", T.legendAbove));
         if (show) {
+          // the line's words keep their own span (so its τ keeps its context); a framed view adds the touched report
+          const v = sv.vertices[0];
+          const line = key("prx-fr-sw-line", h("span", {}, `${T.legendLine} `, ctx.num(state.tau, formatSetting(state.tau))),
+            framed ? h("span", {}, TF.touching, ctx.num(Array.from(v.grade), formatGrades(Array.from(v.grade))), v.Ew > yTop ? TF.above : "") : null);
           items.push(
             key("prx-fr-sw-vertex", T.legendVertex),
             key("prx-fr-sw-hull", `${T.legendHull} `, captionNode(ctx, "mixture-not-report")),
-            key("prx-fr-sw-line", `${T.legendLine} `, ctx.num(state.tau, formatSetting(state.tau))),
+            line,
             key("prx-fr-sw-ring", T.legendRing),
           );
           if (mix) {
@@ -234,15 +355,59 @@ export function mountWidget(el, spec = {}) {
         mixBody.replaceChildren(...lines);
       }
 
-      function writeMixtureSummary(model, mix) {
+      // the lottery as a picture: the two whole reports (chips), their chances (bars) and the average point
+      function drawLottery(model, mix) {
+        const fmt = model.fmt;
+        const n = (name, v) => ro(name, v, formatCount(v));
+        // the chart's diamond, as a swatch before the average point it marks
+        const diamond = () => h("span", { class: "prx-fm-diamond", "aria-hidden": "true" });
+        const row = (grade, N, chance, prefix) => h("li", { class: "prx-fm-lot-row" },
+          h("span", { class: "prx-fm-chip" }, ro(`lottery-${prefix}Grade`, Array.from(grade), formatGrades(Array.from(grade))), " · N ", n(`lottery-${prefix}N`, N)),
+          h("span", { class: "prx-fm-track", "aria-hidden": "true" }, h("span", { class: "prx-fm-fill", style: { width: `${100 * chance}%` } })),
+          h("span", { class: "prx-fm-share" }, ro(`lottery-${prefix}Chance`, chance, fmt.psi(chance))));
+        if (mix.psi === 0) {
+          lotteryTitle.textContent = TF.vertexTitle;
+          lotteryRows.replaceChildren(row(mix.lower.grade, mix.lower.N, 1, "vertex"));
+          lotteryAverage.replaceChildren(diamond(), TF.averageVertex, ro("lottery-m", mix.N, formatCount(mix.N)), ", E = ", ro("lottery-H", mix.H, fmt.E(mix.H)));
+        } else {
+          lotteryTitle.textContent = TF.lotteryTitle;
+          lotteryRows.replaceChildren(row(mix.lower.grade, mix.lower.N, 1 - mix.psi, "lower"), row(mix.upper.grade, mix.upper.N, mix.psi, "upper"));
+          lotteryAverage.replaceChildren(diamond(), TF.averageMix, ro("lottery-m", mix.N, formatCount(mix.N)), ", E = ", ro("lottery-H", mix.H, fmt.E(mix.H)));
+        }
+      }
+
+      // the endpoint status of the family, beside the family (G3-F1, G3-F2: the capped family's status stays visible)
+      function drawPill(model) {
+        const lastV = model.hull.at(-1);
+        if (model.eligible) {
+          pill.setAttribute("data-prx-endpoint", "guaranteed");
+          pill.replaceChildren("Endpoint at τ = ", half(), TF.pillYes);
+        } else {
+          pill.setAttribute("data-prx-endpoint", "not-guaranteed");
+          pill.replaceChildren("Endpoint at τ = ", half(), TF.pillNo, " (H(m) ends at N = ", ctx.num(lastV.N, formatCount(lastV.N)), " of ",
+            ctx.num(model.M, formatCount(model.M)), ")");
+        }
+      }
+
+      // the review's read-out copy (G3-F1): the lottery, that each draw is printable and the average is not, the gap
+      function writeMixtureSummary(model, mix, state, sv) {
         const n = (v) => ctx.num(v, formatCount(v));
         const e = (v) => ctx.num(v, model.fmt.E(v));
         const psi = (v) => ctx.num(v, model.fmt.psi(v));
-        const parts = ["At mean disclosure ", n(mix.N), ", the boundary has ", e(mix.H), ` ${model.wrong}. `];
-        if (mix.psi === 0) parts.push("This is a vertex report; no mixture is needed.");
-        else if (mix.best) parts.push("Print the report stating ", n(mix.upper.N), " pairs with chance ", psi(mix.psi), "; otherwise print the report stating ", n(mix.lower.N), " pairs; the best single report at this disclosure lies ", e(mix.gap), " higher.");
-        else parts.push("Print the report stating ", n(mix.upper.N), " pairs with chance ", psi(mix.psi), "; otherwise print the report stating ", n(mix.lower.N), " pairs; no single report states exactly this many pairs.");
-        ctx.readout.set(parts);
+        const support = [" At τ ", ctx.num(state.tau, formatSetting(state.tau)),
+          sv.vertices.length === 1 ? ", the supporting vertex states " : ", the supporting edge runs from ",
+          n(sv.vertices[0].N), ...(sv.vertices.length === 1 ? [] : [" to ", n(sv.vertices.at(-1).N)]),
+          " pairs."];
+        if (mix.psi === 0) {
+          const g = Array.from(mix.lower.grade);
+          ctx.readout.set(["At ", n(mix.N), " stated pairs the vertex report ", ctx.num(g, formatGrades(g)), " itself reaches ", e(mix.H), ` ${model.wrong}: no mixture is needed.`, ...support]);
+          return;
+        }
+        const parts = ["At an average of ", n(mix.N), " stated pairs, a lottery between two whole reports reaches ", e(mix.H), ` ${model.wrong}: the `,
+          n(mix.upper.N), "-pair report with chance ", psi(mix.psi), ", otherwise the ", n(mix.lower.N), "-pair report. Each draw is a printable report; the average is not. "];
+        if (mix.best) parts.push("The best single report with exactly ", n(mix.N), " pairs has ", e(mix.best.Ew), ", ", e(mix.gap), " higher.");
+        else parts.push("No single report states exactly ", n(mix.N), " pairs.");
+        ctx.readout.set([...parts, ...support]);
       }
 
       function drawHalf(state, model) {
@@ -325,7 +490,7 @@ export function mountWidget(el, spec = {}) {
       }
 
       return {
-        render(state) {
+        render(state, info = {}) {
           ctx.root.setAttribute("aria-busy", "true");
           try {
             const show = true;
@@ -357,13 +522,17 @@ export function mountWidget(el, spec = {}) {
 
             reportIds = model.E.ids;
             vectorKey.textContent = `Vector positions: ${reportIds.join(" / ")}. Smaller grades mean higher priority; equal grades withhold. > means “stated above”.`;
+            const framed = state.view !== "all" && mixtureFrame(model, mixShown) !== null;
             drawHead(state, model);
             drawHeadline(state, model, opt, sv);
-            drawChart(state, model, opt, sv, mixShown, show);
-            drawLegend(state, model, mixShown, show);
+            // opening a box changes nothing the chart shows: keep it (and a pinned tip) as it is
+            if (info.reason !== "disclosure") drawChart(state, model, opt, sv, mixShown, show);
+            drawLegend(state, model, mixShown, show, sv, framed);
+            drawLottery(model, mix);
+            drawPill(model);
             drawVertices(state, model, sv);
             drawMix(state, model, mix);
-            writeMixtureSummary(model, mix);
+            writeMixtureSummary(model, mix, state, sv);
             drawHalf(state, model);
             ctx.caption.textContent = state.example === "tb16" ? T.noteTb16 : T.note;
           } finally {

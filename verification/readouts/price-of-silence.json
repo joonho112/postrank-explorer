@@ -6584,6 +6584,62 @@
             "field": "count"
           },
           "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"readoutSize\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: the family's size, \"(… reports)\"",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "familySize"
+          },
+          "value": 603
+        },
+        {
+          "select": "[data-prx-readout=\"readoutN\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: pairs the best report states, \"N of 15 stated\"",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-cap3-tau.20",
+            "field": "N"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"readoutM\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: the package's pair count M, \"of M stated\"",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112233",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"readoutRisk\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: the best report's risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871
         }
       ]
     },
@@ -6788,6 +6844,62 @@
             "field": "count"
           },
           "value": 0
+        },
+        {
+          "select": "[data-prx-readout=\"readoutSize\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: the family's size, \"(… reports)\"",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-readout=\"readoutN\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: pairs the best report states, \"N of 15 stated\"",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.20",
+            "field": "N"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"readoutM\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: the package's pair count M, \"of M stated\"",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112233",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"readoutRisk\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: the best report's risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0371717560840893
         }
       ]
     },
@@ -6971,6 +7083,62 @@
             "field": "tauTo.4"
           },
           "value": 0.361836804915882
+        },
+        {
+          "select": "[data-prx-readout=\"readoutSize\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: the family's size, \"(… reports)\"",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "familySize"
+          },
+          "value": 4683
+        },
+        {
+          "select": "[data-prx-readout=\"readoutN\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: pairs the best report states, \"N of 15 stated\"",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.40",
+            "field": "N"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"readoutM\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: the package's pair count M, \"of M stated\"",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112233",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"readoutRisk\"]",
+          "about": "review 044 repair (G1-F1): the read-out sentence's own number: the best report's risk",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-all-tau.40",
+            "field": "risk"
+          },
+          "value": 0.0479608764118148
         }
       ]
     },
@@ -7779,7 +7947,7 @@
           "about": "the learner's report line, with the fixed-report caption",
           "source": "literal",
           "ref": "9.1",
-          "value": "Your report, {A} > {B} > {C, D, E, F}: risk ⟨yours⟩ (evaluation of a fixed report), above the best report's ⟨best⟩. Your report states ⟨N⟩ of ⟨M⟩ pairs; the best report states ⟨bestN⟩ of ⟨M⟩. these reports disclose different amounts."
+          "value": "Your report, {A} > {B} > {C, D, E, F}: risk ⟨yours⟩ (evaluation of a fixed report), above the best report's ⟨best⟩. Your report states ⟨N⟩ of ⟨M⟩ pairs; the best report states ⟨bestN⟩ of ⟨M⟩. These reports disclose different amounts."
         },
         {
           "select": ".prx-pos-yours .prx-num",
@@ -8790,7 +8958,7 @@
           "slots": true,
           "source": "literal",
           "ref": "9.1",
-          "value": "Your report, {A} > {B} > {C, D} > {E} > {F}: risk ⟨yours⟩ (evaluation of a fixed report); not in this family. The best report in the selected family has risk ⟨best⟩. Your report states ⟨N⟩ of ⟨M⟩ pairs; the best report states ⟨bestN⟩ of ⟨M⟩. these reports disclose different amounts."
+          "value": "Your report, {A} > {B} > {C, D} > {E} > {F}: risk ⟨yours⟩ (evaluation of a fixed report); not in this family. The best report in the selected family has risk ⟨best⟩. Your report states ⟨N⟩ of ⟨M⟩ pairs; the best report states ⟨bestN⟩ of ⟨M⟩. These reports disclose different amounts."
         },
         {
           "select": "[data-prx-readout=\"yoursN\"]",

@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for the Part 1 engine supplement (engine/API.md "v3 helpers: Part 1 supplement (Step 3.27)").
 #   oracle-v3p1  base R only; postrank is not loaded. The ten new functions (pairDifference, normalCoverage, withinBand,
 #                sharedMeanPosterior, claimsByDistance, finiteLawCells, binomialMcse, maxCoefficientError, chainCountLaw,

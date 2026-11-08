@@ -14,6 +14,14 @@ test('CSV preserves quoted commas, doubled quotes, Unicode and embedded CRLF wit
  assert.equal(parseUserInput('id,c_mean,c_sd\n"A"oops,1,.1\nB,2,.2').ok,false);
 });
 
+test('spreadsheet TSV accepts quoted tabs, commas, Unicode and CRLF in records and matrices',()=>{
+ const rows=parseUserInput('\ufeff\r\n"id"\t"θ_mean"\t"θ_sd"\r\n"A\t서울, ""quoted"""\t1\t.1\r\nB\t2\t.2');
+ assert.equal(rows.ok,true);assert.deepEqual(rows.data.ids,['A\t서울, "quoted"','B']);assert.deepEqual(rows.data.mean,[[1],[2]]);
+ const matrices=parseUserInput('criterion\t"A,B"\r\nid\tA\tB\r\nA\t\t.2\r\nB\t.8\t\r\n',options);
+ assert.equal(matrices.ok,true);assert.deepEqual(matrices.data.criteria,['A,B']);assert.equal(matrices.data.probabilities[0][1][0],.8);
+ assert.equal(parseUserInput('"id"\t,c_mean,c_sd\nA,1,.1\nB,2,.2').ok,true,'tabs after a quoted CSV header stay valid');
+});
+
 test('record checks identify failed rows/columns and retain the declared interpretation',()=>{
  const examples=[['id,c_mean,c_sd\nA,,1\nB,2,1','Row 2, c_mean'],['id,c_mean,c_sd\nA,1,0\nB,2,1','Row 2, c_sd'],['id,c_mean,c_sd\nA,Infinity,1\nB,2,1','finite number'],['id,c_mean,c_sd\nA,1,1\nA,2,1','duplicate unit ID'],['id,c_mean,c_sd\nA,1,1,2\nB,2,1','expected 3 columns'],['id,c_mean\nA,1\nB,2','needs c_sd'],['id,c_mean,c_sd,c_sd\nA,1,1,1\nB,2,1,1','unique'],['id,c_mean,c_sd\nA,1,1','2–30 units']];
  for(const[text,message]of examples){const result=parseUserInput(text);assert.equal(result.ok,false,text);assert.ok(result.messages[0].includes(message),result.messages[0]);assert.equal(result.data,null);}

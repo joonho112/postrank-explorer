@@ -18,6 +18,7 @@ test('latest input and preset win every pending stage; downloads wait for one co
  const {page,errors,failed}=await openTab(browser,{origin:server.origin,width:375,height:800});
  const cdp=await page.createCDPSession();await cdp.send('Browser.setDownloadBehavior',{behavior:'allow',downloadPath:directory});
  await page.goto(`${server.origin}/embed/your-data.html`);await waitForWidgetIdle(page);
+ if(await page.$('details[data-prx-disclosure="input"]:not([open])'))await page.click('details[data-prx-disclosure="input"] summary');await waitForWidgetIdle(page);
  await page.evaluate(()=>{window.__createdBlobs=[];const create=URL.createObjectURL.bind(URL);URL.createObjectURL=blob=>{__createdBlobs.push(blob);return create(blob);};__prxApp.applyPreset('league30-posterior');});
  assert.deepEqual(await exportState(page),[true,true,true,true]);
  assert.equal(await page.$eval('.prx-widget',e=>e.getAttribute('aria-busy')),'true');
@@ -46,6 +47,7 @@ test('latest input and preset win every pending stage; downloads wait for one co
  assert.equal(await page.evaluate(()=>typeof PRX_SOLVER),'undefined','no stage starts the optional solver');
  assert.equal(await page.evaluate(()=>document.activeElement.dataset.prxFocusKey),'input:apply');
  // Each native download uses the final thirty-unit model and its matching settings/R text.
+ await page.click('[role=tab]:last-child');
  for(const button of await page.$$('button'))if((await button.evaluate(b=>b.textContent)).startsWith('Download '))await button.click();
  const blobs=await page.evaluate(()=>Promise.all(__createdBlobs.map(blob=>blob.text())));assert.equal(blobs.length,4);
  const json=JSON.parse(blobs[2]);assert.deepEqual(json.grade,league30.optimum.grade);assert.equal(json.input.ids.length,30);assert.equal(json.settings.example,'league30-posterior');assert.equal(json.settings.tau,.2);assert.equal(json.settings.cap,'3');assert.ok(!blobs.some(text=>text.includes('local-stage-')));assert.equal(blobs[3],await page.$eval('textarea[readonly]',e=>e.value));

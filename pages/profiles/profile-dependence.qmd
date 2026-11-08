@@ -1,0 +1,66 @@
+---
+title: "Error overlap"
+subtitle: "P.3 · Domain profiles"
+description: "Same domain laws. Different decisions."
+---
+
+[Multiple criteria](../criteria/index.qmd#domain-profiles) → [Domain profiles](index.qmd)
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/profile-dependence.js"></script>
+<script>window.__prxApp = PRX["profile-dependence"].mountWidget(document.getElementById("app"));</script>
+```
+
+```{=html}
+<details>
+<summary>Examples, method and R reproduction</summary>
+```
+
+Two directions can have the same error probabilities whether their errors tend to occur together or in different
+states. That distinction determines how often the full report makes at least one error. The example changes
+which reversals coincide while holding each domain's distribution and the nine candidate cards fixed.
+The joint cap can then change which report has the lowest expected loss among the feasible cards.
+
+## Numerical illustrations {#what-to-try}
+
+- **Coincident failures.** The two directions each have error probability 1/10, and they fail together.
+  Stating both gives probability 1/10 of at least one error, below the cap 3/20. That card alone minimizes
+  expected loss at 1/10.
+- **Disjoint failures.** The marginal probabilities remain 1/10, but the probability of at least one error
+  rises to 1/5 if the report states both. The cap rules out that card. Two cards tie at risk 7/40, each stating
+  one positive direction and withholding the other.
+- **Independent domains.** At overlap c=1/100, the probability of at least one error when stating both is 19/100.
+  This exceeds the joint cap even under independence, so the same two cards tie for the lowest risk.
+- **At the joint cap.** At c=1/20, the probability of at least one error when stating both is exactly 3/20.
+  A probability equal to the cap is allowed, so that card is feasible and uniquely optimal.
+
+::: {.callout-note appearance="simple"}
+The example uses a complete fictional distribution with equal domain weights, withholding cost 1/4, and
+zero thresholds. The joint event occurs if either domain's error share exceeds its threshold. A shared
+grade leaves a direction unstated. When several feasible cards have the same lowest risk, the app lists all of
+them and shows one first. The exact calculation applies to this distribution and these candidates.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+The [R script](../../data/recipes/profile-dependence.R) reproduces the example with postrank 1.2.0 and gmp.
+
+```r
+source("profile-dependence.R")
+result <- profile_dependence()
+result$summary
+```
+:::
+
+Source: [postrank multidomain decisions](https://joonho112.github.io/postrank/articles/mdomain-decisions.html).
+
+Standalone: [open this app](../../embed/profile-dependence.html), for example `?preset=coincident&theme=dark`.
+
+Related applications: [Separate optimization under additive loss](profile-separability.qmd), [A common grade report for two scores](../criteria/two-scores.qmd) and
+[Criterion-specific expected-error budgets](../criteria/error-budgets.qmd).
+
+```{=html}
+</details>
+```

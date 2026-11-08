@@ -1,6 +1,6 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R seed-boundary UI pins for accepted Review A findings A-COR-001/A-CLR-001.
-# Written in an isolated worktree at e53ba100e941a1f33942fda544ea15caf6b76dc0. The patched
+# Reproduce the seed and boundary cases for posterior report selection.
 # mc-error app was not read. This generator loads neither postrank nor JavaScript/engine output.
 # Run from the repository root: Rscript r-export/28_v3_review_a_seed_boundary.R
 # Worktrees may set POSTRANK_SRC to the existing public source directory for _paths.R.

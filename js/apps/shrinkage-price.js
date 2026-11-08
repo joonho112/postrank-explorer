@@ -7,7 +7,7 @@
 // come from app 1.5's exports; the curves over the whole range and the pair probabilities along it are new.
 //
 // One state { priorSd, seed } drives every part:
-//   curves    four panels over the prior SD (log scale), under one key (a 2 × 2 table: colour tells posterior means
+//   curves    four panels over the prior SD (log scale), under one key (a 2 × 2 table: color tells posterior means
 //             from estimates, the line this draw from many draws): the distance and the certainty across the full
 //             width, then order and farther side by side; the slider's hint, the panels' click hint and the seed
 //             follow them. Each draws the true spread (the SD of the true values, engine summaryStats) as a dashed
@@ -31,10 +31,17 @@
 // Keys: priorSd (number .01–1, step .01, clamped, not snapped; default .15) and seed (integer; default the frozen draw
 // LEAGUE_SEED). The app loads on its first preset, prior SD .15 on the frozen draw.
 //
+// Layout (review 044 repair, X-01 and X-14/U1-F8): base.js's result-first frame (the read-out under the slider and the
+// presets). The distance panel is the primary graphic (ctx.primaryGraphic). The two full-width panels write their
+// values at the chosen prior SD next to its dots, on the side away from the true-spread rule. The league (1.5's units
+// and order figures at the chosen prior SD) is complete in a closed box directly under the four panels ("Units at
+// prior SD …"), and the comparison keeps its lead visible with its table complete in a closed box ("Data and exact
+// values"); both are drawn at every render, so their hooks and hidden tables are always in the page.
+//
 // Exports (for Reported and realized error, app 2.9, which reads the league along the prior SD): CONFIG, GRID, closedForms(),
 // curvesFor(seed), certaintyAt(r).
 import { appLink, createWidget, roundTo, stepDecimals, uid } from "../shared/base.js";
-import { plot } from "../shared/chart.js";
+import { numText, plot } from "../shared/chart.js";
 import { formatCount, formatDecimal, formatExpectedCount, formatSetting } from "../shared/format.js";
 import { captionNode } from "../shared/labels.js";
 import {
@@ -65,6 +72,10 @@ export const CONFIG = Object.freeze({
     height: 178, heightWide: 210, marginTop: 12, marginRight: 14, marginBottom: 38, marginLeft: 46, ticks: 4,
     mantissas: Object.freeze([1, 2, 5]), line: 2, ref: 1.5, dash: "6,4", dotted: "1.5,3", spreadDash: "4,3", chosen: 1.25,
     dot: 4.5, dotRim: 1.5, pad: 0.06, defaultWidth: 480,
+    // the values written next to the chosen dots (review 044, X-01): px beside and above or below the dot, the text
+    // height kept inside the plot, the least space between two labels, the halo, the width of one character of the
+    // bold 12 px digits (to know a label's width before it is drawn) and the space kept from the plot's edges
+    label: Object.freeze({ dx: 8, gap: 3, height: 13, space: 5, halo: 3, char: 7.2, edge: 4 }),
   }),
   text: Object.freeze({
     sliderLabel: SH.text.sliderLabel,
@@ -73,7 +84,7 @@ export const CONFIG = Object.freeze({
     seedHint: "A seed, a whole number, fixes the noise of a draw, so the same seed always gives the same draw. The curves over many draws do not depend on it.",
     readA: "Prior SD {ps}, against a true spread of {spread}: the average squared distance to the true values is {mse} in this draw and {closed} over many draws ({mseEst} and {closedEst} for the estimates).",
     readB: " In {s90} of the {M} pairs the posterior puts one direction above {t90}, in {s99} above {t99}.",
-    // the key: colour tells posterior means from estimates, the line this draw from many draws (a 2 × 2 table), then
+    // the key: color tells posterior means from estimates, the line this draw from many draws (a 2 × 2 table), then
     // the true spread and the chosen prior SD
     keyPost: "posterior means",
     keyEst: "the estimates (no pull: a flat prior)",
@@ -112,7 +123,8 @@ export const CONFIG = Object.freeze({
     }),
     farther: Object.freeze({
       title: "Units that end farther from their true value than their estimate was, of {n}",
-      value: "At prior SD {ps}: {count} in this draw, ringed in the league below.",
+      // review 044 (U1-F8): the league is in the closed box "Units at prior SD …" directly under the panels
+      value: "At prior SD {ps}: {count} in this draw, ringed in the units view below.",
       note: "In this draw the count stays at {settled} from about prior SD {from} on.",
       noteWhole: "In this draw the count is {settled} at every prior SD on the slider.",
       noteWhy: " No prior SD on the slider brings it to {zero}: a unit whose estimate lies between {zero} and its true value moves away from it under any pull toward {zero}.",
@@ -126,7 +138,7 @@ export const CONFIG = Object.freeze({
       key: "Solid: above {t90}; dotted: above {t99}.",
       // the counts at the chosen prior SD are in the read-out; this line gives the flat prior's
       value: "With a flat prior: {f90} above {t90} and {f99} above {t99}.",
-      note: "A pair's probability is the posterior probability that one of its two units is truly higher than the other. With a flat prior, the chance a direction is wrong takes each true value as normal around its estimate, with its SE. postrank reads these probabilities from the posterior it is given and fits no model: the prior SD behind them is set or estimated by the producer (an empirical Bayes producer estimates it from the data).",
+      note: "The pairwise probability comes from the posterior distribution of the difference in true values. Under a flat prior, each unit has a normal posterior centered at its estimate, with a standard deviation equal to its SE. The analyst chooses the prior SD or estimates it from the data. postrank takes the resulting posterior as input.",
       alt: "The number of pairs in which the posterior puts one direction above .90 (solid) or above .99 (dotted), along the prior SD, beside the counts under a flat prior.",
       table: "Pairs with one direction above the lower threshold, {t90}, and above the higher, {t99}, at each prior SD",
       colLower: "Above the lower threshold",
@@ -152,8 +164,14 @@ export const CONFIG = Object.freeze({
       rowFarther: "Units that end farther than their estimate was",
       rowSure: "Pairs with one direction above {t}",
       noMove: "— (no pull)",
+      // the closed box that holds the table (review 044, X-14)
+      data: "Data and exact values",
     }),
     league: Object.freeze({
+      // the closed box that holds the league (review 044, X-14/U1-F8): a noun phrase, with the units that end farther
+      show: "Units at prior SD {ps} (rings mark the {count} that end farther)",
+      showOne: "Units at prior SD {ps} (a ring marks the {count} that ends farther)",
+      showNone: "Units at prior SD {ps} (none ends farther)",
       heading: "The league at prior SD {ps}",
       unitsLabel: "The units of the league at the chosen prior SD",
       direction: "For independent normal posteriors, whatever their SDs, the larger posterior mean is always the more likely direction, so each crossing is a pair whose more likely direction differs from the order of the estimates.",
@@ -193,7 +211,7 @@ const CSS = `
   .prx-sp .prx-sp-panel-distance, .prx-sp .prx-sp-panel-certainty { grid-column: 1 / -1; }
   .prx-sp .prx-sp-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
 }
-/* the key: a 2 × 2 table (colour by row, line by column), then the true spread and the chosen prior SD */
+/* the key: a 2 × 2 table (color by row, line by column), then the true spread and the chosen prior SD */
 .prx-sp .prx-sp-keygrid { border-collapse: collapse; margin: 0; font-size: 1em; }
 .prx-sp .prx-sp-keygrid th, .prx-sp .prx-sp-keygrid td { padding: 0.1rem 0.75rem 0.1rem 0; border: 0; text-align: left; vertical-align: middle; }
 .prx-sp .prx-sp-keygrid thead th { font-weight: 600; }
@@ -248,6 +266,10 @@ const CSS = `
 .prx-sp .prx-sp-table thead th { font-weight: 600; min-width: 6.5em; }
 .prx-sp .prx-sp-gloss { display: block; font-style: normal; }
 .prx-sp .prx-sp-source { margin-top: 0; }
+/* the closed boxes of the league and the comparison table (review 044, X-14) sit in the flow of the panels, a little
+   below what they follow; the league section starts at the top of its box */
+.prx-sp .prx-sp-box { margin-top: 0.75rem; }
+.prx-sp .prx-sp-box > .prx-disclosure-body > .prx-sp-section { margin-top: 0; }
 @container (max-width: 30rem) {
   .prx-sp .prx-sp-table { font-size: 0.82em; }
   .prx-sp .prx-sp-table th, .prx-sp .prx-sp-table td { padding: 0.2rem 0.25rem; }
@@ -373,10 +395,60 @@ function snapPriorSd(v) {
 }
 
 /**
+ * The values at the chosen prior SD written next to their dots (review 044, X-01), as text with data-num. Both go on
+ * the side of the chosen rule away from the true-spread rule, so they never cross it, unless that side has no room
+ * for them (near an end of the axis); then on the other side. The highest value sits just above its dot and the next
+ * just below its own, at least one text height and CONFIG.curve.label.space apart, inside the plot (the second is
+ * moved, never the two drawn over each other). format(raw) is the panel's formatter; spread is the true spread and
+ * width the figure's width (px).
+ */
+function chosenLabels(P, c, chosen, format, { spread, width }) {
+  const L = CONFIG.curve.label;
+  const C = CONFIG.curve;
+  const { min, max } = CONFIG.priorSd;
+  const share = (v) => (Math.log(v) - Math.log(min)) / (Math.log(max) - Math.log(min));
+  // highest first: the first label goes above its dot, the second below its own
+  const rows = chosen.values.map((v) => ({ s: chosen.s, v })).sort((a, b) => b.v - a.v).slice(0, 2);
+  const plotW = Math.max(1, width - C.marginLeft - C.marginRight);
+  const x = share(chosen.s) * plotW;
+  const need = L.dx + L.edge + L.char * Math.max(...rows.map((r) => format(r.v).length));
+  const room = { right: plotW + C.marginRight - x, left: x };
+  const away = spread > chosen.s ? "left" : "right";
+  const other = away === "left" ? "right" : "left";
+  const side = room[away] >= need ? away : room[other] >= need ? other : (room.right >= room.left ? "right" : "left");
+  const right = side === "right";
+  const half = L.height / 2;
+  const apart = L.height + L.space;
+  const render = (index, scales, values, dims, context, next) => {
+    const Y = values.y;
+    const top = dims.marginTop + half;
+    const bottom = dims.height - dims.marginBottom - half;
+    const at = Array.from(index);
+    const y0 = Y[at[0]] - L.gap - half;
+    const y1 = at.length > 1 ? Y[at[1]] + L.gap + half : null;
+    let a = Math.max(top, Math.min(bottom, y0));
+    let b = y1 === null ? null : Math.max(top, Math.min(bottom, y1));
+    if (b !== null && b - a < apart) {
+      // pushed against an edge: keep one text height and a space between them, inside the plot
+      if (b >= bottom) a = b - apart; else b = a + apart;
+      if (a < top) { a = top; b = top + apart; }
+    }
+    Y[at[0]] = a;
+    if (b !== null) Y[at[1]] = b;
+    return next(index, scales, values, dims, context);
+  };
+  return numText(rows, {
+    x: "s", y: "v", value: "v", format, render, lineAnchor: "middle", textAnchor: right ? "start" : "end",
+    dx: right ? L.dx : -L.dx, fill: c.plotFg, stroke: c.plotBg, strokeWidth: L.halo, paintOrder: "stroke", fontWeight: 600,
+  });
+}
+
+/**
  * One panel of curves in el: the true spread (dashed rule), the estimates' levels (vermillion rules), the lines of the
- * posterior means (navy; solid, dashed or dotted), and the chosen prior SD (a rule with a dot on every line).
- * spec: { width, rows, lines: [{ y, dash, step }], refs: [{ value, dash }], chosen: { s, values }, domain, spread,
- * alt, table, keyboard: { y, title, onFocus } }.
+ * posterior means (navy; solid, dashed or dotted), and the chosen prior SD (a rule with a dot on every line, and with
+ * spec.labels, a formatter, the values written next to the dots).
+ * spec: { width, rows, lines: [{ y, dash, step }], refs: [{ value, dash }], chosen: { s, values }, labels, domain,
+ * spread, alt, table, keyboard: { y, title, onFocus } }.
  */
 function drawCurves(el, spec) {
   const C = CONFIG.curve;
@@ -398,7 +470,11 @@ function drawCurves(el, spec) {
         x: "s", y: l.y, stroke: c.post, strokeWidth: C.line, strokeDasharray: l.dash ?? undefined, curve: l.step ? "step" : "linear",
       })),
       P.ruleX([spec.chosen.s], { stroke: c.plotFg, strokeWidth: C.chosen }),
+      // A cap still identifies the dashed reference when the two SDs nearly coincide.
+      P.text([spec.spread], { x: d => d, frameAnchor: "top", dy: -7, text: () => "True spread",
+        fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke", fontSize: 11 }),
       P.dot(marker, { x: "s", y: "v", r: C.dot, fill: c.post, stroke: c.plotBg, strokeWidth: C.dotRim }),
+      typeof spec.labels === "function" ? chosenLabels(P, c, spec.chosen, spec.labels, { spread: spec.spread, width: spec.width ?? C.defaultWidth }) : null,
     ],
     keyboard: {
       data: spec.rows, x: "s", y: spec.keyboard.y, key: "s", label: spec.alt, title: spec.keyboard.title, onFocus: spec.keyboard.onFocus,
@@ -423,6 +499,8 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     title: CONFIG.title,
     className: CONFIG.className,
+    // review 044 repair (X-01): the read-out directly under the slider and the preset row
+    layout: "result-first",
     css: CSS,
     keys: {
       priorSd: { type: "number", min: CONFIG.priorSd.min, max: CONFIG.priorSd.max, step: CONFIG.priorSd.step, value: CONFIG.priorSd.value },
@@ -458,8 +536,7 @@ export function mountWidget(el, spec = {}) {
       seed.root.append(h("p", { id: seedHintId, class: "prx-hint", text: T.seedHint }));
       seed.root.classList.add("prx-sp-seed");
       ctx.controls.append(prior.root);
-      // the read-out sits between the controls and the figures
-      ctx.controls.after(ctx.readout.node);
+      // (the result-first frame puts the read-out between the controls and the figures)
 
       // --- the key of the four panels
       const swatch = (cls) => h("span", { class: `prx-sp-swatch ${cls}`, "aria-hidden": "true" });
@@ -494,6 +571,8 @@ export function mountWidget(el, spec = {}) {
         return p;
       };
       const pDist = panel("distance");
+      // the U-curve the slider moves along, directly under the read-out and the key (base.js primaryGraphic)
+      ctx.primaryGraphic(pDist.slot);
       const pOrder = panel("order");
       const pFar = panel("farther");
       const pSure = panel("certainty");
@@ -503,16 +582,19 @@ export function mountWidget(el, spec = {}) {
       pDist.value.hidden = true;
       const curves = h("div", { class: "prx-sp-curves" }, pDist.root, pSure.root, pOrder.root, pFar.root);
       const pickHint = h("p", { class: "prx-sp-note prx-sp-pick", text: T.pickHint });
-      // under the panels: how to pick a prior SD on them, the slider's hint, the seed
+      // under the panels (and the closed box of the league): how to pick a prior SD on them, the slider's hint, the seed
       const after = h("div", { class: "prx-sp-after" },
         h("div", { "data-prx-part": "notes" }, pickHint, h("p", { class: "prx-hint prx-sp-prior-hint" }, h("strong", { text: `${T.sliderLabel}. ` }), priorHint)),
         ctx.part("controls", h("div", { class: "prx-sp-seed-row" }, seed.root)));
 
-      // --- the comparison of a too-narrow and a too-wide prior
+      // --- the comparison of a too-narrow and a too-wide prior: its lead in view (it carries the two counts and the link
+      // to 2.9), its table complete in a closed box under it (review 044, X-14/U1-F8)
       const compareLead = h("p", { class: "prx-sp-note", "data-prx-part": "readout" });
       const compareTable = h("div", { "data-prx-part": "readout" });
+      const compareData = ctx.disclosure({ name: "data", title: T.compare.data, placement: "none", className: "prx-sp-box" });
+      compareData.body.append(compareTable);
       const compareBox = h("section", { class: "prx-sp-section prx-sp-compare", "aria-label": T.compare.heading },
-        ctx.panelTitle(T.compare.heading, { className: "prx-sp-heading" }), compareLead, compareTable);
+        ctx.panelTitle(T.compare.heading, { className: "prx-sp-heading" }), compareLead, compareData.root);
 
       // --- the league at the chosen prior SD: 1.5's units figure and order figure
       const leagueHead = ctx.panelTitle("", { className: "prx-sp-heading" });
@@ -534,9 +616,13 @@ export function mountWidget(el, spec = {}) {
         h("p", { class: "prx-sp-note", text: T.league.direction }));
       const leagueBox = h("section", { class: "prx-sp-section prx-sp-league" }, leagueHead, leagueLead,
         h("div", { class: "prx-sp-grid" }, unitsBox, orderBox));
+      // the league, complete, in a closed box directly under the four panels; its summary names the prior SD and the
+      // units the farther panel counts (review 044, X-14/U1-F8). Opening it renders once more, at its real width.
+      const unitsView = ctx.disclosure({ name: "units", title: "", placement: "none", className: "prx-sp-box prx-sp-units-box" });
+      unitsView.body.append(leagueBox);
 
       ctx.charts.classList.add("prx-sp-charts");
-      ctx.charts.append(curveKey, curves, after, compareBox, leagueBox);
+      ctx.charts.append(curveKey, curves, unitsView.root, after, compareBox);
 
       const note = ctx.part("notes", h("p", { class: "prx-sp-note prx-sp-source" }));
       ctx.caption.replaceChildren(captionNode(ctx, "teaching-posterior"), " ", h("span", { class: "prx-sp-gloss", text: S.gloss }));
@@ -560,7 +646,7 @@ export function mountWidget(el, spec = {}) {
 
       // ------------------------------------------------------------------------------------------- drawing
 
-      /** The key as a 2 × 2 table (colour: posterior means or estimates; line: this draw or over many draws), then the
+      /** The key as a 2 × 2 table (color: posterior means or estimates; line: this draw or over many draws), then the
        * true spread and the chosen prior SD. Each cell's swatch is named for screen readers. */
       function drawKey(spread) {
         const cell = (cls, which, line) => h("td", {}, swatch(cls), h("span", { class: "prx-sr-only", text: words(T.keyCell, { which, line }) }));
@@ -601,6 +687,7 @@ export function mountWidget(el, spec = {}) {
           lines: [{ y: "mse" }, { y: "closed", dash: C.dash }],
           refs: [{ value: E.mse }, { value: E.closed, dash: C.dash }],
           chosen: { s: state.priorSd, values: [r.msePost, r.expectedMsePost] },
+          labels: fmtMse,
           domain: domainOf(cv.rows, ["mse", "closed"], [E.mse, E.closed], { zero: true }),
           alt: D.alt,
           table: {
@@ -675,6 +762,7 @@ export function mountWidget(el, spec = {}) {
           lines: [{ y: "sure90", step: true }, { y: "sure99", step: true, dash: C.dotted }],
           refs: [{ value: E.sure90 }, { value: E.sure99, dash: C.dotted }],
           chosen: { s: state.priorSd, values: sure },
+          labels: (v) => formatCount(v),
           domain: domainOf(cv.rows, ["sure90", "sure99"], [E.sure90, E.sure99], { zero: true }),
           alt: Q.alt,
           table: {
@@ -725,6 +813,11 @@ export function mountWidget(el, spec = {}) {
       }
 
       function drawLeagueViews(state, r, width) {
+        // the closed box's summary: the prior SD and the units that end farther (the rings inside)
+        const L0 = T.league;
+        unitsView.summary.replaceChildren(...fill(r.farther === 0 ? L0.showNone : r.farther === 1 ? L0.showOne : L0.show, {
+          ps: () => sd(state.priorSd), count: () => count(r.farther),
+        }));
         leagueHead.replaceChildren(...fill(T.league.heading, { ps: () => sd(state.priorSd) }));
         // 1.5's lead: it follows this draw's distances and calls the prior too narrow only when the closed form agrees
         const L = S.priceLead;

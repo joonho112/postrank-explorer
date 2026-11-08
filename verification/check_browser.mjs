@@ -28,6 +28,8 @@ const timing = !args.includes("--no-timing");
 const BUDGET_MS = 150;
 // PRX_PAGE_HEIGHT and PRX_BUDGET_MS exist to see the checks fail on purpose (for example PRX_PAGE_HEIGHT=600)
 const PAGE_H = Number(process.env.PRX_PAGE_HEIGHT) || 800;
+/** A Tab step that moves focus this far back up the page is reported (a warning, not a failure). */
+const CONFIG_TAB_UP_PX = 40;
 const BUDGET = Number(process.env.PRX_BUDGET_MS) || BUDGET_MS;
 const FIRST_SCREEN_MIN = 200;
 const STAGED_MS = 3000;
@@ -152,7 +154,9 @@ await pool(apps, 1, async (a) => {
     // its controls again when a preset changes them, so each control is looked up where it is used.
     // the first visible, enabled slider (an app may hide a control at some settings)
     const findSlider = async () => {
-      const hdl = await page.evaluateHandle(() => [...document.querySelectorAll(".prx-widget input[type=range]")].find((n) => !n.disabled && n.offsetParent !== null) ?? null);
+      const hdl = await page.evaluateHandle(() => [...document.querySelectorAll(".prx-widget input[type=range]")].find((n) =>
+        !n.matches(":disabled") && n.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })
+        && !n.closest("details:not([open])")) ?? null);
       const el = hdl.asElement();
       if (!el) await hdl.dispose();
       return el;
@@ -196,21 +200,40 @@ await pool(apps, 1, async (a) => {
       // frames. Count the final layout after staged work replaces tables and their regions.
       await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     }, STAGED_MS);
-    await page.evaluate(() => document.activeElement?.blur());
+    async function walkKeyboard(label) {
+    await page.evaluate(() => {
+      document.activeElement?.blur();
+      const root = document.querySelector('.prx-widget'), previous = root.getAttribute('tabindex');
+      root.setAttribute('tabindex', '-1'); root.focus();
+      if (previous === null) root.removeAttribute('tabindex'); else root.setAttribute('tabindex', previous);
+      root.querySelectorAll('[data-kb]').forEach(n => n.removeAttribute('data-kb'));
+    });
     const wanted = await page.evaluate(() => {
       const root = document.querySelector(".prx-widget");
-      const all = [...root.querySelectorAll("input, button, select, [tabindex='0']")].filter((n) => !n.disabled && n.offsetParent !== null && n.tabIndex >= 0);
+      const visible = n => {
+        if (!n.getClientRects().length || !n.checkVisibility({visibilityProperty:true})) return false;
+        for (let p=n.parentElement;p;p=p.parentElement) if(p.tagName==='DETAILS'&&!p.open) {
+          const summary=[...p.children].find(c=>c.tagName==='SUMMARY');
+          if (!summary?.contains(n)) return false;
+        }
+        return true;
+      };
+      const all = [...root.querySelectorAll("input, button, select, summary, [tabindex='0']")].filter((n) => !n.disabled && visible(n) && n.tabIndex >= 0);
       // a radio group is one Tab stop (the checked radio, else the first), as in Chrome and base.js tabOrder()
       const stopOf = (r) => { const g = all.filter((x) => x.type === "radio" && x.name === r.name); return g.find((x) => x.checked) ?? g[0]; };
       // a figure's keyboard points are one stop, counted by the figure's place among the keyboard layers: an app may
       // redraw one figure when focus in another changes the selection, so its points are new nodes
       const plain = all.filter((n) => !n.closest(".prx-kbd-layer") && (!(n.tagName === "INPUT" && n.type === "radio" && n.name) || stopOf(n) === n));
       plain.forEach((n, i) => n.setAttribute("data-kb", String(i)));
-      const layers = [...root.querySelectorAll(".prx-kbd-layer")].filter((l) => l.querySelector("[tabindex='0']") && l.offsetParent !== null);
+      const layers = [...root.querySelectorAll(".prx-kbd-layer")].filter((l) => l.querySelector("[tabindex='0']") && visible(l));
+      // Explicit SVG indicators must be transparent before focus. An always-painted mark is not a focus ring.
+      root.querySelectorAll('[data-prx-focus-ring]').forEach(n=>n.dataset.kbUnfocusedStroke=getComputedStyle(n).stroke);
       return plain.length + layers.length;
     });
     const seen = new Set();
-    let ringMissing = 0;
+    const ringMissing = new Set();
+    const upMoves = [];
+    let prevStop = null;
     for (let k = 0; k < wanted + 12 && seen.size < wanted; k += 1) {
       await page.keyboard.press("Tab");
       const f = await page.evaluate(() => {
@@ -221,13 +244,41 @@ await pool(apps, 1, async (a) => {
         const id = layer && root.contains(layer) ? `layer:${[...root.querySelectorAll(".prx-kbd-layer")].indexOf(layer)}` : n.getAttribute("data-kb");
         if (id === null) return null;
         const cs = getComputedStyle(n);
-        return { id, ring: cs.outlineStyle !== "none" && parseFloat(cs.outlineWidth) > 0 };
+        const opaque = color => color !== 'none' && color !== 'transparent' && !/rgba\([^)]*,\s*0\s*\)$/.test(color);
+        const svgRing = [...n.querySelectorAll('[data-prx-focus-ring]')].some(r=>{
+          const s=getComputedStyle(r),b=r.getBoundingClientRect();
+          return opaque(s.stroke)&&!opaque(r.dataset.kbUnfocusedStroke)&&parseFloat(s.strokeWidth)>=2&&Number(s.strokeOpacity)*Number(s.opacity)>0&&b.width>0&&b.height>0;
+        });
+        const box = n.getBoundingClientRect();
+        return { id, key:n.dataset.prxFocusKey??n.tagName+':'+id, ring: (cs.outlineStyle !== "none" && parseFloat(cs.outlineWidth) > 0 && opaque(cs.outlineColor)) || svgRing, top: box.top + scrollY };
       });
-      if (f) { seen.add(f.id); if (!f.ring) ringMissing += 1; }
+      if (f) {
+        seen.add(f.id); if (!f.ring) ringMissing.add(f.key);
+        // review 044 repair (pilot review S3): report, without failing, a Tab step that jumps back up the page
+        if (prevStop && f.top < prevStop.top - CONFIG_TAB_UP_PX) upMoves.push(`${prevStop.key} → ${f.key} (${Math.round(prevStop.top)} → ${Math.round(f.top)} px)`);
+        prevStop = f;
+      }
     }
+    if (upMoves.length) console.log(`WARN ${where}: ${label}: Tab moves back up the page ${upMoves.length}×: ${upMoves.slice(0, 3).join("; ")}`);
     // a figure's keyboard points are one Tab stop (roving tabindex): only the point with tabindex 0 is counted
-    if (seen.size < wanted) fail(where, `Tab reached ${seen.size} of ${wanted} controls`);
-    if (ringMissing) fail(where, `${ringMissing} focused control(s) without a visible focus ring`);
+    if (seen.size < wanted) fail(where, `${label}: Tab reached ${seen.size} of ${wanted} controls`);
+    if (ringMissing.size) fail(where, `${label}: focused controls without a visible focus ring: ${[...ringMissing].join(', ')}`);
+    return `${label} ${seen.size}/${wanted}`;
+    }
+    const stops = [await walkKeyboard('default')];
+    // Expand through native summary activation, then inspect the real keyboard surface of the audit data too.
+    if (await page.$('[data-mdv-details]')) {
+      for (const kind of ['settings','data']) {
+        const summary=await page.$(`[data-mdv-details="${kind}"] > summary`);
+        if (summary) {
+          const open=await summary.evaluate(n=>n.parentElement.open);
+          if(!open){await summary.focus();await page.keyboard.press('Enter');}
+          if(!await summary.evaluate(n=>n.parentElement.open))fail(where,`${kind}: Enter did not open the disclosure`);
+        }
+      }
+      await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+      stops.push(await walkKeyboard('expanded'));
+    }
     const slider = await findSlider();
     if (slider) {
       const before = await page.evaluate(() => JSON.stringify(window.__prxApp.state));
@@ -243,11 +294,12 @@ await pool(apps, 1, async (a) => {
     if (presetButtons.length) {
       const last = presetButtons[presetButtons.length - 1];
       await last.focus();
+      if(!await last.evaluate(n=>n===document.activeElement))fail(where,'preset button did not receive keyboard focus');
       await page.keyboard.press("Enter");
       const on = await page.evaluate((el) => el.getAttribute("aria-pressed"), last);
       if (on !== "true") fail(where, "Enter on a preset button did not apply it");
     }
-    return { slowest: timing ? slowest.toFixed(1) : null, stops: `${seen.size}/${wanted}` };
+    return { slowest: timing ? slowest.toFixed(1) : null, stops: stops.join('; ') };
   });
   report(`${where} (${timing ? "speed, " : ""}keyboard)`, tab, res);
   if (verbose && res.stops) notes.push(`${where}: ${res.slowest ? `slowest update ${res.slowest} ms at CPU x4; ` : ""}Tab reached ${res.stops}`);

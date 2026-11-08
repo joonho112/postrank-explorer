@@ -9,21 +9,30 @@
 // posterior beside it, and a second way to set the posterior, from a stated model in which a shared, uncertain prior
 // mean makes the two posteriors move together.
 //
-// One state drives every part, all redrawn on every render:
-//   controls  "Posterior": set by hand (the two unit fieldsets of 1.8 and the correlation slider, |corr| ≤ .95) or
-//             from a shared prior mean (each unit's estimate and SE, the prior SD and the SD of the prior mean)
+// One state drives every part, all redrawn on every render. The app uses the shared result-first frame (base.js layout
+// "result-first"; review 044 repair, X-01), top to bottom:
+//   controls  "Posterior": set by hand or from a shared prior mean; then the preset row (before the fieldsets that
+//             depend on the choice, base.js afterPresets, so the row stays put when a preset switches between the two:
+//             review 044, X-18's placement); then those fieldsets: by hand, the two unit fieldsets of 1.8 and the
+//             correlation slider (|corr| ≤ .95; the primary control, base.js primaryControl), or from a shared prior
+//             mean, each unit's estimate and SE, the prior SD and the SD of the prior mean
+//   read-out  directly under the controls: π_AB with the correlation and the independent π_AB, and the side of one half
+//             the means fix
 //   pair      the ellipse that marks where .90 of the posterior of (θ_A, θ_B) lies, with the chosen correlation (solid)
 //             and for independent posteriors (dotted; from a shared prior mean, the same two posteriors taken as
 //             independent), the line θ_A = θ_B and the region below it shaded: its posterior probability is π_AB
-//             (engine pairDifference with { corr }). One key under it names the line styles of the pair and the
-//             difference (solid ellipse and dash-dot difference with the correlation, dotted without) and the + of the
-//             posterior means.
-//   units     each unit's posterior (1.8's upper figure: A solid, B dashed); correlation does not change it
+//             (engine pairDifference with { corr }); its title carries π_AB and the independent π_AB (review 044, X-01:
+//             the answer next to the mark the correlation turns; ctx.primaryGraphic marks this figure)
 //   diff      the posterior of A − B with the chosen correlation (dash-dot, the area above 0 shaded) and for
 //             independent posteriors (dotted), as in v1's box; the result line under it
-//   formula   with a shared prior mean, the correlation it gives; the general formula with corr; the formula at these
-//             settings
-//   read-out  π_AB with the correlation and the independent π_AB, and the side of one half the means fix
+//   units     each unit's posterior (1.8's upper figure: A solid, B dashed); correlation does not change it
+//   key       one key that names the line styles of the pair and the difference (solid ellipse and dash-dot difference
+//             with the correlation, dotted without) and the + of the posterior means
+//   formula   under the figures, always shown: with a shared prior mean, the correlation it gives; the general formula
+//             with corr; the formula at these settings
+// The figures follow the result-first order (the panels the correlation changes first): in a wide container the pair
+// with the key under it on the left, the difference above each unit's posterior on the right; in a narrow one pair,
+// difference, units, key, in DOM order (so focus follows what is seen at every width).
 //
 // The shared prior mean (closed form, exact; engine sharedMeanPosterior): estimate y_i ~ N(θ_i, SE_i²); given the
 // prior mean μ, θ_i ~ N(μ, prior SD²), independently; μ ~ N(0, SD_μ²). Given μ, each posterior is normal and keeps the
@@ -242,7 +251,7 @@ export const CONFIG = Object.freeze({
     sideStaysBelow: " stays below one half at every correlation.",
     sideHalf: " is one half at every correlation.",
     // the caption's gloss when the browser computes the posterior from the stated model
-    gloss: "In plain words: this prior was chosen for teaching, and this browser computes the posterior from it.",
+    gloss: "Uncertainty about the shared prior mean gives the two posterior values their dependence.",
   }),
   tex: Object.freeze({
     sdDiff: "\\mathrm{SD}_{A-B}",
@@ -270,6 +279,8 @@ const C = CONFIG.chart;
 const X = CONFIG.tex;
 const M = CONFIG.model;
 const SVG_NS = "http://www.w3.org/2000/svg";
+// a space that does not break a line (the pair title keeps "(independent .760)" together)
+const NBSP = " ";
 const dec = (digits) => (x) => formatDecimal(x, { digits });
 
 /** Display rules by how the posterior was set: by hand its numbers are settings; from the model they are computed. */
@@ -287,12 +298,16 @@ export const CSS = `${TWO_CSS}
 .cu .cu-set { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; flex: 1 1 100%; min-width: 0; }
 .cu .cu-set > .prx-two-units-unit { flex: 1 1 15rem; }
 .cu .prx-two-units-unit .prx-hint { margin-top: 0.1rem; }
-.cu .cu-figs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.85rem 1.25rem; align-items: start; }
+/* the figures in result-first order (review 044, X-01): narrow, one column in DOM order (pair, difference, units, key);
+   wide, the pair with the key under it on the left and the difference above the units on the right */
+.cu .cu-figs { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "pair" "side" "key"; gap: 0.85rem 1.25rem;
+  align-items: start; }
 .cu .cu-fig { min-width: 0; }
-.cu .cu-pair { max-width: 27rem; }
-.cu .cu-side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.85rem; min-width: 0; }
+.cu .cu-pair { grid-area: pair; max-width: 27rem; }
+.cu .cu-side { grid-area: side; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.85rem; min-width: 0; }
+.cu .cu-figs > .cu-key { grid-area: key; }
 @container (min-width: 48rem) {
-  .cu .cu-figs { grid-template-columns: minmax(0, 26rem) minmax(0, 1fr); }
+  .cu .cu-figs { grid-template-columns: minmax(0, 26rem) minmax(0, 1fr); grid-template-areas: "pair side" "key side"; grid-template-rows: auto 1fr; }
   .cu .cu-pair { max-width: none; }
 }
 .cu .cu-key { display: flex; flex-wrap: wrap; gap: 0.15rem 1rem; margin: 0; padding: 0.25rem 0.5rem 0.35rem;
@@ -699,6 +714,9 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: CONFIG.className,
     css: CSS,
+    // the shared result-first frame (review 044 repair, X-01): the controls, the read-out directly under them, then the
+    // figures and the formula box; base.js only moves nodes (keys, presets, hooks and the live region are the same)
+    layout: "result-first",
     keys: appKeys(),
     build(ctx) {
       const { h } = ctx;
@@ -717,6 +735,8 @@ export function mountWidget(el, spec = {}) {
         hint: [T.corrHintA, num(CONFIG.corr.max, formatSetting(CONFIG.corr.max), "corr-max"), T.corrHintB],
       });
       corr.input.setAttribute("aria-label", T.corrName);
+      // the correlation slider moves the pair figure (review 044: base.js primaryControl; the mode switch comes first)
+      ctx.primaryControl(corr.root);
       const pairSet = h("fieldset", { class: "prx-control prx-two-units-unit" }, h("legend", { text: T.pairLegend }), corr.root);
       const handSet = h("div", { class: "cu-set", "data-prx-source": "hand" }, ...units.roots, pairSet);
 
@@ -736,11 +756,15 @@ export function mountWidget(el, spec = {}) {
         modelSlider("meanSd", T.meanSd, T.meanSdName, [T.meanSdHintA, ctx.num(M.meanSd.min, formatSetting(M.meanSd.min)), T.meanSdHintB]));
       const sharedSet = h("div", { class: "cu-set", "data-prx-source": "shared" }, ...modelUnits, priorSet);
       // only the fieldsets of the way the posterior is set are in the page (swapped in render), so the first slider
-      // is always one the reader sees
+      // is always one the reader sees. They follow the preset row (base.js afterPresets; a swap keeps the place): the
+      // two sets differ in height (by 72 px on a page at 1280), so above it they would move the preset buttons when a
+      // preset switches between them (review 044: presetShift; X-18's placement)
       let shownSet = handSet;
-      ctx.controls.append(source.root, shownSet);
+      ctx.controls.append(source.root);
+      ctx.afterPresets(shownSet);
 
-      // --- figures: the pair (square) beside each unit's posterior and the difference with its result line
+      // --- figures: the pair (square, its title carrying π_AB), the difference with its result line above each unit's
+      // posterior, then the key (review 044, X-01: the panels the correlation changes first)
       ctx.charts.classList.add("prx-two-units-charts");
       const pairSlot = h("div", { class: "prx-two-units-panel" });
       const unitsSlot = h("div", { class: "prx-two-units-panel" });
@@ -772,11 +796,16 @@ export function mountWidget(el, spec = {}) {
       const key = ctx.part("legend", h("p", { class: "prx-light-panel cu-key" }, keyCorr, keyIndep, keyEqual, keyMeans, keyRegion, keyNote));
       const result = h("p", { class: "cu-result" });
       const title = (text) => ctx.panelTitle(text);
+      // the pair's title carries π_AB and the independent π_AB (written in render); the section keeps the plain name
+      const pairTitle = title(T.pairTitle);
+      const marginalScope = h("p", { class: "prx-two-units-note" });
+      const pairSection = ctx.primaryGraphic(h("section", { class: "cu-fig cu-pair", "aria-label": T.pairTitle }, pairTitle, pairSlot));
       ctx.charts.append(h("div", { class: "cu-figs" },
-        h("section", { class: "cu-fig cu-pair", "aria-label": T.pairTitle }, title(T.pairTitle), pairSlot, key),
+        pairSection,
         h("div", { class: "cu-side" },
-          h("section", { class: "cu-fig", "aria-label": T.unitsTitle }, title(T.unitsTitle), unitsSlot),
-          h("section", { class: "cu-fig", "aria-label": T.diffTitle }, title(T.diffTitle), diffSlot, result))));
+          h("section", { class: "cu-fig", "aria-label": T.diffTitle }, title(T.diffTitle), diffSlot, result),
+          h("section", { class: "cu-fig", "aria-label": T.unitsTitle }, title(T.unitsTitle), unitsSlot, marginalScope)),
+        key));
 
       // --- formulas: the model's correlation (shared prior mean only), the general formula, the formula at these settings
       const tex = (name, label) => ctx.scrollRegion(h("div", { class: "prx-two-units-tex", "data-prx-tex": name }), label);
@@ -795,7 +824,7 @@ export function mountWidget(el, spec = {}) {
           modelStep,
           h("div", { class: "prx-two-units-step" }, head(T.generalHead), general, gloss, claim),
           h("div", { class: "prx-two-units-step" }, head(T.workedHead), worked))));
-      ctx.root.insertBefore(formula, ctx.readout.node);
+      ctx.charts.append(formula);
       const g = generalTex();
       renderTex(general, g.tex, { display: true, nums: g.raws });
 
@@ -820,6 +849,15 @@ export function mountWidget(el, spec = {}) {
           T.resultC[mode], num(d.sdIndep, fmtSd(d.sdIndep), "corr-sd-indep"), T.resultD,
           piName(h, "AB"), ...probAfter(d.pi, "corr-pi"),
           T.resultC[mode], num(d.piIndep, probText(d.piIndep), "corr-pi-indep"), T.resultE);
+      }
+
+      /** The pair's title with its values (review 044, X-01): "…: π_AB = .694 (independent .760)"; from a shared prior
+       *  mean "(taken as independent …)"; at correlation 0 the two are one, so only "…: π_AB = .760". A bound reads
+       *  "π_AB above .999", "(independent below .001)". The space before the independent value does not break, so the
+       *  value never ends up alone on a line ("(independent .760)" wraps as one). */
+      function drawPairTitle(d, mode) {
+        const indep = d.corr === 0 ? [] : [" (", T.independent[mode], NBSP, num(d.piIndep, probText(d.piIndep), "pair-pi-indep"), ")"];
+        pairTitle.replaceChildren(T.pairTitle, ": ", piName(h, "AB"), ...probGives(d.pi, "pair-pi"), ...indep);
       }
 
       function drawModel(m) {
@@ -871,9 +909,13 @@ export function mountWidget(el, spec = {}) {
           keyCorr.hidden = d.corr === 0;
           keyCorrWords.textContent = `${T.keyCorr[mode]}${T.keyCorrParts}`;
           keyIndepWords.textContent = d.corr === 0 ? T.keyIndep.hand : T.keyIndep[mode];
+          drawPairTitle(d, mode);
           drawPair(pairSlot, d, fmt, mode);
-          drawUnits(unitsSlot, d, fmt);
           drawDiff(diffSlot, d, fmt, mode);
+          drawUnits(unitsSlot, d, fmt);
+          marginalScope.textContent = mode === "shared"
+            ? "In the shared-prior model, changing the prior can change each unit’s posterior spread."
+            : "The correlation slider changes the joint posterior; the two marginal means and spreads stay fixed.";
           drawResult(d, fmt, mode);
           if (mode === "shared") drawModel(p.model);
           else model.replaceChildren();

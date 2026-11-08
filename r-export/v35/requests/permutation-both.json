@@ -1,0 +1,196 @@
+{
+  "schemaVersion": "postrank-explorer-mdomain-v1",
+  "fixtureId": "permutation-both",
+  "description": "The same labelled finite-law decision problem in a different declared array order.",
+  "input": {
+    "inputId": "dependence-input-disjoint-both",
+    "lawId": "dependence-law-disjoint-both",
+    "representation": "exact_finite_law",
+    "coupling": "supplied_joint",
+    "unitIds": [
+      "B",
+      "A"
+    ],
+    "domainIds": [
+      "C",
+      "S"
+    ],
+    "stateIds": [
+      "++",
+      "-+",
+      "+-",
+      "--"
+    ],
+    "states": [
+      [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          -1
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          -1,
+          1
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          -1,
+          -1
+        ]
+      ]
+    ],
+    "masses": [
+      "4/5",
+      "1/10",
+      "1/10",
+      "0"
+    ],
+    "targets": [
+      {
+        "domainId": "C",
+        "definition": "Fictional C priority coordinate",
+        "units": "illustrative score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "B",
+          "A"
+        ],
+        "equalityProvenance": "No structural identities between the two units."
+      },
+      {
+        "domainId": "S",
+        "definition": "Fictional S priority coordinate",
+        "units": "illustrative score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "B",
+          "A"
+        ],
+        "equalityProvenance": "No structural identities between the two units."
+      }
+    ],
+    "provenance": {
+      "producer": "JoonHo Lee: self-contained dependence teaching law",
+      "conditioningInfo": "Specified finite law; no fitted observations or sampled draws.",
+      "jointGeneration": "Each labelled matrix contains both units and both domains; dependence is supplied by the exact masses.",
+      "finiteSupportOrigin": "The four listed matrices exhaust this specified law, including zero-mass rows.",
+      "properLaw": true
+    }
+  },
+  "decision": {
+    "decisionId": "dependence-equal-weights-direct-union-both",
+    "domainIds": [
+      "C",
+      "S"
+    ],
+    "scope": "all_pairs",
+    "weights": [
+      "1/2",
+      "1/2"
+    ],
+    "tau": [
+      "1/4",
+      "1/4"
+    ],
+    "q": null,
+    "t": [
+      "0",
+      "0"
+    ],
+    "alpha": "3/20"
+  },
+  "family": {
+    "familyId": "dependence-nine-product-cards-both",
+    "unitIds": [
+      "B",
+      "A"
+    ],
+    "domainIds": [
+      "C",
+      "S"
+    ],
+    "maxGrades": [
+      2,
+      2
+    ],
+    "maxActions": 9,
+    "banks": [
+      {
+        "domainId": "C",
+        "columns": [
+          {
+            "columnId": "withhold",
+            "grades": [
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "forward",
+            "grades": [
+              2,
+              1
+            ]
+          },
+          {
+            "columnId": "reverse",
+            "grades": [
+              1,
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "domainId": "S",
+        "columns": [
+          {
+            "columnId": "withhold",
+            "grades": [
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "forward",
+            "grades": [
+              2,
+              1
+            ]
+          },
+          {
+            "columnId": "reverse",
+            "grades": [
+              1,
+              2
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

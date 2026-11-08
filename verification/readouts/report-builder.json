@@ -1,7 +1,7 @@
 {
   "$schema": "./_schema.json",
   "catalog": "2.2",
-  "about": "G-02, a grade report placed by hand: the three catalog presets, raw queries (four sites 1/1/2/2, labels to tidy, blocks out of letter order), two update() paths (moving B into grade 1, switching to four sites) and three scripted predictions. Counts come from the base-R oracle rows disclosure-*, pairCount-*, canonicalGrade-* and familySize-n*-all (oracle-report-risk), from the postrank 1.1.0 golden evaluateReport rows of pr_tutorial$one (N, disclosure_rate, G), and from registry keys (part2.json, part2-g02.json), which the page writes; the report 1/2/2/2/2/3 (N 9, N/M .600, three grades, sizes 1, 4, 1) has the base-R row disclosure-1.2.2.2.2.3. Pairs inside a grade are pairCount of the grade's size. No probabilities, labels or captions: nothing is optimized on this page.",
+  "about": "G-02, a grade report placed by hand: the three catalog presets, raw queries (four sites 1/1/2/2, labels to tidy, blocks out of letter order), two update() paths (moving B into grade 1, switching to four sites) and three scripted predictions. Counts come from the base-R oracle rows disclosure-*, pairCount-*, canonicalGrade-* and familySize-n*-all (oracle-report-risk), from the postrank 1.1.0 golden evaluateReport rows of pr_tutorial$one (N, disclosure_rate, G), and from registry keys (part2.json, part2-g02.json), which the page writes; the report 1/2/2/2/2/3 (N 9, N/M .600, three grades, sizes 1, 4, 1) has the base-R row disclosure-1.2.2.2.2.3. Pairs inside a grade are pairCount of the grade's size. No probabilities, labels or captions: nothing is optimized on this page. Review 044 repair (G-E): the one-line result under the boxes (hooks result-N, result-M, result-share, result-withheld, result-G) is checked against the same rows; the counts block now sits in the closed \"Counts in detail\" box, read the same way.",
   "cases": [
     {
       "id": "one-four-one",
@@ -338,6 +338,76 @@
             "field": "N"
           },
           "value": 9
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-N\"]",
+          "about": "review 044 repair (G1-F2): the result line under the boxes, pairs stated (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2.2.3",
+            "field": "N"
+          },
+          "value": 9
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-M\"]",
+          "about": "the result line: pairs of six sites (base-R pairCount)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-6",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-share\"]",
+          "about": "the result line: share stated, N/M (base-R disclosure)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2.2.3",
+            "field": "s"
+          },
+          "value": 0.6
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-withheld\"]",
+          "about": "the result line: pairs withheld, all inside the grade of four sites (base-R pairCount for four units)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-4",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-G\"]",
+          "about": "the result line: number of grades (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2.2.3",
+            "field": "G"
+          },
+          "value": 3
         }
       ]
     },
@@ -601,6 +671,62 @@
             "field": "size"
           },
           "value": "4683"
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-N\"]",
+          "about": "the result line: pairs stated (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "N"
+          },
+          "value": 12
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-M\"]",
+          "about": "the result line: pairs (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "M"
+          },
+          "value": 15
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-share\"]",
+          "about": "the result line: share stated (base-R disclosure)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "s"
+          },
+          "value": 0.8
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-G\"]",
+          "about": "the result line: number of grades (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.1.2.2.3.3",
+            "field": "G"
+          },
+          "value": 3
         }
       ]
     },
@@ -735,6 +861,76 @@
             "field": "size"
           },
           "value": "75"
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-N\"]",
+          "about": "the result line: pairs stated (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "N"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-M\"]",
+          "about": "the result line: pairs of four sites (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "M"
+          },
+          "value": 6
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-share\"]",
+          "about": "the result line: share stated (base-R disclosure)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "s"
+          },
+          "value": 0.5
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-withheld\"]",
+          "about": "the result line: pairs withheld, all inside the grade of three sites (base-R pairCount for three units)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "pairCount-3",
+            "field": "M"
+          },
+          "value": 3
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-G\"]",
+          "about": "the result line: number of grades (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-1.2.2.2",
+            "field": "G"
+          },
+          "value": 2
         }
       ]
     },
@@ -950,6 +1146,34 @@
             2,
             2
           ]
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-N\"]",
+          "about": "the result line: pairs stated (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-3.1.2.1.3.2",
+            "field": "N"
+          },
+          "value": 12
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-share\"]",
+          "about": "the result line: share stated (base-R disclosure)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-3.1.2.1.3.2",
+            "field": "s"
+          },
+          "value": 0.8
         }
       ]
     },
@@ -1039,6 +1263,34 @@
             "field": "M"
           },
           "value": 1
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-N\"]",
+          "about": "the result line after update(): pairs stated (postrank 1.1.0); an update is not a move, so no change is shown",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112223",
+            "field": "N"
+          },
+          "value": 11
+        },
+        {
+          "select": ".prx-rb-result [data-prx-readout=\"result-share\"]",
+          "about": "the result line after update(): share stated (postrank disclosure_rate)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-report-risk",
+            "row": "evaluateReport-pr_tutorial-one-tau.2-112223",
+            "field": "s"
+          },
+          "value": 0.733333333333333
         }
       ]
     },

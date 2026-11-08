@@ -1611,6 +1611,358 @@
           }
         }
       ]
+    },
+    {
+      "id": "preset-w50",
+      "preset": "w50",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"grade-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.grade"
+          },
+          "value": [
+            1,
+            1,
+            1,
+            1,
+            2,
+            3
+          ],
+          "format": {
+            "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.N"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.risk"
+          },
+          "value": 0.09334318607505901,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Ew-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.Ew"
+          },
+          "value": 0.20014779112588488,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.E.0"
+          },
+          "value": 0.1596995934976001,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.EoverN.0"
+          },
+          "value": 0.017744399277511123,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"perpair-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.EoverM.0"
+          },
+          "value": 0.010646639566506673,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.Rk.0"
+          },
+          "value": 0.09064663956650669,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.E.1"
+          },
+          "value": 0.24059598875416963,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.EoverN.1"
+          },
+          "value": 0.02673288763935218,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"perpair-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.EoverM.1"
+          },
+          "value": 0.01603973258361131,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "settings-six-small-full",
+            "field": "rows.6.evaluation.Rk.1"
+          },
+          "value": 0.09603973258361133,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"N-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.N"
+          },
+          "value": 9,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"risk-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.risk"
+          },
+          "value": 0.09334318607505901,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Ew-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.Ew"
+          },
+          "value": 0.200147791125885,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.E.0"
+          },
+          "value": 0.15969959349760054,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.EoverN.0"
+          },
+          "value": 0.01774439927751117,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"perpair-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.EoverM.0"
+          },
+          "value": 0.010646639566506704,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.Rk.0"
+          },
+          "value": 0.09064663956650672,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.E.1"
+          },
+          "value": 0.24059598875416946,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"share-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.EoverN.1"
+          },
+          "value": 0.026732887639352162,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"perpair-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.EoverM.1"
+          },
+          "value": 0.016039732583611296,
+          "format": {
+            "fn": "formatShare"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"Rk-0-1\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.evaluation.Rk.1"
+          },
+          "value": 0.09603973258361131,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"tauN-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.conditionalBounds.weightedBudget.rows.0.qN"
+          },
+          "value": 1.8,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"bound-slack-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.conditionalBounds.weightedBudget.rows.0.slack"
+          },
+          "value": 1.5998522088741152,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"bound-residual-0\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-profiles",
+            "row": "two-scores-w0.5-0.5",
+            "field": "profiles.0.conditionalBounds.riskDifference"
+          },
+          "value": -0.106656813924941,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ],
+      "about": "Named w50 alias: defaults retain tau=.2 and cap=3, exactly the independent equal-weight report setting."
     }
   ]
 }

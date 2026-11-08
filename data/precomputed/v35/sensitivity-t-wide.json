@@ -1,0 +1,347 @@
+{
+  "schema_version": "postrank-integration-card-1.2.0-v1",
+  "package_version": "1.2.0",
+  "case_id": "sensitivity-t-wide",
+  "case_role": "sensitivity",
+  "runtime_postrank_object": false,
+  "purpose": "Frozen output illustration only; not raw input, a fitted object, or a new validation.",
+  "attribution": {
+    "author": "JoonHo Lee",
+    "copyright": "Copyright 2026 JoonHo Lee",
+    "title": "From Noisy Indicators to Pre-K Funding Priorities",
+    "source_url": "https://github.com/joonho112/need-based-prek-funding-tutorial",
+    "content_license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "original_code_license": "MIT; no original tutorial code is copied in this asset.",
+    "changes": "Extracted two selected grade matrices and aggregate card/diagnostic counts; retained fictional IDs and domain/chain identities; excluded posterior states, geography, source school records and catchments."
+  },
+  "source_identity": {
+    "repository_commit": "ff223082b27c8af92f762c20f49092f06b19a913",
+    "sha256": "bd36f6c0bad7d8d5abb540899b8d8ddca536e2705410118ddfc76d6b6bb5c590",
+    "original_dimensions": {
+      "retained_iterations": 4000,
+      "chains": 4,
+      "units": 40,
+      "domains": 2
+    },
+    "representation": "mcmc_equal_weight_draws",
+    "original_iterations": [
+      2001,
+      6000
+    ]
+  },
+  "targets": {
+    "S": "Student-composition economic need; existing latent references and new-site conditional predictions.",
+    "C": "Catchment-community economic need for the declared community profile.",
+    "orientation": "larger_is_higher",
+    "grade_orientation": "smaller_is_higher_priority",
+    "S_identity_classes": 40,
+    "C_identity_classes": 38,
+    "C_identity_pairs": [
+      [
+        "S05",
+        "S06"
+      ],
+      [
+        "S21",
+        "S22"
+      ]
+    ]
+  },
+  "domain_ids": [
+    "S",
+    "C"
+  ],
+  "grade_tuple_fields": [
+    "unit_id",
+    "S",
+    "C"
+  ],
+  "grade_tuples": [
+    [
+      "S01",
+      2,
+      3
+    ],
+    [
+      "S02",
+      2,
+      3
+    ],
+    [
+      "S03",
+      2,
+      3
+    ],
+    [
+      "S04",
+      2,
+      3
+    ],
+    [
+      "S05",
+      2,
+      3
+    ],
+    [
+      "S06",
+      2,
+      3
+    ],
+    [
+      "S07",
+      2,
+      3
+    ],
+    [
+      "S08",
+      2,
+      3
+    ],
+    [
+      "S09",
+      2,
+      3
+    ],
+    [
+      "S10",
+      2,
+      3
+    ],
+    [
+      "S11",
+      1,
+      2
+    ],
+    [
+      "S12",
+      1,
+      2
+    ],
+    [
+      "S13",
+      1,
+      1
+    ],
+    [
+      "S14",
+      1,
+      1
+    ],
+    [
+      "S15",
+      2,
+      3
+    ],
+    [
+      "S16",
+      1,
+      2
+    ],
+    [
+      "S17",
+      1,
+      1
+    ],
+    [
+      "S18",
+      2,
+      1
+    ],
+    [
+      "S19",
+      2,
+      1
+    ],
+    [
+      "S20",
+      2,
+      1
+    ],
+    [
+      "S21",
+      2,
+      3
+    ],
+    [
+      "S22",
+      2,
+      3
+    ],
+    [
+      "S23",
+      2,
+      2
+    ],
+    [
+      "S24",
+      1,
+      2
+    ],
+    [
+      "S25",
+      2,
+      1
+    ],
+    [
+      "S26",
+      1,
+      1
+    ],
+    [
+      "S27",
+      1,
+      1
+    ],
+    [
+      "S28",
+      2,
+      3
+    ],
+    [
+      "S29",
+      2,
+      2
+    ],
+    [
+      "S30",
+      2,
+      2
+    ],
+    [
+      "S31",
+      2,
+      2
+    ],
+    [
+      "S32",
+      1,
+      1
+    ],
+    [
+      "S33",
+      2,
+      2
+    ],
+    [
+      "S34",
+      2,
+      2
+    ],
+    [
+      "S35",
+      2,
+      3
+    ],
+    [
+      "S36",
+      2,
+      3
+    ],
+    [
+      "S37",
+      2,
+      3
+    ],
+    [
+      "S38",
+      2,
+      3
+    ],
+    [
+      "S39",
+      2,
+      3
+    ],
+    [
+      "S40",
+      2,
+      3
+    ]
+  ],
+  "design": {
+    "original_units": 40,
+    "original_pairs": 780,
+    "column_counts": {
+      "S": 7,
+      "C": 7
+    },
+    "candidate_product": 49,
+    "max_grades": 3,
+    "cut_positions": [
+      10,
+      20,
+      30
+    ],
+    "order_rule": "Decreasing selection-state posterior mean, then original unit order.",
+    "candidate_order_uses_selection_states": true,
+    "weights": [
+      "1/2",
+      "1/2"
+    ],
+    "tau": "1/10",
+    "q": "1/20",
+    "alpha": "1/20",
+    "scope": "all original pairs",
+    "t": "1/10"
+  },
+  "state_roles": {
+    "state_id_recipe": "synthetic40:chain=<chain_id>:iteration=<original_iteration>",
+    "selection_chain_ids": [
+      "1",
+      "2"
+    ],
+    "diagnostic_chain_ids": [
+      "3",
+      "4"
+    ],
+    "states_per_role": 8000,
+    "chain_split_establishes_independence": false
+  },
+  "results": {
+    "N_S": 300,
+    "N_C": 500,
+    "risk_exact": "716341/12480000",
+    "selection_J_exact": "133/4000",
+    "diagnostic_J_exact": "229/8000",
+    "diagnostic_risk_exact": "717433/12480000",
+    "selection_union_hits": 266,
+    "diagnostic_union_hits": 229,
+    "optimizer_count": 1,
+    "feasible_candidates": 14
+  },
+  "derived_display": {
+    "occupancy_rows_C_columns_S": [
+      [
+        6,
+        4
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        0,
+        20
+      ]
+    ],
+    "pair_class_counts": {
+      "neither": 232,
+      "C_only": 248,
+      "S_only": 48,
+      "same": 236,
+      "crossed": 16
+    },
+    "unique_disclosed_pairs": 548,
+    "crossed_pairs": 16,
+    "occupied_cells": 5,
+    "total_cells": 6
+  },
+  "assurance": {
+    "arithmetic": "Exact rational arithmetic on supplied equal-weight empirical measures.",
+    "numerical_guarantee": false,
+    "intended_posterior_feasibility_certified": false,
+    "independent_validation_claim": false,
+    "original_analysis_executed_in_vignette": false
+  }
+}

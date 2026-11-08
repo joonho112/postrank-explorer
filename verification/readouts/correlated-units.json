@@ -3,7 +3,7 @@
   "app": "correlated-units",
   "catalog": "1.9",
   "from": "postrank-explorer-v1 verification/readouts/two-units.json (the correlation box's cases)",
-  "about": "Two correlated normal posteriors. The result line under the difference figure gives corr, the SD of the difference with corr and independent, and pi_AB with corr and independent; the read-out repeats corr, pi_AB and the independent pi_AB; the formula at these settings has 11 numbers (SD_A, SD_B, 2, corr, SD_A, SD_B, SD of the difference, gap, SD of the difference, z, pi_AB); the slider's note names its end, .95. Ported from v1's correlation-box cases (corr50, corr-plus-sites, corr-minus-sites, corr-unequal, corr-negative-means, corr-clamped, corr-minus95) without deeper=corr, which v3 does not have: the box is the app. In corr50 the core read-out's independent pi_AB is the result line's independent value, and the slider, figure and table indices count this app's own (the correlation slider is the fifth slider; the difference figure and its table are the third). Probabilities are rows of the base-R oracle (oracle-pairwise, pairDirection); settings, the gap, the SDs of the difference and z come from v1's frozen registry (settings.*, cf.pair.*). New in v3: the presets independent, corr95 and shared-mean, an update case, and the shared prior mean. With equal SEs the shared prior mean cancels from the difference, so its pi_AB is Phi(B(y_A - y_B)/sqrt(2 B SE^2)) = Phi(.04/sqrt(.016)) = Phi(sqrt(.1)), whatever the SD of the prior mean: the same value as Phi(.2/sqrt(.4)) at means .30 and .10 with SDs .20 and .60, which the oracle row and the registry give independently; z is sqrt(.1) for the same reason. The model's other numbers (the correlation .645, the posterior means and SDs) have no golden row yet; they are read back by the general rules only. The model's posterior is engine sharedMeanPosterior when the prior mean is uncertain (case shared-mean) and, with its SD at 0, the known-mean limit, engine normalPosterior with correlation 0 (case shared-known-mean), so both branches are pinned.",
+  "about": "Two correlated normal posteriors. The result line under the difference figure gives corr, the SD of the difference with corr and independent, and pi_AB with corr and independent; the read-out repeats corr, pi_AB and the independent pi_AB; the formula at these settings has 11 numbers (SD_A, SD_B, 2, corr, SD_A, SD_B, SD of the difference, gap, SD of the difference, z, pi_AB); the slider's note names its end, .95. Ported from v1's correlation-box cases (corr50, corr-plus-sites, corr-minus-sites, corr-unequal, corr-negative-means, corr-clamped, corr-minus95) without deeper=corr, which v3 does not have: the box is the app. In corr50 the core read-out's independent pi_AB is the result line's independent value, and the slider, figure and table indices count this app's own (the correlation slider is the fifth slider; the difference figure and its table are the third). Probabilities are rows of the base-R oracle (oracle-pairwise, pairDirection); settings, the gap, the SDs of the difference and z come from v1's frozen registry (settings.*, cf.pair.*). New in v3: the presets independent, corr95 and shared-mean, an update case, and the shared prior mean. With equal SEs the shared prior mean cancels from the difference, so its pi_AB is Phi(B(y_A - y_B)/sqrt(2 B SE^2)) = Phi(.04/sqrt(.016)) = Phi(sqrt(.1)), whatever the SD of the prior mean: the same value as Phi(.2/sqrt(.4)) at means .30 and .10 with SDs .20 and .60, which the oracle row and the registry give independently; z is sqrt(.1) for the same reason. The model's other numbers (the correlation .645, the posterior means and SDs) have no golden row yet; they are read back by the general rules only. The model's posterior is engine sharedMeanPosterior when the prior mean is uncertain (case shared-mean) and, with its SD at 0, the known-mean limit, engine normalPosterior with correlation 0 (case shared-known-mean), so both branches are pinned. Review 044 repair (X-01): the figures now read in result-first order (the pair, the difference with its result line, each unit's posterior, the key), so the difference is the second figure and the units' the third: the index-based selectors of the difference's text alternative and of the two hidden tables' captions follow them (same figures, same literals). The pair figure's title carries pi_AB and the independent pi_AB (hooks pair-pi, pair-pi-indep), checked in cases independent, corr50, corr-minus95 and shared-mean against the result line's oracle rows.",
   "cases": [
     {
       "id": "default",
@@ -146,7 +146,7 @@
           "about": "the posteriors are set by hand for teaching (caption in its v3 wording)",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": "svg[role=\"img\"]",
@@ -160,7 +160,7 @@
         },
         {
           "select": "svg[role=\"img\"]",
-          "index": 2,
+          "index": 1,
           "attr": "aria-label",
           "kind": "text",
           "about": "text alternative of the difference figure at corr 0: only the independent curve is drawn",
@@ -170,12 +170,26 @@
         },
         {
           "select": "[data-prx-part~=\"table\"] caption",
-          "index": 1,
+          "index": 2,
           "kind": "text",
           "about": "caption of the units' figure's data table (as in 1.8)",
           "source": "literal",
           "ref": "11.4",
           "value": "Posterior mean and SD of each unit"
+        },
+        {
+          "select": "[data-prx-readout=\"pair-pi\"]",
+          "about": "the pair figure's title: pi_AB (at correlation 0 the only value; review 044, X-01)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-forward",
+            "field": "pi"
+          },
+          "value": 0.760249938906523
         }
       ]
     },
@@ -379,7 +393,7 @@
         },
         {
           "select": "[data-prx-part~=\"table\"] caption",
-          "index": 2,
+          "index": 1,
           "kind": "text",
           "about": "caption of the difference figure's data table",
           "source": "literal",
@@ -388,7 +402,7 @@
         },
         {
           "select": "svg[role=\"img\"]",
-          "index": 2,
+          "index": 1,
           "attr": "aria-label",
           "kind": "text",
           "about": "text alternative of the difference figure",
@@ -414,6 +428,34 @@
           "source": "literal",
           "ref": "11.4",
           "value": "The posterior of the pair (A, B): the probability of each side of the line where the two true values are equal"
+        },
+        {
+          "select": "[data-prx-readout=\"pair-pi\"]",
+          "about": "the pair figure's title: pi_AB with corr .50 (review 044, X-01)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-corr.50",
+            "field": "pi"
+          },
+          "value": 0.841344746068543
+        },
+        {
+          "select": "[data-prx-readout=\"pair-pi-indep\"]",
+          "about": "the pair figure's title: the independent pi_AB",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-forward",
+            "field": "pi"
+          },
+          "value": 0.760249938906523
         }
       ]
     },
@@ -668,6 +710,34 @@
           "source": "registry",
           "ref": "cf.pair.p1.diffsd",
           "value": 0.2828427124746189
+        },
+        {
+          "select": "[data-prx-readout=\"pair-pi\"]",
+          "about": "the pair figure's title: pi_AB with corr -.95 (the review's loss check: .694 next to the turned ellipse)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-corr-.95",
+            "field": "pi"
+          },
+          "value": 0.693701423576451
+        },
+        {
+          "select": "[data-prx-readout=\"pair-pi-indep\"]",
+          "about": "the pair figure's title: the independent pi_AB (.760)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-forward",
+            "field": "pi"
+          },
+          "value": 0.760249938906523
         }
       ]
     },
@@ -719,7 +789,7 @@
           "about": "the prior is set by hand for teaching (caption in its v3 wording)",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": "svg[role=\"img\"]",
@@ -733,7 +803,7 @@
         },
         {
           "select": "[data-prx-part~=\"table\"] caption",
-          "index": 2,
+          "index": 1,
           "kind": "text",
           "about": "caption of the difference figure's data table with the model's correlation",
           "source": "literal",
@@ -766,6 +836,20 @@
           "source": "literal",
           "ref": "9.4",
           "value": "k, the share kept, is the weight each posterior puts on its own estimate, given the prior mean; the rest goes to the prior mean. Given both estimates the prior mean has variance v = ⟨v⟩ (SD ⟨sdv⟩), and both true values lean on it, so they move together. Posterior means ⟨ma⟩ and ⟨mb⟩, SDs ⟨sa⟩ and ⟨sb⟩."
+        },
+        {
+          "select": "[data-prx-readout=\"pair-pi\"]",
+          "about": "the pair figure's title: pi_AB with the model's correlation, Phi(sqrt(.1))",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.60-forward",
+            "field": "pi"
+          },
+          "value": 0.624085182977075
         }
       ]
     },

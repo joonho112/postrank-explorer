@@ -7,6 +7,16 @@ import { spawnSync } from 'node:child_process';
 import { makeWindow, sleep } from '../dom-env.mjs';
 import { caseInput } from '../../js/shared/case-inputs.js';
 import { DEFAULTS, designerModel, mountWidget, csvText, exportR, exportTables, reportSentence, sentenceHints } from '../../js/apps/report-designer.js';
+// The v3.5 gate supplies POSTRANK_LIB=.R-library-v35 and requires 1.2.0.
+// Unset POSTRANK_LIB preserves the historical 1.1.0 replay environment.
+const ROOT = resolve(import.meta.dirname, '../..');
+const POSTRANK_LIB = resolve(ROOT, process.env.POSTRANK_LIB || '.R-library');
+const POSTRANK_VERSION = process.env.POSTRANK_LIB ? '1.2.0' : '1.1.0';
+const rBinding = `.libPaths(unique(c(${JSON.stringify(POSTRANK_LIB)}, .libPaths())))
+stopifnot(identical(as.character(utils::packageVersion("postrank", lib.loc=${JSON.stringify(POSTRANK_LIB)})), ${JSON.stringify(POSTRANK_VERSION)}))
+suppressPackageStartupMessages(library("postrank", lib.loc=${JSON.stringify(POSTRANK_LIB)}, character.only=TRUE))
+stopifnot(identical(normalizePath(getNamespaceInfo(asNamespace("postrank"), "path"), mustWork=TRUE), normalizePath(file.path(${JSON.stringify(POSTRANK_LIB)}, "postrank"), mustWork=TRUE)))
+`;
 const settings = key => ({ case: key, ...DEFAULTS[key], qa: null, qb: null });
 test('budget edits check the same report and N=0 keeps undefined shares', () => {
     const initial = designerModel(settings('cde')), budgeted = designerModel({ ...settings('cde'), qa: .0001 });
@@ -66,13 +76,13 @@ test('CSV escaping preserves quotes, commas, newlines and Unicode labels with co
     assert.ok(sentenceHints('λ = τ').some(h=>h.repair.includes('different loss parameters')));
     assert.ok(sentenceHints('Equal scores with a confidence level and error rate.').length >= 3);
 });
-test('the downloaded R scripts execute with postrank1.1.0 and round-trip every released coefficient and supplied marginal at double precision', () => {
+test(`the downloaded R scripts execute with postrank ${POSTRANK_VERSION} and round-trip every released coefficient and supplied marginal at double precision`, () => {
     const dir = mkdtempSync(join(tmpdir(), 'prx-designer-export-'));
     try {
         for (const key of ['cde', 'krw', 'alabama']) {
             const m = designerModel(settings(key)), binary = join(dir, key + '.bin'), file = join(dir, key + '.R'), ids = join(dir, key + '-ids.txt');
-            writeFileSync(file, exportR(m) + `\nwriteBin(c(as.double(e),as.double(summaries$means),as.double(summaries$lower),as.double(summaries$upper),summaries$level,settings$tau,as.double(settings$weights),as.double(q),archive_record$tau,as.double(archive_record$weights),archive_record$lower_bound,archive_record$gap),${JSON.stringify(binary)},size=8,endian="little")\nwriteLines(ids,${JSON.stringify(ids)},useBytes=TRUE)\nstopifnot(as.character(packageVersion("postrank"))=="1.1.0")\n`);
-            const run = spawnSync('Rscript', [file], { encoding: 'utf8', env: { ...process.env, R_LIBS_USER: process.env.POSTRANK_LIB || resolve('.R-library') } });
+            writeFileSync(file, rBinding + exportR(m) + `\nwriteBin(c(as.double(e),as.double(summaries$means),as.double(summaries$lower),as.double(summaries$upper),summaries$level,settings$tau,as.double(settings$weights),as.double(q),archive_record$tau,as.double(archive_record$weights),archive_record$lower_bound,archive_record$gap),${JSON.stringify(binary)},size=8,endian="little")\nwriteLines(ids,${JSON.stringify(ids)},useBytes=TRUE)\n`);
+            const run = spawnSync('Rscript', [file], { encoding: 'utf8', cwd: ROOT, timeout: 30000, env: { ...process.env, R_LIBS_USER: POSTRANK_LIB } });
             assert.equal(run.status, 0, run.stderr);
             const bytes = readFileSync(binary), values = [];
             for (let k = 0; k < m.input.K; k++)
@@ -100,7 +110,7 @@ test('reporting models retain target orientation and posterior conditioning with
         assert.ok(text.includes(d.conditioning));
         for (const c of d.criteria) assert.ok(text.includes(d.targets[c]));
         assert.match(text, /tie tolerance/);
-        assert.match(text, /unassessed units suppressed rather than graded last/);
+        assert.match(text, /Only units in this case’s comparison set receive grades/);
         assert.equal(sentenceHints(text, m).length, 0, 'the declared targets and expected-rank order are valid terminology');
     }
     assert.equal(sentenceHints('tau .2; cap three; criterion weights; within this family. A grade is not a tier or a rank.').length, 0);

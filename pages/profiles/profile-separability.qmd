@@ -1,0 +1,75 @@
+---
+title: "Separate or joint?"
+subtitle: "P.2 · Domain profiles"
+description: "Additive loss. A joint guard can change the choices."
+---
+
+[Multiple criteria](../criteria/index.qmd#domain-profiles) → [Domain profiles](index.qmd)
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/profile-separability.js"></script>
+<script>window.__prxApp = PRX["profile-separability"].mountWidget(document.getElementById("app"));</script>
+```
+
+```{=html}
+<details>
+<summary>Examples, method and R reproduction</summary>
+```
+
+Start with the grade columns that appear in at least one feasible card. If every such column in one domain can
+be combined with every such column in the other, the feasible cards form a Cartesian product. With additive
+expected loss, choosing a column with the lowest weighted loss in each domain then gives a joint optimum.
+Every combination of tied minima is also optimal.
+This condition can hold even when outcomes are dependent. A joint cap can rule out some combinations
+even when outcomes are independent.
+
+## Numerical illustrations {#what-to-try}
+
+- **Dependent domains, separate choices.** Coincident reversals give a feasible product of all nine cards.
+  Both domains prefer A ahead, with total risk 1/10, even though their targets are dependent.
+- **Different dependence, same minimum.** Disjoint reversals leave each domain's distribution and weighted
+  losses unchanged. With the joint cap disabled, stating A ahead in both domains still gives the unique
+  optimum at risk 1/10.
+- **Zero loss weight in S.** All three S columns have the same weighted loss, and C still favors A ahead.
+  The three resulting cards tie at risk 1/10. Their unweighted losses in S differ.
+- **Independent domains with a joint guard.** The feasible family has three cards and fails the product condition.
+  The two domain minima sum to 1/10, but the card that combines them has joint-event probability 19/100,
+  above the cap 3/20. The two feasible optima each state a direction in one domain, at risk 7/40.
+- **Joint guard with coincident failures.** Four feasible cards form a product of two columns per domain.
+  The best card states A ahead in both domains. Its risk and joint-event probability are both 1/10.
+
+With independent reversals, zero S weight, and an active cap, a feasible card still reaches the lower bound
+of 1/10. Some combinations of weighted minima exceed the cap, but only one needs to pass to reach the bound.
+Errors in S still count toward the cap when its loss weight is zero.
+
+::: {.callout-note appearance="simple"}
+The fictional distributions have the same marginals. The calculation evaluates the nine cards in this
+example, with expected-error caps disabled and the joint cap set separately. A shared grade leaves the
+direction unstated. If the supplied law approximates another posterior, feasibility under that posterior
+requires a separate check.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+The [R script](../../data/recipes/profile-separability.R) reproduces all twelve settings with postrank 1.2.0
+and gmp. It uses the public results to identify each domain's feasible columns and weighted minima.
+
+```r
+source("profile-separability.R")
+result <- profile_separability()
+result$summary
+```
+:::
+
+Source: [postrank multidomain decisions](https://joonho112.github.io/postrank/articles/mdomain-decisions.html).
+
+Standalone: [open this app](../../embed/profile-separability.html), for example `?preset=independent-joint&theme=dark`.
+
+Related applications: [Common or profile?](profile-common-vs-domain.qmd) and
+[Error overlap](profile-dependence.qmd).
+
+```{=html}
+</details>
+```

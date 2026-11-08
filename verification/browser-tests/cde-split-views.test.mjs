@@ -8,6 +8,24 @@ const oracle=id=>rows.find(r=>r.id===id).expect;
 const catalog=JSON.parse(readFileSync(new URL('../../catalog.json',import.meta.url),'utf8'));
 const names=['cde-cuts','cde-one-disclosure','cde-pair','cde-tau-path'];
 const near=(a,b)=>assert.ok(Math.abs(a-b)<=1e-12,`${a} versus independent ${b}`);
+const activeOptimumApps=new Set(['cde-pair','cde-tau-path']);
+const frontier=oracle('cde-complete-frontier');
+async function checkActiveOptimum(page,name){
+ if(!activeOptimumApps.has(name))return;
+ const actual=await page.$eval('.prx-cd-optimum-chart',chart=>({
+  tau:window.__prxApp.state.tau,
+  drawn:chart.querySelector('svg').checkVisibility(),
+  schools:chart.querySelectorAll('table tbody tr').length,
+  grades:[...chart.querySelectorAll('[data-prx-readout^=optimum-school-grade-]')].map(e=>[
+   Number(e.dataset.prxReadout.split('-').at(-1)),Number(e.dataset.num),
+  ]).sort(([a],[b])=>a-b),
+ }));
+ const ref=frontier.intervals.find(i=>actual.tau>i.tauFrom&&actual.tau<=i.tauTo);
+ assert.ok(ref,`independent frontier interval for τ=${actual.tau}`);
+ assert.ok(actual.drawn,'active optimum chart is displayed');
+ assert.equal(actual.schools,12,'active optimum card keeps every school');
+ assert.deepEqual(actual.grades,ref.grade.map((g,i)=>[i,g]),`active optimum at τ=${actual.tau}`);
+}
 
 test('CDE split views retain every school, complete distribution and boundary through native presets and controls',async t=>{
  const server=await startServer(DOCS),browser=await launchChrome();
@@ -36,11 +54,22 @@ test('CDE split views retain every school, complete distribution and boundary th
     if(name==='cde-one-disclosure'){const ref=oracle('cde-complete-N48');assert.equal(actual.count,ref.count);assert.deepEqual(actual.bins,ref.bins);assert.equal(actual.bins.reduce((s,b)=>s+b.count,0),34650);}
     if(name==='cde-tau-path'){const ref=oracle('cde-complete-frontier');actual.boundaries.forEach((v,i)=>near(v,ref.endpointOptima[i].tau));assert.deepEqual(actual.changes,ref.pathChanges.map(c=>({stated:c.nNewDisclosed,withheld:c.nNewWithheld,reversed:c.nReversed,pairs:c.pairs.length})));}
     if(name==='cde-cuts'&&preset.id==='tertiles'){const ref=oracle('cde-cut-reports').reports[0];assert.equal(actual.evaluation.N,ref.evaluation.N);near(actual.evaluation.risk,ref.evaluation.risk);}
+    await checkActiveOptimum(page,name);
+   }
+   // Cuts and matched disclosure put τ in Settings. Open it using the native summary before moving the range.
+   const settings=await page.$('details[data-prx-disclosure="settings"]:not([open]) > summary');
+   if(settings){
+    await settings.focus();await page.keyboard.press('Enter');
+    assert.ok(await settings.evaluate(s=>s.parentElement.open),'Settings opens by keyboard');
    }
    // The real native range reaches both exact endpoints and keeps focus after the full staged work.
-   await page.focus('input[name=tau]');await page.keyboard.press('Home');await waitForWidgetIdle(page);assert.equal(await page.evaluate(()=>__prxApp.state.tau),.01);
+   await page.focus('input[name=tau]');
+   assert.equal(await page.evaluate(()=>document.activeElement.name),'tau','focus reaches the native τ range');
+   await page.keyboard.press('Home');await waitForWidgetIdle(page);assert.equal(await page.evaluate(()=>__prxApp.state.tau),.01);
+   await checkActiveOptimum(page,name);
    await page.keyboard.press('End');await waitForWidgetIdle(page);assert.equal(await page.evaluate(()=>__prxApp.state.tau),.5);
    assert.equal(await page.evaluate(()=>document.activeElement.name),'tau');
+   await checkActiveOptimum(page,name);
    nativeEvents+=await page.evaluate(()=>__cdeTrusted);contexts++;
    assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);
   }finally{await page.close();}

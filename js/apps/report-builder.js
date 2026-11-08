@@ -1,7 +1,7 @@
 // A report decides all pairs through ordered grades. Counts and relations come from the engine.
 import { createWidget, uid } from "../shared/base.js";
 import { canvasLayer, gradeColors, labelOn, numText, palette, plot } from "../shared/chart.js";
-import { formatCount, formatGrades, formatShare, formatSizes, blocksText } from "../shared/format.js";
+import { formatCount, formatGrades, formatShare, formatSigned, formatSizes, blocksText } from "../shared/format.js";
 import { canonicalGrade, disclosure, familySize, pairCount, relations } from "../pr-core.js";
 import SIX from "../../data/released/six-sites.json" with { type: "json" };
 
@@ -16,8 +16,11 @@ export const CONFIG = Object.freeze({
   starts: Object.freeze({ 4: Object.freeze([1, 2, 2, 2]), 6: Object.freeze([1, 2, 2, 2, 2, 3]) }),
   // the side fact: possible reports of 2 … 6 sites
   sizes: Object.freeze({ from: 2, to: 6 }),
-  // a pointer press becomes a drag after this many px
-  drag: Object.freeze({ threshold: 5 }),
+  // a mouse or pen press becomes a drag after `threshold` px. A touch press (review 044 repair, G1-F3) becomes a drag
+  // only after it is held for holdMs ms without moving more than touchSlop px, or when it first moves mostly sideways
+  // (at least touchSlop px across, and more than `sideways` times as far across as up or down): the chips allow
+  // vertical panning, so a vertical swipe that starts on a site scrolls the page and leaves the report as it was
+  drag: Object.freeze({ threshold: 5, holdMs: 350, touchSlop: 8, sideways: 1.5 }),
   matrix: Object.freeze({
     marginTop: 22, marginLeft: 22, marginRight: 4, marginBottom: 4,
     minCell: 30, maxCell: 52, inset: 0.5, dotShare: 0.3, hatchSpacing: 6, hatchWidth: 1.2,
@@ -31,6 +34,19 @@ export const CONFIG = Object.freeze({
     unitsHint: "Switching starts from that size's first report.",
     builderHeading: "The report",
     builderHint: "Drag a site onto another grade, or tap it and then tap a grade. With the keyboard, focus a site and press the number of a grade; zero makes a new grade at the top, and the number after the last grade a new one at the bottom. Or press Enter to pick the site up, Up and Down to choose a grade, and Enter to drop it (Escape puts it back).",
+    // review 044 repair (G1-F2 in X-16, X-14): one visible line; the full text above moves into a closed box and stays
+    // the list's description (aria-describedby); the touch line says how a drag starts on a touch screen (G1-F3)
+    builderHintShort: "Drag or tap a site, then a grade.",
+    keysTitle: "Keyboard and touch",
+    touchHint: "On a touch screen, a swipe that starts on a site scrolls the page. To drag a site, hold it for a moment or move it sideways first; a tap on the site and then a tap on a grade also moves it.",
+    countsTitle: "Counts in detail",
+    // the one-line result under the boxes (review 044 repair, G1-F2 in X-16): the tiles' numbers in words
+    resultOf: "of",
+    resultPairsStated: "pairs stated",
+    resultWithheld: "withheld",
+    resultShare: "share",
+    resultGrade: "grade",
+    resultGrades: "grades",
     // the short description every site button carries; the long hint above describes the list once
     chipHint: "Press a grade number to move the site, or Enter to pick it up.",
     orientation: "Grade 1 = highest priority, the sites visited first; a larger grade number is a lower priority.",
@@ -73,7 +89,7 @@ export const CONFIG = Object.freeze({
     sideFor: "for",
     sideTail: "No two of them make the same pair decisions.",
     sideOfWords: Object.freeze({ 2: "two", 3: "three", 4: "four", 5: "five", 6: "six" }),
-    note: "Six fictional sites from the postrank tutorial, score A: a higher score means a higher priority. A report here is only a grade vector; no probability enters here.",
+    note: "The six fictional sites come from the postrank tutorial. A higher score A gives a site higher priority. The matrix counts the directions implied by the grade assignments.",
     states: "states",
     pairsOf: "of the",
     pairsWord: "pairs and withholds",
@@ -108,6 +124,8 @@ export const CONFIG = Object.freeze({
 
 const T = CONFIG.text;
 const MX = CONFIG.matrix;
+/** Render reasons that change no setting (base.js): the read-out is kept as it is on these. */
+const REDRAW_ONLY = new Set(["disclosure", "resize", "theme", "motion"]);
 const SVGNS = "http://www.w3.org/2000/svg";
 const IDS = Object.freeze(SIX.tables.units.id.slice());
 
@@ -313,7 +331,7 @@ function installRelationPointer(ctx, figure, layer) {
 }
 /** Actual relation grid. large retains all cells via canvas and one virtual keyboard target.
  * Optional rep.names/unit/units name generic inputs; selected/onFocus/onPick use zero-based i,j.
- * The caller places the large slot in a labelled two-axis scroll region. Default SVG behavior is unchanged. */
+ * The caller places the large slot in a labeled two-axis scroll region. Default SVG behavior is unchanged. */
 export function drawRelationMatrix(ctx, matrixSlot, matrixLegend, rep, { rel = relations(rep.g), changed = null, hatchId = uid("prx-rb-hatch"), large = false, selected = null, onFocus, onPick, onHover } = {}) {
     const { h } = ctx;
     const { n, ids, g } = rep;
@@ -322,10 +340,15 @@ export function drawRelationMatrix(ctx, matrixSlot, matrixLegend, rep, { rel = r
     if (names.length !== n)
         throw new RangeError("Relation matrix names must match its units");
     const wording = text => generic ? text.replace(/\bsites\b/g, units).replace(/\bsite\b/g, unit) : text;
-    if (!large && relationLayers.has(matrixSlot))
-        matrixSlot.style.width = "";
-    const idMeasure=generic?relationIdWidth(ctx,ids):{width:0,fontSize:12};
-    const marginLeft=generic?Math.max(MX.marginLeft,Math.ceil(idMeasure.width)+11):MX.marginLeft;
+    // Review 044 repair, G1-F4: the size is recomputed from the room the slot has now. The previous drawing's
+    // max-width (and, in large mode, width) is cleared before measuring, so a smaller report (four sites) does not cap
+    // the next one (338 -> 234 -> 230 px), and a wider window grows the matrix again.
+    matrixSlot.style.maxWidth = "";
+    matrixSlot.style.width = "";
+    // Row labels get the room they need (review 044 repair, X-09: 2.20's league ids "U04" lost their first glyph in
+    // the fixed 22 px margin). Single-letter sites measure below that margin, so their matrices are unchanged.
+    const idMeasure=relationIdWidth(ctx,ids);
+    const marginLeft=Math.max(MX.marginLeft,Math.ceil(idMeasure.width)+11);
     const avail = matrixSlot.clientWidth || Math.min(ctx.width(), MX.maxCell * n + marginLeft + MX.marginRight);
     const cell = Math.max(MX.minCell, Math.min(MX.maxCell, Math.floor((avail - marginLeft - MX.marginRight) / n)));
     const tickRotate=generic&&idMeasure.width>cell-3?-60:0;
@@ -434,6 +457,8 @@ export function drawRelationMatrix(ctx, matrixSlot, matrixLegend, rep, { rel = r
         },
     });
     if(generic)figure.figure.querySelectorAll('g[aria-label$="tick label"] text').forEach(node=>node.setAttribute('data-prx-name',''));
+    // the matrix's geometry, for a host that pins a copy of the row labels while its box scrolls (2.20; review 044, X-09)
+    figure.relationGeometry = { n, cell, width, height, marginLeft, marginTop, marginRight };
     if (large) {
         matrixSlot.style.width = `${width}px`;
         figure.figure.style.width = `${width}px`;
@@ -469,7 +494,10 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     title: CONFIG.title,
     className: CONFIG.className,
-    css: REPORT_BUILDER_CSS,
+    css: REPORT_BUILDER_CSS + REPORT_BUILDER_APP_CSS,
+    // the shared result-first frame (review 044, X-01): the units radio and the preset row, the read-out (the move
+    // narration and the summary, the one live region), then the builder beside the matrix; base.js only moves nodes
+    layout: "result-first",
     keys: {
       units: { type: "custom", value: CONFIG.units.value, parse: (v) => parseUnits(v) },
       grades: { type: "custom", value: Array.from(CONFIG.grades.value), parse: (v) => parseGrades(v) },
@@ -502,16 +530,29 @@ export function mountWidget(el, spec = {}) {
       const unitsHint = h("p", { class: "prx-hint prx-rb-units-hint", text: T.unitsHint });
       ctx.controls.append(unitsRadio.root, unitsHint);
 
-      // --- the builder (controls part: the boxes are the widget's main control)
-      const orientation = h("p", { class: "prx-rb-orientation", "data-prx-part": "legend", text: T.orientation });
+      // --- the builder (controls part: the boxes are the widget's main control). Review 044 repair (G1-F2 in X-16,
+      // X-14): the orientation line is plain text (no longer painted as a legend panel); one short visible hint, with
+      // the full keyboard text (still the list's aria-describedby) and the touch line in a closed "Keyboard and
+      // touch" box beside it; the one-line result directly under the boxes
+      const orientation = h("p", { class: "prx-rb-orientation", "data-prx-part": "notes", text: T.orientation });
+      const hintShort = h("p", { class: "prx-hint prx-rb-hint-short", text: T.builderHintShort });
+      const hintRow = h("div", { class: "prx-rb-hint-row" }, hintShort);
+      const keysBox = ctx.disclosure({ name: "keyboard", title: T.keysTitle, placement: { after: hintShort }, className: "prx-rb-keys" });
       const hint = h("p", { id: hintId, class: "prx-hint prx-rb-hint", text: T.builderHint });
+      const touchHint = h("p", { class: "prx-hint prx-rb-touch-hint", text: T.touchHint });
+      keysBox.body.append(hint, touchHint);
       const chipHint = h("p", { id: chipHintId, class: "prx-sr-only", text: T.chipHint });
       const boxes = h("ol", { class: "prx-rb-boxes", "aria-label": T.builderHeading, "aria-describedby": hintId });
+      // the control a reader changes first (base.js primaryControl): the boxes; the read-out sits above them, the
+      // one-line result directly under them
+      ctx.primaryControl(boxes);
+      const result = h("p", { class: "prx-rb-result", "data-prx-part": "readout" });
       const builder = h("section", { class: "prx-rb-builder", "data-prx-part": "controls", "aria-label": T.builderHeading },
-        h("h4", { class: "prx-rb-heading", text: T.builderHeading }), orientation, hint, chipHint, boxes);
+        h("h4", { class: "prx-rb-heading", text: T.builderHeading }), orientation, hintRow, chipHint, boxes, result);
 
-      // --- the matrix and counts
+      // --- the matrix (the graphic a move changes: base.js primaryGraphic) and counts
       const matrixSlot = h("div", { class: "prx-rb-matrix-chart" });
+      ctx.primaryGraphic(matrixSlot);
       const matrixLegend = h("div", { class: "prx-rb-legend", "data-prx-part": "legend" });
       const twice = h("p", { class: "prx-rb-note", "data-prx-part": "notes", text: T.twice });
       const matrixBox = h("section", { class: "prx-rb-matrix", "aria-label": T.readHeading },
@@ -525,8 +566,11 @@ export function mountWidget(el, spec = {}) {
       const sideLine = h("p", { class: "prx-rb-side", "data-prx-part": "notes" });
 
       const grid = h("div", { class: "prx-rb-grid" }, builder, matrixBox);
-      ctx.charts.append(grid, countsBox, sideLine);
-      ctx.charts.before(ctx.readout.node);
+      ctx.charts.append(grid);
+      // review 044 repair (X-14, G1-F12): the tiles, the rule line, the inside-grade table, the grade vector, the
+      // tidy line and the side fact, complete, in a closed box under the matrix; the result line keeps N, M, the
+      // share and the number of grades visible
+      ctx.disclosure({ name: "counts", title: T.countsTitle }).body.append(countsBox, sideLine);
       ctx.caption.textContent = T.note;
 
       // --- interaction state
@@ -592,7 +636,8 @@ export function mountWidget(el, spec = {}) {
         const r1 = relations(res.next);
         const cells = new Set();
         for (let a = 0; a < g.length; a += 1) for (let b = 0; b < g.length; b += 1) if (a !== b && r0[a][b] !== r1[a][b]) cells.add(`${a},${b}`);
-        changed = { after: res.next.slice(), cells };
+        // dN: the change in the stated pairs, shown in the result line while the outlines show this move
+        changed = { after: res.next.slice(), cells, dN: after.N - before.N };
         const lead = [`${siteName(i)} ${T.moved} `, count(res.next[i])];
         if (target === "top") lead.push(` ${T.movedTop}`);
         else if (target === "bottom") lead.push(` ${T.movedBottom}`);
@@ -696,7 +741,11 @@ export function mountWidget(el, spec = {}) {
         }
       }
 
-      // --- pointer drag (mouse, pen, touch): the chip follows the pointer; the box under it is the target
+      // --- pointer drag (mouse, pen, touch): the chip follows the pointer; the box under it is the target. A mouse or
+      // pen drag starts after CONFIG.drag.threshold px. A touch drag (review 044 repair, G1-F3) starts only after a
+      // press-and-hold (holdMs) or a first move that is mostly sideways: the chips allow vertical panning (CSS
+      // touch-action: pan-y), so a vertical swipe that starts on a site scrolls the page (the browser takes it and
+      // cancels the pointer) and the report stays as it was; tap, then tap a grade, is unchanged
       function boxAt(x, y) {
         const hit = typeof ctx.doc.elementFromPoint === "function" ? ctx.doc.elementFromPoint(x, y) : null;
         const box = hit?.closest?.(".prx-rb-box");
@@ -707,7 +756,8 @@ export function mountWidget(el, spec = {}) {
       }
       function endDrag() {
         if (!drag) return;
-        drag.chip.classList.remove("prx-rb-dragging");
+        drag.cancelHold?.();
+        drag.chip.classList.remove("prx-rb-dragging", "prx-rb-held");
         drag.chip.style.removeProperty("transform");
         markOver(null);
         builder.classList.remove("prx-rb-dragging-on");
@@ -715,16 +765,44 @@ export function mountWidget(el, spec = {}) {
       }
       function onPointerDown(e, i, chip) {
         if (e.pointerType === "mouse" && e.button !== 0) return;
-        drag = { i, chip, x: e.clientX, y: e.clientY, id: e.pointerId, active: false };
+        if (drag) endDrag(); // a second finger (or a lost pointerup) ends the earlier press
+        const touch = e.pointerType === "touch";
+        const d = { i, chip, x: e.clientX, y: e.clientY, id: e.pointerId, active: false, touch, held: false, cancelHold: null };
+        drag = d;
+        if (touch) {
+          // held still for holdMs: the press is a drag in any direction from now on (the chip shows it); endDrag (also
+          // run by destroy) clears the timer
+          const timer = ctx.win.setTimeout(() => {
+            d.cancelHold = null;
+            if (drag !== d || d.active) return;
+            d.held = true;
+            chip.classList.add("prx-rb-held");
+          }, CONFIG.drag.holdMs);
+          d.cancelHold = () => ctx.win.clearTimeout(timer);
+        }
+      }
+      /** Whether a press that has moved (dx, dy) px becomes a drag now. */
+      function startsDrag(d, dx, dy) {
+        const dist = Math.hypot(dx, dy);
+        if (!d.touch) return dist >= CONFIG.drag.threshold;
+        if (d.held) return dist >= CONFIG.drag.threshold;
+        const across = Math.abs(dx);
+        if (across >= CONFIG.drag.touchSlop && across > CONFIG.drag.sideways * Math.abs(dy)) return true;
+        // moved before the hold time and not sideways: a scroll (the browser takes it) or a tap's wobble
+        if (dist > CONFIG.drag.touchSlop) { d.cancelHold?.(); d.cancelHold = null; }
+        return false;
       }
       ctx.listen(ctx.win, "pointermove", (e) => {
         if (!drag || e.pointerId !== drag.id) return;
         const dx = e.clientX - drag.x;
         const dy = e.clientY - drag.y;
         if (!drag.active) {
-          if (Math.hypot(dx, dy) < CONFIG.drag.threshold) return;
+          if (!startsDrag(drag, dx, dy)) return;
           drag.active = true;
+          drag.cancelHold?.();
+          drag.cancelHold = null;
           if (picked) { picked = null; syncBuilder(); }
+          drag.chip.classList.remove("prx-rb-held");
           drag.chip.classList.add("prx-rb-dragging");
           builder.classList.add("prx-rb-dragging-on");
         }
@@ -732,6 +810,13 @@ export function mountWidget(el, spec = {}) {
         drag.chip.style.transform = `translate(${dx}px, ${dy}px)`;
         markOver(boxAt(e.clientX, e.clientY));
       });
+      // a touch drag (held, or started sideways) owns the finger: the page must not scroll under it. Touch events are
+      // the only way to stop the browser's own panning, and only from a listener that is not passive
+      ctx.listen(boxes, "touchmove", (e) => {
+        if (drag?.touch && (drag.active || drag.held) && e.cancelable) e.preventDefault();
+      }, { passive: false });
+      // no context menu or callout on a site that is being held to drag
+      ctx.listen(boxes, "contextmenu", (e) => { if (drag?.touch && e.target?.closest?.(".prx-rb-site")) e.preventDefault(); });
       ctx.listen(ctx.win, "pointerup", (e) => {
         if (!drag || e.pointerId !== drag.id) return;
         const d = drag;
@@ -810,6 +895,21 @@ export function mountWidget(el, spec = {}) {
         }
       }
 
+      /** The one-line result under the boxes (review 044 repair, G1-F2 in X-16): N of M pairs stated (with the change
+       *  the last move made, while its outlines show), the withheld pairs, the share stated and the number of grades,
+       *  the tiles' numbers in words, each with data-num and its own hook. */
+      function drawResult(rep, d) {
+        const dN = changed && same(changed.after, rep.g) ? changed.dN : 0;
+        const part = (...nodes) => h("span", { class: "prx-rb-result-part" }, ...nodes);
+        // "9 of 15 pairs stated (+2), share .600; 6 withheld; 3 grades." (the share follows the stated pairs it is of)
+        result.replaceChildren(
+          part(ro("result-N", d.N, formatCount(d.N)), ` ${T.resultOf} `, ro("result-M", d.M, formatCount(d.M)), ` ${T.resultPairsStated}`,
+            ...(dN ? [" (", ro("result-change", dN, formatSigned(dN, { digits: 0 })), ")"] : []), ","), " ",
+          part(`${T.resultShare} `, ro("result-share", d.s, formatShare(d.s)), ";"), " ",
+          part(ro("result-withheld", d.M - d.N, formatCount(d.M - d.N)), ` ${T.resultWithheld};`), " ",
+          part(ro("result-G", d.G, formatCount(d.G)), ` ${d.G === 1 ? T.resultGrade : T.resultGrades}.`));
+      }
+
       function drawSide(n) {
         const parts = [`${T.sideLead} `];
         for (const { n: k, count: size } of reportCountRows()) {
@@ -834,7 +934,11 @@ export function mountWidget(el, spec = {}) {
             drawBuilder();
             drawMatrix(current, rel);
             drawCounts(current, d);
+            drawResult(current, d);
             drawSide(current.n);
+            // a redraw that changes no setting (a box opened, a resize, a theme or motion change) keeps the read-out
+            // as it is, so the narration of the last move stays and nothing is announced again
+            if (REDRAW_ONLY.has(info.reason) && !note) return;
             const lead = note ? [...note, " "] : [];
             note = null;
             say([...lead, ...summary(current, d)]);
@@ -989,9 +1093,18 @@ export const REPORT_BUILDER_CSS = `
   border: 2px solid var(--prx-border-strong);
   border-radius: var(--prx-radius, 6px);
   cursor: grab;
-  touch-action: none;
+  /* review 044 repair, G1-F3: a vertical swipe that starts on a site scrolls the page; a touch drag starts after a
+     press-and-hold or a sideways move (report-builder's pointer code), so a scroll never edits the report */
+  touch-action: pan-y;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* a site held long enough to drag on a touch screen */
+.prx-rb .prx-rb-site.prx-rb-held {
+  outline: 2px dashed var(--prx-accent);
+  outline-offset: 2px;
 }
 
 .prx-rb .prx-rb-site:hover {
@@ -1192,5 +1305,55 @@ export const REPORT_BUILDER_CSS = `
 
 @media (prefers-reduced-motion: no-preference) {
   .prx-rb[data-motion="full"] .prx-rb-box { transition: border-color 0.12s, background-color 0.12s; }
+}
+`;
+
+// This app's own rules for its review 044 repair (G1-F2 in X-16, X-14): the short hint beside the closed "Keyboard and
+// touch" box, and the one-line result under the boxes. Kept out of REPORT_BUILDER_CSS, which 2.3, 2.20, T.1 and T.2
+// share, so their pages are unchanged.
+const REPORT_BUILDER_APP_CSS = `
+.prx-rb .prx-rb-hint-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  margin: 0 0 0.5rem;
+}
+
+.prx-rb .prx-rb-hint-row > .prx-rb-hint-short {
+  margin: 0;
+}
+
+.prx-rb .prx-rb-hint-row > .prx-rb-keys {
+  flex: 0 1 auto;
+  padding: 0 0.6rem;
+}
+
+.prx-rb .prx-rb-hint-row > .prx-rb-keys > summary {
+  padding: 0.3rem 0;
+  font-size: 0.9em;
+}
+
+.prx-rb .prx-rb-hint-row > .prx-rb-keys[open] {
+  flex-basis: 100%;
+}
+
+.prx-rb .prx-rb-keys .prx-rb-hint,
+.prx-rb .prx-rb-keys .prx-rb-touch-hint {
+  margin: 0 0 0.4rem;
+}
+
+.prx-rb .prx-rb-result {
+  margin: 0.5rem 0 0;
+  padding: 0.35rem 0.6rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  background: var(--prx-bg);
+  border-left: 3px solid var(--prx-accent);
+  border-radius: 4px;
+}
+
+.prx-rb .prx-rb-result-part {
+  white-space: nowrap;
 }
 `;

@@ -65,7 +65,7 @@ export function appendKrwNotice(ctx) {
 }
 
 /** Actual S-02 heat map, all97×97 cells. New angles pass highlighted unit indices; Part5 retains all three stages. */
-export function drawKrwHeat(ctx,slot,legend,model,{grade,tau,sort='mean',stage=2,highlight=[]}) {
+export function drawKrwHeat(ctx,slot,legend,model,{grade,tau,sort='mean',stage=2,highlight=[],pointer=false}) {
   const h=ctx.h,n=model.n,order=stage===3?blockOrder(model,grade,sort):keyOrder(model,sort),width=Math.min(560,Math.max(1,Math.round(slot.clientWidth||ctx.width())));
   const H={marginSide:2,marginTop:20,marginBottom:2,outline:2,halo:4,labelPx:14,labelDy:-5},inner=Math.max(1,width-2*H.marginSide),blocks=[];
   if(stage===3)order.forEach((i,p)=>{const g=grade[i],b=blocks[g-1]??(blocks[g-1]={grade:g,first:p,last:p});b.last=p;});
@@ -82,7 +82,7 @@ export function drawKrwHeat(ctx,slot,legend,model,{grade,tau,sort='mean',stage=2
     alt:'Every row–column firm pair: probability the row true value is higher. Thresholded cells retain blue; grade blocks and selected units are outlined when requested.',
     table:{caption:stage===1?'Every firm on the complete pair map':'Every firm: number of other firms it is stated above by the isolated strict threshold',columns:[{label:'Firm',value:'firm'},...(stage===3?[{label:'Card grade',value:'grade',format:formatCount}]:[]),...(stage>=2?[{label:'Naive stated above',value:'above',format:formatCount}]:[])],rows:tableRows},
     x:{domain:[0,n],axis:null},y:{domain:[0,n],axis:null,reverse:true},
-    keyboard:{data:cells,x:'q',y:'r',sort:false,columns:n,virtual:true,label:'Read the complete firm-pair probability matrix with arrow keys',title},
+    keyboard:{data:cells,x:'q',y:'r',sort:false,columns:n,virtual:true,pointer,label:'Read the complete firm-pair probability matrix with arrow keys',title},
     marks:(c,P)=>[P.frame({stroke:c.plotMuted}),P.rect(blocks.filter(Boolean),{x1:'first',x2:b=>b.last+1,y1:'first',y2:b=>b.last+1,fill:'none',stroke:c.plotBg,strokeWidth:H.halo}),P.rect(blocks.filter(Boolean),{x1:'first',x2:b=>b.last+1,y1:'first',y2:b=>b.last+1,fill:'none',stroke:c.plotFg,strokeWidth:H.outline}),numText(labeled,{x:'mid',y:()=>0,value:'grade',format:formatCount,dy:H.labelDy,lineAnchor:'bottom',textAnchor:'middle',fill:c.plotFg,fontWeight:'bold'}),P.rect(cells.filter(d=>d.i!==d.j&&highlight.includes(d.i)&&highlight.includes(d.j)),{x1:d=>d.q-.5,x2:d=>d.q+.5,y1:d=>d.r-.5,y2:d=>d.r+.5,fill:'none',stroke:c.plotFg,strokeWidth:1.8})]});
   if(stage>=2)slot.querySelectorAll('[data-prx-part="table"] tbody tr').forEach((row,p)=>{row.lastElementChild.dataset.prxUnitcount=String(order[p]);});
   if(!layer.canvas||!slot.contains(layer.canvas)){
@@ -98,15 +98,25 @@ export function drawKrwHeat(ctx,slot,legend,model,{grade,tau,sort='mean',stage=2
 }
 
 /** G-09 two-axis plot frame extended by the archived S-02 grid and quantile overlays. No interpolation certificate. */
-export function drawKrwAxes(ctx,slot,rows,{selected,overlays=[]}) {
+export function drawKrwAxes(ctx,slot,rows,{selected,overlays=[],dominance}) {
   const data=rows.map(r=>({x:r.DR,y:r.information,label:`KRW grid λ${formatSetting(r.lambda)}`,lambda:r.lambda}));
   const tier=overlays.map(r=>({x:r.DR,y:r.information,label:r.label})),cur=selected?{x:selected.DR,y:selected.information}:null;
   const maxX=Math.max(.25,...data.map(d=>d.x),...tier.map(d=>d.x))*1.06,maxY=Math.max(.5,...data.map(d=>d.y),...tier.map(d=>d.y))*1.06;
   const table=[...data,...tier],title=d=>`${d.label}: DR ${formatDecimal(d.x,{digits:4})}, I ${formatDecimal(d.y,{digits:4})}`;
+  const region=dominance?{x:dominance.benchmark.DR,y:dominance.benchmark.information}:null;
+  const better=dominance?.runs.flatMap((run,segment)=>run.map(r=>({x:r.DR,y:r.information,segment})))??[];
   return plot(slot,{width:Math.max(1,Math.round(slot.clientWidth||ctx.width())),height:330,marginTop:20,marginBottom:48,marginLeft:56,marginRight:22,
-    alt:'Archived KRW grid reports on two axes: expected wrong directions per pair horizontally and posterior informativeness vertically; fixed posterior-mean tiers are overlaid.',
+    alt:'Archived KRW grid reports on two axes: expected wrong directions per pair horizontally and posterior informativeness vertically; fixed posterior-mean tiers are overlaid.'+(region?' The shaded region is strictly better than the selected tier on both axes.':'') ,
     table:{caption:'The same released law evaluates every plotted report',columns:[{label:'Report',value:'label'},{label:'DR=E/M',value:'x',format:v=>formatDecimal(v,{digits:4})},{label:'I(g,θ)',value:'y',format:v=>formatDecimal(v,{digits:4})}],rows:table},
     x:{domain:[0,maxX],label:'DR = E/M (smaller is better)',labelAnchor:'center',labelArrow:'none'},y:{domain:[Math.min(0,...data.map(d=>d.y)),maxY],label:'I(g, θ) (larger is better)',labelArrow:'none',grid:true},
     keyboard:{data:table,x:'x',y:'y',sort:false,label:'Read KRW grid and fixed-tier points',title},
-    marks:(c,P)=>[P.ruleY([0],{stroke:c.plotAxis}),P.ruleX([0],{stroke:c.plotAxis}),P.line(data,{x:'x',y:'y',stroke:c.plotFg,strokeWidth:1.5}),P.dot(data,{x:'x',y:'y',r:2,fill:c.plotFg}),P.dot(tier,{x:'x',y:'y',symbol:'diamond',r:6,fill:c.est,stroke:c.plotBg}),...tier.map(d=>P.text([d],{x:'x',y:'y',text:'label',dy:d.label==='Quartiles'?16:-14,fill:c.estText,stroke:c.plotBg,strokeWidth:3,paintOrder:'stroke'})),P.dot(cur?[cur]:[],{x:'x',y:'y',r:8,fill:'none',stroke:c.plotFg,strokeWidth:2})]});
+    marks:(c,P)=>[
+      ...(region?[
+        P.rect([region],{x1:()=>0,x2:'x',y1:'y',y2:()=>maxY,fill:c.est,fillOpacity:.12}),
+        P.ruleX([region],{x:'x',y1:'y',y2:()=>maxY,stroke:c.est,strokeDasharray:'4,3'}),
+        P.ruleY([region],{y:'y',x1:()=>0,x2:'x',stroke:c.est,strokeDasharray:'4,3'}),
+      ]:[]),
+      P.ruleY([0],{stroke:c.plotAxis}),P.ruleX([0],{stroke:c.plotAxis}),P.line(data,{x:'x',y:'y',stroke:c.plotFg,strokeWidth:1.5}),P.dot(data,{x:'x',y:'y',r:2,fill:c.plotFg}),
+      P.line(better,{x:'x',y:'y',z:'segment',stroke:c.est,strokeWidth:2.6}),
+      P.dot(better,{x:'x',y:'y',r:2.7,fill:c.est}),P.dot(tier,{x:'x',y:'y',symbol:'diamond',r:6,fill:c.est,stroke:c.plotBg}),...tier.map(d=>P.text([d],{x:'x',y:'y',text:'label',dy:d.label==='Quartiles'?16:-14,fill:c.estText,stroke:c.plotBg,strokeWidth:3,paintOrder:'stroke'})),P.dot(cur?[cur]:[],{x:'x',y:'y',r:8,fill:'none',stroke:c.plotFg,strokeWidth:2})]});
 }

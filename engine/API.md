@@ -144,7 +144,7 @@ for the unrestricted family; the objective carries the offset Σ_{i≠j}(ebar_ij
 - `krwRisk` returns a number and accepts λ in [0, 1] (λ = 0 gives DR).
 - `reportCardRows(g, summaries, sort)`: `summaries = { ids?, expectedRank?, mean? }`, default sort `expected_rank`; remaining ties by unit id (code-point order, as R radix sort).
 - Conveniences: one common SD; n-vectors when K = 1; `probs = null` means equal weights; default ids A, B, … then U01, U02, ….
-- Not in the API (left out deliberately): `errorMatrix` (use `errorArray`), `drawTruth` (Step 2.10 `gaussianDraws`), composite-target pair probabilities (P-04 uses known states only), KRW relabelling d_i = G + 1 − g_i (a G-09 table entry, not a function).
+- Not in the API (left out deliberately): `errorMatrix` (use `errorArray`), `drawTruth` (Step 2.10 `gaussianDraws`), composite-target pair probabilities (P-04 uses known states only), KRW relabeling d_i = G + 1 − g_i (a G-09 table entry, not a function).
 
 ## Simulated league specification (SR-06; used by `league30` and `drawLeague`)
 - Units U01 … U30 (index i = 1 … 30). Size cycles 16, 64, 256 starting at U01 (U01 = 16, U02 = 64, U03 = 256, U04 = 16, …);
@@ -308,7 +308,7 @@ oracle-simulate; verification/parity-exempt.json is empty.
   4/4/2/8/79, 4/4/2/6/97, 3/5/2/8/70, 5/3/2/7/77, 4/4/2/8/71.
 
 ### `unitRelationCounts(g)` → `{ n, partners, above, below, stated, withheld }`
-- g: integer grade labels (any integers; canonicalised first, smallest label = grade 1), n ≥ 1.
+- g: integer grade labels (any integers; canonicalized first, smallest label = grade 1), n ≥ 1.
 - above[i] = #{j : g_i < g_j} (i stated above j); below[i] = #{j : g_i > g_j}; stated[i] = above[i] + below[i];
   withheld[i] = #{j ≠ i : g_j = g_i} (the other units of its grade); partners = n − 1 = stated[i] + withheld[i].
   These are the counts of +1, −1, nonzero and off-diagonal 0 in row i of `relations(g)`.
@@ -569,7 +569,7 @@ randomized report or a design over datasets (theory book ch. 16, "Averaging conv
 fractions"). With weights p: ERR = Σ p·A / Σ p·N (null when Σ p·N = 0); meanFraction = Σ_{N>0} p·A/N / Σ_{N>0} p
 (null when no case discloses); zeroImputed = Σ_{N>0} p·A/N; positiveFrequency = Σ_{N>0} p; meanDisclosure =
 Σ p·N/M (null without M). Sums run in case order. Without `weights` the cases are equally likely (the current
-behaviour, unchanged).
+behavior, unchanged).
 Example: cases (A, N) = (2, 2), (0, 3), (0, 0) with weights (1/2, 1/4, 1/4) and M 3: ERR 1/(7/4) = 4/7, meanFraction
 (1/2)/(3/4) = 2/3, zeroImputed 1/2, positiveFrequency 3/4, meanDisclosure 7/12.
 
@@ -903,7 +903,7 @@ Neither needs a new estimation function. Monte Carlo top-membership estimates re
 
 Implemented after independent source/mathematics audits. R35 supplies135 independent base-R rows;
 all37 parity groups/17,966 comparison fields agree with no exemptions. The original32 complete
-toy states are released with source provenance and exact double round-trip checks (R36).
+toy states record their source and include exact double round-trip checks (R36).
 The signatures and numerical boundaries below are the public contract; application-specific
 compositions do not authorize a second numerical implementation in the UI.
 
@@ -955,7 +955,7 @@ actualBracketInclusions:{innerSubsetExact,exactSubsetOuter,innerSubsetNominal,no
 
 App4.14 defaults to book's deterministic Ehat_AB=t, Eexact_AB=t+.1, reverse complements, q=t+.05, tau.25, t0/.2 and epsilon.1 presets. Epsilon control is a PROPOSED envelope radius with exact/estimated laws kept fixed, so reducing it may make event/brackets fail. Say so. Canonical decimal strict check can fail by roundoff while advisory check and actual inclusions hold; label numerical comparisons transparently, not theorem failure/model failure. Distinguish exact family empty from inner family empty (not certified).
 
-A separately labelled fixed-S IID illustration may use six-site exact Normal law, seeded whole-state draws, drawErrors and the existing book/package envelopeRadius with stated alpha allocation and actual1.17 producer reuse. 1-alpha concerns repeated fixed-size numerical samples conditional on law, not posterior probability of protection or model calibration. No MCMC ESS substitution/adaptive stopping. Do not add a constrained-regret certificate to a membership-only app.
+A separately labeled fixed-S IID illustration may use six-site exact Normal law, seeded whole-state draws, drawErrors and the existing book/package envelopeRadius with stated alpha allocation and actual1.17 producer reuse. 1-alpha concerns repeated fixed-size numerical samples conditional on law, not posterior probability of protection or model calibration. No MCMC ESS substitution/adaptive stopping. Do not add a constrained-regret certificate to a membership-only app.
 
 ### 8. drawErrors additive raw counts
 
@@ -969,7 +969,7 @@ Toy32: export actual tensor from ../postrank-R-package-public/inst/examples/synt
 
 Settings lattice: explicit Cartesian settings, stable row IDs, exactOptimum/evaluateReport/relationChange; not package default one-at-a-time. Preserve sparse archived30 source path/status/gap without interpolation as exact breakpoints. Cap changes FAMILY, not LOSS; fixed law,tau,w risks across caps are comparable. Increasing nested cap cannot raise exact optimum risk. Changes of tau/w change loss.
 
-Restated exact laws: chapter19 states/probs and coupling editor from concept-audit note, tagged source/provenance; no new released data needed for tiny pedagogical law constants. Every new output and the finite-composite/shuffle/settings compositions need independent R35 pins. New exports4: normalComposite, compareReports, pairConstrainedOptimum, protectionEnvelopes. Existing function additions4: pairDecision, commonalityCost, weightBreakpoints, drawErrors. No new exemptions.
+The exact states and probabilities come from chapter 19, and the coupling editor comes from the concept audit. These small examples specify their laws directly. The independent R35 references cover the new outputs and the finite-composite, shuffle, and settings examples. New exports are `normalComposite`, `compareReports`, `pairConstrainedOptimum`, and `protectionEnvelopes`. The changes also extend `pairDecision`, `commonalityCost`, `weightBreakpoints`, and `drawErrors`.
 
 ### Approved fixed-report correct-fraction composition (4.13)
 

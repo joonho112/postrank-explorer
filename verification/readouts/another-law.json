@@ -230,6 +230,37 @@
               "digits": 4
             }
           }
+        },
+        {
+          "select": "[data-prx-readout=\"ro-best-evaluation\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-same",
+            "field": "r11"
+          },
+          "value": 0.0416516399454871,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out names the evaluation law’s own best risk"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-same",
+            "field": "deltaW"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 4
+            }
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out names δ when the bounds are 0 or say nothing"
         }
       ]
     },
@@ -460,6 +491,51 @@
               "digits": 4
             }
           }
+        },
+        {
+          "select": "[data-prx-readout=\"ro-best-evaluation\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-move",
+            "field": "r11"
+          },
+          "value": 0.0542441078611637,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out names the evaluation law’s own best risk"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-move",
+            "field": "deltaW"
+          },
+          "value": 0.848913652436349,
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 4
+            }
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out names δ when the bounds are 0 or say nothing"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-sharp-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-move",
+            "field": "regretBound"
+          },
+          "value": 1.3016676004024,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out compares the regret with the sharper bound"
         }
       ]
     },
@@ -690,6 +766,34 @@
               "digits": 4
             }
           }
+        },
+        {
+          "select": "[data-prx-readout=\"ro-best-evaluation\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-spread",
+            "field": "r11"
+          },
+          "value": 0.0779028325716426,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out names the evaluation law’s own best risk"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-sharp-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-spread",
+            "field": "regretBound"
+          },
+          "value": 0.245630979374954,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out compares the regret with the sharper bound"
         }
       ]
     },
@@ -920,6 +1024,34 @@
               "digits": 4
             }
           }
+        },
+        {
+          "select": "[data-prx-readout=\"ro-best-evaluation\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-uncapped",
+            "field": "r11"
+          },
+          "value": 0.0370216137581941,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out names the evaluation law’s own best risk"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-sharp-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-uncapped",
+            "field": "regretBound"
+          },
+          "value": 0.625021280151947,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out compares the regret with the sharper bound"
         }
       ]
     },
@@ -1150,6 +1282,34 @@
               "digits": 4
             }
           }
+        },
+        {
+          "select": "[data-prx-readout=\"ro-best-evaluation\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-small",
+            "field": "r11"
+          },
+          "value": 0.0471051313707548,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out names the evaluation law’s own best risk"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-sharp-bound\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "another-law-small",
+            "field": "regretBound"
+          },
+          "value": 0.0254522807532437,
+          "format": {
+            "fn": "formatRisk"
+          },
+          "about": "review 044 repair (G4-F6 copy): the read-out compares the regret with the sharper bound"
         }
       ]
     }

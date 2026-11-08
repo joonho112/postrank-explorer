@@ -2,7 +2,7 @@
   "$schema": "./_schema.json",
   "app": "computing-grades",
   "catalog": "2.16",
-  "about": "Independent package/base-R pins for counts, binary pattern, fixed-order and full-family risks. Runtime solver checked separately for lazy loading, offline operation and risk-scale objective accounting.",
+  "about": "Independent package/base-R pins for counts, binary pattern, fixed-order and full-family risks. Runtime solver checked separately for lazy loading, offline operation and risk-scale objective accounting. Review 044 repair: new marks pinned too (the read-out's label and both risks, the strip's grades, the counts written beside the points at 12 units, the family-bound bars).",
   "cases": [
     {
       "id": "dp-default",
@@ -125,6 +125,126 @@
           "format": {
             "fn": "formatCount"
           }
+        },
+        {
+          "about": "review 044 repair: the DP read-out (replacement copy) names the order's label from labels.js",
+          "select": ".prx-readout [data-prx-label]",
+          "source": "literal",
+          "ref": "6.2",
+          "kind": "text",
+          "value": "optimal within this order"
+        },
+        {
+          "about": "review 044 repair: the DP risk in the read-out",
+          "select": "[data-prx-readout=\"dp-readout-risk\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "about": "review 044 repair: the enumeration's risk in the read-out",
+          "select": "[data-prx-readout=\"dp-readout-capped-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "risk"
+          },
+          "value": 0.0416516399454871,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "about": "review 044 repair: each site's grade written under the grade strip",
+          "select": "[data-prx-readout=\"strip-grade-A\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "grade.0"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "about": "review 044 repair: each site's grade written under the grade strip",
+          "select": "[data-prx-readout=\"strip-grade-B\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "grade.1"
+          },
+          "value": 1,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "about": "review 044 repair: each site's grade written under the grade strip",
+          "select": "[data-prx-readout=\"strip-grade-C\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "grade.2"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "about": "review 044 repair: each site's grade written under the grade strip",
+          "select": "[data-prx-readout=\"strip-grade-D\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "grade.3"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "about": "review 044 repair: each site's grade written under the grade strip",
+          "select": "[data-prx-readout=\"strip-grade-E\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "grade.4"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "about": "review 044 repair: each site's grade written under the grade strip",
+          "select": "[data-prx-readout=\"strip-grade-F\"]",
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-six-A-pmorder-cap3-tau.20",
+            "field": "grade.5"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
         }
       ]
     },
@@ -160,6 +280,48 @@
         },
         {
           "select": "[data-prx-readout=\"count-order\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-order-atMost3",
+            "field": "size"
+          },
+          "value": "67",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "about": "review 044 repair: the count written beside the all-reports point at 12 units",
+          "select": "[data-prx-readout=\"count-label-all\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-all",
+            "field": "size"
+          },
+          "value": "28091567595",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "about": "review 044 repair: the count written beside the capped point at 12 units",
+          "select": "[data-prx-readout=\"count-label-capped\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n12-atMost3",
+            "field": "size"
+          },
+          "value": "523251",
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "about": "review 044 repair: the count written beside the one-order point at 12 units",
+          "select": "[data-prx-readout=\"count-label-order\"]",
           "source": "oracle",
           "ref": {
             "group": "oracle-report-risk",
@@ -317,6 +479,62 @@
           "value": 0.15,
           "format": {
             "fn": "formatRisk"
+          }
+        },
+        {
+          "about": "review 044 repair: the family-bound example's exactly-four-grades bar",
+          "select": "[data-prx-readout=\"book-bar-exact\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-ties",
+            "row": "fixedOrderDPTrace-tb14-ABCD-cap4-tau1/4",
+            "field": "riskByG.3"
+          },
+          "value": 0.175,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
+          "about": "review 044 repair: the family-bound example's at-most-four-grades bar",
+          "select": "[data-prx-readout=\"book-bar-cap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-ties",
+            "row": "fixedOrderDPTrace-tb14-ABCD-cap4-tau1/4",
+            "field": "risk"
+          },
+          "value": 0.15,
+          "format": {
+            "fn": "formatRisk"
+          }
+        }
+      ]
+    },
+    {
+      "id": "solver-six-before-click",
+      "preset": "joint-solver-six",
+      "expect": [
+        {
+          "about": "The six-unit preset shows a feasible fixed-order candidate and waits for the solver action. The numeric risk is checked against exhaustive enumeration in the real-browser test.",
+          "select": ".prx-readout",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "slots": true,
+          "value": "Fixed-order candidate risk ⟨risk⟩. Joint solver not run at these settings."
+        },
+        {
+          "select": ".prx-cg-scope [data-prx-family-size]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "familySize-n6-order",
+            "field": "size"
+          },
+          "value": "32",
+          "format": {
+            "fn": "formatCount"
           }
         }
       ]

@@ -1,4 +1,4 @@
-/* postrank Explorer solver bundle (Node, in-process): engine/src/mip.ts with highs-js 1.15.4 (HiGHS compiled to WebAssembly; the wasm bytes are inlined as base64). Build script: engine/scripts/build-solver.mjs; do not edit.
+/* postrank Explorer solver bundle (Node, in-process): engine/src/mip.ts with highs-js 1.15.4 (HiGHS compiled to WebAssembly; the wasm bytes are inlined as base64). Built by engine/scripts/build-solver.mjs; do not edit.
 
 highs-js license:
 MIT License

@@ -21,10 +21,12 @@ const fill = (ctx, parts, slots = {}) => parts.flatMap(p => { const m = /^\{(\w+
 const key = g => Array.from(g).join(',');
 let cloudCache = null;
 
-export function createKrwAxesView(ctx, slot) {
+export function createKrwAxesView(ctx, slot, { pointer = false } = {}) {
   const h = ctx.h, chart = h('div', { class: 'kb-cloud' }), sentence = h('p', { class: 'kb-line' });
+  const axisKey = h('p', { class: 'kb-note' }, 'Grade vector order: ', h('span', { 'data-prx-name': '', text: E6.ids.join(' / ') }),
+    '. A shared grade leaves a comparison unstated. DR divides expected errors by all pairs. The uppermost equal-risk line touches the best report.');
   const note = h('p', { class: 'kb-note' }, T.axesNote, ' See ', h('a', { href: '../../pages/grades/frontier.html', text: 'The frontier' }), '.');
-  const root = h('section', { class: 'kb-axes' }, ctx.panelTitle(T.axesHead), h('div', { class: 'kb-figure' }, chart), sentence, note);
+  const root = h('section', { class: 'kb-axes' }, ctx.panelTitle(T.axesHead), h('div', { class: 'kb-figure' }, chart), sentence, axisKey, note);
   slot.append(root);
   let layer = null, paint = [];
   return { root, render(model, cloud) {
@@ -38,7 +40,7 @@ export function createKrwAxesView(ctx, slot) {
     const fig = plot(chart, { alt: T.axesAlt.replace('4,683', formatCount(FAMILY_COUNT)), height: 300, marginTop: 30, marginRight: 14, marginBottom: 42, marginLeft: 48,
       table: { caption: T.axesTable, columns: [{ label: T.colN, value: 'N', format: formatCount, header: true }, { label: T.colReports, value: 'count', format: formatCount }, { label: T.colMinDR, value: 'dr', format: formatShare }, { label: T.colTopI, value: 'inf', format: v => formatSig(v, { sig: 3 }) }], rows: cloud.rows },
       x: { domain: [0, 1], ticks: 5, label: T.axesX, labelAnchor: 'center', labelArrow: 'none' }, y: { domain: [-1, 1], ticks: 5, label: T.axesY, labelAnchor: 'center', labelArrow: 'none' },
-      keyboard: { data: cloud.points, x: 'x', y: 'y', sort: false, virtual: true, label: 'Read every six-site report on KRW’s axes', title: d => `Report ${formatGrades(d.grade)}: ${formatCount(d.N)} stated pairs; DR ${formatShare(d.x)}; correct minus wrong per pair ${formatSig(d.y, { sig: 3 })}.` },
+      keyboard: { data: cloud.points, x: 'x', y: 'y', sort: false, virtual: true, pointer, label: 'Read every six-site report on KRW’s axes', title: d => `Report ${formatGrades(d.grade)}: ${formatCount(d.N)} stated pairs; DR ${formatShare(d.x)}; correct minus wrong per pair ${formatSig(d.y, { sig: 3 })}.` },
       marks: (c, P) => [P.ruleY([0], { stroke: c.plotAxis }), P.ruleX([0], { stroke: c.plotAxis }), P.line(line, { x: 'x', y: 'y', stroke: c.plotFg, strokeWidth: 1.75, clip: true }), P.dot([{ x: 0, y: 0 }], { x: 'x', y: 'y', r: 4, fill: c.wh, stroke: c.plotBg }), P.text([{ x: 0, y: 0 }], { x: 'x', y: 'y', text: () => T.allWithheld, dx: 8, dy: 10, textAnchor: 'start', fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: 'stroke' }), P.dot(best, { x: 'x', y: 'y', r: 7, fill: 'none', stroke: c.plotFg, strokeWidth: 2 }), P.dot(best, { x: 'x', y: 'y', r: 4, fill: c.err, stroke: c.plotBg }), numText([b], { x: 'x', y: 'y', value: 'grade', format: formatGrades, dx: 8, dy: -10, textAnchor: 'start', fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: 'stroke' }), P.text([label], { x: 'x', y: 'y', text: () => T.lineLabel, dx: right > .5 ? -6 : nearBestLabel ? 14 : 6, dy: nearBestLabel ? 32 : 14, textAnchor: right > .5 ? 'end' : 'start', fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: 'stroke', clip: true })],
     });
     if (!layer || !chart.contains(layer.canvas)) layer = canvasLayer(fig, (g, { x, y, palette }) => { g.save(); g.globalAlpha = .45; g.fillStyle = palette.neutral[4]; for (const p of paint) { g.beginPath(); g.arc(x(p.x), y(p.y), 1.6, 0, 2 * Math.PI); g.fill(); } g.restore(); });
@@ -68,22 +70,25 @@ export function createKrwGridView(ctx, slot) {
 }
 
 export function mountWidget(el, spec = {}) {
-  return createWidget(el, spec, { name: 'krw-axes', className: 'prx-kbridge', css: CSS, keys: { ...bridgeKeys(1), grid: { type: 'boolean', value: false } }, build(ctx) {
+  return createWidget(el, spec, { name: 'krw-axes', className: 'prx-kbridge', css: CSS, layout: 'result-first', keys: { ...bridgeKeys(1), grid: { type: 'boolean', value: false } }, build(ctx) {
     const h = ctx.h, controls = createAxisControls(ctx), taus = gridTaus();
     const toggle = ctx.toggle({ label: ['Check every τ on a τ grid from ', ctx.num(taus[0], formatSetting(taus[0])), ' to ', ctx.num(taus.at(-1), formatSetting(taus.at(-1))), ' (not KRW’s λ grid)'], name: 'grid', onChange: grid => ctx.set({ grid }) });
     toggle.root.querySelector('label').replaceChildren('Check every τ on a τ grid from ', ctx.num(taus[0], formatSetting(taus[0])), ' to ', ctx.num(taus.at(-1), formatSetting(taus.at(-1))), " (not KRW's λ grid)");
-    const progress = h('p', { class: 'kb-progress' }); controls.tau.root.append(progress);
+    ctx.controls.append(toggle.root);
+    ctx.primaryControl(controls.lambda.input);
+    ctx.afterPresets(controls.lambda.root, controls.tau.root);
+    const progress = h('p', { class: 'kb-progress' });
     const axesSlot = h('div'), converterSlot = h('div'), identitySlot = h('div'), gridSlot = h('div'); ctx.charts.append(axesSlot, converterSlot, identitySlot, gridSlot);
-    const axes = createKrwAxesView(ctx, axesSlot);
-    // Keep the complete diagram on the first desktop screen; the intact endpoint hint and grid choice follow it.
-    axesSlot.append(controls.lambda.root.querySelector('.prx-hint'), toggle.root);
+    const axes = createKrwAxesView(ctx, axesSlot, { pointer: true });
+    ctx.primaryGraphic(axes.root.querySelector('.kb-cloud'));
+    axesSlot.append(progress, controls.lambda.root.querySelector('.prx-hint'));
     const converter = createConverterView(ctx, converterSlot), identity = createIdentityView(ctx, identitySlot, { detailed: true }), grid = createKrwGridView(ctx, gridSlot);
     // The actual predecessor reads the published card; the same joined firms identify the lambda-one grid card.
     const published = raceCardReference(), race = readKrwModel('race'), one = cardAt(race, 1), context = { n: published.card.length, G: one.d.G, DR: one.DR };
     ctx.caption.replaceChildren('Six fictional sites: ', captionNode(ctx, 'teaching-posterior'), '.'); appendKrwNotice(ctx);
     let closed = false, pendingCloud = false, cloud = cloudCache, points = [], rawCloud = null, gridRows = [], cancelGrid = null, epoch = 0;
     const busy = () => { const active = !cloud || Boolean(ctx.state.grid && gridRows.length < taus.length); progress.textContent = active ? 'Updating reports…' : ''; if (active) ctx.root.setAttribute('aria-busy', 'true'); else ctx.root.removeAttribute('aria-busy'); };
-    const draw = () => { if (closed) return; const model = identityAt(ctx.state); controls.render(model); toggle.set(ctx.state.grid); if (cloud) axes.render(model, cloud); converter.render(model); identity.render(model, context); const summary = grid.render(gridRows, ctx.state.grid); writeBridgeReadout(ctx, model, { grid: ctx.state.grid ? summary : null, running: Boolean(ctx.state.grid && !summary) }); busy(); };
+    const draw = () => { if (closed) return; const model = identityAt(ctx.state); controls.render(model); toggle.set(ctx.state.grid); if (cloud) axes.render(model, cloud); converter.render(model); identity.render(model, context); const summary = grid.render(gridRows, ctx.state.grid); writeBridgeReadout(ctx, model, { grid: ctx.state.grid ? summary : null, running: Boolean(ctx.state.grid && !summary), residual: true }); busy(); };
     const runGrid = () => {
       if (!cloud || !ctx.state.grid || gridRows.length === taus.length || cancelGrid) return;
       const ticket = ++epoch;

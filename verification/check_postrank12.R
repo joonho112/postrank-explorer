@@ -1,0 +1,18 @@
+# Author: JoonHo Lee (jlee296@ua.edu).
+# Required runtime binding; historical golden-file provenance is deliberately unchanged.
+requested <- Sys.getenv("POSTRANK_LIB", unset="")
+if(!nzchar(requested))stop("Set POSTRANK_LIB to the postrank 1.2.0 library, or run bash verification/run_v35.sh.",call.=FALSE)
+lib <- normalizePath(requested,mustWork=TRUE)
+version <- as.character(utils::packageVersion("postrank",lib.loc=lib))
+if(!identical(version,"1.2.0"))stop("Required postrank 1.2.0; found ",version," in POSTRANK_LIB",call.=FALSE)
+.libPaths(unique(c(lib,.libPaths())))
+suppressPackageStartupMessages(library("postrank",lib.loc=lib,character.only=TRUE))
+actual <- normalizePath(getNamespaceInfo(asNamespace("postrank"),"path"),mustWork=TRUE)
+expected <- normalizePath(file.path(lib,"postrank"),mustWork=TRUE)
+if(!identical(actual,expected))stop("A different postrank namespace was loaded",call.=FALSE)
+required <- c("postrank_mdomain_input","postrank_mdomain_grades","postrank_mdomain_family","postrank_mdomain_evaluate","postrank_mdomain_solve","postrank_mdomain_decision","postrank_mdomain_assess","postrank_plot_mdomain")
+missing <- setdiff(required,getNamespaceExports("postrank"))
+if(length(missing))stop("Required public exports missing: ",paste(missing,collapse=", "),call.=FALSE)
+asset <- system.file("extdata","mdomain","synthetic40-card.json",package="postrank")
+if(!nzchar(asset)||!file.exists(asset))stop("Public frozen display asset missing",call.=FALSE)
+cat("PASS: postrank",version,"from",actual,"; public profile exports and display asset present\n")

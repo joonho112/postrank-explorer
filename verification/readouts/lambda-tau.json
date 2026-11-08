@@ -195,7 +195,20 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"readout-informed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatSetting"
+          }
         }
       ],
       "query": ""
@@ -391,7 +404,20 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"readout-informed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.25",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.6,
+          "format": {
+            "fn": "formatSetting"
+          }
         }
       ],
       "preset": "lambda25"
@@ -587,7 +613,20 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"readout-informed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-1",
+            "field": "parameters.informedShare"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatSetting"
+          }
         }
       ],
       "preset": "lambda1"
@@ -783,7 +822,20 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"readout-informed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.5",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.33333333333333337,
+          "format": {
+            "fn": "formatSetting"
+          }
         }
       ],
       "preset": "lambda50"
@@ -979,7 +1031,20 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"readout-informed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-tau25",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.5,
+          "format": {
+            "fn": "formatSetting"
+          }
         }
       ],
       "query": "?lambda=auto&tau=.25"
@@ -1175,7 +1240,20 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"readout-informed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-grid-tau40",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.19999999999999996,
+          "format": {
+            "fn": "formatSetting"
+          }
         }
       ],
       "preset": "tau40"
@@ -1371,7 +1449,20 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"readout-informed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.01",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.9801980198019802,
+          "format": {
+            "fn": "formatSetting"
+          }
         }
       ],
       "query": "?lambda=.01&tau=auto"
@@ -1568,7 +1659,20 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"readout-informed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "case-bridge-lambda10",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.8181818181818181,
+          "format": {
+            "fn": "formatSetting"
+          }
         }
       ]
     },
@@ -1743,7 +1847,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": "[data-prx-readout=\"best-0\"]",
@@ -1763,6 +1867,19 @@
           ],
           "format": {
             "fn": "formatGrades"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-informed-share\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-krw",
+            "row": "krw-correspondence-source-lambda-0.08",
+            "field": "parameters.informedShare"
+          },
+          "value": 0.8518518518518519,
+          "format": {
+            "fn": "formatSetting"
           }
         }
       ],

@@ -46,7 +46,7 @@ export function sizeInput(state) {
 export function mountWidget(el, spec = {}) {
   let discardCountDrafts = () => {};
   const widget = createWidget(el, spec, {
-    name: "tier-sizes", className: "prx-ts", css: CSS,
+    name: "tier-sizes", className: "prx-ts", css: CSS, layout: "result-first",
     keys: {
       n: { type: "integer", ...CONFIG.n }, G: { type: "integer", ...CONFIG.G },
       sizes: { type: "string", value: "10,10,10" },
@@ -104,28 +104,34 @@ export function mountWidget(el, spec = {}) {
       ctx.listen(vector, "input", () => ctx.set({ sizes: vector.value }));
       const reset = ctx.button({ label: "Use balanced sizes", onClick: () => balanced(ctx.state.n, Math.min(ctx.state.G, ctx.state.n)) });
       ctx.controls.append(h("div", { class: "ts-controls" }, nInput.root, gInput.root,
-        h("div", { class: "ts-vector" }, h("label", { for: vectorId, text: "Sizes, highest tier first" }), vector), reset.root),
+        ctx.primaryControl(h("div", { class: "ts-vector" }, h("label", { for: vectorId, text: "Sizes, highest tier first" }), vector)), reset.root),
         h("p", { id: vectorHintId, class: "ts-hint", text: "Press Enter or leave a count field to apply n or G and reset sizes to balanced. Edit the vector or individual sizes; each must be positive and the total must equal n." }), countFeedback);
       const editors = h("div", { class: "ts-editors", "aria-label": "Edit individual tier sizes" });
       const feedback = h("p", { class: "ts-feedback", role: "status", hidden: true, "data-prx-part": "input-feedback" });
       ctx.controls.append(editors, feedback);
-      ctx.controls.after(ctx.readout.node);
-      const sizePlot = h("div");
+      const sizePlot = ctx.primaryGraphic(h("div"));
       const distPlot = h("div");
+      const currentN = h("span");
+      const maximumN = h("span");
+      const currentLabel = h("span", { text: "current sizes" });
+      const maximumKey = h("span", {}, h("i", { class: "ts-maximum", "aria-hidden": "true" }), "balanced maximum", maximumN);
       const key = h("p", { class: "ts-key prx-light-panel" },
-        h("span", {}, h("i", { class: "ts-current", "aria-hidden": "true" }), "current sizes"),
-        h("span", {}, h("i", { class: "ts-maximum", "aria-hidden": "true" }), "balanced maximum"));
-      const patternNote = h("p", { class: "ts-hint", text: "A size pattern is an ordered positive vector, one size for each tier from highest to lowest. Every such vector has equal weight. This counts size patterns, not assignments of named units to grades. Reordering sizes preserves N but is another pattern." });
+        h("span", {}, h("i", { class: "ts-current", "aria-hidden": "true" }), currentLabel, currentN), maximumKey);
+      const patternNote = h("p", { class: "ts-hint", text: "A size pattern lists the number of units in each tier, from highest to lowest. Each list with no empty tiers gets equal weight, regardless of how many assignments it permits. Reordering the sizes gives a new pattern with the same number of stated pairs." });
       const chosen = createTierDisclosure(ctx, { balancedNote: "This count applies to any supplied positive tier sizes. The separate balanced reference maximizes disclosure at the same number of grades; a chosen unbalanced pattern need not attain that maximum." }); chosen.root.dataset.tierSizePanel = "chosen";
       const reference = createTierDisclosure(ctx); reference.root.dataset.tierSizePanel = "balanced";
+      const chosenHeading = ctx.panelTitle("Chosen sizes: count every withheld pair");
+      const chosenPanel = h("section", {}, chosenHeading, chosen.root);
+      const referencePanel = h("section", {}, ctx.panelTitle("Balanced sizes: maximum at this G"), reference.root);
+      const referenceDetails = ctx.disclosure({ name: "balanced-reference", title: "Balanced reference formula", placement: "none" });
+      const formulas = h("div", { class: "ts-formulas" }, chosenPanel, referencePanel);
       const table = h("table", { class: "ts-table" });
       const tableWrap = ctx.scrollRegion(h("div", { class: "ts-table-wrap" }, table), "Exact disclosure distribution, scroll to read all rows");
       const details = h("details", {}, h("summary", { text: "Exact distribution table" }), tableWrap);
       const result = h("div", {}, h("div", { class: "ts-figures" },
         h("section", {}, ctx.panelTitle("The chosen tier sizes"), sizePlot),
         h("section", {}, ctx.panelTitle("Disclosure over every size pattern"), distPlot, key)), patternNote,
-        h("div", { class: "ts-formulas" }, h("section", {}, ctx.panelTitle("Chosen sizes: count every withheld pair"), chosen.root),
-          h("section", {}, ctx.panelTitle("Balanced sizes: maximum at this G"), reference.root)), details);
+        formulas, referenceDetails.root, details);
       ctx.charts.append(result);
       const perTier = [];
       function syncEditors(s, parsed) {
@@ -160,6 +166,18 @@ export function mountWidget(el, spec = {}) {
         if (input.error) { ctx.readout.set("Correct the sizes to update disclosure. No result is shown for an invalid size pattern."); return; }
         const model = tierModelOfGrade(input.grade);
         const d = distribution(s.n, s.G);
+        currentN.replaceChildren(ro("plot-currentN", input.disc.N));
+        maximumN.replaceChildren(ro("plot-maxN", d.maxN));
+        const atMaximum = input.disc.N === d.maxN;
+        maximumKey.hidden = atMaximum;
+        currentLabel.textContent = atMaximum ? "current = balanced maximum" : "current sizes";
+        chosenHeading.replaceChildren(...(atMaximum
+          ? ["Chosen sizes = balanced maximum at G = ", ctx.num(d.G, formatCount(d.G))]
+          : ["Chosen sizes: count every withheld pair"]));
+        referenceDetails.root.hidden = !atMaximum;
+        if (!atMaximum) referenceDetails.root.open = false;
+        const destination = atMaximum ? referenceDetails.body : formulas;
+        if (referencePanel.parentElement !== destination) destination.append(referencePanel);
         const balancedGrade = d.balancedSizes.flatMap((size, i) => new Array(size).fill(i + 1));
         chosen.draw(model); reference.draw(tierModelOfGrade(balancedGrade));
         ctx.readout.set([ro("n", d.n), " units in ", ro("G", d.G), d.G === 1 ? " tier: these sizes state " : " tiers: these sizes state ", ro("N", input.disc.N), " of ", ro("M", d.M), " pairs (", ro("share", input.disc.s, formatShare), "). The maximum is ", ro("maxN", d.maxN), " (", ro("maxShare", d.maxShare, formatShare), "), with balanced ", ro("balancedSizes", d.balancedSizes, formatSizes), "; the full distribution counts ", ro("totalPatterns", d.totalPatterns), d.totalPatterns === 1 ? " ordered size pattern." : " ordered size patterns."]);
@@ -173,11 +191,13 @@ export function mountWidget(el, spec = {}) {
           keyboard: { data: sizeRows, x: "tier", y: "size", key: "tier", title: (r) => `Tier ${formatCount(r.tier)}: ${formatCount(r.size)} units, ${formatCount(r.withheld)} withheld pairs.` },
         });
         plot(distPlot, {
-          alt: "The number of ordered positive tier-size patterns at every attained disclosure count. The solid line is the chosen pattern's disclosure; the dashed line is the balanced maximum.",
+          alt: "The number of ordered positive tier-size patterns at every attained disclosure count. " + (atMaximum
+            ? "The solid line marks both the chosen pattern's disclosure and the balanced maximum."
+            : "The solid line is the chosen pattern's disclosure; the dashed line is the balanced maximum."),
           table: { caption: "Complete distribution of N over ordered positive tier-size patterns", columns: [{ label: "Pairs stated N", value: "N", format: formatCount }, { label: "Patterns", value: "count", format: formatCount }, { label: "Probability", value: "probability", format: formatShare }], rows: d.distribution },
           height: 225, marginTop: 22, marginLeft: 53, marginBottom: 36,
           x: { label: "Pairs stated, N", domain: [-.5, d.M + .5], tickFormat: countTick }, y: { label: "Size patterns", grid: true, ticks: 5, tickFormat: countTick },
-          marks: (c, P) => [P.rectY(d.distribution, { x1: (r) => r.N - .45, x2: (r) => r.N + .45, y1: 0, y2: "count", fill: c.plotGrid, stroke: c.plotMuted }), P.ruleX([input.disc.N], { stroke: c.plotFg, strokeWidth: 2 }), P.ruleX([d.maxN], { stroke: c.plotFg, strokeWidth: 2, strokeDasharray: "5,3" }), P.ruleY([0])],
+          marks: (c, P) => [P.rectY(d.distribution, { x1: (r) => r.N - .45, x2: (r) => r.N + .45, y1: 0, y2: "count", fill: c.plotGrid, stroke: c.plotMuted }), P.ruleX([input.disc.N], { stroke: c.plotFg, strokeWidth: 2 }), P.ruleX(atMaximum ? [] : [d.maxN], { stroke: c.plotFg, strokeWidth: 2, strokeDasharray: "5,3" }), P.ruleY([0])],
           keyboard: { data: d.distribution, x: "N", y: "count", key: "N", title: (r) => `${formatCount(r.N)} stated pairs: ${formatCount(r.count)} patterns, probability ${formatShare(r.probability)}.` },
         });
         table.replaceChildren(h("caption", {}, "All ", ro("table-totalPatterns", d.totalPatterns), " ordered size patterns, grouped by disclosure"),

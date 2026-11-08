@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Writes engine/tests/fixtures/stream-r.json: the seeded stream of pr-core (engine/src/random.ts)
 # reimplemented in base R from the algorithm stated in engine/README.md ("Random stream"), with unsigned
 # 32-bit arithmetic emulated on doubles. engine/tests/random.test.ts checks that the TypeScript stream

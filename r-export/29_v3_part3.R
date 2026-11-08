@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R Phase 6 / Part 3 oracle.
 # Sources: engine/API.md "Part 3 supplement"; public theory book chapters 16,17,19;
 # released case-krw.json + krw-lambda-grid.json. No postrank/JavaScript/solver calls.

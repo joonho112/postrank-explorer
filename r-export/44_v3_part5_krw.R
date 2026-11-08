@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R oracle for spec-v3-part5.md's two KRW functions.
 # Authority: engine/API.md/README.md, public theory book ch10/ch20, public
 # v1 G-09 source/presets, and released six-sites coefficients. No new TS,

@@ -17,7 +17,29 @@ const n=(ctx,value,kind='risk',hook)=>{const f={risk:formatRisk,count:formatCoun
 const gradeKey=g=>Array.from(g).join('-');
 export const MIXTURE_CSS=`
 .mix .sev-paper .prx-result-tag,.mix .sev-paper [data-prx-label]{color:var(--prx-plot-fg)}
-.mix .mix-controls{display:flex;flex-wrap:wrap;gap:.6rem;max-width:100%;min-width:0;width:100%}
+.mix .mix-controls{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1.1fr);gap:.65rem 1rem;align-items:start;width:100%;min-width:0}
+.mix .mix-controls select{width:100%}
+.mix .mix-controls [data-mix-weight][hidden]{display:grid;visibility:hidden}
+.mix .mix-controls .prx-slider{max-width:none}
+.mix .mix-settings-fields{display:flex;flex-wrap:wrap;gap:.65rem 1rem;align-items:end}
+.mix .mix-settings-fields .prx-control{min-width:0;max-width:100%}
+.mix .mix-overview{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:.75rem 1rem;align-items:start}
+.mix .mix-overview > section{min-width:0}
+.mix .mix-figure{min-width:0}
+.mix .mix-figure [data-mix-criterion]{cursor:pointer}
+.mix .mix-explain,.mix .mix-contributions,.mix .mix-branch-facts,.mix .mix-branch-note{margin:.3rem 0;font-size:.88em}
+.mix .mix-explain{color:var(--prx-fg-muted)}
+.mix .mix-contributions{display:flex;flex-wrap:wrap;gap:.2rem .8rem}
+.mix .mix-contributions > span{white-space:nowrap}
+.mix .mix-live-chips{margin:.3rem 0}
+.mix .mix-actions{margin-top:.75rem}
+.mix .mix-actions select{width:min(18rem,100%)}
+@media (max-width:45rem){
+ .mix .mix-overview{grid-template-columns:minmax(0,1fr)}
+ .mix .mix-controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem .7rem}
+ .mix .mix-controls > :first-child{grid-column:1/-1}
+ .mix .mix-controls .mix-tau-exact input{grid-column:1/-1;width:100%;margin-top:.2rem}
+}
 .mix .mix-controls .prx-control,.mix .mix-controls select{max-width:100%;min-width:0}.mix .mix-section{margin:.85rem 0;min-width:0}
 .mix .mix-hidden[hidden]{display:none}.mix .mix-details{padding:.75rem;border-radius:.4rem;min-width:0}
 .mix .mix-identities{display:flex;flex-wrap:wrap;gap:.5rem 2rem;font-weight:600}.mix .mix-identities p{margin:.3rem 0}
@@ -72,8 +94,8 @@ export function createMixtureRiskView(ctx,slot){return {render(model){
 }};}
 export function createCriterionBranchView(ctx,slot){return {render(model){
  const {data,criterion:k,selected}=model;
- slot.replaceChildren(ctx.panelTitle('One criterion selects one whole unit vector'),ctx.h('p',{},'Inspecting ',name(ctx,label(data,k)),': selection chance ',n(ctx,model.w[k],'prob','branch-chance'),'; risk of the already chosen report on this criterion ',n(ctx,selected.mixture.Rk[k],'risk','branch-risk'),'.'),ctx.h('p',{class:'mix-short'},'The outlined column includes every unit. Choosing a different branch does not select a different report. This is an auxiliary loss interpretation, not a sample of stakeholder preferences or a composite of target values.'),ctx.h('p',{class:'mix-short'},model.w[k]===0?'This branch has zero selection chance at these weights. Its criterion-specific risk can be inspected, but this mixture never selects it.':'The selected index would be used for the entire report, independently of the target law conditional on the supplied information.'));
- slot.append(ctx.h('p',{class:'mix-short'},data.key==='six'?'The six-site vector law has independent Normal units. The table shows its marginal mean and SD on each criterion; it is not a realized draw. Other vector laws may retain unit dependence.':'These stipulated true values form one complete known state. The same selected criterion applies to both units, not separately to each row or pair.'),hint(ctx));
+ slot.replaceChildren(ctx.panelTitle('One criterion selects one whole unit vector'),ctx.h('p',{},'Inspecting ',name(ctx,label(data,k)),': selection chance ',n(ctx,model.w[k],'prob','branch-chance'),'; risk of the already chosen report on this criterion ',n(ctx,selected.mixture.Rk[k],'risk','branch-risk'),'.'),ctx.h('p',{class:'mix-short'},'The outlined column gives the selected criterion for every unit. Switching criteria reevaluates the same report. The draw represents the weights in the loss.'),ctx.h('p',{class:'mix-short'},model.w[k]===0?'This branch has zero selection chance at these weights. Its criterion-specific risk can be inspected, but this mixture never selects it.':'The selected index would be used for the entire report, independently of the target law conditional on the supplied information.'));
+ slot.append(ctx.h('p',{class:'mix-short'},data.key==='six'?'The six-site example treats the units as independent and normally distributed. The table gives the mean and SD on each criterion. The same risk identity also applies when units are dependent.':'These stipulated true values form one complete known state. The same selected criterion applies to both units, not separately to each row or pair.'),hint(ctx));
  const rows=data.ids.map((id,i)=>[name(ctx,id),...data.criteria.map((_,j)=>data.key==='six'?ctx.h('span',{},'Normal(',n(ctx,data.means[i][j],'value'),', SD ',n(ctx,data.sds[i][j],'value'),')'):n(ctx,data.law.states[0][i][j],'value'))]);
  const t=table(ctx,['Unit',...data.criteria.map((_,j)=>label(data,j))],rows,'mix-vector');for(const row of t.rows)row.cells[k+1]?.classList.add('mix-picked');const vectorRegion=scroll(ctx,slot,'Whole selected criterion vector across every unit',t),header=t.rows[0]?.cells[k+1];if(header)vectorRegion.scrollLeft=Math.max(0,header.offsetLeft+header.offsetWidth-vectorRegion.clientWidth+8);
 }};}
@@ -105,6 +127,80 @@ function createTauDraft(ctx,range){
  range.output.hidden=true;range.root.append(root,hint);reset(value);
  return {reset,sync(v){if(!Object.is(v,applied))reset(v);}};
 }
+function createExpectationView(ctx, slot) {
+ const select = k => ctx.set({criterion:k});
+ ctx.listen(slot, 'click', e => {
+  const criterion = e.detail===0
+   ? e.target.closest('.prx-kbd-point')?.dataset.prxFocusKey.split(':').at(-1)
+   : e.target.closest('[data-mix-criterion]')?.dataset.mixCriterion;
+  if (criterion !== undefined) select(Number(criterion));
+ });
+ return {render(model) {
+  const {data,selected,criterion} = model;
+  const risk = selected.mixture.weightedRisk;
+  let edge = 0;
+  const rows = data.criteria.map((_,k) => {
+   const w = selected.mixture.w[k], left = edge;
+   edge += w;
+   return {k,criterion:label(data,k),w,left,right:edge,center:(left+edge)/2,risk:selected.mixture.Rk[k],contribution:selected.contributions[k]};
+  });
+  const high = Math.max(.01,...rows.map(row=>row.risk),risk);
+  const active = rows.find(row=>row.k===criterion);
+  const labels = rows.filter(row=>row.w>=.23);
+  plot(slot,{
+   height:175,marginTop:22,marginRight:54,marginLeft:39,marginBottom:34,
+   x:{domain:[0,1],label:'Selection chance',labelAnchor:'center',labelArrow:'none',ticks:[0,.25,.5,.75,1]},
+   y:{domain:[0,1.25*high],label:'Criterion risk',labelArrow:'none',grid:true,ticks:4},
+   alt:'Column width is the chance of drawing a criterion, height is the risk of the fixed report on that criterion, and area is its contribution. The dashed line gives the direct weighted risk.',
+   table:{caption:'Selection chances and risks of the fixed report',rows,columns:[
+    {label:'Criterion',value:'criterion'},{label:'Selection chance',value:'w',format:v=>formatProb(v)},
+    {label:'Criterion risk',value:'risk',format:v=>formatRisk(v)},{label:'Weighted contribution',value:'contribution',format:v=>formatRisk(v)},
+   ]},
+   keyboard:{data:rows,x:'center',y:'risk',key:'k',sort:false,label:'Inspect the criterion for the whole vector',
+    title:row=>`${row.criterion}: selection chance ${formatProb(row.w)}, risk ${formatRisk(row.risk)}, contribution ${formatRisk(row.contribution)}.`},
+   marks:(c,P)=>[
+    P.rect(rows,{x1:'left',x2:'right',y1:0,y2:'risk',fill:row=>c.crit[row.k],fillOpacity:.27,
+     stroke:row=>row.k===criterion?c.plotFg:c.crit[row.k],strokeWidth:row=>row.k===criterion?2.3:1,
+     render(index,scales,values,dimensions,context,next) {
+      const mark = next(index,scales,values,dimensions,context);
+      [...mark.querySelectorAll('rect')].forEach((node,i)=>node.dataset.mixCriterion=String(rows[index[i]].k));
+      return mark;
+     }}),
+    P.ruleY([risk],{stroke:c.plotFg,strokeDasharray:'4 3'}),
+    numText(labels,{x:'center',y:'risk',value:'risk',format:formatRisk,dy:-11,fill:c.plotFg,fontSize:11,
+     render(index,scales,values,dimensions,context,next) {
+      const mark = next(index,scales,values,dimensions,context);
+      mark.setAttribute('pointer-events','none');
+      return mark;
+     }}),
+    numText([{risk}],{x:()=>1,y:'risk',value:'risk',format:formatRisk,dx:6,textAnchor:'start',fill:c.plotFg,fontWeight:600,
+     render(index,scales,values,dimensions,context,next) {
+      const mark = next(index,scales,values,dimensions,context);
+      mark.querySelector('text')?.setAttribute('data-prx-readout','plot-weighted-risk');
+      return mark;
+     }}),
+    ...(active.w===0?[P.dot([active],{x:'center',y:0,r:3,fill:c.plotBg,stroke:c.plotFg})]:[]),
+   ],
+  });
+ }};
+}
+
+function drawBranchStrip(ctx, slot, model) {
+ const {data,criterion:k}=model;
+ const six = data.key==='six';
+ const rows=data.ids.map((id,i)=>({id,value:six?data.means[i][k]:data.law.states[0][i][k]}));
+ const values=rows.map(row=>row.value),lo=Math.min(...values),hi=Math.max(...values),pad=Math.max(.10,(hi-lo)*.16);
+ plot(slot,{
+  height:65+rows.length*17,marginTop:8,marginLeft:33,marginRight:12,marginBottom:34,
+  x:{domain:[lo-pad,hi+pad],label:six?'Posterior mean':'Known value',labelAnchor:'center',labelArrow:'none',grid:true,ticks:5},
+  y:{domain:data.ids,label:null},
+  alt:six?'Posterior means for every unit on the selected score. These are summaries of one vector law.':'The known values of both units on the same selected criterion.',
+  table:{caption:'All unit values shown on the selected criterion',rows,columns:[{label:'Unit',value:'id'},{label:six?'Posterior mean':'Known value',value:'value',format:v=>formatSetting(v)}]},
+  keyboard:{data:rows,x:'value',y:'id',key:'id',sort:false,title:row=>`${row.id}: ${six?'posterior mean':'known value'} ${formatSetting(row.value)}.`},
+  marks:(c,P)=>[P.dot(rows,{x:'value',y:'id',r:4.5,fill:c.crit[k],stroke:c.plotFg,strokeWidth:.6})],
+ });
+}
+
 function createControls(ctx){
  const root=ctx.h('div',{class:'mix-controls'}),data=ctx.select({label:'Supplied law',name:'data',options:Object.entries(TITLES).map(([value,label])=>({value,label})),onChange:v=>ctx.set({data:v,criterion:0,report:1,pair:'auto'})}),w=ctx.slider({label:'Error weight on the first criterion',...ctx.key('w'),onInput:v=>ctx.set({w:v})}),tau=ctx.slider({label:'Cost of withholding a pair, τ',...ctx.key('tau'),name:'tau-slider',onInput:v=>ctx.set({tau:v===Number((1/3).toPrecision(15))?1/3:v})}),cap=ctx.select({label:'Allowed six-site reports',name:'cap',options:[{value:'2',label:'At most two grades'},{value:'3',label:'At most three grades'},{value:'all',label:'No grade cap'}],onChange:v=>ctx.set({cap:v})}),report=ctx.slider({label:'Inspect retained best report',...ctx.key('report'),format:formatCount,onInput:v=>ctx.set({report:v})});
  // Chrome range values serialize to 15 digits. The native number field preserves the exact boundary;
@@ -113,23 +209,104 @@ function createControls(ctx){
  const tauEditor=createTauDraft(ctx,tau);
  const branches={};for(const K of [2,3])branches[K]=ctx.segmented({label:'Auxiliary criterion for the whole vector',name:`criterion-${K}`,options:Array.from({length:K},(_,k)=>({value:k,label:['First criterion','Second criterion','Third criterion'][k]})),onChange:v=>ctx.set({criterion:v})});
  const six=criteriaData('six'),pair=ctx.select({label:'Inspect this isolated six-site pair',name:'pair',options:[{value:'auto',label:'A above C'},...six.ids.flatMap((id,i)=>six.ids.flatMap((other,j)=>i===j?[]:[{value:`${id},${other}`,label:`${id} above ${other}`}]))],onChange:v=>ctx.set({pair:v})});
- root.append(data.root,w.root,tau.root,cap.root,branches[2].root,branches[3].root,report.root,pair.root);ctx.controls.append(root);
- return {tauEditor,render(state,model){data.set(state.data);w.set(state.w);tau.set(state.tau);tauEditor.sync(state.tau);cap.set(state.cap);w.root.hidden=state.data==='majority';cap.root.hidden=state.data!=='six';pair.root.hidden=state.data!=='six';pair.set(state.pair);for(const K of [2,3]){branches[K].root.hidden=model.data.K!==K;branches[K].set(model.criterion);}report.input.max=String(model.profiles.length);report.set(model.chosen+1);report.root.hidden=model.profiles.length===1;}};
+ w.root.dataset.mixWeight='';
+ root.append(data.root,ctx.primaryControl(w.root),tau.root);
+ ctx.controls.append(root);
+ const settings=ctx.disclosure({name:'settings',title:'Settings',placement:'none'});
+ settings.body.append(ctx.h('div',{class:'mix-settings-fields'},cap.root,report.root));
+ ctx.afterPresets(settings.root);
+ return {tauEditor,branches,pair,render(state,model){
+  data.set(state.data);w.set(state.w);tau.set(state.tau);tauEditor.sync(state.tau);cap.set(state.cap);
+  w.root.hidden=state.data==='majority';cap.root.hidden=state.data!=='six';pair.root.hidden=state.data!=='six';
+  settings.root.hidden=state.data!=='six'&&model.profiles.length===1;
+  pair.set(state.pair);
+  for(const K of [2,3]){branches[K].root.hidden=model.data.K!==K;branches[K].set(model.criterion);}
+  report.input.max=String(model.profiles.length);report.set(model.chosen+1);report.root.hidden=model.profiles.length===1;
+ }};
 }
-export function mountWidget(el,spec={}){let tauEditor;const handle=createWidget(el,spec,{name:'criterion-mixture',className:'mix',css:MIXTURE_CSS+PAIR_COST_CSS+CRITERIA_PROFILE_CSS+TWO_SCORES_CSS,keys:MIXTURE_KEYS,build(ctx){
- ctx.root.classList.add('cp','sev','tws');const control=createControls(ctx),risk=ctx.h('div',{class:'sev-paper mix-section'}),branch=ctx.h('div',{class:'sev-paper mix-section'}),pair=ctx.h('div',{class:'sev-paper mix-section'}),coherence=ctx.h('div',{class:'sev-paper mix-section'}),source=ctx.h('div',{class:'mix-source mix-details mix-section prx-light-panel'}),conditions=ctx.h('div',{class:'sev-paper mix-section'});
+export function mountWidget(el,spec={}){let tauEditor;const handle=createWidget(el,spec,{
+ name:'criterion-mixture',className:'mix',css:MIXTURE_CSS+PAIR_COST_CSS+CRITERIA_PROFILE_CSS+TWO_SCORES_CSS,
+ keys:MIXTURE_KEYS,layout:'result-first',build(ctx){
+ const {h}=ctx;
+ ctx.root.classList.add('cp','sev','tws');
+ const control=createControls(ctx);
  tauEditor=control.tauEditor;
- ctx.charts.append(ctx.readout.node,risk,branch,pair,coherence,source,conditions);
- const riskView=createMixtureRiskView(ctx,risk),branchView=createCriterionBranchView(ctx,branch),pairView=createPairCostView(ctx,pair),sourceReadout=ctx.h('p',{class:'mix-source-readout'}),sourceCaption=ctx.h('p',{class:'mix-source-caption'}),sourceCtx=Object.create(ctx);
+ const expectation=ctx.primaryGraphic(h('div',{class:'mix-figure'})),contributions=h('p',{class:'mix-contributions'});
+ const branchFacts=h('p',{class:'mix-branch-facts'}),branchStrip=h('div',{class:'mix-figure'});
+ const zeroChance=h('p',{class:'mix-branch-note',hidden:true},'This branch can be inspected. Its zero weight gives it no chance of being drawn.');
+ const liveChips=h('div',{class:'tws-chips mix-live-chips'}),familyFacts=h('p',{class:'mix-branch-facts'});
+ const pair=h('div',{class:'sev-paper'}),pairCosts=h('p',{class:'mix-contributions'}),coherence=h('div',{class:'sev-paper mix-section'});
+ ctx.charts.append(
+  h('div',{class:'mix-overview'},
+   h('section',{},ctx.panelTitle('Criterion risks for one fixed report'),expectation,
+    h('p',{class:'mix-explain'},'Width shows selection chance. Height shows criterion risk. The dashed line is the direct weighted risk.'),contributions),
+   h('section',{},ctx.panelTitle('Inspect one criterion'),control.branches[2].root,control.branches[3].root,
+    branchFacts,branchStrip,zeroChance,ctx.panelTitle('Report fixed before the draw'),liveChips,
+    h('p',{class:'mix-branch-note'},'Units in the same grade have their comparison withheld.'),familyFacts)),
+  h('section',{class:'mix-actions'},control.pair.root,pairCosts,pair),coherence,
+ );
+ const data=ctx.disclosure({name:'data',title:'Exact risks and retained reports'});
+ const risk=h('div',{class:'sev-paper mix-section'}),branch=h('div',{class:'sev-paper mix-section'});
+ data.body.append(risk,branch);
+ const full=ctx.disclosure({name:'full-report',title:'Full two-score report'});
+ const source=h('div',{class:'mix-source mix-details mix-section prx-light-panel'});
+ full.body.append(source);
+ const method=ctx.disclosure({name:'method',title:'Method and KRW conditions'});
+ const conditions=h('div',{class:'sev-paper mix-section'});
+ method.body.append(conditions);
+ const expectationView=createExpectationView(ctx,expectation),riskView=createMixtureRiskView(ctx,risk),branchView=createCriterionBranchView(ctx,branch);
+ const pairView=createPairCostView(ctx,pair,{descriptionPosition:'after'});
+ const sourceReadout=h('p',{class:'mix-source-readout'}),sourceCaption=h('p',{class:'mix-source-caption'}),sourceCtx=Object.create(ctx);
  sourceCtx.readout={node:sourceReadout,set:parts=>sourceReadout.replaceChildren(...[parts].flat(Infinity))};sourceCtx.caption=sourceCaption;
- source.append(ctx.panelTitle('The full linked six-site report'),ctx.h('p',{class:'mix-short'},'These linked views use the first retained best report for the matrices and slope chart, and list every retained optimum and its differing profiles. The mixture branch above uses the selected retained report.'));
+ source.append(ctx.panelTitle('The full linked six-site report'),h('p',{class:'mix-short'},'These linked views use the first retained best report for the matrices and slope chart, and list every retained optimum and its differing profiles. The mixture branch above uses the selected retained report.'));
  const sourceView=createTwoScoresView(sourceCtx,createTwoScoresSlots(sourceCtx,source));source.append(sourceCaption);
- let lastSource,lastSourceViewKey,lastSelected,lastPairKey,lastViewKey;
- return {render(state){
-  const model=solveCriterionMixture(state),correction={};if(state.report!==model.chosen+1)correction.report=model.chosen+1;if(state.criterion!==model.criterion)correction.criterion=model.criterion;if(!isCriterionPairKey(model.data,state.pair))correction.pair='auto';if(Object.keys(correction).length)ctx.set(correction);
-  control.render(state,model);const viewKey=`${ctx.width()}|${ctx.root.dataset.theme}|${ctx.doc.documentElement.dataset.theme}`,newView=viewKey!==lastViewKey,pairKey=JSON.stringify([state.data,state.w,state.tau,model.pair]);if(newView||lastSelected!==model.selected)riskView.render(model);branchView.render(model);if(newView||lastPairKey!==pairKey)pairView.render({data:model.data,pair:model.pair,weighted:model.costs.weighted,kind:state.data==='six'?'posterior':'known state'});coherenceView(ctx,coherence,model);source.hidden=state.data!=='six';if(!source.hidden&&(viewKey!==lastSourceViewKey||lastSource!==model.source)){sourceView.render(model.source,{w:state.w,tau:state.tau,cap:state.cap});lastSource=model.source;lastSourceViewKey=viewKey;}lastSelected=model.selected;lastPairKey=pairKey;lastViewKey=viewKey;
-  conditions.replaceChildren(ctx.panelTitle('What the mixture means, and when KRW corresponds'),ctx.h('p',{class:'mix-short'},'The mixture identity uses postrank’s weak-error loss: a strict direction is wrong at equality. It holds with latent equalities and arbitrary dependence. It averages losses of one fixed report, not target magnitudes.'),ctx.h('p',{class:'mix-short'},'The correspondence to KRW’s strict-count objective additionally needs the same law, targets, orientation, labeled units, pair normalization and nonempty family. The usual affine formula assumes zero latent equality probability on positive-weight criteria; otherwise an explicit equality correction is required.'),ctx.h('p',{class:'mix-short'},'For an isolated known conflict, positive cost from strict opposition needs positive weight on both sides. The smaller directional cost excludes withholding. Posterior directional minima can also reflect uncertainty. A full coherent report need not print every isolated action choice.'));
-  ctx.readout.set(['For report ',n(ctx,model.selected.grade,'grades','readout-grade'),', the criterion mixture risk is ',n(ctx,model.selected.mixture.risk,'risk','readout-mixture'),' and the direct weighted risk is ',n(ctx,model.selected.mixture.weightedRisk,'risk','readout-weighted'),'. Changing the auxiliary criterion keeps this report fixed.']);
+ conditions.replaceChildren(ctx.panelTitle('What the mixture means, and when KRW corresponds'),h('p',{class:'mix-short'},'The mixture identity uses postrank’s weak-error loss: a strict direction is wrong at equality. It holds with latent equalities and arbitrary dependence. It averages losses of one fixed report, not target magnitudes.'),h('p',{class:'mix-short'},'The correspondence to KRW’s strict-count objective additionally needs the same law, targets, orientation, labeled units, pair normalization and nonempty family. The usual affine formula assumes zero latent equality probability on positive-weight criteria; otherwise an explicit equality correction is required.'),h('p',{class:'mix-short'},'For an isolated known conflict, positive cost from strict opposition needs positive weight on both sides. The smaller directional cost excludes withholding. Posterior directional minima can also reflect uncertainty. A full coherent report need not print every isolated action choice.'));
+ let lastSource,lastSourceViewKey,lastSelected,lastPairKey,lastViewKey,lastCriterion;
+ return {render(state,info={}){
+  const model=solveCriterionMixture(state),correction={};
+  if(state.report!==model.chosen+1)correction.report=model.chosen+1;
+  if(state.criterion!==model.criterion)correction.criterion=model.criterion;
+  if(!isCriterionPairKey(model.data,state.pair))correction.pair='auto';
+  if(Object.keys(correction).length)ctx.set(correction);
+  control.render(state,model);
+  const {selected,criterion:k}=model, mixture=selected.mixture;
+  const viewKey=`${ctx.width()}|${ctx.root.dataset.theme}|${ctx.doc.documentElement.dataset.theme}`;
+  const newView=viewKey!==lastViewKey,newReport=lastSelected!==selected,newCriterion=k!==lastCriterion;
+  const pairKey=JSON.stringify([state.data,state.w,state.tau,model.pair]);
+  if(newView||newReport||newCriterion){
+   expectationView.render(model);
+   drawBranchStrip(ctx,branchStrip,model);
+   branchFacts.replaceChildren(name(ctx,label(model.data,k)), ' · chance ', n(ctx,mixture.w[k],'prob','selected-branch-chance'), ' · risk ', n(ctx,mixture.Rk[k],'risk','selected-branch-risk'));
+   zeroChance.hidden=mixture.w[k]!==0;
+  }
+  if(newReport||newView){
+   drawTwoScoreReport(ctx,liveChips,selected.grade,model.data.ids);
+   contributions.replaceChildren('Weighted contributions ',...selected.contributions.map((value,i)=>h('span',{},name(ctx,label(model.data,i)),' ',n(ctx,value))));
+   familyFacts.replaceChildren(tagNode(ctx,model.optimum),' · ',n(ctx,selected.evaluation.N,'count'),' pairs stated');
+  }
+  const dataOpening=info.reason==='disclosure'&&info.disclosure==='data';
+  if(newView||newReport||dataOpening)riskView.render(model);
+  if(newView||newReport||newCriterion||dataOpening)branchView.render(model);
+  if(newView||lastPairKey!==pairKey){
+   pairView.render({data:model.data,pair:model.pair,weighted:model.costs.weighted,kind:state.data==='six'?'posterior':'known state'});
+   const {i,j}=model.pair, a=model.data.ids[i], b=model.data.ids[j], costs=model.costs.weighted.decision.costs;
+   pairCosts.replaceChildren(
+    h('span',{},name(ctx,`${a} above ${b}`),' ',n(ctx,costs.iAboveJ)),
+    h('span',{},name(ctx,`${b} above ${a}`),' ',n(ctx,costs.jAboveI)),
+    h('span',{},'Withhold ',n(ctx,costs.withhold)),
+   );
+  }
+  coherenceView(ctx,coherence,model);
+  full.root.hidden=state.data!=='six';
+  if(!full.root.hidden&&(viewKey!==lastSourceViewKey||lastSource!==model.source||info.reason==='disclosure'&&info.disclosure==='full-report')){
+   sourceView.render(model.source,{w:state.w,tau:state.tau,cap:state.cap});
+   lastSource=model.source;lastSourceViewKey=viewKey;
+  }
+  lastSelected=selected;lastPairKey=pairKey;lastViewKey=viewKey;lastCriterion=k;
+  const terms=mixture.Rk.flatMap((risk,i)=>[i?' + ':'',name(ctx,label(model.data,i)),' ',n(ctx,risk),' × ',n(ctx,mixture.w[i],'prob')]);
+  ctx.readout.set(['Report ',n(ctx,selected.grade,'grades','readout-grade'),' is fixed first. ',...terms,
+   ' = ',n(ctx,mixture.risk,'risk','readout-mixture'),'. Direct weighted risk is ',n(ctx,mixture.weightedRisk,'risk','readout-weighted'),
+   mixture.w[k]===0?'. You can inspect ':'. The selected vector comes from ',name(ctx,label(model.data,k)),mixture.w[k]===0?' at zero selection chance.':'.']);
   ctx.caption.replaceChildren('Supplied synthetic laws after the postrank theory book. One criterion selects one whole unit vector; weights are a loss interpretation, not measured stakeholder preferences. Strict directions count equality as wrong. Synthetic data license CC BY ',ctx.num(4,formatDecimal(4,{digits:1})),'.');
  }};
 }});

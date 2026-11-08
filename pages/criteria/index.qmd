@@ -1,14 +1,117 @@
 ---
-title: "4 · Several criteria"
+title: "Multiple criteria"
 ---
 
-A common report must resolve comparisons that can differ across criteria. The
-[posterior-profile display](several-criteria.qmd) retains each criterion's scale and pairwise probabilities.
-The [two-score report](two-scores.qmd) uses weighted directional errors to select common grades;
-[criterion-specific excess risk](common-grade-cost.qmd) compares them with separate reports in the same family.
-[Expected-error budgets](error-budgets.qmd) restrict the feasible reports, whereas
-[minimax selection](worst-criterion.qmd) minimises the largest criterion risk.
-The [withholding diagnostics](why-withheld.qmd) examine uncertainty, conflicting criteria, coherence and family
-restrictions as nonexclusive explanations of a shared grade.
+The same units can rank differently across criteria. A common report assigns one grade per unit and evaluates those grades on every criterion. A domain profile gives each domain its own column.
+
+```{=html}
+<style>
+.prx-report-types { --report-ink: var(--prx-fg, #343b36); --report-muted: var(--prx-fg-muted, #5c6560); --report-line: var(--prx-border-strong, #7f857e); --report-a: var(--prx-accent, #17645e); --report-b: var(--prx-crit-ink-2, #963f73); margin: 1.25rem 0 2rem; color: var(--report-ink); }
+.prx-report-types .prx-report-types__entries { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem; min-width: 0; }
+.prx-report-types .prx-report-types__entry { display: flex; flex-direction: column; min-width: 0; padding: clamp(.9rem, 1.6vw, 1.25rem); border: 1px solid var(--report-line); border-radius: 12px; background: var(--prx-bg-raised, #f3f1e8); color: inherit; text-decoration: none; }
+.prx-report-types .prx-report-types__entry:hover { border-color: var(--report-a); box-shadow: inset 0 0 0 1px var(--report-a); }
+.prx-report-types .prx-report-types__entry:focus-visible { outline: 3px solid var(--prx-focus, #17645e); outline-offset: 4px; }
+.prx-report-types .prx-report-types__eyebrow { margin: 0 0 .25rem; color: var(--report-muted); font-size: .75rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.prx-report-types .prx-report-types__entry h2 { margin: 0; padding: 0; border: 0; font-size: 1.45rem; line-height: 1.2; }
+.prx-report-types .prx-report-types__entry svg { display: block; width: 100%; height: auto; min-height: 200px; margin: .35rem 0 .2rem; overflow: visible; font-family: inherit; }
+.prx-report-types .prx-report-types__rung { stroke: var(--report-line); stroke-width: 2; }
+.prx-report-types .prx-report-types__rail { stroke: var(--report-line); stroke-width: 2; stroke-dasharray: 3 5; }
+.prx-report-types .prx-report-types__label { fill: var(--report-ink); font-size: 20px; }
+.prx-report-types .prx-report-types__small { fill: var(--report-muted); font-size: 20px; }
+.prx-report-types .prx-report-types__domain { fill: var(--report-ink); font-size: 22px; font-weight: 700; }
+.prx-report-types .prx-report-types__chip { fill: var(--prx-bg, #fdfbf6); stroke: var(--report-line); stroke-width: 1.5; }
+.prx-report-types .prx-report-types__a { fill: var(--report-a); }
+.prx-report-types .prx-report-types__b { fill: var(--report-b); }
+.prx-report-types .prx-report-types__unit { fill: #fff; font-size: 20px; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+.prx-report-types .prx-report-types__connection-a { fill: none; stroke: var(--report-a); stroke-width: 3; }
+.prx-report-types .prx-report-types__connection-b { fill: none; stroke: var(--report-b); stroke-width: 3; stroke-dasharray: 7 5; }
+.prx-report-types .prx-report-types__copy { margin: 0 0 .8rem; font-size: 1rem; line-height: 1.5; }
+.prx-report-types .prx-report-types__link { margin-top: auto; color: var(--report-a); font-weight: 700; text-decoration: underline; text-underline-offset: .2em; }
+.prx-report-types .prx-report-types__note { margin: .8rem 0 0; color: var(--report-muted); font-size: .9rem; line-height: 1.5; }
+@media (max-width: 680px) {
+  .prx-report-types .prx-report-types__entries { grid-template-columns: minmax(0, 1fr); }
+  .prx-report-types .prx-report-types__entry svg { max-height: 280px; }
+}
+</style>
+
+<div class="prx-report-types" role="group" aria-label="Choose a report structure">
+  <div class="prx-report-types__entries">
+    <a class="prx-report-types__entry" href="#common-grades" aria-labelledby="common-grades-entry-heading" aria-describedby="common-grades-entry-copy">
+      <p class="prx-report-types__eyebrow">One column</p>
+      <h2 id="common-grades-entry-heading">Common grades</h2>
+      <svg viewBox="0 0 400 280" width="400" height="280" role="img" aria-labelledby="common-report-title common-report-description">
+        <title id="common-report-title">One grade column evaluated across criteria S and C</title>
+        <desc id="common-report-description">The common report assigns grade 1 to A and grade 2 to B. Both criteria evaluate that same direction.</desc>
+        <rect class="prx-report-types__chip" x="133" y="17" width="54" height="34" rx="8"></rect>
+        <rect class="prx-report-types__chip" x="233" y="17" width="54" height="34" rx="8"></rect>
+        <text class="prx-report-types__domain" x="160" y="41" text-anchor="middle">S</text>
+        <text class="prx-report-types__domain" x="260" y="41" text-anchor="middle">C</text>
+        <path class="prx-report-types__rung" d="M160 54 L210 78 L260 54" fill="none"></path>
+        <line class="prx-report-types__rail" x1="210" y1="78" x2="210" y2="229"></line>
+        <line class="prx-report-types__rung" x1="157" y1="108" x2="263" y2="108"></line>
+        <line class="prx-report-types__rung" x1="157" y1="208" x2="263" y2="208"></line>
+        <text class="prx-report-types__label" x="35" y="114">Grade 1</text>
+        <text class="prx-report-types__label" x="35" y="214">Grade 2</text>
+        <circle class="prx-report-types__a" cx="210" cy="108" r="21"></circle>
+        <text class="prx-report-types__unit" x="210" y="108">A</text>
+        <rect class="prx-report-types__b" x="189" y="187" width="42" height="42" rx="5"></rect>
+        <text class="prx-report-types__unit" x="210" y="208">B</text>
+        <text class="prx-report-types__small" x="210" y="265" text-anchor="middle">One shared report</text>
+      </svg>
+      <p class="prx-report-types__copy" id="common-grades-entry-copy">One ordered grade column, evaluated across criteria.</p>
+      <span class="prx-report-types__link">Explore 14 apps <span aria-hidden="true">↓</span></span>
+    </a>
+    <a class="prx-report-types__entry" href="#domain-profiles" aria-labelledby="domain-profiles-entry-heading" aria-describedby="domain-profiles-entry-copy">
+      <p class="prx-report-types__eyebrow">One column per domain</p>
+      <h2 id="domain-profiles-entry-heading">Domain profiles</h2>
+      <svg viewBox="0 0 400 280" width="400" height="280" role="img" aria-labelledby="domain-report-title domain-report-description">
+        <title id="domain-report-title">Separate S and C grade columns can retain crossed directions</title>
+        <desc id="domain-report-description">Domain S puts A in grade 1 and B in grade 2. Domain C puts B in grade 1 and A in grade 2. The lines connect the grades of the same unit across domains.</desc>
+        <rect class="prx-report-types__chip" x="121" y="17" width="54" height="34" rx="8"></rect>
+        <rect class="prx-report-types__chip" x="289" y="17" width="54" height="34" rx="8"></rect>
+        <text class="prx-report-types__domain" x="148" y="41" text-anchor="middle">S</text>
+        <text class="prx-report-types__domain" x="316" y="41" text-anchor="middle">C</text>
+        <line class="prx-report-types__rail" x1="148" y1="78" x2="148" y2="229"></line>
+        <line class="prx-report-types__rail" x1="316" y1="78" x2="316" y2="229"></line>
+        <line class="prx-report-types__rung" x1="110" y1="108" x2="186" y2="108"></line>
+        <line class="prx-report-types__rung" x1="278" y1="108" x2="354" y2="108"></line>
+        <line class="prx-report-types__rung" x1="110" y1="208" x2="186" y2="208"></line>
+        <line class="prx-report-types__rung" x1="278" y1="208" x2="354" y2="208"></line>
+        <path class="prx-report-types__connection-a" d="M148 108 C213 108 251 208 316 208"></path>
+        <path class="prx-report-types__connection-b" d="M148 208 C213 208 251 108 316 108"></path>
+        <text class="prx-report-types__label" x="10" y="114">Grade 1</text>
+        <text class="prx-report-types__label" x="10" y="214">Grade 2</text>
+        <circle class="prx-report-types__a" cx="148" cy="108" r="21"></circle>
+        <text class="prx-report-types__unit" x="148" y="108">A</text>
+        <rect class="prx-report-types__b" x="127" y="187" width="42" height="42" rx="5"></rect>
+        <text class="prx-report-types__unit" x="148" y="208">B</text>
+        <rect class="prx-report-types__b" x="295" y="87" width="42" height="42" rx="5"></rect>
+        <text class="prx-report-types__unit" x="316" y="108">B</text>
+        <circle class="prx-report-types__a" cx="316" cy="208" r="21"></circle>
+        <text class="prx-report-types__unit" x="316" y="208">A</text>
+        <text class="prx-report-types__small" x="232" y="265" text-anchor="middle">Separate domain reports</text>
+      </svg>
+      <p class="prx-report-types__copy" id="domain-profiles-entry-copy">Separate grade columns preserve each domain's directions.</p>
+      <span class="prx-report-types__link">Explore P.1–P.5 <span aria-hidden="true">↓</span></span>
+    </a>
+  </div>
+  <p class="prx-report-types__note">Grade 1 is highest within each column. A profile reports each domain's order separately.</p>
+</div>
+```
+
+## Common grades {#common-grades}
+
+The same grade column states a direction on every criterion. [Two scores](two-scores.qmd) shows what happens
+when those directions conflict. [Criterion-specific costs](common-grade-cost.qmd) compares each criterion's risk
+under the shared grades with its own minimum. [Withheld comparisons](why-withheld.qmd) traces why individual
+directions are left unranked.
 
 {{< include _apps.md >}}
+
+## Domain profiles {#domain-profiles}
+
+Separate columns allow two units to rank in opposite directions on different domains. The five examples
+examine which domains can be graded separately, how a joint error limit changes that choice, and what the
+resulting profiles look like for forty fictional sites. See the [Domain profiles guide](../profiles/index.qmd).
+
+{{< include _profile-apps.md >}}

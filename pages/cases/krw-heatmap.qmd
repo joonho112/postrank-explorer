@@ -4,12 +4,11 @@ subtitle: "5.4 · after Kline, Rose and Walters (2024), Figure 5A"
 description: "Comparison of isolated-pair thresholds with the relations in KRW's coherent cards."
 ---
 
-Each cell contains the posterior probability that the row firm's contact gap exceeds the column firm's gap.
-The matrix includes every ordered pair and the diagonal. Thresholding identifies directions that would minimise
-loss for each pair considered separately. The archived card's grade blocks identify the statements in a coherent
-report. Comparing the two reveals high-probability directions withheld within grades and additional directions
-stated between grades. The probability scale is retained throughout; darker blue represents greater support for
-the row-above-column direction rather than a larger error probability.
+Each cell gives the posterior probability that the row firm's contact gap is larger than the column firm's gap.
+Darker blue indicates stronger support for that direction. The threshold shows which directions would minimize
+loss if each pair were decided on its own. The grade blocks show what the archived report actually states.
+Some high-probability directions lie within a grade and are withheld. Some directions between grades fall short
+of the pairwise threshold. Select a cell or choose two firms to read their comparison above the matrix.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,23 +20,23 @@ the row-above-column direction rather than a larger error probability.
 
 ## Numerical illustrations {#what-to-try}
 
-- **All direction probabilities.** The Blues legend is labelled “Pr(row truly higher)”. A darker cell means a
-  larger direction probability; it does not mean a larger error. Arrow keys move through the complete matrix,
-  and each cell names both firms and the card’s relation.
+- **All direction probabilities.** The Blues legend reads “Pr(row truly higher)”. Arrow keys move through every
+  cell, including the diagonal. Each cell names both firms and gives their relation in the card.
 - **Above the threshold.** At λ .25, the corresponding withholding cost is τ .20. The strict pairwise rule
-  would state 1,575 pairs whose favored direction has probability above .80. Other cells fade, while the grey
+  would state 1,575 pairs whose favored direction has probability above .80. Other cells fade, while the gray
   diagonal continues to mark self-comparisons.
-- **Add the card blocks.** The card withholds 575 bright pairs inside its blocks. It also states 324 pairs whose
-  error exceeds τ. These are consequences of fitting directions into one coherent report, not a cap on grades.
+- **Add the card blocks.** Orange hatching marks 575 confident pairs withheld within a grade. Purple outlines
+  mark 324 stated pairs whose error exceeds τ. The discrepancies can arise from requiring one coherent report,
+  even with no grade cap.
 - **λ .50 blocks.** The threshold admits 2,994 pairs. Of these, 49 are withheld by the card; 545 stated pairs have
   error above the current τ. Varying the reward changes both the threshold and the selected archived card.
 - **Gender blocks.** The target is the signed male-name contact advantage. Negative gaps favor
   female-named applicants. Both row-above-column directions retain this signed orientation.
 
 ::: {.callout-note appearance="simple"}
-Grid cards were computed with KRW’s code under archived probabilities and solver tolerances. Their evaluations
-here use the released postrank probabilities and supply no new optimality certificate. Race’s baseline card is
-Figure 7; gender is Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.
+KRW's code selected the grid cards using their archived probabilities and solver tolerances. The app holds those
+grades fixed and evaluates them with the released postrank probabilities. The baseline race card is in Figure 7,
+and the gender card is in Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.
 
 Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC
 as stated by the deposit, noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted.

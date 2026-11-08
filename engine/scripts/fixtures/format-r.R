@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Writes engine/tests/fixtures/format-r.json: R's sprintf("%.<d>f", x) for exact binary ties (k/2^j), near
 # ties (2.675, 1.0005, ...), random values and large values, at d = 0 ... 6 decimals. pr-core rounds the exact
 # binary value with ties to even, as C printf does, so engine/tests/format.test.ts expects the same digits

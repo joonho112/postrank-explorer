@@ -4,12 +4,8 @@ subtitle: "5.6 · after the postrank theory book, chapters 4 and 20; KRW’s gen
 description: "Target-specific posterior probabilities and fixed-order reports for signed and absolute contact gaps."
 ---
 
-A signed male-name contact advantage and its absolute magnitude are distinct reporting targets. A large female-name
-advantage is low on the signed scale but large on the absolute scale. Each target has its own released posterior
-pair probabilities, expected-rank order and optimal cuts within that order. The display compares the resulting
-relations and marginal summaries for all firms. Folding a posterior distribution also differs from taking the
-absolute value of its mean. Consequently, the absolute-target report cannot be recovered from the signed means or
-direction probabilities alone.
+A firm with a large female-name contact advantage can rank low on the signed scale and high on the absolute
+scale. Each line connects the same firm's grades under the two targets.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,27 +17,29 @@ direction probabilities alone.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Both target-specific cards.** Both computations use at most 4 grades at withholding cost τ .20. The family label beside each result specifies that each is labelled “optimal within this order.” The two orders can differ,
-  so neither result is a certificate of optimality over every possible report.
+The two reports use different posterior pair probabilities. For each target, the app orders firms by expected
+rank and searches cuts of that order. To compute probabilities for absolute gaps, the transformation applies
+to the gaps throughout the posterior distribution. Signed means or signed direction probabilities alone cannot
+recover the absolute report.
+
+- **Both target-specific cards.** Both searches allow at most 4 grades at withholding cost τ .20. Each result
+  is labeled “optimal within this order.” A different order can admit different grade reports.
 - **Every changed pair.** The “Complete list of changed unordered pairs” keeps every relation that changes from the signed report to the absolute
   report. A direction can appear, disappear or reverse. Each row names both firms and shows the wrong-direction
-  probability under the law for that report. These are different targets, so their risk values are not a
-  comparison under one fixed loss.
+  probability under the posterior for that target. The signed and absolute risk values answer different questions.
 - **All firm summaries.** “All firms in released ID order” keeps all 97 firms together. The table keeps the supplied means and
-  central 90% intervals for both targets, their expected ranks and their chosen grades. A folded posterior mean
-  is not obtained by taking the absolute value of a signed posterior mean.
+  central 90% intervals for both targets, their expected ranks, and their chosen grades.
 
-The report cards use supplied marginal intervals only to describe individual firms. Their grades come from
-pair probabilities, the declared order, the cap and the withholding cost. Sharing a grade states no direction;
-it does not assert equality. The folded probabilities come directly from the public postrank data object’s
-absolute-gender alternative. The app does not refit independent normal distributions to those summaries or infer
-a joint race–gender posterior from marginal information.
+The dots and intervals describe individual firms. The grades depend on the pair probabilities, order, grade cap,
+and withholding cost. The report leaves the direction unstated for two firms in the same grade. The absolute-gap
+probabilities come from the public postrank data, which supplies separate signed and folded distributions.
 
-Both precision views keep the signed gender estimate’s original sampling SE. Beside the folded report, it is
-only a precision covariate, not an SE of the absolute target. A shared middle grade is not evidence of average behavior.
+Both precision plots use the original sampling SE of the signed estimate. In the plot of absolute gaps, that SE
+describes the precision of the original signed estimate. Firms in the middle grade can still differ in their
+contact gaps.
 
 ::: {.callout-note appearance="simple"}
-The two reports are newly computed cuts of their own expected-rank orders. They are not KRW’s archived cards.
+The app checks its signed grade assignments against KRW's published gender card.
 Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC,
 noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), exact signed and folded posterior cells and
 supplied central intervals. Changes noted; provided as is, without warranty; no endorsement is implied.

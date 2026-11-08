@@ -1,15 +1,14 @@
 ---
 title: "Pairwise errors from joint posterior draws"
 subtitle: "4.11 · after postrank’s posterior-input vignettes"
-description: "Dependence of empirical pairwise errors on the alignment of unit values within posterior states."
+description: "Pairing values from different posterior draws can change the estimated direction errors."
 ---
 
-A posterior draw contains one joint state of every unit on every criterion. The empirical error probability of a
-proposed direction is the proportion of states in which that direction is wrong. The package's 32-state toy sample
-illustrates the role of alignment: cyclically shifting one unit's vector preserves its marginal values but changes
-its pairing with the other units. Shifting all units together instead permutes complete states and preserves
-full-sample pairwise errors. The display records both counts and denominators, including the effects of using only a
-prefix of the retained sample.
+A posterior draw gives the values of all units and criteria in one joint state. We estimate the probability of
+a wrong direction by counting the states in which it is wrong and dividing by the number of draws. The package's
+32-state example shows what happens if we shift the values for one unit by a row. The unit has the same
+marginal values, but the shift changes which values it is compared with. Shifting all units together
+reorders complete states and preserves the full-sample error rates.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -27,18 +26,17 @@ prefix of the retained sample.
   7 times and its share to .219. The need_B count remains 32 times. The raw marginal values have only been
   reordered; the joint pairing has changed.
 - **Move states together.** Applying the same shift to every unit restores the original full-sample counts:
-  8 times and 32 times. This is a reordering of complete states, so every full-sample coefficient stays the same.
-- **Short prefix.** Only 8 retained states now enter the estimates. Both the wrong count and denominator depend on the selected prefix length. Short prefixes can change even when complete states
-  are shifted together.
+  8 times and 32 times. Each state still contains the same values, so every full-sample error share stays the same.
+- **Short prefix.** Only 8 retained states now enter the estimates. Even a shift of complete states can change which draws appear in the first 8 rows.
 - **Unshifted pair.** The pair 001 and site C contains neither shifted unit. Its counts remain 0 times and
   25 times, with need_B share .781. Changing a third unit’s pairing cannot change this pair’s comparisons.
 - **Full cycle.** A full cyclic shift returns every source vector to its original row, with counts 8 times and
   32 times again. The source table retains all original unit and criterion coordinates.
 
 ::: {.callout-note appearance="simple"}
-This is a fixed IID numerical sample from a specified synthetic normal law. A zero empirical error share means
-that the event did not occur in this sample; it does not establish an exact zero posterior probability. The shift
-is a reproducible dependence illustration, not an additional posterior simulation or a convergence test.
+The original states are independent draws from the same synthetic normal law. An error share of zero means that
+no retained draw shows the event. Its posterior probability can still be positive. The shifted comparisons reuse
+the original sample to show how pairing across units affects the estimated probabilities.
 :::
 
 ::: {.callout-note collapse="true" title="In postrank"}

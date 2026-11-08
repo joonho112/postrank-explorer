@@ -1,0 +1,581 @@
+{
+  "schemaVersion": "postrank-explorer-mdomain-v1",
+  "fixtureId": "boundary-positive-coarsening",
+  "description": "Complete finite teaching law: boundary-positive-coarsening. Policy and candidate banks are explicitly declared.",
+  "input": {
+    "inputId": "boundary-positive-coarsening-input",
+    "lawId": "boundary-positive-coarsening-law",
+    "representation": "exact_finite_law",
+    "coupling": "supplied_joint",
+    "unitIds": [
+      "A",
+      "B",
+      "C"
+    ],
+    "domainIds": [
+      "S"
+    ],
+    "stateIds": [
+      "s1"
+    ],
+    "states": [
+      [
+        [
+          3
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ]
+    ],
+    "masses": [
+      "1"
+    ],
+    "targets": [
+      {
+        "domainId": "S",
+        "definition": "Fictional S priority",
+        "units": "oriented teaching score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "A",
+          "B",
+          "C"
+        ],
+        "equalityProvenance": "Explicit classes of this finite teaching law."
+      }
+    ],
+    "provenance": {
+      "producer": "Self-contained finite teaching law",
+      "conditioningInfo": "Specified fictional law; no observations.",
+      "jointGeneration": "Every labelled state contains all units and domains.",
+      "finiteSupportOrigin": "These states exhaust this finite law, including declared zero-mass states.",
+      "properLaw": true
+    }
+  },
+  "decision": {
+    "decisionId": "boundary-positive-coarsening-policy",
+    "domainIds": [
+      "S"
+    ],
+    "scope": "all_pairs",
+    "weights": [
+      "1"
+    ],
+    "tau": [
+      "1/4"
+    ],
+    "q": [
+      "2/5"
+    ],
+    "t": [
+      "2/5"
+    ],
+    "alpha": "0"
+  },
+  "family": {
+    "familyId": "boundary-positive-coarsening-family",
+    "unitIds": [
+      "A",
+      "B",
+      "C"
+    ],
+    "domainIds": [
+      "S"
+    ],
+    "maxGrades": [
+      3
+    ],
+    "maxActions": 256,
+    "banks": [
+      {
+        "domainId": "S",
+        "columns": [
+          {
+            "columnId": "column-1",
+            "grades": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "column-2",
+            "grades": [
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "columnId": "column-3",
+            "grades": [
+              1,
+              1,
+              2
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "fit": {
+      "inputId": "boundary-positive-coarsening-input",
+      "lawId": "boundary-positive-coarsening-law",
+      "decisionId": "boundary-positive-coarsening-policy",
+      "familyId": "boundary-positive-coarsening-family",
+      "candidateTable": [
+        {
+          "candidateId": "p:1,1,1",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                1
+              ]
+            ]
+          },
+          "riskExact": "1/4",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "disclosedCounts": [
+            0
+          ],
+          "gradeCounts": [
+            1
+          ],
+          "optimal": true,
+          "selected": true
+        },
+        {
+          "candidateId": "p:1,1,2",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                2
+              ]
+            ]
+          },
+          "riskExact": "5/12",
+          "jointProbabilityExact": "1",
+          "meanFeasible": false,
+          "jointFeasible": false,
+          "feasible": false,
+          "disclosedCounts": [
+            2
+          ],
+          "gradeCounts": [
+            2
+          ],
+          "optimal": false,
+          "selected": false
+        },
+        {
+          "candidateId": "p:1,2,3",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                2
+              ],
+              [
+                3
+              ]
+            ]
+          },
+          "riskExact": "1/3",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "disclosedCounts": [
+            3
+          ],
+          "gradeCounts": [
+            3
+          ],
+          "optimal": false,
+          "selected": false
+        }
+      ],
+      "optimizerIds": [
+        "p:1,1,1"
+      ],
+      "selectedId": "p:1,1,1",
+      "selectedGrades": {
+        "unitIds": [
+          "A",
+          "B",
+          "C"
+        ],
+        "domainIds": [
+          "S"
+        ],
+        "values": [
+          [
+            1
+          ],
+          [
+            1
+          ],
+          [
+            1
+          ]
+        ]
+      },
+      "riskExact": "1/4",
+      "jointProbabilityExact": "0",
+      "searchScope": {
+        "type": "declared_cartesian_product",
+        "candidateCount": 3,
+        "examinedActions": 3,
+        "fullProductExamined": true,
+        "unrestrictedOptimalityClaim": false
+      },
+      "assurance": {
+        "arithmetic": "exact_represented_finite_law",
+        "properLawStatus": "producer_declaration",
+        "numericalGuarantee": false,
+        "intendedPosteriorFeasibilityCertified": false,
+        "searchOptimality": "candidate_restricted"
+      }
+    },
+    "selectedEvaluation": {
+      "inputId": "boundary-positive-coarsening-input",
+      "lawId": "boundary-positive-coarsening-law",
+      "decisionId": "boundary-positive-coarsening-policy",
+      "grades": {
+        "unitIds": [
+          "A",
+          "B",
+          "C"
+        ],
+        "domainIds": [
+          "S"
+        ],
+        "values": [
+          [
+            1
+          ],
+          [
+            1
+          ],
+          [
+            1
+          ]
+        ]
+      },
+      "originalPairs": 3,
+      "riskExact": "1/4",
+      "jointProbabilityExact": "0",
+      "meanFeasible": true,
+      "jointFeasible": true,
+      "feasible": true,
+      "jointStatus": "analytic_zero",
+      "domains": [
+        {
+          "domainId": "S",
+          "gradeCount": 1,
+          "disclosedPairs": 0,
+          "withheldPairs": 3,
+          "expectedFalseCountExact": "0",
+          "expectedFalseProportionExact": null,
+          "lossExact": "1/4",
+          "weightedLossExact": "1/4",
+          "meanGuardSatisfied": true,
+          "thresholdExact": "2/5",
+          "firstExceedanceCount": 1,
+          "eventProbabilityExact": "0",
+          "eventActive": false
+        }
+      ],
+      "states": [
+        {
+          "stateId": "s1",
+          "falseCounts": [
+            0
+          ],
+          "exceedances": [
+            false
+          ],
+          "unionExceeded": false
+        }
+      ],
+      "assurance": {
+        "arithmetic": "exact_represented_finite_law",
+        "properLawStatus": "producer_declaration",
+        "numericalGuarantee": false,
+        "intendedPosteriorFeasibilityCertified": false,
+        "searchOptimality": "fixed_card"
+      }
+    },
+    "fixedCards": [
+      {
+        "cardId": "p:1,1,1",
+        "evaluation": {
+          "inputId": "boundary-positive-coarsening-input",
+          "lawId": "boundary-positive-coarsening-law",
+          "decisionId": "boundary-positive-coarsening-policy",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                1
+              ]
+            ]
+          },
+          "originalPairs": 3,
+          "riskExact": "1/4",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "jointStatus": "analytic_zero",
+          "domains": [
+            {
+              "domainId": "S",
+              "gradeCount": 1,
+              "disclosedPairs": 0,
+              "withheldPairs": 3,
+              "expectedFalseCountExact": "0",
+              "expectedFalseProportionExact": null,
+              "lossExact": "1/4",
+              "weightedLossExact": "1/4",
+              "meanGuardSatisfied": true,
+              "thresholdExact": "2/5",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "0",
+              "eventActive": false
+            }
+          ],
+          "states": [
+            {
+              "stateId": "s1",
+              "falseCounts": [
+                0
+              ],
+              "exceedances": [
+                false
+              ],
+              "unionExceeded": false
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:1,1,2",
+        "evaluation": {
+          "inputId": "boundary-positive-coarsening-input",
+          "lawId": "boundary-positive-coarsening-law",
+          "decisionId": "boundary-positive-coarsening-policy",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                2
+              ]
+            ]
+          },
+          "originalPairs": 3,
+          "riskExact": "5/12",
+          "jointProbabilityExact": "1",
+          "meanFeasible": false,
+          "jointFeasible": false,
+          "feasible": false,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "S",
+              "gradeCount": 2,
+              "disclosedPairs": 2,
+              "withheldPairs": 1,
+              "expectedFalseCountExact": "1",
+              "expectedFalseProportionExact": "1/2",
+              "lossExact": "5/12",
+              "weightedLossExact": "5/12",
+              "meanGuardSatisfied": false,
+              "thresholdExact": "2/5",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "1",
+              "eventActive": true
+            }
+          ],
+          "states": [
+            {
+              "stateId": "s1",
+              "falseCounts": [
+                1
+              ],
+              "exceedances": [
+                true
+              ],
+              "unionExceeded": true
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:1,2,3",
+        "evaluation": {
+          "inputId": "boundary-positive-coarsening-input",
+          "lawId": "boundary-positive-coarsening-law",
+          "decisionId": "boundary-positive-coarsening-policy",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                2
+              ],
+              [
+                3
+              ]
+            ]
+          },
+          "originalPairs": 3,
+          "riskExact": "1/3",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "S",
+              "gradeCount": 3,
+              "disclosedPairs": 3,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "1",
+              "expectedFalseProportionExact": "1/3",
+              "lossExact": "1/3",
+              "weightedLossExact": "1/3",
+              "meanGuardSatisfied": true,
+              "thresholdExact": "2/5",
+              "firstExceedanceCount": 2,
+              "eventProbabilityExact": "0",
+              "eventActive": true
+            }
+          ],
+          "states": [
+            {
+              "stateId": "s1",
+              "falseCounts": [
+                1
+              ],
+              "exceedances": [
+                false
+              ],
+              "unionExceeded": false
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      }
+    ]
+  },
+  "oracle": {
+    "package": "postrank",
+    "packageVersion": "1.2.0",
+    "sourceCommit": "da02a785f753efb060e149f04650970b0ea1e05b",
+    "generator": "r-export/v35/resolution-boundaries.R",
+    "method": "public_api_exhaustive_fixed_cards"
+  }
+}

@@ -1,17 +1,17 @@
 /*
  * postrank Explorer · design tokens
  *
- * One source for every colour a page, widget, embed, catalog card or deck uses (CONTRACT 11).
+ * One source for every color a page, widget, embed, catalog card or deck uses (CONTRACT 11).
  * Validate after any change:   node scripts/validate_palette.mjs
  *
  * Families
- *   chrome   page and control colours: postrank pkgdown ivory #fdfbf6, teal #17645E, link #3c6657.
+ *   chrome   page and control colors: postrank pkgdown ivory #fdfbf6, teal #17645E, link #3c6657.
  *            A skin may change these and only these.
  *   figure   the plot panel and its ink (panel, axis, grid, cell outline, hatch, label inks, focus).
- *   data     colours that carry a meaning (table below). Data marks are theme-invariant: they keep
+ *   data     colors that carry a meaning (table below). Data marks are theme-invariant: they keep
  *            the postrank package values in every theme and skin, so a widget and the figure a
  *            learner makes in R read alike.
- *   formula  text forms of data colours for \class{prx-…}{…} in formulas (CONTRACT 4.4). Each is
+ *   formula  text forms of data colors for \class{prx-…}{…} in formulas (CONTRACT 4.4). Each is
  *            the same hue as its mark, adjusted per theme to reach text contrast.
  *
  * Theme and skin selection (attributes on <html>; embeds map ?theme= and ?skin= to them)
@@ -24,32 +24,32 @@
  * the validator requires the two copies to be identical.
  *
  * Dark theme and the plot panel
- *   The grade ramp and the relation colours are designed for a light panel (the package draws
+ *   The grade ramp and the relation colors are designed for a light panel (the package draws
  *   figures on white for this reason; see theme_postrank()). In the dark theme the chrome turns
- *   dark and the plot panel (--prx-plot-bg) stays a dimmed paper, so every data colour keeps its
+ *   dark and the plot panel (--prx-plot-bg) stays a dimmed paper, so every data color keeps its
  *   meaning and its validated contrast. Data marks, legends and direct labels are drawn inside
  *   the plot panel; SVG text uses --prx-plot-fg / --prx-plot-muted, never --prx-fg.
  *
- * Colour meanings (one colour, one meaning inside a widget; CONTRACT 11.2)
+ * Color meanings (one color, one meaning inside a widget; CONTRACT 11.2)
  *   --prx-est        vermillion #D55E00   a raw estimate (Part 1; Part 3 case pages)
  *   --prx-post       navy #1f3a5f         a posterior summary (Part 1)
  *   --prx-rel-above  #0072B2              the row unit is disclosed above the column unit
  *   --prx-rel-withheld grey80 #cccccc     the pair is withheld
  *   --prx-rel-below  #E69F00              the row unit is disclosed below the column unit
  *   --prx-err        vermillion #D55E00   the error term E/M (Part 2 onward, where no raw estimate is drawn)
- *   --prx-wh         grey #6b6b6b         the withholding term τ(M−N)/M (the withheld colour at text contrast)
+ *   --prx-wh         gray #6b6b6b         the withholding term τ(M−N)/M (the withheld color at text contrast)
  *   --prx-blues-1…7  Blues               Pr(row truly higher), π; legend title "Pr(row truly higher)"
  *   --prx-purples-1…7 Purples            Pr(stating row above column is wrong), e; legend title
  *                                        "Pr(stating row above column is wrong)"
- *   --prx-neutral-1…7 Greys              the probability layer of a staged view once relation colours appear
+ *   --prx-neutral-1…7 Grays              the probability layer of a staged view once relation colors appear
  *   --prx-grade-1…8  #153653 → #4F879E    grade 1 … grade G (grade 1 = highest priority)
  *   --prx-crit-1…3   #009E73 #CC79A7 #8C564B   criteria k = 1, 2, 3
  *   --prx-chg-*      package change palette   a pair's relation changed between two reports
  * Formula text forms (.prx-est, .prx-err, .prx-post, .prx-wh): vermillion #b04800 light / #ff8f4a dark
- * (#D55E00 itself is 3.74:1 on ivory, below text contrast), navy #1f3a5f / #a9c1e0, grey #6b6b6b / #a3a3a3.
+ * (#D55E00 itself is 3.74:1 on ivory, below text contrast), navy #1f3a5f / #a9c1e0, gray #6b6b6b / #a3a3a3.
  *
  * Grades. --prx-grade-1…8 are postrank_palette(8). A view with G < 8 grades interpolates its own
- * G colours between --prx-grade-1 and --prx-grade-8 with the package rule
+ * G colors between --prx-grade-1 and --prx-grade-8 with the package rule
  * channel = floor(a + (b − a)·(g − 1)/(G − 1) + 0.5) in sRGB 0–255 (G = 1 uses --prx-grade-1);
  * the validator checks that rule for G = 1…64.
  *
@@ -65,9 +65,9 @@
  *   [plot-deco]         grid line, not needed to read the figure (exempt)
  *   [label]             ink for direct labels on data fills (the better of the two is used)
  *   [halo]              inner ring of the two-tone plot focus ring
- *   [mark]              data colour, ≥ 3:1 on the panel or covered by a declared supplement
- *   [data-text]         formula colour, ≥ 4.5:1 on every chrome surface
- *   [font] [size]       non-colour tokens (not colour-checked)
+ *   [mark]              data color, ≥ 3:1 on the panel or covered by a declared supplement
+ *   [data-text]         formula color, ≥ 4.5:1 on every chrome surface
+ *   [font] [size]       non-color tokens (not color-checked)
  */
 
 /*
@@ -88,56 +88,56 @@
  * @ramp neutral down: --prx-neutral-1, --prx-neutral-2, --prx-neutral-3, --prx-neutral-4, --prx-neutral-5, --prx-neutral-6, --prx-neutral-7
  * @ramp grade up: --prx-grade-1, --prx-grade-2, --prx-grade-3, --prx-grade-4, --prx-grade-5, --prx-grade-6, --prx-grade-7, --prx-grade-8
  *
- * Supplements: a data colour below 3:1 on the panel (or a ramp whose neighbouring steps are close)
- * is legal only with a non-colour channel. Kinds: border (1px --prx-cell-border outline), pattern
+ * Supplements: a data color below 3:1 on the panel (or a ramp whose neighboring steps are close)
+ * is legal only with a non-color channel. Kinds: border (1px --prx-cell-border outline), pattern
  * (45° hatch in --prx-hatch), label (direct label in the better label ink), linetype (solid,
  * dashed, dotted, with point shapes).
  * @supplement --prx-rel-withheld: pattern, border — withheld cells are hatched and outlined, so they never read as a light probability step
  * @supplement --prx-rel-below: border, label — #E69F00 is 2.25:1 on white; below cells are outlined and carry their direction label
- * @supplement --prx-chg-unchanged: border, label — unchanged cells are outlined and labelled
- * @supplement --prx-chg-withheld: border, label — newly withheld cells are outlined and labelled
+ * @supplement --prx-chg-unchanged: border, label — unchanged cells are outlined and labeled
+ * @supplement --prx-chg-withheld: border, label — newly withheld cells are outlined and labeled
  * @supplement blues: border, label — every matrix cell has an outline and its value as a direct label (CONTRACT 11.2)
  * @supplement purples: border, label — every matrix cell has an outline and its value as a direct label (CONTRACT 11.2)
  * @supplement neutral: border, label — every matrix cell has an outline and its value as a direct label (CONTRACT 11.2)
- * @supplement grade: label — neighbouring grades differ little in lightness; every grade mark or band carries its grade number
- * @supplement criteria: linetype, label — criterion lines are solid, dashed, dotted (k = 1, 2, 3) and labelled at the line end
+ * @supplement grade: label — neighboring grades differ little in lightness; every grade mark or band carries its grade number
+ * @supplement criteria: linetype, label — criterion lines are solid, dashed, dotted (k = 1, 2, 3) and labeled at the line end
  *
- * One colour, one meaning: colours with different meanings that are close (normal ΔE < 15 or CVD
+ * One color, one meaning: colors with different meanings that are close (normal ΔE < 15 or CVD
  * ΔE < 8) are either never in one widget (@exclusive) or kept apart by a named channel (@separated).
- * @exclusive part1 | risk — a raw estimate and the error term are never drawn in one widget (CONTRACT 11 colour table)
+ * @exclusive part1 | risk — a raw estimate and the error term are never drawn in one widget (CONTRACT 11 color table)
  * @exclusive part1 | change — change views draw no raw estimate or posterior summary
  * @exclusive risk | change — change views draw no risk split
  * @exclusive relation | change — a change view replaces the relation view
- * @exclusive relation | blues — once relation colours appear the probability layer switches to the neutral ramp (CONTRACT 11.2)
- * @exclusive relation | purples — once relation colours appear the probability layer switches to the neutral ramp (CONTRACT 11.2)
+ * @exclusive relation | blues — once relation colors appear the probability layer switches to the neutral ramp (CONTRACT 11.2)
+ * @exclusive relation | purples — once relation colors appear the probability layer switches to the neutral ramp (CONTRACT 11.2)
  * @exclusive change | blues — a change view shows no probability layer
  * @exclusive change | purples — a change view shows no probability layer
  * @exclusive change | neutral — a change view shows no probability layer
- * @exclusive change | grade — a change view compares relations, not grade colours
+ * @exclusive change | grade — a change view compares relations, not grade colors
  * @exclusive part1 | neutral — the neutral ramp belongs to staged relation views (Part 2 onward)
  * @exclusive criteria | change — change views are drawn for one criterion at a time
  * @separated relation | neutral by label — neutral cells show their probability value, relation cells their direction; withheld cells are also hatched
- * @separated risk | neutral by marktype — G-03: the risk split is a labelled bar beside the staged matrix; the withholding bar (#6b6b6b) and neutral step 5 (#737373) are nearly the same grey, so the bar always carries its label
- * @separated relation | risk by marktype — relation colours fill matrix cells; the risk split is a labelled bar
- * @separated relation | grade by marktype — relation colours fill matrix cells; grades colour unit marks and bands with grade numbers
+ * @separated risk | neutral by marktype — G-03: the risk split is a labeled bar beside the staged matrix; the withholding bar (#6b6b6b) and neutral step 5 (#737373) are nearly the same gray, so the bar always carries its label
+ * @separated relation | risk by marktype — relation colors fill matrix cells; the risk split is a labeled bar
+ * @separated relation | grade by marktype — relation colors fill matrix cells; grades color unit marks and bands with grade numbers
  * @separated blues | purples by panel — π and e sit in separate matrices, each with its legend title
  * @separated blues | neutral by panel — a staged view shows one probability layer at a time
  * @separated purples | neutral by panel — a staged view shows one probability layer at a time
- * @separated blues | grade by marktype — matrix cells against grade-coloured unit marks with grade numbers
- * @separated purples | grade by marktype — matrix cells against grade-coloured unit marks with grade numbers
- * @separated neutral | grade by marktype — matrix cells against grade-coloured unit marks with grade numbers
+ * @separated blues | grade by marktype — matrix cells against grade-colored unit marks with grade numbers
+ * @separated purples | grade by marktype — matrix cells against grade-colored unit marks with grade numbers
+ * @separated neutral | grade by marktype — matrix cells against grade-colored unit marks with grade numbers
  * @separated part1 | grade by marktype — L-01: posterior means and intervals are navy points and lines over grade bands that carry grade numbers
  * @separated part1 | blues by marktype — estimates and posteriors are points and intervals; π is a matrix
  * @separated part1 | purples by marktype — estimates and posteriors are points and intervals; e is a matrix
- * @separated risk | blues by marktype — the risk split is a labelled bar; π is a matrix
- * @separated risk | purples by marktype — the risk split is a labelled bar; e is a matrix
- * @separated risk | grade by marktype — the risk split is a labelled bar; grades colour unit marks
- * @separated criteria | blues by marktype — criteria colour lines and points; π is a matrix
- * @separated criteria | purples by marktype — criteria colour lines and points; e is a matrix
- * @separated criteria | neutral by marktype — criteria colour lines and points; the neutral layer is a matrix
- * @separated criteria | grade by marktype — criteria colour lines and points; grades colour unit marks with grade numbers
- * @separated criteria | part1 by marktype — criteria colour lines between linked panels; estimates and posteriors are points and intervals
- * @separated criteria | risk by marktype — criteria colour lines and points; the risk split is a labelled bar
+ * @separated risk | blues by marktype — the risk split is a labeled bar; π is a matrix
+ * @separated risk | purples by marktype — the risk split is a labeled bar; e is a matrix
+ * @separated risk | grade by marktype — the risk split is a labeled bar; grades color unit marks
+ * @separated criteria | blues by marktype — criteria color lines and points; π is a matrix
+ * @separated criteria | purples by marktype — criteria color lines and points; e is a matrix
+ * @separated criteria | neutral by marktype — criteria color lines and points; the neutral layer is a matrix
+ * @separated criteria | grade by marktype — criteria color lines and points; grades color unit marks with grade numbers
+ * @separated criteria | part1 by marktype — criteria color lines between linked panels; estimates and posteriors are points and intervals
+ * @separated criteria | risk by marktype — criteria color lines and points; the risk split is a labeled bar
  */
 
 :root {
@@ -202,7 +202,7 @@
   --prx-purples-6: #6A51A3;     /* [mark] e step 6 */
   --prx-purples-7: #4A1486;     /* [mark] e step 7 (highest) */
 
-  /* --- data: neutral probability layer of a staged relation view (ColorBrewer Greys 7) --- */
+  /* --- data: neutral probability layer of a staged relation view (ColorBrewer Grays 7) --- */
   --prx-neutral-1: #F7F7F7;     /* [mark] neutral probability step 1 (lowest) */
   --prx-neutral-2: #D9D9D9;     /* [mark] neutral probability step 2 */
   --prx-neutral-3: #BDBDBD;     /* [mark] neutral probability step 3 */
@@ -235,7 +235,7 @@
   --prx-chg-withheld: #999999;  /* [mark] the pair is newly withheld */
   --prx-chg-reversed: #D55E00;  /* [mark] the pair's direction is reversed */
 
-  /* --- formula colours (\class{prx-…}{…}; text forms of the data colours) --- */
+  /* --- formula colors (\class{prx-…}{…}; text forms of the data colors) --- */
   --prx-est-text: #b04800;      /* [data-text] .prx-est: a raw estimate in a formula (vermillion at text contrast) */
   --prx-post-text: #1f3a5f;     /* [data-text] .prx-post: a posterior summary in a formula (navy) */
   --prx-err-text: #b04800;      /* [data-text] .prx-err: the error term E/M in a formula (vermillion at text contrast) */
@@ -297,7 +297,7 @@
   --prx-wh-text: #a3a3a3;
 }
 
-/* jhl skin (jhl-seminar: teal and coral). Chrome colours only; figure and data tokens are untouched. */
+/* jhl skin (jhl-seminar: teal and coral). Chrome colors only; figure and data tokens are untouched. */
 :root[data-skin="jhl"] {
   --prx-bg: #FCFBF8;
   --prx-bg-raised: #F5F3EC;
@@ -348,7 +348,7 @@
   --prx-focus: #f2a088;
 }
 
-/* Formula colour classes (CONTRACT 4.4: \class{prx-…}{…} in TeX, never \textcolor or inline hex). */
+/* Formula color classes (CONTRACT 4.4: \class{prx-…}{…} in TeX, never \textcolor or inline hex). */
 .prx-est { color: var(--prx-est-text); }
 .prx-post { color: var(--prx-post-text); }
 .prx-err { color: var(--prx-err-text); }

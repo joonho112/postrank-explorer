@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "postrank-explorer-mdomain-v1",
+  "fixtureId": "resolution-k2-a6",
+  "description": "Complete finite teaching law: resolution-k2-a6. Policy and candidate banks are explicitly declared.",
+  "input": {
+    "inputId": "resolution-k2-a6-input",
+    "lawId": "resolution-k2-a6-law",
+    "representation": "exact_finite_law",
+    "coupling": "supplied_joint",
+    "unitIds": [
+      "A",
+      "B"
+    ],
+    "domainIds": [
+      "S",
+      "C"
+    ],
+    "stateIds": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "states": [
+      [
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          -1,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          -1
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    ],
+    "masses": [
+      "7/10",
+      "1/10",
+      "1/5"
+    ],
+    "targets": [
+      {
+        "domainId": "S",
+        "definition": "Fictional S priority",
+        "units": "oriented teaching score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "A",
+          "B"
+        ],
+        "equalityProvenance": "Explicit classes of this finite teaching law."
+      },
+      {
+        "domainId": "C",
+        "definition": "Fictional C priority",
+        "units": "oriented teaching score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "A",
+          "B"
+        ],
+        "equalityProvenance": "Explicit classes of this finite teaching law."
+      }
+    ],
+    "provenance": {
+      "producer": "Self-contained finite teaching law",
+      "conditioningInfo": "Specified fictional law; no observations.",
+      "jointGeneration": "Every labelled state contains all units and domains.",
+      "finiteSupportOrigin": "These states exhaust this finite law, including declared zero-mass states.",
+      "properLaw": true
+    }
+  },
+  "decision": {
+    "decisionId": "resolution-k2-a6-policy",
+    "domainIds": [
+      "S",
+      "C"
+    ],
+    "scope": "all_pairs",
+    "weights": [
+      "1/4",
+      "3/4"
+    ],
+    "tau": [
+      "1/4",
+      "1/4"
+    ],
+    "q": null,
+    "t": [
+      "0",
+      "0"
+    ],
+    "alpha": "3/20"
+  },
+  "family": {
+    "familyId": "resolution-k2-a6-family",
+    "unitIds": [
+      "A",
+      "B"
+    ],
+    "domainIds": [
+      "S",
+      "C"
+    ],
+    "maxGrades": [
+      2,
+      2
+    ],
+    "maxActions": 256,
+    "banks": [
+      {
+        "domainId": "S",
+        "columns": [
+          {
+            "columnId": "column-1",
+            "grades": [
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "column-2",
+            "grades": [
+              1,
+              2
+            ]
+          },
+          {
+            "columnId": "column-3",
+            "grades": [
+              2,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "domainId": "C",
+        "columns": [
+          {
+            "columnId": "column-1",
+            "grades": [
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "column-2",
+            "grades": [
+              1,
+              2
+            ]
+          },
+          {
+            "columnId": "column-3",
+            "grades": [
+              2,
+              1
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

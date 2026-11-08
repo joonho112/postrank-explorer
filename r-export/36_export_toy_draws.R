@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Export the actual fixed 32 complete toy states; original public package sources stay read-only.
 # Rscript r-export/36_export_toy_draws.R
 prx_export_lib_only <- TRUE

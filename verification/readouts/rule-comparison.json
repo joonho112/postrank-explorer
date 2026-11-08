@@ -551,6 +551,52 @@
         }
       ],
       "query": "?data=league8&family=cap3&match=n&tau=.20&rule=tiers4"
+    },
+    {
+      "id": "preset-pmcuts",
+      "preset": "pmcuts",
+      "about": "Named posterior-mean-cuts preset at tau=.20 within the all-report family; selected N, expected wrong count and zero lower-envelope gap use the independent pmcuts3 base-R ruleGap row. At this hull vertex the UI does not render a separate H readout.",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"N\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmcuts3",
+            "field": "N"
+          },
+          "value": 17,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"E\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmcuts3",
+            "field": "Ew"
+          },
+          "value": 1.87413223654424,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"gap\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "ruleGap-league8-all-pmcuts3",
+            "field": "gap"
+          },
+          "value": 0,
+          "format": {
+            "fn": "formatExpectedCount"
+          }
+        }
+      ]
     }
   ],
   "from": "postrank-explorer-v1 verification/readouts/rule-comparison.json, minus course prediction cases"

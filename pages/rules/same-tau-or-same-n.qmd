@@ -4,11 +4,10 @@ subtitle: "3.8 · after the postrank theory book, ch. 16–17"
 description: "Risk comparisons at a common cost and error comparisons at a common disclosure level."
 ---
 
-Two comparisons use different constraints. At a common withholding cost, posterior risk combines expected errors
-with the cost of the pairs left unstated. At matched disclosure, the frontier comparison holds the number of stated
-pairs fixed and compares expected wrong counts. The display evaluates the same rules under both criteria, using one
-posterior and a specified report family. This makes the source of each risk or error difference explicit. For the
-thirty-unit example, the boundary is restricted to contiguous cuts of one order.
+There are two ways to compare reports that disclose different numbers of pairs. At a common withholding cost,
+risk includes both expected wrong directions and the cost of the pairs left unranked. At a common number of
+stated pairs, we compare expected wrong counts directly. We apply both comparisons to the same rules under
+one posterior. In the thirty-unit example, the comparison family consists of contiguous cuts of one order.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,22 +20,21 @@ thirty-unit example, the boundary is restricted to contiguous cuts of one order.
 ## Numerical illustrations {#what-to-try}
 
 - **Same τ, .20.** Posterior-mean tiers state 21 pairs with risk .1612, while the best report states 17 with risk
-  .1455. These reports disclose different amounts. The solid and dashed lines have the same slope; a lower line
-  has lower risk at this τ.
+  .1455. The solid and dashed lines have the same slope. The lower line has lower risk at this τ.
 - **Same N, eight units.** The tiers' gap is .1634 at N 21. The diamond is a frontier mixture, while the square
-  marks the best single report at that N. The table now compares wrong counts at each rule's own disclosure.
+  marks the best single report at that N. The rank strip and table compare risk and gap side by side.
 - **Thirty units, one order.** The capped family has 436 reports. Posterior-mean tiers state 300 pairs with E 48.31.
-  The boundary is optimal within this order; other orders are not searched.
+  The boundary gives the lowest expected wrong count available among cuts of this order.
 - **Thirty units, same τ.** Without the cap, the family contains 536,870,912 contiguous cuts of the posterior-mean order. There is no enumerated cloud here. Both comparison modes use the same units.
 - **Flags outside the order.** The flag report is outside this family: it still has an evaluated risk, but no matched-disclosure
   benchmark in this order family. The hollow mark records this restriction.
 - **All-withheld.** N is 0 and the risk at τ .20 is .2000. Its fraction of stated pairs that are wrong is undefined.
 
 ::: {.callout-note appearance="simple"}
-All rules share a supplied normal teaching posterior. Flags use the mean of all thirty estimates as their reference.
-On thirty units the boundary is the hull of contiguous cuts in one declared order, not the unrestricted H(m).
-Changing τ changes the loss; changing the family changes the benchmark. Risks across those settings answer
-different questions. No reporting-risk comparison establishes a rule's value for allocation or classification.
+We evaluate the rules under the same normal posterior. The flags use the mean of all thirty estimates as their
+reference. For thirty units, the boundary comes from the hull of contiguous cuts in the given order. The
+withholding cost determines the loss, and the report family determines which benchmarks are available. An
+allocation or classification decision would require its own objective.
 :::
 
 ::: {.callout-note collapse="true" title="In postrank"}

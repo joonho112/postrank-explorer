@@ -1,0 +1,1835 @@
+{
+  "schemaVersion": "postrank-explorer-mdomain-v1",
+  "fixtureId": "permutation-both",
+  "description": "The same labelled finite-law decision problem in a different declared array order.",
+  "input": {
+    "inputId": "dependence-input-disjoint-both",
+    "lawId": "dependence-law-disjoint-both",
+    "representation": "exact_finite_law",
+    "coupling": "supplied_joint",
+    "unitIds": [
+      "B",
+      "A"
+    ],
+    "domainIds": [
+      "C",
+      "S"
+    ],
+    "stateIds": [
+      "++",
+      "-+",
+      "+-",
+      "--"
+    ],
+    "states": [
+      [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          -1
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          -1,
+          1
+        ]
+      ],
+      [
+        [
+          0,
+          0
+        ],
+        [
+          -1,
+          -1
+        ]
+      ]
+    ],
+    "masses": [
+      "4/5",
+      "1/10",
+      "1/10",
+      "0"
+    ],
+    "targets": [
+      {
+        "domainId": "C",
+        "definition": "Fictional C priority coordinate",
+        "units": "illustrative score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "B",
+          "A"
+        ],
+        "equalityProvenance": "No structural identities between the two units."
+      },
+      {
+        "domainId": "S",
+        "definition": "Fictional S priority coordinate",
+        "units": "illustrative score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "B",
+          "A"
+        ],
+        "equalityProvenance": "No structural identities between the two units."
+      }
+    ],
+    "provenance": {
+      "producer": "JoonHo Lee: self-contained dependence teaching law",
+      "conditioningInfo": "Specified finite law; no fitted observations or sampled draws.",
+      "jointGeneration": "Each labelled matrix contains both units and both domains; dependence is supplied by the exact masses.",
+      "finiteSupportOrigin": "The four listed matrices exhaust this specified law, including zero-mass rows.",
+      "properLaw": true
+    }
+  },
+  "decision": {
+    "decisionId": "dependence-equal-weights-direct-union-both",
+    "domainIds": [
+      "C",
+      "S"
+    ],
+    "scope": "all_pairs",
+    "weights": [
+      "1/2",
+      "1/2"
+    ],
+    "tau": [
+      "1/4",
+      "1/4"
+    ],
+    "q": null,
+    "t": [
+      "0",
+      "0"
+    ],
+    "alpha": "3/20"
+  },
+  "family": {
+    "familyId": "dependence-nine-product-cards-both",
+    "unitIds": [
+      "B",
+      "A"
+    ],
+    "domainIds": [
+      "C",
+      "S"
+    ],
+    "maxGrades": [
+      2,
+      2
+    ],
+    "maxActions": 9,
+    "banks": [
+      {
+        "domainId": "C",
+        "columns": [
+          {
+            "columnId": "withhold",
+            "grades": [
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "forward",
+            "grades": [
+              2,
+              1
+            ]
+          },
+          {
+            "columnId": "reverse",
+            "grades": [
+              1,
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "domainId": "S",
+        "columns": [
+          {
+            "columnId": "withhold",
+            "grades": [
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "forward",
+            "grades": [
+              2,
+              1
+            ]
+          },
+          {
+            "columnId": "reverse",
+            "grades": [
+              1,
+              2
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "fit": {
+      "inputId": "dependence-input-disjoint-both",
+      "lawId": "dependence-law-disjoint-both",
+      "decisionId": "dependence-equal-weights-direct-union-both",
+      "familyId": "dependence-nine-product-cards-both",
+      "candidateTable": [
+        {
+          "candidateId": "p:1,1|1,1",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          "riskExact": "1/4",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "disclosedCounts": [
+            0,
+            0
+          ],
+          "gradeCounts": [
+            1,
+            1
+          ],
+          "optimal": false,
+          "selected": false
+        },
+        {
+          "candidateId": "p:1,1|1,2",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ]
+          },
+          "riskExact": "23/40",
+          "jointProbabilityExact": "9/10",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "disclosedCounts": [
+            0,
+            1
+          ],
+          "gradeCounts": [
+            1,
+            2
+          ],
+          "optimal": false,
+          "selected": false
+        },
+        {
+          "candidateId": "p:1,1|2,1",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          "riskExact": "7/40",
+          "jointProbabilityExact": "1/10",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "disclosedCounts": [
+            0,
+            1
+          ],
+          "gradeCounts": [
+            1,
+            2
+          ],
+          "optimal": true,
+          "selected": true
+        },
+        {
+          "candidateId": "p:1,2|1,1",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          "riskExact": "23/40",
+          "jointProbabilityExact": "9/10",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "disclosedCounts": [
+            1,
+            0
+          ],
+          "gradeCounts": [
+            2,
+            1
+          ],
+          "optimal": false,
+          "selected": false
+        },
+        {
+          "candidateId": "p:1,2|1,2",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ]
+            ]
+          },
+          "riskExact": "9/10",
+          "jointProbabilityExact": "1",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "disclosedCounts": [
+            1,
+            1
+          ],
+          "gradeCounts": [
+            2,
+            2
+          ],
+          "optimal": false,
+          "selected": false
+        },
+        {
+          "candidateId": "p:1,2|2,1",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          "riskExact": "1/2",
+          "jointProbabilityExact": "9/10",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "disclosedCounts": [
+            1,
+            1
+          ],
+          "gradeCounts": [
+            2,
+            2
+          ],
+          "optimal": false,
+          "selected": false
+        },
+        {
+          "candidateId": "p:2,1|1,1",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          "riskExact": "7/40",
+          "jointProbabilityExact": "1/10",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "disclosedCounts": [
+            1,
+            0
+          ],
+          "gradeCounts": [
+            2,
+            1
+          ],
+          "optimal": true,
+          "selected": false
+        },
+        {
+          "candidateId": "p:2,1|1,2",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ]
+          },
+          "riskExact": "1/2",
+          "jointProbabilityExact": "9/10",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "disclosedCounts": [
+            1,
+            1
+          ],
+          "gradeCounts": [
+            2,
+            2
+          ],
+          "optimal": false,
+          "selected": false
+        },
+        {
+          "candidateId": "p:2,1|2,1",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          "riskExact": "1/10",
+          "jointProbabilityExact": "1/5",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "disclosedCounts": [
+            1,
+            1
+          ],
+          "gradeCounts": [
+            2,
+            2
+          ],
+          "optimal": false,
+          "selected": false
+        }
+      ],
+      "optimizerIds": [
+        "p:1,1|2,1",
+        "p:2,1|1,1"
+      ],
+      "selectedId": "p:1,1|2,1",
+      "selectedGrades": {
+        "unitIds": [
+          "B",
+          "A"
+        ],
+        "domainIds": [
+          "C",
+          "S"
+        ],
+        "values": [
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "riskExact": "7/40",
+      "jointProbabilityExact": "1/10",
+      "searchScope": {
+        "type": "declared_cartesian_product",
+        "candidateCount": 9,
+        "examinedActions": 9,
+        "fullProductExamined": true,
+        "unrestrictedOptimalityClaim": false
+      },
+      "assurance": {
+        "arithmetic": "exact_represented_finite_law",
+        "properLawStatus": "producer_declaration",
+        "numericalGuarantee": false,
+        "intendedPosteriorFeasibilityCertified": false,
+        "searchOptimality": "candidate_restricted"
+      }
+    },
+    "selectedEvaluation": {
+      "inputId": "dependence-input-disjoint-both",
+      "lawId": "dependence-law-disjoint-both",
+      "decisionId": "dependence-equal-weights-direct-union-both",
+      "grades": {
+        "unitIds": [
+          "B",
+          "A"
+        ],
+        "domainIds": [
+          "C",
+          "S"
+        ],
+        "values": [
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "originalPairs": 1,
+      "riskExact": "7/40",
+      "jointProbabilityExact": "1/10",
+      "meanFeasible": true,
+      "jointFeasible": true,
+      "feasible": true,
+      "jointStatus": "evaluated",
+      "domains": [
+        {
+          "domainId": "C",
+          "gradeCount": 1,
+          "disclosedPairs": 0,
+          "withheldPairs": 1,
+          "expectedFalseCountExact": "0",
+          "expectedFalseProportionExact": null,
+          "lossExact": "1/4",
+          "weightedLossExact": "1/8",
+          "meanGuardSatisfied": null,
+          "thresholdExact": "0",
+          "firstExceedanceCount": 1,
+          "eventProbabilityExact": "0",
+          "eventActive": false
+        },
+        {
+          "domainId": "S",
+          "gradeCount": 2,
+          "disclosedPairs": 1,
+          "withheldPairs": 0,
+          "expectedFalseCountExact": "1/10",
+          "expectedFalseProportionExact": "1/10",
+          "lossExact": "1/10",
+          "weightedLossExact": "1/20",
+          "meanGuardSatisfied": null,
+          "thresholdExact": "0",
+          "firstExceedanceCount": 1,
+          "eventProbabilityExact": "1/10",
+          "eventActive": true
+        }
+      ],
+      "states": [
+        {
+          "stateId": "++",
+          "falseCounts": [
+            0,
+            0
+          ],
+          "exceedances": [
+            false,
+            false
+          ],
+          "unionExceeded": false
+        },
+        {
+          "stateId": "-+",
+          "falseCounts": [
+            0,
+            1
+          ],
+          "exceedances": [
+            false,
+            true
+          ],
+          "unionExceeded": true
+        },
+        {
+          "stateId": "+-",
+          "falseCounts": [
+            0,
+            0
+          ],
+          "exceedances": [
+            false,
+            false
+          ],
+          "unionExceeded": false
+        },
+        {
+          "stateId": "--",
+          "falseCounts": [
+            0,
+            1
+          ],
+          "exceedances": [
+            false,
+            true
+          ],
+          "unionExceeded": true
+        }
+      ],
+      "assurance": {
+        "arithmetic": "exact_represented_finite_law",
+        "properLawStatus": "producer_declaration",
+        "numericalGuarantee": false,
+        "intendedPosteriorFeasibilityCertified": false,
+        "searchOptimality": "fixed_card"
+      }
+    },
+    "fixedCards": [
+      {
+        "cardId": "p:1,1|1,1",
+        "evaluation": {
+          "inputId": "dependence-input-disjoint-both",
+          "lawId": "dependence-law-disjoint-both",
+          "decisionId": "dependence-equal-weights-direct-union-both",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          "originalPairs": 1,
+          "riskExact": "1/4",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "jointStatus": "analytic_zero",
+          "domains": [
+            {
+              "domainId": "C",
+              "gradeCount": 1,
+              "disclosedPairs": 0,
+              "withheldPairs": 1,
+              "expectedFalseCountExact": "0",
+              "expectedFalseProportionExact": null,
+              "lossExact": "1/4",
+              "weightedLossExact": "1/8",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "0",
+              "eventActive": false
+            },
+            {
+              "domainId": "S",
+              "gradeCount": 1,
+              "disclosedPairs": 0,
+              "withheldPairs": 1,
+              "expectedFalseCountExact": "0",
+              "expectedFalseProportionExact": null,
+              "lossExact": "1/4",
+              "weightedLossExact": "1/8",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "0",
+              "eventActive": false
+            }
+          ],
+          "states": [
+            {
+              "stateId": "++",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "-+",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "+-",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "--",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:1,1|1,2",
+        "evaluation": {
+          "inputId": "dependence-input-disjoint-both",
+          "lawId": "dependence-law-disjoint-both",
+          "decisionId": "dependence-equal-weights-direct-union-both",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ]
+          },
+          "originalPairs": 1,
+          "riskExact": "23/40",
+          "jointProbabilityExact": "9/10",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "C",
+              "gradeCount": 1,
+              "disclosedPairs": 0,
+              "withheldPairs": 1,
+              "expectedFalseCountExact": "0",
+              "expectedFalseProportionExact": null,
+              "lossExact": "1/4",
+              "weightedLossExact": "1/8",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "0",
+              "eventActive": false
+            },
+            {
+              "domainId": "S",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "9/10",
+              "expectedFalseProportionExact": "9/10",
+              "lossExact": "9/10",
+              "weightedLossExact": "9/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "9/10",
+              "eventActive": true
+            }
+          ],
+          "states": [
+            {
+              "stateId": "++",
+              "falseCounts": [
+                0,
+                1
+              ],
+              "exceedances": [
+                false,
+                true
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "-+",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "+-",
+              "falseCounts": [
+                0,
+                1
+              ],
+              "exceedances": [
+                false,
+                true
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "--",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:1,1|2,1",
+        "evaluation": {
+          "inputId": "dependence-input-disjoint-both",
+          "lawId": "dependence-law-disjoint-both",
+          "decisionId": "dependence-equal-weights-direct-union-both",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          "originalPairs": 1,
+          "riskExact": "7/40",
+          "jointProbabilityExact": "1/10",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "C",
+              "gradeCount": 1,
+              "disclosedPairs": 0,
+              "withheldPairs": 1,
+              "expectedFalseCountExact": "0",
+              "expectedFalseProportionExact": null,
+              "lossExact": "1/4",
+              "weightedLossExact": "1/8",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "0",
+              "eventActive": false
+            },
+            {
+              "domainId": "S",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "1/10",
+              "expectedFalseProportionExact": "1/10",
+              "lossExact": "1/10",
+              "weightedLossExact": "1/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "1/10",
+              "eventActive": true
+            }
+          ],
+          "states": [
+            {
+              "stateId": "++",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "-+",
+              "falseCounts": [
+                0,
+                1
+              ],
+              "exceedances": [
+                false,
+                true
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "+-",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "--",
+              "falseCounts": [
+                0,
+                1
+              ],
+              "exceedances": [
+                false,
+                true
+              ],
+              "unionExceeded": true
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:1,2|1,1",
+        "evaluation": {
+          "inputId": "dependence-input-disjoint-both",
+          "lawId": "dependence-law-disjoint-both",
+          "decisionId": "dependence-equal-weights-direct-union-both",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          "originalPairs": 1,
+          "riskExact": "23/40",
+          "jointProbabilityExact": "9/10",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "C",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "9/10",
+              "expectedFalseProportionExact": "9/10",
+              "lossExact": "9/10",
+              "weightedLossExact": "9/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "9/10",
+              "eventActive": true
+            },
+            {
+              "domainId": "S",
+              "gradeCount": 1,
+              "disclosedPairs": 0,
+              "withheldPairs": 1,
+              "expectedFalseCountExact": "0",
+              "expectedFalseProportionExact": null,
+              "lossExact": "1/4",
+              "weightedLossExact": "1/8",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "0",
+              "eventActive": false
+            }
+          ],
+          "states": [
+            {
+              "stateId": "++",
+              "falseCounts": [
+                1,
+                0
+              ],
+              "exceedances": [
+                true,
+                false
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "-+",
+              "falseCounts": [
+                1,
+                0
+              ],
+              "exceedances": [
+                true,
+                false
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "+-",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "--",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:1,2|1,2",
+        "evaluation": {
+          "inputId": "dependence-input-disjoint-both",
+          "lawId": "dependence-law-disjoint-both",
+          "decisionId": "dependence-equal-weights-direct-union-both",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ]
+            ]
+          },
+          "originalPairs": 1,
+          "riskExact": "9/10",
+          "jointProbabilityExact": "1",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "C",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "9/10",
+              "expectedFalseProportionExact": "9/10",
+              "lossExact": "9/10",
+              "weightedLossExact": "9/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "9/10",
+              "eventActive": true
+            },
+            {
+              "domainId": "S",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "9/10",
+              "expectedFalseProportionExact": "9/10",
+              "lossExact": "9/10",
+              "weightedLossExact": "9/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "9/10",
+              "eventActive": true
+            }
+          ],
+          "states": [
+            {
+              "stateId": "++",
+              "falseCounts": [
+                1,
+                1
+              ],
+              "exceedances": [
+                true,
+                true
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "-+",
+              "falseCounts": [
+                1,
+                0
+              ],
+              "exceedances": [
+                true,
+                false
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "+-",
+              "falseCounts": [
+                0,
+                1
+              ],
+              "exceedances": [
+                false,
+                true
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "--",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:1,2|2,1",
+        "evaluation": {
+          "inputId": "dependence-input-disjoint-both",
+          "lawId": "dependence-law-disjoint-both",
+          "decisionId": "dependence-equal-weights-direct-union-both",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                1
+              ]
+            ]
+          },
+          "originalPairs": 1,
+          "riskExact": "1/2",
+          "jointProbabilityExact": "9/10",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "C",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "9/10",
+              "expectedFalseProportionExact": "9/10",
+              "lossExact": "9/10",
+              "weightedLossExact": "9/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "9/10",
+              "eventActive": true
+            },
+            {
+              "domainId": "S",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "1/10",
+              "expectedFalseProportionExact": "1/10",
+              "lossExact": "1/10",
+              "weightedLossExact": "1/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "1/10",
+              "eventActive": true
+            }
+          ],
+          "states": [
+            {
+              "stateId": "++",
+              "falseCounts": [
+                1,
+                0
+              ],
+              "exceedances": [
+                true,
+                false
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "-+",
+              "falseCounts": [
+                1,
+                1
+              ],
+              "exceedances": [
+                true,
+                true
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "+-",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "--",
+              "falseCounts": [
+                0,
+                1
+              ],
+              "exceedances": [
+                false,
+                true
+              ],
+              "unionExceeded": true
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:2,1|1,1",
+        "evaluation": {
+          "inputId": "dependence-input-disjoint-both",
+          "lawId": "dependence-law-disjoint-both",
+          "decisionId": "dependence-equal-weights-direct-union-both",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          "originalPairs": 1,
+          "riskExact": "7/40",
+          "jointProbabilityExact": "1/10",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "C",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "1/10",
+              "expectedFalseProportionExact": "1/10",
+              "lossExact": "1/10",
+              "weightedLossExact": "1/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "1/10",
+              "eventActive": true
+            },
+            {
+              "domainId": "S",
+              "gradeCount": 1,
+              "disclosedPairs": 0,
+              "withheldPairs": 1,
+              "expectedFalseCountExact": "0",
+              "expectedFalseProportionExact": null,
+              "lossExact": "1/4",
+              "weightedLossExact": "1/8",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "0",
+              "eventActive": false
+            }
+          ],
+          "states": [
+            {
+              "stateId": "++",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "-+",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "+-",
+              "falseCounts": [
+                1,
+                0
+              ],
+              "exceedances": [
+                true,
+                false
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "--",
+              "falseCounts": [
+                1,
+                0
+              ],
+              "exceedances": [
+                true,
+                false
+              ],
+              "unionExceeded": true
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:2,1|1,2",
+        "evaluation": {
+          "inputId": "dependence-input-disjoint-both",
+          "lawId": "dependence-law-disjoint-both",
+          "decisionId": "dependence-equal-weights-direct-union-both",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ]
+            ]
+          },
+          "originalPairs": 1,
+          "riskExact": "1/2",
+          "jointProbabilityExact": "9/10",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "C",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "1/10",
+              "expectedFalseProportionExact": "1/10",
+              "lossExact": "1/10",
+              "weightedLossExact": "1/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "1/10",
+              "eventActive": true
+            },
+            {
+              "domainId": "S",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "9/10",
+              "expectedFalseProportionExact": "9/10",
+              "lossExact": "9/10",
+              "weightedLossExact": "9/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "9/10",
+              "eventActive": true
+            }
+          ],
+          "states": [
+            {
+              "stateId": "++",
+              "falseCounts": [
+                0,
+                1
+              ],
+              "exceedances": [
+                false,
+                true
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "-+",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "+-",
+              "falseCounts": [
+                1,
+                1
+              ],
+              "exceedances": [
+                true,
+                true
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "--",
+              "falseCounts": [
+                1,
+                0
+              ],
+              "exceedances": [
+                true,
+                false
+              ],
+              "unionExceeded": true
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:2,1|2,1",
+        "evaluation": {
+          "inputId": "dependence-input-disjoint-both",
+          "lawId": "dependence-law-disjoint-both",
+          "decisionId": "dependence-equal-weights-direct-union-both",
+          "grades": {
+            "unitIds": [
+              "B",
+              "A"
+            ],
+            "domainIds": [
+              "C",
+              "S"
+            ],
+            "values": [
+              [
+                2,
+                2
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          "originalPairs": 1,
+          "riskExact": "1/10",
+          "jointProbabilityExact": "1/5",
+          "meanFeasible": true,
+          "jointFeasible": false,
+          "feasible": false,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "C",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "1/10",
+              "expectedFalseProportionExact": "1/10",
+              "lossExact": "1/10",
+              "weightedLossExact": "1/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "1/10",
+              "eventActive": true
+            },
+            {
+              "domainId": "S",
+              "gradeCount": 2,
+              "disclosedPairs": 1,
+              "withheldPairs": 0,
+              "expectedFalseCountExact": "1/10",
+              "expectedFalseProportionExact": "1/10",
+              "lossExact": "1/10",
+              "weightedLossExact": "1/20",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "1/10",
+              "eventActive": true
+            }
+          ],
+          "states": [
+            {
+              "stateId": "++",
+              "falseCounts": [
+                0,
+                0
+              ],
+              "exceedances": [
+                false,
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "-+",
+              "falseCounts": [
+                0,
+                1
+              ],
+              "exceedances": [
+                false,
+                true
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "+-",
+              "falseCounts": [
+                1,
+                0
+              ],
+              "exceedances": [
+                true,
+                false
+              ],
+              "unionExceeded": true
+            },
+            {
+              "stateId": "--",
+              "falseCounts": [
+                1,
+                1
+              ],
+              "exceedances": [
+                true,
+                true
+              ],
+              "unionExceeded": true
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      }
+    ]
+  },
+  "oracle": {
+    "package": "postrank",
+    "packageVersion": "1.2.0",
+    "sourceCommit": "da02a785f753efb060e149f04650970b0ea1e05b",
+    "generator": "r-export/v35/permutations.R",
+    "method": "public_api_exhaustive_fixed_cards"
+  }
+}

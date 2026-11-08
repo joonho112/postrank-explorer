@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for the Step 5.14 Part 1 summaries (engine/API.md "Step 5.14: Part 1 summaries").
 #   oracle-summaries  base R only; postrank is not loaded. summaryStats, meanSquaredDistance, fartherCount (L-04),
 #                     intervalOverlapTally (L-06), rankIntervals (L-09), leagueReplays (L-03), unitRelationCounts (L-01).
@@ -250,7 +250,7 @@ ug <- urc("krw-gender-card", as.integer(krw$gender_card))
 stopifnot(ur$partners == 96, ug$partners == 96, ur$stated[15] == 95, ur$withheld[15] == 1, ur$stated[62] == 95, ur$withheld[62] == 1,
           ug$stated[95] == 96, ug$withheld[95] == 0, identical(tabulate(krw$race_card), c(2L, 81L, 14L)))
 
-# ---- Step 6.14 Part 2 rows (engine/API.md; shared inputs in r-export/15_part2.R) --------------------
+# ---- Step 6.14 Part 2 rows (shared inputs in r-export/15_part2.R) --------------------
 # G-07 grade averages of the posterior means: the six sites' card 1/1/2/2/3/3 (score A) and the 30-site poverty card
 # (at most 4 grades, tau = .25), grade by grade, units in site order.
 source("r-export/15_part2.R")

@@ -4,6 +4,8 @@
 //
 // numberFindings(root, { authored })   every number visible in a read-out, table or figure label carries data-num.
 //   The scanned parts are CONFIG.numberScope (read-outs, tables, figures and their legends, captions, notes, titles,
+//   the result-first frame's closed disclosures wherever they sit, except a Settings box in the controls row (review 044
+//   repair: their content is complete, so it is checked too),
 //   <output>, MathML, formula labels, result labels and captions); controls are not scanned (native form labels and
 //   the preset row; a slider's value is its <output>, which carries data-num). A numeric token is any run with an
 //   ASCII digit: 12, 1,234, .20, 0.5, −.0227, +.049, 14%, 1e−12, 1/2/2. It passes when an ancestor (or the element
@@ -43,7 +45,7 @@
 export const CONFIG = Object.freeze({
   numberScope: [
     '[data-prx-part~="readout"]', '[data-prx-part~="table"]', '[data-prx-part~="chart"]', '[data-prx-part~="legend"]',
-    '[data-prx-part~="caption"]', '[data-prx-part~="notes"]', '[data-prx-part~="title"]', "[aria-live]", "table",
+    '[data-prx-part~="caption"]', '[data-prx-part~="notes"]', '[data-prx-part~="title"]', '[data-prx-part~="disclosures"]', '.prx-disclosure:not([data-prx-placement="controls"]) > .prx-disclosure-body', "[aria-live]", "table",
     "figure", "svg", "output", "math", ".prx-math-label", "[data-prx-label]", "[data-prx-caption]",
   ].join(", "),
   captionPart: '[data-prx-part~="caption"]',
@@ -201,21 +203,84 @@ export function badTokenFindings(root, { allow } = {}) {
       if (v && /NaN|undefined|Infinity|\[object /.test(v)) check(v, `${describe(el, root)} @${a}`, el, "attribute");
     }
     const dn = el.getAttribute("data-num");
-    if (dn !== null && !DATA_NUM.test(dn)) findings.push({ rule: "bad-data-num", where: describe(el, root), token: dn, text: excerpt(el.textContent ?? "") });
+    if (dn !== null && (!parseDataNum(dn).ok || (el.getAttribute("data-prx-format") === "mdomain-exact" && dn !== "NA" && !parseExactDataNum(dn)))) findings.push({ rule: "bad-data-num", where: describe(el, root), token: dn, text: excerpt(el.textContent ?? "") });
   }
   return findings;
 }
 
-/** data-num text -> { ok, value }: NA -> null, comma lists -> arrays, integers beyond 2^53 -> BigInt. */
+/** Canonical nonnegative exact text. Output fractions have no artificial input-length cap. */
+export function parseExactDataNum(text) {
+  if (typeof text !== "string" || !/^(0|[1-9][0-9]*)(?:\/([1-9][0-9]*))?$/.test(text)) return null;
+  const [numerator, denominator = "1"] = text.split("/");
+  const n = BigInt(numerator), d = BigInt(denominator);
+  let a = n, b = d;
+  while (b !== 0n) { const r = a % b; a = b; b = r; }
+  if (a !== 1n || (n === 0n && text !== "0") || (d === 1n && text.includes("/"))) return null;
+  return { n, d };
+}
+
+/** Exact oracle equality; no tolerance and no projection to Number, including integer strings. */
+export function compareExactValues(stored, expected) {
+  if (expected === null) return stored === null || stored === "NA" ? null : "an undefined ratio requires NA";
+  const a = parseExactDataNum(stored), b = parseExactDataNum(expected);
+  if (!a || !b) return "exact values require canonical nonnegative rational text";
+  return a.n * b.d === b.n * a.d ? null : `${stored} != ${expected} exactly`;
+}
+
+/** Independent BigInt display check for the exact-number presentation protocol. */
+export function exactDisplayProblem(display, raw, { style = "fraction", digits = 4 } = {}) {
+  if (!["fraction", "decimal", "percent"].includes(style)) return "exact display style must be fraction, decimal or percent";
+  if (!Number.isInteger(digits) || digits < 0 || digits > 20) return "exact decimal digits must be an integer from 0 to 20";
+  if (raw === "NA" || raw === null) return display === "NA: no disclosure" ? null : "an undefined exact ratio displays NA: no disclosure";
+  const value = parseExactDataNum(raw);
+  if (!value) return "exact data-num requires canonical nonnegative rational text";
+  let expected = raw;
+  if (style === "decimal" || style === "percent") {
+    if (value.n === 0n) expected = style === "percent" ? "0%" : "0";
+    else {
+      const scaled = value.n * (style === "percent" ? 100n : 1n) * 10n ** BigInt(digits);
+      let rounded = scaled / value.d;
+      const twiceRemainder = 2n * (scaled % value.d);
+      if (twiceRemainder > value.d || (twiceRemainder === value.d && rounded % 2n !== 0n)) rounded += 1n;
+      let text = rounded.toString();
+      if (digits > 0) {
+        text = text.padStart(digits + 1, "0");
+        text = text.slice(0, -digits) + "." + text.slice(-digits);
+        if (style === "decimal" && value.n < value.d) text = text.replace(/^0\./, ".");
+      }
+      expected = text + (style === "percent" ? "%" : "");
+    }
+  }
+  return display === expected ? null : `display "${display}" != exact ${style} display "${expected}"`;
+}
+
+export function exactElementDisplayProblem(element) {
+  if (element.getAttribute("data-prx-format") !== "mdomain-exact") return "exact readouts require mdomain-exact presentation metadata";
+  const style = element.getAttribute("data-prx-exact-style");
+  const digitsText = element.getAttribute("data-prx-exact-digits");
+  if (!["fraction", "decimal", "percent"].includes(style)) return "exact presentation metadata lacks a valid style";
+  if (digitsText === null || !/^(0|[1-9][0-9]*)$/.test(digitsText)) return "exact presentation metadata lacks canonical digits";
+  return exactDisplayProblem((element.textContent ?? "").trim(), element.getAttribute("data-num"), { style, digits: Number(digitsText) });
+}
+
+/** Numeric/BigInt/null behavior stays unchanged. New slash fractions remain exact strings. */
 export function parseDataNum(s) {
-  if (typeof s !== "string" || !DATA_NUM.test(s)) return { ok: false, value: undefined };
-  const one = (x) => {
-    if (x === "NA") return null;
-    if (/^-?\d+$/.test(x) && !Number.isSafeInteger(Number(x))) return BigInt(x);
-    return Number(x);
-  };
+  if (typeof s !== "string") return { ok: false, value: undefined };
   const parts = s.split(",");
-  return { ok: true, value: parts.length > 1 ? parts.map(one) : one(parts[0]), list: parts.length > 1 };
+  let hasExact = false;
+  const values = [];
+  for (const x of parts) {
+    if (x.includes("/")) {
+      if (!parseExactDataNum(x)) return { ok: false, value: undefined };
+      values.push(x); hasExact = true;
+    } else {
+      if (!DATA_NUM.test(x)) return { ok: false, value: undefined };
+      if (x === "NA") values.push(null);
+      else if (/^-?\d+$/.test(x) && !Number.isSafeInteger(Number(x))) values.push(BigInt(x));
+      else values.push(Number(x));
+    }
+  }
+  return { ok: true, value: values.length > 1 ? values : values[0], list: values.length > 1, ...(hasExact ? { exact: true } : {}) };
 }
 
 // --------------------------------------------------------------------------------------- reading a display back
@@ -294,6 +359,7 @@ function agrees(reading, raw) {
 /** Why a display does not read as its raw value, or null when it does. */
 export function displayProblem(display, parsed) {
   const raw = parsed.value;
+  if (typeof raw === "string" && parseExactDataNum(raw)) return exactDisplayProblem(display, raw);
   const list = Array.isArray(raw);
   const readings = readDisplay(display, list);
   if (!readings) return `display "${display}" does not read as a number`;
@@ -316,6 +382,11 @@ export function displayFindings(root, { skip = new Set() } = {}) {
     const parsed = parseDataNum(el.getAttribute("data-num"));
     if (!parsed.ok) continue; // badTokenFindings reports it
     const display = (el.textContent ?? "").trim();
+    if (el.getAttribute("data-prx-format") === "mdomain-exact") {
+      const problem = exactElementDisplayProblem(el);
+      if (problem) findings.push({ rule: "display-generic", where: describe(el, root), token: el.getAttribute("data-num"), text: problem });
+      continue;
+    }
     if (isFormula(el)) {
       if (Array.isArray(parsed.value)) continue;
       const tokens = [...display.matchAll(TOKEN)].map((m) => m[0]);

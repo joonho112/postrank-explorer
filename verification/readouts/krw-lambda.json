@@ -1607,7 +1607,8 @@
           },
           "value": 0.07406036268117101,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatRisk",
+            "options": { "digits": 5 }
           },
           "tol": {
             "abs": 1e-12,
@@ -1624,7 +1625,8 @@
           },
           "value": 0.07407407407407407,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatRisk",
+            "options": { "digits": 5 }
           },
           "tol": {
             "abs": 1e-12,
@@ -13590,6 +13592,20 @@
             "abs": 1e-12,
             "rel": 1e-12
           }
+        },
+        {
+          "select": "[data-prx-readout=\"lambda-selected-grade-mark\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "krw-grid-race-025",
+            "field": "evaluation.G"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
+          },
+          "tol": 0
         }
       ]
     },
@@ -13786,6 +13802,20 @@
           ],
           "format": {
             "fn": "formatSizes"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"lambda-selected-grade-mark\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "krw-grid-race-008",
+            "field": "evaluation.G"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
           },
           "tol": 0
         }
@@ -14322,6 +14352,20 @@
           ],
           "format": {
             "fn": "formatSizes"
+          },
+          "tol": 0
+        },
+        {
+          "select": "[data-prx-readout=\"lambda-selected-grade-mark\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "krw-grid-race-030",
+            "field": "evaluation.G"
+          },
+          "value": 3,
+          "format": {
+            "fn": "formatCount"
           },
           "tol": 0
         }
@@ -16124,7 +16168,8 @@
           },
           "value": 0.029099764371144043,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatRisk",
+            "options": { "digits": 5 }
           },
           "tol": {
             "abs": 1e-12,
@@ -16141,7 +16186,8 @@
           },
           "value": 0.029126213592233007,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatRisk",
+            "options": { "digits": 5 }
           },
           "tol": {
             "abs": 1e-12,

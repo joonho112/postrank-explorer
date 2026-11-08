@@ -1,0 +1,73 @@
+---
+title: "Site profiles"
+subtitle: "P.5 · Domain profiles"
+description: "Forty sites. Two priorities. Saved fictional reports."
+---
+
+[Multiple criteria](../criteria/index.qmd#domain-profiles) → [Domain profiles](index.qmd)
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/fictional-site-profiles.js"></script>
+<script>window.__prxApp = PRX["fictional-site-profiles"].mountWidget(document.getElementById("app"));</script>
+```
+
+```{=html}
+<details>
+<summary>Examples, method and R reproduction</summary>
+```
+
+The two cards assign composition and community grades to forty fictional sites. A site can have higher
+reported need on one measure and lower reported need on the other. The grid and pair view count sites and
+comparisons from the saved grades. The risk and joint-event summaries come from the original analysis.
+
+
+## Numerical illustrations {#what-to-try}
+
+- **Primary saved card.** Composition S has no disclosed comparisons, so its error proportion is not defined.
+  Community C discloses 500 pairs. All forty sites occupy three profile cells.
+- **Wider-threshold saved card.** With threshold 1/10, S discloses 300 pairs and C discloses 500. Their union
+  contains 548 distinct pairs, including 16 with crossed directions. Five of six profile cells are occupied.
+- **Crossed site profiles.** In the wider card, S11 has grades (1,2) and S18 has (2,1). S11 has higher reported
+  composition priority, and S18 has higher reported community priority. The grades report those priorities separately.
+- **Composition comparison withheld.** In the primary card, S11 and S18 share composition grade 1.
+  Their composition direction is withheld, while community grades 2 and 1 give S18 higher community priority.
+- **An empty profile cell.** In the wider card, zero sites have community grade 3 and composition grade 1.
+  The grid shows that combination alongside the occupied cells.
+
+At the primary threshold of 1/20, 25 errors among 500 stated comparisons reach the threshold and 26 exceed it.
+The original analysis estimated a zero probability of exceeding the threshold in either domain. It also found
+at least one error in 1,871 of 8,000 selection states. The saved output does not include expected error
+fractions for domains that state comparisons.
+
+::: {.callout-note appearance="simple"}
+The original fictional analysis used chains 1–2 to select the reports and chains 3–4 for diagnostics.
+Using separate chains for those tasks does not establish independence or verify the intended posterior.
+The saved grades let the browser count comparisons, and the saved summaries describe errors in the
+original analysis. The joint states needed to rerun the selection or diagnostics are unavailable.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+The [R script](../../data/recipes/fictional-site-profiles.R) reads the saved grades and summaries with
+postrank 1.2.0 and jsonlite. It reproduces the grid and pair directions from those grades.
+
+```r
+source("fictional-site-profiles.R")
+result <- fictional_site_profiles()
+result$summary
+```
+:::
+
+Content: JoonHo Lee, [From Noisy Indicators to Pre-K Funding Priorities](https://github.com/joonho112/need-based-prek-funding-tutorial),
+adapted under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Original recipe code: MIT.
+
+Standalone: [open this app](../../embed/fictional-site-profiles.html), for example `?preset=crossed&theme=dark`.
+
+Related applications: [Common or profile?](profile-common-vs-domain.qmd) and
+[Error overlap](profile-dependence.qmd).
+
+```{=html}
+</details>
+```

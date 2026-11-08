@@ -79,7 +79,7 @@ const CSS = `
 .k2 .k2-note { margin: 0.2rem 0 0; font-size: 0.8125rem; color: var(--prx-fg-muted); }
 .k2 .k2-key { margin: 0; padding: 0.15rem 0.4rem 0.25rem; }
 .k2 .k2-tag { margin: 0.2rem 0 0; font-size: 0.8125rem; color: var(--prx-fg-muted); }
-.k2 .k2-right .prx-readout { margin-top: 0.45rem; }
+.k2 .k2-status:empty{display:none}
 .k2 .k2-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.4rem 1rem;width:100%}.k2 .k2-controls>*{min-width:0}
 .k2 .k2-detail{margin-top:1rem}.k2 .k2-tablebox{overflow:auto;max-height:34rem}.k2 table{border-collapse:collapse;width:100%;font-size:.82rem}.k2 th,.k2 td{padding:.35rem .45rem;border-bottom:1px solid var(--prx-border);text-align:right;white-space:nowrap}.k2 th:first-child,.k2 td:first-child{text-align:left}.k2 .k2-selected{outline:2px solid var(--prx-fg);outline-offset:-2px}.k2 .k2-tablebox button{font:inherit;color:inherit;background:transparent;border:0;text-align:left;cursor:pointer}.k2 .k2-tablebox button:focus-visible{outline:2px solid var(--prx-fg)}
 .k2 .k2-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}.k2 .k2-status{min-height:1.5em;margin:.2rem 0}.k2 textarea{width:100%;box-sizing:border-box;min-height:5rem}.k2 .k2-error{color:var(--prx-err-text)}.k2 .k2-vector{overflow-wrap:anywhere;font-size:.8rem}.k2 .k2-stack p{margin:.35rem 0}
@@ -95,9 +95,11 @@ export function mountWidget(el, spec = {}) {
     name: CONFIG.name,
     className: "k2",
     css: CSS,
+    layout: 'result-first',
     keys: { w: CONFIG.w,tau:{type:'number',min:.02,max:.5,step:.01,value:TAU},cap:{type:'integer',min:1,max:6,value:GMAX},report:{type:'choice',values:REPORTS.map(r=>r[0]),value:'common'},firm:{type:'integer',min:0,max:N_UNITS-1,value:ARCHIVED_GRADE.indexOf(1)},edited:{type:'custom',value:ARCHIVED_GRADE.join(','),parse:editedGrade} },
     build(ctx) {
       const { h } = ctx;
+      const panel = (title, node) => h('section', {class:'prx-panel k2-detail'}, ctx.panelTitle(title), node);
       const T = CONFIG.text;
       const w = ctx.slider({ label: T.w, ...ctx.key("w"), onInput: (v) => ctx.set({ w: v }) });
 
@@ -105,18 +107,23 @@ export function mountWidget(el, spec = {}) {
       const cap=ctx.slider({label:'Most grades allowed in the live order search',...ctx.key('cap'),onInput:v=>ctx.set({cap:v})});
       const report=ctx.select({label:'Color firms by this report',options:REPORTS.map(([value,label])=>({value,label})),value:ctx.state.report,onChange:v=>ctx.set({report:v})});
       const firm=ctx.select({label:'Firm to read',options:U.firm_name.map((label,value)=>({value,label})),value:ctx.state.firm,onChange:v=>ctx.set({firm:v})});
-      ctx.controls.append(h('div',{class:'k2-controls'},w.root,tau.root,cap.root,report.root,firm.root));
+      const controls = ctx.disclosure({ name: 'settings', title: 'Settings', placement: 'controls' });
+      controls.body.append(h('div', { class: 'k2-controls' }, tau.root, cap.root, report.root, firm.root));
+      ctx.primaryControl(w.input);
+      ctx.afterPresets(w.root);
 
       const firmsSlot = h("div", { class: "k2-firms" });
-      const risksSlot = h("div", { class: "k2-risks" });
+      const risksSlot = ctx.primaryGraphic(h("div", { class: "k2-risks" }));
       // the grade key sits on the light plot paper in every theme, like the dots it explains
       const gradeKey = h("div", { class: "prx-legend prx-light-panel k2-key", "data-prx-part": "legend" });
       const label = h("p", { class: "k2-tag" });
       const g1 = h("p", { class: "k2-note" });
       const status=h('p',{class:'k2-status','aria-live':'off'});
+      const scatter = h("section", { class: "prx-panel k2-left", "aria-label": T.firmsTitle },
+        ctx.panelTitle(T.firmsTitle), firmsSlot, gradeKey, g1);
       ctx.charts.append(h("div", { class: "k2-grid" },
-        h("section", { class: "prx-panel k2-left", "aria-label": T.firmsTitle }, ctx.panelTitle(T.firmsTitle), firmsSlot, gradeKey, g1),
-        h("section", { class: "prx-panel k2-right", "aria-label": T.risksTitle }, ctx.panelTitle('Risk under the current cost, against race weight'), risksSlot,status, label, ctx.readout.node)));
+        h("section", { class: "prx-panel k2-right", "aria-label": T.risksTitle },
+          ctx.panelTitle('Risk under the current cost, against race weight'), risksSlot, status, label), scatter));
 
       const topFirms=h('div',{class:'k2-tablebox'}),ranks=h('div',{class:'k2-tablebox'}),ties=h('div',{class:'k2-stack'});
       const selectedSummary=h('div',{class:'k2-stack'}),settings=h('div',{class:'k2-settings'}),profiles=h('div',{class:'k2-tablebox'}),archive=h('div',{class:'k2-stack k2-tablebox'}),details=h('div',{class:'k2-tablebox'}),card=h('div',{class:'k2-tablebox'}),editor=h('textarea',{'aria-label':'Edited grade vector, one integer per firm in original input order'}),error=h('p',{class:'k2-error',role:'alert'});
@@ -126,8 +133,16 @@ export function mountWidget(el, spec = {}) {
       let dirty=false,lastEdited=ctx.state.edited;
       editor.value=lastEdited;ctx.listen(editor,'input',()=>{dirty=true;});ctx.listen(editor,'keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();applyEdit();}if(e.key==='Escape'){editor.value=ctx.state.edited;dirty=false;error.textContent='';}});
       function applyEdit(){const value=editedGrade(editor.value);if(value===undefined){error.textContent='Use one integer for each of the firms in the original input order.';return;}dirty=false;editor.value=value;error.textContent='';ctx.set({edited:value,report:'edited'});}
-      const editorPanel=h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('Edit a fixed report'),h('p',{},'Enter one integer grade for every firm, in original input order. Smaller labels mean higher priority. Apply commits the whole vector; Escape restores it.'),editor,ctx.button({label:'Apply edited report',onClick:applyEdit}).root,error);
-      ctx.charts.append(h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('The report being colored'),selectedSummary),h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('Selection settings and current evaluation'),settings),h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('Every report under the same current loss'),profiles),h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('The archived common analysis'),archive),h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('Selected firm and marginal intervals'),details),h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('Grade one: every firm and marginal interval'),topFirms),h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('All firms and their marginal intervals, grade one first'),card),h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('Report ranking under the current loss'),ranks),h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('Returned minimizing reports in the live order'),ties),editorPanel);
+      const editorPanel=h('section',{class:'prx-panel k2-detail'},ctx.panelTitle('Edit a fixed report'),h('p',{},'Enter one integer grade per firm in original input order. Smaller numbers indicate higher priority. Apply saves the grades. Escape restores the previous grades.'),editor,ctx.button({label:'Apply edited report',onClick:applyEdit}).root,error);
+      scatter.append(panel('Selected firm and marginal intervals', details));
+      ctx.charts.append(panel('Report ranking under the current loss', ranks));
+      ctx.disclosure({name:'risk-profiles',title:'Risk profiles and live reports'}).body.append(
+        panel('The report being colored', selectedSummary), panel('Every report under the same current loss', profiles),
+        panel('Returned minimizing reports in the live order', ties));
+      ctx.disclosure({name:'firm-intervals',title:'All firms and marginal intervals'}).body.append(
+        panel('Grade one: every firm and marginal interval', topFirms), panel('All firms and their marginal intervals, grade one first', card));
+      ctx.disclosure({name:'archive-settings',title:'Archived analysis, settings and report editor'}).body.append(
+        panel('Selection settings and current evaluation', settings), panel('The archived common analysis', archive), editorPanel);
       appendKrwNotice(ctx);
       ctx.scrollRegion(card,'All firms, grades and marginal intervals');ctx.scrollRegion(profiles,'Full report risk profiles');ctx.scrollRegion(details,'Selected firm marginal intervals');ctx.scrollRegion(topFirms,'All grade-one firms and marginal intervals');ctx.scrollRegion(ranks,'Complete fixed report risk ranking');ctx.scrollRegion(archive,'Full archived selection and criterion profile');
       const conflicts=conflictPairs(E2);
@@ -232,6 +247,15 @@ export function mountWidget(el, spec = {}) {
             ...lines.map((l) => P.line(l.pts, { x: "w", y: "risk", stroke: l.stroke, strokeWidth: 2.5 })),
             P.dot(g, { x: "w", y: "risk", r: 2.6, fill: c.post }),
             P.dot(now, { x: () => state.w, y: "risk", r: 5, fill: "fill", stroke: c.plotBg, strokeWidth: 1.2 }),
+            numText([now[2]], { x: () => state.w, y: 'risk', value: 'risk', format: formatRisk,
+              dx: state.w > .70 ? -8 : 8, dy: 13, textAnchor: state.w > .70 ? 'end' : 'start',
+              fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: 'stroke', fontWeight: 700,
+              render(index, scales, values, dims, context, next) {
+                const group = next(index, scales, values, dims, context);
+                group.querySelector('text')?.setAttribute('data-prx-readout', 'common-risk-mark');
+                return group;
+              },
+            }),
             P.text(ends, { x: 1, y: "y", text: "name", dx: 6, textAnchor: "start", fill: "fill", fontWeight: 700, fontSize: 12 }),
           ],
           keyboard: {
@@ -250,6 +274,15 @@ export function mountWidget(el, spec = {}) {
         const beats = dp.risk < state.tau;
         const race = riskAt(CARDS.race, state.w,state.tau) < state.tau;
         const gender = riskAt(CARDS.gender, state.w,state.tau) < state.tau;
+        if (dp.N === 0) {
+          const cards = race && gender ? "Both KRW cards beat that risk."
+            : race || gender ? `The fixed ${race ? "race" : "gender"} card beats that risk.` : "Neither KRW card beats that risk.";
+          ctx.readout.set([
+            ...name, ": the live common grade states no pairs. Its risk ", ctx.num(dp.risk, formatRisk(dp.risk)),
+            " equals the withholding cost ", set(state.tau), ". ", cards,
+          ]);
+          return;
+        }
         let cards;
         if (race && gender) cards = beats ? "so do both KRW cards" : "both KRW cards do";
         else if (race || gender) {
@@ -284,10 +317,10 @@ export function mountWidget(el, spec = {}) {
           if(state.report==='edited')current.push(['edited',grade]);
           profiles.replaceChildren(table(['Report','Outcome','Expected wrong E','Wrong per stated pair E/N','Wrong per pair E/M','Criterion risk','Weighted risk','N','Weighted expected errors','Error contribution','Withholding contribution'],current.flatMap(([id,g])=>{const e=evaluateReport(g,E2,{tau:state.tau,w:[state.w,1-state.w]});return['Race','Gender'].map((name,k)=>[id==='live'?'Live common grade':REPORTS.find(r=>r[0]===id)?.[1]??id,name,N(e.E[k],formatExpectedCount,`${id}-E-${k}`),N(e.EoverN[k],formatShare,`${id}-share-${k}`),N(e.EoverM[k],formatShare,`${id}-perpair-${k}`),N(e.Rk[k],formatRisk,`${id}-Rk-${k}`),N(e.risk,formatRisk,`${id}-risk-${k}`),N(e.N,formatCount,`${id}-N-${k}`),N(e.Ew,formatExpectedCount),N(e.errorTerm,formatRisk),N(e.withholdingTerm,formatRisk)]);})));
           const cross=cardCrossings(state.tau),af=ARCHIVED.facts;
-          settings.replaceChildren(h('div',{},h('p',{},'Current live order search: withholding cost ',N(state.tau,formatSetting),' (λ = ',N(tauToLambda(state.tau),formatSetting),'), at most ',N(state.cap),' grades; race weight ',N(state.w,formatSetting),', gender weight ',N(1-state.w,formatSetting),'.'),h('p',{},'The order averages the two criteria’s expected ranks: average posterior positions, with one at the high-priority end. It is recomputed when weights change. Equal scores remain in one grade.')),
+          settings.replaceChildren(h('div',{},h('p',{},'Current live order search: withholding cost ',N(state.tau,formatSetting),' (λ = ',N(tauToLambda(state.tau),formatSetting),'), at most ',N(state.cap),' grades; race weight ',N(state.w,formatSetting),', gender weight ',N(1-state.w,formatSetting),'.'),h('p',{},'The browser orders firms by their weighted average posterior ranks. A rank of one is highest priority. Changing the weights can change the order. Firms with equal scores stay in one grade.')),
             h('div',{},h('p',{},'Archived common selection: τ = ',N(TAU,formatSetting),' (λ = ',N(tauToLambda(TAU),formatSetting),'), at most ',N(GMAX),' grades; equal weights.'),h('p',{},'KRW card selection: λ = ',N(KRW.facts.card_lambda,formatSetting),', that is τ = ',N(KRW.facts.card_tau,formatSetting),'; one criterion each. Here both cards are fixed reports under the current common loss. Equal numbers for λ and τ are different costs.')));
           archive.replaceChildren(h('p',{},'Recorded selection: ',tagNode(ctx,af,{key:'archive-record'}),'; status ',af.status,'; stored risk ',N(af.risk,formatRisk,'archive-stored-risk'),'; lower bound ',N(af.lower_bound,formatRisk,'archive-bound'),'; absolute gap ',N(af.gap,formatSci,'archive-gap'),'. Bound source: ',af.bound_source,'.'),h('p',{},'These stored solve fields apply to the archived cost, weights and cap above. A zero gap is not a numerical certificate.'),h('p',{},isArchived?'At these settings the live order search reproduces the complete archived grade vector, stated count and risk.':'The live search is scoped to its current weighted expected-rank order; the archived report remains a fixed comparison.'),h('p',{class:'k2-vector'},'Archived grade vector ',N(ARCHIVED_GRADE,formatGrades,'archive-grade')),h('p',{},'Race-weight crossings of withholding: race card ',N(cross.race,v=>formatProb(v,{digits:2}),'cross-race'),'; gender card ',N(cross.gender,v=>formatProb(v,{digits:2}),'cross-gender'),'. NA means no interior crossing.'),h('p',{},'Across the supplied firms, the signed posterior means have correlation ',N(FOLDED.facts.signed_mean_correlation.value,v=>formatDecimal(v,{digits:3}),'mean-correlation'),'. This is across-firm association, not a joint posterior. Opposite more-likely criterion directions occur for ',N(conflicts.count,formatCount,'conflict-count'),' of ',N(M),' pairs.'));
-          selectedSummary.append(h('p',{},'Live order family: ',N(dp.family.size,formatCount,'live-family'),' reports; ',N(dp.tieCount,formatCount,'live-ties'),' minimizing report',dp.tieCount===1?'':'s',' at equal-risk tolerance ',N(dp.tieTol,formatSci,'live-tolerance'),'.'),h('p',{class:'k2-vector'},'Live grade vector ',N(Array.from(dp.grade),formatGrades,'live-grade')),h('p',{},'A shared grade means not compared, not equal. These reports disclose different amounts. Risks at different weights or withholding costs belong to different losses.'));
+          selectedSummary.append(h('p',{},'Live order family: ',N(dp.family.size,formatCount,'live-family'),dp.family.sizeExact===1n?' report; ':' reports; ',N(dp.tieCount,formatCount,'live-ties'),' minimizing report',dp.tieCount===1?'':'s',' at equal-risk tolerance ',N(dp.tieTol,formatSci,'live-tolerance'),'.'),h('p',{class:'k2-vector'},'Live grade vector ',N(Array.from(dp.grade),formatGrades,'live-grade')),h('p',{},'A shared grade leaves a direction unstated. Reports can state different numbers of pairs under the same loss. Changing the weights or withholding cost changes that loss.'));
           const original=evaluateReport(ARCHIVED_GRADE,E2,{tau:TAU,w:[W_ARCHIVED,1-W_ARCHIVED]});
           archive.append(h('p',{},'Archived joint profile at its original settings (criterion risks, not probabilities of a joint event):'),table(['Criterion','Expected wrong E','E/N','E/M','Criterion risk'],['Race','Gender'].map((name,k)=>[name,N(original.E[k],formatExpectedCount,`archive-original-E-${k}`),N(original.EoverN[k],formatShare,`archive-original-share-${k}`),N(original.EoverM[k],formatShare),N(original.Rk[k],formatRisk,`archive-original-Rk-${k}`)])));
           const ranked=current.map(([id,g])=>({id,e:evaluateReport(g,E2,{tau:state.tau,w:[state.w,1-state.w]})})).sort((a,b)=>a.e.risk-b.e.risk);

@@ -4,11 +4,7 @@ subtitle: "2.14 · after Kline, Rose and Walters (2024), Section II and slides 2
 description: "Relation between expected errors per possible pair and expected errors per stated pair."
 ---
 
-Two error rates use the same expected wrong count E but different denominators. KRW's discordance rate, DR, divides
-by all M unordered pairs, whereas $E/N$ divides by the N pairs whose directions the report states. For positive N,
-$\mathrm{DR}=(N/M)\times E/N$. The factor N/M is the disclosure share. The paired displays evaluate this identity
-for a synthetic example and KRW's archived race card. They show how a low rate over all pairs can coexist with a
-substantially higher error share among the directions disclosed.
+The same report can have a low expected error rate over all possible pairs and a much higher rate among the directions it states. Both rates use the same expected wrong count E. KRW's discordance rate, DR, divides E by all M unordered pairs, and $E/N$ divides it by the N stated pairs. For positive N, $\mathrm{DR}=(N/M)\times E/N$, where N/M is the fraction of pairs the report states. We compare the two rates for a synthetic report and KRW's archived race card.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -24,10 +20,10 @@ substantially higher error share among the directions disclosed.
 - **KRW setting.** The race card states 1,324 of 4,656 pairs, a share .284. DR .0387 divides the expected wrong count by all pairs; E/N .136 divides it by the stated pairs. Its KRW risk is −.0227 and its postrank risk is .1818, evaluated on the released probabilities.
 - **All pairs stated.** The synthetic report states all 15 pairs. Both rates are .0480 because their denominators coincide. The race card remains fixed as the controls change; its title records the costs at which it was chosen.
 
-The rounded identity uses an approximation sign because multiplying rounded rates need not reproduce the rounded product exactly. A small rate over all pairs can accompany a much larger rate among the pairs a report actually states. Neither rate describes the chance that any error occurs somewhere in the report.
+The rounded identity uses an approximation sign because multiplying rounded rates need not reproduce the rounded product exactly. Both rates are expectations over pairs. The chance of at least one error in the report depends on the joint distribution of those errors.
 
 ::: {.callout-note appearance="simple"}
-KRW's archived card statistics and the evaluation on released pair probabilities agree at the displayed digits. The released probabilities differ slightly from KRW's archived probabilities. The card is evaluated here as a fixed report; no claim is made that it minimises postrank's risk. Its risk below the cost of withholding every pair implies that its expected error share is below that cost at this setting.
+KRW's archived card statistics and the evaluation on released pair probabilities agree at the displayed digits. The released probabilities differ slightly from KRW's archived probabilities. We use the archived grade assignments as given and evaluate them under postrank's loss. Its risk below the cost of withholding every pair implies that its expected error share is below that cost at this setting.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}
@@ -42,4 +38,4 @@ Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; replication depo
 
 Standalone: [open the app](../../embed/two-denominators.html), for example `?tau=.25`.
 
-Related applications: [Expected and realised errors among stated directions](disclosed-errors.qmd) · [Posterior summaries in a grade report](report-card.qmd).
+Related applications: [Expected and realized errors among stated directions](disclosed-errors.qmd) · [Posterior summaries in a grade report](report-card.qmd) · [KRW’s archived reward path](../cases/krw-lambda.qmd).

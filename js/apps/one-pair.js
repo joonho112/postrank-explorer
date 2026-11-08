@@ -1,6 +1,6 @@
 // One pair: all linked cost, bridge and rule views; probabilities and choices from pairDecision.
 import { createWidget } from "../shared/base.js";
-import { plot } from "../shared/chart.js";
+import { numText, plot } from "../shared/chart.js";
 import { formatCount, formatProb, formatSetting } from "../shared/format.js";
 import { captionNode } from "../shared/labels.js";
 import { formulaNums, renderTex } from "../shared/math.js";
@@ -49,7 +49,7 @@ export const CONFIG = Object.freeze({
     equal: "equally good",
     // two lines, so that the label fits between the two direction lines at a narrow width
     equalAll: "all three\nequally good",
-    alt: "Three expected-cost lines against the error probability of stating A above B, from zero to one. Stating A above B costs that error (solid line, rising). Stating B above A costs one minus it (dashed line, falling). Withholding costs τ (flat gray line). The area under the lowest line is shaded, and open circles mark where the flat line crosses the others. A vertical line marks the current pair, with a dot on each line and a ring around each best action's dot.",
+    alt: "Three expected-cost lines against the error probability of stating A above B, from zero to one along the bottom. The top scale shows the complementary direction probability, from one to zero. Stating A above B costs that error (solid line, rising). Stating B above A costs one minus it (dashed line, falling). Withholding costs τ (flat gray line). The area under the lowest line is shaded, and open circles mark where the flat line crosses the others. A vertical line marks the current pair, with a dot on each line and a ring around each best action's dot.",
     tableCaption: "Where the actions are equally good, and the current pair",
     colWhere: "Point on the figure",
     colError: "Error probability of A above B",
@@ -72,7 +72,7 @@ export const CONFIG = Object.freeze({
     smallest: "yes",
     smallestEqual: "yes, equal",
     // read-out
-    readSetting: Object.freeze(["With ", "{piAB}", " = ", "{pi}", " and τ = ", "{tau}", ", the error of stating A above B is ", "{eAB}", " = ", "{e}", " and the error of stating B above A is ", "{eBA}", " = ", "{eRev}", ". "]),
+    readSetting: Object.freeze(["{piAB}", " = ", "{pi}", ", τ = ", "{tau}", ". Direction errors: ", "{eAB}", " = ", "{e}", ", ", "{eBA}", " = ", "{eRev}", ". "]),
     readBest: Object.freeze({
       iAboveJ: Object.freeze(["Stating A above B is the unique best action: its expected cost ", "{e}", " is below τ."]),
       jAboveI: Object.freeze(["Stating B above A is the unique best action: its expected cost ", "{eRev}", " is below τ."]),
@@ -103,12 +103,22 @@ export const CONFIG = Object.freeze({
     eAB: "\\class{prx-err}{e_{AB}}",
     eBA: "\\class{prx-err}{e_{BA}}",
     piAB: "\\pi_{AB}",
-    marker: "e_{AB}",
+    marker: "\\pi_{AB}",
   }),
 });
 
 const CSS = `.prx-one-pair .prx-controls {
   align-items: flex-start;
+}
+
+@media (max-width: 30em) {
+  .prx-one-pair .prx-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem 0.7rem;
+    align-items: end;
+  }
+  .prx-one-pair .prx-controls > .prx-presets { grid-column: 1 / -1; }
 }
 
 .prx-one-pair .prx-one-pair-sym sub {
@@ -354,6 +364,9 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: CONFIG.className,
     css: CSS,
+    // the shared result-first frame (review 044, X-01): sliders and the preset row, the read-out, then the cost chart
+    // beside the cost table (the panel the sliders change), then the rule and the bridge; base.js only moves nodes
+    layout: "result-first",
     keys: {
       pi: { type: "number", ...CONFIG.pi, snap: true },
       tau: { type: "number", ...CONFIG.tau, snap: true },
@@ -372,16 +385,18 @@ export function mountWidget(el, spec = {}) {
       const piSlider = ctx.slider({ label: T.piLabel, ...CONFIG.pi, value: ctx.state.pi, name: "pi", onInput: (v) => ctx.set({ pi: v }) });
       piSlider.input.setAttribute("aria-label", T.piName);
       const tauSlider = ctx.slider({ label: T.tauLabel, ...CONFIG.tau, value: ctx.state.tau, name: "tau", hint: T.tauHint.join(""), onInput: (v) => ctx.set({ tau: v }) });
-      tauSlider.root.querySelector(".prx-hint")?.replaceChildren(...fill(T.tauHint, { one: () => ctx.num(CONFIG.wrongCost, formatCount(CONFIG.wrongCost)) }));
+      const tauHint = tauSlider.root.querySelector(".prx-hint");
+      tauHint?.replaceChildren(...fill(T.tauHint, { one: () => ctx.num(CONFIG.wrongCost, formatCount(CONFIG.wrongCost)) }));
       ctx.controls.append(piSlider.root, tauSlider.root);
+      ctx.primaryControl(piSlider.root);
 
-      // --- bridge: the definition (static) and the numbers (live)
+      // --- bridge: the definition (static) and the numbers (live); review 044 repair (X-01): after the chart and the
+      // rule box, no longer between the sliders and the read-out
       const definition = h("div", { class: "prx-one-pair-tex", "data-prx-tex": "definition" });
       const worked = h("div", { class: "prx-one-pair-tex", "data-prx-tex": "bridge" });
       const bridge = ctx.part("notes", h("section", { class: "prx-one-pair-bridge", "aria-label": T.bridgeHead },
         ctx.panelTitle(T.bridgeHead, { className: "prx-one-pair-head" }), definition, worked,
         h("p", { class: "prx-one-pair-note", text: T.bridgeNote })));
-      ctx.controls.after(bridge);
       ctx.scrollRegion(definition, "Definition of the error probability");
       ctx.scrollRegion(worked, "Direction probability and error probability");
       renderTex(definition, CONFIG.tex.definition, { display: true });
@@ -393,18 +408,22 @@ export function mountWidget(el, spec = {}) {
         h("span", { class: "prx-one-pair-key" }, h("span", { class: "prx-one-pair-swatch prx-one-pair-swatch-circle", "aria-hidden": "true" }), T.legendCircle),
         h("span", { class: "prx-one-pair-key" }, h("span", { class: "prx-one-pair-swatch prx-one-pair-swatch-ring", "aria-hidden": "true" }), T.legendRing)));
       const figureBox = h("div", { class: "prx-one-pair-figure" }, chartSlot, legend);
+      // the graphic the sliders move (base.js primaryGraphic): the marker, its dots and rings
+      ctx.primaryGraphic(figureBox);
       const costTable = ctx.part("table", h("div", { class: "prx-one-pair-costs" }));
       const grid = h("div", { class: "prx-one-pair-grid" }, figureBox, costTable);
-      ctx.charts.append(grid);
 
-      // --- rule box, after the read-out
+      // --- rule box: review 044 repair (X-01), directly after the chart and the cost table (it was after the read-out,
+      // which now sits under the sliders), then the bridge
       const ruleHere = h("p", { class: "prx-one-pair-rule-here" });
       const ruleBox = ctx.part("notes", h("section", { class: "prx-one-pair-rule", "aria-label": T.ruleHead },
         ctx.panelTitle(T.ruleHead, { className: "prx-one-pair-head" }),
         h("p", { class: "prx-one-pair-rule-text" }, ...fill(T.rule, { one: () => num(CONFIG.wrongCost, formatCount(CONFIG.wrongCost)) }), " ",
           h("span", { class: "prx-one-pair-note", text: T.ruleGloss })),
         ruleHere));
-      ctx.readout.node.after(ruleBox);
+      // Keep the exact cost explanation with the worked rule, outside the short control-to-figure path.
+      if (tauHint) ruleBox.append(tauHint);
+      ctx.charts.append(grid, ruleBox, bridge);
       // base.css puts the parentheses around a caption that is the only element in the caption line
       ctx.caption.replaceChildren(T.caption, " (", captionNode(ctx, "teaching-posterior"), ")");
 
@@ -437,7 +456,8 @@ export function mountWidget(el, spec = {}) {
           { e: C.labelBA, c: 1 - C.labelBA, text: T.lineBA, anchor: "start", dx: C.labelDx, dy: C.labelDy },
           { e: 1, c: r.tau, text: T.lineWH, anchor: "end", dx: C.whLabelDx, dy: C.whLabelDy },
         ];
-        const markerAnchor = r.eAB < C.markerEdge ? "start" : r.eAB > 1 - C.markerEdge ? "end" : "middle";
+        const markerAnchor = r.eAB < C.markerEdge ? "start" : r.eAB > (width < 450 ? .76 : .87) ? "end" : "middle";
+        const piTicks = [0, .25, .5, .75, 1].map(e => ({ e, pi: 1 - e }));
         const rows = [
           ...cross.map((x) => ({
             where: x.kind === "all" ? T.rowCrossAll : x.kind === "ab" ? T.rowCrossAB : T.rowCrossBA,
@@ -471,6 +491,18 @@ export function mountWidget(el, spec = {}) {
           y: { domain: [0, CONFIG.wrongCost], ticks: C.ticks, label: T.yLabel, labelAnchor: "center", labelArrow: "none" },
           color: { type: "identity" },
           marks: (k, P) => [
+            P.ruleY([1], { x1: 0, x2: 1, stroke: k.plotAxis }),
+            P.ruleX(piTicks, { x: "e", y1: 1, y2: 1.025, stroke: k.plotAxis }),
+            numText(piTicks, {
+              x: "e", y: 1, dy: -11, value: "pi",
+              format: formatSetting,
+              render(index, scales, values, dims, context, next) {
+                const group = next(index, scales, values, dims, context);
+                group.setAttribute("data-prx-pi-scale", "");
+                return group;
+              },
+            }),
+            P.text([0], { x: e => e, y: 1, dy: -11, dx: -14, text: () => "π", fill: k.plotFg }),
             P.areaY(envelope, { x: "e", y: "c", fill: k.neutral[1], fillOpacity: C.envelopeOpacity }),
             P.ruleY([0], { stroke: k.plotAxis }),
             P.lineY(lineWH, { x: "e", y: "c", stroke: k.wh, strokeWidth: C.line }),
@@ -484,7 +516,7 @@ export function mountWidget(el, spec = {}) {
             ...eqLabels.map((d) => P.text([d], { x: "e", y: "c", text: "text", dx: d.dx, dy: d.dy, textAnchor: d.anchor, fill: k.plotFg, ...halo(k) })),
           ],
           formulas: [{
-            key: "marker", tex: `${CONFIG.tex.marker} = \\text{${formatProb(r.eAB, { digits: 2 })}}`, num: r.eAB,
+            key: "marker", tex: `${CONFIG.tex.marker} = \\text{${formatProb(r.pi, { digits: 2 })}} \\;\\to\\; e_{AB} = \\text{${formatProb(r.eAB, { digits: 2 })}}`, num: r.eAB,
             x: r.eAB, y: C.markerTop, dy: C.markerDy, anchor: markerAnchor,
           }],
         });

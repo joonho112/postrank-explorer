@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Released case summaries (data/released/): the three public cases of postrank 1.1.0, the KRW lambda grid and the
 # Alabama county boundaries, each with its license_scope, attribution and change notice (notes/data-rights.md).
 #   Rscript r-export/21_export_cases.R

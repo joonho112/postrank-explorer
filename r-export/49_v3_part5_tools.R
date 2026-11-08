@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent R49 Tools fixtures from frozen spec-v3-part5-tools.md and old public API.
 # No new Tools/TS/JS source or output is read; no postrank namespace or heavy MIP.
 source('r-export/_paths.R');source('r-export/_helpers.R');source('r-export/_oracle.R');source('r-export/_rng.R')

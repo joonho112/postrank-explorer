@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent enumeration check for app 2.18's four rerun settings.
 # Run from the repository root: Rscript r-export/26_v3_part2_selection_check.R
 # This is a source-only integration check, not a new golden-value group.

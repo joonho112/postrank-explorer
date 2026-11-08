@@ -1,11 +1,13 @@
 #!/usr/bin/env node
-// Page length: the prose of each app page has 250–450 words. Counted on the rendered
+// Page policy: legacy79 prose has250–450words; P-only visual pages have<=160visible words, no minimum. Counted on the rendered
 // page (docs/pages/<part>/<name>.html): the main content without the title block (title and subtitle), the app, code
 // blocks (the In postrank lines), scripts and styles; a word is a run of non-space characters holding a letter or a
 // digit. All built applications are checked.
 //   node verification/check_pages.mjs [--only <name>] [--verbose]
 import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+import {profilePagePolicy} from "./profile_page_policy.mjs";
 import { appsFor, DOCS, ROOT } from "./browser.mjs";
 
 const CONFIG = Object.freeze({ min: 250, max: 450 });
@@ -30,12 +32,20 @@ export function pageWords(html) {
   return prose.split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
 }
 
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
 let checked = 0;
 for (const a of appsFor(only)) {
   const page = `pages/${a.slug}/${a.name}.html`;
   const file = join(DOCS, page);
   if (!existsSync(file)) { failures.push(`${page}: not rendered`); continue; }
-  const n = pageWords(readFileSync(file, "utf8"));
+  const html = readFileSync(file, "utf8");
+  if (a.part === "P") {
+    const r = profilePagePolicy(html,{name:a.name}); checked += 1;
+    failures.push(...r.problems.map(p=>`${page}: ${p}`));
+    if(verbose) console.log(`  ${a.id} ${a.name}: ${r.visibleWords} visible, ${r.closedWords} closed technical, ${r.hiddenWords} other hidden words; max160, no minimum`);
+    continue;
+  }
+  const n = pageWords(html);
   if (n === null) { failures.push(`${page}: no <main> element`); continue; }
   const inRange = n >= CONFIG.min && n <= CONFIG.max;
   checked += 1;
@@ -46,3 +56,4 @@ if (verbose) for (const x of listed) console.log(`  listed ${x}`);
 for (const f of failures) console.log(`FAIL ${f}`);
 console.log(`check_pages: ${checked} v3 page(s) counted, ${listed.length} listed only; ${failures.length} failure(s)`);
 process.exit(failures.length ? 1 : 0);
+}

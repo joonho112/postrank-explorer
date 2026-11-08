@@ -4,11 +4,7 @@ subtitle: "2.2 · block reading after Kline, Rose and Walters (2024), slide 56"
 description: "Pairwise statements induced by assigning units to ordered grades."
 ---
 
-An ordered grade report determines a decision for every pair of units. Pairs in different grades receive a stated
-direction; pairs within a grade are withheld. A shared grade makes no assertion of equality between the true values.
-The grade labels specify order, with highest priority at the top, rather than numerical distances. Reassigning sites
-among the boxes changes the induced pairwise relation. The accompanying matrix records these changes and the totals
-of stated and withheld pairs, permitting comparison of reports with different grade sizes and orders.
+A grade report compares every pair of sites in different grades and withholds every pair in the same grade. Sharing a grade means the report makes no statement about which site has the larger true value. The labels order grades from highest priority to lowest. They do not measure the distance between grades. Moving a site to another grade changes the corresponding cells in the matrix. The totals show how many comparisons the report states and withholds.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -23,17 +19,15 @@ of stated and withheld pairs, permitting comparison of reports with different gr
 - **A, then B to E, then F.** The report states 9 of the 15 pairs and withholds 6, a share stated of .600. Every
   comparison involving either end is stated; the middle grade withholds its internal pairs. Moving a middle site into an end grade changes the outlined matrix cells.
 - **Three grades of two sites.** The same number of grades now states 12 of the 15 pairs and withholds only 3,
-  a share of .800. Each grade withholds its own internal pair. Disclosure depends on the sizes as well as the number of grades.
-- **Four sites: 1/2/2/2.** The smaller report states 3 of the 6 pairs, a share of .500. A focused site button accepts a destination grade number. Enter selects the site, arrow keys specify a destination, and a second Enter completes the move. The dashed
+  a share of .800. Each grade withholds the comparison between its two sites. Together, the first two examples show how grade sizes affect disclosure even when the number of grades stays fixed.
+- **Four sites: 1/2/2/2.** The smaller report states 3 of the 6 pairs, a share of .500. A focused site button accepts a destination grade number. Enter selects the site. Use Up or Down to choose a destination, or Home or End for either boundary. A second Enter completes the move. The dashed
   boxes create a new grade at either end.
 - **Beyond letter order.** The report {B, D} > {C, F} > {A, E} still states 12 of the 15 pairs. Any grouping and
   ordering can be built. The blue and orange transposed cells represent the same unordered pair: each stated pair appears in both triangles,
   while the pair count includes it once.
 
 ::: {.callout-note appearance="simple"}
-These fictional after-school sites are ordered for practice-documentation visits, with no funding consequence.
-The matrix represents the supplied report without evaluating the accuracy of its directions. Empty grades
-disappear after a move, preserving the relative order of the occupied boxes.
+In this example, an evaluation office plans practice-documentation visits to fictional after-school sites. The grades carry no funding consequence. The exercise counts the directions in the report the reader supplies. It does not use posterior probabilities to judge whether those directions are likely to be right. When a move empties a grade, the remaining grades keep their relative order.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

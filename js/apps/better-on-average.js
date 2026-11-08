@@ -1,6 +1,6 @@
 // App3.11: fixed reports evaluated on paired whole-state posterior draws. Scientific traces/summaries are public-engine outputs.
 import { createWidget } from "../shared/base.js";
-import { plot } from "../shared/chart.js";
+import { numText, plot } from "../shared/chart.js";
 import { blocksText, formatCount, formatGrades, formatProb, formatRisk, formatSci, formatShare, formatSigned } from "../shared/format.js";
 import { captionNode, tagNode } from "../shared/labels.js";
 import { compareReportLosses, disclosure, errorArray, evaluateReport, exactOptimum, expectedRank, finiteLawDraws, finiteLawPairwise, gaussianDraws, rankSummaries, realizedWrong, strictOrder, tierGrades } from "../pr-core.js";
@@ -67,7 +67,7 @@ export function comparisonDraws(s, m) {
 
 export function mountWidget(el, spec = {}) {
   return createWidget(el, spec, {
-    name: "better-on-average", className: "prx-boa", css: CSS,
+    name: "better-on-average", className: "prx-boa", css: CSS, layout: "result-first",
     keys: {
       law: { type: "choice", values: ["six", "finite"], value: "six" },
       family: { type: "choice", values: ["cap2", "cap3"], value: "cap2" },
@@ -91,13 +91,17 @@ export function mountWidget(el, spec = {}) {
       const S = ctx.numberInput({ label: "Whole-state draws S", ...ctx.key("S"), name: "S", onInput: (v) => ctx.set({ S: v }) });
       const seed = ctx.numberInput({ label: "Seed", ...ctx.key("seed"), name: "seed", onInput: (v) => ctx.set({ seed: v }) });
       const redraw = ctx.button({ label: "Next seed", key: "next-seed", onClick: () => ctx.set({ seed: ctx.state.seed === CONFIG.seed.max ? CONFIG.seed.min : ctx.state.seed + 1 }) });
-      ctx.controls.append(h("div", { class: "boa-controls" }, law.root, family.root, rule.root, outside.root, tau.root));
+      ctx.controls.append(h("div", { class: "boa-controls" }, law.root, rule.root, tau.root));
+      const optionalControls = h("div", { class: "boa-controls" }, family.root, outside.root);
+      ctx.afterPresets(optionalControls);
       const lawNote = h("p", { class: "boa-note" });
       const status = h("p", { class: "boa-note", role: "status", hidden: true });
       const cards = h("div", { class: "boa-cards" });
       const condition = h("p", { class: "boa-warning" });
       const scatter = h("div");
-      const key = h("p", { class: "boa-key prx-light-panel" }, h("span", {}, h("i", { class: "boa-line", "aria-hidden": "true" }), "equal realized loss"), h("span", {}, h("i", { class: "boa-ring", "aria-hidden": "true" }), "selected draw"), h("span", {}, "Below the line: common rule wins."));
+      const key = h("p", { class: "boa-key prx-light-panel" }, h("span", {}, h("i", { class: "boa-line", "aria-hidden": "true" }), "equal realized loss"), h("span", {}, h("i", { class: "boa-ring", "aria-hidden": "true" }), "selected draw"), h("span", {}, h("b", { "aria-hidden": "true" }, "+ "), "sample mean"),
+        h("span", {}, h("b", { "aria-hidden": "true" }, "★ "), "exact expectation"),
+        h("span", {}, "Below the line: common rule wins."));
       const summary = h("div", { class: "boa-stat" });
       const draw = ctx.numberInput({ label: "Draw followed", min: 1, max: ctx.state.S, step: 1, value: 1, name: "draw", onInput: (v) => ctx.set({ draw: v }) });
       const previous = ctx.button({ label: "Previous draw", key: "previous-draw", onClick: () => ctx.set({ draw: Math.max(1, ctx.state.draw - 1) }) });
@@ -107,11 +111,12 @@ export function mountWidget(el, spec = {}) {
       const choice = h("select", { "aria-label": "Equal-risk optimum followed", name: "optimum" });
       ctx.listen(choice, "change", () => ctx.set({ optimum: Number(choice.value) }));
       const tiedChoice = h("label", {}, "Optimum followed ", choice);
-      const result = h("div", {}, condition, h("div", { class: "boa-main" }, h("section", {}, ctx.panelTitle("Two fixed reports on the same whole-state draws"), scatter, key,
-        h("p", { class: "boa-note", text: "Each point is a paired draw; points may overlap. Tab into the plot and use arrow keys to read every draw." })), cards), lawNote,
-        h("div", { class: "boa-controls" }, S.root, seed.root, redraw.root), summary,
-        h("div", { class: "boa-controls" }, draw.root, previous.root, next.root), chosen, tiedChoice, tieRows);
-      ctx.controls.after(ctx.readout.node);
+      const drawControls = h("div", { class: "boa-controls boa-draw-controls" }, draw.root, previous.root, next.root);
+      const result = h("div", {}, h("div", { class: "boa-main" }, h("section", {}, ctx.panelTitle("Two fixed reports on the same whole-state draws"), scatter, key, drawControls,
+        h("p", { class: "boa-note", text: "Dot size and labels show how many paired draws share those losses. Tab into the plot and use arrow keys to read every draw." })), cards), condition, lawNote,
+        h("div", { class: "boa-controls" }, S.root, seed.root, redraw.root), summary, chosen, tiedChoice, tieRows);
+      ctx.primaryControl(tau.root);
+      ctx.primaryGraphic(scatter);
       ctx.charts.append(status, result);
       let cancel = null, epoch = 0, rendered = "";
       const cache = new Map();
@@ -124,17 +129,41 @@ export function mountWidget(el, spec = {}) {
         const q = s.draw - 1;
         cards.replaceChildren(card("Best report followed", m.best, m.bestEval, L, m.optimum), card(m.ruleName, m.rule, m.ruleEval, L));
         if (m.bestEval.N !== m.ruleEval.N) cards.append(captionNode(ctx, "different-disclosure"));
-        condition.replaceChildren(m.admitted ? "The common rule is inside the optimized family: its exact expected loss cannot be lower, within numerical tolerance. This is not a promise for each draw."
-          : "The common rule is outside the family optimized here. This restricted optimum has no expected-loss dominance guarantee over that rule; the law and optimized family have stayed fixed.");
+        condition.replaceChildren(m.admitted ? "The common rule was among the reports in the search, so its expected loss cannot be lower beyond numerical tolerance. It can still have lower loss on individual draws."
+          : "The search excluded the common rule. The minimum applies to reports that meet the family restriction under the same law.");
         ctx.readout.set(["Exact conditional risk difference (rule − best; positive favors best): ", ro("exactGap", m.exactGap, signed), ". The mean over ", ro("S", s.S), s.S === 1 ? " paired draw is " : " paired draws is ", ro("meanDelta", sim.compare.meanDelta, signed), "; the common rule wins ", ro("ruleWins", sim.compare.ruleWins), sim.compare.ruleWins === 1 ? " draw (" : " draws (", ro("ruleWinShare", sim.compare.ruleWinShare, formatShare), ")."]);
         const rows = sim.draws.map((theta, i) => ({ draw: i + 1, best: sim.compare.lossBest[i], rule: sim.compare.lossRule[i], delta: sim.compare.delta[i] }));
-        const top = Math.min(1.05, Math.max(.1, ...sim.compare.lossBest, ...sim.compare.lossRule) * 1.12);
-        plot(scatter, { alt: "One point per whole-state posterior draw: best report's realized total reporting loss horizontally, common rule's vertically. Below the dashed diagonal the common rule wins. Points may overlap; arrow keys read every draw. The ring follows the selected draw.",
+        const pointCounts = new Map();
+        for (const row of rows) {
+          const key = JSON.stringify([row.best, row.rule]);
+          const point = pointCounts.get(key) ?? { ...row, count: 0 };
+          point.count += 1;
+          pointCounts.set(key, point);
+        }
+        const points = [...pointCounts.values()];
+        const showCounts = points.length <= 6 && points.some(p => p.count > 1);
+        const dotRadius = p => Math.min(14, Math.max(3.5, 1.6 * Math.sqrt(p.count)));
+        const countLabel = p => `${formatCount(p.count)} ${p.count === 1 ? "draw" : "draws"}: ${p.delta === 0
+          ? "equal loss" : `${p.delta > 0 ? "best report" : "common rule"} better by ${formatRisk(Math.abs(p.delta))}`}`;
+        const bestMean = sim.compare.lossBest.reduce((total, loss) => total + loss, 0) / rows.length;
+        const average = { best: bestMean, rule: bestMean + sim.compare.meanDelta };
+        const expectation = { best: m.bestEval.risk, rule: m.ruleEval.risk };
+        const top = Math.min(1.05, Math.max(.1, ...sim.compare.lossBest, ...sim.compare.lossRule,
+          average.best, average.rule, expectation.best, expectation.rule) * 1.12);
+        plot(scatter, { alt: "One point per whole-state posterior draw: best report's realized total reporting loss horizontally, common rule's vertically. Below the dashed diagonal the common rule wins. A larger dot represents more draws at the same losses; arrow keys read every draw. The ring follows the selected draw. The cross marks the sample mean and the star marks the exact conditional expectation.",
           table: { caption: "Paired realized reporting losses, one row for every draw", columns: [{ label: "Draw", value: "draw", format: (v) => formatCount(v) }, { label: "Best report loss", value: "best", format: (v) => formatRisk(v) }, { label: "Common rule loss", value: "rule", format: (v) => formatRisk(v) }, { label: "Rule minus best", value: "delta", format: signed }], rows },
           height: 330, marginTop: 18, marginLeft: 60, marginBottom: 47, marginRight: 24,
+          r: { type: "identity" },
           x: { domain: [0, top], label: "Best report: realized loss", labelAnchor: "center", labelArrow: "none", grid: true },
           y: { domain: [0, top], label: "Common rule: realized loss", labelAnchor: "center", labelArrow: "none", grid: true },
-          marks: (c, P) => [P.line([{ x: 0, y: 0 }, { x: top, y: top }], { x: "x", y: "y", stroke: c.plotFg, strokeDasharray: "5,3" }), P.dot(rows, { x: "best", y: "rule", r: 3.5, fill: c.purples[4], fillOpacity: .4 }), P.dot([rows[q]], { x: "best", y: "rule", r: 7, fill: "none", stroke: c.plotFg, strokeWidth: 2 })],
+          marks: (c, P) => [P.line([{ x: 0, y: 0 }, { x: top, y: top }], { x: "x", y: "y", stroke: c.plotFg, strokeDasharray: "5,3" }), P.dot(points, { x: "best", y: "rule", r: dotRadius, fill: c.purples[4], fillOpacity: .7, title: countLabel }),
+            P.dot([{ ...rows[q], count: pointCounts.get(JSON.stringify([rows[q].best, rows[q].rule])).count }], { x: "best", y: "rule", r: p => dotRadius(p) + 4, fill: "none", stroke: c.plotFg, strokeWidth: 2 }),
+            P.dot([expectation], { x: "best", y: "rule", symbol: "star", r: 10, fill: c.plotBg, stroke: c.plotFg, strokeWidth: 1.7, ariaLabel: "Exact expectation",
+              title: d => `Exact conditional risks: ${formatRisk(d.best)}, ${formatRisk(d.rule)}` }),
+            P.dot([average], { x: "best", y: "rule", symbol: "cross", r: 6, fill: c.est, stroke: c.plotBg, strokeWidth: 1.4, ariaLabel: "Sample mean",
+              title: d => `Paired mean losses: ${formatRisk(d.best)}, ${formatRisk(d.rule)}` }),
+            ...showCounts ? [numText(points.filter(p => p.best <= top / 2), { x:"best", y:"rule", value:"count", format:formatCount, dx:19, dy:-11, textAnchor:"start", fontWeight:600, fill:c.plotFg, stroke:c.plotBg, strokeWidth:3, paintOrder:"stroke" }),
+              numText(points.filter(p => p.best > top / 2), { x:"best", y:"rule", value:"count", format:formatCount, dx:-19, dy:-11, textAnchor:"end", fontWeight:600, fill:c.plotFg, stroke:c.plotBg, strokeWidth:3, paintOrder:"stroke" })] : []],
           keyboard: { data: rows, x: "best", y: "rule", key: "draw", title: (r) => `Draw ${formatCount(r.draw)}: best loss ${formatRisk(r.best)}, rule loss ${formatRisk(r.rule)}, difference ${signed(r.delta)}.` },
         });
         summary.replaceChildren(h("p", {}, "Paired mean difference: ", ro("pairedMean", sim.compare.meanDelta, signed), "; paired Monte Carlo SE ", ro("pairedMcse", sim.compare.mcseDelta, mcseFormat), s.S === 1 ? " (undefined for one draw)." : "."),
@@ -155,11 +184,11 @@ export function mountWidget(el, spec = {}) {
           h("p", {}, "Wrong directions in this state: best ", ro("selectedBestWrong", bw.D[0]), ", rule ", ro("selectedRuleWrong", rw.D[0]), ". Their wrong fractions among stated directions are ", ro("selectedBestFraction", bw.DoverN[0], formatShare), " and ", ro("selectedRuleFraction", rw.DoverN[0], formatShare), "; those fractions are different from total reporting loss."));
         tiedChoice.hidden = m.optimum.grades.length < 2;
         choice.replaceChildren(...m.optimum.grades.map((g, i) => h("option", { value: String(i), text: formatGrades(g) }))); choice.value = String(m.index);
-        tieRows.replaceChildren(h("p", { class: "boa-note" }, ro("tieCount", m.optimum.tieCount), " report(s) share the smallest conditional risk within equal-risk tolerance ", ro("riskTieTol", m.optimum.tieTol, formatSci), ". The followed report is fixed for the entire draw comparison. ", m.optimum.grades.length > 1 ? "Use the choice above to follow another equal-risk optimum; the table gives each one's own comparison on these same draws. For the identical-report rule, each row compares its report with itself." : ""));
+        tieRows.replaceChildren(h("p", { class: "boa-note" }, ro("tieCount", m.optimum.tieCount), m.optimum.tieCount===1?" report reaches the smallest conditional risk within equal-risk tolerance ":" reports share the smallest conditional risk within equal-risk tolerance ", ro("riskTieTol", m.optimum.tieTol, formatSci), ". The followed report is fixed for the entire draw comparison. ", m.optimum.grades.length > 1 ? "Use the choice above to follow another equal-risk optimum; the table gives each one's own comparison on these same draws. For the identical-report rule, each row compares its report with itself." : ""));
         if (m.optimum.tieCount > m.optimum.grades.length) tieRows.append(h("p", {}, "The table lists the first ", ctx.num(m.optimum.grades.length, formatCount(m.optimum.grades.length)), " of those reports."));
         if (m.optimum.grades.length > 1) {
           const headings = ["Best grade", "Rule grade", "Best stated pairs", "Rule stated pairs", "Best expected wrong share", "Rule expected wrong share", "Best risk", "Rule risk", "Exact rule − best", "Paired mean", "Paired Monte Carlo SE", "Rule wins", "Best wins", "Equal losses", "Selected best loss", "Selected rule loss", "Selected best wrong", "Selected rule wrong", "Selected best wrong fraction", "Selected rule wrong fraction"];
-          tieRows.append(h("p", { class: "boa-note", text: "Table key: expected wrong share uses the conditional law; selected wrong fraction uses the followed draw. Both divide by that report's stated pairs. The paired Monte Carlo SE describes the mean of rule loss minus best loss across these same draws." }));
+          tieRows.append(h("p", { class: "boa-note", text: "The expected wrong share averages over posterior states. The selected wrong fraction comes from one draw. Both divide by the number of stated pairs. The paired Monte Carlo SE measures the precision of the mean loss difference over these draws." }));
           tieRows.append(ctx.scrollRegion(h("div", { class: "boa-detail" }, h("table", { class: "boa-table boa-tie-table" }, h("caption", { text: "Equal-risk optima and each report's own comparison" }),
             h("thead", {}, h("tr", {}, ...headings.map((text) => h("th", { scope: "col", text })))),
             h("tbody", {}, ...m.optimum.grades.map((g) => {
@@ -174,7 +203,7 @@ export function mountWidget(el, spec = {}) {
         ctx.caption.replaceChildren(captionNode(ctx, "monte-carlo", { S: s.S, seed: s.seed }), ". Independent whole-state draws from the declared conditional law. Reports are selected once from that law at the displayed τ and family. This is not remeasurement, a model check, or fixed-parameter frequentist dominance.");
       }
       return { render(s, info = {}) {
-        // A cancelled intermediate render may already have replaced the readout. A return to the
+        // A canceled intermediate render may already have replaced the readout. A return to the
         // last completed state must restore it from the cache instead of keeping that pending text.
         const hadPending = ctx.root.getAttribute("aria-busy") === "true";
         cancel?.(); cancel = null; epoch += 1;
@@ -182,6 +211,7 @@ export function mountWidget(el, spec = {}) {
         if (s.law === "finite" && s.outside) { ctx.set({ outside: false }); return; }
         law.set(s.law); family.set(s.family); family.root.hidden = s.law === "finite"; rule.set(s.rule); outside.set(s.outside);
         outside.root.hidden = s.law === "finite" || s.rule !== "tiers";
+        optionalControls.hidden = family.root.hidden && outside.root.hidden;
         tau.set(s.tau); S.set(s.S); seed.set(s.seed); draw.input.max = String(s.S); draw.set(s.draw);
         const m = comparisonModel(s);
         if (m.index !== s.optimum) { ctx.set({ optimum: m.index }); return; }

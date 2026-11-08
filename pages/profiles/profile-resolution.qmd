@@ -1,0 +1,71 @@
+---
+title: "Budget and grades"
+subtitle: "P.4 · Domain profiles"
+description: "More budget can shift detail between domains."
+---
+
+[Multiple criteria](../criteria/index.qmd#domain-profiles) → [Domain profiles](index.qmd)
+
+```{=html}
+<div id="app" class="prx-app column-page"></div>
+<script src="../../js/vendor/d3.min.js"></script>
+<script src="../../js/vendor/plot.min.js"></script>
+<script src="../../js/bundles/profile-resolution.js"></script>
+<script>window.__prxApp = PRX["profile-resolution"].mountWidget(document.getElementById("app"));</script>
+```
+
+```{=html}
+<details>
+<summary>Examples, method and R reproduction</summary>
+```
+
+A larger joint budget can admit more reports and reduce the minimum risk. It can also shift detail from one
+domain to another. Here B has targets (0,0), while A has (1,1), (−1,1), or (1,−1), with probabilities
+1−3k/20, k/20, and k/10. The choices k=0, 1, and 2 set the probability of a reversal in each fictional distribution.
+
+## Numerical illustrations {#what-to-try}
+
+- **Tighter joint budget.** At k=1 and cap 3/40, the unique optimum discloses A ahead only in S. Its risk is 1/5,
+  joint-event probability 1/20, and occupied-grade counts (2,1).
+- **Larger joint budget.** Raising the cap to 1/8 admits the report that states a direction only in C. It has
+  risk 11/80 and joint-event probability 1/10. With more weight on C, the best report now uses two grades
+  in C and one in S, giving counts (1,2).
+- **Both domains disclosed.** At cap 3/20, the double-positive card becomes feasible at equality. Its risk is
+  7/80, joint-event probability 3/20, and occupied-grade counts (2,2). The cap is inclusive.
+- **More posterior reversals.** With k=2 and cap 3/20, the best report again states a direction only in S,
+  at risk 17/80 and joint-event probability 1/10. Changing k changes the distribution. Compare budgets
+  within a fixed k to isolate the effect of the budget.
+
+The chart counts the grades used in S and C. The grade table gives each site's two grades. At every budget,
+the app lists all reports tied for the lowest risk and plots the counts for the first of those reports.
+At k=1 and zero budget, all directions are withheld at risk 1/4. At k=0, both directions can be stated
+even at zero budget, with risk zero.
+
+::: {.callout-note appearance="simple"}
+All settings use the same nine cards, weights (1/4,3/4), and withholding costs (1/4,1/4). The joint event
+occurs if either domain has an error share above zero. Expected-error caps are disabled. A shared grade
+withholds a direction, and the error share is undefined when the report states no directions in a domain.
+The calculation is exact for the fictional distributions specified here.
+:::
+
+::: {.callout-tip collapse="true" title="In postrank"}
+The [R script](../../data/recipes/profile-resolution.R) reproduces the candidates, tied optima, and frontiers
+for all twenty-one settings with postrank 1.2.0 and gmp.
+
+```r
+source("profile-resolution.R")
+result <- profile_resolution()
+result$summary
+```
+:::
+
+Source: [postrank multidomain decisions](https://joonho112.github.io/postrank/articles/mdomain-decisions.html).
+
+Standalone: [open this app](../../embed/profile-resolution.html), for example `?preset=larger-budget&theme=dark`.
+
+Related applications: [Separate or joint?](profile-separability.qmd) and
+[Error overlap](profile-dependence.qmd).
+
+```{=html}
+</details>
+```

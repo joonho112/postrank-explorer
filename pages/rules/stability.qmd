@@ -1,16 +1,10 @@
 ---
 title: "Report stability under repeated measurement"
 subtitle: "3.12 · after the postrank theory book, ch. 17, repeated-data stability"
-description: "Changes in pairwise relations across independent datasets at fixed true values."
+description: "How new measurements of the same units change the directions a report states."
 ---
 
-Repeated measurements of the same units yield different estimates, posterior summaries and grade reports. The
-simulation compares relations between pairs across two such measurements, distinguishing new disclosures, new
-withholding decisions and reversals. Stability is evaluated alongside disclosure and each report's expected errors.
-This is necessary because a rule that always withholds has perfect stability without stating any direction. The
-true values and standard errors remain fixed, while each dataset receives a newly computed posterior under the
-specified prior. The experiment therefore concerns repeated-data stability rather than posterior variation at fixed
-data.
+A new set of measurements can change which units a report ranks above others, even when their true values stay fixed.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,18 +14,26 @@ data.
 <script>window.__prxApp = PRX["stability"].mountWidget(document.getElementById("app"));</script>
 ```
 
+For each pair of measurements, we count comparisons that become stated, become withheld or reverse direction.
+We report these changes alongside the number of pairs stated and each report's expected errors. A rule that
+withholds every pair is perfectly stable by this measure, but provides no directions. The simulation holds the
+true values and standard errors fixed and calculates a fresh posterior for each dataset under the same prior.
+
 ## Numerical illustrations {#what-to-try}
 
 - **Optimal cuts.** The first observation states 251 pairs. The second report and relation-change grid show that the criterion is the same, but the measurements and fitted posterior summaries change. The pair control selects a repeated-measurement experiment.
 - **Estimate tiers.** The first report states 300 pairs. The fixed tier sizes keep disclosure constant here, even when different units occupy those grades. The comparison table separates disclosure from the fraction of changed relations.
-- **Prior SD .05.** The same measurements are reused with a narrower assumed prior. The posterior means, probabilities and optimised cuts are recomputed. This changes the stipulated producer; it does not change the fixed truth or estimate that prior from the observations.
+- **Prior SD .05.** The same measurements are reused with a narrower assumed prior. We recalculate the posterior means, probabilities and optimal cuts under this narrower prior. The true values stay fixed.
 - **Withhold every pair.** Every relation stays withheld. The claimed error fraction reads NA: no disclosure. Its stability is no evidence that the report is informative.
 - **τ .05.** A lower price makes withholding cheaper. The histogram and disclosure column describe repeated-data stability, separately from reporting risk.
 
 ::: {.callout-note appearance="simple"}
-The simulation fixes the units, true values and SEs, then draws independent normal measurement errors. Both observations get a newly computed posterior under the chosen fixed prior. This is remeasurement at fixed truth, not posterior draws at fixed data or a calibration identity. Each claimed error fraction concerns its own supplied posterior. The pooled claim adds expected wrong counts and divides by total disclosure; it is not an average of the fractions. The optimised rule searches cuts of the declared posterior-mean order, not every possible report.
+We draw independent normal measurement errors for the same units, true values and SEs. Each report's error
+fraction uses the posterior from its own measurements. The pooled fraction adds the two expected wrong counts
+and divides by their total disclosure. The optimal-cut rule searches boundaries within the posterior-mean order
+for each dataset.
 :::
 
 Standalone: [stability](../../embed/stability.html), for example `?preset=cuts&pair=2`.
 
-Related applications: [Fixed quantile tiers](fixed-tiers.qmd), [Tiers and optimised cuts of posterior rankings](posterior-tiers.qmd), [Averaging error shares across reports](../grades/averaging-errors.qmd).
+Related applications: [Fixed quantile tiers](fixed-tiers.qmd), [Tiers and optimized cuts of posterior rankings](posterior-tiers.qmd), [Averaging error shares across reports](../grades/averaging-errors.qmd).

@@ -200,6 +200,153 @@
           },
           "value": 0.181802817279421,
           "about": "postrank's risk of the race card at tau .20, base-R oracle on the released array"
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-bar-s\"]",
+          "about": "review 044 repair: six-site identity line under its bar, s",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "s"
+          },
+          "value": 0.933333333333333
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-bar-en\"]",
+          "about": "review 044 repair: six-site identity line under its bar, E/N",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "EoverN.0"
+          },
+          "value": 0.0255411672329528
+        },
+        {
+          "select": "[data-prx-readout=\"den-six-bar-dr\"]",
+          "about": "review 044 repair: six-site identity line under its bar, DR = s × E/N",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "EoverM.0"
+          },
+          "value": 0.023838422750756
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-bar-s\"]",
+          "about": "review 044 repair: race-card identity line under its bar, s",
+          "source": "registry",
+          "ref": "krw.race.card.s",
+          "value": 0.284364261168385
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-bar-en\"]",
+          "about": "review 044 repair: race-card identity line under its bar, E/N",
+          "source": "registry",
+          "ref": "krw.race.card.EoverN",
+          "value": 0.136007104622356
+        },
+        {
+          "select": "[data-prx-readout=\"den-card-bar-dr\"]",
+          "about": "review 044 repair: race-card identity line under its bar, DR",
+          "source": "registry",
+          "ref": "krw.race.card.DR",
+          "value": 0.0386755598195876
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-tau\"]",
+          "about": "review 044 repair (G3-F3 copy): the read-out names the six-site tau",
+          "source": "registry",
+          "ref": "settings.tau25",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-N\"]",
+          "about": "review 044 repair (G3-F3 copy): read-out, six-site N",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "N"
+          },
+          "value": 14
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-s\"]",
+          "about": "review 044 repair (G3-F3 copy): read-out, six-site s",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "s"
+          },
+          "value": 0.933333333333333
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-dr\"]",
+          "about": "review 044 repair (G3-F3 copy): read-out, six-site DR",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "EoverM.0"
+          },
+          "value": 0.023838422750756
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-en\"]",
+          "about": "review 044 repair (G3-F3 copy): read-out, six-site E/N",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-all-tau.25",
+            "field": "EoverN.0"
+          },
+          "value": 0.0255411672329528
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-card-s\"]",
+          "about": "review 044 repair (G3-F3 copy): read-out, fixed race card s",
+          "source": "registry",
+          "ref": "krw.race.card.s",
+          "value": 0.284364261168385
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-card-dr\"]",
+          "about": "review 044 repair (G3-F3 copy): read-out, fixed race card DR",
+          "source": "registry",
+          "ref": "krw.race.card.DR",
+          "value": 0.0386755598195876
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-card-en\"]",
+          "about": "review 044 repair (G3-F3 copy): read-out, fixed race card E/N",
+          "source": "registry",
+          "ref": "krw.race.card.EoverN",
+          "value": 0.136007104622356
         }
       ]
     },
@@ -401,6 +548,20 @@
         },
         {
           "select": "[data-prx-readout=\"den-tau\"]",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-lambda\"]",
+          "about": "review 044 repair: with lambda given, the read-out names lambda and its tau",
+          "source": "registry",
+          "ref": "settings.lambda25",
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"den-ro-tau\"]",
+          "about": "review 044 repair: tau = lambda/(1 + lambda) = .20 in the read-out",
           "source": "registry",
           "ref": "settings.tau20",
           "value": 0.2

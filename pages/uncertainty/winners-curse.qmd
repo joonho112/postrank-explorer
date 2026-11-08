@@ -4,11 +4,7 @@ subtitle: "1.4 · the simulated league, after Walters (2024) and Andrews, Kitaga
 description: "Repeated-sampling bias of selected extreme estimates and its dependence on the prior used for shrinkage."
 ---
 
-Selection by an extreme estimate also selects on sampling error. In a simulation of thirty units, the estimates of
-the highest-ranked units therefore exceed their true values on average. The corresponding bias for the lowest-ranked
-units has the opposite sign. Repeated datasets quantify these differences for the selected k units. Under a normal
-prior centred on the average true value, with a standard deviation near their spread, posterior means substantially
-reduce the average upward bias of the highest estimates; the remaining average difference is −.007 in this example.
+The largest estimates in a ranking tend to overstate their units' true values because units with positive sampling errors are more likely to rank near the top. The reverse holds at the bottom. In a simulation of thirty units, we compare estimates and posterior means with the true values of units selected by their estimates. A normal prior centered on the average true value, with a standard deviation close to the true spread, reduces the average upward bias of the highest estimates. The posterior means differ from the true values by −.007 on average in this example.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -23,8 +19,7 @@ reduce the average upward bias of the highest estimates; the remaining average d
 - **Top 3.** Over the 2,000 replays, estimate minus true value averages .160 for the top 3 by estimate; for their
   posterior means at prior SD .15, near the true values' spread of .149, it averages −.007. Replay 1 is the draw that
   1.3 and 1.5 show first: .071 and −.031.
-- **Replay 9.** The repeated-sampling result does not hold in every dataset: here the top 3 sit below their true values (−.043, averaged over the
-  three), and their posterior means further below (−.117). This bias is defined by the average over repeated datasets.
+- **Replay 9.** In this sample, the differences from the true values average −.043 for the top 3 estimates and −.117 for their posterior means. The average bias across samples allows for individual samples like this one.
 - **Top 1.** Over the replays, the largest estimate overshoots most: .220 above its unit's true value on average,
   against .081 for the top 10 (set k to 10). Its posterior mean averages −.024.
 - **Bottom 3.** The lower-tail comparison has the opposite sign: on average over the replays the bottom 3 sit below their true values, −.150, and their posterior means have average difference −.013.
@@ -35,8 +30,7 @@ reduce the average upward bias of the highest estimates; the remaining average d
 Walters (2024, Handbook of Labor Economics, section 3.5) points to the upward bias of the largest estimate that the
 ranking step creates. Andrews, Kitagawa and McCloskey (2024, "Inference on Winners") give inference on the top unit's
 value that accounts for it. The posterior here comes from one normal prior set by hand for teaching; postrank does not
-fit it, and postrank's input is a posterior, not a list of estimates. With real units the true values are unknown, so
-this check is not possible.
+fit it. The reporting procedure takes the resulting posterior as its input. In an application, the analyst cannot check these differences directly because the true values are unknown.
 :::
 
 Standalone: [embed/winners-curse.html](../../embed/winners-curse.html), for example `?k=5&side=bottom` or

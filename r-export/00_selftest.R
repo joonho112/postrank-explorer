@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Self-test of the r-export base: writes one oracle golden group and one postrank group with manifest fragments.
 source("r-export/_paths.R"); source("r-export/_helpers.R"); source("r-export/_oracle.R")
 

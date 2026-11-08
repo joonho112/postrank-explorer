@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R criterion-mixture displays. No new4.8 app JS/TS/tests or
 # JS-computed expectations read. Frozen R35 pure math + declared input laws.
 source('r-export/_paths.R');source('r-export/_helpers.R');source('r-export/_oracle.R');assert_no_postrank()

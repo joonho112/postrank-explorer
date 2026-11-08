@@ -4,12 +4,10 @@ subtitle: "3.1 · a simulated league, after the postrank theory book, ch. 9, 16 
 description: "Posterior evaluation of directions stated by quantile groups of the estimates."
 ---
 
-A quantile-tier rule sorts estimates into groups of nearly equal size. Interpreted as an ordered grade report, it
-states every direction between tiers and withholds every comparison within a tier. The grouping uses the estimates
-alone; a separately specified posterior evaluates the expected errors of its statements. The display records grade
-sizes, disclosure and reporting risk, together with individual errors above the withholding cost. A shared tier
-withholds a comparison. Neither membership in a tier nor its size determines the posterior probability that a
-particular stated direction is correct.
+A quantile-tier rule sorts units by their estimates and divides them into groups of nearly equal size. It places
+every unit in a higher tier above every unit in a lower tier and leaves pairs in the same tier unranked. The rule
+uses the estimates to make these assignments. We use a posterior distribution to assess how often the directions
+would be wrong and how much the report would cost if withholding also carries a penalty.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -25,24 +23,20 @@ particular stated direction is correct.
 - **Three tiers.** Three groups of 10 state 300 of 435 pairs, a share of .690. Under the teaching posterior they
   expect 51.86 wrong directions, .173 per stated direction, and risk .1813 at τ .20. The marks identify all stated pairs with error above τ, including comparisons across several boundaries.
 - **Ten tiers, marks on.** Disclosure rises to 405 pairs (.931), but expected wrong directions rise to 89.40 and
-  E/N to .221. There are 197 marked pairs; the largest stated error is .802. Risk .2193 exceeds the all-withheld
-  report's .2000 at this τ. This comparison does not make τ an error bound for the tier rule.
+  E/N to .221. There are 197 marked pairs; the largest stated error is .802. At this τ, the tier rule has risk .2193, compared with .2000 if it withholds every direction. Here τ sets the cost of withholding.
 - **Four tiers.** Quantile positions produce sizes 8, 7, 8, 7 and state 337 pairs (.775). The grouped formula counts within-tier withheld pairs. The equal-size closed form disappears because four does not divide thirty.
-- **Two tiers.** Groups of 15 state 225 pairs (.517). Each within-tier triangle holds comparisons the report
-  leaves unsaid; arrows read every cell of the pair map.
+- **Two tiers.** Groups of 15 state 225 pairs (.517). The triangles in the pair map mark comparisons within a tier. Use the arrow keys to read individual cells.
 - **Thirty tiers.** Every pair is stated. The tiers follow the estimates, so their 102.2 expected wrong directions
   differ from the 94.48 of the posterior-mean ranking in [Ranking states many claims](../uncertainty/ranking-claims.qmd).
   With G set to one, E/N becomes “NA: no disclosure,” while risk is .2000.
 
 ::: {.callout-note appearance="simple"}
-These are thirty simulated units in one frozen draw, with independent normal teaching posteriors (prior mean 0,
-SD .15). Tier membership is fixed by the grouping rule. τ changes their evaluation and the marked errors, while their membership
-stays fixed. The loss evaluates stated directions rather than the purpose a tier rule was designed for. Sizes alone
-do not determine how many directions are wrong. Quantile sizes are nearly balanced when estimates have no ties;
-the package merges tiers crossed by equal scores.
+The example uses one set of estimates for thirty simulated units and independent normal posteriors based on a prior
+with mean 0 and SD .15. A change in τ changes the reporting loss and which errors the app marks. The estimates
+still determine tier membership. If an exact tie spans two tiers, postrank merges those tiers to keep the tied units together.
 :::
 
 Standalone: [embed/fixed-tiers.html](../../embed/fixed-tiers.html), for example `?preset=ten-tiers&theme=dark`.
 
 Related applications: [Grade reports as pairwise decisions](../grades/report-builder.qmd) and
-[Reporting risk and withholding cost](../grades/price-of-silence.qmd), where the report is optimised at a stated price.
+[Reporting risk and withholding cost](../grades/price-of-silence.qmd), where the report is optimized at a stated price.

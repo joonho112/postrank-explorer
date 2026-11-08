@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Paths shared by every r-export script. Run scripts from the repository root:
 #   Rscript r-export/NN_name.R
 # Environment variables override the defaults:

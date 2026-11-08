@@ -22,6 +22,10 @@ export function yourDataR(model,grade,{runSearch=true}={}) {
   '# Applied inputs, settings and report; user text is quoted data. JSON parsing preserves the exported doubles.',
   `entered_input <- ${literal(model.input)}`,`applied_settings <- ${literal(s)}`,`ids <- ${vector(E.ids)}`,`criteria <- ${vector(E.criteria)}`,
   `e <- array(${vector(cells)}, c(length(ids), length(ids), length(criteria)), dimnames = list(ids, ids, criteria))`];
+ if(model.provenance){
+  const comment=value=>String(value).replace(/[\r\n]+/g,' ');
+  lines.unshift(`# Source: ${comment(model.provenance.source)}`,`# License: ${comment(model.provenance.licence)}`);
+ }
  if(model.posterior){
   const matrix=x=>`matrix(${vector(E.criteria.flatMap((_,k)=>x.map(row=>row[k])))}, nrow = length(ids), ncol = length(criteria), dimnames = list(ids, criteria))`;
   lines.push(`posterior_mean_raw <- ${matrix(model.posterior.mean)}`,`posterior_sd_raw <- ${matrix(model.posterior.sd)}`,`lower_raw <- ${matrix(model.posterior.lower)}`,`upper_raw <- ${matrix(model.posterior.upper)}`,`orient <- ${vector(s.orient)}`,

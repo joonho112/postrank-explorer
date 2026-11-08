@@ -7,5 +7,5 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const out = path.resolve(here, "../../js/pr-core.d.ts");
-fs.writeFileSync(out, '// pr-core type declarations (build source: engine/scripts/write-dts-entry.mjs; do not edit)\nexport * from "./types/index.js";\n');
+fs.writeFileSync(out, '// pr-core type declarations (written by engine/scripts/write-dts-entry.mjs; do not edit)\nexport * from "./types/index.js";\n');
 console.log("wrote js/pr-core.d.ts");

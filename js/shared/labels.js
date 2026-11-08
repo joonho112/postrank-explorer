@@ -27,7 +27,7 @@
 //                          and it is aria-hidden.
 //                          label_form. Names without a low line (𝒜₆, 𝒜ᵨ,≤3) are written as they are.
 // markLabelStarts(root)    marks with data-prx-label-start every block (p, div, li, td, …) whose first content is a
-//                          result label, so CSS capitalises the label's first letter there (base.css; the strings stay
+//                          result label, so CSS capitalizes the label's first letter there (base.css; the strings stay
 //                          exact). base.js runs it after every render and on every DOM change inside a widget.
 // tagNode(ctx, result)     the short form ("best of all 4,683 reports"); prefer it inside apps
 // captionText(id)          the registry string of a caption
@@ -66,7 +66,7 @@ export const CONFIG = Object.freeze({
     "mixture-not-report": "a mixture of two complete reports, not a report we can print",
     "different-disclosure": "these reports disclose different amounts",
     "tau-not-compared": "risks at different τ are not compared",
-    "teaching-posterior": "a posterior set by hand for teaching; postrank does not fit it",
+    "teaching-posterior": "a posterior specified for the example",
     "flat-posterior": "the chance a direction is wrong takes each true value as normal around its estimate, with its SE",
     "monte-carlo": "Monte Carlo, S draws, seed shown",
     "package-quantity": "package quantity",
@@ -101,7 +101,7 @@ export const CONFIG = Object.freeze({
     lowClass: "prx-family-low",
     subClass: "prx-family-sub",
   }),
-  // A block whose first content is a result label: CSS capitalises its first letter (I-03).
+  // A block whose first content is a result label: CSS capitalizes its first letter (I-03).
   labelStart: "data-prx-label-start",
   blockTags: Object.freeze(["P", "DIV", "LI", "DD", "DT", "TD", "TH", "CAPTION", "FIGCAPTION", "LEGEND", "SUMMARY",
     "BLOCKQUOTE", "H1", "H2", "H3", "H4", "H5", "H6", "SECTION", "ARTICLE", "ASIDE", "OUTPUT"]),
@@ -285,13 +285,16 @@ export function labelNode(target, result, { key, slot } = {}) {
 /**
  * A short tag for a result: what the result is the best of, with the family size.
  *   exact optimum      "best of all 4,683 reports" / "best of the 603 reports with at most 3 grades"
+ *                      (singleton "only 1 report with at most 1 grade")
  *                      (with budgets "… that meet the error budgets", "… the error budget" when only one criterion has one)
  *   one order          "best along one order (32 reports)"; with orderWords, the order is named:
  *                      "best along the expected-rank order (4,090 reports)", "best along the order B, A, C, D, E, F (32 reports)"
  *   archived solve     "best found by the solver"
  * The node carries the same data attributes as labelNode, so a check can derive it from the engine result.
+ * With { ties: true } (review 044, X-12) a result whose engine tieCount is above 1 adds
+ *   " (one of 3 equal-risk best reports; showing the first)", the count with data-num (tieNode).
  */
-export function tagNode(target, result, { key, orderWords } = {}) {
+export function tagNode(target, result, { key, orderWords, ties = false } = {}) {
   const id = labelId(result);
   if (!id) return null;
   const doc = docOf(target);
@@ -306,17 +309,43 @@ export function tagNode(target, result, { key, orderWords } = {}) {
   const budgets = Array.isArray(result.family?.budgets) ? result.family.budgets.filter((q) => q !== null && q !== undefined) : [];
   let words = typeof result.family?.words === "string" ? result.family.words.replace(/\s*E_k ≤ q_k N/g, "") : "";
   if (budgets.length === 1) words = words.replace(/\berror budgets\b/, "error budget");
+  const singleReport = size?.dataset.num === "1";
   if (id === "exact-within-family" && size) {
-    if (/^all reports/.test(words) || !words) node.append("best of all ", size, " reports");
+    if (singleReport) {
+      if (/^all reports/.test(words) || !words) node.append("only ", size, " report");
+      else node.append("only ", size, " ", words.replace(/^reports\b/, "report").replace(" that meet ", " that meets "));
+    } else if (/^all reports/.test(words) || !words) node.append("best of all ", size, " reports");
     else node.append("best of the ", size, " ", words);
   } else if (id === "optimal-within-order") {
     node.append(`best along ${typeof orderWords === "string" && orderWords ? orderWords : "one order"}`);
-    if (size) node.append(" (", size, " reports)");
+    if (size) node.append(" (", size, singleReport ? " report)" : " reports)");
   } else if (id === "optimal-within-solver-tolerances") {
     node.append("best found by the solver");
   } else {
     node.textContent = labelText(id, result.family);
   }
+  if (ties) {
+    const t = tieNode(doc, result);
+    if (t) node.append(t);
+  }
+  return node;
+}
+
+/**
+ * The tie qualifier of a result (review 044, X-12), or null when the engine reports at most one best report:
+ * " (one of k equal-risk best reports; showing the first)", k from result.tieCount with data-num.
+ * { lead: false } leaves out the parentheses and the leading space, for use inside a sentence.
+ */
+export function tieNode(target, result, { lead = true, showing = "showing the first" } = {}) {
+  const k = Number(result?.tieCount);
+  if (!(Number.isFinite(k) && k > 1)) return null;
+  const doc = docOf(target);
+  const node = doc.createElement("span");
+  node.className = "prx-result-ties";
+  node.setAttribute("data-prx-ties", String(k));
+  const tail = showing ? `; ${showing}` : "";
+  if (lead) node.append(" (one of ", numSpan(k, formatCount(k), { document: doc }), ` equal-risk best reports${tail})`);
+  else node.append("one of ", numSpan(k, formatCount(k), { document: doc }), ` equal-risk best reports${tail}`);
   return node;
 }
 

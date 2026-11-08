@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent R50 direct pins for the seven frozen report-designer presets.
 # Authority: spec-v3-part5-tools.md and the old public largestStatedError API.
 # Only released case inputs and extracted, closed pure R definitions are used.

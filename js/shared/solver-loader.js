@@ -8,7 +8,7 @@
 //   const solver = await loadSolver();             // after a click
 //   const r = await solver.mipSolve(E, { tau, w }); // { grade, risk, status, label, bound, gap, ... }
 //
-// A solver result is labelled by labels.js from its own status (an optimum "within solver tolerances" only when
+// A solver result is labeled by labels.js from its own status (an optimum "within solver tolerances" only when
 // the status is optimal).
 
 // the app bundle's own address, read while the bundle runs (document.currentScript is null later)

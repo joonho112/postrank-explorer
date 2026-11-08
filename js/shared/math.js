@@ -1,6 +1,6 @@
 // App formulas. Renders TeX to MathML with the vendored Temml (loaded once as the classic
 // global `temml` from js/vendor/temml/temml.min.js), the macros below and the same options as the page post-render:
-// throwOnError, and `trust` only for \class (colours come from \class{prx-...}{...} and styles/temml.css).
+// throwOnError, and `trust` only for \class (colors come from \class{prx-...}{...} and styles/temml.css).
 //
 //   import { renderTex } from "./math.js";
 //   renderTex(el, "R_\\tau(g) = \\class{prx-err}{E/M} + \\class{prx-wh}{\\tau(M-N)/M}", { display: true });

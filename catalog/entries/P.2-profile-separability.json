@@ -1,0 +1,76 @@
+{
+  "id": "P.2",
+  "name": "profile-separability",
+  "part": "P",
+  "title": "Separate or joint?",
+  "idea": "Additive loss. A joint guard can change the choices.",
+  "status": "built",
+  "from": "P2 multidomain profile theory",
+  "data": [
+    "engine"
+  ],
+  "credit": "JoonHo Lee; postrank multidomain profile decisions (postrank 1.2.0).",
+  "caption": "Complete finite teaching law; exact arithmetic; optimum within the stated candidate bank.",
+  "presets": [
+    {
+      "id": "dependent-coincident",
+      "label": "Dependent domains, separate choices",
+      "query": "couplingIndex=10&zeroWeight=false&protected=false&candidate=p%3A1%2C2%7C1%2C2"
+    },
+    {
+      "id": "dependent-disjoint",
+      "label": "Different dependence, same minimum",
+      "query": "couplingIndex=0&zeroWeight=false&protected=false&candidate=p%3A1%2C2%7C1%2C2"
+    },
+    {
+      "id": "zero-weight",
+      "label": "Zero loss weight in S",
+      "query": "couplingIndex=0&zeroWeight=true&protected=false&candidate=p%3A1%2C2%7C1%2C2"
+    },
+    {
+      "id": "independent-joint",
+      "label": "Independent domains with a joint guard",
+      "query": "couplingIndex=1&zeroWeight=false&protected=true&candidate=p%3A1%2C2%7C1%2C2"
+    },
+    {
+      "id": "guarded-coincident",
+      "label": "Joint guard with coincident failures",
+      "query": "couplingIndex=10&zeroWeight=false&protected=true&candidate=p%3A1%2C2%7C1%2C2"
+    }
+  ],
+  "try": [
+    {
+      "preset": "dependent-coincident",
+      "shows": [
+        "1/10"
+      ]
+    },
+    {
+      "preset": "dependent-disjoint",
+      "shows": [
+        "1/10"
+      ]
+    },
+    {
+      "preset": "zero-weight",
+      "shows": [
+        "1/10"
+      ]
+    },
+    {
+      "preset": "independent-joint",
+      "shows": [
+        "1/10",
+        "19/100",
+        "3/20",
+        "7/40"
+      ]
+    },
+    {
+      "preset": "guarded-coincident",
+      "shows": [
+        "1/10"
+      ]
+    }
+  ]
+}

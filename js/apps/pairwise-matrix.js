@@ -23,9 +23,11 @@
 //            selected cell, and focusing a cell selects it (the pair panel follows after CONFIG.pairDeferMs, so that
 //            held arrow keys stay light). Hovering shows a tip and the cell's two posteriors; a click or tap selects
 //            the cell. The league matrix keeps cells of at least CONFIG.matrix.league.minCell px and scrolls sideways
-//            inside its own box (then a keyboard stop) when the column is narrower. When only the prior SD, the order
-//            or the cell changes, the drawn matrix is updated in place (cell fills, values and data-num, labels,
-//            keyboard names, the hidden table) instead of being drawn again.
+//            inside its own box (then a keyboard stop) when the column is narrower; while it scrolls, its row labels
+//            stay at the box's left edge (review 044 repair, X-09: matrixView's stickyRows, a sticky copy of the
+//            labels, hidden from assistive technology, over the matrix's own), and the selected cell is kept clear of
+//            them. When only the prior SD, the order or the cell changes, the drawn matrix is updated in place (cell
+//            fills, values and data-num, labels, keyboard names, the hidden table) instead of being drawn again.
 //   pair     (pairView) the two posteriors of the selected (or hovered) cell: the row unit solid, the column unit
 //            dashed, short ticks at every unit's posterior mean, how far the cell sits from the diagonal, the worked
 //            formula π = Φ(gap / SD of the difference) with every number as data-num, its scope and Φ in words, and
@@ -47,7 +49,8 @@
 //             pairs), leastInOrder(d, order), orderOf(d, sort), parseCell(v), cellKey(d, cell), resolveCell(d, key),
 //             stepsApart(order, cell)
 //   geometry  blueStep(p), niceDomain(lo, hi), densityFrame(d), densityPoints(mu, sd, lo, hi), spreadLabels(...)
-//   views     matrixView(ctx, { onFocus }), pairView(ctx), leastView(ctx, { onPick }), legendNodes(ctx)
+//   views     matrixView(ctx, { onFocus, stickyRows }), pairView(ctx), leastView(ctx, { onPick }), legendNodes(ctx)
+//             (stickyRows: row labels that stay in view while the box scrolls; default false, the behavior before)
 //   text      fill(template, slots), fillText(template, slots)
 //   CSS       cssFor(rootClass) (the views' CSS under another root class)
 import { appLink, createWidget, uid } from "../shared/base.js";
@@ -179,7 +182,7 @@ export const CONFIG = Object.freeze({
     // where the least certain pair's cell sits (the read-out's last clause, after "; ")
     readNext: "its cell is next to the diagonal",
     readFar: "its cell is {steps} cells from the diagonal",
-    noteSix: "Six fictional sites from postrank's tutorial data ({data}), their reading score ({score} there): independent normal posteriors with SD {sd} each, specified for teaching and taken as given.",
+    noteSix: "The reading scores ({score}) for six fictional sites come from postrank's tutorial data ({data}). Their independent normal posteriors have SD {sd} each.",
     noteLeague: "Simulated league of {n} units (ten small, ten medium, ten large), one fixed draw of the estimates (seed {seed}); teaching posterior with a normal prior of mean {zero} and SD {prior}.",
     notePackage: "{fn} draws this matrix with the same rule, row above column, but each of its cells shows {one} − π, the probability that stating the row unit above the column unit is wrong; postrank chooses its grades from those error probabilities.",
     rData: "pr_tutorial",
@@ -398,15 +401,23 @@ export function legendNodes(ctx) {
   return items;
 }
 
+const SVG_NS = "http://www.w3.org/2000/svg";
+// the matrix svg's attributes the pinned copy of its row labels does not take over (it has its own size, and it is
+// hidden from assistive technology)
+const PIN_SKIP = /^(?:width|height|viewBox|role|aria-[\w-]+|id|tabindex)$/;
+
 /**
  * The matrix section: the matrix in its scroll box (with the scroll note), the legend, then the order note and the
  * how-to hint, so the matrix comes first; the selected cell, its mirror cell, the cell under the pointer and the
  * pointer tip are overlays placed in percent of the plot. options.onFocus(cell) is called when a keyboard cell is
- * focused (cell: { i, j, … }).
+ * focused (cell: { i, j, … }). options.stickyRows (default false, the behavior before review 044's repair): while
+ * the box scrolls sideways, a copy of the row labels (aria-hidden; the matrix keeps its own labels, names and table)
+ * stays at the box's left edge in a sticky column, and a cell revealed or scrolled into view, and the keyboard tip,
+ * are kept clear of it.
  * Returns { root, slot, draw(state, d, order, { avail, inPlace, selection, hovered }), overlays(selection, hovered),
  * syncStop(selection), cellAt(event), note(state, d), reveal(selection), scrollToSelected(), geom }.
  */
-export function matrixView(ctx, { onFocus, label = CONFIG.title, generic = null } = {}) {
+export function matrixView(ctx, { onFocus, label = CONFIG.title, generic = null, stickyRows = false } = {}) {
   // Optional arbitrary-input presentation; the original six/league law and text stay the default.
   // generic accepts caller-authored alt/orderNote/tableCaption/howTo/legendTitle and probabilityOpen(d).
   // Its keyboard selection reveals itself inside the scroll viewport without requiring a linked-panel callback.
@@ -422,7 +433,12 @@ export function matrixView(ctx, { onFocus, label = CONFIG.title, generic = null 
   const orderNote = h("p", { class: "prx-pm-note", "data-prx-part": "notes" });
   const howTo = h("p", { class: "prx-hint prx-pm-howto", "data-prx-part": "notes", text: customText("howTo", null, null, custom ? "Hover, focus or tap a cell to read its probability. Arrow keys move one cell left or right and one row up or down." : T.howTo) });
   const slot = h("div", { class: "prx-pm-matrix-chart" });
-  const scrollBox = h("div", { class: "prx-pm-scroll" }, slot);
+  // stickyRows (review 044 repair, X-09): the sticky column of row labels sits before the matrix in a wrapper as wide
+  // as the matrix, so it can stay at the box's left edge across the whole scroll
+  const pin = stickyRows ? h("div", { class: "prx-pm-pin", "aria-hidden": "true", hidden: true }) : null;
+  const scrollBox = stickyRows
+    ? h("div", { class: "prx-pm-scroll prx-pm-sticky-rows" }, h("div", { class: "prx-pm-scroll-inner" }, pin, slot))
+    : h("div", { class: "prx-pm-scroll" }, slot);
   const scrollNote = h("p", { class: "prx-hint prx-pm-scroll-note", "data-prx-part": "notes", text: T.scrollNote, hidden: true });
   const legend = h("div", { class: "prx-pm-legend", "data-prx-part": "legend" }, ...legendNodes(ctx));
   const root = h("section", { class: "prx-pm-matrix", "aria-label": label }, scrollBox, scrollNote, legend, orderNote, howTo);
@@ -523,12 +539,61 @@ export function matrixView(ctx, { onFocus, label = CONFIG.title, generic = null 
   function setScrolls(on) {
     scrollBox.classList.toggle("prx-pm-scrolls", on);
     scrollNote.hidden = !on;
-    if (on && !scrollBox.hasAttribute("tabindex")) ctx.scrollRegion(scrollBox, T.scrollLabel);
+    // with the row labels pinned, the shared scroll cue fades only the right edge (base.js scrollRegion stickyLabels)
+    if (on && !scrollBox.hasAttribute("tabindex")) ctx.scrollRegion(scrollBox, T.scrollLabel, stickyRows ? { stickyLabels: true } : undefined);
     if (!on && scrollBox.hasAttribute("tabindex")) {
       for (const a of ["tabindex", "role", "aria-label"]) scrollBox.removeAttribute(a);
       scrollBox.classList.remove("prx-scroll-region");
     }
   }
+
+  /**
+   * stickyRows: the copy of the row labels in the sticky column, made while the box scrolls sideways (a clone of the
+   * matrix's own row labels, on the plot panel's paper, in the matrix's coordinates) and removed when the matrix fits.
+   * The browser then keeps a cell it scrolls into view (a keyboard move) clear of the column (scroll-padding).
+   */
+  function pinRows() {
+    if (!pin) return;
+    const g = geom;
+    const labels = g?.parts?.rowLabels?.g ?? null;
+    if (!g?.svg || !labels || !scrollBox.classList.contains("prx-pm-scrolls")) {
+      if (pin.firstChild) pin.replaceChildren();
+      pin.hidden = true;
+      scrollBox.style.removeProperty("scroll-padding-left");
+      return;
+    }
+    const copy = ctx.doc.createElementNS(SVG_NS, "svg");
+    for (const a of Array.from(g.svg.attributes)) if (!PIN_SKIP.test(a.name)) copy.setAttribute(a.name, a.value);
+    copy.setAttribute("width", String(g.marginLeft));
+    copy.setAttribute("height", String(g.height));
+    copy.setAttribute("viewBox", `0 0 ${g.marginLeft} ${g.height}`);
+    copy.setAttribute("aria-hidden", "true");
+    copy.style.width = `${g.marginLeft}px`;
+    copy.style.height = `${g.height}px`;
+    copy.style.background = "var(--prx-plot-bg)";
+    copy.append(labels.cloneNode(true));
+    pin.style.width = `${g.marginLeft}px`;
+    pin.replaceChildren(copy);
+    pin.hidden = false;
+    scrollBox.style.scrollPaddingLeft = `${g.marginLeft}px`;
+  }
+
+  /**
+   * stickyRows: the keyboard tip (chart.js places it inside the box's visible part, the pinned column included) stops
+   * at the column's right edge. A tip that would cover the pinned labels extends left of its cell, so it is narrowed
+   * from the left (its right end stays at the cell) and wraps instead. Run after chart.js has placed it (a microtask
+   * queued when a cell is focused).
+   */
+  function clampTip() {
+    const col = pin && !pin.hidden ? pin.firstElementChild : null;
+    const tip = slot.querySelector(".prx-kbd-tip");
+    if (!col || !tip || tip.hidden) return;
+    const edge = col.getBoundingClientRect().right;
+    const r = tip.getBoundingClientRect();
+    if (!(r.width > 0) || r.left >= edge - 0.5) return;
+    tip.style.maxWidth = `${Math.max(1, Math.floor(r.right - edge))}px`;
+  }
+  const afterTip = (fn) => (typeof ctx.win.queueMicrotask === "function" ? ctx.win.queueMicrotask(fn) : Promise.resolve().then(fn));
 
   /** The one Tab stop of the keyboard grid sits on the selected cell, unless focus is already in the grid. */
   function syncStop(selection) {
@@ -624,6 +689,7 @@ export function matrixView(ctx, { onFocus, label = CONFIG.title, generic = null 
     const key = [d.data, n, cell, width, height].join("|");
     if (inPlace && geom && geom.key === key && geom.parts) {
       updateInPlace(state, d, order);
+      pinRows();
       overlays(selection, hovered);
       syncStop(selection);
       return;
@@ -709,6 +775,7 @@ export function matrixView(ctx, { onFocus, label = CONFIG.title, generic = null 
             scrollToSelected();
           }
           onFocus?.(x);
+          if (pin) afterTip(clampTip);
         },
       },
     });
@@ -721,6 +788,7 @@ export function matrixView(ctx, { onFocus, label = CONFIG.title, generic = null 
       pal: handle.palette, parts: complete ? parts : null, buttons, focusPrefix, table: handle.table?.querySelector?.("table") ?? null,
     };
     if (custom && geom.table) for (const th of [...geom.table.querySelectorAll("thead th")].slice(1)) th.setAttribute("data-prx-name", "");
+    pinRows();
     overlays(selection, hovered);
     syncStop(selection);
   }
@@ -746,7 +814,8 @@ export function matrixView(ctx, { onFocus, label = CONFIG.title, generic = null 
       ...(d.data === "six" && state.sort === "label" ? [" ", T.sameOrder] : []));
   }
 
-  /** Scroll the box sideways (only the box, never the page) so that the selected cell is in view. */
+  /** Scroll the box sideways (only the box, never the page) so that the selected cell is in view (with the row labels
+   *  pinned, in view to the right of them). */
   function reveal(selection) {
     const g = geom;
     if (!g || !selection || !scrollBox.classList.contains("prx-pm-scrolls")) return;
@@ -754,7 +823,8 @@ export function matrixView(ctx, { onFocus, label = CONFIG.title, generic = null 
     const left = scrollBox.scrollLeft;
     const w = scrollBox.clientWidth;
     if (!(w > 0)) return;
-    if (x0 < left || x0 + g.cell > left + w) scrollBox.scrollLeft = Math.max(0, x0 - (w - g.cell) / 2);
+    const pad = pin && !pin.hidden ? g.marginLeft : 0;
+    if (x0 < left + pad || x0 + g.cell > left + w) scrollBox.scrollLeft = Math.max(0, x0 - pad - (w - pad - g.cell) / 2);
   }
 
   /** Bring the selected cell's outline into view (a keyboard move inside the scroll box). */
@@ -997,7 +1067,7 @@ export function leastView(ctx, { onPick } = {}) {
 // ---------------------------------------------------------------------------------------------- CSS
 
 // The views' CSS; %r stands for the root class of the app that shows them, so every selector starts with it. Legends,
-// overlays and figures sit on the plot panel (--prx-plot-bg), so data colours keep their meaning in every theme.
+// overlays and figures sit on the plot panel (--prx-plot-bg), so data colors keep their meaning in every theme.
 const CSS_TEMPLATE = `
 %r .prx-pm-data, %r .prx-pm-sort { display: flex; flex-wrap: wrap; column-gap: 1rem; }
 %r .prx-pm-data > legend, %r .prx-pm-sort > legend { flex: 1 1 100%; }
@@ -1074,6 +1144,19 @@ const CSS_TEMPLATE = `
 /** The CSS of the views above, every selector under `.rootClass` (an app that shows them adds it to its own css). */
 export const cssFor = (rootClass) => CSS_TEMPLATE.replaceAll("%r", `.${rootClass}`);
 
+// This app's own rules for the pinned row labels (matrixView's stickyRows; review 044 repair, X-09), after cssFor, so
+// cssFor, which T.1 shares, is unchanged. The sticky column sits over the matrix's own labels (the same clone, on the
+// plot panel's paper) and casts a shadow once the box is scrolled; the box's scroll cue fades only its right edge
+// through the shared rule for boxes that pin their own labels (base.js scrollRegion stickyLabels, styles/app.css).
+const PIN_CSS = `
+.prx-pm .prx-pm-scroll-inner { width: max-content; }
+.prx-pm .prx-pm-pin { position: sticky; left: 0; z-index: 2; height: 0; }
+.prx-pm .prx-pm-pin > svg { position: absolute; top: 0; left: 0; display: block; max-width: none; pointer-events: auto; }
+.prx-pm .prx-pm-scroll.prx-pm-sticky-rows[data-prx-overflow="start"] .prx-pm-pin > svg,
+.prx-pm .prx-pm-scroll.prx-pm-sticky-rows[data-prx-overflow="both"] .prx-pm-pin > svg {
+  box-shadow: 6px 0 6px -5px color-mix(in srgb, var(--prx-plot-fg) 40%, transparent); }
+`;
+
 // ---------------------------------------------------------------------------------------------- app
 
 export function mountWidget(el, spec = {}) {
@@ -1082,7 +1165,7 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     title: CONFIG.title,
     className: CONFIG.className,
-    css: cssFor(CONFIG.className),
+    css: cssFor(CONFIG.className) + PIN_CSS,
     keys: {
       data: { type: "choice", values: CONFIG.data.values.slice(), value: CONFIG.data.value },
       sort: { type: "choice", values: CONFIG.sort.values.slice(), value: CONFIG.sort.value },
@@ -1126,7 +1209,8 @@ export function mountWidget(el, spec = {}) {
       // from the list reveals the cell inside the scroll box
       const NONE = Object.freeze({ defer: false, scroll: false, reveal: false });
       let pending = NONE;
-      const matrix = matrixView(ctx, { onFocus: (x) => select({ i: x.i, j: x.j }, { scroll: true, defer: true }) });
+      // the league matrix scrolls sideways on a narrow screen: its row labels stay in view (review 044 repair, X-09)
+      const matrix = matrixView(ctx, { onFocus: (x) => select({ i: x.i, j: x.j }, { scroll: true, defer: true }), stickyRows: true });
       const pair = pairView(ctx);
       const least = leastView(ctx, { onPick: (c) => { hovered = null; select(c, { reveal: true }); } });
       ctx.charts.classList.add("prx-pm-charts");
@@ -1183,18 +1267,25 @@ export function mountWidget(el, spec = {}) {
 
       function drawReadout(state, d, order) {
         // the least certain pair, the first of the engine's list, with how far its cell sits from the diagonal here
-        const lc = leastInOrder(d, order)[0];
+        const leastPairs = leastInOrder(d, order);
+        const lc = leastPairs[0];
         const steps = lc.apart;
         const p = d.pi[lc.i][lc.j];
         const head = d.data === "league" ? [T.readLeague, ro("prior-sd", d.priorSd, formatSetting(d.priorSd))] : [T.readSix];
         // the last clause carries a hook of its own (data-prx-readout="least-where"), so its words can be checked
         const where = h("span", { "data-prx-readout": "least-where" },
           ...(steps === 1 ? [T.readNext] : fill(T.readFar, { steps: ro("least-steps", steps, formatCount(steps)) })));
+        const closeCount = leastPairs.filter(x => x.apart === 1).length;
+        const near = d.data === "league" ? [" ", ctx.num(closeCount, formatCount(closeCount)), " of the ",
+          ctx.num(leastPairs.length, formatCount(leastPairs.length)), " least certain pairs are neighbors in this order."] : [];
+        const followed = state.cell !== CONFIG.cell.auto && selection && selection.i !== selection.j
+          ? [" Selected: ", nameNode(d.ids[selection.i]), T.readAbove, nameNode(d.ids[selection.j]),
+            " has probability ", ctx.num(d.pi[selection.i][selection.j], fmtPi(d.pi[selection.i][selection.j])), "."] : [];
         ctx.readout.set([
           ...head, state.sort === "label" ? T.readByLabel : T.readByMean,
           ro("pairs", d.M, formatCount(d.M)), T.readPairs,
           nameNode(d.ids[lc.i]), T.readAbove, nameNode(d.ids[lc.j]), ", ", piName(d.ids[lc.i], d.ids[lc.j]), " = ",
-          ro("least-pi", p, fmtPi(p)), "; ", where, ".",
+          ro("least-pi", p, fmtPi(p)), "; ", where, ".", ...near, ...followed,
         ]);
       }
 
@@ -1246,6 +1337,7 @@ export function mountWidget(el, spec = {}) {
               matrix.overlays(selection, hovered);
               matrix.syncStop(selection);
               least.mark(selection);
+              drawReadout(state, d, order);
               if (how.defer) deferPair();
               else { pair.cancel(); drawPair(width); }
               if (how.scroll) matrix.scrollToSelected();

@@ -11,13 +11,13 @@
 //                                         other pages, so the shared files (cards, navbar, catalog tables) stay put
 //
 // The catalog is catalog/site.json (the parts) and one file per app, catalog/entries/<id>-<name>.json. From it (and
-// data/released/data_contract.json for the licence notices):
+// data/released/data_contract.json for the license notices):
 //   catalog.json               the merged catalog (read by the apps through base.js, the checks and r-export/)
 //   js/bundles/<name>.js       one classic-script bundle per js/apps/<name>.js (engine/scripts/build-bundles.mjs)
 //   embed/<name>.html          standalone page of every built app: works from file://, URL parameters, theme=dark
 //   pages/<slug>/_apps.md      the cards of a part's index (included by pages/<slug>/index.qmd)
 //   _catalog.md                the catalog tables (included by catalog.qmd)
-//   _nav.yml                   the navbar: one entry per part (a menu once it has built apps), Catalog
+//   _nav.yml                   content-category menus; profiles stay under Multiple criteria
 // Catalog rules checked here: an entry's file is named <id>-<name>.json; ids are <part>.<n> with the part's key;
 // app numbers 1 to n within each part with no gap; unique ids and names, a known part, status planned | building | built (building: a builder is at work; the app
 // is not on the site yet and its files may be incomplete), a one-line idea, data and credit; a built app has
@@ -28,6 +28,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { navigationProblems, activeNavigationHtml } from "./navigation.mjs";
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS = process.argv.slice(2);
@@ -56,22 +57,26 @@ export function loadCatalog() {
   const apps = files.map((f) => ({ ...JSON.parse(read(`catalog/entries/${f}`)), [FILE]: f }));
   const rank = new Map((site.parts ?? []).map((p, i) => [p.key, i]));
   apps.sort((a, b) => (rank.get(a.part) ?? 99) - (rank.get(b.part) ?? 99) || idOrder(a.id) - idOrder(b.id));
-  return { about: site.about, parts: site.parts ?? [], apps, discovery: JSON.parse(read("catalog/discovery.json")), siteCopy: websiteCopy.apps, siteNavigation: websiteCopy.navigation };
+  return { about: site.about, parts: site.parts ?? [], apps, discovery: JSON.parse(read("catalog/discovery.json")), siteCopy: websiteCopy.apps, websiteNavigation: JSON.parse(read("catalog/navigation.json")) };
 }
 
 /** The entry file an app came from (not part of the merged catalog.json). */
 const FILE = Symbol("file");
 
-/** The subtitle in a page's front matter, or null. */
-function pageSubtitle(file) {
+/** The quoted display fields in an app page's front matter. */
+function pageHeadings(file) {
   const fm = /^---\n([\s\S]*?)\n---/.exec(readFileSync(file, "utf8"));
-  const m = fm && /^subtitle:\s*"(.*)"\s*$/m.exec(fm[1]);
-  return m ? m[1] : null;
+  const fields = {};
+  for (const [, key, value] of fm?.[1].matchAll(/^(title|subtitle):[ \t]*("(?:[^"\\]|\\.)*")[ \t]*$/gm) ?? []) {
+    try { fields[key] = JSON.parse(value); } catch { /* Catalog validation reports the missing field. */ }
+  }
+  return fields;
 }
 
 /** Catalog problems (strings); empty when the catalog is valid. */
 export function validate(cat, { appFiles } = {}) {
   const errs = [];
+  if(cat.websiteNavigation!==undefined||(cat.parts?.length??0)>0)errs.push(...navigationProblems(cat.websiteNavigation, cat.parts ?? []));
   // Website copy is separate from the metadata embedded in application bundles.
   for (const a of cat.apps ?? []) {
     const copy = cat.siteCopy?.[a.name];
@@ -113,6 +118,7 @@ export function validate(cat, { appFiles } = {}) {
       if (t.preset && !pids.has(t.preset)) errs.push(`${where}: try names an unknown preset ${t.preset}`);
       if (!t.preset && typeof t.query !== "string") errs.push(`${where}: a try entry needs a preset or a query`);
       if (!Array.isArray(t.shows) || !t.shows.length) errs.push(`${where}: a try entry needs shows: [...]`);
+      if (t.open !== undefined && !(Array.isArray(t.open) && t.open.length && t.open.every((x) => typeof x === "string" && x))) errs.push(`${where}: a try entry's open must list disclosure names`);
     }
     const slug = parts.get(a.part)?.slug;
     const appFile = `js/apps/${a.name}.js`;
@@ -120,7 +126,11 @@ export function validate(cat, { appFiles } = {}) {
     if (a.status === "built") {
       if (!existsSync(join(ROOT, appFile))) errs.push(`${where}: built but ${appFile} is missing`);
       if (!existsSync(join(ROOT, pageFile))) errs.push(`${where}: built but ${pageFile} is missing`);
-      else if (!String(pageSubtitle(join(ROOT, pageFile)) ?? "").startsWith(`${a.id} · `)) errs.push(`${where}: the subtitle of ${pageFile} must start with "${a.id} · "`);
+      else {
+        const { title, subtitle } = pageHeadings(join(ROOT, pageFile));
+        if (!subtitle?.startsWith(`${a.id} · `)) errs.push(`${where}: the subtitle of ${pageFile} must start with "${a.id} · "`);
+        if (title !== cat.siteCopy?.[a.name]?.title) errs.push(`${where}: the title of ${pageFile} must match catalog/site-copy.json`);
+      }
       if (!a.caption) errs.push(`${where}: built apps need a caption (one line: source, scope)`);
       if (!presets.length) errs.push(`${where}: built apps need presets`);
     }
@@ -156,7 +166,7 @@ export function validate(cat, { appFiles } = {}) {
 const partOf = (cat, a) => cat.parts.find((s) => s.key === a.part);
 const pagePath = (cat, a) => `pages/${partOf(cat, a).slug}/${a.name}`;
 /** "1 · Ranking under uncertainty"; the Tools part has no number. */
-const partLabel = (s) => (/^[0-9]+$/.test(s.key) ? `${s.key} · ${s.title}` : s.title);
+const REPORT_GROUPS = Object.freeze({ "4": "Common grades", P: "Domain profiles" });
 const built = (cat) => cat.apps.filter((a) => a.status === "built");
 
 /** Required notices for the non-author data an app uses (from the data contract). */
@@ -171,6 +181,17 @@ function notices(a) {
     for (const n of [...(scope?.required_notice ?? []), ...(EXTRA_NOTICES[entry.license_scope] ?? [])]) if (!out.includes(n)) out.push(n);
   }
   return out;
+}
+
+/** The author-data notice of an app's standalone page (review 044, X-19): a site page shows "CC BY 4.0" in its
+ *  footer, a standalone page has no footer, so its credit line carries the contract's required author notice. */
+function authorNotices(a) {
+  const contract = JSON.parse(read("data/released/data_contract.json"));
+  const uses = (a.data ?? []).some((d) => {
+    const file = d.split("/").pop();
+    return (contract.files?.[file] ?? contract.precomputed?.[file])?.license_scope === "author";
+  });
+  return uses ? (contract.license_scopes?.author?.required_notice ?? []).map((n) => `author data ${n}`) : [];
 }
 
 /** Notices the data-rights note asks for beyond the contract's required ones (notes/data-rights.md). */
@@ -195,24 +216,32 @@ const THEME_SCRIPT = `<script>
   })();
 </script>`;
 
+function publishedSiteUrl() {
+  const match = /^\s*site-url:\s*["']?([^"'\s]+)["']?\s*$/m.exec(read("_quarto.yml"));
+  return match ? `${match[1].replace(/\/$/, "")}/` : null;
+}
+
 function embedHtml(cat, a) {
-  const credit = [`${SITE} · ${a.id}`, esc(a.credit), ...notices(a).map(esc),
+  const title = cat.siteCopy[a.name].title;
+  const credit = [`${SITE} · ${a.id}`, esc(a.credit), ...notices(a).map(esc), ...authorNotices(a).map(esc),
     `<a href="../${pagePath(cat, a)}.html">page</a>`].join(" · ");
   const styles = ["../styles/tokens.css", "../styles/app.css", ...(a.math ? ["../styles/temml.css"] : [])];
+  const canonical = publishedSiteUrl();
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="data:,">
+${canonical ? `<link rel="canonical" href="${esc(canonical + pagePath(cat, a) + ".html")}">` : ""}
 <!-- ${a.id} ${a.name}. Build inputs: catalog.json; do not edit. -->
-<title>${esc(a.title)} · ${SITE}</title>
+<title>${esc(title)} · ${SITE}</title>
 ${THEME_SCRIPT}
 ${styles.map((h) => `<link rel="stylesheet" href="${h}">`).join("\n")}
 </head>
 <body class="prx-embed">
 <main>
-<h1 class="prx-embed-title">${esc(a.title)}</h1>
+<h1 class="prx-embed-title">${esc(title)}</h1>
 <div id="app"><p>This app needs JavaScript.</p></div>
 <p class="prx-embed-credit">${credit}</p>
 </main>
@@ -264,7 +293,13 @@ ${apps.map((a) => card(cat, a, "../../")).join("\n")}
 
 function catalogTables(cat) {
   const d = cat.discovery, topicByKey = new Map(d.topics.map(t => [t.key, t.label]));
-  const options = (items) => items.map(i => `<option value="${esc(i.key)}">${esc(i.label ?? partLabel(i))}</option>`).join("");
+  const option = (key, label) => `<option value="${esc(key)}">${esc(label)}</option>`;
+  const options = (items) => items.map(i => option(i.key, i.label)).join("");
+  const categories = cat.websiteNavigation.sections.map(section => {
+    if (section.parts.length === 1) return option(section.landingPart, section.label);
+    const children = section.parts.map(key => option(key, REPORT_GROUPS[key])).join("");
+    return `<optgroup label="${esc(section.label)}">${children}</optgroup>`;
+  }).join("");
   const cards = built(cat).map(a => {
     const topics = d.appTopics[a.name], groups = d.dataGroups.filter(g => g.files?.some(f => a.data.some(p => p.split("/").pop() === f)) || g.apps?.includes(a.name));
     const copy = cat.siteCopy[a.name];
@@ -275,9 +310,9 @@ function catalogTables(cat) {
   return `<!-- Build inputs: the catalog and discovery metadata; do not edit. -->
 \`\`\`{=html}
 <section class="prx-catalog" data-catalog>
-<form class="prx-catalog-filters" hidden aria-label="Application catalogue">
+<form class="prx-catalog-filters" hidden aria-label="Application catalog">
 <label>Search<input type="search" name="query" placeholder="τ, intervals, posterior" autocomplete="off"></label>
-<label>Part<select name="part"><option value="">All parts</option>${options(cat.parts)}</select></label>
+<label>Category<select name="part"><option value="">All categories</option>${categories}</select></label>
 <label>Concept<select name="topic"><option value="">All concepts</option>${options(d.topics)}</select></label>
 <label>Data<select name="data"><option value="">All data</option>${options(d.dataGroups)}</select></label>
 <button type="reset">Clear filters</button>
@@ -292,19 +327,28 @@ function catalogTables(cat) {
 }
 
 function navYml(cat) {
-  // no "Home" entry: the site title links home, and the six parts need the room
-  const out = ["# Build inputs: the catalog; do not edit.", "website:", "  navbar:", "    left:"];
-  for (const s of cat.parts) {
-    const apps = built(cat).filter((a) => a.part === s.key);
-    const text = yq(cat.siteNavigation?.[s.key] ?? partLabel(s));
-    if (!apps.length) {
-      out.push(`      - text: ${text}`, `        href: pages/${s.slug}/index.qmd`);
-      continue;
+  const nav=cat.websiteNavigation;
+  const out = ["# Build inputs: catalog/navigation.json; do not edit.", "website:", "  navbar:", `    collapse-below: ${nav.collapseBelow}`, "    left:"];
+  for (const section of nav.sections) {
+    const part=cat.parts.find(p=>p.key===section.landingPart);
+    out.push(`      - id: prx-nav-${section.key}`, `        text: ${yq(section.label)}`, '        menu:',
+      '          - text: "Overview"', `            href: pages/${part.slug}/index.qmd`);
+    if(section.parts.length>1) {
+      const commonCount=built(cat).filter(a=>a.part==='4').length,profileCount=built(cat).filter(a=>a.part==='P').length;
+      out.push(`          - text: ${yq('Common grades · '+commonCount+' apps')}`, '            href: pages/criteria/index.qmd#common-grades',
+        `          - text: ${yq('Domain profiles · '+profileCount+' apps')}`, '            href: pages/criteria/index.qmd#domain-profiles');
     }
-    out.push(`      - text: ${text}`, "        menu:", "          - text: Overview", `            href: pages/${s.slug}/index.qmd`);
-    for (const a of apps) out.push(`          - text: ${yq(cat.siteCopy[a.name].title)}`, `            href: ${pagePath(cat, a)}.qmd`);
+    for(const member of section.parts) {
+      const group=cat.parts.find(p=>p.key===member);
+      out.push('          - text: "---"');
+      if(section.parts.length>1)out.push(`          - text: ${yq(REPORT_GROUPS[member])}`);
+      for(const app of built(cat).filter(a=>a.part===member)) {
+        out.push(`          - text: ${yq(`${app.id} · ${cat.siteCopy[app.name].title}`)}`, `            href: pages/${group.slug}/${app.name}.qmd`);
+      }
+    }
   }
-  out.push("    right:", "      - text: Catalogue", "        href: catalog.qmd", "      - text: Terminology", "        href: pages/words.qmd");
+  out.push("    right:");
+  for(const utility of nav.utilities)out.push(`      - text: ${yq(utility.label)}`,`        href: ${utility.href}`);
   return out.join("\n") + "\n";
 }
 
@@ -322,6 +366,8 @@ export function generate(cat) {
   for (const s of cat.parts) files.set(`pages/${s.slug}/_apps.md`, partCards(cat, s));
   files.set("_catalog.md", catalogTables(cat));
   files.set("_nav.yml", navYml(cat));
+  files.set("js/site/navigation.html", activeNavigationHtml(cat.websiteNavigation, cat.parts));
+  files.set("pages/criteria/_profile-apps.md",partCards(cat,cat.parts.find(p=>p.key==='P')));
   return files;
 }
 

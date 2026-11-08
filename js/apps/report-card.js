@@ -93,6 +93,8 @@ export const CONFIG = Object.freeze({
     betweenHeading: "How reliable are comparisons between grades?",
     betweenCaption: "Each cell below the diagonal is the expected share of wrong stated directions between two grades. It averages, over those pairs (their number is below it), the probability that stating the unit of the column's grade above the unit of the row's grade is wrong. Diagonal: the grade's average posterior mean. Solid outline: adjacent grades; dashed outline: grade averages.",
     betweenShort: "Between-grade expected wrong shares, with grade-average posterior means on the diagonal",
+    separateMeansCaption: "A cell below the diagonal gives the average error probability when the column grade is stated above the row grade. It also gives the number of pairs in that average. Solid outlines mark adjacent grades. The report withholds pairs within each grade. The list above the table gives each grade's mean on the posterior score scale.",
+    separateMeansShort: "Between-grade expected wrong shares; same-grade pairs are withheld",
     betweenCorner: "Row grade, column grade",
     gradeHead: "Grade {g}",
     pairsWord: "{n} pairs",
@@ -325,7 +327,7 @@ const purpleStep = (v) => {
 };
 
 /** The lower-triangle between-grade table and its summary line (see the header). */
-export function drawBetweenGrades(el, { grade, E, w, mean, shown, names, hookPrefix = "", caption = T.betweenCaption } = {}) {
+export function drawBetweenGrades(el, { grade, E, w, mean, shown, names, hookPrefix = "", meansInLegend = false, caption = meansInLegend ? T.separateMeansCaption : T.betweenCaption } = {}) {
   const doc = el.ownerDocument;
   const pal = palette(el);
   const G = Math.max(...grade);
@@ -345,7 +347,8 @@ export function drawBetweenGrades(el, { grade, E, w, mean, shown, names, hookPre
   const avg = gradeAverages(grade, mean);
   const colors = gradeColors(G, pal);
   const cells = {};
-  const table = make("table", { class: "prx-rc-between-table", "aria-label": T.betweenShort });
+  const tableLabel = meansInLegend ? T.separateMeansShort : T.betweenShort;
+  const table = make("table", { class: "prx-rc-between-table", "aria-label": tableLabel });
   const head = make("tr", {}, make("td", { class: "prx-rc-corner", "aria-label": T.betweenCorner }));
   for (let h = 1; h <= S; h += 1) head.append(make("th", { scope: "col" }, ...fill(T.gradeHead, { g: () => num(h, formatCount(h)) })));
   table.append(make("thead", {}, head));
@@ -355,9 +358,11 @@ export function drawBetweenGrades(el, { grade, E, w, mean, shown, names, hookPre
     for (let h = 1; h <= S; h += 1) {
       if (h === hp) {
         const a = avg[h - 1];
-        const td = make("td", { class: "prx-rc-diag" },
-          make("span", { class: "prx-rc-diag-swatch", "aria-hidden": "true", style: `--prx-rc-swatch: ${colors[h - 1]}` }),
-          num(a.mean, formatDecimal(a.mean, { digits: CONFIG.digits.average }), `gmean-${h}`));
+        const td = meansInLegend
+          ? make("td", { class: "prx-rc-diag prx-rc-diag-withheld", "aria-label": "Same grade, comparison withheld" }, "—")
+          : make("td", { class: "prx-rc-diag" },
+            make("span", { class: "prx-rc-diag-swatch", "aria-hidden": "true", style: `--prx-rc-swatch: ${colors[h - 1]}` }),
+            num(a.mean, formatDecimal(a.mean, { digits: CONFIG.digits.average }), `gmean-${h}`));
         tr.append(td);
       } else if (h < hp) {
         const b = between.find((x) => x.h === h && x.hp === hp);
@@ -377,7 +382,7 @@ export function drawBetweenGrades(el, { grade, E, w, mean, shown, names, hookPre
     body.append(tr);
   }
   table.append(body);
-  const wrap = scrollRegion(make("div", { class: "prx-rc-between-scroll" }, table), T.betweenShort);
+  const wrap = scrollRegion(make("div", { class: "prx-rc-between-scroll" }, table), tableLabel);
   const legend = make("p", { class: "prx-rc-shade" },
     make("span", { class: "prx-rc-ramp", "aria-hidden": "true" }, ...pal.purples.map((c) => make("span", { style: `background: ${c}` }))),
     make("span", {}, ...fill(T.shadeLegend, {
@@ -420,7 +425,12 @@ export function drawBetweenGrades(el, { grade, E, w, mean, shown, names, hookPre
     }
     if (S < G) summary.append(" ", T.summaryShown);
   }
-  el.replaceChildren(make("p", { class: "prx-rc-between-note" }, caption), wrap, legend, summary);
+  const means = meansInLegend ? make("ul", { class: "prx-rc-means", "aria-label": "Grade means on the posterior score scale" },
+    ...avg.slice(0, S).map(({ mean: value }, i) => make("li", {},
+      make("span", { class: "prx-rc-diag-swatch", "aria-hidden": "true", style: `--prx-rc-swatch: ${colors[i]}` }),
+      ...fill(T.gradeHead, { g: () => num(i + 1, formatCount(i + 1)) }), " mean ",
+      num(value, formatDecimal(value, { digits: CONFIG.digits.average }), `gmean-${i + 1}`)))) : null;
+  el.replaceChildren(make("p", { class: "prx-rc-between-note" }, caption), ...(means ? [means] : []), wrap, legend, summary);
   return { cells, summary, between, averages: avg };
 }
 
@@ -619,6 +629,8 @@ export const REPORT_CARD_CSS = `.prx-rc .prx-rc-result .prx-result-tag { color: 
   margin-right: 0.3rem;
   vertical-align: -0.1rem;
 }
+.prx-rc .prx-rc-diag-withheld {border-style:solid;font-weight:normal}
+.prx-rc .prx-rc-means {display:flex;flex-wrap:wrap;gap:.25rem .8rem;list-style:none;padding:0;margin:.25rem 0 .5rem;font-size:.85rem}
 .prx-rc .prx-rc-shade{
   display: flex;
   flex-wrap: wrap;
@@ -654,12 +666,41 @@ export const REPORT_CARD_CSS = `.prx-rc .prx-rc-result .prx-result-tag { color: 
 
 // ------------------------------------------------------------------------------------------------- widget
 
+// App 2.13's own layout (review 044 repair, X-01, G3-F7): the shared result-first frame, the card beside the
+// between-grade table (.prx-split: about 60/40 where the views are wide enough, the card first and the table under it
+// on a phone), "Sort within grades" as a compact select, and the read-out with the review's copy. Only mountWidget uses
+// what follows; every export above keeps its behavior for the apps that import it (krw-common, your-data,
+// why-withheld, report-designer, one-correction, cde-common). The rules are scoped to prx-rc-app, a class only this
+// app's root carries, so REPORT_CARD_CSS is unchanged.
+const APP_CSS = `
+.prx-rc-app .prx-rc-split > .prx-rc-card, .prx-rc-app .prx-rc-split > .prx-rc-between { margin: 0; }
+.prx-rc-app .prx-rc-split > .prx-split-main { flex-basis: 30rem; }
+.prx-rc-app .prx-rc-split > .prx-split-side { flex-basis: 18rem; }
+.prx-rc-app .prx-rc-order select { max-width: 100%; }
+/* the reveal button keeps the width of its longest label ("Start again at grade 1"), so a label change never rewraps
+   the controls and the preset row under them stays put */
+.prx-rc-app .prx-rc-reveal > .prx-btn:first-child { min-width: 12.5em; }
+@media (min-width: 64rem) {
+  .prx-rc-app .prx-rc-order { display: flex; align-items: center; gap: 0.5rem; }
+  .prx-rc-app .prx-rc-order > label { margin: 0; }
+}
+`;
+
+const APP_TEXT = Object.freeze({
+  // the read-out (review 044, X-01/G3-F7: the review's replacement copy, with the sort and the reveal it kept)
+  readout: "{name}, τ = {tau}, at most {cap} grades: the card {card} states {N} of {M} pairs (s = {s}), risk {risk}. {compare}Rows: {orderWords}; grades {first} to {shown} of {G} shown.",
+  leastCertain: "Least certain stated comparisons: adjacent grades ({list}). ",
+  adjacent: "Adjacent grades: {list}. ",
+});
+
 export function mountWidget(el, spec = {}) {
   return createWidget(el, spec, {
     name: CONFIG.name,
     label: CONFIG.label,
-    className: CONFIG.className,
-    css: REPORT_CARD_CSS,
+    className: `${CONFIG.className} prx-rc-app`,
+    // review 044 repair (X-01): the read-out directly under the controls and the preset row
+    layout: "result-first",
+    css: REPORT_CARD_CSS + APP_CSS,
     keys: {
       data: { type: "choice", values: [...CONFIG.datasets], value: CONFIG.defaults.data },
       tau: { type: "number", ...CONFIG.tau, snap: true },
@@ -675,7 +716,7 @@ export function mountWidget(el, spec = {}) {
       const setting = (raw, name) => num(raw, formatSetting(raw), name);
       const sym = (base, arg) => h("span", { class: "prx-rc-sym" }, h("i", {}, base), arg ? ["(", h("i", {}, arg), ")"] : []);
 
-      // --- controls
+      // --- controls (review 044 repair: "Sort within grades" a compact select, the τ slider marked as the primary control)
       const dataRadio = ctx.radioGroup({
         legend: T.dataLegend, name: "data", className: "prx-rc-data",
         options: CONFIG.datasets.map((v) => ({ value: v, label: CONFIG.data[v].label })),
@@ -685,11 +726,12 @@ export function mountWidget(el, spec = {}) {
       const capOptions = [];
       for (let g = CONFIG.cap.min; g <= CONFIG.cap.max; g += 1) capOptions.push({ value: g, label: formatCount(g) });
       const capSelect = ctx.select({ label: T.capLabel, options: capOptions, value: ctx.state.cap, name: "cap", onChange: (v) => ctx.set({ cap: v }) });
-      const orderRadio = ctx.radioGroup({
-        legend: T.orderLegend, name: "order", className: "prx-rc-order",
+      const orderSelect = ctx.select({
+        label: T.orderLegend, name: "order",
         options: CONFIG.orders.map((v) => ({ value: v, label: T.orderWords[v] })),
         value: ctx.state.order, onChange: (v) => ctx.set({ order: v }),
       });
+      orderSelect.root.classList.add("prx-rc-order");
       let lastG = 1;
       const revealBtn = ctx.button({
         label: T.revealStart, key: "reveal-next",
@@ -701,22 +743,24 @@ export function mountWidget(el, spec = {}) {
       });
       const allBtn = ctx.button({ label: T.revealAll, key: "reveal-all", onClick: () => ctx.set({ reveal: 0 }) });
       const revealBox = h("div", { class: "prx-control prx-rc-reveal" }, revealBtn.root, allBtn.root);
-      ctx.controls.append(dataRadio.root, tauSlider.root, capSelect.root, orderRadio.root, revealBox);
+      ctx.controls.append(dataRadio.root, ctx.primaryControl(tauSlider.root), capSelect.root, orderSelect.root, revealBox);
+      // (the result-first frame puts the read-out between the controls and the views)
 
       // --- header, card, legend, caption
       const header = h("div", { class: "prx-rc-header" });
-      const chartSlot = h("div", { class: "prx-rc-chart" });
+      const chartSlot = ctx.primaryGraphic(h("div", { class: "prx-rc-chart" }));
       const legendSlot = ctx.part("legend", h("div", { class: "prx-rc-legend-slot" }));
       const cardCaption = h("p", { class: "prx-rc-card-caption" });
       const dataNote = h("p", { class: "prx-rc-note", hidden: true });
-      const cardBox = h("section", { class: "prx-rc-card", "aria-label": T.cardHeading },
+      const cardBox = h("section", { class: "prx-rc-card prx-split-main", "aria-label": T.cardHeading },
         ctx.panelTitle(T.cardHeading, { className: "prx-rc-heading" }), header, chartSlot, legendSlot, cardCaption, dataNote);
 
-      // --- between-grade panel
+      // --- between-grade panel, beside the card (review 044 repair, X-01/G3-F7: what the reveal and τ change is in view
+      // together with the card rows)
       const betweenSlot = h("div", { class: "prx-rc-between-body" });
-      const betweenBox = ctx.part("table", h("section", { class: "prx-rc-between prx-light-panel", "aria-label": T.betweenHeading },
+      const betweenBox = ctx.part("table", h("section", { class: "prx-rc-between prx-light-panel prx-split-side", "aria-label": T.betweenHeading },
         ctx.panelTitle(T.betweenHeading, { className: "prx-rc-heading" }), betweenSlot));
-      ctx.charts.append(cardBox, betweenBox);
+      ctx.charts.append(h("div", { class: "prx-split prx-rc-split" }, cardBox, betweenBox));
       ctx.caption.replaceChildren(captionNode(ctx, "teaching-posterior"));
 
       // --- drawing
@@ -756,12 +800,37 @@ export function mountWidget(el, spec = {}) {
         allBtn.setDisabled(r === 0 || G === 1);
       }
 
-      function drawReadout(r, set, state, shown) {
+      /**
+       * The read-out (review 044 repair, X-01/G3-F7): the review's copy, "Six sites, score A, τ = .20, at most 3 grades:
+       * the card 1/1/2/2/3/3 states 12 of 15 pairs (s = .800), risk .0417. Least certain stated comparisons: adjacent
+       * grades (.0024, .0038).", then the sort and the reveal it kept ("Rows: …; grades 1 to 3 of 3 shown."). The
+       * comparisons are the between-grade table's values (engine betweenGradeErrors) for the grades shown; adjacent
+       * grades are called the least certain only when every adjacent value is at least every other one shown. With one
+       * grade shown there is no comparison yet, and a card of one grade keeps its sentence (it states no direction).
+       */
+      function drawReadout(r, set, state, shown, between) {
         const vectorForm = r.grade.length <= CONFIG.vectorMax;
         const card = vectorForm ? num(r.grade, formatGrades(r.grade), "ro-card") : h("span", {}, "with ", num(r.sizes, formatSizes(r.sizes), "ro-sizes"));
-        ctx.readout.set(fill(r.G === 1 ? T.readoutOne : T.readout, {
+        if (r.G === 1) {
+          ctx.readout.set(fill(T.readoutOne, {
+            name: set.D.readName, tau: () => setting(r.tau, "ro-tau"), cap: () => count(r.cap, "ro-cap"), card: () => card,
+            risk: () => num(r.risk, formatRisk(r.risk), "ro-risk"), orderWords: T.orderRead[state.order],
+          }));
+          return;
+        }
+        const vis = between.filter((b) => b.hp <= shown);
+        const adj = vis.filter((b) => b.hp === b.h + 1);
+        const far = vis.filter((b) => b.hp > b.h + 1);
+        let compare = "";
+        if (adj.length) {
+          const list = () => h("span", {}, ...adj.flatMap((b, k) => [k ? ", " : "", num(b.meanError, formatRisk(b.meanError), `ro-adj-${b.h}-${b.hp}`)]));
+          const least = far.every((f) => adj.every((a) => a.meanError >= f.meanError));
+          compare = fill(least ? APP_TEXT.leastCertain : APP_TEXT.adjacent, { list });
+        }
+        ctx.readout.set(fill(APP_TEXT.readout, {
           name: set.D.readName, tau: () => setting(r.tau, "ro-tau"), cap: () => count(r.cap, "ro-cap"), card: () => card,
-          risk: () => num(r.risk, formatRisk(r.risk), "ro-risk"), orderWords: T.orderRead[state.order],
+          N: () => count(r.N, "ro-N"), M: () => count(r.M, "ro-M"), s: () => num(r.s, formatShare(r.s), "ro-s"),
+          risk: () => num(r.risk, formatRisk(r.risk), "ro-risk"), compare: () => compare, orderWords: T.orderRead[state.order],
           first: () => count(1), shown: () => count(shown, "ro-shown"), G: () => count(r.G, "ro-G"),
         }));
       }
@@ -773,15 +842,15 @@ export function mountWidget(el, spec = {}) {
             dataRadio.set(state.data);
             tauSlider.set(state.tau);
             capSelect.set(state.cap);
-            orderRadio.set(state.order);
+            orderSelect.set(state.order);
             const set = datasets()[state.data];
             const r = solve(state);
             lastG = r.G;
             drawHeader(r, set);
             const out = drawCard(r, set, state);
             drawReveal(state, r.G);
-            drawReadout(r, set, state, out.shown);
-            drawBetweenGrades(betweenSlot, { grade: r.grade, E: set.E, mean: set.card.mean, shown: state.reveal, names: set.card.names });
+            const table = drawBetweenGrades(betweenSlot, { grade: r.grade, E: set.E, mean: set.card.mean, shown: state.reveal, names: set.card.names, meansInLegend: true });
+            drawReadout(r, set, state, out.shown, table.between);
           } finally {
             ctx.root.removeAttribute("aria-busy");
           }

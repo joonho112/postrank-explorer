@@ -4,12 +4,7 @@ subtitle: "2.12 · postrank's report families; four-unit example after the theor
 description: "Consequences of grade caps, exact grade counts and fixed-order restrictions for minimum risk."
 ---
 
-An optimum is defined relative to a specified family of reports. A grade cap, an exact number of occupied grades
-and contiguous cuts of a declared order impose different restrictions. The rows compare each family's minimum risk
-at a common withholding cost and on a common scale. Reordering the units changes the fixed-order family, while
-leaving the unrestricted family unchanged. The examples identify when a restricted optimum coincides with the
-unrestricted optimum and when the restriction raises risk. Each result is accompanied by the family over which it
-was obtained.
+The report with the smallest risk depends on which reports the analyst allows. A cap permits any number of occupied grades up to a limit. An exact count requires every permitted grade to be occupied, and a fixed order allows only cuts between adjacent units in that order. The figure compares the best report in each family at the same withholding cost and on the same scale. Rearranging the units changes the possible cuts of the fixed order while leaving the unrestricted family intact.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -28,7 +23,7 @@ was obtained.
   required number gives a smaller family of 540. Here both best risks are .0417; the shared scale makes that
   equality visible. Further grade restrictions can change the minimum at this fixed cost.
 - **B before A.** The declared order allows 32 contiguous reports. Its best cut costs .0379, above the unrestricted
-  .0372. The unit arrows modify the declared order. The dynamic program searches cuts of the declared order, and the row checks its answer against enumeration of those same cuts.
+  .0372. The arrows in the Declared order box modify the declared order. The dynamic program searches cuts of the declared order, and the line under the rows checks its answer against enumeration of those same cuts.
 - **Two criteria.** The four-unit example has 24 reports with every grade distinct, 75 in the unrestricted family,
   and 8 contiguous cuts. The exact-count row costs 7/40. The law's table gives the criterion-specific errors and their weighted average: the orange segment now measures expected weighted wrong directions.
 
@@ -37,10 +32,8 @@ was obtained.
   infeasible. The law panel checks the strict cross-set premise again whenever you change the price.
 
 ::: {.callout-note appearance="simple"}
-Every optimum belongs to a declared family. Enlarging a family cannot increase its smallest risk at a fixed
-price, but changing the price changes the decision problem. The dashed mark is the all-withheld risk; an
-exact-count family need not contain that report. Equal-risk reports are identified in the rows, and the order
-family states its tie rule. All examples are specified for teaching.
+At a fixed withholding cost, adding eligible reports can only lower the minimum risk or leave it unchanged. The dashed mark gives the risk of withholding every pair. A family that requires several occupied grades excludes that report. Equal-risk reports are identified in the rows and the read-out,
+and the box of search lines states the order family's tie rule. All examples are specified for teaching.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

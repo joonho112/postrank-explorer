@@ -4,12 +4,9 @@ subtitle: "T.1 · browser-local inputs and declared report families"
 description: "Local calculation from normal summaries, declared priors or pairwise probability matrices."
 ---
 
-The tool accepts posterior means and standard deviations, estimates and standard errors with a declared prior, or
-supplied pairwise probabilities. It calculates the implications of those inputs for a coherent grade report and
-identifies the searched family. normal-summary inputs impose independence across units; probability matrices require
-explicit event and source declarations. Public examples illustrate these alternatives. Pasted records remain in the
-component's memory, and downloads retain the applied input and settings. A URL records settings rather than the
-pasted records, so reproducing a local-input analysis requires supplying those records again.
+The tool builds a grade report from posterior means and standard deviations, estimates with standard errors
+and a prior, or pairwise probability matrices. The result names the set of reports searched. The calculation
+runs in your browser, where your input records stay.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,16 +18,27 @@ pasted records, so reproducing a local-input analysis requires supplying those r
 
 ## Numerical illustrations {#what-to-try}
 
-- **Eight posterior summaries** uses the league's first 8 units, whose precisions differ. Its report states 17 pairs and has weighted risk .1455. The family tag specifies the scope of this optimum.
-- **Eight estimates, flat prior** takes each true value as normal around its estimate with its SE. The risk is .1368. The selected grades happen to agree here, although the probabilities and posterior uncertainties differ.
-- **Eight estimates, Normal prior** states a prior centred at zero with SD .15. It returns the same posterior as the first example, and risk .1455. An estimate and an SE do not identify that prior by themselves.
-- **Two probability matrices** evaluates the supplied two-criterion six-site arrays. The common report states 9 pairs, with weighted risk .0933. The roster has no invented means or intervals.
-- **Thirty posterior summaries** exceeds an enumeration limit. The report is best along the weighted expected-rank order: 251 stated pairs and risk .1581. The declared order depends on the criterion weights.
-- **All reports tied** has 541 minimising reports. The first 100 are retained and the total remains visible. The all-withheld report has no stated pairs, so its wrong-among-stated share is NA.
+- **Eight posterior summaries** uses the first 8 units from the league example, which differ in precision.
+  The report states 17 pairs and has weighted risk .1455.
+- **Eight estimates, flat prior** uses a normal posterior for each unit, centered on its estimate with SD
+  equal to its SE. The grades agree with the first example even though the posterior probabilities and risk differ. Here the risk is .1368.
+- **Eight estimates, Normal prior** centers the prior at zero with SD .15. The posterior matches the first example, and the risk is .1455. The prior is a separate assumption from the estimates and their SEs.
+- **Two probability matrices** uses the supplied probabilities for two criteria at six sites. The common
+  report states 9 pairs at weighted risk .0933. The matrices provide pair probabilities without site means or intervals.
+- **Thirty posterior summaries** exceeds the enumeration limit. The tool searches cuts of the weighted
+  expected-rank order, which depends on the criterion weights. The best report in that order states 251 pairs at risk .1581.
+- **All reports tied** has 541 reports with the same minimum risk. The list displays the first 100 and gives
+  the total. With every comparison withheld, the expected error share is shown as NA.
 
-For normal inputs, units are treated as independent given the model. Correlated units need joint draws or a joint law in R. Matrix inputs require declarations of the probability event, zero latent equality, zero comparison margin and source. Passing shape, range and reverse-sum checks does not establish a realizable joint law, model calibration or numerical accuracy. Unassessed units remain outside the input; a bottom grade would assert adverse comparisons.
+The normal-input calculation assumes that the units are independent given the model. Use joint draws or a joint
+law in R when the units are correlated. For matrices, specify the event and where the probabilities came from.
+The input assumes zero probability of latent equality and a zero comparison margin. The checks cover dimensions,
+ranges, and whether opposite directions sum to one. A joint law, calibration, and numerical accuracy need
+separate evidence. Leave unassessed units out of the input because a bottom grade would assert comparisons about them.
 
-Apply replaces the report only after the input passes its checks. Downloads include the applied input and settings. The URL contains choices and settings, never the pasted records or source descriptions; a local-input analysis therefore requires the records again after reload. The optional joint solver loads only on an explicit action, and its status and gap concern optimisation of the supplied probabilities.
+Apply keeps the previous report until the new input passes the checks. A download includes the input and settings
+used in the displayed report. The URL carries settings only, so paste the records and source descriptions again
+after a reload. If you open the optional joint solver, its status and gap describe the search using the supplied probabilities.
 
 [Open the standalone tool](../../embed/your-data.html?preset=league8-posterior).
 

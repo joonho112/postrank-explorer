@@ -4,12 +4,7 @@ subtitle: "1.14 · after the postrank theory book, ch. 19, and Kline, Rose and W
 description: "Rankings by posterior mean, expected rank and top-group probability need not coincide."
 ---
 
-A posterior distribution supports several ranking summaries. The slope chart compares orderings by posterior mean,
-expected rank and probability of membership in a specified top group. Expected rank is the posterior average
-position, with rank 1 assigned to the largest value. Differences in posterior dispersion or shape can produce
-different pairwise orders under these summaries. Rank distributions describe the remaining uncertainty in each unit's
-position. A finite three-unit distribution and a simulated league illustrate these distinctions, including the
-effect of changing the measurement scale on rankings by posterior mean.
+Three summaries of the same posterior can give different rankings. The figure compares the posterior mean, the expected rank, and the posterior probability of belonging to a specified top group. Expected rank averages a unit's position over the posterior, with rank 1 assigned to the largest value. The first example uses three units to show why these summaries can order a pair differently. The simulated league shows how much uncertainty remains in a unit's rank and how a change of measurement scale can alter an ordering by posterior mean.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -33,12 +28,10 @@ effect of changing the measurement scale on rankings by posterior mean.
   orders differ on 6 of the 435 pairs.
 - **League, top ten.** U21 is the unit most often in the top ten in 4,000 Monte Carlo draws (.96; one standard error
   is below .01), ahead of U26 (.94), which has the largest posterior mean. Two units are never in the top ten.
-- **League, exp(10θ).** On this scale U13 climbs from 6th to 3rd by posterior mean (4.09), and that order puts 40 of
-  the 435 pairs differently from the expected rank.
+- **League, exp(10θ).** On this scale U13 climbs from 6th to 3rd by posterior mean (4.09), and the posterior-mean order disagrees with the expected-rank order for 40 of the 435 pairs.
 
 ::: {.callout-note appearance="simple"}
-The three-unit law is specified directly and the league's posterior is set by hand for teaching; postrank fits
-neither. Rankings by posterior means appear in Kline, Rose and Walters (2024), Section IV.B and the notes to Figure
+We specify the three-unit distribution and the league's posterior directly. postrank uses these distributions as inputs. Rankings by posterior means appear in Kline, Rose and Walters (2024), Section IV.B and the notes to Figure
 2C, where empirical Bayes posterior means are coarsened into deciles and quartiles; talk slide 59 sets such rules
 beside their grades for the firms. Their Section II.F names the expected rank.
 :::

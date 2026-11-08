@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent Part4 display/composition pins. Read installed public data and
 # cached RDS values; never call load_or_compute, a package solver, TS or app JS.
 # Gaussian intervals/probabilities/ranks and finite compositions use base R.

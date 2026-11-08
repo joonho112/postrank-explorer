@@ -31,6 +31,25 @@ export const ESTIMAND_CSS=`
 .estim .estim-table{min-width:43rem}.estim .estim-profile-table{min-width:40rem}.estim .estim-law-table{min-width:32rem}
 .estim .estim-caption{font-size:.87rem;line-height:1.45}.estim .estim-tag{margin:.25rem 0}.estim .estim-weights p{margin:.4rem 0}
 `;
+const ESTIMAND_OVERVIEW_CSS=`
+.estim .estim-primary-controls{display:grid;grid-template-columns:minmax(0,1fr) repeat(2,minmax(0,1.15fr));gap:.4rem .75rem;width:100%}
+.estim .estim-primary-controls > .prx-control{min-width:0}
+.estim .estim-primary-controls select{width:100%}
+.estim .estim-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+.estim .estim-comparison .sev-paper{padding:.45rem .65rem}
+.estim .estim-cost-row{display:grid;grid-template-columns:minmax(5.5rem,1.05fr) minmax(2rem,1fr) 4rem;align-items:center;gap:.35rem;font-size:.84rem;margin:.24rem 0}
+.estim .estim-cost-row > :last-child{font-variant-numeric:tabular-nums;text-align:right}
+.estim .estim-cost-track{display:block;position:relative;height:.5rem;background:var(--prx-plot-grid);border-radius:2px}
+.estim .estim-cost-fill{display:block;height:.5rem;background:var(--prx-plot-muted);border-radius:2px}
+.estim .estim-cost-row[data-best] .estim-cost-track{outline:1px solid var(--prx-plot-fg)}
+.estim .estim-cost-row[data-best] .estim-cost-fill{background:var(--prx-plot-fg)}
+.estim .estim-cost-row[data-best] > :last-child{font-weight:700}
+.estim .estim-cost-legend{font-size:.8rem;margin:.3rem 0}
+@media(max-width:650px){
+ .estim .estim-primary-controls,.estim .estim-comparison{grid-template-columns:minmax(0,1fr)}
+ .estim.prx-widget[data-prx-layout=result-first] .prx-presets[data-prx-preset-rows] .prx-seg-buttons{display:flex}
+}
+`;
 export const ESTIMAND_KEYS={
  data:{type:'choice',values:Object.keys(TITLES),value:'known'},
  w:{type:'number',min:0,max:1,step:.01,value:.75},
@@ -134,20 +153,77 @@ export function createEstimandReportView(ctx,slot){return {render(model){
  scroll(ctx,slot,'All finite-family report risks',table(ctx,['Report','N','Criterion weighted E','Criterion risk','Composite E','Composite risk'],model.allReports.map(r=>[n(ctx,r.grade,'grades',`all-${gradeKey(r.grade)}-grade`),n(ctx,r.criterion.N,'count',`all-${gradeKey(r.grade)}-N`),n(ctx,r.criterion.Ew,'expected',`all-${gradeKey(r.grade)}-criterion-E`),n(ctx,r.criterion.risk,'risk',`all-${gradeKey(r.grade)}-criterion-risk`),n(ctx,r.composite.Ew,'expected',`all-${gradeKey(r.grade)}-composite-E`),n(ctx,r.composite.risk,'risk',`all-${gradeKey(r.grade)}-composite-risk`)])));
 }};}
 function createControls(ctx){
- const main=ctx.h('div',{class:'estim-controls'}),data=ctx.select({label:'Supplied law',name:'data',options:Object.entries(TITLES).map(([value,label])=>({value,label})),onChange:v=>ctx.set({data:v,pair:'auto',...(v==='six'?{transform:'identity'}:{})})}),w=ctx.slider({label:'Error weight on the first criterion, w',...ctx.key('w'),onInput:v=>ctx.set({w:v})}),a=ctx.slider({label:'Composite coefficient on the first criterion, a',...ctx.key('a'),onInput:v=>ctx.set({a:v})}),tau=ctx.slider({label:'Withholding cost τ',...ctx.key('tau'),onInput:v=>ctx.set({tau:v})}),multiplier=ctx.slider({label:'Positive multiplier for the second criterion',...ctx.key('multiplier'),onInput:v=>ctx.set({multiplier:v})}),cap=ctx.select({label:'Same report family for both losses',name:'cap',options:[{value:'all',label:'All grade reports'},{value:'2',label:'At most two grades'},{value:'3',label:'At most three grades'}],onChange:v=>ctx.set({cap:v})});
- main.append(data.root,w.root,a.root,tau.root,multiplier.root,cap.root);ctx.controls.append(main);
- const advanced=ctx.h('div',{class:'estim-controls estim-advanced'}),transform=ctx.select({label:'Whole finite-law transformation',name:'transform',options:[{value:'identity',label:'Original values'},{value:'exp',label:'Exponentiate every finite input value'}],onChange:v=>ctx.set({transform:v})}),pairs={};advanced.append(transform.root);
+ const main=ctx.h('div',{class:'estim-primary-controls'}),data=ctx.select({label:'Supplied law',name:'data',options:Object.entries(TITLES).map(([value,label])=>({value,label})),onChange:v=>ctx.set({data:v,pair:'auto',...(v==='six'?{transform:'identity'}:{})})}),w=ctx.slider({label:'Error weight on the first criterion, w',...ctx.key('w'),onInput:v=>ctx.set({w:v})}),a=ctx.slider({label:'Composite coefficient on the first criterion, a',...ctx.key('a'),onInput:v=>ctx.set({a:v})}),tau=ctx.slider({label:'Withholding cost τ',...ctx.key('tau'),onInput:v=>ctx.set({tau:v})}),multiplier=ctx.slider({label:'Positive multiplier for the second criterion',...ctx.key('multiplier'),onInput:v=>ctx.set({multiplier:v})}),cap=ctx.select({label:'Same report family for both losses',name:'cap',options:[{value:'all',label:'All grade reports'},{value:'2',label:'At most two grades'},{value:'3',label:'At most three grades'}],onChange:v=>ctx.set({cap:v})});
+ main.append(data.root,w.root,a.root);ctx.controls.append(main);ctx.primaryControl(a.root);
+ const advanced=ctx.h('div',{class:'estim-controls estim-advanced'}),transform=ctx.select({label:'Whole finite-law transformation',name:'transform',options:[{value:'identity',label:'Original values'},{value:'exp',label:'Exponentiate every finite input value'}],onChange:v=>ctx.set({transform:v})}),pairs={};advanced.append(tau.root,multiplier.root,cap.root,transform.root);
  for(const key of Object.keys(TITLES)){const ids=key==='six'?criteriaData('six').ids:LAWS[key].ids,pair=ctx.select({label:'Inspect this isolated pair',name:`pair-${key}`,options:[{value:'auto',label:'Source example pair'},...ids.flatMap((id,i)=>ids.flatMap((other,j)=>i===j?[]:[{value:`${id},${other}`,label:`${id} above ${other}`}]))],onChange:v=>ctx.set({pair:v})}),group=ctx.h('div',{class:'estim-advanced-group'},pair.root);advanced.append(group);pairs[key]={pair,group};}
  return {advanced,render(state){data.set(state.data);w.set(state.w);a.set(state.a);tau.set(state.tau);multiplier.set(state.multiplier);cap.set(state.cap);transform.set(state.transform);transform.root.hidden=state.data==='six';for(const key of Object.keys(TITLES)){pairs[key].group.hidden=key!==state.data;pairs[key].pair.set(state.pair);}}};
 }
-export function mountWidget(el,spec={}){return createWidget(el,spec,{name:'composite-or-criterion',className:'estim',css:ESTIMAND_CSS+PAIR_COST_CSS+CRITERIA_PROFILE_CSS,keys:ESTIMAND_KEYS,build(ctx){
+function comparisonStrips(ctx,root,model){
+ const {h}=ctx,{ids,pair,pairCosts}=model;
+ const actions=[['iAboveJ',`${ids[pair.i]} above ${ids[pair.j]}`],['jAboveI',`${ids[pair.j]} above ${ids[pair.i]}`],['withhold','Withhold']];
+ root.replaceChildren(...[['criterion','Criterion directions'],['composite','Composite direction']].map(([key,label])=>{
+  const decision=pairCosts[key];
+  return h('section',{class:'sev-paper'},ctx.panelTitle(label),
+   ...actions.map(([action,words])=>{
+    const cost=decision.costs[action],best=decision.best.includes(action);
+    return h('div',{class:'estim-cost-row','data-best':best?'':null},
+     name(ctx,words),h('span',{class:'estim-cost-track','aria-hidden':'true'},h('span',{class:'estim-cost-fill',style:`width:${100*cost}%`})),
+     h('span',{},n(ctx,cost,'risk',`overview-${key}-${action}`),...(best?[h('span',{class:'prx-sr-only'},'; smallest cost')]:[])));
+   }));
+ }));
+}
+
+function drawKnownPlane(ctx, section, chart, explanation, model) {
+ // A single known state has no sampling or posterior dispersion to plot.
+ section.hidden=model.route!=='finite'||model.law.states.length!==1;
+ if(section.hidden)return;
+ const {i,j}=model.pair,state=model.law.states[0];
+ const points=[i,j].map((k,idx)=>({id:model.ids[k],x:state[k][0],y:state[k][1],chosen:idx===0}));
+ const [u,v]=points, xs=points.map(p=>p.x),ys=points.map(p=>p.y);
+ const pad=(values)=>{const lo=Math.min(...values),hi=Math.max(...values),gap=hi-lo||Math.max(1,Math.abs(lo)*.2);return [lo-gap*.28,hi+gap*.28];};
+ const xd=pad(xs),yd=pad(ys),c1=model.a[0],c2=model.a[1]*model.multiplier[1];
+ // The line of equal composite value passes through the second unit. The
+ // tangent is perpendicular to (a, (1-a) × multiplier), including endpoints.
+ const dx=c2,dy=-c1;
+ const limits=(base,d,[lo,hi])=>d===0?[-Infinity,Infinity]:[(lo-base)/d,(hi-base)/d].sort((a,b)=>a-b);
+ const [xl,xh]=limits(v.x,dx,xd),[yl,yh]=limits(v.y,dy,yd);
+ const line=[Math.max(xl,yl),Math.min(xh,yh)].map(t=>({x:v.x+t*dx,y:v.y+t*dy}));
+ const delta=model.compositeStates[0][i][0]-model.compositeStates[0][j][0];
+ explanation.replaceChildren('Dashed line: same composite value as ',name(ctx,v.id),'. ',
+  name(ctx,u.id),delta===0?' lies on the line: composite equality, so the composite decision withholds.':
+  delta>0?' lies on the higher composite side.':' lies on the lower composite side.');
+ plot(chart,{height:230,marginLeft:49,marginRight:20,marginTop:24,marginBottom:43,
+  x:{domain:xd,grid:true,label:'First criterion value',labelArrow:'none'},y:{domain:yd,grid:true,label:'Second criterion value',labelArrow:'none'},
+  alt:'The two units on their criterion scales, with a line through the second unit at equal composite value. Changing the composite weights rotates that line.',
+  keyboard:{data:points,x:'x',y:'y',key:'id',title:d=>d.id+': first criterion '+formatSetting(d.x)+', second criterion '+formatSetting(d.y)+'.'},
+  marks:(c,P)=>[P.line(line,{x:'x',y:'y',stroke:c.plotMuted,strokeWidth:2,strokeDasharray:'6 3',
+   render(index,scales,values,dims,context,next){const group=next(index,scales,values,dims,context);group.setAttribute('data-prx-composite-zero','');return group;}}),
+   P.dot(points,{x:'x',y:'y',fill:d=>d.chosen?c.post:c.est,stroke:c.plotBg,strokeWidth:1.2,r:6}),
+   P.text(points,{x:'x',y:'y',text:'id',dy:-13,fontWeight:'bold',fill:c.plotFg,stroke:c.plotBg,strokeWidth:3,paintOrder:'stroke'})]});
+}
+
+export function mountWidget(el,spec={}){return createWidget(el,spec,{name:'composite-or-criterion',className:'estim',css:ESTIMAND_CSS+PAIR_COST_CSS+CRITERIA_PROFILE_CSS+ESTIMAND_OVERVIEW_CSS,layout:'result-first',keys:ESTIMAND_KEYS,build(ctx){
  ctx.root.classList.add('cp','sev');const control=createControls(ctx),costRoot=ctx.h('div',{class:'estim-grid estim-section'}),costSlots={criterion:ctx.h('div',{class:'estim-cost sev-paper'}),composite:ctx.h('div',{class:'estim-cost sev-paper'})};costRoot.append(costSlots.criterion,costSlots.composite);
  const pairSummary=ctx.h('p',{class:'estim-caption'}),weights=ctx.h('div',{class:'estim-weights sev-paper estim-section'}),invariance=ctx.h('div',{class:'sev-paper estim-section'}),law=ctx.h('div',{class:'sev-paper estim-section'}),reports=ctx.h('div',{class:'sev-paper estim-section'});
- ctx.charts.append(ctx.readout.node,costRoot,control.advanced,pairSummary,weights,invariance,law,reports);
+ const settings=ctx.disclosure({name:'settings',title:'Settings',placement:'controls'});
+ settings.body.append(control.advanced);
+ const method=ctx.disclosure({name:'method',title:'Weights and invariance'});
+ method.body.append(weights,invariance);
+ const data=ctx.disclosure({name:'data',title:'Data and exact values'});
+ data.body.append(costRoot,law,reports);
+ const comparison=ctx.h('div',{class:'estim-comparison'}),normalSummary=ctx.h('p',{class:'estim-caption'});
+ const planeChart=ctx.h('div'),planeNote=ctx.h('p',{class:'estim-caption','data-prx-composite-side':''}),
+  plane=ctx.h('section',{class:'sev-paper estim-section'},ctx.panelTitle('Why the composite direction changes'),planeChart,planeNote);
+ ctx.charts.append(comparison,ctx.h('p',{class:'estim-cost-legend'},'Bar scale: ',n(ctx,0,'setting'),' to ',n(ctx,1,'setting'),'. Outlines mark every smallest cost for this pair.'),pairSummary,normalSummary,plane);
+ ctx.primaryGraphic(comparison);
  const costView=createEstimandCostView(ctx,costSlots),lawView=createEstimandLawView(ctx,law),reportView=createEstimandReportView(ctx,reports);
  return {render(state){
   const model=solveEstimands(state),correction={};if(model.ids.length===2&&state.cap==='3')correction.cap='2';if(state.data==='six'&&state.transform!=='identity')correction.transform='identity';if(!isCriterionPairKey({ids:model.ids},state.pair))correction.pair='auto';if(Object.keys(correction).length)ctx.set(correction);
-  control.render(state);costView.render(model);pairSummary.replaceChildren('For ',name(ctx,model.ids[model.pair.i]),' above ',name(ctx,model.ids[model.pair.j]),': criterion cost ',n(ctx,model.pairCosts.criterion.costs.iAboveJ,'risk'),', composite cost ',n(ctx,model.pairCosts.composite.costs.iAboveJ,'risk'),'. Current reports: ',n(ctx,model.criterionOptimum.grade,'grades'),' for criterion directions; ',n(ctx,model.compositeOptimum.grade,'grades'),' for the composite.');lawView.render(model);reportView.render(model);invarianceView(ctx,invariance,model);
+  control.render(state);comparisonStrips(ctx,comparison,model);drawKnownPlane(ctx,plane,planeChart,planeNote,model);costView.render(model);pairSummary.replaceChildren('For ',name(ctx,model.ids[model.pair.i]),' above ',name(ctx,model.ids[model.pair.j]),': criterion cost ',n(ctx,model.pairCosts.criterion.costs.iAboveJ,'risk'),', composite cost ',n(ctx,model.pairCosts.composite.costs.iAboveJ,'risk'),'. Current reports: ',n(ctx,model.criterionOptimum.grade,'grades'),' for criterion directions; ',n(ctx,model.compositeOptimum.grade,'grades'),' for the composite.');
+  normalSummary.hidden=model.route!=='normal';
+  if(!normalSummary.hidden)normalSummary.replaceChildren('First unit ',name(ctx,model.ids[0]),' has composite mean ',n(ctx,model.composite.mean[0],'value'),'.');
+  lawView.render(model);reportView.render(model);invarianceView(ctx,invariance,model);
   weights.replaceChildren(ctx.panelTitle('Three roles for weights'),ctx.h('p',{},'Error weights w = ',n(ctx,model.w[0],'setting','w-first'),', ',n(ctx,model.w[1],'setting','w-second'),' price criterion-specific wrong directions. Composite coefficients a = ',n(ctx,model.a[0],'setting','a-first'),', ',n(ctx,model.a[1],'setting','a-second'),' build a new target from magnitudes.'),ctx.h('p',{},'The second criterion is multiplied by ',n(ctx,model.multiplier[1],'setting','multiplier'),' for every unit in every finite state, or in the declared independent Normal composite. Both a and w stay nonnegative and sum to ',n(ctx,1,'setting'),'.'),ctx.h('p',{},'Expected-rank averaging weights have a third role: they average criterion-specific positions. They do not turn the weighted criterion loss into a composite target. The composite objective here has one constructed target with error weight ',n(ctx,1,'setting'),'.'),ctx.h('p',{},'Even numerically equal w and a need not give the same loss or the same report.'));
   ctx.readout.set(['Criterion directions choose ',n(ctx,model.criterionOptimum.grade,'grades','criterion-grade'), ' with risk ',n(ctx,model.criterionOptimum.risk,'risk','criterion-risk'),'; the composite chooses ',n(ctx,model.compositeOptimum.grade,'grades','composite-grade'),' with risk ',n(ctx,model.compositeOptimum.risk,'risk','composite-risk'),'. These minima concern different targets; each full report is judged under both below.']);
   ctx.caption.replaceChildren('Synthetic supplied laws after the postrank theory book and vignette m2. Grade ',n(ctx,1,'count'),' is stated highest on the declared target. A shared grade withholds; strict directions count equality as wrong. Synthetic data license CC BY ',ctx.num(4,formatDecimal(4,{digits:1})),'.');

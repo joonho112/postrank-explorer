@@ -16,8 +16,23 @@ const nonempty = s => typeof s==='string' && s.trim()!=='';
 const numeric = (s,where) => {if(!nonempty(s))fail(`${where}: a numeric cell is missing.`);const n=Number(s);if(!Number.isFinite(n))fail(`${where}: enter a finite number.`);return n;};
 const checkIds = (ids,where) => {if(ids.length<2||ids.length>30)fail(`${where}: enter 2–30 units (found ${ids.length}).`);const seen=new Set();for(let i=0;i<ids.length;i++){if(!nonempty(ids[i]))fail(`${where}, unit ${i+1}: the ID is missing.`);if(ids[i].includes('\0'))fail(`${where}, unit ${i+1}: a null character cannot be used in an ID.`);if(seen.has(ids[i]))fail(`${where}: duplicate unit ID “${ids[i]}”.`);seen.add(ids[i]);}};
 
-/** Quoted CSV, doubled quotes, Unicode, CRLF and embedded newlines; no HTML or code interpretation. */
-export function parseCsv(text) {
+// Inspect the first nonblank logical record. Tabs inside a quoted field are data.
+function inputDelimiter(text) {
+  let quoted=false, hasTab=false, nonblank=false;
+  for(const c of text){
+    if(c==='"'){quoted=!quoted;nonblank=true;}
+    else if(!quoted){
+      if(c===',')return ',';
+      if(c==='\r'||c==='\n'){if(nonblank)return hasTab?'\t':',';hasTab=false;}
+      else if(c==='\t')hasTab=true;
+      else if(c.trim())nonblank=true;
+    }
+  }
+  return hasTab?'\t':',';
+}
+
+/** Quoted delimiters, doubled quotes, Unicode, CRLF and embedded newlines. */
+export function parseCsv(text,delimiter=',') {
   if(typeof text!=='string')fail('Paste CSV text.');
   if(text.includes('\0'))fail('CSV input cannot contain null characters.');
   const rows=[];let row=[],value='',quoted=false,closedQuote=false,fieldStart=true;
@@ -26,7 +41,7 @@ export function parseCsv(text) {
     const c=text[i];
     if(quoted){if(c==='"'){if(text[i+1]==='"'){value+='"';i++;}else{quoted=false;closedQuote=true;}}else value+=c;continue;}
     if(c==='"'){if(!fieldStart)fail(`CSV row ${rows.length+1}: a quote must begin a quoted cell.`);quoted=true;fieldStart=false;continue;}
-    if(c===','){push();continue;}
+    if(c===delimiter){push();continue;}
     if(c==='\n'||c==='\r'){push();rows.push(row);row=[];if(c==='\r'&&text[i+1]==='\n')i++;continue;}
     if(closedQuote){if(c===' '||c==='\t')continue;fail(`CSV row ${rows.length+1}: unexpected text after a closing quote.`);}
     value+=c;fieldStart=false;
@@ -71,13 +86,19 @@ function matrices(rows,{matrixEvent='directional_error',zeroTies=false,margin=0,
   return {format:'probabilities',ids,criteria,probabilities,event:matrixEvent,zeroTies:true,margin:0,source:{...source}};
 }
 export function parseUserInput(text,options={}) {
-  try{const format=options.format??'posterior';if(!['posterior','estimates','probabilities'].includes(format))fail('Choose an input format.');const rows=parseCsv(text),data=format==='probabilities'?matrices(rows,options):records(rows,format);return {ok:true,messages:[],data};}
+  try{const format=options.format??'posterior';if(!['posterior','estimates','probabilities'].includes(format))fail('Choose an input format.');const rows=parseCsv(text,typeof text==='string'?inputDelimiter(text):','),data=format==='probabilities'?matrices(rows,options):records(rows,format);return {ok:true,messages:[],data};}
   catch(error){return {ok:false,messages:[String(error.message??error)],data:null};}
 }
 export function inputCsv(input) {
   if(input.format==='probabilities')return input.criteria.map((c,k)=>csvText([['criterion',c],['id',...input.ids],...input.ids.map((id,i)=>[id,...input.probabilities[k][i]])])).join('\r\n');
   const a=input.format==='posterior'?'mean':'estimate',b=input.format==='posterior'?'sd':'se';
   return csvText([['id',...input.criteria.flatMap(c=>[`${c}_${a}`,`${c}_${b}`])],...input.ids.map((id,i)=>[id,...input.criteria.flatMap((_,k)=>[input[a][i][k],input[b][i][k]])])]);
+}
+export function publicYourDataProvenance(example) {
+  const source=example==='six'?SIX.attribution:example==='equal5'
+    ?'Equal-means synthetic teaching example by JoonHo Lee, postrank Explorer v3.'
+    :'Synthetic league for postrank Explorer, JoonHo Lee.';
+  return {source,licence:'CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)'};
 }
 export function publicYourDataInput(example='league8',format='posterior') {
   if(example==='six'){

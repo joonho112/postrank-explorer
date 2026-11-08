@@ -118,7 +118,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": "[data-prx-readout=\"ro-card\"]",
@@ -357,20 +357,11 @@
         {
           "select": ".prx-rc-between-scroll",
           "kind": "text",
-          "attr": "tabindex",
-          "about": "the box that may scroll sideways is reachable by keyboard",
+          "attr": "class",
+          "about": "the between-grade table sits in a base.js scroll region, which is a labeled keyboard stop while it overflows (review 044 repair: replaces the tabindex and aria-label expectations; with the result-first frame the region's first overflow update runs before this case reads it, and jsdom lays out no width, so base.js removes the stop from a box that fits, as it does in a browser)",
           "source": "literal",
           "ref": "11.4",
-          "value": "0"
-        },
-        {
-          "select": ".prx-rc-between-scroll",
-          "kind": "text",
-          "attr": "aria-label",
-          "about": "and labelled",
-          "source": "literal",
-          "ref": "11.4",
-          "value": "Between-grade expected wrong shares, with grade-average posterior means on the diagonal"
+          "value": "prx-rc-between-scroll prx-scroll-region"
         },
         {
           "select": ".prx-rc-card [role=\"heading\"]",
@@ -380,6 +371,48 @@
           "source": "literal",
           "ref": "11.4",
           "value": "4"
+        },
+        {
+          "select": "[data-prx-readout=\"ro-N\"]",
+          "about": "the read-out: pairs the card states",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.N",
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"ro-M\"]",
+          "about": "the read-out: all pairs of six units",
+          "source": "registry",
+          "ref": "cf.pairCount.n6",
+          "value": 15
+        },
+        {
+          "select": "[data-prx-readout=\"ro-s\"]",
+          "about": "the read-out: s = N/M of the card (base-R evaluation)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "evaluateReport-six-K1-optimum-cap3-tau.20",
+            "field": "s"
+          },
+          "value": 0.8
+        },
+        {
+          "select": "[data-prx-readout=\"ro-adj-1-2\"]",
+          "about": "the read-out: the least certain stated comparisons, grades 1 and 2 (adjacent)",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.between12",
+          "value": 0.00237429721448715
+        },
+        {
+          "select": "[data-prx-readout=\"ro-adj-2-3\"]",
+          "about": "the read-out: grades 2 and 3 (adjacent)",
+          "source": "registry",
+          "ref": "six.A.cap3.tau20.between23",
+          "value": 0.0038193153804910976
         }
       ]
     },
@@ -1171,6 +1204,83 @@
             6,
             8
           ]
+        },
+        {
+          "select": "[data-prx-readout=\"ro-N\"]",
+          "about": "the read-out: pairs the card states (base-R disclosure)",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-thirty-poverty-card-cap4-tau.25",
+            "field": "N"
+          },
+          "value": 303
+        },
+        {
+          "select": "[data-prx-readout=\"ro-M\"]",
+          "about": "the read-out: all pairs of thirty units",
+          "source": "registry",
+          "ref": "cf.pairCount.n30",
+          "value": 435
+        },
+        {
+          "select": "[data-prx-readout=\"ro-s\"]",
+          "about": "the read-out: s = N/M (base-R disclosure)",
+          "format": {
+            "fn": "formatShare"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "disclosure-thirty-poverty-card-cap4-tau.25",
+            "field": "s"
+          },
+          "value": 0.696551724137931
+        },
+        {
+          "select": "[data-prx-readout=\"ro-adj-1-2\"]",
+          "about": "the read-out: adjacent grades 1 and 2 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.0.meanError"
+          },
+          "value": 0.20192642338616
+        },
+        {
+          "select": "[data-prx-readout=\"ro-adj-2-3\"]",
+          "about": "the read-out: adjacent grades 2 and 3 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.3.meanError"
+          },
+          "value": 0.167245015351806
+        },
+        {
+          "select": "[data-prx-readout=\"ro-adj-3-4\"]",
+          "about": "the read-out: adjacent grades 3 and 4 (base-R betweenGradeErrors)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-report-risk",
+            "row": "betweenGradeErrors-thirty-poverty-card-cap4-tau.25",
+            "field": "rows.5.meanError"
+          },
+          "value": 0.06403102089465
         }
       ]
     },

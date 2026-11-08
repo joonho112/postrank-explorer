@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/rules.ts (Step 2.9).
 #   oracle-rules    base R only: strict orders, quantile tiers with exact-score merging, evidence flags (theory book
 #                   ch. 2), expected ranks (ch. 5, 10, 19 laws); postrank is not loaded.

@@ -4,12 +4,8 @@ subtitle: "5.3 · after Kline, Rose and Walters (2024), Figures 7, 10A and 14"
 description: "Marginal summaries and pairwise statements in the archived cards for 97 firms."
 ---
 
-KRW's report cards state directions between grades and withhold comparisons within grades. Grade 1 denotes the end
-with the highest oriented target. Race and signed gender gaps have separate target definitions and pairwise
-posterior probabilities. The cards display firm-level means and intervals together with the error probabilities of
-stated comparisons. A correct direction receives reward λ, a wrong direction costs 1 and withholding has payoff 0;
-λ .25 corresponds to τ .20. The discordance rate DR divides the expected wrong count by all 4,656 unordered pairs,
-whereas E/N uses only stated pairs.
+KRW's cards report which firms have larger contact gaps by placing firms in ordered grades. The grade assignments
+and expected error rates can change with the target or the reward λ for a correct direction.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,10 +17,14 @@ whereas E/N uses only stated pairs.
 
 ## Numerical illustrations {#what-to-try}
 
+Grade 1 is highest on the chosen target. The card states directions between grades and withholds them within a
+grade. A correct direction earns λ, a wrong direction costs 1, and withholding pays 0. DR divides expected errors
+by all pairs. E/N divides them by the number of pairs the card states.
+
 - **Published race card.** The card states 1,324 of 4,656 pairs, with expected wrong share E/N .136.
-  Its risk .1818 splits into .0387 for errors and .1431 for withholding. The full firm display and between-grade table show that directions between distant grades are more reliable than adjacent ones here.
-- **Reveal grade 1.** Grades can be displayed sequentially. The remaining bands stay in place; unrevealed firms are
-  omitted from the disclosure and between-grade tables until those grades are displayed.
+  Its risk .1818 comprises .0387 for errors and .1431 for withholding. In this card, comparisons between distant grades have lower expected error rates than comparisons between adjacent grades.
+- **Reveal grade 1.** The remaining bands stay in place. As each grade is revealed, its firms enter the disclosure
+  and between-grade tables.
 - **Sort by estimate.** State Farm moves 69 rows inside its grade. Changing the row order changes no reported
   direction. Genuine Parts and AutoNation illustrate why estimates alone do not determine the card.
 - **λ .08: first race split.** The risk .07406 is slightly below all withheld, .07407. The extra decimal
@@ -33,13 +33,13 @@ whereas E/N uses only stated pairs.
   directions are more likely wrong than right. The note identifies these firms and probabilities.
 - **One grade.** Nothing is stated. E/N is NA: no disclosure, meaning undefined; the app draws no E/N bar.
 
-The precision view plots each firm’s original sampling SE against its current grade, with a complete named table.
-KRW’s prior depends on precision; uncertain firms sharing the middle grade is not evidence of average behavior.
+The precision plot places each firm's original sampling SE beside its grade. The table identifies each firm.
+KRW's prior depends on precision. Firms with uncertain estimates can share the middle grade while having very different contact gaps.
 
 ::: {.callout-note appearance="simple"}
-Grid cards were computed with KRW’s code under archived probabilities and solver tolerances. Their evaluations
-here use the released postrank probabilities and supply no new optimality certificate. Race’s baseline card is
-Figure 7; gender is Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.
+KRW's code selected the grid cards using their archived probabilities and solver tolerances. The app holds those
+grades fixed and evaluates them with the released postrank probabilities. The baseline race card is in Figure 7,
+and the gender card is in Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.
 
 Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC
 as stated by the deposit, noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted.

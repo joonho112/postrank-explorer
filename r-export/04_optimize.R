@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/optimize.ts (Step 2.6).
 #   oracle-optimize    base R only (full enumeration of canonical reports, closed forms, exact rationals, theory-book
 #                      examples); postrank is not loaded. Package datasets are read with base load() only.
@@ -487,7 +487,7 @@ for (f in list(fam_all(), fam_atmost(3))) {
   stopifnot(!is.unsorted(Ns))                    # disclosure of the optimum never falls as tau rises (exchange argument)
 }
 
-# ---- Step 6.14 Part 2 rows (engine/API.md; shared inputs in r-export/15_part2.R) --------------------
+# ---- Step 6.14 Part 2 rows (shared inputs in r-export/15_part2.R) --------------------
 source("r-export/15_part2.R")
 stopifnot(identical(p2$six$e, e_rel))
 # G-04 KRW Example 1 (omega_2 = 1, .80, .81, .50; tau = .20, .25): the exact optimum among all 13 reports.

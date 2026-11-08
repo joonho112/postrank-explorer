@@ -1,0 +1,81 @@
+{
+  "id": "P.5",
+  "name": "fictional-site-profiles",
+  "part": "P",
+  "title": "Site profiles",
+  "idea": "Forty sites. Two priorities. Saved fictional reports.",
+  "status": "built",
+  "from": "P2 multidomain profile theory",
+  "data": [
+    "data/precomputed/v35/main-alpha-1_20.json",
+    "data/precomputed/v35/sensitivity-t-wide.json"
+  ],
+  "credit": "JoonHo Lee; postrank multidomain profile decisions (postrank 1.2.0).",
+  "caption": "Saved fictional forty-site cards from postrank 1.2.0; display only, with no runtime reoptimization or intended-posterior certificate.",
+  "presets": [
+    {
+      "id": "primary",
+      "label": "Primary saved card",
+      "query": "scenario=primary&site=S11&pair=S01%7CS02&cell=site"
+    },
+    {
+      "id": "wide",
+      "label": "Wider-threshold saved card",
+      "query": "scenario=wide&site=S11&pair=S11%7CS12&cell=site"
+    },
+    {
+      "id": "crossed",
+      "label": "Crossed site profiles",
+      "query": "scenario=wide&site=S11&pair=S11%7CS18&cell=site"
+    },
+    {
+      "id": "withheld",
+      "label": "Composition comparison withheld",
+      "query": "scenario=primary&site=S11&pair=S11%7CS18&cell=site"
+    },
+    {
+      "id": "empty-cell",
+      "label": "An empty profile cell",
+      "query": "scenario=wide&site=S11&pair=S11%7CS18&cell=3%2C1"
+    }
+  ],
+  "try": [
+    {
+      "preset": "primary",
+      "shows": [
+        "500"
+      ]
+    },
+    {
+      "preset": "wide",
+      "shows": [
+        "1/10",
+        "300",
+        "500",
+        "548",
+        "16"
+      ]
+    },
+    {
+      "preset": "crossed",
+      "shows": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "preset": "withheld",
+      "shows": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "preset": "empty-cell",
+      "shows": [
+        "3",
+        "1"
+      ]
+    }
+  ]
+}

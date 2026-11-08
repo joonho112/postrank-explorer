@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R case fixtures: spec-v3-part5-cases.md and published API.
 # No new app source, TS solver code, JS output, postrank namespace, private
 # input, network, or unrestricted large-case solve. Only public released inputs.

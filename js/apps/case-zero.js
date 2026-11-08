@@ -1,30 +1,44 @@
 // case-zero (app 1.1): "A league table and a report card". Kline, Rose and Walters' 97 firms (the released case
-// data/released/case-krw.json, licence cc-by-nc-krw) shown two ways, side by side when there is room:
-//   league table   a real table in its own scroll box: rank, firm, the estimate with a bar of ± 1 SE, the posterior
-//                  mean, the firm's grade on the chosen card, the rank under the other order and the industry code;
-//                  it first shows the top and the bottom CONFIG.showRows rows (a gap row counts the rest) and a Show
-//                  all button brings back every row (selecting a hidden firm shows them all too);
-//                  the criterion follows the card (race estimates with the race card, gender estimates with the
-//                  gender card) and the heading names it; ordered by estimate or by posterior mean (key sort); the
-//                  header row stays in view, the rank and firm columns stay in view when the table scrolls sideways
-//                  at 375 px, and a hint says so while the box scrolls sideways
-//   the card       one of the two cards KRW published (key card: race, sizes 2/81/14, or gender, sizes 1/3/89/4),
+// data/released/case-krw.json, license cc-by-nc-krw) shown two ways. The app uses the shared result-first frame
+// (base.js layout "result-first"; review 044: U1-F1, X-01, X-09, U1-F4), top to bottom:
+//   controls       the card, the order of the league table and a find box, then the preset row (its own line)
+//   read-out       directly under the controls (the frame puts it there): v1's three sentences on the card's pairs,
+//                  then how many of its directions run as the table does and how many the other way
+//   pair bar       the mark the card and the order change (ctx.primaryGraphic), drawn by the shared partBar: all M
+//                  pairs of firms in three parts, the card's directions that run as the table does (N − against), those
+//                  that run the other way (against, each pair named when there are at most three) and the pairs it is
+//                  silent on (M − N), each count written under the track; the title names the card
+//   selected firm  a strip: the firm, the same three parts of its n − 1 pairs (a compact partBar; the firms on the other
+//                  side of its reversed pairs are named when there are few), the pairs line, then its rank and grade
+//                  lines; in the table the firms of its reversed pairs carry ↕ after their grade. On phones (<= 600 px)
+//                  the find box moves from the controls row into the strip's head, next to the firm it finds
+//   the card and the league table, side by side when the charts are wide (the card first, so it also comes first
+//                  when they stack):
+//     the card     one of the two cards KRW published (key card: race, sizes 2/81/14, or gender, sizes 1/3/89/4),
 //                  drawn after KRW's slides 61-63: each firm's posterior mean and central 90% posterior interval (navy)
 //                  over light grade bands that carry their grade numbers (tokens.css: posterior navy and the grade
-//                  ramp are separated by mark type); a hidden table and arrow-key reading through chart.js; under the
-//                  race card, why its intervals lie right of zero (KRW's race prior)
+//                  ramp are separated by mark type); a hidden table and arrow-key reading through chart.js. One note
+//                  above the figure (grades and sizes, what grade 1 means, the marks, KRW's 95% and the order within a
+//                  grade); under the figure the race card's prior note (why its intervals lie right of zero) and a
+//                  closed "Card source" box (ctx.disclosure) with KRW's caption, the plain gloss and the band legend
+//     league table a real table in its own scroll box: rank, firm, the firm's grade on the chosen card (right after
+//                  the firm, so the grade compared stays in view: X-09), the estimate with a bar of ± 1 SE, the
+//                  posterior mean, the rank under the other order and the industry code; it first shows the top and
+//                  the bottom CONFIG.showRows rows (a gap row counts the rest, and the reversed partners among them)
+//                  and a Show all button brings back every row (selecting a hidden firm shows them all too); the
+//                  criterion follows the card (race estimates with the race card, gender estimates with the gender
+//                  card) and the heading names it; ordered by estimate or by posterior mean (key sort); the header row
+//                  stays in view, the rank and firm columns stay in view when the table scrolls sideways (the shared
+//                  prx-sticky-two class), and a hint says so while the box scrolls
+//   scale note, caption, and on a standalone page the data notice
 // One firm is selected at a time (key firm: the first row of the table's order unless a firm is named; then a click,
 // the arrow keys in either view, or the find box): its row is marked in the table (aria-current, and its firm cell is
-// described by the details lines) and its interval in the card (whose keyboard reading starts at it), and a details
-// panel above the two views says what each view states about it: how many directions the card states, how many of
-// them run as the table's order shown (by estimate or by posterior mean) and how many the other way, and how many pairs
-// it leaves silent. Ranks, card order, grade sizes and pair counts come from the engine (strictOrder, reportCardRows,
-// disclosure, unitRelationCounts, statedAgainst, pairCount); every value shown is a released value, formatted with
-// format.js. The read-out gives the card's pair counts (v1's sentences), then how many of its directions run as the
-// table does. The KRW
-// caption is the labels.js string, followed by a plain gloss; a standalone embed (a page without Quarto's quarto:offset
-// meta element) keeps the data notice (the page's string), the change note and the site's disclaimer, and a site page
-// carries one callout and one credit of its own.
+// described by the strip's rank and grade lines) and its interval in the card (whose keyboard reading starts at it).
+// Ranks, card order, grade sizes and pair counts come from the engine (strictOrder, reportCardRows, disclosure,
+// unitRelationCounts, statedAgainst, pairCount); every value shown is a released value, formatted with format.js.
+// The KRW caption is the labels.js string, followed by a plain gloss; a standalone embed (a page without Quarto's
+// quarto:offset meta element) keeps the data notice (the page's string), the change note and the site's disclaimer,
+// and a site page carries one callout and one credit of its own.
 // Performance: the card view is computed once per card, the resolved palette is cached until the theme changes, a
 // change of order only (sort) does not redraw the card, and a change of the selected firm only moves the marks.
 //
@@ -36,6 +50,7 @@
 
 import { createWidget, uid } from "../shared/base.js";
 import { gradeColors, labelOn, numText, palette, plot } from "../shared/chart.js";
+import { partBar } from "../shared/partbar.js";
 import { formatCount, formatDecimal, formatPercent, formatProb, formatSizes, setNum, tickLabel } from "../shared/format.js";
 import { captionNode } from "../shared/labels.js";
 import {
@@ -61,6 +76,9 @@ export const CONFIG = Object.freeze({
       prior: "KRW's race prior puts all its weight on positive gaps, so every race posterior lies above zero, even for a firm with a negative estimate.",
       // the KRW figure of this card, whose caption gives the interval level KRW drew (KRW §VI, Figure 7)
       figure: "KRW's Figure 7 caption says ",
+      figureName: "Figure 7",
+      // how KRW's figure marks grade 1 (the page's source callout; review 044, U1-F4)
+      star: "Grade 1 is KRW's ★ (one star), which KRW call the worst grade.",
     }),
     gender: Object.freeze({
       label: "Gender card", title: "KRW's gender card", table: "Gender league table", grade: "gender_card",
@@ -70,6 +88,7 @@ export const CONFIG = Object.freeze({
       scale: "Both panels show the log contact gap: the log of the contact rate of male-named applications minus that of female-named ones. Above zero, male-named applications were contacted more often; below zero, female-named ones.",
       // KRW §VIII, Figure 14
       figure: "KRW's Figure 14 caption says ",
+      figureName: "Figure 14",
     }),
   }),
   cardOrder: Object.freeze(["race", "gender"]),
@@ -90,6 +109,13 @@ export const CONFIG = Object.freeze({
   pageRows: 10,
   // rows shown at each end of the league table until Show all
   showRows: 10,
+  // the three parts of a set of pairs in the pair bars, in bar order: the card's directions that run as the table
+  // does, those that run the other way, and the pairs it is silent on
+  pairParts: Object.freeze(["agree", "against", "silent"]),
+  // reversed pairs are named, in the card's bar and in the selected firm's strip, when there are at most this many
+  revNames: 3,
+  // phones: at or below this width "Find a firm" moves into the selected firm's strip (the frame's 600 px breakpoint)
+  narrowQuery: "(max-width: 37.5em)",
   // the card: rowPx per firm; light grade bands, their fill opacity alternating between the two tints so that
   // neighboring grades separate (the legend swatches mix the same shares); labelGap px between an interval and the
   // selected firm's name; grade numbers at least labelPx px apart
@@ -107,7 +133,8 @@ export const CONFIG = Object.freeze({
     scrollHint: "The table scrolls sideways: more columns sit to the right of the firm names.",
     barNote: Object.freeze(["Bars: estimate ± ", "{se}", " SE (such a bar covers the true value in about ", "{within}", " of repeated estimates)."]),
     orderNote: Object.freeze({ estimate: "Ordered by estimate, largest first.", mean: "Ordered by posterior mean, largest first." }),
-    caption: Object.freeze(["{table}", " of the ", "{n}", " firms. Each row gives the rank in this order, the firm, its estimate and SE (the bar repeats them), its posterior mean, its grade on the card, its rank in the other order and its industry code."]),
+    // the columns in their order (review 044, X-09: the card grade right after the firm)
+    caption: Object.freeze(["{table}", " of the ", "{n}", " firms. Each row gives the rank in this order, the firm, its grade on the card, its estimate and SE (the bar repeats them), its posterior mean, its rank in the other order and its industry code. ↕ after a grade marks a firm whose pair with the selected firm the card states the other way."]),
     colRank: "Rank",
     colRankBy: Object.freeze({ estimate: "by estimate", mean: "by posterior mean" }),
     colOther: Object.freeze({ estimate: "Rank by posterior mean", mean: "Rank by estimate" }),
@@ -116,11 +143,35 @@ export const CONFIG = Object.freeze({
     colMean: "Posterior mean",
     colGrade: "Card grade",
     colIndustry: "Industry code",
-    krwGloss: "In plain words: these grades are the baseline card KRW published, computed with KRW's own code and probabilities; we show it as published.",
+    krwGloss: "KRW published these baseline grades. Their code and posterior probabilities determine the grades shown here.",
     showAll: "Show all firms",
     showEnds: "Show the top ten and the bottom ten only",
     gap: Object.freeze(["{count}", " firms in the middle are not shown."]),
-    cardNote: Object.freeze(["Dots: posterior means. Lines: ", "{level}", " posterior intervals. Shaded bands: the grades, grade 1 at the top."]),
+    // after "marked ↕" in the strip when some of the marked firms are among the rows the short table does not show
+    revHidden: Object.freeze([" (", "{count}", " in the rows not shown)"]),
+    // the note above the card (review 044, U1-F4): the marks, the level KRW's figure shows and the order within a grade;
+    // the sentence on the shaded bands moves with the band legend into the "Card source" box
+    cardNote: Object.freeze(["Dots: posterior means. Lines: ", "{level}", " posterior intervals (KRW's ", "{figure}", " shows ", "{krwLevel}", " intervals); within a grade, firms by posterior mean."]),
+    bandsNote: "Shaded bands: the grades, grade 1 at the top.",
+    cardSource: "Card source",
+    // the pair bars: the title of the card's bar (it names the card), the words after each count, and the strip's bar
+    // for one firm
+    pairsTitle: Object.freeze(["All ", "{total}", " pairs of firms · ", "{card}"]),
+    pairWords: Object.freeze({ agree: " stated as the table does", against: " stated the other way", silent: " silent (same grade)" }),
+    // after "stated the other way" when the card states at most CONFIG.revNames such pairs: each pair as the card
+    // states it ("the card puts State Farm above VFC (North Face / Vans)")
+    revPairsLead: ": the card puts ",
+    revPairAbove: " above ",
+    revPairSep: "; ",
+    firmPairsTitle: Object.freeze(["Its ", "{total}", " pairs"]),
+    firmWords: Object.freeze({ agree: " as the table does", against: " the other way", silent: " silent" }),
+    // the firms on the other side of the selected firm's reversed pairs: named after the count when few, marked in the
+    // table in any case (the mark's alternative text for screen readers is revMarkSr)
+    revNamed: ": ",
+    revMarked: ", marked ↕",
+    revMany: ", marked ↕ in the table",
+    revMark: "↕",
+    revMarkSr: "the card states its pair with the selected firm the other way",
     gradesWord: " grades, ",
     firm: " firm",
     firms: " firms",
@@ -180,6 +231,8 @@ export const CONFIG = Object.freeze({
 });
 
 const T = CONFIG.text;
+/** A text as a CSS string (for generated content). */
+const cssString = (s) => `"${String(s).replace(/["\\]/g, "\\$&")}"`;
 const roundNice = (x) => Number(x.toFixed(CONFIG.nice.decimals));
 const pct = (v, total) => `${(v / total) * CONFIG.percent}%`;
 
@@ -252,13 +305,19 @@ export function cardView(D, key) {
   // the row counts of the relation matrix)
   const rel = unitRelationCounts(grade);
   // the directions the card states against the table's shown order (engine statedAgainst on the strictOrder ranks, 1 at
-  // the top, so "ascending"): the card's count, and per firm the pairs of that list it belongs to. The ranks are
-  // strict, so every other stated pair runs as the table does: agree = stated − against.
+  // the top, so "ascending"): the card's count and its pairs ({ above, below } as the card states them), per firm the
+  // number of pairs of that list it belongs to (per), and per firm the firms on the other side of those pairs (firms;
+  // marked ↕ in the table while the firm is selected). The ranks are strict, so every other stated pair runs as the
+  // table does: agree = stated − against.
   const againstOrder = (rank) => {
     const r = statedAgainst(grade, Array.from(rank), { direction: "ascending" });
     const per = new Array(D.n).fill(0);
-    for (const p of r.pairs) { per[p.above] += 1; per[p.below] += 1; }
-    return { count: r.count, per };
+    const firms = Array.from({ length: D.n }, () => []);
+    for (const p of r.pairs) {
+      per[p.above] += 1; per[p.below] += 1;
+      firms[p.above].push(p.below); firms[p.below].push(p.above);
+    }
+    return { count: r.count, pairs: r.pairs, per, firms };
   };
   const w = CONFIG.seWidth;
   return {
@@ -302,29 +361,47 @@ const CSS = `
 .prx-cz .prx-cz-notice strong { font-weight: 600; color: var(--prx-fg); }
 .prx-cz .prx-cz-missing { margin: 0; padding: 0.75rem; border: 1px dashed var(--prx-border-strong); border-radius: var(--prx-radius, 6px); }
 
-/* the selected firm */
+/* the two part bars (js/shared/partbar.js and styles/app.css .prx-partbar*, lifted from this app's pair bar): only
+   where they sit is the app's own */
+.prx-cz .prx-cz-charts > .prx-partbar { margin: 0 0 0.6rem; }
+.prx-cz .prx-cz-details .prx-partbar { margin: 0.3rem 0 0.15rem; }
+
+/* the selected firm: a strip under the pair bar; the heading and the firm's name on one line (on phones "Find a firm"
+   joins them, on a line of its own), then its own part bar and the details lines */
 .prx-cz .prx-cz-details {
-  margin: 0 0 0.75rem; padding: 0.5rem 0.75rem; background: var(--prx-bg); border: 1px solid var(--prx-border);
+  margin: 0 0 0.75rem; padding: 0.45rem 0.75rem 0.5rem; background: var(--prx-bg); border: 1px solid var(--prx-border);
   border-radius: var(--prx-radius, 6px); font-variant-numeric: tabular-nums;
 }
+.prx-cz .prx-cz-details-head { display: flex; flex-wrap: wrap; gap: 0.1rem 0.6rem; align-items: baseline; }
+.prx-cz .prx-cz-details-head .prx-cz-heading { margin: 0; }
+.prx-cz .prx-cz-details-head > .prx-cz-find { flex: 1 1 100%; margin: 0.35rem 0 0.1rem; }
 .prx-cz .prx-cz-details-name, .prx-cz .prx-cz-details-line, .prx-cz .prx-cz-find-status { margin: 0.15rem 0 0; }
-.prx-cz .prx-cz-details-name { margin-top: 0; }
+.prx-cz .prx-cz-details-head .prx-cz-details-name { margin: 0; }
 
 /* the two panels: side by side in a wide container, stacked below 54rem (the site page's column at 1280 px gives the
-   charts about 957 px at a 17 px root font, 56.3rem; the 16 px standalone page about 1,125 px). Side by side, the
-   table's box takes the card's height, so the top ten, the gap row and the bottom ten show together. The container is
-   named: the league panel is a container of its own, and the table box inside it must still answer to the charts'
-   width. */
+   charts about 957 px at a 17 px root font, 56.3rem; the 16 px standalone page about 1,125 px). The card comes first,
+   in the DOM and on screen, so it also comes first when the panels stack. Side by side, the table's box keeps its
+   natural height up to 46rem: the short table (the top ten, the gap row and the bottom ten: 40.5rem to 45.2rem tall at
+   the widths where the panels sit side by side) shows whole beside the card, whose column is shorter now that its
+   source notes sit in a closed box, and all 97 rows scroll inside the box. The container is named: the league panel is
+   a container of its own, and the table box inside it must still answer to the charts' width. */
 .prx-cz .prx-cz-charts { container: prx-cz-charts / inline-size; }
 .prx-cz .prx-cz-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
 .prx-cz .prx-cz-panel { min-width: 0; }
 @container prx-cz-charts (min-width: 54rem) {
-  .prx-cz .prx-cz-grid { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); }
-  .prx-cz .prx-cz-league { display: flex; flex-direction: column; }
-  .prx-cz .prx-cz-league .prx-cz-table-box { flex: 1 1 0; min-height: 16rem; max-height: none; }
+  .prx-cz .prx-cz-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr); }
+  .prx-cz .prx-cz-league .prx-cz-table-box { max-height: 46rem; }
 }
+.prx-cz .prx-cz-league-head { display: flex; flex-wrap: wrap; gap: 0.2rem 0.75rem; align-items: baseline; margin: 0 0 0.3rem; }
+.prx-cz .prx-cz-league-head > * { margin: 0; }
 .prx-cz .prx-cz-scale { margin: 0.75rem 0 0; }
 .prx-cz .prx-cz-prior { margin: 0.35rem 0 0; }
+/* the note above the card: v1's grade legend and, joined to it as one box on plot paper (both are legends), the
+   marks, KRW's 95% and the order within a grade; the closed "Card source" box sits under the figure */
+.prx-cz .prx-cz-card .prx-cz-grade1 { margin: 0; padding: 0.2rem 0.45rem 0.05rem; border-radius: 4px 4px 0 0; }
+.prx-cz .prx-cz-card-note { padding: 0.05rem 0.45rem 0.2rem; border-radius: 0 0 4px 4px; }
+.prx-cz .prx-cz-card .prx-disclosure { margin: 0.5rem 0 0; }
+.prx-cz .prx-cz-card .prx-disclosure-body > :last-child { margin-bottom: 0; }
 
 /* the league table in its own scroll box */
 .prx-cz .prx-cz-table-box {
@@ -343,12 +420,14 @@ const CSS = `
   position: sticky; top: 0; z-index: 2; vertical-align: bottom; white-space: normal; font-weight: 600;
   color: var(--prx-fg-heading); background: var(--prx-bg-raised); border-bottom: 1px solid var(--prx-border-strong);
 }
-/* rank and firm stay in view when the table scrolls sideways */
-.prx-cz .prx-cz-table .prx-cz-col-rank { position: sticky; left: 0; z-index: 1; width: 3.75rem; min-width: 3.75rem; max-width: 3.75rem; white-space: normal; }
-.prx-cz .prx-cz-table .prx-cz-col-firm {
-  position: sticky; left: 3.75rem; z-index: 1; min-width: 8.5rem; max-width: 11rem; white-space: normal;
-  border-right: 1px solid var(--prx-border);
-}
+/* rank and firm stay in view when the table scrolls sideways: the shared prx-sticky-two class (styles/app.css, a
+   cascade layer that acts only while the box overflows) keeps the first two columns, the firm column at the rank
+   column's width (--prx-sticky-first-width) and casting a shadow once the box is scrolled; the cells keep the table's
+   own surface (the app's rules win over the layer), so the selection and hover tints reach them. The header's two
+   corner cells stay above the header cells that scroll under them (the app's header cells are z-index 2). */
+.prx-cz .prx-cz-table { --prx-sticky-first-width: 3.75rem; }
+.prx-cz .prx-cz-table .prx-cz-col-rank { width: 3.75rem; min-width: 3.75rem; max-width: 3.75rem; white-space: normal; }
+.prx-cz .prx-cz-table .prx-cz-col-firm { min-width: 8.5rem; max-width: 11rem; white-space: normal; border-right: 1px solid var(--prx-border); }
 .prx-cz .prx-cz-table thead .prx-cz-col-rank, .prx-cz .prx-cz-table thead .prx-cz-col-firm { z-index: 3; }
 .prx-cz .prx-cz-table tbody th { font-weight: 400; color: var(--prx-fg); cursor: pointer; }
 .prx-cz .prx-cz-table tbody tr { cursor: pointer; }
@@ -356,6 +435,14 @@ const CSS = `
 .prx-cz .prx-cz-table tbody tr:hover > * { background: var(--prx-bg-raised); }
 .prx-cz .prx-cz-table tbody tr.prx-cz-selected > * { background: var(--prx-bg-sunken); font-weight: 600; }
 .prx-cz .prx-cz-table tbody tr.prx-cz-selected > .prx-cz-col-rank { box-shadow: inset 4px 0 0 var(--prx-accent); }
+/* the firms of the selected firm's reversed pairs: a bar on the rank cell in the color of "the other way" in the pair
+   bars, and ↕ after the grade badge. The mark is generated content, so each cell's text stays what it states (its grade);
+   its alternative text names the mark for screen readers (the plain form first, for browsers without the "/" syntax) */
+.prx-cz .prx-cz-table tbody tr.prx-cz-rev > .prx-cz-col-rank { box-shadow: inset 4px 0 0 var(--prx-rel-below); }
+.prx-cz .prx-cz-table tbody tr.prx-cz-rev > .prx-cz-col-grade::after {
+  content: ${cssString(T.revMark)}; content: ${cssString(T.revMark)} / ${cssString(T.revMarkSr)};
+  margin-left: 0.35rem; font-weight: 700; color: var(--prx-fg);
+}
 .prx-cz .prx-cz-table tbody th:focus-visible { outline: var(--prx-focus-width, 2px) solid var(--prx-focus); outline-offset: calc(-1 * var(--prx-focus-width, 2px)); }
 .prx-cz .prx-cz-table .prx-cz-col-other, .prx-cz .prx-cz-table .prx-cz-col-industry { color: var(--prx-fg-muted); }
 /* the gap row stands for the hidden middle rows until Show all; its text stays in view when the table scrolls */
@@ -363,9 +450,8 @@ const CSS = `
 .prx-cz .prx-cz-table tbody tr.prx-cz-gap > td { padding: 0.35rem 0.45rem; font-style: italic; color: var(--prx-fg-muted); background: var(--prx-bg-sunken); }
 .prx-cz .prx-cz-table tbody tr.prx-cz-gap > td > span { position: sticky; left: 0.45rem; }
 .prx-cz .prx-cz-table tbody tr.prx-cz-gap:hover > * { background: var(--prx-bg-sunken); }
-.prx-cz .prx-cz-show { align-self: flex-start; margin: 0 0 0.5rem; }
 .prx-cz .prx-cz-table td.prx-cz-col-mean { color: var(--prx-post-text); }
-/* estimate ± 1 SE: a bar on the plot panel colour, then the numbers in the estimate's text colour */
+/* estimate ± 1 SE: a bar on the plot panel color, then the numbers in the estimate's text color */
 .prx-cz .prx-cz-table .prx-cz-col-est { min-width: 13rem; }
 .prx-cz .prx-cz-table thead .prx-cz-col-other { min-width: 6.5rem; }
 /* a roomy table keeps each firm's name on one line */
@@ -393,8 +479,8 @@ const CSS = `
   font-size: 0.9em; border-radius: 4px;
 }
 .prx-cz .prx-cz-band { display: inline-flex; gap: 0.3rem; align-items: center; }
-/* a grade band's tint: its grade colour at the band's fill opacity (set by the app as --prx-cz-mix) on the plot
-   panel colour */
+/* a grade band's tint: its grade color at the band's fill opacity (set by the app as --prx-cz-mix) on the plot
+   panel color */
 .prx-cz .prx-cz-swatch {
   display: inline-block; flex: none; width: 0.95rem; height: 0.95rem;
   background: color-mix(in srgb, var(--prx-cz-swatch, #153653) var(--prx-cz-mix, 20%), var(--prx-plot-bg));
@@ -422,8 +508,9 @@ const CSS = `
   .prx-cz .prx-cz-cards, .prx-cz .prx-cz-sorts, .prx-cz .prx-cz-find { flex: 0 0 auto; }
   .prx-cz .prx-cz-find { width: 100%; }
   .prx-cz .prx-cz-table-box { max-height: 22rem; }
+  .prx-cz .prx-cz-table { --prx-sticky-first-width: 3.5rem; }
   .prx-cz .prx-cz-table .prx-cz-col-rank { width: 3.5rem; min-width: 3.5rem; max-width: 3.5rem; padding-right: 0.3rem; padding-left: 0.3rem; }
-  .prx-cz .prx-cz-table .prx-cz-col-firm { left: 3.5rem; min-width: 7rem; }
+  .prx-cz .prx-cz-table .prx-cz-col-firm { min-width: 7rem; }
 }
 `;
 
@@ -435,6 +522,9 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: CONFIG.className,
     css: CSS,
+    // the shared result-first frame (review 044, X-01): title, controls and preset row, the read-out, the charts (the
+    // pair bar first), then the caption; base.js only moves nodes, so keys, presets, hooks and the live region are kept
+    layout: "result-first",
     keys: {
       card: { type: "choice", values: [...CONFIG.cardOrder], value: CONFIG.defaults.card },
       sort: { type: "choice", values: CONFIG.sorts.map((s) => s.value), value: CONFIG.defaults.sort },
@@ -530,26 +620,51 @@ export function mountWidget(el, spec = {}) {
       });
       ctx.controls.append(cardSeg.root, sortSeg.root, find.root);
 
-      // --- selected firm: a details panel
+      // --- the pair bar of the card (the shared partBar, review 044 U1-F1): all pairs of firms in three parts, each
+      // count written under the track; the first panel under the read-out, and the graphic the card and the order change
+      const PARTS = CONFIG.pairParts.map((key) => ({ key, role: key }));
+      const pairs = partBar(ctx, { hook: "pairs", parts: PARTS });
+      ctx.primaryGraphic(pairs.root);
+
+      // --- selected firm: a strip under the pair bar, with its own (compact) part bar; then v1's details lines, the
+      // pairs line first (it says in words what the small bar shows), then the rank and grade lines
       const detailsName = h("p", { class: "prx-cz-details-name" });
+      const firmPairs = partBar(ctx, { hook: "firm-bar", parts: PARTS, compact: true });
       const detailsRank = h("p", { class: "prx-cz-details-line" });
       const detailsGrade = h("p", { class: "prx-cz-details-line" });
       const pairsLine = h("p", { class: "prx-cz-details-line prx-cz-pairs" });
       const findStatus = h("p", { class: "prx-hint prx-cz-find-status", hidden: true });
       detailsRank.id = uid("prx-cz-rank");
       detailsGrade.id = uid("prx-cz-grade");
+      const detailsHead = h("div", { class: "prx-cz-details-head" }, ctx.panelTitle(T.detailsHeading, { className: "prx-cz-heading" }), detailsName);
       const details = h("section", { class: "prx-cz-details", "aria-label": T.detailsHeading, "data-prx-part": "readout" },
-        ctx.panelTitle(T.detailsHeading, { className: "prx-cz-heading" }), findStatus, detailsName, detailsRank, detailsGrade, pairsLine);
+        detailsHead, findStatus, firmPairs.root, pairsLine, detailsRank, detailsGrade);
 
-      // --- league table
+      // phones (<= 600 px): "Find a firm" drives only the selected firm, so it moves into the strip's head, next to the
+      // firm it finds (CONVENTIONS, result-first frame); wider screens keep it in the controls row. The node itself
+      // moves, so the typed text, the match line, the datalist and the firm key are unchanged, and Tab order follows the
+      // layout (controls, presets, then the strip's find box on phones).
+      const narrow = ctx.win.matchMedia?.(CONFIG.narrowQuery) ?? null;
+      function placeFind() {
+        const inStrip = Boolean(narrow?.matches);
+        if (inStrip === (find.root.parentNode === detailsHead)) return;
+        const focused = ctx.doc.activeElement === find.input;
+        if (inStrip) detailsHead.append(find.root); else sortSeg.root.after(find.root);
+        if (focused) find.input.focus({ preventScroll: true });
+      }
+      if (narrow) ctx.listen(narrow, "change", placeFind);
+      placeFind();
+
+      // --- league table: the card grade right after the firm, so the grade compared stays in view while the box
+      // scrolls sideways (review 044, X-09); rank and firm stick through the shared prx-sticky-two rule
       const tableBox = ctx.scrollRegion(h("div", { class: "prx-cz-table-box" }), T.tableHeading);
       const caption = h("caption", { class: "prx-sr-only" });
       const head = {
         rank: h("th", { scope: "col", class: "prx-cz-col-rank" }),
         firm: h("th", { scope: "col", class: "prx-cz-col-firm", text: T.colFirm }),
+        grade: h("th", { scope: "col", class: "prx-cz-col-grade", text: T.colGrade }),
         est: h("th", { scope: "col", class: "prx-cz-col-est" }),
         mean: h("th", { scope: "col", class: "prx-cz-col-mean", text: T.colMean }),
-        grade: h("th", { scope: "col", class: "prx-cz-col-grade", text: T.colGrade }),
         other: h("th", { scope: "col", class: "prx-cz-col-other" }),
         industry: h("th", { scope: "col", class: "prx-cz-col-industry", text: T.colIndustry }),
       };
@@ -558,8 +673,8 @@ export function mountWidget(el, spec = {}) {
       head.est.append(estLabel, axisRow);
       const tbody = h("tbody", {});
       const tableId = uid("prx-cz-table");
-      const table = h("table", { class: "prx-cz-table", id: tableId }, caption,
-        h("thead", {}, h("tr", {}, head.rank, head.firm, head.est, head.mean, head.grade, head.other, head.industry)), tbody);
+      const table = h("table", { class: "prx-cz-table prx-sticky-two", id: tableId }, caption,
+        h("thead", {}, h("tr", {}, head.rank, head.firm, head.grade, head.est, head.mean, head.other, head.industry)), tbody);
       tableBox.append(table);
       const rowEls = D.names.map((_, i) => {
         const zero = h("span", { class: "prx-cz-zero" });
@@ -572,13 +687,15 @@ export function mountWidget(el, spec = {}) {
           se: h("span", { class: "prx-cz-est-num" }),
           mean: h("td", { class: "prx-cz-col-mean" }),
           badge: h("span", { class: "prx-cz-badge" }),
+          grade: h("td", { class: "prx-cz-col-grade" }),
           other: h("td", { class: "prx-cz-col-other" }),
         };
+        cells.grade.append(cells.badge);
         const strip = h("span", { class: "prx-cz-strip", "aria-hidden": "true" }, zero, bar, dot);
         const tr = h("tr", { "data-prx-row": D.ids[i] },
-          cells.rank, cells.firm,
+          cells.rank, cells.firm, cells.grade,
           h("td", { class: "prx-cz-col-est" }, strip, h("span", { class: "prx-cz-est-text" }, cells.est, " ± ", cells.se)),
-          cells.mean, h("td", { class: "prx-cz-col-grade" }, cells.badge), cells.other,
+          cells.mean, cells.other,
           h("td", { class: "prx-cz-col-industry", "data-prx-name": "", text: String(D.industry[i]) }));
         tbody.append(tr);
         return { tr, cells, zero, bar, dot };
@@ -596,28 +713,35 @@ export function mountWidget(el, spec = {}) {
       const orderNote = h("p", { class: "prx-cz-note" });
       const tableHeading = ctx.panelTitle(T.tableHeading, { className: "prx-cz-heading prx-cz-table-heading" });
       const scrollHint = h("p", { class: "prx-hint prx-cz-scroll-hint", text: T.scrollHint, hidden: true });
+      // the heading, the order note and the Show all button share one row where there is room (the review's sketch:
+      // "Race league table [Show all]"); then the bar note, the scroll hint and the box
       const tablePanel = h("section", { class: "prx-cz-panel prx-cz-league", "aria-label": T.tableHeading },
-        tableHeading, orderNote, barNote, showBtn.root, scrollHint, tableBox);
+        h("div", { class: "prx-cz-league-head" }, tableHeading, orderNote, showBtn.root), barNote, scrollHint, tableBox);
 
-      // --- the card
+      // --- the card: its heading, one note above the figure (v1's grade legend, joined in one box with how KRW's figure
+      // marks grade 1 where the source says so, the marks, KRW's 95% and the order within a grade), the figure, the race
+      // card's prior note (why its intervals lie right of zero beside negative estimates), then a closed "Card source"
+      // box with v1's KRW caption, the plain gloss and the band legend (review 044, U1-F4: moved, not removed)
       const cardHeading = ctx.panelTitle("", { className: "prx-cz-heading" });
+      const gradeLegend = h("p", { class: "prx-cz-note prx-cz-grade1", "data-prx-part": "legend" });
+      const starNote = h("span", { class: "prx-cz-star" });
+      const marksNote = h("span", { class: "prx-cz-marks" });
+      const cardNote = h("p", { class: "prx-cz-note prx-cz-card-note", "data-prx-part": "legend" }, starNote, marksNote);
+      const cardSlot = h("div", { class: "prx-cz-card-chart" });
+      const priorNote = h("p", { class: "prx-cz-note prx-cz-prior", "data-prx-part": "notes", hidden: true });
+      const cardPanel = h("section", { class: "prx-cz-panel prx-cz-card", "aria-label": T.cardLegend },
+        cardHeading, gradeLegend, cardNote, cardSlot, priorNote);
+      const source = ctx.disclosure({ name: "card-source", title: T.cardSource, placement: { after: priorNote } });
       const cardCaption = h("p", { class: "prx-cz-note prx-cz-krw", "data-prx-part": "caption" }, captionNode(ctx, "krw-card"));
       const krwGloss = h("p", { class: "prx-cz-note prx-cz-gloss", "data-prx-part": "caption", text: T.krwGloss });
-      const gradeLegend = h("p", { class: "prx-cz-note prx-cz-grade1", "data-prx-part": "legend" });
-      const cardNote = h("p", { class: "prx-cz-note", "data-prx-part": "legend" });
       const bands = h("p", { class: "prx-cz-bands prx-light-panel", "data-prx-part": "legend" });
-      const cardSlot = h("div", { class: "prx-cz-card-chart" });
-      // under the race card: why its intervals lie right of zero beside negative estimates
-      const priorNote = h("p", { class: "prx-cz-note prx-cz-prior", "data-prx-part": "notes", hidden: true });
-      // v1's card blocks in order (heading, KRW caption, gloss, grade legend, card note, band legend, figure), then the
-      // race card's prior note under the figure
-      const cardPanel = h("section", { class: "prx-cz-panel prx-cz-card", "aria-label": T.cardLegend },
-        cardHeading, cardCaption, krwGloss, gradeLegend, cardNote, bands, cardSlot, priorNote);
+      source.body.append(cardCaption, krwGloss, h("p", { class: "prx-cz-note", "data-prx-part": "legend", text: T.bandsNote }), bands);
 
       const scaleNote = h("p", { class: "prx-cz-note prx-cz-scale", "data-prx-part": "notes" });
       ctx.charts.classList.add("prx-cz-charts");
-      // v1's order: the selected firm's details first, then the two panels, then the scale note
-      ctx.charts.append(details, h("div", { class: "prx-cz-grid" }, tablePanel, cardPanel), scaleNote);
+      // the result-first order: the pair bar (what the card and the order change), the selected firm's strip, then the
+      // card and the league table (the card first), then the scale note
+      ctx.charts.append(pairs.root, details, h("div", { class: "prx-cz-grid" }, cardPanel, tablePanel), scaleNote);
 
       // --- the notice: a standalone embed keeps the data notice (the same string as the page's), the change note and
       // the site's disclaimer; a site page has its own callout and credit (one of each per page)
@@ -686,18 +810,31 @@ export function mountWidget(el, spec = {}) {
       const middle = (order, k) => k >= CONFIG.showRows && k < order.length - CONFIG.showRows;
 
       /** Hide the middle rows of the league table unless it is expanded (the selected firm's row stays); the gap row
-       * counts the hidden rows. */
+       * counts the hidden rows (v1's words), and hiddenMarked keeps how many of them carry ↕ (the strip says so). */
+      let hiddenMarked = 0;
       function showRows(order) {
         let hidden = 0;
+        hiddenMarked = 0;
         order.forEach((i, k) => {
           const hide = !expanded && middle(order, k) && i !== selected;
           rowEls[i].tr.hidden = hide;
-          if (hide) hidden += 1;
+          if (hide) { hidden += 1; if (marked.has(i)) hiddenMarked += 1; }
         });
         gapRow.hidden = hidden === 0;
         gapCount.replaceChildren(...fill(T.gap, { count: () => count(hidden) }));
         showBtn.setLabel(expanded ? T.showEnds : T.showAll);
         showBtn.root.setAttribute("aria-expanded", String(expanded));
+      }
+
+      /** Mark the firms on the other side of the selected firm's reversed pairs (a class: ↕ after the grade and a bar on
+       * the rank cell, both drawn by CSS) and unmark the rest; `firms` comes from the card view's statedAgainst list for
+       * the order shown. */
+      let marked = new Set();
+      function markReversed(firms) {
+        const next = new Set(firms);
+        for (const j of marked) if (!next.has(j)) rowEls[j].tr.classList.remove("prx-cz-rev");
+        for (const j of next) rowEls[j].tr.classList.add("prx-cz-rev");
+        marked = next;
       }
 
       /** Keep a row in view inside the table box, below the sticky header (the page itself does not scroll). */
@@ -743,10 +880,19 @@ export function mountWidget(el, spec = {}) {
         const c = v.card;
         cardHeading.textContent = c.title;
         cardPanel.setAttribute("aria-label", c.title);
+        // the note above the figure: v1's grade legend (its words and hooks), then how KRW's figure marks grade 1 (only
+        // where the source says so), the marks, the level KRW's figure shows (a number, not the caption's krw-level
+        // hook) and the order within a grade
         gradeLegend.replaceChildren(ro("G", v.disc.G, formatCount(v.disc.G)), T.gradesWord,
           ro("sizes", v.disc.sizes, formatSizes(v.disc.sizes)), ". ", h("span", { class: "prx-cz-grade1-text", text: c.grade1 }));
-        cardNote.replaceChildren(...fill(T.cardNote, { level: () => ro("level", level, formatPercent(level)) }));
+        starNote.textContent = c.star ? `${c.star} ` : "";
+        marksNote.replaceChildren(...fill(T.cardNote, {
+          level: () => ro("level", level, formatPercent(level)),
+          figure: () => c.figureName,
+          krwLevel: () => num(CONFIG.krwLevel, formatPercent(CONFIG.krwLevel)),
+        }));
         const colors = gradeColors(v.disc.G, pal());
+        // in the "Card source" box, under the sentence on the shaded bands: a swatch and the size of each grade
         bands.replaceChildren(
           ...Array.from(v.disc.sizes, (size, k) => h("span", { class: "prx-cz-band" },
             h("span", { class: "prx-cz-swatch", style: { "--prx-cz-swatch": colors[k], "--prx-cz-mix": `${tintOf(k + 1) * CONFIG.percent}%` } }),
@@ -905,13 +1051,26 @@ export function mountWidget(el, spec = {}) {
         }).flat());
         const silent = v.withheld[i];
         // the card's directions about this firm against the table's order as shown (by estimate or posterior mean)
-        const against = v.against[ctx.state.sort].per[i];
+        const sort = ctx.state.sort;
+        const against = v.against[sort].per[i];
         const agree = v.stated[i] - against;
         const split = v.stated[i] === 0 ? [] : [", ", ...(against === 0 ? [T.allAgree] : agree === 0 ? [T.allAgainst]
           : [ro("firm-agree", agree, formatCount(agree)), T.agreeA, ro("firm-against", against, formatCount(against)), T.againstA])];
         pairsLine.replaceChildren(T.pairsA, ro("firm-pairs", v.partners, formatCount(v.partners)), T.pairsB, v.card.title, T.pairsC,
           ro("firm-stated", v.stated[i], formatCount(v.stated[i])), T.pairsD, ...split,
           ...(silent === 0 ? [T.pairsNone] : [T.pairsSilent, ro("firm-silent", silent, formatCount(silent)), silent === 1 ? T.pairsSilentOne : T.pairsSilentMany]));
+        // the strip's bar: the same three parts of the firm's pairs; after "the other way", the firms on the other side
+        // of those pairs in the table's order when there are few (else where to find them), and how many of them the
+        // short table does not show (showRows ran just before)
+        const rank = sort === "mean" ? v.rankMean : v.rankEst;
+        const reversed = v.against[sort].firms[i].slice().sort((a, b) => rank[a] - rank[b]);
+        const named = [...(reversed.length <= CONFIG.revNames
+          ? [T.revNamed, ...reversed.flatMap((j, k) => (k ? [", ", nameNode(j)] : [nameNode(j)])), T.revMarked] : [T.revMany]),
+        ...(hiddenMarked ? fill(T.revHidden, { count: () => count(hiddenMarked) }) : [])];
+        firmPairs.set({
+          title: (total) => fill(T.firmPairsTitle, { total }), total: v.partners, counts: { agree, against, silent },
+          words: T.firmWords, after: (p) => (p === "against" && reversed.length ? named : []),
+        });
       }
 
       /** Show firm i as selected in both views and the details panel; intent: scroll its row into view, focus its
@@ -928,7 +1087,9 @@ export function mountWidget(el, spec = {}) {
         }
         selected = i;
         const r = rowEls[i];
-        showRows(view(ctx.state.card).rows[ctx.state.sort]);
+        const v = view(ctx.state.card);
+        markReversed(v.against[ctx.state.sort].firms[i]);
+        showRows(v.rows[ctx.state.sort]);
         r.tr.classList.add("prx-cz-selected");
         r.tr.setAttribute("aria-current", "true");
         r.cells.firm.setAttribute("aria-describedby", `${detailsRank.id} ${detailsGrade.id}`);
@@ -979,7 +1140,24 @@ export function mountWidget(el, spec = {}) {
       }
       ctx.listen(find.input, "input", () => { if (!find.input.value.trim()) { matches = []; drawFindStatus(); } });
 
-      // ------------------------------------------------------------------------------------- read-out
+      // ------------------------------------------------------------------------------------- read-out and pair bar
+
+      /** The card's pair bar: of all M pairs, the directions it states that run as the table's order shown does
+       * (N − against), those that run the other way (against) and the pairs it is silent on (M − N); the same engine
+       * counts as the read-out's. */
+      function drawPairs(v, sort) {
+        const d = v.disc;
+        const { count: against, pairs: reversed } = v.against[sort];
+        // at most CONFIG.revNames reversed pairs: each named after its count, as the card states it
+        const named = against > 0 && against <= CONFIG.revNames
+          ? [T.revPairsLead, ...reversed.flatMap((p, k) => [k ? T.revPairSep : null, nameNode(p.above), T.revPairAbove, nameNode(p.below)].filter(Boolean))]
+          : [];
+        pairs.set({
+          title: (total) => fill(T.pairsTitle, { total, card: () => v.card.title }), total: d.M,
+          counts: { agree: d.N - against, against, silent: d.M - d.N }, words: T.pairWords,
+          after: (p) => (p === "against" ? named : []),
+        });
+      }
 
       /** v1's three sentences (all pairs; the pairs the card states and their share; the pairs it is silent on, grade
        * by grade), then how many of the card's directions run as the table's order as shown and how many the other
@@ -1011,7 +1189,7 @@ export function mountWidget(el, spec = {}) {
           ctx.root.setAttribute("aria-busy", "true");
           rendering = true;
           try {
-            // a new theme (the OS setting, or the theme key) clears the palette cache and redraws the colours
+            // a new theme (the OS setting, or the theme key) clears the palette cache and redraws the colors
             const theme = themeKey();
             const themed = theme !== lastTheme;
             if (themed) { palCache = null; lastTheme = theme; }
@@ -1027,12 +1205,14 @@ export function mountWidget(el, spec = {}) {
             if (cardChanged || themed) { fillTable(v); drawLegend(v); }
             if (cardChanged) drawCaption(v);
             if (moved) orderRows(v, state.sort);
-            // the card does not depend on the order, the firm or the rows shown: such a change keeps it
-            const redraw = !chart || cardChanged || themed || info?.reason !== "update";
+            // the card does not depend on the order, the firm or the rows shown, and opening the "Card source" box
+            // (reason "disclosure") changes nothing in it: such a render keeps it
+            const redraw = !chart || cardChanged || themed || !["update", "disclosure"].includes(info?.reason);
             lastCard = state.card;
             lastSort = state.sort;
             if (redraw) drawCard(v);
             drawReadout(v, state.sort);
+            drawPairs(v, state.sort);
             select(firmOf(state), intent);
             // a phone hides the sideways scrollbar: say that the box scrolls when its columns do not fit
             scrollHint.hidden = !(tableBox.scrollWidth > tableBox.clientWidth + 1);

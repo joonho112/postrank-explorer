@@ -4,12 +4,7 @@ subtitle: "2.13 · after Kline, Rose and Walters (2024), Section VI and slides 6
 description: "Marginal intervals and mean pairwise errors between ordered grades."
 ---
 
-Each report-card row gives a unit's posterior mean and marginal interval, with colour indicating its grade.
-Different grades state directions; a shared grade withholds their comparison. The between-grade table averages the
-error probabilities of the corresponding stated pairs. These averages describe individual pairwise statements,
-rather than the probability of a joint ordering of entire grades. Sorting within grades changes the presentation
-without changing the reported relations or risk. The progressive display separates the marginal summaries from the
-comparisons introduced by each additional grade.
+Each row of the report card shows a unit's posterior mean and marginal interval, and color identifies its grade. A comparison across grades states a direction. A comparison within a grade is withheld. In the table, each cell below the diagonal averages the error probabilities for the stated pairs between those grades. It measures the expected share of wrong comparisons in that group of pairs. Showing one grade at a time makes it possible to see which comparisons enter as grades are added.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,11 +16,11 @@ comparisons introduced by each additional grade.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Six sites.** The card states 12 of 15 pairs, a share .800, with risk .0417 and expected share wrong .00206. Adjacent-grade comparisons have average errors .0024 and .0038. The purple cells compare these errors with those between distant grades; diagonal entries give grade means.
-- **Reveal by grade.** Only Grade 1 is drawn initially; the table says “With one grade shown there is nothing to compare yet.” Displaying another grade introduces the corresponding between-grade comparisons. Later grades retain their coloured bands and numbers while their rows are hidden.
-- **Thirty sites.** The card states 303 of 435 pairs, with risk .1603 and expected share wrong .121. Adjacent-grade shares are .2019, .1672 and .0640. A cell averages the errors of its stated pairs; it is not a probability about the grades as wholes.
+- **Six sites.** The card states 12 of 15 pairs, a share .800, with risk .0417 and expected share wrong .00206. Adjacent-grade comparisons have average errors .0024 and .0038. The purple cells compare these errors with those between distant grades. The diagonal marks withheld pairs. Grade means appear separately above the matrix.
+- **Reveal by grade.** Only Grade 1 is drawn initially; the table says “With one grade shown there is nothing to compare yet.” Displaying another grade introduces the corresponding between-grade comparisons. Later grades retain their colored bands and numbers while their rows are hidden.
+- **Thirty sites.** The card states 303 of 435 pairs, with risk .1603 and expected share wrong .121. Adjacent-grade shares are .2019, .1672 and .0640. These are averages for the stated pairs. The joint probability that every unit in one grade exceeds every unit in another would require a separate calculation.
 
-Within-grade sorting affects only the presentation. Expected rank is a unit's average position under the posterior, with the top position first. Posterior-mean sorting can rearrange rows within a grade; the report still states no direction between those units. The sort is for reading only and does not change the grades or risk.
+Expected rank averages a unit's position under the posterior, with the top position first. Sorting by posterior mean can rearrange rows within a grade. The comparison of two sites in that grade remains withheld, and the report retains the same risk.
 
 ::: {.callout-note appearance="simple"}
 These synthetic posteriors are taken as given. Grade 1 declares priority; in the poverty example it means the highest synthetic need. The intervals describe individual units, and their overlap does not determine grades. In these cards the least certain stated comparisons are between adjacent grades. The larger example keeps one expected-rank order and chooses where to cut it into grades; its optimum is restricted to that declared order.
@@ -39,8 +34,8 @@ one$fit$evaluation[c("G", "N", "M", "disclosure_rate")]
 ```
 :::
 
-The larger dataset is the poverty criterion of `pr_example_gaussian`, an analytic posterior law. The card layout follows the package's report-card plot; the between-grade display follows Kline, Rose and Walters, Figure 10 and Section VI.B.
+The larger dataset is the poverty criterion of `pr_example_gaussian`, an analytic posterior law. The card follows the package’s report-card plot. The between-grade table follows Figure 10 and Section VI.B of Kline, Rose and Walters.
 
 Standalone: [open the app](../../embed/report-card.html), for example `?data=thirty&tau=.25&cap=4&order=mean`.
 
-Related applications: [Reporting risk and withholding cost](price-of-silence.qmd) · [Expected and realised errors among stated directions](disclosed-errors.qmd).
+Related applications: [Reporting risk and withholding cost](price-of-silence.qmd) · [Expected and realized errors among stated directions](disclosed-errors.qmd).

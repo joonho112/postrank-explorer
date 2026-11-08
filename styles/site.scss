@@ -11,7 +11,7 @@ $navbar-fg: #343b36;
 $navbar-hl: #17645E;
 
 /*-- scss:rules --*/
-// Site shell. Colours are tokens from styles/tokens.css with the light value as fallback.
+// Site shell. Colors are tokens from styles/tokens.css with the light value as fallback.
 
 // A compact title block, so an app page shows its app without scrolling at 1280 x 800.
 #title-block-header.quarto-title-block { margin-bottom: 0.6rem; }
@@ -88,10 +88,65 @@ main.content p code { overflow-wrap: anywhere; }  /* long queries and calls in p
 /* a short URL query (?tau=.4) stays on one line; long code still wraps */
 main.content p a ~ code { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
 
-// Navbar: the site title and the six parts with their full names fit in one row at 1280 px.
-.navbar .navbar-nav .nav-link { padding-left: 0.4rem; padding-right: 0.4rem; font-size: 0.94rem; }
+// Original content categories: open each category to choose an application directly.
+.navbar .navbar-nav .nav-link { padding-left: 0.4rem; padding-right: 0.4rem; font-size: 0.94rem; min-height: 44px; display: flex; align-items: center; }
+.navbar .navbar-toggler { min-width: 44px; min-height: 44px; display: flex; align-items: center; gap: .5rem; font-size: .9rem; }
+.navbar .navbar-toggler::before { content: "Menu"; }
 .navbar .navbar-brand { margin-right: 0.6rem; }
 .navbar .navbar-title { white-space: nowrap; }
+.navbar .nav-link.active { font-weight: 650; color: #17645e; text-decoration: underline; text-underline-offset: .3em; text-decoration-thickness: 2px; }
+.navbar .dropdown-menu {
+  min-width: 19rem; max-width: min(36rem, calc(100vw - 2rem));
+  max-height: min(75vh, 42rem); overflow-y: auto; overscroll-behavior: contain;
+  padding: .35rem; border: 1px solid #bdc9bf; border-radius: 8px;
+  background: #fdfbf6; box-shadow: 0 8px 24px #343b3620;
+  scrollbar-gutter: stable;
+}
+.navbar .dropdown-item {
+  display: flex; align-items: center; min-height: 44px; padding: .5rem .75rem;
+  white-space: normal; font-size: .9rem; line-height: 1.35; color: #343b36; border-radius: 4px;
+}
+.navbar .dropdown-item:hover, .navbar .dropdown-item:focus { background: #e9eee6; color: #17645e; }
+.navbar .dropdown-item.active, .navbar .dropdown-item[aria-current] { background: #e1ece4; color: #12504b; font-weight: 650; box-shadow: inset 3px 0 #17645e; }
+.navbar .dropdown-header { padding: .6rem .75rem .3rem; color: #4b574e; font-size: .85rem; font-weight: 700; }
+.navbar .dropdown-divider { margin: .3rem 0; border-color: #d5dcd3; }
+@media (min-width: 1200px) {
+  .navbar-expand-xl .navbar-toggler { display: none; }
+  .navbar .dropdown-menu:not([aria-labelledby="nav-menu-tools"]) {
+    width: min(40rem, calc(100vw - 2rem));
+    max-width: none;
+  }
+  .navbar .dropdown-menu:is([aria-labelledby="nav-menu-multiple-criteria"], [aria-labelledby="nav-menu-cases"]) {
+    right: 0;
+    left: auto;
+  }
+  .navbar .dropdown-menu.show:not([aria-labelledby="nav-menu-tools"]) {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .navbar .dropdown-menu.show:not([aria-labelledby="nav-menu-tools"]) > li {
+    min-width: 0;
+    grid-column: span 3;
+  }
+  .navbar .dropdown-menu.show:not([aria-labelledby="nav-menu-tools"]) > li:is(:first-child, .dropdown-header, :has(> .dropdown-divider)) {
+    grid-column: 1 / -1;
+  }
+  .navbar .dropdown-menu.show[aria-labelledby="nav-menu-multiple-criteria"] > li:nth-child(-n + 3) {
+    grid-column: span 2;
+  }
+  .navbar .dropdown-menu.show:not([aria-labelledby="nav-menu-tools"]) .dropdown-item {
+    height: 100%;
+    padding-block: .26rem;
+  }
+  .navbar .dropdown-menu.show .dropdown-header { padding-block: .12rem; line-height: 1.2; }
+  .navbar .dropdown-menu.show .dropdown-divider { margin-block: .12rem; }
+}
+@media (max-width: 1199.98px) {
+  .navbar .navbar-collapse { max-height: calc(100dvh - 76px); overflow-y: auto; }
+  .navbar .navbar-nav-scroll { max-height: none; overflow: visible; }
+  .navbar .dropdown-menu { min-width: 0; max-width: 100%; max-height: none; margin: 0 0 .5rem .6rem; box-shadow: none; border: 0; border-left: 2px solid #bdc9bf; border-radius: 0; }
+  .navbar .navbar-nav .nav-link { padding-left: .65rem; }
+}
 
 // Content discovery: all public cards remain in the HTML when scripting is unavailable.
 .prx-catalog-filters {
@@ -121,4 +176,30 @@ main.content p a ~ code { white-space: nowrap; overflow-wrap: normal; word-break
   .prx-glossary dl { display: block; }
   .prx-glossary dt { margin-top: 1rem; }
   .prx-glossary dd { border-top: 0; padding-top: .35rem; }
+}
+
+
+.prx-app-sequence {
+  grid-column: body-content-start / body-content-end;
+  grid-row: content-bottom / page-bottom;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+  margin: 2rem 0 1rem;
+}
+.prx-app-sequence a {
+  display: flex;
+  flex-direction: column;
+  min-height: 44px;
+  padding: .65rem .85rem;
+  border: 1px solid #bdc9bf;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+.prx-app-sequence a[rel="next"] { grid-column: 2; }
+.prx-app-sequence a span { color: #4b574e; font-size: .85rem; }
+.prx-app-sequence a:focus-visible { outline: 3px solid #17645e; outline-offset: 2px; }
+@media (max-width: 575px) {
+  .prx-app-sequence { grid-template-columns: minmax(0, 1fr); }
+  .prx-app-sequence a[rel="next"] { grid-column: 1; }
 }

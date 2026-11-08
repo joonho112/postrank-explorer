@@ -3,7 +3,7 @@
   "app": "noisy-league",
   "catalog": "1.3",
   "from": "postrank-explorer-v1 verification/readouts/noisy-league.json",
-  "about": "The simulated league ranked by estimate. Numbers of the first draw at seed 20261030 and at 20261031-20261033 come from base-R oracle rows (oracle-simulate: drawLeague, extremeCounts top and bottom, topKOverlap, misorderedPairs, expectedMisorderedPairs, league30); group totals, truth counts, true ranks and the twenty-replay averages come from the registry (numbers/spec/part1-l03.json and part1.json league.* keys). Per-replay counts (group totals among the 10 extreme positions, top-10 overlap, pairs in the wrong order) and the twenty-replay averages come from the registry keys of the engine's leagueReplays (league.replay.rNN.*, league.replay20.avg.*; base-R oracle rows pending, Step 5.14). Port to v3 1.3: v1's seven cases unchanged (none scripted a prediction; the presets keep their v1 ids and queries), the reveal case extended with the U18 and U19 rows (positions 24 and 26, true ranks 30 and 11), and four cases for the draw key: the first preset, replay 11, a draw beyond the replays run, and an outside change of the replays. Part 1 review: the expected count prints at four significant digits (88.12, formatExpectedCount, register CR-002), checked against the oracle row in place of the registry's one-decimal 88.1; the read-out keeps v1's three sentences, checked word for word at Twenty replays.",
+  "about": "The simulated league ranked by estimate. Numbers of the first draw at seed 20261030 and at 20261031-20261033 come from base-R oracle rows (oracle-simulate: drawLeague, extremeCounts top and bottom, topKOverlap, misorderedPairs, expectedMisorderedPairs, league30); group totals, truth counts, true ranks and the twenty-replay averages come from the registry (numbers/spec/part1-l03.json and part1.json league.* keys). Per-replay counts (group totals among the 10 extreme positions, top-10 overlap, pairs in the wrong order) and the twenty-replay averages come from the registry keys of the engine's leagueReplays (league.replay.rNN.*, league.replay20.avg.*; base-R oracle rows pending, Step 5.14). Port to v3 1.3: v1's seven cases unchanged (none scripted a prediction; the presets keep their v1 ids and queries), the reveal case extended with the U18 and U19 rows (positions 24 and 26, true ranks 30 and 11), and four cases for the draw key: the first preset, replay 11, a draw beyond the replays run, and an outside change of the replays. Part 1 review: the expected count prints at four significant digits (88.12, formatExpectedCount, register CR-002), checked against the oracle row in place of the registry's one-decimal 88.1; the read-out keeps v1's three sentences, checked word for word at Twenty replays. Review 044 repair (U1-F7): the replay chart follows the league table's size code (the larger dot is the noisier group), so its key's caveat about size ('here a mark's size shows the group, not the SE', literal 11.4) went with the reversed code; the replay20 case checks the key's line for the averages instead, and the two averages now written at the ends of the chart's series (hooks chart-avg-small and chart-avg-large) against the same registry keys and base-R oracle row as the tallies.",
   "cases": [
     {
       "id": "first-draw",
@@ -3404,12 +3404,60 @@
           "value": 71
         },
         {
-          "select": ".prx-nl-key-sizes",
+          "select": ".prx-nl-key-avg",
           "kind": "text",
-          "about": "the replay chart's key: mark size there shows the group, not the SE",
+          "about": "the replay chart's key (review 044 repair, U1-F7): the solid lines are the groups' averages, written at the series' ends; the caveat about the reversed size code went with that code",
           "source": "literal",
           "ref": "11.4",
-          "value": "here a mark's size shows the group, not the SE"
+          "value": "solid lines: each group's average over the replays run, written at the right"
+        },
+        {
+          "select": "[data-prx-readout=\"chart-avg-small\"]",
+          "about": "replay chart (review 044 repair, U1-F7): the small units' average over the twenty replays, written at the end of their series",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10small",
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"chart-avg-small\"]",
+          "about": "replay chart: the small units' average (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.small"
+          },
+          "value": 4.35
+        },
+        {
+          "select": "[data-prx-readout=\"chart-avg-large\"]",
+          "about": "replay chart (review 044 repair, U1-F7): the large units' average over the twenty replays, written at the end of their series",
+          "source": "registry",
+          "ref": "league.replay20.avg.ext10large",
+          "value": 2
+        },
+        {
+          "select": "[data-prx-readout=\"chart-avg-large\"]",
+          "about": "replay chart: the large units' average (independent base-R oracle row)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "leagueReplays-seed20261030-R20-k5-top10",
+            "field": "mean.extreme.large"
+          },
+          "value": 2
         },
         {
           "select": ".prx-readout",

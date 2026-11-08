@@ -1,43 +1,43 @@
 ---
 title: "Terminology and notation"
 subtitle: "Targets, reporting losses and computation scope"
-description: "Definitions of posterior quantities, grade reports, disclosure, error measures and report families."
+description: "Definitions of posterior quantities, common grades, multidomain profiles, disclosure, error measures and report families."
 ---
 
-The notation below is used throughout the collection. Numerical interpretation depends on the target orientation,
-posterior law and eligible report family. Each application specifies these assumptions for its own examples.
+An Alabama county and a California school are both units, but their reports compare different outcomes. The
+definitions below specify what is compared, how the posterior enters the comparison, and which reports can be chosen.
 
 ## Targets and posterior uncertainty
 
 ::: {.prx-glossary}
 
 Unit; criterion $k$
-:   A firm, school, site or other entity included in the comparison population. A criterion is a target on which the report is evaluated. Units outside this population remain unassessed.
+:   A unit is a firm, school, site, or other entity included in the comparison. A criterion is an outcome or other target used to evaluate the report. For example, income and incarceration are two criteria measured for the same counties.
 
     **Examples:** [Multiple criteria](criteria/several-criteria.qmd) · [Supplied summaries](tools/your-data.qmd)
 
 $\theta_i$
-:   The oriented target for unit $i$. Larger values denote higher reporting priority. This orientation is specified substantively and need not correspond to better outcomes or greater need.
+:   The target for unit $i$, coded so that higher values receive higher reporting priority. The application states what higher priority means for that target.
 
     **Examples:** [Two-unit comparison](uncertainty/two-units.qmd) · [Alabama counties](cases/alabama-map.qmd)
 
 Posterior
-:   The distribution of target values conditional on the stated data and model. Reported posterior risk is an expectation under this distribution. Its calculation does not establish calibration in an external population.
+:   The distribution of target values given the data and model. Posterior risk averages the loss over this distribution. Calibration concerns how those probabilities agree with outcomes under a specified evaluation law or in new data.
 
     **Examples:** [Posterior shrinkage](uncertainty/shrinkage.qmd) · [Posterior inputs](uncertainty/posterior-pipeline.qmd)
 
 $\pi_{ij}$
-:   The posterior probability of a specified direction, such as $\Pr(\theta_i>\theta_j)$. It concerns the joint distribution of two targets; a marginal interval for one unit does not determine it.
+:   The posterior probability of a direction such as $\Pr(\theta_i>\theta_j)$. This calculation uses the joint distribution of the two targets because the event depends on their difference.
 
     **Examples:** [Direction probabilities](uncertainty/two-units.qmd) · [Interval overlap](uncertainty/interval-overlap.qmd)
 
 $e_{ij}^{(k)}$
-:   The probability that stating $i$ above $j$ is wrong on criterion $k$. Under the zero-margin weak-error convention, exact equality counts as a wrong strict direction. The forward and reverse errors can therefore sum to more than one when equality has positive probability. Event conventions and comparison margins are specified with the input.
+:   The probability that stating $i$ above $j$ is wrong on criterion $k$. Under the zero-margin weak-error convention, equality makes either strict direction wrong. If equality has positive probability, the two directional errors sum to more than one. Each example specifies the event and any comparison margin.
 
     **Examples:** [Pairwise decisions](grades/one-pair.qmd) · [Posterior equality](grades/ties-and-withholding.qmd)
 
 Marginal interval
-:   A posterior interval for an individual target at a specified probability level. Its level is marginal rather than simultaneous across units. Overlap of two such intervals is distinct from their direction probability.
+:   An interval containing a specified share of the posterior distribution for one target. A 90% interval for each of two schools gives a probability statement about each school individually. The probability that one school's target exceeds the other's uses their joint posterior.
 
     **Example:** [Report-card summaries](grades/report-card.qmd)
 
@@ -52,8 +52,8 @@ Expected rank
 
 ::: {.prx-glossary}
 
-Grade report $g$
-:   An ordered partition of the included units, with grade 1 at the high-priority end. Different grades state a direction; a shared grade withholds a comparison without asserting equality. Allocation requires an additional decision rule.
+Common-grade report $g$ (P1)
+:   An ordered grouping of the units, with grade 1 at the high-priority end. The report states a direction between grades. Within a grade it leaves the comparison unstated. Using the report to allocate places or resources requires a separate rule.
 
     **Examples:** [Report construction](grades/report-builder.qmd) · [Allocation objectives](rules/one-place.qmd)
 
@@ -70,7 +70,7 @@ $N$, $s=N/M$
 $E_k$
 :   The posterior expected number of wrong stated directions on criterion $k$, obtained by summing directional error probabilities over the stated pairs. Joint correctness is a separate probability.
 
-    **Example:** [Expected and realised errors](grades/disclosed-errors.qmd)
+    **Example:** [Expected and realized errors](grades/disclosed-errors.qmd)
 
 $E_k/N$
 :   The expected wrong share among stated pairs of a fixed report. It is **NA: no disclosure** when $N=0$.
@@ -94,26 +94,26 @@ $\lambda$, $\phi$
 
 :::
 
-The inequality $E_w\leq\tau N$ holds for a loss-minimising report when its eligible family includes the all-withheld
-report. It does not apply automatically to an arbitrary fixed report or rule. Shared grades, exact equality of
-latent values and equal-risk optimisation solutions refer to distinct properties.
+A loss-minimizing report satisfies $E_w\leq\tau N$ when the family includes the report that withholds every
+comparison. The inequality follows by comparing the chosen report's loss with that benchmark. A grade report
+chosen by a different rule may exceed the benchmark.
 
 ## Report families and comparisons
 
 ::: {.prx-glossary}
 
 Family; grade cap
-:   The set of reports eligible for optimisation. Examples include all reports with at most a specified number of grades and contiguous cuts of a fixed order. An optimum within one order has this restricted scope. Equal order scores may be required to remain together.
+:   The set of reports considered in the search. A grade cap limits the number of grades. A fixed order limits grade boundaries to cuts along that order, so the best report among those cuts may differ from the best report over all orders. Some fixed orders also keep equal scores together.
 
     **Examples:** [Report families](grades/families.qmd) · [Computation methods](grades/computing-grades.qmd)
 
 Frontier
-:   The lower convex boundary of expected wrong counts against disclosure in the specified family, allowing randomisation over complete reports. A point on an edge may be unattainable by a single report. Reports optimal at the same $\tau$ can have different disclosures.
+:   The lower convex boundary of expected wrong counts plotted against disclosure for a specified report family. A point on an edge may require randomizing between complete reports. Two reports can minimize risk at the same $\tau$ while stating different numbers of pairs.
 
     **Examples:** [Error–disclosure frontier](grades/frontier.qmd) · [Comparison constraints](rules/same-tau-or-same-n.qmd)
 
 $\psi$
-:   The probability of selecting the higher-disclosure complete report in a mixture of two frontier reports. The resulting expected disclosure describes a randomised reporting rule; it need not correspond to a deterministic intermediate grade vector.
+:   The probability of choosing the report that states more pairs in a mixture of two frontier reports. Expected disclosure averages the two pair counts using the mixing probabilities. An individual draw produces one of the two complete reports.
 
     **Example:** [Mixtures of reports](grades/frontier-mixtures.qmd)
 
@@ -128,12 +128,12 @@ $q_k$
     **Examples:** [Budget-constrained families](criteria/error-budgets.qmd) · [Case-report checks](tools/report-designer.qmd)
 
 $\Delta_k$
-:   The risk of a common report on criterion $k$ minus that criterion's minimum risk under the same loss and feasible family. Optimisation bounds give an interval when the criterion-specific minimum is not established. Differences between settings or nonnested families need not have this interpretation.
+:   The risk of the common report on criterion $k$ minus the minimum risk for that criterion under the same loss and report family. If the exact minimum is unknown, bounds on it give an interval for the excess risk. Changing the loss or family changes the benchmark.
 
     **Example:** [Criterion-specific excess risk](criteria/common-grade-cost.qmd)
 
 Selection belief; evaluation law
-:   The distribution used to select a report and the distribution used to evaluate that fixed report. Evaluation under a different law gives a different expected loss, even when the grade vector is unchanged.
+:   The distribution used to select a report and the distribution used to evaluate that fixed report. Using a different evaluation law can change expected loss for the same grade vector.
 
     **Examples:** [Alternative evaluation laws](grades/another-law.qmd) · [Selection-draw evaluation](grades/chosen-and-judged.qmd)
 
@@ -149,8 +149,94 @@ Simulation error
 
 :::
 
-Across repeated datasets, the mean of realised error fractions, the ratio of expected wrong and stated counts, and
-the mean posterior-reported share define different summaries. Their denominators and conditioning must therefore be
-specified. [Averaging across reports](grades/averaging-errors.qmd) illustrates these distinctions, and the
-[case-report tool](tools/report-designer.qmd) records the quantities used in its reporting account. None of these
-summaries alone establishes external calibration.
+When repeated reports state different numbers of pairs, averaging their realized error fractions gives equal weight
+to reports that state at least one pair. Dividing expected wrong counts by expected stated counts gives more weight to reports
+that state more pairs. A posterior-reported share instead uses the probabilities supplied to that report.
+[Averaging across reports](grades/averaging-errors.qmd) compares these quantities, and the
+[case-report tool](tools/report-designer.qmd) specifies the denominator used in its report.
+
+## Domain profiles and joint protection {#multidomain-profiles-and-joint-protection}
+
+[Domain profiles](criteria/index.qmd#domain-profiles) give each unit a grade for each domain. The following
+definitions explain how those grades are compared and how joint errors enter the choice of a report.
+
+::: {.prx-glossary}
+
+Domain $d$; profile matrix $G$
+:   A substantive reporting coordinate and its grade column. The matrix has units on rows and domains on columns.
+    A common-grade report uses the same column across criteria; a multidomain profile (P2) permits separate columns.
+    Grade 1 denotes the highest reported priority within its own domain.
+
+    **Example:** [Common grades and domain profiles](profiles/profile-common-vs-domain.qmd)
+
+Profile tuple; crossed directions
+:   A unit's ordered domain grades. Tuples such as $(1,2)$ and $(2,1)$ place the first unit higher in one domain and
+    lower in the other. They do not define an overall ranking or an allocation rule. Equal grades within a domain
+    withhold that pair's direction without asserting equal latent targets.
+
+    **Examples:** [Common and profile reports](profiles/profile-common-vs-domain.qmd) · [Forty fictional sites](profiles/fictional-site-profiles.qmd)
+
+Complete joint state
+:   A set of target values for every included unit and domain in one posterior state. A complete finite law lists
+    each possible state and its probability. Two laws can agree within each domain and differ in how the domains
+    vary together. Row labels on separate simulations are insufficient to recover that dependence.
+
+    **Example:** [Dependence and joint protection](profiles/profile-dependence.qmd)
+
+$F_d$, $N_d$, $R(G)$
+:   In a joint state, $F_d$ counts false strict directions in domain $d$; a strict assertion at latent equality is
+    false. The reported card discloses $N_d$ pairs in that domain. Its additive expected loss is
+    $R(G)=\sum_d w_d\{E(F_d)+\tau_d(M-N_d)\}/M$, with the original $M=n(n-1)/2$ pair count. This expected cost is
+    distinct from a probability that one or more protected conditions fail.
+
+    **Examples:** [Separate weighted choices](profiles/profile-separability.qmd) · [Reporting resolution](profiles/profile-resolution.qmd)
+
+$t_d$, $\alpha$, $J(G)$
+:   A strict false-direction-proportion threshold, an inclusive joint cap, and the direct union probability
+    $J(G)=\Pr\{\text{at least one }d:\ F_d>t_dN_d\}$. The union is formed within the same joint state before its
+    probability is calculated. At $N_d=0$ the ratio is not defined and the domain's exceedance event is false.
+    Feasibility requires $J(G)\leq\alpha$, alongside any other declared constraints.
+
+    **Example:** [Dependence and joint protection](profiles/profile-dependence.qmd)
+
+Separable reporting decision
+:   An additive weighted objective whose actual feasible family factors into a Cartesian product of domain
+    choices. Every combination of the complete weighted domain minimizer sets is then optimal in that product.
+    Posterior independence is unnecessary. A zero-weight domain contributes every feasible column to its weighted
+    minimizer set, while retaining its constraints. A joint constraint can prevent the feasible family from factoring.
+
+    **Example:** [When domain choices separate](profiles/profile-separability.qmd)
+
+Occupied-grade counts $(K_S,K_C)$
+:   The numbers of occupied grades in the two domains, rather than a particular site's profile tuple. With a fixed
+    law, loss and candidate bank, relaxing a budget cannot increase minimum risk. A selected domain's grade count
+    can nevertheless decrease as reporting detail moves to another domain. Count paths identify the canonical
+    representative when there are tied optima.
+
+    **Example:** [Posterior uncertainty and reporting resolution](profiles/profile-resolution.qmd)
+
+Exact optimizer set; displayed representative
+:   All feasible candidates that attain the same exact minimum loss. The app displays the first in a specified
+    grade order and keeps the other tied reports available. The reported optimum is relative to the candidates
+    included in the search.
+
+    **Examples:** [Common versus separate columns](profiles/profile-common-vs-domain.qmd) · [Dependence and tied cards](profiles/profile-dependence.qmd)
+
+Exact calculations for a finite law
+:   For a complete list of posterior states and probabilities, the app computes losses and tests constraints with
+    exact fractions. A separate assessment is required if the supplied law approximates another posterior. The
+    browser examples accept 2–4 units, 1–2 domains, 1–8 states, and at most 256 distinct profile cards, with at most
+    256 input columns per domain. The R package also supports assessment with independent draws and MCMC diagnostics.
+
+    **Examples:** [Joint-law illustration](profiles/profile-dependence.qmd) · [Specified reversal scenarios](profiles/profile-resolution.qmd)
+
+Saved profiles for fictional sites
+:   The forty-site example shows grade tuples, the settings used to choose them, and separate summaries for
+    selection and diagnostics. The grade tuples identify occupied cells and the directions stated in each
+    domain. Rerunning selection or computing new risk probabilities would require the original joint draws.
+    The stored fractions describe the draws used. The diagnostic segment came from the same chain as the
+    selection segment, so it does not provide an independent validation.
+
+    **Example:** [Profiles of forty fictional sites](profiles/fictional-site-profiles.qmd)
+
+:::

@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent fixed-report accounting for Part4 withholding diagnostics.
 # Run from the repository root: Rscript r-export/42_v3_part4_withholding.R
 # No new app/TypeScript/tests, postrank namespace, browser, network, timing,

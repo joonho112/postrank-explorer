@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/pairwise.ts (Step 2.4).
 #   oracle-pairwise    base R only (closed forms, exact integer masses, draw counts); postrank is not loaded.
 #   postrank-pairwise  postrank 1.1.0 arrays (pr_tutorial, pr_example_gaussian, postrank_toy, exact finite laws)
@@ -228,7 +228,7 @@ for (p in list(c(0.30, 0.20, 0.10, 0.20), c(0.30, 0.20, 0.10, 0.60), c(0.20, 0.2
   stopifnot(abs(sum(pis) - 1) < 1e-15)                             # forward + reverse = 1 (no ties under a normal law)
 }
 
-# ---- Step 5.14 Part 1 rows (engine/API.md) ---------------------------------------------------------
+# ---- Step 5.14 Part 1 rows ---------------------------------------------------------
 # L-07 correlation box at the prediction's setting (means .30/.10, SDs .20/.20): corr .50, .95 and -.95. The record
 # (not compared) holds the SD of the difference sqrt(sA^2 + sB^2 - 2 rho sA sB) and z = gap / SD; pi = Phi(z).
 for (rho in c(0.50, 0.95, -0.95)) {
@@ -274,7 +274,7 @@ lg_pi <- o_direction_matrix(lg_m, lg_s)
 stopifnot(all(abs(lg_pi + t(lg_pi) - 1) < 1e-15, na.rm = TRUE))
 add(row("directionMatrix-league-seed20261030-prior.15", "directionMatrix", list(means = vec(lg_m), sds = vec(lg_s)), list(pi = lg_pi)))
 
-# ---- Step 6.14 Part 2 rows (engine/API.md; shared inputs in r-export/15_part2.R) --------------------
+# ---- Step 6.14 Part 2 rows (shared inputs in r-export/15_part2.R) --------------------
 source("r-export/15_part2.R")
 # G-04 KRW Example 1 (omega = (2, omega_2, 0), unit SDs): pi_12 = pairDirection(2, 1, omega_2, 1),
 # pi_23 = pairDirection(omega_2, 1, 0, 1), pi_13 = pairDirection(2, 1, 0, 1), at omega_2 = 1, .80, .81, .50.

@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Rules for base-R oracle code (golden values that do not call postrank).
 # 1. An oracle script never loads postrank; call assert_no_postrank() after its setup.
 # 2. It uses closed forms (pnorm, choose, exact rationals) or full enumeration of small families.

@@ -6,7 +6,7 @@
 //            posteriors taken as given, with the package's pair array (pr_tutorial$one); no estimates of their own
 //   league   the simulated league (engine league30 and drawLeague at LEAGUE_SEED) with the teaching normal–normal
 //            posterior (engine normalPosterior, prior mean 0, prior SD .15) and its pair array (errorArray)
-//   krw      Kline, Rose and Walters' 97 firms, race contact gap (data/released/case-krw.json, licence cc-by-nc-krw):
+//   krw      Kline, Rose and Walters' 97 firms, race contact gap (data/released/case-krw.json, license cc-by-nc-krw):
 //            the released race pair array, posterior means and estimates
 // The ranking takes the top n units by posterior mean (engine strictOrder); n runs from 2 to the data set's size, and
 // choosing a data set starts at all of its units (as the presets do). Every count and probability comes from the
@@ -31,6 +31,14 @@
 //            as a formula, the least certain claim, and, for the league and the firms, the same units ranked by
 //            estimate (vermillion), with the pairs on which the two orders disagree; for the league, the wrong claims
 //            counted against its true values beside the posterior's expected count
+// Layout (review 044 repair, X-01 and X-16): base.js's result-first frame, so the read-out sits directly under the
+// controls and the preset row. The claims panel, the errors panel and the scale panel are the three areas of one grid,
+// in a phone's reading order in the DOM: the triangle, then the dot plot, then the scale table (U3-F8: the scale table
+// no longer sits between the two graphics the slider changes); in one column the sum's note also follows the dot plot
+// (CSS order). From a 46rem container on, two columns as before: the claims panel with the scale panel under it on the
+// left, the errors panel on the right. The triangle and the dot plot are the graphics the slider changes
+// (ctx.primaryGraphic; the triangle, shown first, is the one measured), and the n slider is the control that moves them
+// (ctx.primaryControl).
 // Drawing: above CONFIG.readMax units the triangle's squares and the dots are each drawn as one SVG path (onePath), so
 // a drag of n over the 97 firms redraws two elements instead of 2 × 4,656. Views are memoized (CONFIG.memo, FIFO).
 // Notices: a standalone page (no Quarto meta element) adds the KRW notice (with the firms) and the CDE notice after
@@ -152,14 +160,14 @@ export const CONFIG = Object.freeze({
     compareSame: "Both rankings make all {M} claims and agree on every pair here, so they expect the same number of wrong claims.",
     noEstimates: "The six sites come with posteriors only, without estimates of their own, so there is no estimate order to compare.",
     truth: "The league is simulated, so its true values are known. Against them, {mis} of these {M} claims are wrong in this draw, and {exp} on average over new draws of the estimates. The posterior, which does not know the true values, expects {E}. The two averages answer different questions (over new estimates for these true values; over true values, given these estimates), so they need not agree. Only this second count can be given for real units.",
-    readAll: "{name}: a strict ranking of all {n} {units} makes {M} claims, one for each pair.",
-    readTop: "{name}: a strict ranking of the top {n} of the {N} {units} by posterior mean makes {M} claims, one for each pair.",
+    readAll: "{name}: a strict ranking of all {n} {units} makes {M} {claims}, one for each pair.",
+    readTop: "{name}: a strict ranking of the top {n} of the {N} {units} by posterior mean makes {M} {claims}, one for each pair.",
     readPm: " Ranked by posterior mean, the expected number of wrong claims is {E}.",
     readEst: " Ranked by estimate, it is {E}.",
-    noteSix: "Six fictional sites from the postrank package's tutorial data, the reading score: independent normal posteriors with SD {sd} each, specified for teaching and taken as given.",
+    noteSix: "The reading scores are for six fictional sites in the postrank tutorial data. The calculation uses independent normal posteriors, each with SD {sd}.",
     noteLeague: "Simulated league of {n} units (ten small, ten medium, ten large), one fixed draw of the estimates (seed {seed}); teaching posterior with a normal prior of mean {zero} and SD {prior}.",
     noteKrw: "KRW's firms: the log contact gap of white-named minus Black-named applications, with a smoothed version of KRW's posteriors. Rank {one} is the largest posterior-mean race gap (white over Black names).",
-    // one KRW notice (data_contract.json scope cc-by-nc-krw; CR-054): DOIs, the licence as the deposit states it (no
+    // one KRW notice (data_contract.json scope cc-by-nc-krw; CR-054): DOIs, the license as the deposit states it (no
     // version), noncommercial, a change note, no endorsement, the conduct line
     noticeKrw: "Data: Kline, Rose and Walters (2024), A Discrimination Report Card, American Economic Review, doi:10.1257/aer.20230700; replication deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. The data shown here are provided as is and without warranty. No endorsement by the authors is implied.",
     noticeKrwChanges: "Changes: the race pair probabilities as adapted in postrank 1.1.0 (pr_case_krw), a smoothed version of KRW's posteriors; firms ranked here by posterior mean, top-n blocks and expected counts computed in this browser.",
@@ -344,14 +352,29 @@ const CSS = `
   .prx-rc .prx-rc-n { width: 100%; }
 }
 
-/* the read-out sits under the controls */
-.prx-rc > .prx-readout { margin: 0 0 0.75rem; }
-
-/* panels: side by side in a wide container, stacked below 46rem */
-.prx-rc .prx-rc-charts { container-type: inline-size; }
+/* panels (review 044 repair, X-16): the claims, errors and scale panels are three grid areas, stacked in the DOM's
+   (a phone's) order below 46rem: the triangle, the dot plot, then the scale table. From 46rem, two columns as before:
+   the claims panel with the scale panel under it (1rem apart, as when it sat inside the claims panel) on the left,
+   the errors panel across both rows on the right; the second row takes any extra height, so the scale panel starts
+   right under the claims panel */
+.prx-rc .prx-rc-charts { container: prx-rc-charts / inline-size; }
 .prx-rc .prx-rc-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem 1.5rem; align-items: start; min-width: 0; }
+.prx-rc .prx-rc-grid > .prx-rc-strip-panel { margin-top: 0; }
 @container (min-width: 46rem) {
-  .prx-rc .prx-rc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prx-rc .prx-rc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto 1fr; row-gap: 0;
+    grid-template-areas: "claims errors" "strip errors"; }
+  .prx-rc .prx-rc-claims { grid-area: claims; }
+  .prx-rc .prx-rc-errors { grid-area: errors; }
+  .prx-rc .prx-rc-grid > .prx-rc-strip-panel { grid-area: strip; margin-top: 1rem; }
+}
+/* one column (review 044 repair, X-16; Phase 3 fix round): the sum's note follows the dot plot, so the dot plot comes
+   right after the sum it shows. CSS order inside the errors panel, switched by the same container width as the columns
+   (no script switches it, so a background tab lays it out too); the note holds no control, so Tab order is the same */
+@container prx-rc-charts (width < 46rem) {
+  .prx-rc .prx-rc-errors { display: flex; flex-direction: column; }
+  .prx-rc .prx-rc-errors > * { order: 2; }
+  .prx-rc .prx-rc-errors > .prx-rc-heading, .prx-rc .prx-rc-errors > .prx-rc-tex, .prx-rc .prx-rc-errors > .prx-rc-scatter { order: 0; }
+  .prx-rc .prx-rc-errors > .prx-rc-sum-note { order: 1; }
 }
 /* each panel is a container too, so the scale table answers to its own panel's width */
 .prx-rc .prx-rc-panel { min-width: 0; container-type: inline-size; }
@@ -440,6 +463,8 @@ export function mountWidget(el, spec = {}) {
     name: CONFIG.name,
     label: CONFIG.label,
     className: CONFIG.className,
+    // review 044 repair (X-01): the read-out directly under the controls and the preset row
+    layout: "result-first",
     css: CSS,
     keys: {
       data: { type: "choice", values: CONFIG.data.values.slice(), value: CONFIG.data.value },
@@ -491,12 +516,14 @@ export function mountWidget(el, spec = {}) {
         sliderFor = d.key;
       }
       ctx.controls.append(dataRadio.root, sliderSlot);
-      ctx.controls.after(ctx.readout.node);
+      // the n slider is the control that moves the two graphics; it follows the data radio (base.js primaryControl)
+      ctx.primaryControl(sliderSlot);
 
-      // --- the claims panel: the count formula, the triangle, the scale table
+      // --- the claims panel: the count formula and the triangle; the scale table is a panel of its own (below)
       const texPairs = h("div", { class: "prx-rc-tex", "data-prx-tex": "pairs" });
       const triNote = h("p", { class: "prx-rc-note", "data-prx-part": "legend" });
-      const triSlot = h("div", { class: "prx-rc-triangle" });
+      // the triangle, the first graphic the slider changes (base.js primaryGraphic)
+      const triSlot = ctx.primaryGraphic(h("div", { class: "prx-rc-triangle" }));
       const stripBody = h("tbody", {});
       const stripScale = h("span", { class: "prx-rc-scale-axis", "aria-hidden": "true" });
       const stripTable = h("table", { class: "prx-rc-strip" },
@@ -509,15 +536,18 @@ export function mountWidget(el, spec = {}) {
       const stripBox = ctx.scrollRegion(h("div", { class: "prx-rc-strip-box", "data-prx-part": "table" }, stripTable), T.stripCaption);
       const stripNote = h("p", { class: "prx-rc-note", "data-prx-part": "notes", text: T.stripNote });
       const cdeLine = h("p", { class: "prx-rc-note", "data-prx-part": "notes", hidden: !cde });
-      const stripPanel = h("section", { class: "prx-rc-sub prx-rc-strip-panel", "data-prx-box": "strip", "aria-label": T.stripHeading },
+      // the scale panel, a container of its own (prx-rc-panel), so its table still answers to the panel's width
+      const stripPanel = h("section", { class: "prx-rc-panel prx-rc-sub prx-rc-strip-panel", "data-prx-box": "strip", "aria-label": T.stripHeading },
         ctx.panelTitle(T.stripHeading, { className: "prx-rc-heading" }), stripBox, stripNote, cdeLine);
       const claimsPanel = h("section", { class: "prx-rc-panel prx-rc-claims", "aria-label": T.claimsHeading },
-        ctx.panelTitle(T.claimsHeading, { className: "prx-rc-heading" }), texPairs, triSlot, triNote, stripPanel);
+        ctx.panelTitle(T.claimsHeading, { className: "prx-rc-heading" }), texPairs, triSlot, triNote);
 
       // --- the errors panel: the sum, the dot plot, the least certain claim, the comparison, the league's truth
       const texExpected = h("div", { class: "prx-rc-tex", "data-prx-tex": "expected" });
-      const formulaNote = h("p", { class: "prx-rc-note", "data-prx-part": "legend" });
-      const scSlot = h("div", { class: "prx-rc-scatter" });
+      // the sum's note (in one column it follows the dot plot: CSS order, review 044 repair, X-16)
+      const formulaNote = h("p", { class: "prx-rc-note prx-rc-sum-note", "data-prx-part": "legend" });
+      // the dot plot, the second graphic the slider changes, beside the triangle (marked too; the first shown counts)
+      const scSlot = ctx.primaryGraphic(h("div", { class: "prx-rc-scatter" }));
       const leastLine = h("p", { class: "prx-rc-note prx-rc-least", "data-prx-part": "notes" });
       const readHint = h("p", { class: "prx-hint prx-rc-read", "data-prx-part": "notes" });
       const halfNote = h("p", { class: "prx-rc-note prx-rc-half", "data-prx-part": "notes", hidden: true });
@@ -532,12 +562,14 @@ export function mountWidget(el, spec = {}) {
         comparePanel, noEst, truthNote);
 
       ctx.charts.classList.add("prx-rc-charts");
-      const grid = h("div", { class: "prx-rc-grid" }, claimsPanel, errorsPanel);
+      // a phone's reading order (review 044 repair, X-16): the triangle, the dot plot, then the scale table; two
+      // columns from 46rem (CSS grid areas), with the scale table under the triangle as before
+      const grid = h("div", { class: "prx-rc-grid" }, claimsPanel, errorsPanel, stripPanel);
       const missing = h("p", { class: "prx-rc-missing", text: T.missing, hidden: true });
       ctx.charts.append(missing, grid);
 
       // --- notes under the app: the data set's source (numbers as data-num); on a standalone page also the notices
-      // of the KRW and CDE data (licence, change note and conduct line; their citations carry DOIs and years, so they
+      // of the KRW and CDE data (license, change note and conduct line; their citations carry DOIs and years, so they
       // sit outside the parts whose numbers the checks read). A site page carries one note of its own.
       const sourceNote = ctx.part("notes", h("p", { class: "prx-rc-source" }));
       ctx.caption.after(sourceNote);
@@ -748,7 +780,7 @@ export function mountWidget(el, spec = {}) {
               // "{count} claims above", its count a data-num tspan (render hook)
               above.length
                 ? P.text([{ x: farthest, y: CONFIG.half }], {
-                  x: "x", y: "y", text: () => `${formatCount(v.aboveHalf)}${T.aboveLabel}`, dx: SC.aboveDx, dy: SC.halfDy,
+                  x: "x", y: "y", text: () => `${formatCount(v.aboveHalf)}${v.aboveHalf === 1 ? " claim above" : T.aboveLabel}`, dx: SC.aboveDx, dy: SC.halfDy,
                   textAnchor: "start", fill: c.plotFg, fontWeight: "bold",
                   render: (index, scales, values, dims, context, next) => {
                     const g = next(index, scales, values, dims, context);
@@ -759,7 +791,7 @@ export function mountWidget(el, spec = {}) {
                       num.setAttribute("data-num", dataNum(v.aboveHalf));
                       num.textContent = formatCount(v.aboveHalf);
                       const rest = doc.createElementNS(SVG_NS, "tspan");
-                      rest.textContent = T.aboveLabel;
+                      rest.textContent = v.aboveHalf === 1 ? " claim above" : T.aboveLabel;
                       t.replaceChildren(num, rest);
                     }
                     return g;
@@ -829,7 +861,7 @@ export function mountWidget(el, spec = {}) {
       function drawReadout(v) {
         const d = v.d;
         const slots = {
-          name: T.names[d.key], units: T.units[d.key],
+          name: T.names[d.key], units: T.units[d.key], claims: v.M === 1 ? "claim" : "claims",
           n: () => ro("n", v.n, formatCount(v.n)), N: () => ro("N", d.n, formatCount(d.n)), M: () => ro("M", v.M, formatCount(v.M)),
         };
         ctx.readout.set([

@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R native decision experiment (3.13), written before reading the app.
 # Sources: public theory book ch.17/19, engine/API.md contracts/SR-06, _rng.R's independent
 # public stream implementation. No new app source, decision.ts or new test expectations read.

@@ -12,8 +12,24 @@
 //              in a dashed box and keep the order of the column before, so a box adds no crossing of its own
 //   ranks      each unit's rank distribution (one bar per rank, on one scale for all units), its expected rank (a
 //              diamond) and its 90% rank interval (engine rankIntervals), rows in the order of the chosen summary
-//   card       the selected unit (or the one under the pointer): its numbers and its worked expected rank, and on another
-//              scale its worked posterior mean
+//   card       the selected unit (or the one under the pointer): its numbers, then a closed "Worked expected rank" box
+//              with its worked expected rank and, on another scale, its worked posterior mean
+// Layout (review 044 repair: U3-F1, X-01): base.js's result-first frame, top to bottom:
+//   controls   Data, the top group (a radio pair for three units, a slider for the league), the scale of the true values
+//              and the scale's hint on one row, then the summary ("Rank the units by", a three-way segmented choice,
+//              ctx.primaryControl) with a closed Settings box beside it (the league's prior SD and k of exp(kθ), with a
+//              line saying where they act, disabled where they do not apply, so the box and the preset row never move),
+//              then the preset row
+//   read-out   directly under the controls (the frame puts it there); on the three-unit law ranked by posterior mean in
+//              the review's words; under the posterior mean or the expected rank it names the top group k, so a change of
+//              k always changes the sentence; ranked by the posterior mean on another scale it says where the scale took
+//              the listed unit whose place moves most ("On this scale U13 climbs from 6th to 3rd by posterior mean.")
+//   charts     the slope chart first (ctx.primaryGraphic), the selected unit directly under it (it follows the slope
+//              chart's points) with the worked formulas one click away, then the chart's notes; beside it, where the
+//              charts are wide, the posterior (table or the league's widths note) above the rank distributions; on a
+//              narrow screen the side column follows the slope chart's column (the DOM follows the desktop reading
+//              order, so Tab moves once from the end of the left column to the top of the right one)
+//   caption, then the source note
 // The scale switch puts the same posterior on another increasing scale: √θ for the three-unit law, exp(kθ) for the
 // league (engine transformedMeans). Only the posterior-mean column moves. Expected ranks, rank distributions and
 // top-group probabilities depend on the order of the units in each state alone, which a common increasing change of
@@ -27,7 +43,8 @@
 // from misorderedPairs.
 // Speed: each league prior SD is computed once and kept, and every step of the prior-SD slider is computed ahead in
 // idle time, nearest to the current prior SD first, so a drag redraws without drawing 4,000 posterior samples again.
-// A change of the selected unit toggles attributes on the drawn marks and redraws only the card.
+// A change of the selected unit toggles attributes on the drawn marks and redraws only the card; so does the render that
+// follows opening a box (info.reason "disclosure"): no figure sits inside a box.
 //
 // Keys: data ("puzzle" | "league"), summary ("mean" | "expected_rank" | "top"), k (1-10; the three-unit law uses at
 // most 2), priorSd (.02-.60, league only), scale ("theta", or the data set's other scale: "sqrt" for the law, "exp"
@@ -77,6 +94,9 @@ export const CONFIG = Object.freeze({
   level: 0.9,
   half: 0.5,
   tieTol: 1e-12,
+  // the read-out's three-unit sentence (review 044): how close a state's value or a sum of rank probabilities must be
+  // to count as equal (the engine's sums of exact probabilities carry rounding of about 1e-16)
+  storyTol: 1e-9,
   // data sets kept: every step of the prior-SD slider ((.60 − .02) / .01 + 1 = 59) plus the three-unit law
   memo: 64,
   // idle precompute of the prior-SD steps: requestIdleCallback's timeout, or the delay between steps without it (ms)
@@ -227,8 +247,30 @@ export const CONFIG = Object.freeze({
     readZeros: " {count} units are never in the top {k} in these draws and share the last place.",
     readZerosFirst: " {count} units are never first in these draws and share the last place.",
     readMc: " (Monte Carlo)",
+    // review 044 (U3-F1): the three-unit law ranked by posterior mean, in the review's words (the unit first by posterior
+    // mean, the others after it, its place by expected rank and, when it is only ever first or last, how often it is
+    // first); and under the posterior mean or the expected rank a closing sentence that names the top group k
+    readLaw: "{head}: by posterior mean {unit} is first ({mean}{neither}), ahead of {others}; by expected rank {unit} is {place} ({er}){firstLast}. The two orders differ on {mis} of the {M} pairs.",
+    readLawNeither: ", a value {unit} takes in neither state",
+    readLawFirstLast: ": it is first with probability {p} and last otherwise",
+    readLast: "last",
+    listAnd: " and ",
+    listComma: ", ",
+    topSubjectFirst: "The probability of being first",
+    topSubjectK: "The probability of being in the top {k}",
+    readTopLead: " {subject}{mc} is largest for {units} ({p}).",
+    readTopLeadShared: " {subject}{mc} is largest for {units} ({p} each).",
+    // review 044 repair (fix round): ranked by the posterior mean on another scale, where the scale took one listed unit
+    readMove: " On this scale {unit} {move} from {from} to {to} by posterior mean.",
+    moveUp: "climbs",
+    moveDown: "falls",
+    // review 044 (X-01, U3-F1): the closed boxes
+    settings: "Settings",
+    settingsNote: "Used by the simulated league; k only on the exp(kθ) scale.",
+    workedTitle: "Worked expected rank",
+    workedTitleScale: "Worked expected rank and posterior mean of {scale}",
     // notes and captions
-    notePuzzle: "Three units with two possible states of their true values, after the postrank theory book, chapter 19. The law is specified directly (no data, no fitted model), so every value here is exact.",
+    notePuzzle: "Chapter 19 of the postrank theory book gives this example. The three units have two possible sets of true values, and the calculations use the specified probability of each state.",
     noteLeague: "Simulated league of {n} units (ten small, ten medium, ten large), one fixed draw of the estimates (seed {seed}); teaching posterior with a normal prior of mean {zero} and SD {prior}. Posterior means and expected ranks are exact. Changing the Monte Carlo seed would move only the Monte Carlo summaries, not the exact expected ranks.",
     mcLead: "Top-group probabilities and rank distributions: ",
     postLead: "The league's posterior: ",
@@ -793,6 +835,49 @@ const CSS_TEMPLATE = `
 /** The views' CSS under a root class (for an app that draws these views under its own class). */
 export const cssFor = (rootClass) => CSS_TEMPLATE.replaceAll("%r", `.${rootClass}`);
 
+// This app's own layout (review 044 repair: U3-F1, X-01), after cssFor so it wins over the views' template, which
+// 1.15 majority-wins shares and which stays as it was.
+//   controls  row 1: Data (its two choices one under the other), the top group, the scale and the scale's hint; row 2:
+//             the summary's three buttons under the legend "Rank the units by", the Settings box beside them; the frame
+//             puts the preset row on its own line after them (fix round: with v1's labels Data's two choices side by
+//             side, the top group and the scale need 1,010 px of the 957-px row, and the league's slider label 293 px).
+//             From 600 px of viewport the top group's slot is 13rem wide whether it holds the radio pair (three units)
+//             or the slider (league; its label then takes two lines, never taller than Data); below that it takes the
+//             row and both kinds keep one height, so swapping them moves nothing below (a CSS rule, no script)
+//   charts    the slope chart's column (heading, chart, selected unit, notes) and the side column (the posterior, then
+//             the rank distributions) side by side where the charts are wide (the template's 46rem rule), stacked below
+const APP_CSS = `
+@media (min-width: 64em) {
+  .prx-wr > .prx-controls > .prx-presets .prx-seg { padding-inline: .32rem; font-size: .86em; }
+  .prx-wr > .prx-controls > .prx-presets .prx-seg-buttons { column-gap: .22rem; }
+}
+.prx-wr .prx-wr-data { display: block; }
+.prx-wr .prx-wr-data > .prx-radio, .prx-wr .prx-wr-k > .prx-radio:last-child, .prx-wr .prx-wr-scale > .prx-radio:last-of-type { margin-right: 0; }
+.prx-wr .prx-wr-data > .prx-radio { display: flex; }
+.prx-wr .prx-wr-k, .prx-wr .prx-wr-scale { column-gap: 0; }
+.prx-wr .prx-wr-k, .prx-wr .prx-wr-kslider { min-height: 2.6rem; }
+.prx-wr .prx-wr-kslider { flex: 1 1 13rem; max-width: 19rem; align-content: start; }
+@media (min-width: 37.5em) {
+  .prx-wr .prx-wr-k, .prx-wr .prx-wr-kslider { flex: 0 0 13rem; max-width: 13rem; }
+}
+.prx-wr .prx-wr-scale { flex: 0 0 auto; max-width: none; }
+.prx-wr .prx-wr-scale-hints { display: grid; flex: 1 1 10rem; min-width: 0; align-self: flex-start; }
+.prx-wr .prx-wr-scale-hints > .prx-hint { grid-area: 1 / 1; margin: 0; }
+.prx-wr .prx-wr-hint-spare { visibility: hidden; }
+.prx-wr .prx-controls > .prx-disclosure > .prx-disclosure-body { align-items: flex-start; }
+.prx-wr .prx-wr-settings-note { flex: 1 1 100%; margin: 0; }
+.prx-wr .prx-wr-rank { min-width: 0; max-width: 100%; margin: 0; padding: 0; border: 0; }
+.prx-wr .prx-wr-rank > legend { display: block; float: none; width: auto; margin: 0 0 0.15rem; padding: 0; font-size: 1em;
+  line-height: 1.3; font-weight: 600; color: var(--prx-fg-muted); }
+.prx-wr .prx-wr-rank .prx-seg { text-align: left; }
+.prx-wr .prx-controls > .prx-disclosure .prx-slider { flex: 1 1 13rem; }
+.prx-wr .prx-slider.prx-wr-off { opacity: 0.55; }
+.prx-wr .prx-wr-bump .prx-wr-card { margin: 0.5rem 0 0.6rem; }
+.prx-wr .prx-wr-card .prx-disclosure { margin: 0.4rem 0 0.1rem; }
+.prx-wr .prx-wr-card .prx-disclosure-body > .prx-wr-tex + .prx-wr-tex { margin-top: 0.4rem; }
+.prx-wr .prx-wr-side { min-width: 0; }
+`;
+
 // ---------------------------------------------------------------------------------------------- the app
 
 export function mountWidget(el, spec = {}) {
@@ -800,7 +885,11 @@ export function mountWidget(el, spec = {}) {
     name: CONFIG.name,
     label: CONFIG.label,
     className: CONFIG.className,
-    css: cssFor(CONFIG.className),
+    css: `${cssFor(CONFIG.className)}${APP_CSS}`,
+    // review 044 repair (X-01, U3-F1): the shared result-first frame (title, controls and preset row, the read-out,
+    // the charts with the slope chart first, the caption); base.js only moves nodes, so keys, presets, hooks and the
+    // one live region are kept
+    layout: "result-first",
     keys: {
       data: { type: "choice", values: CONFIG.data.values.slice(), value: CONFIG.data.value },
       summary: { type: "choice", values: CONFIG.summary.values.slice(), value: CONFIG.summary.value },
@@ -840,8 +929,8 @@ export function mountWidget(el, spec = {}) {
       const meanWords = (sc) => (sc ? fillText(T.meanWordsScale, { scale: scaleSym(sc) }) : T.meanWords);
       const tid = (id) => (id.length > 1 ? id.replace(/^([A-Za-z]+)(\d+)$/, "\\mathrm{$1}$2") : id);
 
-      // --- controls: data set, summary, top-group size (a radio pair for three units, a slider for the league), the
-      // league's prior SD, the scale of the true values and k of exp(kθ)
+      // --- controls: data set, top-group size (a radio pair for three units, a slider for the league), the scale of the
+      // true values, the summary; in a closed Settings box the league's prior SD and k of exp(kθ)
       const dataRadio = ctx.radioGroup({
         legend: T.dataLegend, name: "data", className: "prx-wr-data",
         options: [{ value: "puzzle", label: T.dataPuzzle }, { value: "league", label: T.dataLeague }],
@@ -849,11 +938,15 @@ export function mountWidget(el, spec = {}) {
         // a new data set starts from its default unit and keeps the reader's scale (θ, or its own other scale)
         onChange: (v) => ctx.set({ data: v, unit: "", scale: ctx.state.scale === "theta" ? "theta" : CONFIG.scale[v] }),
       });
-      const summaryRadio = ctx.radioGroup({
-        legend: T.summaryLegend, name: "summary", className: "prx-wr-summary",
+      // the summary: a three-way segmented choice (review 044, U3-F1) with v1's legend and labels; the fieldset is its
+      // group (named by the legend), so the buttons' row needs no group role of its own
+      const summarySeg = ctx.segmented({
+        name: "summary", className: "prx-wr-summary-seg",
         options: [{ value: "mean", label: T.summaryMean }, { value: "expected_rank", label: T.summaryEr }, { value: "top", label: T.summaryTop }],
         value: ctx.state.summary, onChange: (v) => ctx.set({ summary: v }),
       });
+      summarySeg.root.removeAttribute("role");
+      const summaryBox = h("fieldset", { class: "prx-control prx-wr-rank" }, h("legend", { text: T.summaryLegend }), summarySeg.root);
       const kRadio = ctx.radioGroup({
         legend: T.kLegend, name: "k-puzzle", className: "prx-wr-k",
         options: [{ value: 1, label: T.kFirst }, { value: CONFIG.k.puzzleMax, label: T.kTopTwo }],
@@ -866,34 +959,60 @@ export function mountWidget(el, spec = {}) {
         onInput: (v) => ctx.set({ priorSd: v }),
       });
       prior.root.classList.add("prx-wr-prior");
+      // the scale's hint sits beside the scale's fieldset (review 044 repair, fix round: Data, the top group and the
+      // scale share the first row, the hint after them; it describes the fieldset through aria-describedby). Both data
+      // sets' hints share one grid cell, the other set's hidden (and hidden from assistive technology), so the cell
+      // keeps one height whichever data set is shown and the preset row never moves when a preset changes the data set
+      const hintPuzzle = h("p", { class: "prx-hint", id: uid("prx-wr-scale-hint"), text: T.scaleHintPuzzle });
+      const hintLeague = h("p", { class: "prx-hint", id: uid("prx-wr-scale-hint"), text: T.scaleHintLeague });
+      const scaleHints = h("div", { class: "prx-wr-scale-hints" }, hintPuzzle, hintLeague);
       const scaleRadio = (name, other, otherLabel, hint) => {
         const g = ctx.radioGroup({
           legend: T.scaleLegend, name, className: "prx-wr-scale",
           options: [{ value: "theta", label: T.scaleTheta }, { value: other, label: otherLabel }],
           value: ctx.state.scale === "theta" ? "theta" : other, onChange: (v) => ctx.set({ scale: v }),
         });
-        g.root.append(h("p", { class: "prx-hint", text: hint }));
+        g.root.setAttribute("aria-describedby", hint.id);
         return g;
       };
-      const scalePuzzle = scaleRadio("scale-puzzle", CONFIG.scale.puzzle, T.scaleSqrt, T.scaleHintPuzzle);
-      const scaleLeague = scaleRadio("scale-league", CONFIG.scale.league, T.scaleExp, T.scaleHintLeague);
+      const scalePuzzle = scaleRadio("scale-puzzle", CONFIG.scale.puzzle, T.scaleSqrt, hintPuzzle);
+      const scaleLeague = scaleRadio("scale-league", CONFIG.scale.league, T.scaleExp, hintLeague);
       const expK = ctx.slider({ label: T.expKLabel, ...ctx.key("expK"), format: (v) => formatCount(v), hint: T.expKHint, onInput: (v) => ctx.set({ expK: v }) });
       expK.root.classList.add("prx-wr-expk");
-      // the controls of one data set only are in the page: the other set's controls leave the DOM (not just hidden), and
-      // each comes back at its own anchor, so the controls that stay are never moved and keep keyboard focus
+      // the top group and the scale of one data set only are in the page: the other set's control leaves the DOM (not
+      // just hidden) and comes back at its own anchor, so the controls that stay are never moved and keep keyboard focus;
+      // the two kinds of top-group control keep one height (APP_CSS), so the rows under them do not move either
       const anchor = (name) => ctx.doc.createComment(name);
       const slots = [
-        { node: kRadio.root, at: anchor("k") }, { node: kSlider.root, at: anchor("k-league") }, { node: prior.root, at: anchor("prior") },
-        { node: scalePuzzle.root, at: anchor("scale") }, { node: scaleLeague.root, at: anchor("scale-league") }, { node: expK.root, at: anchor("exp-k") },
+        { node: kRadio.root, at: anchor("k") }, { node: kSlider.root, at: anchor("k-league") },
+        { node: scalePuzzle.root, at: anchor("scale") }, { node: scaleLeague.root, at: anchor("scale-league") },
       ];
-      ctx.controls.append(dataRadio.root, summaryRadio.root, ...slots.map((s) => s.at));
+      ctx.controls.append(dataRadio.root, ...slots.map((s) => s.at), scaleHints, summaryBox);
+      // the summary is the control that moves the slope chart (review 044 repair, fix round: base.js primaryControl)
+      ctx.primaryControl(summaryBox);
       const showControls = (shown) => slots.forEach((s, i) => {
         if (shown[i] && !s.node.isConnected) s.at.before(s.node);
         else if (!shown[i] && s.node.isConnected) s.node.remove();
       });
-      ctx.controls.after(ctx.readout.node);
+      // the league's prior SD and k of exp(kθ): secondary controls in a closed Settings box in the controls row
+      // (review 044, X-01/X-16), present in every state and disabled where they do not apply (the three-unit law; k
+      // on the θ scale), so neither the box nor the preset row after it moves when a preset changes the data set; a
+      // line above them says where they act, and the two sliders are top-aligned (fix round)
+      const settings = ctx.disclosure({ name: "settings", title: T.settings, placement: "controls" });
+      settings.body.append(h("p", { class: "prx-hint prx-wr-settings-note", text: T.settingsNote }), prior.root, expK.root);
 
-      // --- unit card: its numbers and the worked expected rank (after the read-out); on another scale, the worked mean
+      // --- the slope chart: the panel the summary, k and the scale change, first under the read-out (base.js
+      // primaryGraphic); the heading above it, its notes below it, so nothing stands between the read-out and the chart
+      const bumpHeading = h("h4", { class: "prx-wr-heading", text: T.bumpHeading });
+      const bumpNote = h("p", { class: "prx-wr-note", "data-prx-part": "notes", text: T.bumpNote });
+      const tieNote = h("p", { class: "prx-wr-note", "data-prx-part": "notes", text: T.tieNote, hidden: true });
+      const scaleNote = h("p", { class: "prx-wr-note prx-wr-scale-note", "data-prx-part": "notes", hidden: true });
+      const howTo = h("p", { class: "prx-hint prx-wr-howto", "data-prx-part": "notes", text: T.howTo });
+      const bumpSlot = ctx.primaryGraphic(h("div", { class: "prx-wr-bump-chart" }));
+
+      // --- unit card: the selected unit directly under the slope chart, whose points select it (review 044, U3-F1: a
+      // secondary result sits with the graphic it describes); its numbers in view, its worked expected rank (and on
+      // another scale its worked mean) in a closed box one click away
       const cardStatus = h("p", { class: "prx-wr-card-status" });
       const cardLine = h("p", { class: "prx-wr-card-line" });
       const cardExtra = h("p", { class: "prx-wr-card-extra" });
@@ -902,26 +1021,21 @@ export function mountWidget(el, spec = {}) {
       const scaleTex = ctx.scrollRegion(h("div", { class: "prx-wr-tex", "data-prx-tex": "scale-mean" }), T.cardWorkedScale);
       const formulaNote = h("p", { class: "prx-wr-note" }, ...fill(T.formulaNote, { one: () => ctx.num(1, formatCount(1)) }));
       const card = h("section", { class: "prx-wr-card", "data-prx-part": "readout", "aria-label": T.cardSelected },
-        cardStatus, cardLine, cardExtra, cardScale, texBox, scaleTex, formulaNote);
-      ctx.readout.node.after(card);
+        cardStatus, cardLine, cardExtra, cardScale);
+      const worked = ctx.disclosure({ name: "worked", title: T.workedTitle, placement: { after: cardScale } });
+      worked.body.append(texBox, scaleTex, formulaNote);
+      const bumpBox = h("section", { class: "prx-wr-bump", "aria-label": T.bumpHeading },
+        bumpHeading, bumpSlot, card, scaleNote, tieNote, bumpNote, howTo);
 
-      // --- the posterior (three-unit law: a table of the two states; league: one note)
+      // --- beside the slope chart: the posterior (three-unit law: a table of the two states; league: one note) above
+      // the rank distributions
       const lawBox = h("section", { class: "prx-wr-law", "aria-label": T.lawHeading });
-      // --- slope chart
-      const bumpHeading = h("h4", { class: "prx-wr-heading", text: T.bumpHeading });
-      const bumpNote = h("p", { class: "prx-wr-note", "data-prx-part": "notes", text: T.bumpNote });
-      const tieNote = h("p", { class: "prx-wr-note", "data-prx-part": "notes", text: T.tieNote, hidden: true });
-      const scaleNote = h("p", { class: "prx-wr-note prx-wr-scale-note", "data-prx-part": "notes", hidden: true });
-      const howTo = h("p", { class: "prx-hint prx-wr-howto", "data-prx-part": "notes", text: T.howTo });
-      const bumpSlot = h("div", { class: "prx-wr-bump-chart" });
-      const bumpBox = h("section", { class: "prx-wr-bump", "aria-label": T.bumpHeading }, bumpHeading, bumpNote, howTo, bumpSlot, tieNote, scaleNote);
-      // --- rank distributions
       const ranksHeading = h("h4", { class: "prx-wr-heading", text: T.ranksHeading });
       const ranksNote = h("p", { class: "prx-wr-note", "data-prx-part": "notes" });
       const ranksSlot = h("div", { class: "prx-wr-ranks-chart" });
       const ranksBox = h("section", { class: "prx-wr-ranks", "aria-label": T.ranksHeading }, ranksHeading, ranksNote, ranksSlot);
       ctx.charts.classList.add("prx-wr-charts");
-      ctx.charts.append(lawBox, h("div", { class: "prx-wr-grid" }, bumpBox, ranksBox));
+      ctx.charts.append(h("div", { class: "prx-wr-grid" }, bumpBox, h("div", { class: "prx-wr-side" }, lawBox, ranksBox)));
 
       // --- the source note, after the caption
       const sourceNote = ctx.part("notes", h("p", { class: "prx-wr-note prx-wr-source" }));
@@ -1145,11 +1259,84 @@ export function mountWidget(el, spec = {}) {
         renderTex(scaleTex, tex, { display: true, nums: f.raws });
       }
 
-      function drawReadout(state, d, k, cols, sc) {
+      // units joined as words ("B (4) and C (3)"; "A, B and C"), each part made by part(u, j)
+      const joinUnits = (units, part) => units.flatMap((u, j) => [
+        j === 0 ? "" : j === units.length - 1 ? T.listAnd : T.listComma, ...[part(u, j)].flat()]);
+
+      // review 044 (U3-F1): the three-unit law ranked by posterior mean on θ, in the review's words: the unit first by
+      // posterior mean (its value; "a value X takes in neither state" when no state gives it that value), the others
+      // after it (hooks list-2, list-3, as before), its place by expected rank and, when it is only ever first or last,
+      // how often it is first. Every clause is read from the data set; null (the listing as before) if a place is shared
+      function lawStory(d, cols, head) {
+        const [mean, er] = cols;
+        const u = mean.order[0];
+        if (mean.tied.has(u) || er.tied.has(u)) return null;
+        const tol = CONFIG.storyTol;
+        const pFirst = d.rankProbs[0][u];
+        const pLast = d.rankProbs[d.n - 1][u];
+        const inNoState = LAW.states.every((s) => Math.abs(s[u] - d.mean[u]) > tol);
+        const firstOrLast = pFirst > 0 && pLast > 0 && Math.abs(pFirst + pLast - 1) <= tol;
+        const unit = () => nameNode(d.ids[u]);
+        return fill(T.readLaw, {
+          head, unit,
+          mean: () => ro("list-1", d.mean[u], fmtMean(d, d.mean[u])),
+          neither: inNoState ? () => fill(T.readLawNeither, { unit }) : "",
+          others: () => joinUnits(mean.order.slice(1), (v, j) => [nameNode(d.ids[v]), " (", ro(`list-${j + 2}`, d.mean[v], fmtMean(d, d.mean[v])), ")"]),
+          place: er.place[u] === d.n ? T.readLast : placeText(er, u),
+          er: () => ro("lead-er", d.er[u], fmtEr(d, d.er[u])),
+          firstLast: firstOrLast ? () => fill(T.readLawFirstLast, { p: () => ro("lead-first", pFirst, fmtProb(d, pFirst)) }) : "",
+          mis: () => ro("misordered", d.misordered, formatCount(d.misordered)),
+          M: () => ro("pairs", d.M, formatCount(d.M)),
+        });
+      }
+
+      // review 044 (U3-F1): under the posterior mean or the expected rank, the read-out names the top group k and the
+      // unit (or units) first in the third column, so moving k always changes the sentence
+      function topLead(d, k, top) {
+        const leaders = top.order.filter((u) => top.place[u] === 1);
+        const p = top.value[leaders[0]];
+        return fill(leaders.length > 1 ? T.readTopLeadShared : T.readTopLead, {
+          subject: k === 1 ? T.topSubjectFirst : fillText(T.topSubjectK, { k: kWord(k) }),
+          mc: d.exact ? "" : T.readMc,
+          units: () => joinUnits(leaders.slice(0, CONFIG.listed), (u) => nameNode(d.ids[u])),
+          p: () => ro("top-lead", p, fmtProb(d, p)),
+        });
+      }
+
+      // review 044 repair (fix round, review A1): ranked by the posterior mean on another scale, the read-out says where
+      // the scale took one listed unit: of the units it lists, the one whose place by posterior mean moves most between θ
+      // and that scale (the first listed of equal moves), with both places (the digits data-num, hooks place-theta and
+      // place-scale); nothing when no listed unit moves. Places come from the engine's orders (rankColumns)
+      function placeMove(d, listed, mean, thetaMean) {
+        let best = null;
+        for (const u of listed) {
+          const shift = Math.abs(mean.place[u] - thetaMean.place[u]);
+          if (shift > 0 && (!best || shift > best.shift)) best = { u, shift };
+        }
+        if (!best) return [];
+        const { u } = best;
+        const placeParts = (col, hook) => {
+          const p = col.place[u];
+          return [col.tied.has(u) ? T.tied : "", ro(hook, p, formatCount(p)), ordinal(p).slice(String(p).length)];
+        };
+        return fill(T.readMove, {
+          unit: () => nameNode(d.ids[u]),
+          move: mean.place[u] < thetaMean.place[u] ? T.moveUp : T.moveDown,
+          from: () => placeParts(thetaMean, "place-theta"),
+          to: () => placeParts(mean, "place-scale"),
+        });
+      }
+
+      function drawReadout(state, d, k, cols, sc, thetaCols) {
         const col = cols.find((c) => c.key === state.summary);
         const summaryWords = state.summary === "mean" ? (sc ? fill(T.summaryWordsMeanScale, { scale: () => scaleParts(sc) }) : [T.summaryWordsMean])
           : state.summary === "expected_rank" ? [T.summaryWordsEr] : [`${topWords(k)}${d.exact ? "" : T.readMc}`];
         const head = d.data === "league" ? [T.readLeague, ro("prior-sd", d.priorSd, formatSetting(d.priorSd))] : [T.readPuzzle];
+        const story = d.data === "puzzle" && state.summary === "mean" && !sc ? lawStory(d, cols, head) : null;
+        if (story) {
+          ctx.readout.set([...story, ...topLead(d, k, cols[2])]);
+          return;
+        }
         const listed = col.order.slice(0, Math.min(CONFIG.listed, d.n));
         const list = [];
         listed.forEach((u, j) => {
@@ -1157,6 +1344,7 @@ export function mountWidget(el, spec = {}) {
         });
         if (d.n > listed.length) list.push(T.readMore);
         list.push(".");
+        if (state.summary === "mean" && sc) list.push(...placeMove(d, listed, cols[0], thetaCols[0]));
         const tail = [];
         if (state.summary === "top") {
           const firstTop = col.order[0];
@@ -1176,9 +1364,14 @@ export function mountWidget(el, spec = {}) {
           const mis = sc ? sc.misordered : d.misordered;
           tail.push(...fill(sc ? T.readMisScale : T.readMis, {
             scale: () => (sc ? scaleParts(sc) : ""), mis: () => ro("misordered", mis, formatCount(mis)), M: () => ro("pairs", d.M, formatCount(d.M)),
-          }));
+          }), ...topLead(d, k, cols[2]));
         }
         ctx.readout.set([...head, ...fill(T.readRanked, { summary: () => summaryWords }), ...list, ...tail]);
+      }
+
+      // the closed box's title names what it holds: the worked expected rank, and on another scale the worked mean too
+      function drawWorkedTitle(sc) {
+        worked.summary.replaceChildren(...(sc ? fill(T.workedTitleScale, { scale: () => scaleParts(sc) }) : [T.workedTitle]));
       }
 
       function drawNotes(d) {
@@ -1283,20 +1476,28 @@ export function mountWidget(el, spec = {}) {
           ctx.root.setAttribute("aria-busy", "true");
           try {
             const changed = info?.changed ?? [];
-            // a new selection toggles attributes and redraws the card only
-            const unitOnly = Boolean(current) && !info?.initial && info?.reason === "update"
-              && changed.length === 1 && changed[0] === "unit" && current.state.data === state.data;
+            // a new selection toggles attributes and redraws the card only; so does opening a box (no figure is in one)
+            const unitOnly = Boolean(current) && !info?.initial && current.state.data === state.data
+              && ((info?.reason === "update" && changed.length === 1 && changed[0] === "unit") || info?.reason === "disclosure");
             const league = state.data === "league";
             const scaled = state.scale !== "theta";
             dataRadio.set(state.data);
-            summaryRadio.set(state.summary);
+            summarySeg.set(state.summary);
             kRadio.set(Math.min(state.k, CONFIG.k.puzzleMax));
             kSlider.set(state.k);
             prior.set(state.priorSd);
             scalePuzzle.set(scaled ? CONFIG.scale.puzzle : "theta");
             scaleLeague.set(scaled ? CONFIG.scale.league : "theta");
             expK.set(state.expK);
-            showControls([!league, league, league, !league, league, league && scaled]);
+            showControls([!league, league, !league, league]);
+            for (const [p, mine] of [[hintPuzzle, !league], [hintLeague, league]]) {
+              p.classList.toggle("prx-wr-hint-spare", !mine);
+              if (mine) p.removeAttribute("aria-hidden"); else p.setAttribute("aria-hidden", "true");
+            }
+            prior.setDisabled(!league);
+            expK.setDisabled(!(league && scaled));
+            prior.root.classList.toggle("prx-wr-off", !league);
+            expK.root.classList.toggle("prx-wr-off", !(league && scaled));
             ctx.root.setAttribute("data-prx-data", state.data);
             const d = dataset(state.data, state.priorSd);
             const k = kFor(d, state.k);
@@ -1313,9 +1514,10 @@ export function mountWidget(el, spec = {}) {
               drawLaw(d, sc);
               drawBump(state, d, k, cols, sc);
               drawRanks(state, d, k, cols.find((c) => c.key === state.summary), sc);
-              drawReadout(state, d, k, cols, sc);
+              drawReadout(state, d, k, cols, sc, thetaCols);
               drawNotes(d);
               drawScaleNote(d, sc);
+              drawWorkedTitle(sc);
             }
             highlight();
           } finally {

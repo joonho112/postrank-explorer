@@ -1,20 +1,20 @@
-# Local files and build caches
 .DS_Store
 .quarto/
+**/*.quarto_ipynb
 node_modules/
-.R-library/
-.Rhistory
-.RData
-*.quarto_ipynb
-*.log
-.env
-.env.*
-*.pem
-*.key
-# Local development and verification output
-/log/
-/dev/
+node_modules
 /verification/report/
+/.Rhistory
+.R-library/
+.R-library
 
 /.quarto/
-**/*.quarto_ipynb
+
+# Isolated R library for Explorer v3.5
+/.R-library-v35/
+
+# Local execution evidence, development notes and Python caches
+/log/
+/notes/v35/
+__pycache__/
+*.pyc

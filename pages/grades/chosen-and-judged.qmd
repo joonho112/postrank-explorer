@@ -4,11 +4,7 @@ subtitle: "2.18 · after the postrank vignette m6 and theory book, chapter 15"
 description: "Discrepancy between risk estimated on selection draws and risk under the exact posterior law."
 ---
 
-Each repetition draws from a specified posterior distribution, selects a grade report using estimated pairwise
-probabilities, and evaluates that fixed report twice. The first evaluation uses the selection draws; the second uses
-the exact law. Their signed difference can be positive or negative in an individual repetition. The selected point
-identifies the report held fixed in this comparison. Separate discrepancy and regret bounds distinguish error in its
-risk estimate from excess risk relative to the exact-law optimum in the same family.
+In each repetition, we draw from a specified posterior and estimate the pairwise probabilities from those draws. We select a report using the estimates. We then hold that report fixed and score it twice, once with the selection draws and once with the exact probabilities. The estimated risk can be above or below the exact risk. A separate calculation compares the selected report with the exact-law optimum in the same family. This comparison measures the cost of the selection itself.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,16 +16,16 @@ risk estimate from excess risk relative to the exact-law optimum in the same fam
 
 ## Numerical illustrations {#what-to-try}
 
-- **Own draws.** Among these reruns, 33 look worse on their own draws. The followed run instead has gap −.00061: its selection draws make its chosen report look slightly better than the exact law does.
-- **Looks worse.** Another selected report from the same experiment has a positive discrepancy. Its gap is +.00072, even though it minimises risk for its own estimated probabilities. A single run need not look optimistic.
+- **Own draws.** The graph reads “33 look worse” for the displayed selections. Those reruns have higher risk on their own draws than under the exact law. Choosing other tied reports can change the count. The selected run's gap of −.00061 means its own draws give the lower risk.
+- **Looks worse.** Another selected report from the same experiment has a positive discrepancy. Its gap is +.00072 even though it minimizes risk for its own estimated probabilities.
 - **More draws.** With 4,000 draws per run, the followed gap is −.00025. The cloud and coefficient radius describe the remaining numerical variation. Realized errors need not shrink on every step.
-- **Tighter family.** Search the 603 reports with at most three grades. The followed gap is +.00102. Both evaluations still refer to that run's same selected report. The grey intervals show how loose the discrepancy bounds can be.
+- **Tighter family.** Search the 603 reports with at most three grades. The followed gap is +.00102. Both evaluations still refer to that run's same selected report. The gray intervals show that a bound can be much larger than the observed gap.
 - **Both scores.** The two scores receive equal weights. The followed gap is −.00322. The discrepancy radius now averages each score's largest pair-error discrepancy with those same weights.
 
-The grey intervals bound the absolute gap of each selected report. The regret readout asks a different question: how much worse its exact-law risk is than the exact-law minimum in the same family. Its bound includes an allowance for numerical optimisation. A small risk difference does not require identical grades.
+The gray intervals bound the absolute difference between the two risk evaluations for each selected report. Regret compares that report's exact-law risk with the exact-law minimum. The regret bound allows for numerical optimization. Two grade assignments can differ even when their risks are close.
 
 ::: {.callout-note appearance="simple"}
-These are independent draws from fictional normal posteriors, not repeated observed datasets. “Exact” refers to the declared law. The separate package toy table evaluates each fold's selected report on the other fold; it neither corrects the full-data risk nor checks the fitted model against new observations.
+The example uses independent draws from normal posteriors specified for six fictional sites. The exact risks come from those same distributions. The separate package example selects a report on one fold and evaluates it on the other. Both folds contain draws from the same posterior, so that exercise cannot assess how the model would perform on new observations.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

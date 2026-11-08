@@ -2,7 +2,7 @@
 // Scientific values come from commonalityCost/evaluateReport or the declared released archive.
 import { createWidget } from "../shared/base.js";
 import { gradeColors, labelOn, numText, palette, plot } from "../shared/chart.js";
-import { formatCount, formatRisk, formatSetting, formatGrades, formatShare, formatSci, formatTuple, formatExpectedCount } from "../shared/format.js";
+import { dataNum, formatCount, formatRisk, formatSetting, formatGrades, formatShare, formatSci, formatTuple, formatExpectedCount } from "../shared/format.js";
 import { tagNode, labelNode, familySizeNode, captionNode } from "../shared/labels.js";
 import { commonalityCost, evaluateReport } from "../pr-core.js";
 import { commonalityArchive } from "../shared/criteria-archive.js";
@@ -87,6 +87,7 @@ export function mountWidget(el, spec = {}) {
     name: CONFIG.name,
     className: "cgc",
     css: CSS,
+    layout: "result-first",
     keys: { w: CONFIG.w, data: {type:"choice",values:["six","thirty25","thirty35"],value:"six"} },
     build(ctx) {
       const { h } = ctx;
@@ -95,18 +96,19 @@ export function mountWidget(el, spec = {}) {
       const source = ctx.select({label:"Example",options:[{value:"six",label:"Six fictional sites — live weights"},{value:"thirty25",label:"Thirty sites — archived lower price"},{value:"thirty35",label:"Thirty sites — archived higher price"}],value:"six",onChange:data=>ctx.set({data})});
 
       const w = ctx.slider({ label: T.w, ...ctx.key("w"), onInput: (v) => ctx.set({ w: v }) });
-      ctx.controls.append(source.root,w.root);
+      ctx.controls.append(source.root);ctx.afterPresets(w.root);ctx.primaryControl(w.root);
 
-      const costSlot = h("div", { class: "cgc-cost" });
+      const costSlot = ctx.primaryGraphic(h("div", { class: "cgc-cost" }));
       const key = (cls, text) => h("span", { class: "prx-key" }, h("span", { class: `prx-swatch ${cls}`, "aria-hidden": "true" }), text);
       const legend = h("div", { class: "prx-legend", "data-prx-part": "legend" },
         key("cgc-sw-own", T.keyOwn), key("cgc-sw-common", T.keyCommon),
         h("span", {}, T.keyDelta));
       const rows = h("div", { class: "cgc-rows" });
       const tag = h("p", { class: "cgc-tag" });
+      const familyDetail = ctx.disclosure({ name: "cost-family", title: "Exact family and tie details", placement: "none" });
       const liveGrid=h("div", { class: "cgc-grid" },
-        h("section", { class: "prx-panel cgc-left", "aria-label": T.costTitle }, ctx.panelTitle(T.costTitle), costSlot, legend, ctx.readout.node),
-        h("section", { class: "prx-panel cgc-right", "aria-label": T.reportsTitle }, ctx.panelTitle(T.reportsTitle), rows, tag));
+        h("section", { class: "prx-panel cgc-left", "aria-label": T.costTitle }, ctx.panelTitle(T.costTitle), costSlot, legend),
+        h("section", { class: "prx-panel cgc-right", "aria-label": T.reportsTitle }, ctx.panelTitle(T.reportsTitle), rows, tag, familyDetail.root));
       const archive=h("section",{class:"cgc-archive"}),details=h("section",{class:"cgc-detail"});
       ctx.charts.append(liveGrid,archive,details);
       const ro=(key,value,fn=formatRisk)=>{const node=ctx.num(value,fn(value));node.setAttribute("data-prx-readout",key);return node;};
@@ -139,7 +141,28 @@ export function mountWidget(el, spec = {}) {
         });
         const far = (d) => Math.max(d.common, ...d.alts.map((a) => a.common));
         const altDots = data.flatMap((d) => d.alts.map((a) => ({ ...d, common: a.common })));
-        const deltaText = (d) => `Δ ${[d.delta, ...d.alts.map((a) => a.delta)].map((v) => formatRisk(v)).join(" or ")}`;
+        const deltaValues = d => [d.delta, ...d.alts.map(a => a.delta)];
+        const deltaText = (d, separator = " or ") => deltaValues(d).map(v => formatRisk(v)).join(separator);
+        // Keep the label one anchored mark, with a numeric tspan that can be
+        // checked independently of the visual Δ prefix.
+        const deltaMark = (P, c) => P.text(data, {
+          x: d => (d.own + far(d)) / 2, y: "score", text: d => `Δ ${deltaText(d, ", ")}`,
+          dy: -17, fontSize: 13, fontWeight: 700, fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke",
+          render(index, scales, values, dims, context, next) {
+            const group = next(index, scales, values, dims, context);
+            const marks = group.querySelectorAll("text");
+            Array.from(index).forEach((i, j) => {
+              const mark = marks[j];
+              const prefix = mark.ownerDocument.createElementNS(mark.namespaceURI, "tspan");
+              const value = mark.ownerDocument.createElementNS(mark.namespaceURI, "tspan");
+              prefix.textContent = "Δ ";
+              value.textContent = deltaText(data[i], ", ");
+              value.setAttribute("data-num", dataNum(deltaValues(data[i])));
+              mark.replaceChildren(prefix, value);
+            });
+            return group;
+          },
+        });
         plot(costSlot, {
           alt: T.costAlt,
           table: {
@@ -158,20 +181,19 @@ export function mountWidget(el, spec = {}) {
           marks: (c, P) => [
             P.ruleX([CONFIG.tau], { stroke: c.plotMuted, strokeDasharray: C.dash }),
             P.text([CONFIG.tau],{x:d=>d,frameAnchor:"top",text:()=>"all withheld (τ)",textAnchor:"end",dx:7,dy:-16,fontSize:12,fill:c.plotMuted}),
-            P.text(data,{x:d=>(d.own+far(d))/2,y:"score",text:()=>"Δ",dx:-65,dy:-17,fontWeight:700,fill:c.plotFg}),
             numText([CONFIG.tau], { x: (d) => d, frameAnchor: "top", value: (d) => d, format: (v) => formatSetting(v), dx:20, dy: -16, fontSize: 12, fill: c.plotMuted }),
             P.link(data, { x1: "own", x2: far, y1: "score", y2: "score", stroke: "color", strokeWidth: 3.5 }),
             P.dot(data, { x: "own", y: "score", r: C.r, fill: c.plotBg, stroke: "color", strokeWidth: 2.5 }),
             P.dot(altDots, { x: "common", y: "score", r: C.r, fill: "color", fillOpacity: C.tiedOpacity, stroke: "color", strokeWidth: 1.5 }),
             P.dot(data, { x: "common", y: "score", r: C.r, fill: "color", stroke: c.plotBg, strokeWidth: 1 }),
             // Δ above each bar; with tied common reports, every value ("Δ .1580 or .1697")
-            ...data.map((d) => numText([d], { x: (e) => (e.own + far(e)) / 2, y: "score", value: e=>[e.delta,...e.alts.map(a=>a.delta)], format: v=>formatTuple(v,x=>formatRisk(x)), dy: -17, fontSize: 14, fontWeight: 700, fill: c.plotFg })),
+            deltaMark(P, c),
             numText(data, { x: "own", y: "score", value: "own", format: (v) => formatRisk(v), dx: -13, textAnchor: "end", fontSize: 12, fill: c.plotMuted }),
             numText(data.filter((d) => d.delta > 0 && !d.alts.length), { x: "common", y: "score", value: "common", format: (v) => formatRisk(v), dx: 13, textAnchor: "start", fontSize: 12, fill: c.plotMuted }),
           ],
           keyboard: {
             data, x: "common", y: "score", label: T.costAlt,
-            title: (d) => `Score ${LETTERS[d.k]}: risk ${formatRisk(d.own)} under its own best report and ${[d.common, ...d.alts.map((a) => a.common)].map((v) => formatRisk(v)).join(" or ")} under the common report; cost of the common grade ${deltaText(d).slice(2)}.`,
+            title: (d) => `Score ${LETTERS[d.k]}: risk ${formatRisk(d.own)} under its own best report and ${[d.common, ...d.alts.map((a) => a.common)].map((v) => formatRisk(v)).join(" or ")} under the common report; cost of the common grade ${deltaText(d)}.`,
           },
         });
         return data;
@@ -179,8 +201,9 @@ export function mountWidget(el, spec = {}) {
 
       function drawReports(state, cc, ties, tieMatters, pal) {
         const common = ties[0].grade;
-        const items = ties.flatMap((t,i)=>[chipRow([T.common," ",ctx.num(i+1,formatCount(i+1)), " (w = ", ctx.num(state.w, formatSetting(state.w)), ")"],t.grade,pal,
-          {cls:"cgc-common",note:ties.length>1?T.tied:null}),fullLabel(cc,`common-${i}`)]);
+        const provenance = ties.map((_,i)=>fullLabel(cc,`common-${i}`));
+        const items = ties.map((t,i)=>chipRow([T.common," ",ctx.num(i+1,formatCount(i+1)), " (w = ", ctx.num(state.w, formatSetting(state.w)), ")"],t.grade,pal,
+          {cls:"cgc-common",note:ties.length>1?T.tied:null}));
         const packageIndex=sixSitePackageRepresentativeIndex({w:state.w,tau:CONFIG.tau,cap:CONFIG.family.G},ties.map(t=>t.grade));
         if(packageIndex>=0){
           const chosen=ties[packageIndex],ev=evaluateReport(chosen.grade,ERRORS,{tau:CONFIG.tau,w:cc.w});
@@ -196,10 +219,12 @@ export function mountWidget(el, spec = {}) {
           const own=same?[common,...r.ownGrades.filter(g=>!sameGrade(g,common))]:r.ownGrades;
           for(const [i,g] of own.entries())items.push(chipRow([T.own(LETTERS[r.k])," ",ctx.num(i+1,formatCount(i+1))],g,pal,{color:pal.critInk[r.k],note:r.ownTieCount===2?"one of two optima":null}),
             h("p",{class:"cgc-note"},"Grade vector ",ro(`own-${r.k}-${i}-grade`,g,formatGrades),"; criterion risk ",ro(`own-${r.k}-${i}-risk`,r.ownRk),"; stated pairs ",ro(`own-${r.k}-${i}-N`,evaluateReport(g,ERRORS,{tau:CONFIG.tau,w:cc.w}).N,formatCount),"."));
-          items.push(fullLabel(cc,`own-${r.k}`),h("p",{class:"cgc-note"},ro(`own-${r.k}-tieCount`,r.ownTieCount,formatCount)," report(s) share this criterion's minimum within equal-risk tolerance ",ro(`own-${r.k}-tieTol`,cc.common.tieTol,formatSci),"."));
+          provenance.push(fullLabel(cc,`own-${r.k}`),h("p",{class:"cgc-note"},ro(`own-${r.k}-tieCount`,r.ownTieCount,formatCount),
+            r.ownTieCount===1?" report reaches":" reports share"," this criterion's minimum within equal-risk tolerance ",ro(`own-${r.k}-tieTol`,cc.common.tieTol,formatSci),"."));
         }
         rows.replaceChildren(...items);
-        tag.replaceChildren(tagNode(ctx, cc), ", each for its own weights. ",ro("common-tieCount",cc.common.tieCount,formatCount)," common report(s) share the smallest risk within equal-risk tolerance ",ro("common-tieTol",cc.common.tieTol,formatSci),".");
+        familyDetail.body.replaceChildren(...provenance);
+        tag.replaceChildren(tagNode(ctx, cc), ", each for its own weights. ",ro("common-tieCount",cc.common.tieCount,formatCount),cc.common.tieCount===1?" common report reaches":" common reports share"," the smallest risk within equal-risk tolerance ",ro("common-tieTol",cc.common.tieTol,formatSci),".");
         if(cc.common.tieCount>ties.length)tag.append(" Showing the first ",ctx.num(ties.length,formatCount(ties.length))," common reports.");
         const profileRows=ties.flatMap((t,i)=>{const ev=evaluateReport(t.grade,ERRORS,{tau:CONFIG.tau,w:cc.w});return cc.criteria.map(r=>[ro(`common-${i}-grade-${r.k}`,t.grade,formatGrades),T.scores[r.k],ro(`common-${i}-N-${r.k}`,ev.N,formatCount),ro(`common-${i}-E-${r.k}`,ev.E[r.k],formatExpectedCount),ro(`common-${i}-share-${r.k}`,ev.EoverN[r.k],formatShare),ro(`common-${i}-EoverM-${r.k}`,ev.EoverM[r.k],formatShare),ro(`common-${i}-Rk-${r.k}`,t.Rk[r.k]),ro(`common-${i}-delta-${r.k}`,t.delta[r.k])]);});
         details.replaceChildren(h("p",{class:"cgc-note"},"Grade ",ctx.num(1,formatCount(1))," is highest on the declared targets. A shared grade withholds a direction; it does not assert equal underlying scores. E is the expected number of wrong stated directions, N counts stated pairs, and M counts all pairs. Criterion risk Rₖ = (Eₖ + τ(M − N)) / M."),scrollHint(),
@@ -209,7 +234,7 @@ export function mountWidget(el, spec = {}) {
 
       function drawArchive(state,pal){
         const m=commonalityArchive(state.data==="thirty35"?.35:.25),{facts}=m;
-        const chart=h("div",{class:"cgc-cost"}),legendArchive=legend.cloneNode(true);
+        const chart=ctx.primaryGraphic(h("div",{class:"cgc-cost"})),legendArchive=legend.cloneNode(true);
         // Measure the attached active panel before drawing; a detached plot falls back to desktop width.
         archive.replaceChildren(ctx.panelTitle("Three criteria in the recorded draw-based analysis"),chart,legendArchive);
         const data=m.costRows.map((r,k)=>({...r,k,score:r.criterion_id,own:r.own_best_risk,common:r.common_grade_risk,color:pal.crit[k]}));
@@ -225,15 +250,13 @@ export function mountWidget(el, spec = {}) {
           table("Archived common criterion profiles",["Criterion","Weight","Eₖ","Eₖ/N","Eₖ/M","Rₖ"],m.profileRows.map((r,k)=>[r.criterion,ro(`archive-${k}-weight`,r.weight,formatSetting),ro(`archive-${k}-E`,r.E,formatExpectedCount),ro(`archive-${k}-share`,r.E_over_N,formatShare),ro(`archive-${k}-EoverM`,r.E_over_M,formatShare),ro(`archive-${k}-common`,r.risk)])),
           table("Criterion-specific costs: interval endpoints from optimization bounds",["Criterion","Own risk","Own lower bound","Δ lower","Δ upper","Own status","Own grades","Own N","Relation agreement"],data.map((r,k)=>[r.score,ro(`archive-${k}-own`,r.own),ro(`archive-${k}-ownLower`,r.own_lower_bound,v=>formatRisk(v,{digits:17})),ro(`archive-${k}-lower`,r.cost_lower),ro(`archive-${k}-upper`,r.cost_upper),h("span",{},labelNode(ctx,{status:r.own_status},{key:`archive-own-${k}`}),"; ",r.own_status),ro(`archive-${k}-G`,r.own_G,formatCount),ro(`archive-${k}-N`,r.own_disclosures,formatCount),ro(`archive-${k}-agreement`,r.relation_agreement,formatShare)])),
           table("Raw cost interval endpoints (rounding can hide the bound width)",["Criterion","Lower endpoint","Upper endpoint"],data.map((r,k)=>[r.score,ro(`archive-${k}-rawLower`,r.cost_lower,v=>formatRisk(v,{digits:17})),ro(`archive-${k}-rawUpper`,r.cost_upper,v=>formatRisk(v,{digits:17}))])),
-          chipRow("The archived common report",m.grade,pal,{ids:m.ids}),h("p",{class:"cgc-note",text:"The archive supplies own risks, bounds, statuses and counts, but no own-report grade vectors or complete tied optimum sets. Own-solve absolute risk gaps were not separately archived; equal rounded endpoints do not establish a zero gap. A zero reported gap is a solver diagnostic, not a numerical certificate. The intervals describe optimization bounds, not posterior uncertainty."}));
+          chipRow("The archived common report",m.grade,pal,{ids:m.ids}),h("p",{class:"cgc-note",text:"The archive gives each criterion’s risk, bounds, solver status and counts. It omits the separate grade vectors, the full sets of ties, and the absolute gaps for the separate solves. Rounded endpoints can coincide even if the bounds differ. A reported gap of zero describes what the solver returned. The intervals bound the optimization result."}));
         // Archived analysis contains the common grade, not independent Gaussian marginal errors.
         const nameNodes=archive.querySelectorAll('.cgc-chip');for(const node of nameNodes)node.setAttribute('data-prx-name','');
         details.replaceChildren(h("p",{class:"cgc-note"},"Fixed settings: τ = ",ro("archive-tau",m.tau,formatSetting),"; at most ",ro("archive-cap",m.cap,formatCount)," grades; weights ",...Object.entries(m.weights).flatMap(([name,value],i)=>[i?", ":"",name," ",ctx.num(value,formatSetting(value))]),". The saved pr_example_draws analysis uses whole-state draws. The separate thirty-site Gaussian marginal example has different inputs. Live six-site weights do not change this archive."),
           h("p",{class:"cgc-note"},"M counts all pairs; N counts stated pairs; Eₖ counts expected wrong stated directions. Eₖ/N has no denominator for an all-withheld report. Grade ",ctx.num(1,formatCount(1))," is the highest target; a shared grade withholds a direction."),
-          h("p",{class:"cgc-note"},captionNode(ctx,"package-quantity"),": the cost carries no welfare meaning, and a large cost does not by itself say that a weight is wrong."));
+          h("p",{class:"cgc-note"},captionNode(ctx,"package-quantity")," measures the increase in reporting risk under the common grades."));
         ctx.readout.set(["Archived common report: ",ctx.num(facts.N,formatCount(facts.N))," stated pairs. Criterion costs from optimization bounds: ",...data.flatMap((r,k)=>[k?"; ":"",r.score," ",ctx.num(r.cost_lower,formatRisk(r.cost_lower))," to ",ctx.num(r.cost_upper,formatRisk(r.cost_upper))]),"."]);
-        // Keep the live region visible alongside the active archive figure.
-        chart.after(ctx.readout.node);
         ctx.caption.replaceChildren("Archived pr_example_draws common and own solves, fixed weights/cap/price; recorded optimal status is optimal within solver tolerances. No new solve is run. ",h("span",{class:"cgc-source","data-prx-name":"",text:m.analysis.source.object}),"; ",h("span",{class:"cgc-source","data-prx-name":"",text:m.commonality.source.object}),". ",h("span",{},...m.notice.split(/(\d+(?:\.\d+)?)/).filter(Boolean).map(t=>/^\d/.test(t)?ctx.num(Number(t),t):t)));
       }
 
@@ -242,7 +265,6 @@ export function mountWidget(el, spec = {}) {
           source.set(state.data);w.root.hidden=state.data!=="six";liveGrid.hidden=state.data!=="six";archive.hidden=state.data==="six";details.hidden=false;
           const pal = palette(ctx.root);
           if(state.data!=="six"){drawArchive(state,pal);return;}
-          costSlot.after(legend,ctx.readout.node);
           ctx.caption.replaceChildren("Six fictional sites, independent Normal posteriors on scores A and B; τ = ",ctx.num(CONFIG.tau,formatSetting(CONFIG.tau)),", at most ",ctx.num(CONFIG.family.G,formatCount(CONFIG.family.G))," grades. All common and own comparisons use this same family and price.");
           w.set(state.w);
           const cc = commonalityCost(ERRORS, { tau: CONFIG.tau, w: [state.w, 1 - state.w], family: CONFIG.family });

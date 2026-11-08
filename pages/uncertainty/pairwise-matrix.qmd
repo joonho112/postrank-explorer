@@ -4,12 +4,7 @@ subtitle: "1.13 · after Kline, Rose and Walters (2024), Figure 2A and slides 38
 description: "Pairwise probabilities under alternative orderings of the same units."
 ---
 
-The cell in row $i$ and column $j$ contains $\pi_{ij} = \Pr(\theta_i > \theta_j \mid Y)$. Since equality has posterior
-probability zero in this example, the transposed cell contains $1 - \pi_{ij}$. Under independent normal posteriors,
-ordering units by their posterior means places many of the less certain comparisons near the diagonal. The width of
-this region also reflects differences in posterior precision. Alternative orderings permute each unit's row and
-column together, leaving the underlying probabilities unchanged. The matrix thus distinguishes posterior uncertainty
-from the choice of an ordering for presentation.
+Each cell gives the posterior probability $\pi_{ij} = \Pr(\theta_i > \theta_j \mid Y)$ that the true value for row $i$ exceeds that for column $j$. Equality has posterior probability zero here, so the transposed cell gives $1 - \pi_{ij}$. Sorting by posterior mean places many of the least certain comparisons near the diagonal under independent normal posteriors. Comparisons between units with imprecise posteriors may remain uncertain even farther from the diagonal. Changing the sort moves each unit's row and column together. The probability for a given pair stays the same.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -25,8 +20,7 @@ from the choice of an ordering for presentation.
 - **Six sites, by posterior mean.** C above D, .638, is the least certain direction, and its cell is next to the
   diagonal; A above B (.812) and E above F (.856) follow. Below the diagonal each cell is one minus its mirror: D
   above C is .362.
-- **Six sites, by label.** The same matrix, with C above D still at .638: the labels already follow the posterior
-  means.
+- **Six sites, by label.** The label order already follows the posterior means. C above D still has probability .638.
 - **League, by label.** Of 435 pairs, the least certain, U19 above U25 at .502, sits 6 cells from the diagonal.
   None of these 10 least certain pairs is next to the diagonal; the farthest is 26 cells away.
 - **League, by posterior mean.** The middle-blue cells now form a band: U19 above U25 is next to the diagonal, and
@@ -39,8 +33,7 @@ The six sites are fictional after-school sites, A to F, from postrank's tutorial
 the reading score are set by hand and taken as given. An evaluation office grades them to set the order of its
 visits. The league is that of [Ranking noisy estimates](noisy-league.qmd), with the posterior of
 [normal–normal posterior shrinkage](shrinkage.qmd). Two imprecise units can have direction probabilities near one half even when they are far apart in the
-ranking. Kline, Rose and Walters (2024), Section IV.B, Figure 2A, and slide 38: the heat map of pairwise posterior
-probabilities for the first names of KRW's name analysis (KRW call the posteriors beliefs). Slide 54 shows the same
+ranking. Kline, Rose and Walters (2024) plot these probabilities for pairs of first names in Section IV.B, Figure 2A, and talk slide 38. They refer to the posteriors as beliefs. Slide 54 shows the same
 heat map for the firms. KRW put one half on the diagonal by convention; postrank leaves the diagonal empty.
 :::
 

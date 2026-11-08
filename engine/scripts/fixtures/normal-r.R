@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Writes engine/tests/fixtures/normal-r.json: R's pnorm, pnorm(upper), dnorm and qnorm on a grid with
 # |z| up to 37 and p down to 1e-300. engine/tests/special.test.ts compares pr-core with these values.
 # Run from engine/:  Rscript scripts/fixtures/normal-r.R   (base R only; no packages)

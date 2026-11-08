@@ -1,10 +1,9 @@
-# R reproduction scripts
+# r-export
 
-Author: JoonHo Lee (jlee296@ua.edu).
-
-These scripts reproduce the numerical reference values and released summaries used by postrank Explorer v3.
-They use postrank 1.1.0 or independent base-R calculations. Normal parity checks read the included frozen values;
-regeneration is a separate operation and may overwrite outputs.
+Carried over from postrank Explorer v1 for reproducibility (unchanged, except that `_paths.R` finds the v2 root by `catalog.json`): these scripts wrote the golden files that
+`verification/run_parity.mjs` reads and the files in `data/released/`. Nothing here runs in the v2 check suite. v2 has
+no number registry (`data/numbers*.json` are not carried over), but `22_case_registry.R` stays because `23` and the
+data contract's `registry` section were written with it; the contract check ignores that section.
 
 R scripts that write golden values (`verification/golden/<group>.json` + `manifest.d/<group>.json`) and released
 summaries (`data/released/`). Run from the repository root with the project library:

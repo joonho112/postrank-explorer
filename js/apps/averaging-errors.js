@@ -1,4 +1,10 @@
 // Chapter 16: averaging disclosed-error fractions over a report kernel or replicated datasets.
+// Layout (review 044 repair, X-01 and X-16): the shared result-first frame (base.js layout "result-first"): the mode,
+// the preset row and, behind it, the controls of the chosen mode (ctx.afterPresets, so the preset row never moves:
+// the lottery's chance, the replays' seed, datasets, prior SD, τ and cap); then the read-out, the bars of the three
+// averages (the primary graphic, each value written at its bar) and directly under them the three outcomes as one
+// compact table (a row of the three inputs per outcome, its note in the row under it), so on a phone the bars and
+// Outcome 3's inputs share one screen; the lottery's explanation, the summary lines, the notes and tables follow.
 import { createWidget } from "../shared/base.js";
 import { numText, plot } from "../shared/chart.js";
 import { blocksText, formatCount, formatEoverN, formatExpectedCount, formatRational, formatSetting, formatShare } from "../shared/format.js";
@@ -9,9 +15,18 @@ import { modelOf } from "./frontier.js";
 const NAMES = ["Pooled pairs", "Disclosing outcomes", "Zero-imputed mean"];
 const finiteShare = v => { if(v===null)return formatEoverN(null);try{return formatRational(v,{maxDenominator:10000});}catch{return formatShare(v);} };
 const FIELDS = ["ERR", "meanFraction", "zeroImputed"];
-const CSS = `.avgerr .avgerr-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr)); gap:.75rem; }
-.avgerr .avgerr-card { min-width:0; padding:.6rem; border:1px solid var(--prx-border); border-radius:6px; }
-.avgerr .avgerr-card legend { font-size:1rem; margin:0 0 .4rem; }
+const CSS = `.avgerr .avgerr-cards { min-width:0; margin:.35rem 0 0; }
+.avgerr .avgerr-editor { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+.avgerr .avgerr-editor th,.avgerr .avgerr-editor td { padding:.2rem .5rem .2rem 0; text-align:left; vertical-align:middle; }
+.avgerr .avgerr-editor thead th { font-size:.875rem; font-weight:600; color:var(--prx-fg-muted); border-bottom:1px solid var(--prx-border-strong); }
+.avgerr .avgerr-editor tbody th { font-weight:600; white-space:nowrap; }
+.avgerr .avgerr-editor .avgerr-input-row > * { padding-top:.4rem; }
+.avgerr .avgerr-editor .avgerr-note-row > td { padding-top:0; border-bottom:1px solid var(--prx-border); }
+.avgerr .avgerr-editor .avgerr-note-row .avgerr-note { margin:0 0 .35rem; }
+.avgerr .avgerr-editor .prx-control { margin:0; }
+.avgerr .avgerr-editor input[type="number"] { width:4.2em; }
+@media (min-width:30em) { .avgerr .avgerr-editor thead th:nth-child(1) { width:8rem; } .avgerr .avgerr-editor thead th:nth-child(2) { width:7rem; } .avgerr .avgerr-editor thead th:nth-child(3) { width:9rem; } }
+@media (max-width:30em) { .avgerr .avgerr-editor th,.avgerr .avgerr-editor td { padding-right:.35rem; } .avgerr .avgerr-editor input[type="number"] { width:3.4em; } .avgerr .avgerr-editor select { padding-left:.25rem; padding-right:.1rem; } }
 .avgerr .avgerr-note { font-size:.9rem; color:var(--prx-fg-muted); margin:.5rem 0; }
 .avgerr .avgerr-table { width:100%; min-width:30rem; border-collapse:collapse; font-variant-numeric:tabular-nums; }
 .avgerr .avgerr-table th { white-space:nowrap; }
@@ -56,6 +71,8 @@ export function averagingResult(s) {
 export function mountWidget(el,spec={}) {
   return createWidget(el,spec,{
     name:"averaging-errors",title:"Three ways to average an error share",className:"avgerr",css:CSS,
+    // the shared result-first frame (review 044, X-01): base.js only moves nodes, so keys, presets and hooks stay
+    layout:"result-first",
     keys:{
       mode:{type:"choice",values:["kernel","mixture","replays"],value:"kernel"},
       ...Object.fromEntries([1,2,3].flatMap((i,k) => [
@@ -75,19 +92,25 @@ export function mountWidget(el,spec={}) {
       const ro=(name,value,fmt=formatShare)=>{const n=ctx.num(value,fmt(value));n.dataset.prxReadout=name;return n;};
       const mode=ctx.segmented({label:"Average over",options:[{value:"kernel",label:"Three outcomes"},{value:"mixture",label:"Randomized reports"},{value:"replays",label:"Replicated datasets"}],value:ctx.state.mode,onChange:v=>ctx.set({mode:v})});
       ctx.controls.append(mode.root);
-      const manual=h("section",{"aria-label":"Three possible outcomes",class:"avgerr-cards"});
+      // the three outcomes as one compact table directly under the bars (review 044, X-16): a row of three inputs per
+      // outcome (each keeps its own label, visually hidden; the column heads name them), its note in the row under it
+      const editorBody=h("tbody",{});
+      const manual=h("section",{"aria-label":"Three possible outcomes",class:"avgerr-cards"},
+        h("table",{class:"avgerr-editor"},h("thead",{},h("tr",{},...["Outcome","Wrong","Stated pairs","Weight"].map(t=>h("th",{scope:"col"},t)))),editorBody));
       const editors=[1,2,3].map(i=>{
         const a=ctx.numberInput({label:"Wrong stated directions",...ctx.key(`a${i}`),onInput:v=>ctx.set({[`a${i}`]:Math.min(v,ctx.state[`n${i}`])})});
         const n=ctx.select({label:"Stated pairs",options:[{value:0,label:"None"},{value:2,label:"Two"},{value:3,label:"Three"}],value:ctx.state[`n${i}`],onChange:v=>ctx.set({[`n${i}`]:Number(v),[`a${i}`]:Math.min(ctx.state[`a${i}`],Number(v))})});
         const w=ctx.numberInput({label:"Relative probability weight",...ctx.key(`w${i}`),onInput:v=>ctx.set({[`w${i}`]:v})});
+        for(const c of [a,n,w])c.root.querySelector("label")?.classList.add("prx-sr-only");
         const note=h("p",{class:"avgerr-note"});
-        manual.append(h("fieldset",{class:"avgerr-card"},h("legend",{},"Outcome ",ctx.num(i,formatCount(i))),a.root,n.root,w.root,note));
+        editorBody.append(h("tr",{class:"avgerr-input-row"},h("th",{scope:"row"},"Outcome ",ctx.num(i,formatCount(i))),h("td",{},a.root),h("td",{},n.root),h("td",{},w.root)),
+          h("tr",{class:"avgerr-note-row"},h("td",{colspan:"4"},note)));
         return {a,n,w,note};
       });
       const mixture=h("section",{"aria-label":"A lottery over two complete four-unit reports"});
       const psi=ctx.slider({label:"Chance of the first complete report",...ctx.key("psi"),format:finiteShare,onInput:v=>ctx.set({psi:v})});
       const mixtureText=h("div",{class:"avgerr-note"});
-      mixture.append(psi.root,mixtureText);
+      mixture.append(psi.root);
       const replayControls=h("div",{class:"prx-controls"});
       const controlSpecs=[
         ["seed",ctx.numberInput({label:"Seed",...ctx.key("seed"),onInput:v=>ctx.set({seed:v})})],
@@ -97,7 +120,8 @@ export function mountWidget(el,spec={}) {
         ["cap",ctx.slider({label:"Maximum grades in each ordered cut",...ctx.key("cap"),onInput:v=>ctx.set({cap:v})})],
       ];
       for(const [,c] of controlSpecs) replayControls.append(c.root);
-      ctx.controls.append(replayControls,mixture);
+      // the controls of the chosen mode follow the preset row (review 044, X-18), so the presets never move
+      ctx.afterPresets(replayControls,mixture);
       const inputFeedback=h("p",{class:"avgerr-note",role:"status","data-prx-part":"input-feedback"});
       const fig=h("div",{class:"avgerr-figure"});
       const summary=h("div",{class:"avgerr-result"});
@@ -108,14 +132,15 @@ export function mountWidget(el,spec={}) {
       const table=h("table",{class:"avgerr-table"});
       const scroll=h("div",{class:"avgerr-scroll"},table);
       ctx.scrollRegion(scroll,"Outcomes and their probabilities");
-      ctx.controls.after(ctx.readout.node);
-      ctx.charts.append(fig,inputFeedback,manual,summary,smallR,running,runningKey,explanation,scroll);
+      // the bars first (the primary graphic), the outcomes' editor directly under them, then the lottery's explanation
+      ctx.primaryGraphic(fig);
+      ctx.charts.append(fig,inputFeedback,manual,mixtureText,summary,smallR,running,runningKey,explanation,scroll);
       return {render(s){
         const fix={}; for(const i of [1,2,3])if(s[`a${i}`]>s[`n${i}`])fix[`a${i}`]=s[`n${i}`];
         if(Object.keys(fix).length)ctx.set(fix);
         inputFeedback.hidden=true;
         if(s.mode==="kernel" && s.w1+s.w2+s.w3===0){
-          mode.set(s.mode);manual.hidden=false;replayControls.hidden=true;mixture.hidden=true;
+          mode.set(s.mode);manual.hidden=false;replayControls.hidden=true;mixture.hidden=true;mixtureText.hidden=true;
           editors.forEach((c,k)=>{const i=k+1;c.a.set(Math.min(s[`a${i}`],s[`n${i}`]));c.n.set(s[`n${i}`]);c.w.set(s[`w${i}`]);c.note.textContent="Probability is undefined until at least one outcome has positive weight.";});
           inputFeedback.hidden=false;inputFeedback.textContent="The total probability weight must be positive. Increase any outcome's weight above zero to compute the averages; your inputs are preserved.";
           ctx.readout.set("A probability distribution needs positive total weight. No averages are computed for these inputs.");
@@ -126,8 +151,8 @@ export function mountWidget(el,spec={}) {
         }
         const model=averagingResult(s), r=model.result;
         const share = s.mode === "replays" ? formatShare : finiteShare;
-        mode.set(s.mode); manual.hidden=s.mode!=="kernel"; replayControls.hidden=s.mode!=="replays"; mixture.hidden=s.mode!=="mixture"; running.hidden=s.mode!=="replays"; runningKey.hidden=s.mode!=="replays"; psi.set(s.psi);
-        if(s.mode==="mixture") mixtureText.replaceChildren("The theory book’s four-unit, two-criterion law. A lottery chooses one WHOLE fixed report; the expected weighted wrong count is averaged over that law within each report. ",...model.cases.flatMap((d,i)=>[i?"; ":"",blocksText(d.grade,model.ids),", probability ",ctx.num(d.probability,share(d.probability)),", expected weighted wrong ",ctx.num(d.A,share(d.A)),", stated pairs ",ctx.num(d.N,formatCount(d.N))]),". Evaluation of fixed reports; the lottery is not a single printable report.");
+        mode.set(s.mode); manual.hidden=s.mode!=="kernel"; replayControls.hidden=s.mode!=="replays"; mixture.hidden=s.mode!=="mixture"; mixtureText.hidden=s.mode!=="mixture"; running.hidden=s.mode!=="replays"; runningKey.hidden=s.mode!=="replays"; psi.set(s.psi);
+        if(s.mode==="mixture") mixtureText.replaceChildren("The lottery selects a complete report. For each report, we average the weighted wrong count under the theory book’s four-unit, two-criterion law. ",...model.cases.flatMap((d,i)=>[i?"; ":"",blocksText(d.grade,model.ids),", probability ",ctx.num(d.probability,share(d.probability)),", expected weighted wrong ",ctx.num(d.A,share(d.A)),", stated pairs ",ctx.num(d.N,formatCount(d.N))]),". Evaluation of fixed reports; the lottery is not a single printable report.");
         for(const [key,c]of controlSpecs)c.set(s[key]);
         editors.forEach((c,k)=>{const i=k+1;c.a.set(Math.min(s[`a${i}`],s[`n${i}`]));c.n.set(s[`n${i}`]);c.w.set(s[`w${i}`]);const d=model.cases[k]; if(s.mode==="kernel")c.note.replaceChildren("Probability ",ctx.num(d.probability,share(d.probability)),"; this outcome's error share ",ctx.num(d.share,share(d.share)),". Wrong directions cannot exceed stated pairs.");});
         const rows=FIELDS.map((field,i)=>({label:NAMES[i],value:r[field]}));
@@ -150,7 +175,7 @@ export function mountWidget(el,spec={}) {
           h("tbody",{},...model.cases.map((d,i)=>h("tr",{},h("th",{scope:"row"},ctx.num(i+1,formatCount(i+1))),h("td",{},ctx.num(d.probability,share(d.probability))),h("td",{},ctx.num(d.A,s.mode==="mixture"?share(d.A):formatCount(d.A))),h("td",{},ctx.num(d.N,formatCount(d.N))),h("td",{},ctx.num(d.share,share(d.share)))))));
         ctx.readout.set(["Pooled pairs ",ctx.num(r.ERR,share(r.ERR)),", disclosing outcomes ",ctx.num(r.meanFraction,share(r.meanFraction)),", zero-imputed ",ctx.num(r.zeroImputed,share(r.zeroImputed)),". The chance of any disclosure is ",ctx.num(r.positiveFrequency,share(r.positiveFrequency)),"."]);
         ctx.caption.replaceChildren(...(s.mode==="kernel"?["A hand-set distribution over report outcomes on three units; relative weights are normalized to probabilities. These are illustrative counts."]:s.mode==="mixture"?["A lottery over two complete fixed reports under the theory book’s four-unit law. Expected weighted wrong counts are posterior expectations; reporting randomness chooses a whole report."]:
-          ["Monte Carlo, ",ctx.num(s.replays,formatCount(s.replays))," datasets, seed ",ctx.num(s.seed,formatCount(s.seed)),". Reports are optimal cuts of each posterior-mean order with at most ",ctx.num(s.cap,formatCount(s.cap))," grades (",ctx.num(familySize(30,{kind:"order",order:Array.from({length:30},(_,i)=>i),G:s.cap}),formatCount(familySize(30,{kind:"order",order:Array.from({length:30},(_,i)=>i),G:s.cap})))," cut reports per dataset). True values stay fixed across datasets; assumed prior SD ",ctx.num(s.priorSd,formatSetting(s.priorSd)),", τ ",ctx.num(s.tau,formatSetting(s.tau)),"."]));
+          ["Monte Carlo, ",ctx.num(s.replays,formatCount(s.replays))," datasets, seed ",ctx.num(s.seed,formatSetting(s.seed)),". Reports are optimal cuts of each posterior-mean order with at most ",ctx.num(s.cap,formatCount(s.cap)),s.cap===1?" grade (":" grades (",ctx.num(familySize(30,{kind:"order",order:Array.from({length:30},(_,i)=>i),G:s.cap}),formatCount(familySize(30,{kind:"order",order:Array.from({length:30},(_,i)=>i),G:s.cap}))),s.cap===1?" cut report per dataset). True values stay fixed":" cut reports per dataset). True values stay fixed across datasets; assumed prior SD ",ctx.num(s.priorSd,formatSetting(s.priorSd)),", τ ",ctx.num(s.tau,formatSetting(s.tau)),"."]));
       }};
     },
   });

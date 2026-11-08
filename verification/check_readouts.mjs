@@ -53,7 +53,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, realpathSync, statSync } from "node:fs";
 import { basename, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { badTokenFindings, displayFindings, numberFindings, parseDataNum, textAlternativeFindings } from "./dom_rules.mjs";
+import { badTokenFindings, displayFindings, numberFindings, parseDataNum, parseExactDataNum, compareExactValues, exactElementDisplayProblem, textAlternativeFindings } from "./dom_rules.mjs";
 import { appKeyProblems, caseQuery, entryByName, entryFor, importClosure, loadCatalog, mountCase, ROOT } from "./widget_harness.mjs";
 
 export const CONFIG = Object.freeze({
@@ -61,6 +61,7 @@ export const CONFIG = Object.freeze({
   schema: "verification/readouts/_schema.json",
   golden: "verification/golden",
   parity: "verification/parity.d",
+  mdomainManifests: Object.freeze(["verification/golden/v35/manifest.json", "verification/golden/v35-pilot/manifest.json"]),
   registry: "verification/v1-registry",
   manifest: "MANIFEST.json",
   // the SHA-256 of MANIFEST.json itself, so a frozen value cannot be edited together with its listed hash
@@ -288,6 +289,34 @@ export function contractRows(doc) {
   return new Set((doc?.rows ?? []).map((r) => r.id));
 }
 
+/** Read only manifest-listed independent public-R fixtures, checking current bytes. */
+export function mdomainSourceRegistry({ read = (path) => readFileSync(join(ROOT, path)), exists = (path) => existsSync(join(ROOT, path)), manifests = CONFIG.mdomainManifests } = {}) {
+  const entries = new Map();
+  const failures = [];
+  for (const path of manifests) {
+    if (!exists(path)) continue;
+    try {
+      const manifest = JSON.parse(read(path).toString("utf8"));
+      if (manifest.referencePackage !== "postrank" || manifest.referenceVersion !== "1.2.0" || !/^[0-9a-f]{40}$/.test(manifest.sourceCommit ?? "") || !Array.isArray(manifest.fixtures)) throw new Error("invalid postrank 1.2.0 manifest provenance");
+      for (const entry of manifest.fixtures) {
+        if (!/^[a-z0-9][a-z0-9-]*$/.test(entry.fixtureId ?? "") || !/^verification\/golden\/v35(?:-pilot)?\/[a-z0-9][a-z0-9-]*\.json$/.test(entry.path ?? "") || !/^[0-9a-f]{64}$/.test(entry.sha256 ?? "")) throw new Error("invalid fixture entry");
+        if (entries.has(entry.fixtureId)) throw new Error(`duplicate fixture ID ${entry.fixtureId}`);
+        entries.set(entry.fixtureId, { ...entry, sourceCommit: manifest.sourceCommit });
+      }
+    } catch (error) { failures.push(`${path}: ${error.message}`); }
+  }
+  return (id) => {
+    if (failures.length) throw new Error(failures.join("; "));
+    const entry = entries.get(id);
+    if (!entry) throw new Error(`no manifest-listed multidomain fixture "${id}"`);
+    const bytes = read(entry.path);
+    if (createHash("sha256").update(bytes).digest("hex") !== entry.sha256) throw new Error(`multidomain fixture ${id} SHA-256 mismatch`);
+    const fixture = JSON.parse(bytes.toString("utf8"));
+    if (fixture.fixtureId !== id || !isRecord(fixture.expected) || fixture.oracle?.package !== "postrank" || fixture.oracle?.packageVersion !== "1.2.0" || fixture.oracle?.sourceCommit !== entry.sourceCommit || fixture.oracle?.method !== "public_api_exhaustive_fixed_cards") throw new Error(`multidomain fixture ${id} has invalid expected/oracle provenance`);
+    return fixture;
+  };
+}
+
 /** Everything the expectations are resolved against, loaded once. */
 export async function loadSources() {
   const R = CONFIG.registry;
@@ -323,11 +352,13 @@ export async function loadSources() {
     const top = String(field).split(".")[0];
     return m.tolerance?.[top] ?? m.default ?? 0;
   };
+  const sharedFormats = await import(href(CONFIG.formats));
+  const engine = await import(href(CONFIG.engine));
   return {
-    registry, specs, golden, parityTol, integrity,
+    registry, specs, golden, parityTol, integrity, mdomain: mdomainSourceRegistry(),
     labels: (await import(href(CONFIG.labels))).CONFIG,
-    named: (await import(href(CONFIG.formats))).NAMED_FORMATS,
-    engine: await import(href(CONFIG.engine)),
+    named: sharedFormats.NAMED_FORMATS,
+    engine: { ...engine, ...(typeof sharedFormats.formatExactText === "function" ? { formatExactText: sharedFormats.formatExactText } : {}) },
     rows: contractRows(readIf(`${R}/contract-rows.json`, { rows: [] })),
     v1captions: readIf(`${R}/captions.json`, { captions: [] }),
     schema: readJson(CONFIG.schema),
@@ -411,6 +442,19 @@ export function resolveExpectation(x, src) {
     try { out.value = getPath(row.expect, r.field, `${r.group}/${r.row} expect`); } catch (e) { problems.push(e.message); return out; }
     out.tol = x.tol ?? src.parityTol(r.group, r.field);
     if (kind === "number" && !x.format) problems.push(`${x.source === "oracle" ? "an oracle" : "a golden"} number needs a format (the app's formatter for this element)`);
+  } else if (x.source === "mdomain") {
+    const r = x.ref;
+    if (!isRecord(r) || typeof r.fixture !== "string" || typeof r.field !== "string") { problems.push("a multidomain ref is { fixture, field }"); return out; }
+    try {
+      if (typeof src.mdomain !== "function") throw new Error("multidomain source registry is unavailable");
+      const fixture = src.mdomain(r.fixture);
+      if (r.field.split(".").some(segment => ["__proto__", "prototype", "constructor"].includes(segment))) throw new Error("multidomain refs require declared JSON fields");
+      const rootField = /^(?:input|decision|family|expected)\./.test(r.field);
+      out.value = getPath(rootField ? fixture : fixture.expected, r.field, `${r.fixture} source`);
+    } catch (error) { problems.push(error.message); return out; }
+    out.tol = x.tol ?? 0;
+    if (typeof out.value === "string" && parseExactDataNum(out.value) && kind !== "exact") problems.push("multidomain rational source strings require kind exact");
+    if (kind === "number" && !x.format) problems.push("a multidomain number needs a format");
   } else if (x.source === "literal") {
     if (typeof x.ref !== "string" || !src.rows.has(x.ref)) problems.push(`a literal ref names a row of ${CONFIG.registry}/contract-rows.json ("6.2", "11.4"), got ${JSON.stringify(x.ref)}`);
     if (kind !== "text") problems.push("a literal is only for fixed strings (kind text), never a number");
@@ -431,6 +475,15 @@ export function resolveExpectation(x, src) {
     return out;
   }
   if (out.value === undefined) return out;
+  if (kind === "exact") {
+    if (!(out.value === null || parseExactDataNum(out.value))) problems.push("kind exact requires a canonical rational source string or null");
+    const zeroTolerance = (t) => Array.isArray(t) ? t.every(zeroTolerance) : typeof t === "number" ? t === 0 : isRecord(t) && (t.abs ?? 0) === 0 && (t.rel ?? 0) === 0;
+    if (!zeroTolerance(out.tol)) problems.push("exact rational expectations do not accept a nonzero tolerance");
+    if (out.value === null && x.value !== null) problems.push("an undefined exact case value must be null, not a display token");
+    const why = compareExactValues(x.value, out.value);
+    if (why) problems.push(`exact case value disagrees with source: ${why}`);
+    return out;
+  }
   if (kind === "text" && typeof out.value !== "string") problems.push(`kind text needs a string source value, got ${JSON.stringify(out.value)?.slice(0, 40)}`);
   if (kind === "number" && typeof out.value === "string" && !/^\d+$/.test(out.value)) problems.push(`kind number needs a numeric source value, got "${out.value}"`);
   if (kind === "number" && !out.format) problems.push("no formatter for this number (give format)");
@@ -578,7 +631,7 @@ export async function checkCaseFile(doc, { file = "(memory)", src, module, entry
         findings.push(finding(file, c.id, "app", "", `the app's root has data-prx-widget="${m.initial.widget}", not "${doc.app}": createWidget's name must be the catalog name, since base.js takes the presets and the caption from the catalog entry of that name`));
       }
       // (a spec that sets keys of the app changes the preset's setting on purpose, so the preset is not shown pressed)
-      const specSets = Object.keys(c.spec ?? {}).some((k) => !["preset", "theme", "query"].includes(k));
+      const specSets = Object.keys(c.spec ?? {}).some((k) => !["preset", "theme", "query", "open"].includes(k));
       if (c.preset !== undefined && !specSets && !m.initial.pressed.includes(c.preset)) {
         // a preset with the same query as another is shown as the first of them
         const twins = (entry?.presets ?? []).filter((p) => p.id !== c.preset && String(p.query ?? "").replace(/^\?/, "") === presetQuery).map((p) => p.id);
@@ -616,6 +669,19 @@ export async function checkCaseFile(doc, { file = "(memory)", src, module, entry
         const parsed = parseDataNum(dn);
         if (!parsed.ok) { findings.push(finding(file, c.id, "bad-data-num", where, `data-num "${dn}"`)); return; }
         counts.numbers += 1;
+        if (r.kind === "exact") {
+          const why = compareExactValues(dn, r.value);
+          if (why) findings.push(finding(file, c.id, "raw", where, `data-num ${dn} differs from exact source: ${why}`));
+          const displayProblem = exactElementDisplayProblem(node);
+          if (displayProblem) findings.push(finding(file, c.id, "display", where, displayProblem));
+          if (r.format) {
+            try {
+              const want = formatWith(src.engine, src.named, r.format, dn === "NA" ? null : dn);
+              if ((node.textContent ?? "").trim() !== want) findings.push(finding(file, c.id, "display", where, `exact formatter display disagrees with ${r.format.fn}`));
+            } catch (error) { findings.push(finding(file, c.id, "display", where, error.message)); }
+          }
+          return;
+        }
         const why = compareValues(shapeType(r.value), comparable(parsed.value, r.value), r.value, r.tol);
         if (why) findings.push(finding(file, c.id, "raw", where, `data-num ${dn} vs ${x.source} ${typeof x.ref === "string" ? x.ref : `${x.ref.group}/${x.ref.row}/${x.ref.field}`} = ${JSON.stringify(r.value)} within ${JSON.stringify(r.tol)}: ${why}`));
         const display = (node.textContent ?? "").trim();

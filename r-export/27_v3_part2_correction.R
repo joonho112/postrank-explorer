@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Population-change UI pins, independently generated from SR-06 and the released synthetic six-site law.
 # The small six-site family is enumerated in base R BEFORE postrank is loaded. The league's
 # unrestricted-in-order cuts are reproduced by public postrank1.1.0, not the JavaScript implementation.

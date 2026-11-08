@@ -1,0 +1,505 @@
+{
+  "schemaVersion": "postrank-explorer-mdomain-v1",
+  "fixtureId": "boundary-zero-mass-identity",
+  "description": "Complete finite teaching law: boundary-zero-mass-identity. Policy and candidate banks are explicitly declared.",
+  "input": {
+    "inputId": "boundary-zero-mass-identity-input",
+    "lawId": "boundary-zero-mass-identity-law",
+    "representation": "exact_finite_law",
+    "coupling": "supplied_joint",
+    "unitIds": [
+      "A",
+      "B",
+      "C"
+    ],
+    "domainIds": [
+      "S"
+    ],
+    "stateIds": [
+      "s1",
+      "s2"
+    ],
+    "states": [
+      [
+        [
+          1
+        ],
+        [
+          1
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          0
+        ]
+      ]
+    ],
+    "masses": [
+      "1",
+      "0"
+    ],
+    "targets": [
+      {
+        "domainId": "S",
+        "definition": "Fictional S priority",
+        "units": "oriented teaching score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "same",
+          "same",
+          "C"
+        ],
+        "equalityProvenance": "Explicit classes of this finite teaching law."
+      }
+    ],
+    "provenance": {
+      "producer": "Self-contained finite teaching law",
+      "conditioningInfo": "Specified fictional law; no observations.",
+      "jointGeneration": "Every labelled state contains all units and domains.",
+      "finiteSupportOrigin": "These states exhaust this finite law, including declared zero-mass states.",
+      "properLaw": true
+    }
+  },
+  "decision": {
+    "decisionId": "boundary-zero-mass-identity-policy",
+    "domainIds": [
+      "S"
+    ],
+    "scope": "all_pairs",
+    "weights": [
+      "1"
+    ],
+    "tau": [
+      "1/4"
+    ],
+    "q": null,
+    "t": [
+      "0"
+    ],
+    "alpha": "0"
+  },
+  "family": {
+    "familyId": "boundary-zero-mass-identity-family",
+    "unitIds": [
+      "A",
+      "B",
+      "C"
+    ],
+    "domainIds": [
+      "S"
+    ],
+    "maxGrades": [
+      3
+    ],
+    "maxActions": 256,
+    "banks": [
+      {
+        "domainId": "S",
+        "columns": [
+          {
+            "columnId": "column-1",
+            "grades": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "column-2",
+            "grades": [
+              1,
+              1,
+              2
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "fit": {
+      "inputId": "boundary-zero-mass-identity-input",
+      "lawId": "boundary-zero-mass-identity-law",
+      "decisionId": "boundary-zero-mass-identity-policy",
+      "familyId": "boundary-zero-mass-identity-family",
+      "candidateTable": [
+        {
+          "candidateId": "p:1,1,1",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                1
+              ]
+            ]
+          },
+          "riskExact": "1/4",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "disclosedCounts": [
+            0
+          ],
+          "gradeCounts": [
+            1
+          ],
+          "optimal": false,
+          "selected": false
+        },
+        {
+          "candidateId": "p:1,1,2",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                2
+              ]
+            ]
+          },
+          "riskExact": "1/12",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "disclosedCounts": [
+            2
+          ],
+          "gradeCounts": [
+            2
+          ],
+          "optimal": true,
+          "selected": true
+        }
+      ],
+      "optimizerIds": [
+        "p:1,1,2"
+      ],
+      "selectedId": "p:1,1,2",
+      "selectedGrades": {
+        "unitIds": [
+          "A",
+          "B",
+          "C"
+        ],
+        "domainIds": [
+          "S"
+        ],
+        "values": [
+          [
+            1
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      },
+      "riskExact": "1/12",
+      "jointProbabilityExact": "0",
+      "searchScope": {
+        "type": "declared_cartesian_product",
+        "candidateCount": 2,
+        "examinedActions": 2,
+        "fullProductExamined": true,
+        "unrestrictedOptimalityClaim": false
+      },
+      "assurance": {
+        "arithmetic": "exact_represented_finite_law",
+        "properLawStatus": "producer_declaration",
+        "numericalGuarantee": false,
+        "intendedPosteriorFeasibilityCertified": false,
+        "searchOptimality": "candidate_restricted"
+      }
+    },
+    "selectedEvaluation": {
+      "inputId": "boundary-zero-mass-identity-input",
+      "lawId": "boundary-zero-mass-identity-law",
+      "decisionId": "boundary-zero-mass-identity-policy",
+      "grades": {
+        "unitIds": [
+          "A",
+          "B",
+          "C"
+        ],
+        "domainIds": [
+          "S"
+        ],
+        "values": [
+          [
+            1
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      },
+      "originalPairs": 3,
+      "riskExact": "1/12",
+      "jointProbabilityExact": "0",
+      "meanFeasible": true,
+      "jointFeasible": true,
+      "feasible": true,
+      "jointStatus": "evaluated",
+      "domains": [
+        {
+          "domainId": "S",
+          "gradeCount": 2,
+          "disclosedPairs": 2,
+          "withheldPairs": 1,
+          "expectedFalseCountExact": "0",
+          "expectedFalseProportionExact": "0",
+          "lossExact": "1/12",
+          "weightedLossExact": "1/12",
+          "meanGuardSatisfied": null,
+          "thresholdExact": "0",
+          "firstExceedanceCount": 1,
+          "eventProbabilityExact": "0",
+          "eventActive": true
+        }
+      ],
+      "states": [
+        {
+          "stateId": "s1",
+          "falseCounts": [
+            0
+          ],
+          "exceedances": [
+            false
+          ],
+          "unionExceeded": false
+        },
+        {
+          "stateId": "s2",
+          "falseCounts": [
+            0
+          ],
+          "exceedances": [
+            false
+          ],
+          "unionExceeded": false
+        }
+      ],
+      "assurance": {
+        "arithmetic": "exact_represented_finite_law",
+        "properLawStatus": "producer_declaration",
+        "numericalGuarantee": false,
+        "intendedPosteriorFeasibilityCertified": false,
+        "searchOptimality": "fixed_card"
+      }
+    },
+    "fixedCards": [
+      {
+        "cardId": "p:1,1,1",
+        "evaluation": {
+          "inputId": "boundary-zero-mass-identity-input",
+          "lawId": "boundary-zero-mass-identity-law",
+          "decisionId": "boundary-zero-mass-identity-policy",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                1
+              ]
+            ]
+          },
+          "originalPairs": 3,
+          "riskExact": "1/4",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "jointStatus": "analytic_zero",
+          "domains": [
+            {
+              "domainId": "S",
+              "gradeCount": 1,
+              "disclosedPairs": 0,
+              "withheldPairs": 3,
+              "expectedFalseCountExact": "0",
+              "expectedFalseProportionExact": null,
+              "lossExact": "1/4",
+              "weightedLossExact": "1/4",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "0",
+              "eventActive": false
+            }
+          ],
+          "states": [
+            {
+              "stateId": "s1",
+              "falseCounts": [
+                0
+              ],
+              "exceedances": [
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "s2",
+              "falseCounts": [
+                0
+              ],
+              "exceedances": [
+                false
+              ],
+              "unionExceeded": false
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      },
+      {
+        "cardId": "p:1,1,2",
+        "evaluation": {
+          "inputId": "boundary-zero-mass-identity-input",
+          "lawId": "boundary-zero-mass-identity-law",
+          "decisionId": "boundary-zero-mass-identity-policy",
+          "grades": {
+            "unitIds": [
+              "A",
+              "B",
+              "C"
+            ],
+            "domainIds": [
+              "S"
+            ],
+            "values": [
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                2
+              ]
+            ]
+          },
+          "originalPairs": 3,
+          "riskExact": "1/12",
+          "jointProbabilityExact": "0",
+          "meanFeasible": true,
+          "jointFeasible": true,
+          "feasible": true,
+          "jointStatus": "evaluated",
+          "domains": [
+            {
+              "domainId": "S",
+              "gradeCount": 2,
+              "disclosedPairs": 2,
+              "withheldPairs": 1,
+              "expectedFalseCountExact": "0",
+              "expectedFalseProportionExact": "0",
+              "lossExact": "1/12",
+              "weightedLossExact": "1/12",
+              "meanGuardSatisfied": null,
+              "thresholdExact": "0",
+              "firstExceedanceCount": 1,
+              "eventProbabilityExact": "0",
+              "eventActive": true
+            }
+          ],
+          "states": [
+            {
+              "stateId": "s1",
+              "falseCounts": [
+                0
+              ],
+              "exceedances": [
+                false
+              ],
+              "unionExceeded": false
+            },
+            {
+              "stateId": "s2",
+              "falseCounts": [
+                0
+              ],
+              "exceedances": [
+                false
+              ],
+              "unionExceeded": false
+            }
+          ],
+          "assurance": {
+            "arithmetic": "exact_represented_finite_law",
+            "properLawStatus": "producer_declaration",
+            "numericalGuarantee": false,
+            "intendedPosteriorFeasibilityCertified": false,
+            "searchOptimality": "fixed_card"
+          }
+        }
+      }
+    ]
+  },
+  "oracle": {
+    "package": "postrank",
+    "packageVersion": "1.2.0",
+    "sourceCommit": "da02a785f753efb060e149f04650970b0ea1e05b",
+    "generator": "r-export/v35/resolution-boundaries.R",
+    "method": "public_api_exhaustive_fixed_cards"
+  }
+}

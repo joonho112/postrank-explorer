@@ -158,6 +158,22 @@
           "source": "literal",
           "ref": "6.5",
           "value": "evaluation of a fixed report"
+        },
+        {
+          "select": "[data-prx-badge]",
+          "kind": "text",
+          "attr": "data-prx-badge",
+          "about": "review 044 repair (G2-F4, G2-F6): the one-line badge says E <= tau N applies (the exact optimum of a family with the all-withheld report)",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "applies"
+        },
+        {
+          "select": ".prx-de-seedtag .prx-num",
+          "about": "the seed the draws use, beside the draw buttons (review 044 repair: the Seed field moved into the closed Grades, family and seed box)",
+          "source": "registry",
+          "ref": "settings.seed.s1",
+          "value": 1
         }
       ]
     },
@@ -307,6 +323,22 @@
             "field": "DoverN.0"
           },
           "value": 0.0714285714285714
+        },
+        {
+          "select": "[data-prx-badge]",
+          "kind": "text",
+          "attr": "data-prx-badge",
+          "about": "review 044 repair: the badge applies at the question's setting",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "applies"
+        },
+        {
+          "select": ".prx-de-seedtag .prx-num",
+          "about": "the seed the draws use, beside the draw buttons (review 044 repair: the Seed field moved into the closed Grades, family and seed box)",
+          "source": "registry",
+          "ref": "settings.seed.s1",
+          "value": 1
         }
       ]
     },
@@ -409,6 +441,15 @@
             "field": "s"
           },
           "value": 0
+        },
+        {
+          "select": "[data-prx-badge]",
+          "kind": "text",
+          "attr": "data-prx-badge",
+          "about": "review 044 repair: risk = tau for the all-withheld report, so the badge says E <= tau N holds here (0 <= 0) without a guarantee: not the family optimum",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "holds"
         }
       ]
     },
@@ -525,6 +566,15 @@
           "source": "registry",
           "ref": "g05.law3.r112.ACB.wrong",
           "value": 1
+        },
+        {
+          "select": "[data-prx-badge]",
+          "kind": "text",
+          "attr": "data-prx-badge",
+          "about": "review 044 repair: the badge applies for the optimum within A_3",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "applies"
         }
       ]
     },
@@ -786,6 +836,15 @@
             4,
             5
           ]
+        },
+        {
+          "select": "[data-prx-badge]",
+          "kind": "text",
+          "attr": "data-prx-badge",
+          "about": "review 044 repair: risk below tau but not the optimum within A_6, so the badge says E <= tau N holds here but is not guaranteed",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "holds"
         }
       ]
     },
@@ -860,6 +919,15 @@
           "source": "literal",
           "ref": "6.4",
           "value": "holds"
+        },
+        {
+          "select": "[data-prx-badge]",
+          "kind": "text",
+          "attr": "data-prx-badge",
+          "about": "review 044 repair (G2-F6): the strict order holds E <= tau N without a guarantee; the badge says so in one line",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "holds"
         }
       ]
     },
@@ -882,6 +950,15 @@
           "kind": "text",
           "attr": "data-prx-own",
           "about": "risk > tau: E > tau N",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "fails"
+        },
+        {
+          "select": "[data-prx-badge]",
+          "kind": "text",
+          "attr": "data-prx-badge",
+          "about": "review 044 repair (G2-F6): risk above tau, so the badge says E > tau N: worse than withholding every pair",
           "source": "literal",
           "ref": "6.4",
           "value": "fails"
@@ -936,6 +1013,15 @@
           "ref": "6.4",
           "value": "applies",
           "attr": "data-prx-bound"
+        },
+        {
+          "select": "[data-prx-badge]",
+          "kind": "text",
+          "attr": "data-prx-badge",
+          "about": "review 044 repair: the all-withheld report is the optimum within A_3 at tau .05, so the badge applies",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "applies"
         }
       ]
     },
@@ -2378,6 +2464,61 @@
           "format": {
             "fn": "formatCount"
           }
+        }
+      ]
+    },
+    {
+      "id": "not-in-family-cap3",
+      "about": "review 044 repair (G2-F6): report 1/2/3/3/4/5 has five grades, so it is not in A_<=3 when that family is shown; its risk is below tau, so the badge says E <= tau N holds here but is not guaranteed (the report is not in the family shown), and the best report of A_<=3 is offered",
+      "query": "?grades=1,2,3,3,4,5&cap=3",
+      "expect": [
+        {
+          "select": "[data-prx-bound]",
+          "kind": "text",
+          "attr": "data-prx-bound",
+          "about": "no bound: the report is not in the family shown",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "not-shown"
+        },
+        {
+          "select": "[data-prx-badge]",
+          "kind": "text",
+          "attr": "data-prx-badge",
+          "about": "the badge: E <= tau N holds here but is not guaranteed",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "holds"
+        },
+        {
+          "select": "[data-prx-own]",
+          "kind": "text",
+          "attr": "data-prx-own",
+          "about": "risk <= tau: E <= tau N holds for this report",
+          "source": "literal",
+          "ref": "6.4",
+          "value": "holds"
+        },
+        {
+          "select": "[data-prx-readout=\"optimum0\"]",
+          "about": "the exact optimum within A_<=3 at tau .20",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-optimize",
+            "row": "exactOptimum-six-A-cap3-tau.20",
+            "field": "grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
         }
       ]
     }

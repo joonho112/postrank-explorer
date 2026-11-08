@@ -13,9 +13,8 @@ export const FLAGS_CSS = `
 /*
  * postrank Explorer · evidence-flags (catalog R-02; js/widgets/evidence-flags.js)
  *
- * Layout: the controls (view, cutoff, the two units side by side when there is room, the posterior, tau), then the
- * view's panels in a grid of two columns when the widget is wide enough (one column below about 40rem), then the
- * read-out tiles and lines. Legends sit on the plot panel (prx-light-panel) so data colors keep their meaning in
+ * Layout: the controls, the live result, then the view's panels and detailed evaluation.
+ * Panels have two columns when space permits and stack in reading order on a phone. Legends sit on the plot panel (prx-light-panel) so data colors keep their meaning in
  * every theme. Tokens only; nothing here is wider than its container at 375 px.
  */
 
@@ -262,7 +261,7 @@ export const CONFIG = Object.freeze({
     rowsAlt: "Thirty league units sorted by estimate, each with its estimate, a bar of plus or minus the cutoff times its SE, the reference line and its flag grade.",
     rowsTable: "The thirty units: estimate, SE, z, flag and grade",
     matrixHeading: "What the report states for each pair",
-    matrixNote: "Rows and columns follow the order on the left, largest estimate first (named on a wide screen), so above the diagonal the row unit has the larger estimate. A stated direction that runs against the estimates shows there as a stated-below cell; it and its mirror cell below the diagonal are outlined.",
+    matrixNote: "Rows and columns follow the order in the estimate panel, largest estimate first (named on a wide screen), so above the diagonal the row unit has the larger estimate. A stated direction that runs against the estimates shows there as a stated-below cell; it and its mirror cell below the diagonal are outlined.",
     matrixAlt: "Thirty-by-thirty relation matrix of the flag report: each cell says whether the report states the row unit above, below or neither relative to the column unit.",
     matrixTable: "The stated directions that run against the estimates",
     relationTitle: "Row unit relative to column unit",
@@ -271,8 +270,8 @@ export const CONFIG = Object.freeze({
     relBelow: "stated below",
     outlineLegend: "outline: the stated direction runs against the estimates",
     gradeChip: "grade",
-    note: "Two-unit example after the postrank theory book, chapter 2. The league is simulated (seed shown), with independent normal posteriors set by hand for teaching; every number is computed in this browser.",
-    scope: "This loss evaluates the directions the flags imply, not the purpose the rule was made for.",
+    note: "The two-unit example draws on chapter 2 of the postrank theory book. The league uses the shown simulation seed and independent normal posteriors specified for the example.",
+    scope: "The loss uses the directions implied by the flags and the cost of withholding.",
     seedWords: "seed",
   }),
 });
@@ -358,9 +357,10 @@ export function mountFlags(el, spec = {}, mode = "pair") {
   return createWidget(el, spec, {
     name: isPairView ? CONFIG.name : "flags-in-the-league",
     css: FLAGS_CSS,
+    layout: "result-first",
     math: true,
     label: CONFIG.label,
-    title: CONFIG.title,
+    title: mode === "league" ? "Which directions do the flags state across the league?" : CONFIG.title,
     className: CONFIG.className,
     keys: {
       ...(isPairView ? {
@@ -411,7 +411,7 @@ export function mountFlags(el, spec = {}, mode = "pair") {
         e.input.setAttribute("aria-label", `${T.estLabel} of unit ${u}`);
         s.input.setAttribute("aria-label", `${T.seLabel} of unit ${u}`);
         sliders.push([ek, e], [sk, s]);
-        return h("fieldset", { class: "prx-control prx-ef-unit" }, h("legend", { text: T.unit[u] }), e.root, s.root);
+        return h("fieldset", { class: "prx-control prx-ef-unit" }, h("legend", { text: T.unit[u] }), e.root, u === "B" ? ctx.primaryControl(s.root) : s.root);
       });
       const unitRow = h("div", { class: "prx-ef-units" }, ...unitBoxes);
       const prior = ctx.radioGroup({
@@ -423,13 +423,14 @@ export function mountFlags(el, spec = {}, mode = "pair") {
         label: T.tauLabel, min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: ctx.state.tau,
         name: "tau", hint: T.tauHint, onInput: (v) => ctx.set({ tau: v }),
       });
-      ctx.controls.append(crit.root, ...(isPairView ? [unitRow] : []), prior.root, tau.root);
+      ctx.controls.append(isPairView ? crit.root : ctx.primaryControl(crit.root), ...(isPairView ? [unitRow] : []), prior.root, tau.root);
 
       // --- pair view
       const estSlot = h("div", { class: "prx-ef-chart" });
       const estNote = h("p", { class: "prx-ef-note", "data-prx-part": "notes" });
       const estBox = h("section", { class: "prx-ef-panel", "aria-label": T.estHeading }, ctx.panelTitle(T.estHeading, { className: "prx-ef-heading" }), estSlot, estNote);
       const zSlot = h("div", { class: "prx-ef-chart" });
+      if (isPairView) ctx.primaryGraphic(zSlot);
       const zFormula = h("div", { class: "prx-ef-tex", "data-prx-tex": "z" });
       const zBox = h("section", { class: "prx-ef-panel", "aria-label": T.zHeading },
         ctx.panelTitle(T.zHeading, { className: "prx-ef-heading" }), zSlot, h("p", { class: "prx-ef-note", "data-prx-part": "notes", text: T.zNote }), zFormula);
@@ -438,29 +439,31 @@ export function mountFlags(el, spec = {}, mode = "pair") {
       const errorLine = h("p", { class: "prx-ef-result", "data-prx-part": "readout" });
       const pairTiles = h("div", { class: "prx-ef-tiles", "data-prx-part": "readout" });
       const pairReference = h("p", { class: "prx-ef-note", "data-prx-part": "readout" });
+      const tauHint = tau.root.querySelector(".prx-hint");
       const errorBody = h("div", {}, errorLine, pairTiles, pairReference);
       const errorBox = h("section", { class: "prx-ef-panel", "aria-label": T.errorHeading }, ctx.panelTitle(T.errorHeading, { className: "prx-ef-heading" }), errorBody);
       const pairView = h("div", { class: "prx-ef-view prx-ef-pair" },
-        h("div", { class: "prx-ef-grid" }, estBox, zBox), h("div", { class: "prx-ef-grid" }, resultBox, errorBox));
+        h("div", { class: "prx-ef-grid" }, zBox, estBox), h("div", { class: "prx-ef-grid" }, resultBox, errorBox));
 
       // --- league view
       const rowsSlot = h("div", { class: "prx-ef-chart" });
       const rowsBox = h("section", { class: "prx-ef-panel", "aria-label": T.rowsHeading },
         ctx.panelTitle(T.rowsHeading, { className: "prx-ef-heading" }), rowsSlot, h("p", { class: "prx-ef-note", "data-prx-part": "notes", text: T.rowsNote }));
       const matrixSlot = h("div", { class: "prx-ef-chart prx-ef-matrix-chart" });
+      if (!isPairView) ctx.primaryGraphic(matrixSlot);
       const matrixLegend = h("div", { class: "prx-ef-legend prx-light-panel", "data-prx-part": "legend" });
       const matrixBox = h("section", { class: "prx-ef-panel", "aria-label": T.matrixHeading },
         ctx.panelTitle(T.matrixHeading, { className: "prx-ef-heading" }), matrixSlot, matrixLegend, h("p", { class: "prx-ef-note", "data-prx-part": "notes", text: T.matrixNote }));
       const leagueTiles = h("div", { class: "prx-ef-tiles", "data-prx-part": "readout" });
       const leagueLines = h("div", { class: "prx-ef-lines", "data-prx-part": "readout" });
-      const leagueView = h("div", { class: "prx-ef-view prx-ef-league" }, h("div", { class: "prx-ef-grid" }, rowsBox, matrixBox), leagueTiles, leagueLines);
+      const leagueView = h("div", { class: "prx-ef-view prx-ef-league" }, h("div", { class: "prx-ef-grid" }, matrixBox, rowsBox), leagueTiles, leagueLines);
 
       const scopeLine = h("p", { class: "prx-ef-scope", "data-prx-part": "notes", text: T.scope });
       const captionLine = h("p", { class: "prx-ef-note", "data-prx-part": "caption" });
+      (isPairView ? errorBody : leagueView).append(tauHint);
       ctx.charts.append(isPairView ? pairView : leagueView);
       ctx.caption.textContent = isPairView ? "Two-unit example after the postrank theory book, chapter 2. The flags use estimates and SEs; the selected posterior evaluates their stated direction." : "A simulated league; the reference is the mean of its thirty estimates, treated as fixed. The flags use estimates and SEs; the selected posterior evaluates their stated directions.";
-      ctx.caption.after(scopeLine);
-      ctx.readout.node.after(captionLine);
+      ctx.caption.after(captionLine, scopeLine);
 
       // --------------------------------------------------------------------------------------- drawing: pair
 
@@ -505,7 +508,25 @@ export function mountFlags(el, spec = {}, mode = "pair") {
       function drawZ(state, m) {
         const z = Array.from(m.flags.z);
         const zmax = Math.max(P.zMin, state.crit, ...z.map(Math.abs)) * P.zPad;
-        const rows = CONFIG.units.map((u, i) => ({ u, z: z[i], label: m.flags.labels[i], grade: m.grade[i] }));
+        const width = widthOf(zSlot);
+        const unitsPerPixel = 2 * zmax / Math.max(1, width - P.marginLeft - P.marginRight);
+        const guides = [-zmax, -state.crit, 0, state.crit, zmax];
+        const rows = CONFIG.units.map((u, i) => {
+          const value = z[i];
+          const label = m.flags.labels[i];
+          // Keep the number in its own band when it fits. A compressed central band can
+          // be narrower than the number, so use the nearest guide-free position then.
+          const clearance = (4 + 3.75 * zText(value).length) * unitsPerPixel;
+          const preferred = label === 1 ? 3 : label === 3 ? 0 : value < 0 ? 1 : 2;
+          const positions = guides.slice(0, -1).map((edge, j) => {
+            const left = edge + clearance;
+            const right = guides[j + 1] - clearance;
+            return left <= right ? Math.min(right, Math.max(left, value)) : null;
+          });
+          const labelZ = positions[preferred] ?? positions.filter((x) => x !== null)
+            .reduce((best, x) => best === null || Math.abs(x - value) < Math.abs(best - value) ? x : best, null) ?? value;
+          return { u, z: value, labelZ, label, grade: m.grade[i] };
+        });
         const zones = [{ x1: state.crit, x2: zmax, word: T.zoneAbove, at: (state.crit + zmax) / 2 }, { x1: -zmax, x2: -state.crit, word: T.zoneBelow, at: (-state.crit - zmax) / 2 }];
         plot(zSlot, {
           table: {
@@ -520,7 +541,7 @@ export function mountFlags(el, spec = {}, mode = "pair") {
           },
           keyboard: { data: rows, x: "z", y: "u", sort: false, label: T.zAlt, title: (d) => `${d.u}: z ${zText(d.z)}, ${T.flagWords[d.label]}, grade ${d.grade}.` },
           alt: T.zAlt,
-          width: widthOf(zSlot),
+          width,
           height: P.marginTop + P.marginBottom + rows.length * P.rowHeight,
           marginTop: P.marginTop, marginBottom: P.marginBottom, marginLeft: P.marginLeft, marginRight: P.marginRight,
           x: { domain: [-zmax, zmax], ticks: [-state.crit, 0, state.crit], label: T.zAxis, labelAnchor: "center", labelArrow: "none" },
@@ -531,7 +552,7 @@ export function mountFlags(el, spec = {}, mode = "pair") {
             Pl.ruleX([state.crit, -state.crit], { stroke: c.plotAxis, strokeDasharray: P.cutDash }),
             Pl.ruleX([0], { stroke: c.plotAxis, strokeDasharray: P.refDash }),
             Pl.dot(rows, { x: "z", y: "u", r: P.dot, fill: c.plotFg, stroke: c.plotBg }),
-            numText(rows, { x: "z", y: "u", value: "z", format: (v) => zText(v), dy: P.labelDy, fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke" }),
+            numText(rows, { x: "labelZ", y: "u", value: "z", format: (v) => zText(v), dy: P.labelDy, fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke" }),
           ],
         });
         // the z formula with the numbers put in, one line per unit
@@ -640,7 +661,7 @@ export function mountFlags(el, spec = {}, mode = "pair") {
       function drawMatrix(m) {
         const Mx = CONFIG.matrix;
         const avail = matrixSlot.clientWidth || ctx.width();
-        // unit names on both axes when a cell is large enough to carry one (the order is the left panel's otherwise)
+        // Unit names fit on both axes at larger cell sizes. The estimate panel shares this order.
         const roomy = Math.floor((avail - Mx.labelMargin - Mx.marginRight) / N_UNITS) >= Mx.labelCell;
         const left = roomy ? Mx.labelMargin : Mx.marginLeft;
         const top = roomy ? Mx.labelMargin : Mx.marginTop;
@@ -744,18 +765,23 @@ export function mountFlags(el, spec = {}, mode = "pair") {
             ctx.num(lm.counts[1], formatCount(lm.counts[1])), " not flagged and ", ctx.num(lm.counts[2], formatCount(lm.counts[2])),
             " flagged below. The report states ", ctx.num(ev.N, formatCount(ev.N)), " of ", ctx.num(M_LEAGUE, formatCount(M_LEAGUE)),
             " pairs, E/N ", ctx.num(ev.EoverN[0], formatShare(ev.EoverN[0])), ", risk ", ctx.num(ev.risk, formatRisk(ev.risk)), " at τ = ",
-            ctx.num(state.tau, formatSetting(state.tau)), "; ", ctx.num(lm.against.count, formatCount(lm.against.count)), " stated directions run against the estimates.",
+            ctx.num(state.tau, formatSetting(state.tau)), "; ", ctx.num(lm.against.count, formatCount(lm.against.count)), " stated directions run against the estimates. All-withheld risk ", ro("result-allWithheld", lm.allW.risk, formatRisk(lm.allW.risk)), ".",
           ]);
           return;
         }
-        const z = pm.flags.z;
-        const parts = ["Unit A: z = ", ctx.num(z[0], zText(z[0])), ", ", T.flagWords[pm.flags.labels[0]], "; unit B: z = ", ctx.num(z[1], zText(z[1])), ", ",
-          T.flagWords[pm.flags.labels[1]], ". "];
-        if (!pm.stated) parts.push("The report withholds the pair.");
+        const unitSummary = (i) => [
+          "z = ", ctx.num(pm.flags.z[i], zText(pm.flags.z[i])), ", ", T.flagWords[pm.flags.labels[i]],
+          " (grade ", ro(`result-grade-${CONFIG.units[i]}`, pm.grade[i], formatCount(pm.grade[i])), ")",
+        ];
+        const parts = ["Unit A: ", ...unitSummary(0), "; unit B: ", ...unitSummary(1), ". "];
+        if (!pm.stated) parts.push("The report withholds the pair. Both units are in the same flag group; this makes no claim of equality.");
         else {
-          parts.push(`The report states ${CONFIG.units[pm.above]} above ${CONFIG.units[pm.below]}`);
-          parts.push(", wrong with probability ", ctx.num(pm.error, formatProb(pm.error)), " under the ", state.prior === "flat" ? "flat-prior posterior" : "teaching posterior");
-          parts.push(".");
+          const above = CONFIG.units[pm.above];
+          const below = CONFIG.units[pm.below];
+          parts.push(`The report states ${above} above ${below}`);
+          if (pm.against.count) parts.push(`, although ${below}'s estimate is larger`);
+          parts.push(". Under the ", state.prior === "flat" ? "flat-prior posterior" : "teaching posterior",
+            " that direction is wrong with probability ", ctx.num(pm.error, formatProb(pm.error)), ".");
         }
         ctx.readout.set(parts);
       }

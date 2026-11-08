@@ -17,6 +17,14 @@ test('The full KRW counterfactual retains every independently checked signed pai
   const pair=encodeURIComponent([row.args.E.ids[55],row.args.E.ids[35]].join(','));
   await page.goto(`${server.origin}/embed/why-withheld.html?data=krw&tau=.25&cap=${cap}&pair=${pair}&theme=dark`,{waitUntil:'load'});
   await page.waitForSelector('.prx-widget[aria-busy=false]');
+  const account = 'details[data-prx-disclosure="accounts"]';
+  const initial = await page.$eval(account, details => ({
+   open:details.open,
+   signedRows:details.querySelectorAll('[data-prx-readout^="forward-account-before-"]').length,
+  }));
+  assert.deepEqual(initial, {open:false,signedRows:0}, 'the closed KRW account does not build its rows');
+  await page.click(`${account} > summary`);
+  await page.waitForSelector(`${account}[open] [data-prx-readout="forward-account-before-0"]`);
   const actual=await page.evaluate(()=>{
    const table=document.querySelector('table[aria-label^="Every ordered unit pair"]');
    return {

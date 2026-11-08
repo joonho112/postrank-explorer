@@ -4,12 +4,8 @@ subtitle: "4.1 · after the postrank vignette m2 and theory book, ch. 12"
 description: "Criterion-specific scales, orderings and pairwise direction probabilities for common units."
 ---
 
-The same units can have different posterior orderings on different criteria. Each panel retains its criterion's
-measurement scale, posterior means and marginal intervals. Connecting lines identify units across the separate
-orders, and the pair display gives the error probability of a proposed direction on each criterion. Aligning rows
-by unit makes their profiles comparable without constructing a composite score. The examples distinguish
-opposition between preferred directions from uncertainty within a criterion, and show the effect of reversing the
-substantive orientation of one target.
+The same sites can rank differently on reading growth and family engagement. The site with the largest posterior
+mean on one measure may rank lower on the other.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -19,24 +15,28 @@ substantive orientation of one target.
 <script>window.__prxApp = PRX["several-criteria"].mountWidget(document.getElementById("app"));</script>
 ```
 
+The panels show the posterior means and marginal intervals on their original scales. Lines connect the same
+site across the two orders. Selecting a pair gives the probability that the proposed direction is wrong on
+each criterion. This comparison can show strong support for opposite directions or weak support on either
+measure. The priority order also depends on whether a higher or lower score calls for an earlier visit.
+
 ## Numerical illustrations {#what-to-try}
 
 - **Thirty sites.** There are 397 opposing pairs among 435 pairs. The highest posterior mean belongs to a different
   site on each criterion. Alignment by unit labels displays each unit's criterion-specific profiles.
 - **Six sites, B–C.** The error of stating B above C is .007 on score A and .961 on score B. The complete list has
   3 opposing pairs. A very likely direction on one criterion can be very unlikely on another.
-- **Six sites, B–D.** The errors are .002 on score A and .760 on score B. Matching row labels leaves each
-  criterion’s scale intact; it does not turn the scores into one composite.
+- **Six sites, B–D.** The errors are .002 on score A and .760 on score B. The difference remains visible when both panels use the same order of site labels.
 - **Reverse score B.** Lower score B now means higher priority. The error of stating B above C on the oriented
-  score becomes .039. The supplied information stays the same; the substantive direction of the target changes.
+  score becomes .039. This change reverses the direction that counts as higher priority without changing the underlying scores.
 - **Wider intervals.** The marginal level becomes 95%, while the 397 opposing pairs stay the same. Interval level
   changes the displayed uncertainty bands, not the supplied posterior probabilities or mean orders.
 
 ::: {.callout-note appearance="simple"}
-For the fictional six sites, score A is standardised reading growth and score B a standardised family-engagement
-index; higher values mean higher visit priority by default. Grades would decide only the order of
-practice-documentation visits, with no funding consequence. These are supplied synthetic normal laws: intervals
-are marginal, not simultaneous, and thirty-site marginal releases do not supply a composite or sampled joint state.
+In the six-site example, score A measures standardized reading growth and score B is a standardized index
+of family engagement. Higher scores ordinarily imply earlier visits to document site practices. The example
+assigns no funding. Each interval describes one marginal normal posterior. The released marginal summaries for
+thirty sites leave the joint draws and the distribution of a composite undetermined.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

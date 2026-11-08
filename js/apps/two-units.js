@@ -6,22 +6,27 @@
 // three Deeper boxes are their own apps: 1.9 correlated-units (correlation) and 1.10 beyond-normal (joint laws, a
 // two-bump posterior).
 //
-// One state { muA, sdA, muB, sdB } drives every part, all redrawn on every render:
+// One state { muA, sdA, muB, sdB } drives every part, all redrawn on every render. The app uses the shared
+// result-first frame (base.js layout "result-first"; review 044 repair, X-01), top to bottom:
 //   controls  one fieldset per unit, "Unit A (solid line)" and "Unit B (dashed line)" (the legends name the line
-//             styles of the figure of the two posteriors), each with its posterior mean and posterior SD
+//             styles of the figure of the two posteriors), each with its posterior mean and posterior SD; then the
+//             preset row on its own line
+//   read-out  directly under the controls: π_AB and π_BA (engine pairDifference, each computed on its own, not as
+//             1 − π), the mean and SD of the difference and the gap in SDs of the difference, as a size with "above"
+//             or "below"
 //   upper     the two posteriors, navy (A solid, B dashed), each named at its peak
 //   lower     the posterior of θ_A − θ_B (dash-dot): normal with mean = the gap and SD = √(SD_A² + SD_B²) (engine
-//             pairDifference); the area above 0 shaded (it is π_AB), named "π_AB →" and "← π_BA" on either side of the
-//             line at 0
-//   formula   the general formula (with its symbols in words), the formula at these settings and the reverse line
-//   read-out  π_AB and π_BA (engine pairDifference, each computed on its own, not as 1 − π), the mean and SD of the
-//             difference and the gap in SDs of the difference, as a size with "above" or "below"
+//             pairDifference); the area above 0 shaded (it is π_AB), named with its value, "π_AB = .760 →" and
+//             "← π_BA = .240", on either side of the line at 0 (review 044, X-01: the answer written on the mark the
+//             sliders move; ctx.primaryGraphic marks this figure)
+//   formula   under the figures, always shown: the general formula (with its symbols in words), the formula at these
+//             settings and the reverse line
 // π of two normal posteriors with positive SDs lies strictly inside (0, 1), so a probability whose double is 0 or 1
 // reads "below .001" or "above .999", never "0" or "1" (probText: formatProb with open).
 // Both panels share one x domain (the union of what each curve needs within 4 SDs, and 0) and one y scale in density
 // units, so the posterior of the difference is visibly lower and wider than either unit's posterior. The panels are
-// stacked, so the shared x scale lines up, and sit side by side only in a container of at least 64rem (class
-// prx-two-units-stacked; the apps that reuse the panel grid go side by side from 56rem).
+// stacked below 52rem so the shared x scale lines up on narrow screens. Wide pages show both figures together.
+// The other apps reuse the grid's existing 56rem breakpoint.
 //
 // Keys: muA and muB (−2 to 2), sdA and sdB (.05 to 1); numbers, clamped to the slider ends and not snapped.
 //
@@ -40,17 +45,18 @@
 //   plotWidth(el)                     the width chart.plot gives a figure in el (for label geometry)
 //   peakLabels(r, domain, ymax, { width, height }), topMarks(c, P, r, domain, ymax, { width, height }),
 //   drawTop(el, r, domain, ymax, options)                                        the two posteriors
-//   diffLabel(d, domain, text), diffMarks(c, P, d, domain, options), areaLabels(domain, ymax, { width }),
+//   diffLabel(d, domain, text), diffMarks(c, P, d, domain, options), areaLabels(domain, ymax, { width, values }),
 //   drawDiff(el, r, domain, ymax, options)                                       the posterior of the difference
 // Labels never sit on a curve, the line at 0 or a tick label: a peak label the other unit's curve runs through moves
 // beside its peak; the difference's label moves beside its peak, away from 0, when the peak is near 0 (the rule of
 // the correlation figure, which 1.9 draws with diffLabel too); and when one side of 0 is too narrow for its area
-// label, both area labels share the other.
+// label, both area labels share the other, on one line, or (in a narrow figure, when they carry their values) in two
+// rows from the figure's top edge.
 import { createWidget } from "../shared/base.js";
 import { CONFIG as CHART, plot } from "../shared/chart.js";
 import { formatDecimal, formatProb, formatSetting } from "../shared/format.js";
 import { captionNode } from "../shared/labels.js";
-import { formulaNums, renderTex } from "../shared/math.js";
+import { formulaNums, renderTex, tagNums } from "../shared/math.js";
 import { normalPdf, pairDifference } from "../pr-core.js";
 
 export const CONFIG = Object.freeze({
@@ -77,6 +83,13 @@ export const CONFIG = Object.freeze({
     // the width in px of one area label ("π_AB →", about 49 px at the site's font): when one side of 0 has less room
     // than a label and its offset, both labels go on the other side, on one line
     piLabelWidth: 52,
+    // the same for an area label that carries its value ("π_AB = .760 →", "π_AB >.999 →"; review 044, X-01: at most
+    // 97 px wide and 24 px tall on a site page, 91 × 23 standalone), and the px from the figure's top edge to the
+    // second of two rows: when the other side of 0 has no room for both labels on one line either (a narrow figure),
+    // the labels stand in two rows from the figure's top edge, the first in the top margin, the second just under it,
+    // still above the curve and its "A − B" label (the difference's peak is at most 61.5% of the y range)
+    piValueLabelWidth: 100,
+    piRowStep: 25,
     // keyboard points for the two areas of the lower figure: this share of the x span on either side of 0
     areaDx: 0.06,
   }),
@@ -89,7 +102,7 @@ export const CONFIG = Object.freeze({
     sdName: "Posterior SD of unit ",
     general: "For independent normal posteriors",
     worked: "At these settings",
-    reverseNote: "This holds when the two true values have probability zero of being equal (here: their difference is normal with positive SD).",
+    reverseNote: "The two directions exhaust the probability because the difference is normal with positive SD and has zero probability at equality.",
     // the symbols of the general formula in words
     glossA: " is the probability that A is truly higher: that A's true value, ",
     glossB: ", is larger than B's, ",
@@ -173,9 +186,8 @@ export const CSS = `
 @container (min-width: 56rem) {
   .prx-two-units .prx-two-units-panels:not(.prx-two-units-stacked) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-/* this app's own two panels stay stacked, one scale above the other, up to a wider container than the panels of the
-   apps that reuse the grid */
-@container (min-width: 64rem) {
+/* Keep enough room for the two direct probability labels in the difference panel. */
+@container (min-width: 52rem) {
   .prx-two-units .prx-two-units-panels.prx-two-units-stacked { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .prx-two-units .prx-two-units-formula { container-type: inline-size; margin: 0.75rem 0 0; padding: 0.5rem 0.75rem;
@@ -478,31 +490,70 @@ export function diffMarks(c, P, { mean, sd }, [lo, hi], { label = T.diffLabel, d
 }
 
 /**
+ * The tex of an area label that carries its value (review 044, X-01): "π_AB = .760 →" (arrow "right") or
+ * "← π_BA = .240" (arrow "left"); a bound is a relation, as in the worked formula ("π_AB >.999 →"). Returns { tex,
+ * raws }: raws holds the raw value of the label's one number, for data-num on its <mtext> (math.js tagNums).
+ */
+function areaTex(symbol, raw, arrow) {
+  const f = formulaNums();
+  const value = probTex(f, raw);
+  return { tex: arrow === "right" ? `${symbol} ${value} \\rightarrow` : `\\leftarrow ${symbol} ${value}`, raws: f.raws };
+}
+
+/**
  * The chart.js formula labels of the two areas: "π_AB →" right of 0 and "← π_BA" left of it, at 93% of ymax. When
  * one side of 0 has too little room for its label (in a figure of the given width), both labels sit on the other
  * side, on one line, each arrow still pointing to its area.
+ * options.values = { pi, piReverse } (review 044, X-01) writes each area's probability into its label ("π_AB = .760
+ * →", "← π_BA = .240"; areaTex) and gives each label its raws; the labels are wider then, so when the other side of 0
+ * has no room for both on one line either, they stand in two rows next to 0 from the figure's top edge: the label of
+ * the wide side's area in the top margin, the narrow side's just under it (CONFIG.chart.piRowStep). Without values
+ * the labels are as before.
  */
-export function areaLabels([lo, hi], ymax, { width = CHART.defaultWidth } = {}) {
+export function areaLabels([lo, hi], ymax, { width = CHART.defaultWidth, values = null } = {}) {
   const innerW = Math.max(1, width - C.marginLeft - C.marginRight);
   const zero = ((0 - lo) / (hi - lo)) * innerW;
-  const need = C.piLabelWidth + C.piDx;
-  const far = C.piDx + C.piLabelWidth + C.piDx;
+  const labelWidth = values ? C.piValueLabelWidth : C.piLabelWidth;
+  const need = labelWidth + C.piDx;
+  const far = C.piDx + labelWidth + C.piDx;
   const y = C.labelTop * ymax;
-  const ab = { key: "ab", tex: CONFIG.tex.areaAB, x: 0, y, anchor: "start", dx: C.piDx };
-  const ba = { key: "ba", tex: CONFIG.tex.areaBA, x: 0, y, anchor: "end", dx: -C.piDx };
-  if (zero < need) return [{ ...ab, dx: far }, { ...ba, anchor: "start", dx: C.piDx }];
-  if (innerW - zero < need) return [{ ...ab, anchor: "end", dx: -C.piDx }, { ...ba, dx: -far }];
+  const texts = values ? { ab: areaTex(CONFIG.tex.piAB, values.pi, "right"), ba: areaTex(CONFIG.tex.piBA, values.piReverse, "left") } : null;
+  const ab = { key: "ab", tex: texts ? texts.ab.tex : CONFIG.tex.areaAB, x: 0, y, anchor: "start", dx: C.piDx, ...(texts ? { raws: texts.ab.raws } : {}) };
+  const ba = { key: "ba", tex: texts ? texts.ba.tex : CONFIG.tex.areaBA, x: 0, y, anchor: "end", dx: -C.piDx, ...(texts ? { raws: texts.ba.raws } : {}) };
+  // two rows from the figure's top edge (chart.js places a label without y at `top`, a share of the figure's height)
+  const upper = (f) => ({ ...f, y: undefined, top: 0, valign: "top" });
+  const lower = (f) => ({ ...upper(f), dy: C.piRowStep });
+  if (zero < need) {
+    const left = { ...ba, anchor: "start", dx: C.piDx };
+    return !values || innerW - zero >= far + labelWidth ? [{ ...ab, dx: far }, left] : [upper(ab), lower(left)];
+  }
+  if (innerW - zero < need) {
+    const right = { ...ab, anchor: "end", dx: -C.piDx };
+    return !values || zero >= far + labelWidth ? [right, { ...ba, dx: -far }] : [lower(right), upper(ba)];
+  }
   return [ab, ba];
+}
+
+/** Gives each value label of a figure in el (areaLabels with values) the data-num of its number, on its <mtext>. */
+function tagAreaLabels(el, labels) {
+  for (const f of labels) {
+    if (!f.raws) continue;
+    const node = el.querySelector(`[data-prx-formula="${f.key}"]`);
+    if (node) tagNums(node, f.raws);
+  }
 }
 
 /**
  * The lower figure in el for a compute() result r: diffMarks for the difference (mean = the gap, SD = √(SD_A² +
  * SD_B²)) on the shared domain and y scale, the MathML labels "π_AB →" and "← π_BA" (areaLabels), the hidden table
  * "Posterior mean and SD of the difference A minus B" and keyboard points at the peak and at the two areas.
- * options: marks(c, P) for extra marks drawn last, keyboard (false: none). Returns the chart.plot handle.
+ * options: marks(c, P) for extra marks drawn last, keyboard (false: none), values (true: the area labels carry r's
+ * π_AB and π_BA, "π_AB = .760 →" and "← π_BA = .240", each number with data-num; review 044, X-01). Returns the
+ * chart.plot handle.
  */
-export function drawDiff(el, r, domain = sharedDomain(r), ymax = sharedYMax(r), { marks: extra, keyboard = true } = {}) {
+export function drawDiff(el, r, domain = sharedDomain(r), ymax = sharedYMax(r), { marks: extra, keyboard = true, values = false } = {}) {
   const [lo, hi] = domain;
+  const labels = areaLabels(domain, ymax, { width: plotWidth(el), values: values ? { pi: r.pi, piReverse: r.piReverse } : null });
   const y = C.labelTop * ymax;
   const dx = C.areaDx * (hi - lo);
   const points = [
@@ -510,7 +561,7 @@ export function drawDiff(el, r, domain = sharedDomain(r), ymax = sharedYMax(r), 
     { key: "above", x: Math.min(dx, hi / 2), y, title: `${T.kbAbove}${probText(r.pi)}.` },
     { key: "below", x: Math.max(-dx, lo / 2), y, title: `${T.kbBelow}${probText(r.piReverse)}.` },
   ];
-  return plot(el, {
+  const chart = plot(el, {
     alt: T.altDiff,
     table: {
       caption: T.tableDiff,
@@ -525,9 +576,13 @@ export function drawDiff(el, r, domain = sharedDomain(r), ymax = sharedYMax(r), 
     x: { domain: [lo, hi], label: T.xDiff },
     y: yAxis(ymax),
     marks: (c, P) => [...diffMarks(c, P, { mean: r.gap, sd: r.sdDiff }, domain), ...extraMarks(extra, c, P)],
-    formulas: areaLabels(domain, ymax, { width: plotWidth(el) }),
+    formulas: labels,
     keyboard: keyboard ? { data: points, x: "x", y: "y", key: "key", sort: false, label: T.kbDiff, title: (d) => d.title } : undefined,
   });
+  // every redraw writes the labels' numbers again, so data-num follows the raw value even when the shown digits do not
+  // change (a formula shown before keeps its nodes)
+  tagAreaLabels(el, labels);
+  return chart;
 }
 
 // ---------------------------------------------------------------------------------------------- the app
@@ -538,6 +593,9 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: CONFIG.className,
     css: CSS,
+    // the shared result-first frame (review 044 repair, X-01): the controls and the preset row, the read-out directly
+    // under them, then the two figures and the formula box; base.js only moves nodes (keys, presets, hooks, live region)
+    layout: "result-first",
     keys: unitKeys(),
     build(ctx) {
       const { h } = ctx;
@@ -547,13 +605,15 @@ export function mountWidget(el, spec = {}) {
       const units = unitControls(ctx);
       ctx.controls.append(...units.roots);
 
-      // --- figures: the two posteriors, then the posterior of the difference on the same scales
+      // --- figures: the two posteriors, then the posterior of the difference on the same scales; the difference
+      // carries π_AB and π_BA on its area labels and is the graphic the sliders' answer is read from (primaryGraphic)
       ctx.charts.classList.add("prx-two-units-charts");
       const topSlot = h("div", { class: "prx-two-units-panel" });
-      const diffSlot = h("div", { class: "prx-two-units-panel" });
+      const diffSlot = ctx.primaryGraphic(h("div", { class: "prx-two-units-panel" }));
       ctx.charts.append(h("div", { class: "prx-two-units-panels prx-two-units-stacked" }, topSlot, diffSlot));
 
-      // --- formula: the general formula with its symbols in words, the formula at these settings, the reverse line
+      // --- formula (under the figures, always shown): the general formula with its symbols in words, the formula at
+      // these settings, the reverse line
       const tex = (name, label) => ctx.scrollRegion(h("div", { class: "prx-two-units-tex", "data-prx-tex": name }), label);
       const general = tex("general", T.regionGeneral);
       const worked = tex("worked", T.regionWorked);
@@ -568,7 +628,7 @@ export function mountWidget(el, spec = {}) {
           h("div", { class: "prx-two-units-step" }, head(T.general), general, gloss),
           h("div", { class: "prx-two-units-step" }, head(T.worked), worked),
           h("div", { class: "prx-two-units-step" }, reverse, h("p", { class: "prx-two-units-note", text: T.reverseNote })))));
-      ctx.root.insertBefore(formula, ctx.readout.node);
+      ctx.charts.append(formula);
       renderTex(general, CONFIG.tex.general, { display: true });
       ctx.caption.replaceChildren(captionNode(ctx, "teaching-posterior"));
 
@@ -587,7 +647,7 @@ export function mountWidget(el, spec = {}) {
           const x = sharedDomain(r);
           const ymax = sharedYMax(r);
           drawTop(topSlot, r, x, ymax);
-          drawDiff(diffSlot, r, x, ymax);
+          drawDiff(diffSlot, r, x, ymax, { values: true });
           const w = workedTex(r);
           renderTex(worked, w.tex, { display: true, nums: w.raws });
           const v = reverseTex(r);

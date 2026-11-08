@@ -4,12 +4,7 @@ subtitle: "1.6 · the prior SD of a teaching posterior, after Walters' teaching 
 description: "Repeated-sampling squared error and pairwise posterior probabilities across prior standard deviations."
 ---
 
-The prior standard deviation determines the amount of shrinkage in the normal–normal model. It may be specified by
-the analyst or estimated from the data by an empirical Bayes procedure. Four panels evaluate the simulated league
-from [normal–normal posterior shrinkage](shrinkage.qmd) over prior standard deviations from .01 to 1 on a logarithmic scale.
-With the prior centred on the average true value, the posterior means have the smallest average squared error near
-the standard deviation of those values. Pairwise posterior probabilities also vary with the prior specification;
-[Pairwise posterior direction probabilities](two-units.qmd) defines the probability used in these comparisons.
+A smaller prior standard deviation pulls posterior means closer to the prior mean in the normal–normal model. Analysts may choose the prior standard deviation or estimate it from the data by empirical Bayes. We vary it from .01 to 1 for the same simulated league used in [normal–normal posterior shrinkage](shrinkage.qmd). With the prior centered on the average true value, posterior means have the smallest average squared error when the prior spread is close to the spread of the true values. The prior standard deviation also changes the [posterior probability of each direction](two-units.qmd). The horizontal axis is logarithmic.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -37,8 +32,7 @@ the standard deviation of those values. Pairwise posterior probabilities also va
   at .15 (.0075).
 
 ::: {.callout-note appearance="simple"}
-"Over many draws" means the closed form: the expectation over draws of the estimates with the true values fixed, not
-over true values drawn from the prior. The postrank theory book (ch. 18) calls this a fixed-parameter experiment.
+The curve labeled "Over many draws" gives the expected error across samples with the true values fixed. We compute this expectation in closed form. The postrank theory book (ch. 18) calls this a fixed-parameter experiment.
 postrank fits no model and reads the posterior it is given (ch. 18, "Hyperparameters, precision and represented
 uncertainty"). The best report at each prior SD and the error share it claims are shown in
 [Reported error and reference-law evaluation](../grades/reported-and-realized.qmd). The

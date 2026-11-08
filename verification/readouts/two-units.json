@@ -3,7 +3,7 @@
   "app": "two-units",
   "catalog": "1.8",
   "from": "postrank-explorer-v1 verification/readouts/two-units.json",
-  "about": "Two independent normal posteriors. The read-out gives pi_AB, pi_BA, the posterior mean and SD of the difference A minus B and the size of the gap in SDs of the difference (with above, below or apart in words); the worked formula repeats them with the four settings; the reverse line gives pi_BA = 1 - pi_AB; the sliders show the settings. Ported from v1's core cases: the Deeper boxes' cases moved with their content to apps 1.9 and 1.10, the two scripted predictions were dropped (v3 has no prediction gate), the corr and mixW slider outputs left gap20, and the caption reads in its v3 wording. Probabilities are rows of the base-R oracle (oracle-pairwise, pairDirection); the gap, the SD of the difference and the gap in SDs come from v1's frozen registry (cf.pair.*, settings.*). The clamped case moves both means past the slider ends: pi_BA equals the oracle value at means 2 and -2 only if both were clamped there. New in v3: the preset for tutorial sites A and B, the read-out sentences word for word (slotted literals), the reverse line's condition, the upper table, legends and slider names, and means 2 and -2 with SDs .05, where the doubles of both probabilities are exactly 1 and 0 and read as bounds (CR-008), as pi_AB does in the clamped case.",
+  "about": "Two independent normal posteriors. The read-out gives pi_AB, pi_BA, the posterior mean and SD of the difference A minus B and the size of the gap in SDs of the difference (with above, below or apart in words); the worked formula repeats them with the four settings; the reverse line gives pi_BA = 1 - pi_AB; the sliders show the settings. Ported from v1's core cases: the Deeper boxes' cases moved with their content to apps 1.9 and 1.10, the two scripted predictions were dropped (v3 has no prediction gate), the corr and mixW slider outputs left gap20, and the caption reads in its v3 wording. Probabilities are rows of the base-R oracle (oracle-pairwise, pairDirection); the gap, the SD of the difference and the gap in SDs come from v1's frozen registry (cf.pair.*, settings.*). The clamped case moves both means past the slider ends: pi_BA equals the oracle value at means 2 and -2 only if both were clamped there. New in v3: the preset for tutorial sites A and B, the read-out sentences word for word (slotted literals), the reverse line's condition, the upper table, legends and slider names, and means 2 and -2 with SDs .05, where the doubles of both probabilities are exactly 1 and 0 and read as bounds (CR-008), as pi_AB does in the clamped case. Review 044 repair (X-01): the area labels of the difference figure carry pi_AB and pi_BA (\"pi_AB = .760 ->\", a bound as a relation); cases gap20, wide-b, clamped-far and far-narrow check both against the same oracle rows as the read-out.",
   "cases": [
     {
       "id": "gap20",
@@ -190,7 +190,7 @@
           "about": "the posteriors are set by hand for teaching (caption in its v3 wording)",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": "svg[role=\"img\"]",
@@ -274,7 +274,7 @@
           "about": "the condition under the reverse line: pi_BA = 1 - pi_AB needs probability zero of equal true values (R1-06)",
           "source": "literal",
           "ref": "1.1",
-          "value": "This holds when the two true values have probability zero of being equal (here: their difference is normal with positive SD)."
+          "value": "The two directions exhaust the probability because the difference is normal with positive SD and has zero probability at equality."
         },
         {
           "select": "[data-prx-part~=\"readout\"]",
@@ -284,6 +284,34 @@
           "source": "literal",
           "ref": "11.4",
           "value": "The probability that A's true value is larger than B's is πAB = ⟨pi⟩, and the reverse is πBA = ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference above B's."
+        },
+        {
+          "select": "[data-prx-formula=\"ab\"] mtext",
+          "about": "pi_AB written on its area of the difference figure (review 044, X-01: the answer on the changed mark)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-forward",
+            "field": "pi"
+          },
+          "value": 0.760249938906523
+        },
+        {
+          "select": "[data-prx-formula=\"ba\"] mtext",
+          "about": "pi_BA written on its area of the difference figure (review 044, X-01)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.20-reverse",
+            "field": "pi"
+          },
+          "value": 0.239750061093477
         }
       ]
     },
@@ -350,6 +378,34 @@
             "field": "pi"
           },
           "value": 0.624085182977075
+        },
+        {
+          "select": "[data-prx-formula=\"ab\"] mtext",
+          "about": "pi_AB on its area of the difference figure",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.60-forward",
+            "field": "pi"
+          },
+          "value": 0.624085182977075
+        },
+        {
+          "select": "[data-prx-formula=\"ba\"] mtext",
+          "about": "pi_BA on its area of the difference figure",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-mA.30-sA.20-mB.10-sB.60-reverse",
+            "field": "pi"
+          },
+          "value": 0.375914817022925
         }
       ]
     },
@@ -628,6 +684,41 @@
           "source": "literal",
           "ref": "11.4",
           "value": "The probability that A's true value is larger than B's, πAB, is ⟨pi⟩, and the reverse, πBA, is ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference above B's."
+        },
+        {
+          "select": "[data-prx-formula=\"ab\"] mtext",
+          "about": "pi_AB on its area of the difference figure: the double 1, written as a relation (as in the worked formula)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols",
+              "open": true
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-upper",
+            "field": "pi"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-formula=\"ba\"] mtext",
+          "about": "pi_BA on its area of the difference figure, as a relation",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols"
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-lower",
+            "field": "pi"
+          },
+          "value": 2.69793280580441e-176
         }
       ]
     },
@@ -722,6 +813,45 @@
           "source": "literal",
           "ref": "11.4",
           "value": "The probability that A's true value is larger than B's, πAB, is ⟨pi⟩, and the reverse, πBA, is ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference above B's."
+        },
+        {
+          "select": "[data-prx-formula=\"ab\"] mtext",
+          "about": "pi_AB on its area of the difference figure: the double 1, as a relation",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols",
+              "open": true
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-upper",
+            "field": "pi"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-formula=\"ba\"] mtext",
+          "about": "pi_BA on its area of the difference figure: the double 0, as a relation (between 0 and the value at SDs .10)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "bounds": "symbols",
+              "open": true
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "pairDirection-far-lower",
+            "field": "pi"
+          },
+          "value": 2.69793280580441e-176,
+          "tol": {
+            "abs": 2.69793280580441e-176
+          }
         }
       ]
     },

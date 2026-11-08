@@ -1,7 +1,7 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # The public absolute-gender target, without a Gaussian approximation or an upstream refit.
 # Run from the repository root: Rscript r-export/45_export_krw_targets.R
-# In an isolated worktree set POSTRANK_SRC to the absolute public package checkout first.
+# Set POSTRANK_SRC to the public package checkout if it is outside the standard folder layout.
 # Reads only public postrank 1.1.0 pr_case_krw and the existing released signed summaries.
 # Adds one contract entry; all previously released payload bytes and metadata stay unchanged.
 prx_export_lib_only <- TRUE

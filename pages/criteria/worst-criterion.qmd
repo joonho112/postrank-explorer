@@ -1,15 +1,13 @@
 ---
-title: "Minimising the largest criterion risk"
+title: "Minimizing the largest criterion risk"
 subtitle: "4.9 · after the postrank theory book, chapter 13"
 description: "Comparison of weighted-risk and deterministic minimax report selection."
 ---
 
-Weighted-risk selection minimises an average of expected criterion risks. Deterministic minimax selection instead
-minimises their largest value. For two criteria, each report's risk line connects its criterion-specific risks;
-the weighted rule selects the lowest line at the specified weight, whereas minimax selects the report with the
-smallest higher endpoint. Both calculations use the same posterior law, withholding cost and feasible report family.
-The examples also compare deterministic minimax risk with the maximum of the weighted lower envelope, quantities
-that need not coincide in a restricted discrete family.
+A report with the lowest weighted average risk can perform poorly on one criterion. The minimax rule chooses
+the report with the smallest worst criterion risk. With two criteria, each line connects the risks for that
+report. The weighted rule selects the lowest line at the chosen weight. The deterministic minimax rule
+compares the higher endpoint of each line. Both use the same posterior, withholding cost, and report family.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -22,14 +20,17 @@ that need not coincide in a restricted discrete family.
 ## Numerical illustrations {#what-to-try}
 
 - **w .90.** The weighted best averages .0605 but reaches .2296 when only score B counts. At **w .70**, its weighted risk is .0882 and its worse endpoint is .1378. The price panel compares each selected guarded report with the weighted best under that same loss.
-- **w .30.** Both rules choose {A, B, C, D} > {E, F}; its larger expected criterion risk is .0944. The envelope peak panel distinguishes the risk value from the weight where that peak occurs.
+- **w .30.** Both rules choose {A, B, C, D} > {E, F}; its larger expected criterion risk is .0944. The peak panel gives the largest minimum weighted risk and the weight at which it occurs.
 - **Score B only.** Two weighted reports share the smallest risk. Their worst endpoint risks are .1996 and .2113; both identities, dashed alternative and complete criterion profiles remain visible.
-- **Book low** and **Book high.** In the restated two-unit law, the weighted rule changes from withholding at risk .2500 to stating A above B at risk .1500. The visible table shows every eligible report's two criterion risks and their maximum.
+- **Book low** and **Book high.** In the restated two-unit law, the weighted rule changes from withholding at risk .2500 to stating A above B at risk .1500. The table gives both risks and the larger risk for every report.
 - **Book minimax.** The guarded rule continues to withhold, with maximum .2500. Under **Zero error weight**, the same .2500 guard remains because a zero error weight does not remove a guarded criterion.
 - **Certain opposition.** Exactly two grades exclude withholding. The highest point of the lower envelope is .5000, while deterministic minimax is 1.0000. This makes the gap between those two quantities visible.
 
 ::: {.callout-note}
-Minimax here minimises the maximum of expected criterion risks. It does not minimise the expected maximum of realised losses. Grey full lines stay within the displayed vertical range; highlighted lines are clipped, and the keyboard and hidden table retain every eligible report. A shared grade withholds a direction rather than asserting equality. Changing the weight changes the loss, so risks at different weights are not compared as one objective.
+For the minimax calculation, we first take the expected loss on each criterion and then take their maximum.
+Averaging the worst loss in each posterior state would define a different decision rule. The chart clips
+lines that extend beyond the displayed range. The table and keyboard view give the full values. In a
+restricted family, the maximum of the weighted minimum can be lower than the deterministic minimax risk.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

@@ -272,14 +272,22 @@ test("the catalog is valid, and planted faults are caught", () => {
   }
 });
 
-test("generated pages: every built app gets an embed; the navbar lists only built apps", () => {
+test("generated pages: every built app has an embed, landing card and content-category menu link", () => {
   const cat = loadCatalog();
   const files = generate(cat);
   for (const a of cat.apps.filter((x) => x.status === "built")) {
     assert.ok(files.get(`embed/${a.name}.html`).includes(`js/bundles/${a.name}.js`));
   }
   const nav = files.get("_nav.yml");
-  for (const a of cat.apps) assert.equal(nav.includes(`/${a.name}.qmd`), a.status === "built", a.name);
+  assert.equal((nav.match(/\bmenu:/g)||[]).length,6);
+  for (const a of cat.apps) {
+    assert.equal(nav.includes(`/${a.name}.qmd`),a.status==='built',a.name);
+    const part=cat.parts.find(p=>p.key===a.part);
+    assert.ok(files.get(`pages/${part.slug}/_apps.md`).includes(`/${a.name}.html`),a.name);
+    assert.ok(cat.websiteNavigation.sections.some(s=>s.parts.includes(a.part)),a.name);
+  }
+  assert.equal(cat.websiteNavigation.sections.length,6);
+  assert.ok(files.get('pages/criteria/_profile-apps.md').includes('profile-dependence.html'));
 });
 
 test("chart.js fallback tokens equal the light values of styles/tokens.css", async () => {

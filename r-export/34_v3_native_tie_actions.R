@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent finite-law oracle for app 3.13's native actions on reporting ties.
 # Contract source: engine/API.md only. No app/TypeScript implementation, JS,
 # postrank package or optimizer is read/run. Enumerate all 13 reports in base R.

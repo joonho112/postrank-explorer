@@ -1,0 +1,2070 @@
+{
+  "schemaVersion": "postrank-explorer-mdomain-negatives-v1",
+  "scope": "Separate invalid-payload ledger. Browser subset categories are not literal R error-code aliases. Some subset restrictions are intentionally stricter than R.",
+  "cases": [
+    {
+      "caseId": "mass-total",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-mass-total",
+        "description": "Negative validation case: mass-total; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "coupling": "supplied_joint",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "1/2",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          }
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "1/4",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "3/20"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 9,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainInputInvalid",
+      "referenceRejectionRequired": true,
+      "reference": {
+        "outcome": "rejected",
+        "class": ["postrank_mdomain_error", "error", "condition"],
+        "message": "Finite rational masses must be nonnegative and sum exactly to one",
+        "scope": "Public R constructor or explicit adapter identity/resource validation; not a claim that browser/R error codes are identical."
+      }
+    },
+    {
+      "caseId": "duplicate-units",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-duplicate-units",
+        "description": "Negative validation case: duplicate-units; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "coupling": "supplied_joint",
+          "unitIds": [
+            "A",
+            "A"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "9/10",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          }
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "1/4",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "3/20"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 9,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainInputInvalid",
+      "referenceRejectionRequired": true,
+      "reference": {
+        "outcome": "rejected",
+        "class": ["simpleError", "error", "condition"],
+        "message": "Duplicate or blank identifiers.",
+        "scope": "Public R constructor or explicit adapter identity/resource validation; not a claim that browser/R error codes are identical."
+      }
+    },
+    {
+      "caseId": "structural-violation",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-structural-violation",
+        "description": "Negative validation case: structural-violation; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "coupling": "supplied_joint",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "9/10",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "same",
+                "same"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          }
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "1/4",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "3/20"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 9,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainInputInvalid",
+      "referenceRejectionRequired": true,
+      "reference": {
+        "outcome": "rejected",
+        "class": ["postrank_mdomain_error", "error", "condition"],
+        "message": "Structural equality incompatible in domain S class same",
+        "scope": "Public R constructor or explicit adapter identity/resource validation; not a claim that browser/R error codes are identical."
+      }
+    },
+    {
+      "caseId": "zero-tau",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-zero-tau",
+        "description": "Negative validation case: zero-tau; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "coupling": "supplied_joint",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "9/10",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          }
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "0",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "3/20"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 9,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainPolicyInvalid",
+      "referenceRejectionRequired": true,
+      "reference": {
+        "outcome": "rejected",
+        "class": ["postrank_mdomain_error", "error", "condition"],
+        "message": "tau must contain values in (0, 1/2]",
+        "scope": "Public R constructor or explicit adapter identity/resource validation; not a claim that browser/R error codes are identical."
+      }
+    },
+    {
+      "caseId": "alpha-outside",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-alpha-outside",
+        "description": "Negative validation case: alpha-outside; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "coupling": "supplied_joint",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "9/10",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          }
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "1/4",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "2"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 9,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainPolicyInvalid",
+      "referenceRejectionRequired": true,
+      "reference": {
+        "outcome": "rejected",
+        "class": ["postrank_mdomain_error", "error", "condition"],
+        "message": "alpha must contain one value in [0, 1]",
+        "scope": "Public R constructor or explicit adapter identity/resource validation; not a claim that browser/R error codes are identical."
+      }
+    },
+    {
+      "caseId": "family-order",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-family-order",
+        "description": "Negative validation case: family-order; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "coupling": "supplied_joint",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "9/10",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          }
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "1/4",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "3/20"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "B",
+            "A"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 9,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainIdentityMismatch",
+      "referenceRejectionRequired": true,
+      "reference": {
+        "outcome": "rejected",
+        "class": ["simpleError", "error", "condition"],
+        "message": "Input, decision and family IDs must agree in order.",
+        "scope": "Public R constructor or explicit adapter identity/resource validation; not a claim that browser/R error codes are identical."
+      }
+    },
+    {
+      "caseId": "product-cap",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-product-cap",
+        "description": "Negative validation case: product-cap; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "coupling": "supplied_joint",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "9/10",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          }
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "1/4",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "3/20"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 1,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainResourceCap",
+      "referenceRejectionRequired": true,
+      "reference": {
+        "outcome": "rejected",
+        "class": ["simpleError", "error", "condition"],
+        "message": "Browser product action cap exceeded before enumeration.",
+        "scope": "Public R constructor or explicit adapter identity/resource validation; not a claim that browser/R error codes are identical."
+      }
+    },
+    {
+      "caseId": "missing-coupling",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-missing-coupling",
+        "description": "Negative validation case: missing-coupling; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "9/10",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          }
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "1/4",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "3/20"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 9,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainUnsupported",
+      "referenceRejectionRequired": false,
+      "reference": {
+        "outcome": "not_required",
+        "scope": "Browser representation/subset validation; no R rejection claimed."
+      }
+    },
+    {
+      "caseId": "noncanonical-mass",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-noncanonical-mass",
+        "description": "Negative validation case: noncanonical-mass; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "coupling": "supplied_joint",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "09/10",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          }
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "1/4",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "3/20"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 9,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainInputInvalid",
+      "referenceRejectionRequired": false,
+      "reference": {
+        "outcome": "not_required",
+        "scope": "Browser representation/subset validation; no R rejection claimed."
+      }
+    },
+    {
+      "caseId": "unknown-input-field",
+      "payload": {
+        "schemaVersion": "postrank-explorer-mdomain-v1",
+        "fixtureId": "negative-unknown-input-field",
+        "description": "Negative validation case: unknown-input-field; intentionally invalid in the declared browser subset.",
+        "input": {
+          "inputId": "coupling-p01-c01",
+          "lawId": "coupling-complete-law",
+          "representation": "exact_finite_law",
+          "coupling": "supplied_joint",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "stateIds": [
+            "++",
+            "-+",
+            "+-",
+            "--"
+          ],
+          "states": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          ],
+          "masses": [
+            "9/10",
+            "0",
+            "0",
+            "1/10"
+          ],
+          "targets": [
+            {
+              "domainId": "S",
+              "definition": "Fictional S priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            },
+            {
+              "domainId": "C",
+              "definition": "Fictional C priority coordinate",
+              "units": "illustrative score",
+              "orientation": "larger_is_higher",
+              "equalityClasses": [
+                "A",
+                "B"
+              ],
+              "equalityProvenance": "No structural identities between the two units."
+            }
+          ],
+          "provenance": {
+            "producer": "Self-contained teaching law",
+            "conditioningInfo": "Specified law; no fitted observations.",
+            "jointGeneration": "Each labeled row contains both units and both domains together.",
+            "finiteSupportOrigin": "The four listed joint matrices exhaust the declared law, including zero-mass rows.",
+            "properLaw": true
+          },
+          "unrecognisedField": true
+        },
+        "decision": {
+          "decisionId": "coupling-policy",
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "scope": "all_pairs",
+          "weights": [
+            "1/2",
+            "1/2"
+          ],
+          "tau": [
+            "1/4",
+            "1/4"
+          ],
+          "q": null,
+          "t": [
+            "0",
+            "0"
+          ],
+          "alpha": "3/20"
+        },
+        "family": {
+          "familyId": "all-nine-cards",
+          "unitIds": [
+            "A",
+            "B"
+          ],
+          "domainIds": [
+            "S",
+            "C"
+          ],
+          "maxGrades": [
+            2,
+            2
+          ],
+          "maxActions": 9,
+          "banks": [
+            {
+              "domainId": "S",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "domainId": "C",
+              "columns": [
+                {
+                  "columnId": "withhold",
+                  "grades": [
+                    1,
+                    1
+                  ]
+                },
+                {
+                  "columnId": "forward",
+                  "grades": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "columnId": "reverse",
+                  "grades": [
+                    2,
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "expectedBrowserCode": "mdomainInputInvalid",
+      "referenceRejectionRequired": false,
+      "reference": {
+        "outcome": "not_required",
+        "scope": "Browser representation/subset validation; no R rejection claimed."
+      }
+    }
+  ]
+}

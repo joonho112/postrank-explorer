@@ -14,6 +14,49 @@ import TAUPATH from "../../data/released/cde-taupath.json" with { type: "json" }
 
 export const CDE_COMMON_CSS = '.prx-cd .prx-predict legend,\n.prx-cd .prx-radio-group legend {\n  font-size: 1em;\n  line-height: inherit;\n}\n\n.prx-cd .prx-predict .prx-radio {\n  display: flex;\n  font-weight: 400;\n}\n\n.prx-cd .prx-controls {\n  align-items: flex-start;\n}\n\n.prx-cd .prx-cd-inline .prx-radio {\n  display: inline-flex;\n  margin-right: 1rem;\n  font-weight: 400;\n}\n\n.prx-cd .prx-cd-pairpick {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem 1rem;\n}\n\n/* --- the setting --- */\n.prx-cd .prx-cd-settings {\n  margin: 0 0 0.75rem;\n  padding: 0.5rem 0.75rem;\n  background: var(--prx-bg);\n  border-left: 4px solid var(--prx-border-strong);\n  border-radius: var(--prx-radius, 6px);\n}\n\n.prx-cd .prx-cd-settings p {\n  margin: 0 0 0.25rem;\n}\n\n.prx-cd .prx-cd-settings .prx-cd-heading {\n  color: var(--prx-fg-heading);\n}\n\n.prx-cd .prx-cd-settings .prx-cd-note {\n  color: var(--prx-fg-muted);\n}\n\n/* --- boxes --- */\n.prx-cd .prx-cd-heading {\n  margin: 0 0 0.25rem;\n  font-size: 1em;\n  font-weight: 600;\n  color: var(--prx-plot-fg);\n}\n\n.prx-cd .prx-cd-box {\n  margin: 0.75rem 0 0;\n  padding: 0.5rem 0.75rem 0.75rem;\n  background: var(--prx-plot-bg);\n  color: var(--prx-plot-fg);\n  border: 1px solid var(--prx-border);\n  border-radius: var(--prx-radius, 6px);\n  min-width: 0;\n}\n\n.prx-cd .prx-cd-box p {\n  margin: 0 0 0.3rem;\n}\n\n.prx-cd .prx-cd-box .prx-cd-heading:not(:first-child) {\n  margin-top: 0.75rem;\n}\n\n.prx-cd .prx-cd-note {\n  margin: 0.4rem 0 0;\n  font-size: 0.9em;\n  color: var(--prx-plot-muted);\n}\n\n.prx-cd .prx-cd-cuts {\n  font-weight: 600;\n}\n\n.prx-cd .prx-cd-school {\n  font-weight: 600;\n}\n\n.prx-cd .prx-cd-groups {\n  font-weight: 400;\n  overflow-wrap: anywhere;\n}\n\n/* stands in the place of a box while its question waits */\n.prx-cd .prx-cd-wait {\n  margin: 0.75rem 0 0;\n  padding: 0.6rem 0.75rem;\n  text-align: center;\n  color: var(--prx-fg-muted);\n  border: 1px dashed var(--prx-border-strong);\n  border-radius: var(--prx-radius, 6px);\n}\n\n.prx-cd .prx-cd-card-chart,\n.prx-cd .prx-cd-cloud-chart,\n.prx-cd .prx-cd-path-chart {\n  min-width: 0;\n  max-width: 100%;\n}\n\n/* --- legends --- */\n.prx-cd .prx-cd-legend {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 0.25rem 0.8rem;\n  margin: 0.3rem 0 0;\n  font-size: 0.88em;\n}\n\n.prx-cd .prx-cd-key {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.3rem;\n}\n\n.prx-cd .prx-cd-swatch {\n  display: inline-block;\n  width: 0.9rem;\n  height: 0.9rem;\n  background: var(--prx-cd-swatch, var(--prx-grade-1));\n  border: 1px solid var(--prx-cell-border);\n  border-radius: 2px;\n  flex: 0 0 auto;\n}\n\n.prx-cd .prx-cd-orient {\n  margin: 0.3rem 0 0;\n  font-weight: 600;\n}\n\n.prx-cd .prx-cd-mark {\n  display: inline-block;\n  width: 0.8rem;\n  height: 0.8rem;\n  flex: 0 0 auto;\n}\n\n.prx-cd .prx-cd-mark-hull,\n.prx-cd .prx-cd-mark-steps {\n  height: 0;\n  width: 1.2rem;\n  border-top: 2px solid var(--prx-plot-fg);\n}\n\n.prx-cd .prx-cd-mark-steps {\n  border-top-color: var(--prx-plot-muted);\n}\n\n.prx-cd .prx-cd-mark-you {\n  background: var(--prx-plot-fg);\n  transform: rotate(45deg) scale(0.75);\n}\n\n.prx-cd .prx-cd-mark-tert {\n  width: 0;\n  height: 0;\n  border-left: 0.45rem solid transparent;\n  border-right: 0.45rem solid transparent;\n  border-bottom: 0.8rem solid var(--prx-plot-fg);\n}\n\n.prx-cd .prx-cd-mark-opt {\n  border: 2px solid var(--prx-plot-fg);\n}\n\n.prx-cd .prx-cd-mark-solve {\n  border-radius: 50%;\n  background: var(--prx-plot-fg);\n}\n\n/* --- tables --- */\n.prx-cd .prx-cd-scroll {\n  max-width: 100%;\n  overflow-x: auto;\n}\n\n.prx-cd .prx-cd-table {\n  border-collapse: collapse;\n  font-size: 0.92em;\n}\n\n.prx-cd .prx-cd-table caption {\n  caption-side: top;\n  padding: 0 0 0.3rem;\n  color: var(--prx-plot-muted);\n  font-size: 0.95em;\n  text-align: left;\n}\n\n.prx-cd .prx-cd-table th,\n.prx-cd .prx-cd-table td {\n  padding: 0.2rem 0.6rem;\n  border-bottom: 1px solid var(--prx-plot-grid);\n  text-align: left;\n}\n\n.prx-cd .prx-cd-table thead th {\n  font-weight: 600;\n  vertical-align: bottom;\n  white-space: nowrap;\n}\n\n.prx-cd .prx-cd-notice {\n  margin: 0.75rem 0 0;\n  font-size: 0.85em;\n  color: var(--prx-fg-muted);\n}\n\n@media (max-width: 30rem) {\n  .prx-cd .prx-cd-inline .prx-radio {\n    display: flex;\n    margin-right: 0;\n  }\n\n  .prx-cd .prx-cd-table th,\n  .prx-cd .prx-cd-table td {\n    padding: 0.2rem 0.3rem;\n  }\n}\n.prx-cd .prx-cd-scroll { min-width:0; }\n.prx-cd .prx-cd-table { min-width:30rem; }\n';
 
+const CDE_RESULT_CSS = `
+.prx-cd .prx-cd-primary-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:.65rem;align-items:start}
+.prx-cd .prx-cd-primary-grid > *{min-width:0;margin:0}
+.prx-cd .prx-cd-cut-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem 1rem;width:100%}
+.prx-cd .prx-cd-cut-controls .prx-control{min-width:0;width:100%}
+.prx-cd .prx-cd-cut-controls .prx-slider{max-width:none}
+.prx-cd .prx-cd-quick p{margin:.32rem 0}
+.prx-cd .prx-cd-quick .prx-cd-note{margin:.34rem 0}
+.prx-cd .prx-cd-cue{font-size:.82rem;margin:.25rem 0;color:var(--prx-plot-muted)}
+.prx-cd .prx-cd-cue-chips{display:flex;flex-wrap:wrap;gap:.25rem .45rem}
+.prx-cd .prx-cd-cue-chips > span{background:var(--prx-plot-grid);padding:.12rem .35rem;border-radius:.2rem}
+.prx-cd .prx-cd-extras{margin:.35rem 0}
+.prx-cd .prx-cd-pair-controls{display:flex;flex-wrap:wrap;gap:.45rem 1rem;align-items:end}
+.prx-cd .prx-cd-pair-controls .prx-select{min-width:4rem}
+.prx-cd .prx-cd-pair-controls .prx-cd-pairpick{width:auto;flex-basis:auto}
+.prx-cd .prx-cd-pair-controls .prx-slider{min-width:12rem}
+.prx-cd .prx-cd-pair-right > :first-child{margin:0}
+.prx-cd .prx-cd-ladder-row{margin-block:.3rem}
+@media(max-width:660px){
+ .prx-cd .prx-cd-pair-right{display:contents}
+ .prx-cd .prx-cd-pair-right > :first-child{order:1}
+ .prx-cd .prx-cd-pair-grid > .prx-cd-focus-card{order:2}
+ .prx-cd .prx-cd-pair-grid .prx-cd-toplist{order:3}
+}
+.prx-cd .prx-cd-pair-controls select{width:100%;min-height:2.55rem}
+.prx-cd .prx-cd-ladder-row{display:grid;grid-template-columns:minmax(5.1rem,1.1fr) minmax(2rem,1fr) minmax(4rem,.6fr);gap:.4rem;align-items:center;font-size:.86rem;margin:.4rem 0}
+.prx-cd .prx-cd-ladder-track{position:relative;height:1px;background:var(--prx-plot-muted)}
+.prx-cd .prx-cd-ladder-dot{position:absolute;left:var(--position);top:50%;transform:translate(-50%,-50%);height:.58rem;width:.58rem;background:var(--prx-plot-fg);border-radius:50%}
+.prx-cd .prx-cd-ladder-row > :last-child{text-align:right;font-variant-numeric:tabular-nums}
+.prx-cd .prx-cd-toplist{margin-top:.55rem}
+.prx-cd .prx-cd-top-row{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(7rem,1fr);gap:.5rem;padding:.35rem .1rem;border-bottom:1px solid var(--prx-plot-grid);font-size:.87rem}
+.prx-cd .prx-cd-top-row p{margin:0}
+.prx-cd .prx-cd-focus-chart{cursor:pointer}
+@media(min-width:661px){.prx-cd .prx-cd-pair-grid > .prx-cd-focus-card{order:-1}}
+.prx-cd .prx-cd-view-matched{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:.65rem}
+.prx-cd .prx-cd-view-matched > *{min-width:0;margin:0}
+.prx-cd .prx-cd-matched-controls{display:flex;flex-wrap:wrap;align-items:end;gap:.35rem 1rem;width:100%}
+@media(max-width:660px){
+ .prx-cd .prx-cd-primary-grid,.prx-cd .prx-cd-view-matched{grid-template-columns:minmax(0,1fr)}
+ .prx-cd .prx-cd-cut-controls{gap:.35rem}
+}
+`;
+
 export const CONFIG = Object.freeze({
   name: "case-cde",
   label: "Twelve California schools: cut the posterior-mean order into at most three grades, compare the tertiles and the archived grades at one τ and at one disclosure, a nearly certain direction that is withheld, and the τ path",
@@ -52,7 +95,7 @@ export const CONFIG = Object.freeze({
     // settings box
     settingsHeading: "The setting",
     settingsLine: Object.freeze(["Twelve schools, M = ", "{M}", " pairs, one criterion with weight ", "{one}", ", at most ", "{cap}", " grades, τ = ", "{tau}", "."]),
-    settingsPosterior: Object.freeze(["The posterior is supplied by the case study: it is conditional on a statewide prior fitted to ", "{schools}", " eligible schools, and the uncertainty in that prior is not propagated. Intervals: central ", "{level}", " marginal posterior intervals."]),
+    settingsPosterior: Object.freeze(["The case study fit a statewide prior to ", "{schools}", " eligible schools. The posterior treats that prior as fixed. The intervals are central ", "{level}", " marginal posterior intervals."]),
     // card
     cardHeading: "Chronic absence of the twelve schools",
     cardAxis: "Chronic-absence probability p (reversed: lower absence to the right)",
@@ -71,7 +114,7 @@ export const CONFIG = Object.freeze({
     colHi: "Interval, upper p",
     grade1: "Grade 1 = stated lowest in chronic absence, as the posterior judges it (θ = −p).",
     gradeKey: Object.freeze(["Grade ", "{g}", ": ", "{names}"]),
-    cardNote: Object.freeze(["Dots: posterior means of p. Lines: central ", "{level}", " posterior intervals. Rows follow the posterior-mean order, which is also the observed-rate order here; a shared grade states no direction, so the row order inside a grade claims nothing."]),
+    cardNote: Object.freeze(["Dots show posterior means of p. Lines show central ", "{level}", " posterior intervals. Here the posterior means and observed rates give the same row order. Schools in the same grade have no stated direction, regardless of their row positions."]),
     // result
     resultHeading: "Your report",
     cutsLine: Object.freeze(["Cuts after positions ", "{c1}", " and ", "{c2}", ": ", "{G}", " grades, ", "{sizes}", "."]),
@@ -94,7 +137,7 @@ export const CONFIG = Object.freeze({
     archDiffer: "The browser enumeration above returns another report; compare their risks.",
     archOther: Object.freeze(["The archived solve was run at τ = ", "{tau}", " only; set τ to ", "{tau2}", " to compare it."]),
     youOpt: "Your cuts give this optimum.",
-    youOther: Object.freeze(["Your report states N = ", "{N}", "; the optimum states ", "{Nopt}", ": ", "{caption}", ". A lower risk at one τ does not say which report has fewer expected wrong directions at the same disclosure; the ", "{sameDisclosure}", " compares reports that state the same number."]),
+    youOther: Object.freeze(["Your report states N = ", "{N}", "; the optimum states ", "{Nopt}", ": ", "{caption}", ". A lower risk at one τ does not say which report has fewer expected wrong directions at the same disclosure; the app ", "{sameDisclosure}", " compares reports that state the same number."]),
     youSameN: Object.freeze(["Your report and the optimum both state N = ", "{N}", ", so their risks at this τ differ only by E: yours ", "{E}", ", the optimum's ", "{Eopt}", "."]),
     relHeading: "From the optimum to your report",
     relLine: Object.freeze(["Against the optimum, your report newly states ", "{nd}", " pairs, newly withholds ", "{nw}", ", reverses ", "{nr}", " and keeps ", "{ns}", " of the ", "{M}", " relations."]),
@@ -146,7 +189,7 @@ export const CONFIG = Object.freeze({
     colStates: "States the pair?",
     yes: "yes",
     no: "no",
-    boundaries: "Along the posterior-mean order the clear boundaries, where the intervals of neighboring schools barely overlap, fall after B (the first three schools are A, C and B), after the group F, E, D and after the group H, G, I. Three grades allow two cuts, and the optimum puts them at the first and the third boundary. Stating F above I needs a cut between F and I, which must replace one of them. The second-lowest risk moves the first cut down to after D (A to F share the top grade); the third-lowest moves the second cut up to after D (G to L share the last grade).",
+    boundaries: "Neighboring intervals do not overlap at three clear breaks: after B (the first three schools are A, C and B), after D (F, E, D), and after I (H, G, I). The optimum uses the first and third. To state F above I, the second-lowest-risk report moves the first cut after D, putting A, C, B, F, E, D in the top grade. The third-lowest moves the second cut after D, putting H, G, I, K, L, J in the last grade.",
     dpLine: Object.freeze(["With a fourth grade allowed, the best cuts of the posterior-mean order are ", "{sizes}", " (N = ", "{N}", "), which ", "{state}", ": "]),
     dpState: "state this direction",
     dpNot: "do not state this direction",
@@ -242,8 +285,9 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
   const handle = createWidget(el, spec, {
     name,
     label,
-    css: CDE_COMMON_CSS + "\n.prx-cd .prx-controls { row-gap:.2rem; }\n.prx-cd .prx-cd-card { padding-top:.15rem; }\n",
+    css: CDE_COMMON_CSS + CDE_RESULT_CSS + "\n.prx-cd .prx-controls { row-gap:.2rem; }\n.prx-cd .prx-cd-card { padding-top:.15rem; }\n",
     className: CONFIG.className,
+    layout: "result-first",
     keys: {
       tau: { type: "number", ...CONFIG.tau, snap: true },
       cuts: { type: "custom", value: [...(view === "pair" || view === "path" ? CONFIG.cuts.archived : CONFIG.cuts.value)], parse: (v, prev) => parseCuts(v, prev) },
@@ -322,10 +366,14 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
       // --- controls
       const tauSlider = ctx.slider({ label: T.tauLabel, ...CONFIG.tau, value: ctx.state.tau, name: "tau", format: (v) => formatSetting(v), onInput: (v) => ctx.set({ tau: v }) });
       const cutFormat = (v) => formatCount(v);
-      const cutSlider = (k, label) => ctx.slider({
-        label, min: CONFIG.cuts.min, max: n - 1, step: 1, value: ctx.state.cuts[k], name: `cut${k + 1}`, format: cutFormat,
-        onInput: (v) => { const c = [...ctx.state.cuts]; c[k] = v; ctx.set({ cuts: c }); },
-      });
+      const cutSlider = (k, label) => {
+        const slider = ctx.slider({
+          label: "Cut", min: CONFIG.cuts.min, max: n - 1, step: 1, value: ctx.state.cuts[k], name: `cut${k + 1}`, format: cutFormat,
+          onInput: (v) => { const c = [...ctx.state.cuts]; c[k] = v; ctx.set({ cuts: c }); },
+        });
+        slider.root.querySelector("label").replaceChildren("Cut ", count(k + 1), view === "cuts" ? "" : label.slice(5));
+        return slider;
+      };
       const cut1 = cutSlider(0, T.cut1Label);
       const cut2 = cutSlider(1, T.cut2Label);
       const nSlider = ctx.slider({ label: T.nLabel, ...CONFIG.n, step: 1, value: ctx.state.n, name: "n", format: (v) => formatCount(v), onInput: (v) => ctx.set({ n: v }) });
@@ -334,7 +382,27 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
       const pairA = ctx.select({ label: T.pairLabel1, options: schoolOptions, value: ctx.state.pair[0], name: "pair-a", onChange: (v) => ctx.set({ pair: [v, ctx.state.pair[1]] }) });
       const pairB = ctx.select({ label: T.pairLabel2, options: schoolOptions, value: ctx.state.pair[1], name: "pair-b", onChange: (v) => ctx.set({ pair: [ctx.state.pair[0], v] }) });
       const pairBox = h("div", { class: "prx-control prx-cd-pairpick" }, pairA.root, pairB.root);
-      ctx.controls.append(tauSlider.root, cut1.root, cut2.root, nSlider.root, fullToggle.root, pairBox);
+      const cutControls = h("div", { class: "prx-cd-cut-controls" }, cut1.root, cut2.root);
+      if (view === "cuts") {
+        const settings = ctx.disclosure({ name: "settings", title: "Settings", placement: "controls" });
+        settings.body.append(tauSlider.root);
+        ctx.afterPresets(cutControls);
+        ctx.primaryControl(cutControls);
+      } else if (view === "matched") {
+        const settings = ctx.disclosure({ name: "settings", title: "Settings", placement: "controls" });
+        settings.body.append(tauSlider.root, cutControls);
+        ctx.afterPresets(h("div", { class: "prx-cd-matched-controls" }, nSlider.root, fullToggle.root));
+        ctx.primaryControl(nSlider.root);
+      } else if (view === "pair") {
+        ctx.controls.append(h("div", { class: "prx-cd-pair-controls" }, pairBox, tauSlider.root));
+        ctx.primaryControl(pairBox);
+      } else {
+        ctx.afterPresets(tauSlider.root);
+        ctx.primaryControl(tauSlider.root);
+      }
+
+      if (view !== "matched") ctx.controls.append(nSlider.root, fullToggle.root);
+      if (view !== "pair") ctx.controls.append(pairBox);
 
       // --- settings, card, result, compare, views
       const settingsBox = h("section", { class: "prx-cd-settings", "aria-label": T.settingsHeading });
@@ -366,9 +434,55 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
       const pathBody = h("div", { class: "prx-cd-path-body" });
       const pathChanges = h("div");
       const pathPanel = h("section", { class: "prx-cd-box prx-light-panel prx-cd-path", "aria-label": T.pathHeading }, title(T.pathHeading), h("p", {class:"prx-cd-note prx-cd-path-y-label"}, T.pathAxisY), pathChart, pathKey, pathBody, pathChanges);
-      const viewSlot = h("div", { class: "prx-cd-view" });
-      if (view === "cuts") ctx.charts.append(cardBox, settingsBox, resultBox, viewSlot);
-      else ctx.charts.append(viewSlot, cardBox, settingsBox, resultBox);
+      const pathBrief = h("p", { class: "prx-cd-note" }), latestStep = h("p", { class: "prx-cd-note" });
+      const archivedPathTable = h("div");
+      const originalSummary = h("p");
+      const cutSummary = h("section", { class: "prx-cd-box prx-light-panel prx-cd-quick" });
+      const cutCardKey = h("p", { class: "prx-cd-cue" });
+      const optimumChart = h("div", { class: "prx-cd-optimum-chart" });
+      const optimumLegend = h("div"), optimumNote = h("p", { class: "prx-cd-note" });
+      const optimumCardTitle = title("The optimum at the current τ");
+      const optimumCardCue = h("p", { class: "prx-cd-cue" });
+      const optimumCard = h("section", { class: "prx-cd-box prx-light-panel prx-cd-focus-card" },
+        optimumCardTitle, optimumCardCue, optimumChart);
+      const pairLadder = h("section", { class: "prx-cd-box prx-light-panel prx-cd-quick" });
+      const pairTop = h("section", { class: "prx-cd-box prx-light-panel prx-cd-toplist" });
+      const pairBoundaries = h("p", { class: "prx-cd-cue" }), pairBoundaryDetails = h("p", { class: "prx-cd-note" });
+      const pairFourth = h("p", { class: "prx-cd-note" });
+      if (view === "cuts") {
+        cardChart.before(cutCardKey);
+        const extras = h("div", { class: "prx-cd-extras prx-light-panel" }, legendSlot, cardNote);
+        ctx.charts.append(h("div", { class: "prx-cd-primary-grid" }, cardBox, cutSummary), extras);
+        ctx.primaryGraphic(cardChart);
+        const details = ctx.disclosure({ name: "details", title: "Report and relation details" });
+        details.body.append(originalSummary, resultBox, cutsWrap);
+        const method = ctx.disclosure({ name: "method", title: "Method and scope" });
+        method.body.append(settingsBox,
+          h("p", {}, "Cut ", count(1), T.cut1Label.slice(5)), h("p", {}, "Cut ", count(2), T.cut2Label.slice(5)));
+      } else if (view === "matched") {
+        ctx.charts.append(matchedWrap);
+        ctx.primaryGraphic(cloudChart);
+        ctx.disclosure({ name: "schools", title: "Schools and setting" }).body.append(originalSummary, cardBox, settingsBox, resultBox);
+      } else if (view === "pair") {
+        optimumChart.classList.add("prx-cd-focus-chart");
+        optimumCard.append(pairBoundaries);
+        ctx.charts.append(h("div", { class: "prx-cd-primary-grid prx-cd-pair-grid" },
+          h("div", { class: "prx-cd-pair-right" }, pairLadder, pairTop), optimumCard), pairFourth,
+          h("div", { class: "prx-cd-extras prx-light-panel" }, optimumLegend, optimumNote));
+        ctx.primaryGraphic(pairLadder);
+        ctx.disclosure({ name: "your-report", title: "Your report" }).body.append(cutControls, cardBox, resultBox);
+        ctx.disclosure({ name: "details", title: "Pair and report details" }).body.append(originalSummary, pairPanel, pairBoundaryDetails);
+        ctx.disclosure({ name: "method", title: "Method and scope" }).body.append(settingsBox);
+      } else {
+        pathPanel.replaceChildren(title(T.pathHeading), h("p", { class: "prx-cd-note prx-cd-path-y-label" }, T.pathAxisY),
+          pathChart, pathKey, pathBrief);
+        ctx.charts.append(pathPanel, optimumCard, latestStep, h("div", { class: "prx-cd-extras prx-light-panel" }, optimumLegend, optimumNote));
+        ctx.primaryGraphic(pathChart);
+        ctx.disclosure({ name: "fixed", title: "Compare a fixed report" }).body.append(cutControls, originalSummary, cardBox, resultBox);
+        ctx.disclosure({ name: "steps", title: "Exact steps and boundary ties" }).body.append(pathChanges);
+        ctx.disclosure({ name: "archived", title: "Archived solves and exact path" }).body.append(pathBody, archivedPathTable);
+        ctx.disclosure({ name: "method", title: "Method and scope" }).body.append(settingsBox);
+      }
       if (!ctx.doc.querySelector?.('meta[name="quarto:offset"]')) ctx.root.append(h("p", { class: "prx-cd-notice", text: T.notice }));
 
       // --- drawing
@@ -380,12 +494,44 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         );
       }
 
-      function drawCard(grade, cuts, t1) {
+      let firstSchool = null, focusedSchool = null, pairCardGeometry = null;
+      const chooseSchool = i => {
+        if (!Number.isInteger(i)) return;
+        if (firstSchool !== null && firstSchool !== i) {
+          const pair = [labels[firstSchool], labels[i]];
+          firstSchool = null;
+          optimumCardCue.textContent = "Select two school rows to compare them.";
+          ctx.set({ pair });
+        } else {
+          firstSchool = i;
+          optimumCardCue.replaceChildren("First school ", school(i), ". Select a different row.");
+        }
+      };
+      if (view === "pair") {
+        ctx.listen(optimumChart, "click", event => {
+          if (!event.detail || !pairCardGeometry) return;
+          const svg = optimumChart.querySelector("svg");
+          if (!svg) return;
+          const box = svg.getBoundingClientRect(), { height, margin, rowPx } = pairCardGeometry;
+          if (event.clientX < box.left || event.clientX > box.right || !box.height) return;
+          const p = Math.floor(((event.clientY - box.top) * height / box.height - margin) / rowPx);
+          chooseSchool(model.order[p]);
+        });
+        ctx.listen(optimumChart, "keydown", event => {
+          if (!event.target.closest?.(".prx-kbd-point") || !["Enter", " "].includes(event.key)) return;
+          event.preventDefault();
+          chooseSchool(focusedSchool);
+        });
+      }
+      const changesInOrder = grade => model.order.flatMap((i, pos) => pos > 0 && grade[model.order[pos - 1]] !== grade[i] ? [pos] : []);
+      function drawCard(grade, cuts, { chart = cardChart, legendTarget = legendSlot, noteTarget = cardNote,
+        compareGrade = null, changedRows = [], hookPrefix = "school-grade", compact = false,
+        highlighted = [], solid = false, interactive = false } = {}) {
         const C = CONFIG.card;
         const G = Math.max(...grade);
         const p = (i) => -model.mean[i];
         const rows = model.order.map((i, pos) => ({
-          i, pos, name: labels[i], cds: model.cds[i], grade: grade[i], rate: model.rate[i], y: model.y[i], m: model.m[i],
+          i, pos, name: labels[i], cds: model.cds[i], grade: grade[i], compareGrade: compareGrade?.[i], rate: model.rate[i], y: model.y[i], m: model.m[i],
           p: p(i), lo: -model.upper[i], hi: -model.lower[i],
         }));
         const bands = [];
@@ -397,7 +543,7 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         const lo = Math.min(...rows.map((r) => r.lo));
         const hi = Math.max(...rows.map((r) => r.hi));
         const pad = (hi - lo) * C.pad;
-        const width = Math.round(cardChart.clientWidth || 0) || ctx.width();
+        const width = Math.round(chart.clientWidth || 0) || ctx.width();
         const narrow = width < C.narrowPx;
         const innerW = Math.max(1, width - C.marginLeft - C.marginRight);
         // the axis is reversed: the left edge is the largest p
@@ -415,11 +561,18 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         }).join("");
         const half = CONFIG.half;
         const cutRows = cutSet(cuts).map((c) => ({ y: c - half }));
+        const optimumCuts = compareGrade ? changesInOrder(compareGrade).map(cut => ({ y: cut - half })) : [];
+        const stripes = compareGrade ? [{ field: "grade", left: 1, right: 16 }, { field: "compareGrade", left: 18, right: 33 }] : [];
+        const rowPx = compact && narrow ? 18 : C.rowPx, height = Math.round(C.marginTop + C.marginBottom + n * rowPx);
+        if (interactive) pairCardGeometry = { height, margin: C.marginTop, rowPx };
+        const sameGrade = highlighted.length === 2 && grade[highlighted[0]] === grade[highlighted[1]];
+        const positions = highlighted.map(i => model.position[i]).sort((a, b) => a - b);
+        const bracketX = leftOf(C.marginLeft - 43), bracketEnd = leftOf(C.marginLeft - 48);
         let colors = null;
-        plot(cardChart, {
-          alt: T.cardAlt,
+        plot(chart, {
+          alt: solid ? T.cardAlt.replace(/ The cuts.*$/, " Solid lines show boundaries of the current optimum.") : T.cardAlt,
           table: {
-            caption: T.cardTable,
+            caption: solid ? "The current optimum for the twelve schools" : T.cardTable,
             columns: [
               { label: T.colPos, value: (d) => d.pos + 1, format: (v) => formatCount(v) },
               { label: T.colSchool, value: "name" },
@@ -431,31 +584,50 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             ],
             rows,
           },
-          width, height: Math.round(C.marginTop + C.marginBottom + n * C.rowPx), aspect: false,
+          width, height, aspect: false,
           marginTop: C.marginTop, marginBottom: C.marginBottom, marginLeft: C.marginLeft, marginRight: C.marginRight,
           x: { domain, ticks: narrow ? C.narrowTicks : C.ticks, label: narrow ? T.cardAxisShort : T.cardAxis, labelAnchor: "center", labelArrow: "none", grid: true },
           y: { domain: [n - half, -half], axis: null },
           marks: (k, P) => {
             colors = gradeColors(G, k);
+            const compareColors = compareGrade ? gradeColors(Math.max(...compareGrade), k) : null;
             // Every grade is visible in the split app.
             const ink = (d) => colors[d.grade - 1];
             const shown = bands;
             return [
               P.rect(bands.filter((b) => b.grade % 2 === 1), { x1: () => domain[0], x2: () => domain[1], y1: (b) => b.first - half, y2: (b) => b.last + half, fill: k.plotGrid, fillOpacity: C.bandOpacity }),
-              P.rect(shown, { x1: () => sx1, x2: () => sx2, y1: (b) => b.first - half, y2: (b) => b.last + half, fill: (b) => colors[b.grade - 1], inset: 1 }),
-              numText(shown, { x: () => smid, y: "mid", value: "grade", format: (v) => formatCount(v), fill: (b) => labelOn(colors[b.grade - 1], k), fontWeight: "bold", textAnchor: "middle" }),
-              P.ruleY(cutRows, { y: "y", x1: () => sx1, x2: () => domain[1], stroke: k.plotFg, strokeWidth: 2, strokeDasharray: C.dash }),
+              ...(compareGrade ? stripes.flatMap(({ field, left, right }) => {
+                const color = row => (field === "grade" ? colors : compareColors)[row[field] - 1];
+                return [
+                  P.rect(rows, { x1: () => leftOf(C.marginLeft - left), x2: () => leftOf(C.marginLeft - right),
+                    y1: r => r.pos - half, y2: r => r.pos + half, fill: color, inset: 1 }),
+                  numText(rows, { x: () => leftOf(C.marginLeft - (left + right) / 2), y: "pos", value: field,
+                    format: formatCount, fill: r => labelOn(color(r), k), fontWeight: "bold", textAnchor: "middle" }),
+                ];
+              }) : [
+                P.rect(shown, { x1: () => sx1, x2: () => sx2, y1: (b) => b.first - half, y2: (b) => b.last + half, fill: (b) => colors[b.grade - 1], inset: 1 }),
+                numText(shown, { x: () => smid, y: "mid", value: "grade", format: (v) => formatCount(v), fill: (b) => labelOn(colors[b.grade - 1], k), fontWeight: "bold", textAnchor: "middle" }),
+              ]),
+              P.ruleY(optimumCuts, { y: "y", x1: () => leftOf(C.marginLeft - 18), x2: () => domain[1], stroke: k.plotMuted, strokeWidth: 2 }),
+              P.ruleY(cutRows, { y: "y", x1: () => sx1, x2: () => domain[1], stroke: k.plotFg, strokeWidth: 2, ...(solid ? {} : { strokeDasharray: C.dash }) }),
+              ...(sameGrade ? [
+                P.ruleX([{ x: bracketX, a: positions[0], b: positions[1] }], { x: "x", y1: "a", y2: "b", stroke: k.plotFg, strokeWidth: 1.6 }),
+                P.ruleY(positions, { y: d => d, x1: () => bracketX, x2: () => bracketEnd, stroke: k.plotFg, strokeWidth: 1.6 }),
+              ] : []),
+              P.dot(rows.filter(r => changedRows.includes(r.i)), { x: () => leftOf(C.marginLeft - 39), y: "pos", r: 2.5, fill: k.plotFg }),
               P.text(rows, { x: () => domain[0], y: "pos", text: "name", dx: -C.nameDx, textAnchor: "end", fill: k.plotFg, fontWeight: "bold" }),
               P.ruleY(rows, { y: "pos", x1: "lo", x2: "hi", stroke: ink, strokeWidth: C.line }),
               P.dot(rows, { x: "p", y: "pos", r: C.dot, fill: ink, stroke: k.plotBg }),
+              P.dot(rows.filter(r => highlighted.includes(r.i)), { x: "p", y: "pos", r: C.dot + 2.8, fill: "none", stroke: k.plotFg, strokeWidth: 1.8 }),
               P.tip(rows, P.pointerY({ x: "p", y: "pos", title: tip })),
             ];
           },
-          keyboard: { data: rows, x: "p", y: "pos", key: (d) => d.name, sort: false, label: T.cardKeys, title: tip },
+          keyboard: { data: rows, x: "p", y: "pos", key: (d) => d.name, sort: false, label: T.cardKeys, title: tip,
+            ...(interactive ? { onFocus: row => { focusedSchool = row.i; } } : {}) },
         });
-        cardChart.querySelectorAll('table tbody tr').forEach((row, p) => {
+        chart.querySelectorAll('table tbody tr').forEach((row, p) => {
           const cell = row.children[2];
-          if (cell) (cell.querySelector('[data-num]') ?? cell).setAttribute('data-prx-readout', `school-grade-${model.order[p]}`);
+          if (cell) (cell.querySelector('[data-num]') ?? cell).setAttribute('data-prx-readout', `${hookPrefix}-${model.order[p]}`);
         });
         // Each grade's schools and the target orientation remain beside the card.
         const legend = h("p", { class: "prx-cd-legend" });
@@ -464,8 +636,8 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           sw.style.setProperty("--prx-cd-swatch", (colors ?? [])[b.grade - 1] ?? "");
           legend.append(h("span", { class: "prx-cd-key" }, sw, h("span", {}, ...filled(T.gradeKey, { g: () => count(b.grade), names: () => h("span", {}, ...listNodes(rows.filter((r) => r.grade === b.grade).map((r) => r.i))) }))));
         });
-        legendSlot.replaceChildren(legend, h("p", { class: "prx-cd-orient" }, T.grade1));
-        cardNote.replaceChildren(...filled(T.cardNote, { level: () => num(model.level, level) }));
+        legendTarget.replaceChildren(legend, h("p", { class: "prx-cd-orient" }, T.grade1));
+        noteTarget.replaceChildren(...filled(T.cardNote, { level: () => num(model.level, level) }));
       }
 
       function drawResult(grade, ev, cuts, tau) {
@@ -503,7 +675,9 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         parts.push(h("p", { class: "prx-cd-note" }, ...filled(T.optFamily, {
           size: () => familySizeNode(ctx, opt), cap: () => count(CONFIG.cap), EoN: () => share(opt.EoverN[0], "opt-EoverN"), tau: () => setting(tau),
         })));
-        parts.push(h("p", { class: "prx-cd-note" }, count(opt.tieCount, "opt-ties"), " reports are tied within risk tolerance ", num(opt.tieTol, formatSci(opt.tieTol), "opt-tolerance"), ". Listed ", count(opt.grades.length, "opt-listed"), " of ", count(opt.tieCount), ": ", ...opt.grades.flatMap((g, i) => [i ? "; " : "", groups(g)]), ". Numerical tolerance describes this enumeration; a solver status is not a numerical certificate."));
+        parts.push(h("p", { class: "prx-cd-note" }, count(opt.tieCount, "opt-ties"),
+          opt.tieCount === 1 ? " report attains the minimum within risk tolerance " : " reports are tied within risk tolerance ",
+          num(opt.tieTol, formatSci(opt.tieTol), "opt-tolerance"), ". Listed ", count(opt.grades.length, "opt-listed"), " of ", count(opt.tieCount), ": ", ...opt.grades.flatMap((g, i) => [i ? "; " : "", groups(g)]), ". Numerical tolerance describes this enumeration; a solver status is not a numerical certificate."));
         // the archived solve (released summary; run at tau = .20 only)
         const F = model.archived.facts;
         const arch = { status: F.status, risk: F.risk, lower_bound: F.lower_bound, gap: F.gap, N: F.N, family: opt.family };
@@ -553,6 +727,32 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         );
       }
 
+      function drawCutsOverview(state, grade, ev, opt) {
+        if (!opt) { cutSummary.replaceChildren(busyNote()); return; }
+        const changes = relationChange(opt.grade, grade, E);
+        const rows = [...new Set(changes.pairs.flatMap(pair => [pair.i, pair.j]))];
+        drawCard(grade, state.cuts, { compareGrade: opt.grade, changedRows: rows, compact: true });
+        cutCardKey.textContent = "Grade strips: yours | optimum. Dashed: your cut. Solid: optimum boundary. Dots by school labels mark changed relations.";
+        const boundaryNodes = cuts => cutSet(cuts).flatMap((cut, i) => [i ? "|" : "", count(cut)]);
+        const match = atN(disclosure(tertGrade).N);
+        const tertilesBest = match?.reports[0] && sameList(Array.from(tertGrade), Array.from(match.reports[0].grade));
+        cutSummary.replaceChildren(
+          title("Your cuts and the optimum"),
+          h("p", {}, "Your cuts ", ...boundaryNodes(state.cuts), ": N ", count(ev.N), " · E ", expected(ev.Ew)),
+          h("p", {}, "Optimum at τ ", setting(state.tau), " (", ...boundaryNodes(changesInOrder(opt.grade)), "): N ", count(opt.N), " · E ", expected(opt.Ew)),
+          h("p", {}, "Risk ", risk(ev.risk), " vs ", risk(opt.risk)),
+          h("p", {}, count(changes.nNewDisclosed), " newly stated · ", count(changes.nNewWithheld), " withheld", changes.nReversed ? [" · ", count(changes.nReversed), " reversed"] : []),
+        );
+        const near = changes.pairs.filter(pair => pair.error !== null && pair.error >= .4);
+        if (near.length) cutSummary.append(
+          h("p", { class: "prx-cd-cue" }, "New directions near a coin flip"),
+          h("div", { class: "prx-cd-cue-chips" }, ...near.map(pair => h("span", {}, relationText(pair.to, pair.i, pair.j), " ", prob(pair.error)))),
+        );
+        if (tertilesBest) cutSummary.append(h("p", { class: "prx-cd-note" }, "At N = ", count(match.N ?? disclosure(tertGrade).N), " the tertiles have the least expected error. ", appLink(ctx, "cde-one-disclosure")));
+        ctx.readout.set(["Your cuts ", ...boundaryNodes(state.cuts), " state ", count(ev.N), " pairs (E ", expected(ev.Ew),
+          "); the τ ", setting(state.tau), " optimum states ", count(opt.N), " (E ", expected(opt.Ew), "); risk ", risk(ev.risk), " vs ", risk(opt.risk), "."]);
+      }
+
       function drawMatched(state, grade, ev, optOf, width) {
         const Cc = CONFIG.cloud;
         const ch = cloudOf();
@@ -577,6 +777,8 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           ...(opt ? [{ N: opt.N, Ew: opt.Ew, kind: "opt" }] : []),
         ];
         const inView = marks.filter((m) => m.Ew <= zoom);
+        const atMinimum = r?.reports[0]?.Ew;
+        const selectedMinimum = atMinimum !== undefined && atMinimum <= zoom ? [{ N: state.n, Ew: atMinimum }] : [];
         plot(cloudChart, {
           alt: T.cloudAlt,
           table: {
@@ -600,6 +802,9 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             P.dot(inView.filter((m) => m.kind === "opt"), { x: "N", y: "Ew", r: Cc.mark, symbol: "square", fill: "none", stroke: k.plotFg, strokeWidth: 2 }),
             P.dot(inView.filter((m) => m.kind === "tert"), { x: "N", y: "Ew", r: Cc.mark, symbol: "triangle", fill: "none", stroke: k.plotFg, strokeWidth: 2 }),
             P.dot(inView.filter((m) => m.kind === "you"), { x: "N", y: "Ew", r: Cc.mark - 2, symbol: "diamond", fill: k.plotFg, stroke: k.plotBg }),
+            numText(selectedMinimum, { x: "N", y: "Ew", value: "Ew", format: formatExpectedCount,
+              dx: state.n > M / 2 ? -9 : 9, dy: -8, textAnchor: state.n > M / 2 ? "end" : "start",
+              fill: k.plotFg, stroke: k.plotBg, strokeWidth: 3, paintOrder: "stroke", fontWeight: 700 }),
             P.tip(rows, P.pointerX({ x: "N", y: (d) => clip(d.minEw), title: (d) => `N ${formatCount(d.N)}: ${formatCount(d.count)} reports, E from ${formatExpectedCount(d.minEw)} to ${formatExpectedCount(d.maxEw)}` })),
           ],
           keyboard: { data: rows, x: "N", y: (d) => clip(d.minEw), key: (d) => `n${d.N}`, sort: false, label: T.cloudTable, title: (d) => `N ${formatCount(d.N)}: ${formatCount(d.count)} reports, E from ${formatExpectedCount(d.minEw)} to ${formatExpectedCount(d.maxEw)}` },
@@ -634,6 +839,19 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           N: () => count(gap.N, "gap-N"), N2: () => count(gap.N), E: () => expected(gap.Ew, "gap-E"), H: () => expected(gap.H, "gap-H"), gap: () => expected(gap.gap, "gap"),
         })));
         matchedBody.replaceChildren(...parts);
+        const countText = r ? ["N = ", count(state.n), ": ", count(r.count), r.count === 1 ? " report" : " reports"] : [T.computing];
+        if (r?.reports.length) {
+          countText.push("; least expected error ", expected(r.reports[0].Ew));
+          if (sameList(Array.from(r.reports[0].grade), Array.from(tertGrade))) countText.push(" for the tertiles");
+          if (r.reports[1]) countText.push(" (next ", expected(r.reports[1].Ew), ")");
+          countText.push(".");
+        } else if (r) {
+          countText.push(" can state exactly this many pairs.");
+          if (md.psi !== null && md.psi !== undefined && md.lower?.N !== md.upper?.N) {
+            countText.push(" The lower hull uses a mixture (ψ ", share(md.psi), "), not a single report.");
+          }
+        }
+        ctx.readout.set(countText);
       }
 
       function drawPair(state, grade) {
@@ -658,10 +876,11 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
       }
 
       function drawPairMore(state, tau, a, b) {
-        if (a === b) { pairMore.replaceChildren(); return; }
+        if (a === b) { pairMore.replaceChildren(); pairBoundaries.replaceChildren(); pairBoundaryDetails.replaceChildren(); pairFourth.replaceChildren(); return null; }
         const parts = [];
         const best = bestAt(tau);
         const sb = statingAt(tau, a, b);
+        const reverse = statingAt(tau, b, a);
         const first = best?.reports[0]?.grade;
         if (!sb) parts.push(busyNote());
         else if (sb.reports.length) {
@@ -680,7 +899,7 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           h("td", {}, sizesNode(disclosure(r.grade).sizes, `best-sizes-${k + 1}`), " ", groups(r.grade)),
           h("td", {}, count(r.N, `best-N-${k + 1}`)),
           h("td", {}, risk(r.risk, `best-risk-${k + 1}`)),
-          h("td", { text: r.grade[a] < r.grade[b] ? T.yes : T.no })));
+          h("td", {}, r.grade[a] === r.grade[b] ? "No: withheld" : ["Yes: ", school(r.grade[a] < r.grade[b] ? a : b), " above ", school(r.grade[a] < r.grade[b] ? b : a)])));
         const table = h("table", { class: "prx-cd-table", "data-prx-part": "table" },
           h("caption", { text: T.bestTable }),
           h("thead", {}, h("tr", {}, ...[T.colRank, T.colReport, T.colN, T.colRisk, T.colStates].map((t) => h("th", { scope: "col", text: t })))),
@@ -689,16 +908,70 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           parts.push(title(T.bestHeading), h("p", {}, labelNode(ctx, best, { key: "best" }), " (", familySizeNode(ctx, best), " reports)."),
             ctx.scrollRegion(h("div", { class: "prx-cd-scroll" }, table), T.bestTable));
         } else parts.push(title(T.bestHeading), busyNote());
-        if (labels[a] === CONFIG.pair[0] && labels[b] === CONFIG.pair[1] && close(tau, model.archived.facts.tau)) parts.push(h("p", { class: "prx-cd-note" }, T.boundaries));
+        const showBoundaries = labels[a] === CONFIG.pair[0] && labels[b] === CONFIG.pair[1] && close(tau, model.archived.facts.tau);
+        pairBoundaries.textContent = showBoundaries ? "Three clear gaps follow A, C, B; F, E, D; and H, G, I. The optimum uses the first and third." : "";
+        pairBoundaryDetails.textContent = showBoundaries ? T.boundaries : "";
         // a fourth grade along the posterior-mean order
         const dp = dpAt(tau);
         const dd = disclosure(dp.grade);
-        parts.push(h("p", {}, ...filled(T.dpLine, {
+        pairFourth.replaceChildren(...filled(T.dpLine, {
           sizes: () => sizesNode(dd.sizes, "dp-sizes"), N: () => count(dp.N, "dp-N"), state: dp.grade[a] < dp.grade[b] ? T.dpState : T.dpNot,
         }), labelNode(ctx, dp, { key: "dp" }), ...filled(T.dpTail, {
           family: () => familyNameNode(ctx, dp), size: () => familySizeNode(ctx, dp), risk: () => risk(dp.risk, "dp-risk"),
-        })));
+        }));
         pairMore.replaceChildren(...parts);
+        return { best, sb, reverse };
+      }
+
+      function drawPairOverview(state, a, b, result) {
+        pairTop.hidden = a === b;
+        optimumCard.hidden = a === b;
+        if (a === b) {
+          pairLadder.replaceChildren(h("p", {}, T.pairSame));
+          ctx.readout.set([T.pairSame]);
+          return;
+        }
+        const best = result?.best?.reports[0], forward = result?.sb?.reports[0], reverse = result?.reverse?.reports[0];
+        if (!best || !forward || !reverse) {
+          pairLadder.replaceChildren(busyNote());
+          ctx.readout.set([T.computing]);
+          return;
+        }
+        const relation = (grade) => grade[a] === grade[b] ? "Withheld"
+          : grade[a] < grade[b] ? `${labels[a]} above ${labels[b]}` : `${labels[b]} above ${labels[a]}`;
+        const comparison = [
+          { title: "Optimum", value: best.risk },
+          { title: `Best ${labels[a]} > ${labels[b]}`, value: forward.risk },
+          { title: ["Tertiles (N ", count(disclosure(tertGrade).N), ")"], value: evaluateReport(tertGrade, E, { tau: state.tau }).risk },
+          { title: `Best ${labels[b]} > ${labels[a]}`, value: reverse.risk },
+        ];
+        const min = Math.min(...comparison.map(row => row.value)), max = Math.max(...comparison.map(row => row.value));
+        pairLadder.replaceChildren(title("Risk at the same withholding cost"),
+          ...comparison.map(({ title: label, value }, i) => h("div", { class: "prx-cd-ladder-row" },
+            h("span", {}, label),
+            h("span", { class: "prx-cd-ladder-track", "aria-hidden": "true" }, h("span", {
+              class: "prx-cd-ladder-dot", style: `--position:${8 + 84 * (value - min) / Math.max(max - min, Number.EPSILON)}%`,
+            })), h("span", {}, risk(value, `ladder-risk-${i}`)))),
+          h("p", { class: "prx-cd-cue" }, "Shared risk scale · lower ←"),
+        );
+        const diff = Math.max(0, forward.risk - best.risk);
+        pairLadder.append(h("p", { class: "prx-cd-cue" }, count(result.sb.matched), " reports state ", school(a), " above ", school(b), "."));
+        if (firstSchool === null) optimumCardCue.replaceChildren(
+          ...(best.grade[a] === best.grade[b] ? ["The bracket connects ", school(a), " and ", school(b), " within grade ", count(best.grade[a]), ". The optimum withholds this pair. "] : []),
+          "Select two school rows to compare them.",
+        );
+        drawCard(best.grade, changesInOrder(best.grade), { chart: optimumChart, legendTarget: optimumLegend, noteTarget: optimumNote,
+          hookPrefix: "optimum-school-grade", compact: true, solid: true, highlighted: [a, b], interactive: true });
+        pairTop.replaceChildren(title("The three lowest risks"),
+          h("div", { class: "prx-cd-top-row" }, h("strong", {}, "Report"), h("strong", {}, "Risk · stated direction")),
+          ...result.best.reports.map(r => h("div", { class: "prx-cd-top-row" },
+            h("p", {}, groups(r.grade)),
+            h("p", {}, risk(r.risk), " · ", relation(r.grade)))),
+        );
+        const relationWords = best.grade[a] === best.grade[b] ? "withholds the pair" : `states ${relation(best.grade)}`;
+        ctx.readout.set([school(a), " above ", school(b), " has posterior probability ", prob(1 - E.e[0][a][b], null, CONFIG.digits.pi),
+          ". The τ ", setting(state.tau), " optimum ", relationWords, ". Best risk for this direction ",
+          risk(forward.risk), " (+", risk(diff, "direction-risk-increase"), ")."]);
       }
 
       function drawPath(state, width) {
@@ -709,11 +982,15 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           pinTable(pathChart, "archive-cell");
         pathKey.replaceChildren();
           pathBody.replaceChildren(busyNote());
-          return;
+          ctx.readout.set([T.computing]);
+          return null;
         }
         exposeResult(ctx, tp, "path");
-        const steps = [];
-        for (const iv of tp.intervals) steps.push({ tau: iv.tauFrom, N: iv.N }, { tau: iv.tauTo, N: iv.N });
+        const axisMin = .0001, steps = [];
+        for (const iv of tp.intervals) steps.push({ tau: Math.max(axisMin, iv.tauFrom), N: iv.N }, { tau: iv.tauTo, N: iv.N });
+        const levelLabels = tp.intervals.filter(iv => iv.tauTo > iv.tauFrom).map(iv => ({
+          tau: Math.sqrt(Math.max(axisMin, iv.tauFrom) * iv.tauTo), N: iv.N,
+        }));
         const rel = model.path;
         const solves = rel ? rel.rows.tau.map((t, k) => ({ tau: t, N: rel.rows.N[k], sizes: disclosure(rel.grades[k]).sizes, E: rel.rows.E[k], risk: rel.rows.risk[k], status: rel.rows.status[k], gap: rel.rows.gap[k] })) : [];
         // tau values below the .01 grid (the two named breakpoint values) keep two significant digits
@@ -734,14 +1011,18 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             ],
             rows: solves,
           },
-          width, height: Pc.height, aspect: false, marginLeft: Pc.marginLeft, marginRight: Pc.marginRight, marginTop: Pc.marginTop, marginBottom: Pc.marginBottom,
-          x: { domain: [0, CONFIG.tau.max], ticks: Pc.ticks, label: T.pathAxisX, labelAnchor: "center", labelArrow: "none" },
+          width, height: width < CONFIG.card.narrowPx ? 180 : Pc.height, aspect: false, marginLeft: Pc.marginLeft, marginRight: Pc.marginRight, marginTop: 24, marginBottom: Pc.marginBottom,
+          x: { type: "log", domain: [axisMin, CONFIG.tau.max], ticks: [axisMin, .001, .01, .1, CONFIG.tau.max],
+            tickFormat: tauText, label: T.pathAxisX, labelAnchor: "center", labelArrow: "none" },
           y: { domain: [0, M], ticks: Pc.nTicks.slice(), label: null, labelArrow: "none", grid: true },
           marks: (k, P) => [
             P.ruleX([state.tau], { stroke: k.plotMuted, strokeDasharray: "4,3" }),
             P.line(steps, { x: "tau", y: "N", stroke: k.plotMuted, strokeWidth: 2 }),
             P.dot(solves, { x: "tau", y: "N", r: Pc.dot, fill: k.plotFg, stroke: k.plotBg }),
             P.dot(cur ? [{ tau: state.tau, N: cur.N }] : [], { x: "tau", y: "N", r: Pc.current, fill: "none", stroke: k.plotFg, strokeWidth: 2 }),
+            numText(levelLabels, { x: "tau", y: "N", value: "N", format: formatCount,
+              dx: -3, textAnchor: "middle", dy: -10,
+              fill: k.plotFg, stroke: k.plotBg, strokeWidth: 3, paintOrder: "stroke", fontWeight: 700 }),
             P.tip(solves, P.pointerX({ x: "tau", y: "N", title: (d) => `τ ${tauText(d.tau)}: ${formatSizes(d.sizes)}, N ${formatCount(d.N)}, risk ${formatRisk(d.risk, { digits: CONFIG.digits.risk })}, ${d.status}` })),
           ],
           keyboard: { data: solves, x: "tau", y: "N", key: (d, i) => `s${i}`, sort: false, label: T.pathTable, title: (d) => `τ ${tauText(d.tau)}: ${formatSizes(d.sizes)}, N ${formatCount(d.N)}, risk ${formatRisk(d.risk, { digits: CONFIG.digits.risk })}, ${d.status}` },
@@ -751,6 +1032,14 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         pathKey.replaceChildren(key("prx-cd-mark-steps", T.stepsKey), key("prx-cd-mark-solve", T.dotsKey));
         const solveRec = { status: "optimal", family: tp.family };
         const bp = tp.intervals.slice(0, -1).map((iv) => iv.tauTo);
+        pathBrief.replaceChildren("Log scale. Exact changes at τ ", ...bp.flatMap((value, i) => [i ? ", " : "", num(value, formatSig(value, { sig: CONFIG.digits.sig }))]),
+          ". ", count(solves.length), " archived solves.");
+        const tableCopy = pathChart.querySelector("table")?.cloneNode(true);
+        if (tableCopy) {
+          tableCopy.className = "prx-cd-table";
+          tableCopy.querySelectorAll("[data-prx-readout]").forEach(node => node.removeAttribute("data-prx-readout"));
+          archivedPathTable.replaceChildren(ctx.scrollRegion(h("div", { class: "prx-cd-scroll" }, tableCopy), T.pathTable));
+        }
         pathBody.replaceChildren(
           h("p", {}, ...filled(T.pathSolves, { count: () => count(solves.length, "path-solves"), label: () => labelNode(ctx, solveRec, { key: "solves" }), family: () => familyNameNode(ctx, tp) })),
           h("p", {}, ...filled(T.pathExact, {
@@ -759,6 +1048,32 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           })),
           h("p", {}, ...filled(T.pathNow, { tau: () => setting(state.tau), sizes: () => sizesNode(disclosure(cur.grade).sizes, "path-sizes"), N: () => count(cur.N, "path-N") })),
         );
+        return { tp, cur };
+      }
+
+      function drawPathOverview(state, current) {
+        if (!current) return;
+        const { tp, cur } = current;
+        const result = evaluateReport(cur.grade, E, { tau: state.tau });
+        const sizes = disclosure(cur.grade).sizes;
+        const index = tp.intervals.indexOf(cur), last = index > 0 ? cur.tauFrom : null;
+        const breakpoint = t => num(t, formatSig(t, { sig: CONFIG.digits.sig }));
+        optimumCardCue.replaceChildren(sizesNode(sizes), " · ", count(result.N), " stated pairs. Solid boundaries show the current optimum.");
+        drawCard(cur.grade, changesInOrder(cur.grade), { chart: optimumChart, legendTarget: optimumLegend, noteTarget: optimumNote,
+          hookPrefix: "optimum-school-grade", compact: true, solid: true });
+        if (last === null) latestStep.textContent = "No earlier change in the exact path.";
+        else {
+          const change = relationChange(tp.intervals[index - 1].grade, cur.grade, E);
+          const flagged = change.pairs.filter(pair => pair.error !== null && pair.error > last);
+          const pairNames = change.pairs.length <= 10 ? change.pairs.map(pair => pair.to === "withheld"
+            ? `${labels[pair.i]}–${labels[pair.j]} withheld` : relationText(pair.to, pair.i, pair.j)).join(", ") : null;
+          latestStep.replaceChildren("Last step at τ ", breakpoint(last), ": ", count(change.nNewDisclosed), " newly stated, ",
+            count(change.nNewWithheld), " withheld", ...(change.nReversed ? [", ", count(change.nReversed), " reversed"] : []), ".",
+            ...(pairNames ? [" ", pairNames, "."] : []),
+            ...flagged.flatMap(pair => [" ", relationText(pair.to, pair.i, pair.j), " has error ", prob(pair.error), " above that boundary τ."]));
+        }
+        ctx.readout.set(["At τ ", setting(state.tau), " the optimum states ", count(result.N), " of ", count(M), " pairs (", sizesNode(sizes),
+          "), risk ", risk(result.risk), ...(last === null ? [] : ["; last change at τ ", breakpoint(last)]), "."]);
       }
 
       // The complete distribution added in v2 remains beside the full v1 matched-disclosure view.
@@ -782,12 +1097,14 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         exposeResult(ctx, { bins }, "histogram");
         const ter = evaluateReport(tertGrade, E, { tau: state.tau });
         const mark = [{ E: ter.Ew }];
+        const width = Math.round(histogramChart.clientWidth || 0) || ctx.width();
+        const end = bins.at(-1).to;
         plot(histogramChart, {
           alt: "The complete distribution of expected wrong directions over every three-grade report at the tertiles' disclosure; the tertiles mark the smallest expected error.",
           table: { caption: "Every width-one expected-error bin", columns: [{ label: "From E", value: "from", format: formatCount }, { label: "To E (exclusive)", value: "to", format: formatCount }, { label: "Reports", value: "count", format: formatCount }], rows: bins },
-          width: Math.round(histogramChart.clientWidth || 0) || ctx.width(), height: 190, aspect: false,
+          width, height: 190, aspect: false,
           marginLeft: 58, marginRight: 16, marginTop: 26, marginBottom: 40,
-          x: { domain: [0, bins.at(-1).to], label: "Expected wrong directions E", labelArrow: "none" },
+          x: { domain: [0, end], ...(width >= 420 ? { ticks: Math.ceil(end / 5) } : {}), label: "Expected wrong directions E", labelArrow: "none" },
           y: { label: "Reports", grid: true, labelArrow: "none" },
           marks: (c, P) => [P.rectY(bins, { x1: "from", x2: "to", y: "count", fill: c.plotMuted, inset: .5 }), P.ruleY([0], { stroke: c.plotAxis }), P.ruleX(mark, { x: "E", stroke: c.post, strokeWidth: 3 })],
           keyboard: { data: bins, x: d => (d.from + d.to) / 2, y: "count", sort: false, title: d => `E from ${formatCount(d.from)} to ${formatCount(d.to)} (exclusive): ${formatCount(d.count)} reports.` },
@@ -821,14 +1138,12 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         if (state.view === "matched") parts.push(...filled(v, { n: () => count(state.n, "ro-n") }));
         else if (state.view === "pair") parts.push(...filled(v, { a: () => school(a), b: () => school(b) }));
         else parts.push(v);
-        ctx.readout.set(parts);
+        originalSummary.replaceChildren(...parts);
       }
 
       return {
-        render(raw) {
+        render(raw, info = {}) {
           const state = { ...raw, view };
-          // Keep the entire twelve-row card in the first desktop screen. Presets remain immediately below it.
-          if (view === "cuts" && ctx.presets && ctx.controls.contains(ctx.presets)) cardBox.after(ctx.presets);
           ctx.root.setAttribute("aria-busy", "true");
           budget = CONFIG.heavyPerRender;
           waiting = false;
@@ -837,6 +1152,7 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             cut1.set(state.cuts[0]); cut2.set(state.cuts[1]);
             nSlider.set(state.n); fullToggle.set(state.full);
             pairA.set(state.pair[0]); pairB.set(state.pair[1]);
+            if (view === "pair" && info.changed?.includes("pair")) firstSchool = null;
             nSlider.root.hidden = view !== "matched";
             fullToggle.root.hidden = view !== "matched";
             pairBox.hidden = view !== "pair";
@@ -844,24 +1160,24 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             const ev = evaluateReport(grade, E, { tau: state.tau });
             for (const key of EXPOSED) exposeResult(ctx, null, key);
             const widthOf = node => Math.round(node.clientWidth || 0) || ctx.width();
-            drawSettings(state.tau); drawCard(grade, state.cuts, false);
+            drawSettings(state.tau);
+            if (view !== "cuts") drawCard(grade, state.cuts);
             drawResult(grade, ev, state.cuts, state.tau);
             let a = -1, b = -1;
             if (view === "cuts") {
-              if (viewSlot.firstChild !== cutsWrap) viewSlot.replaceChildren(cutsWrap);
               const opt = optAt(state.tau);
               drawCompare(grade, ev, state.tau, opt); drawRelations(grade, opt);
+              drawCutsOverview(state, grade, ev, opt);
             } else if (view === "matched") {
-              if (viewSlot.firstChild !== matchedWrap) viewSlot.replaceChildren(matchedWrap);
               drawMatched(state, grade, ev, () => optAt(state.tau), widthOf(cloudChart));
               drawDistribution(state);
             } else if (view === "pair") {
-              if (viewSlot.firstChild !== pairPanel) viewSlot.replaceChildren(pairPanel);
               ({ a, b } = drawPair(state, grade));
-              drawPairMore(state, state.tau, a, b);
+              const comparison = drawPairMore(state, state.tau, a, b);
+              drawPairOverview(state, a, b, comparison);
             } else {
-              if (viewSlot.firstChild !== pathPanel) viewSlot.replaceChildren(pathPanel);
-              drawPath(state, widthOf(pathChart));
+              const current = drawPath(state, widthOf(pathChart));
+              drawPathOverview(state, current);
               drawPathChanges();
             }
             drawReadout(state, ev, grade, cs, false, a, b);

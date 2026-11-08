@@ -4,12 +4,7 @@ subtitle: "2.7 · after the postrank theory book, chapter 10"
 description: "Evaluation of all 13 reports under a four-state posterior distribution."
 ---
 
-A finite posterior assigns probability to four possible orders of A, B and C. For some withholding costs, the
-individually optimal pair decisions cannot be represented by any ordered grade report. Evaluating all 13 reports
-establishes the minimum coherent risk and the additional cost relative to the separate pairwise decisions. Each bar
-separates the contribution of expected wrong directions from the contribution of withheld pairs. Because the
-posterior has finite support, these quantities are calculated exactly, without Monte Carlo estimation. Changes in τ
-alter the relative action costs while the posterior probabilities remain fixed.
+The posterior places all its probability on four possible orders of A, B, and C. At some withholding costs, the least costly action for each pair produces a set of decisions that no grade report can represent. We evaluate all 13 reports to measure how much risk coherence adds. Each bar separates the cost of expected wrong directions from the cost of withholding. The four states let us calculate both costs exactly, and the posterior probabilities stay fixed as τ changes.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -24,10 +19,10 @@ alter the relative action costs while the posterior probabilities remain fixed.
 
 - **τ .20.** The pairwise choices cost 1/6 per pair, but the optimal coherent reports cost 11/60. Each states an extra
   direction with error 1/4. The two reports beneath the bars identify the additional directions and their error probabilities.
-  The dashed line is a lower bound, attained by no report at this setting.
+  The dashed line gives the pairwise lower bound, below every complete report at this setting.
 - **τ .10.** Giving everyone the same grade, {A, B, C}, costs 1/10. The outer pair can now be stated or withheld at
   equal cost. Some set of the minimum-cost pairwise actions is coherent, and the best bar reaches the dashed line.
-- **τ .25.** There are 3 equally good reports, all at risk 1/5. Their orange and grey segments show that the same
+- **τ .25.** There are 3 equally good reports, all at risk 1/5. Their orange and gray segments show that the same
   total risk can combine different amounts of disclosure and withholding. The text retains every equal-risk optimum.
 - **τ .30.** The full order {A} > {B} > {C} has risk 1/5. Raising the withholding cost changes the choice without
   changing the posterior law. Keyboard selection provides each report's risk, disclosure and directions with error above the current withholding cost.
@@ -36,8 +31,7 @@ alter the relative action costs while the posterior probabilities remain fixed.
 The law is set by hand for teaching, from the theory book's three-unit example. Each bar is one complete report:
 its first segment is expected wrong directions per pair, and its second pays for withheld pairs. Grades decide
 all pairs together, so a direction with error above the price can appear in a best report. That is compatible with
-the report's overall optimality. Exact fractions make the comparison inspectable; no draws or simulation error
-enter these calculations.
+the report's overall optimality. The fractions come directly from the probabilities assigned to the four states.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

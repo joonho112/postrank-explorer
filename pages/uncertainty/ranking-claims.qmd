@@ -4,12 +4,7 @@ subtitle: "1.16 · after Kline, Rose and Walters (2024), section II.B and slides
 description: "Posterior expected wrong-direction counts among the n(n − 1)/2 statements of a strict ranking."
 ---
 
-A strict ranking states a direction for every unordered pair of units. For $n$ units it therefore makes
-$M = n(n-1)/2$ statements, represented by the cells of a triangle. A statement that $i$ exceeds $j$ is wrong with
-posterior probability $1 - \pi_{ij}$, where $\pi_{ij}$ is the probability that $i$ has the larger true value. Summing
-these error probabilities gives the posterior expected number of incorrect statements. In the examples, uncertain
-comparisons are concentrated among nearby ranks, although two imprecise units can remain difficult to order even
-when widely separated in the displayed ranking ([The matrix of pairwise posterior probabilities](pairwise-matrix.qmd)).
+A strict ranking makes a statement about every unordered pair. With $n$ units, the triangular matrix contains the $M = n(n-1)/2$ statements. If the ranking places $i$ above $j$, the statement has posterior error probability $1 - \pi_{ij}$, where $\pi_{ij}$ is the probability that $i$ has the larger true value. We sum these probabilities to obtain the expected number of wrong statements. Many of the most uncertain pairs contain nearby ranks. As the [pairwise probability matrix](pairwise-matrix.qmd) shows, imprecise units can be difficult to order even when the ranking places them far apart.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -25,13 +20,10 @@ when widely separated in the displayed ranking ([The matrix of pairwise posterio
 - **97 firms.** Kline, Rose and Walters' (KRW) firms, ranked by posterior mean, make 4,656 claims; the posterior expected wrong count is 1,249, more than one in four. Ranked by estimate they expect 1,395 (the two orders disagree on 639
   pairs); KRW find the posterior-mean order close to their best strict ranking (Section V.E), but that is not a general
   rule. Here 35 claims sit above one half.
-- **Top 10 by posterior mean.** 45 claims, 18.22 expected wrong. The scale table sets them beside the 17,014,861
-  claims of a ranking of the case study's 5,834 California schools (elementary-type schools with at least 30 students
-  counted).
-- **Six sites.** 15 claims, .7194 expected wrong. The highest dot, C above D, is a claim between neighbours, wrong with
+- **Top 10 by posterior mean.** 45 claims, 18.22 expected wrong. By comparison, ranking all 5,834 California elementary-type schools with at least 30 students counted in the case study would make 17,014,861 pairwise claims.
+- **Six sites.** 15 claims, .7194 expected wrong. The highest dot, C above D, is a claim between neighbors, wrong with
   probability .362.
-- **League of 30.** 435 claims; 94.48 expected wrong, 102.2 by estimate (37 pairs differ). Only a simulation knows the
-  true values: 88 claims are wrong against them in this draw, 80.69 on average.
+- **League of 30.** 435 claims; 94.48 expected wrong, 102.2 by estimate (37 pairs differ). In the simulation we can compare the ranking with the known true values. The ranking makes 88 wrong claims in this draw and 80.69 on average.
 
 ::: {.callout-note appearance="simple"}
 KRW's race card at λ = 1 is also a full ranking, in a slightly different order, so it expects 1,248 wrong claims where

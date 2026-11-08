@@ -1,62 +1,67 @@
 ---
 title: "postrank Explorer"
-subtitle: "Posterior ranking and ordered grade reports"
-description: "Methods and numerical illustrations for posterior ranking, directional reporting and grading under uncertainty."
+subtitle: "Posterior ranking, grade reports and multidomain profiles"
+description: "Methods and numerical illustrations for posterior ranking, common grade reports and multidomain profiles under uncertainty."
 ---
 
-Ranking uncertain quantities requires decisions about which comparisons to report. A strict ranking states a
-direction for every pair of units. An ordered grade report states directions between grades and withholds
-comparisons within grades. The resulting report can be evaluated by its posterior expected errors and its extent
-of disclosure.
+When two schools have similar estimates, a strict ranking still puts one above the other. An ordered grade report
+can place both schools in the same grade and leave their comparison unstated. To evaluate either report, we count
+the comparisons it makes and use the posterior distribution to estimate how many of those directions are wrong.
 
-This website examines these decisions using postrank, an R package for posterior ranking with integer grades.
-The applications cover posterior inputs, reporting losses, coherence constraints, alternative reporting rules and
-multiple criteria. Numerical illustrations use specified posterior distributions and released empirical examples.
-Each calculation is conditional on the posterior and report family stated with its result.
+The examples use methods implemented in the postrank R package. The package takes a posterior or pairwise
+probabilities as input. The examples cover simulated data and released studies of firms, schools, and counties.
+In the five [Domain profiles](pages/criteria/index.qmd#domain-profiles) applications,
+each domain has its own grade column. The examples show when the columns can be selected separately and when a
+limit on errors across domains changes the best combination.
 
-## Organisation
+## Applications by topic {#organisation}
 
 ::: {.prx-story}
-1. **[Ranking under uncertainty](pages/uncertainty/index.qmd).** Sampling variation, posterior shrinkage,
-   pairwise probabilities and alternative ranking summaries. The
-   [normal–normal example](pages/uncertainty/shrinkage.qmd) examines how precision affects posterior ordering.
-2. **[From ranks to grades](pages/grades/index.qmd).** Pairwise decisions, coherent grade reports, reporting
-   risk and the error–disclosure frontier. [Withholding cost](pages/grades/price-of-silence.qmd) specifies the
-   relative cost of leaving a comparison unstated.
-3. **[Common rules](pages/rules/index.qmd).** Evaluation of tiers, evidence flags and posterior cuts under a
-   common reporting loss. [Matched-disclosure comparisons](pages/rules/rule-comparison.qmd) distinguish
-   additional expected errors from differences in the number of statements.
-4. **[Several criteria](pages/criteria/index.qmd).** Common reports selected using criterion weights,
-   error budgets or minimax risk. The [two-score example](pages/criteria/two-scores.qmd) gives the corresponding
-   criterion-specific error profiles.
-5. **[Cases](pages/cases/index.qmd).** Firm contact gaps, school chronic absence and historical county outcomes.
-   The [school example](pages/cases/cde-cuts.qmd) compares tertiles with minimum-risk grades under a fixed posterior.
-6. **[Tools](pages/tools/index.qmd).** Calculation from supplied posterior summaries and specification of reports
-   for released cases. The [case-report tool](pages/tools/report-designer.qmd) retains targets, settings,
-   computation scope and source information in its exports.
+- **[Uncertainty](pages/uncertainty/index.qmd).** How sampling error affects ranks and how the posterior changes
+  the comparison. The [normal–normal example](pages/uncertainty/shrinkage.qmd) shows that estimates with different
+  precision can change order after shrinkage.
+- **[Grade reports](pages/grades/index.qmd).** How a report balances expected mistakes against unstated comparisons.
+  [Withholding cost](pages/grades/price-of-silence.qmd) sets the cost of leaving a pair unstated relative to stating
+  the wrong direction.
+- **[Reporting rules](pages/rules/index.qmd).** How tiers, evidence flags, and posterior cuts compare.
+  [Matched-disclosure comparisons](pages/rules/rule-comparison.qmd) hold the number of stated pairs fixed so that
+  rules can be compared by their expected errors.
+- **[Multiple criteria](pages/criteria/index.qmd).** Two ways to report on several outcomes for the same units.
+  - **[Common grades](pages/criteria/index.qmd#common-grades).** The [two-score example](pages/criteria/two-scores.qmd)
+    shows how one grade column performs on both scores. Other examples compare weights, error budgets, and minimax risk.
+  - **[Domain profiles](pages/criteria/index.qmd#domain-profiles).** The [common and separate cards](pages/profiles/profile-common-vs-domain.qmd)
+    show what changes when domains can have different grades. [Separability](pages/profiles/profile-separability.qmd)
+    and [dependence](pages/profiles/profile-dependence.qmd) show when a joint limit changes the choice.
+    [Resolution](pages/profiles/profile-resolution.qmd) and [forty fictional sites](pages/profiles/fictional-site-profiles.qmd)
+    show how much detail each domain retains.
+- **[Cases](pages/cases/index.qmd).** Firm contact gaps, school chronic absence, and historical county outcomes.
+  The [school example](pages/cases/cde-cuts.qmd) evaluates tertiles and minimum-risk grades under the same posterior.
+- **[Tools](pages/tools/index.qmd).** Build a report from supplied posterior summaries or revisit a released case.
+  The [case-report tool](pages/tools/report-designer.qmd) exports the data source, targets, settings, and report.
 :::
 
-The [catalogue](catalog.qmd) indexes applications by part, concept and data source. Application numbers give the
-part and position within it; for example, 1.3 denotes the third application in Part 1. Each application has named
-presets, a numerical-illustration section and a standalone version. Downloaded standalone versions also operate
-without a network connection.
+The [catalog](catalog.qmd) lists the applications by category, concept, and data source. Application 1.3 is the
+third example in Part 1. Each page includes worked examples with preset settings. The standalone versions also
+run offline from the downloaded site folder.
 
 ## Numerical verification
 
-Browser calculations are compared with postrank 1.1.0 results and independent base-R calculations that use neither
-postrank nor the JavaScript engine. Released data have recorded sources, fields, licences and checksums. Page
-checks reproduce the specified numerical illustrations and compare their quoted values with the displayed results.
-Inputs and comparison code are retained in `verification/` and `r-export/` in the source repository.
+The checks compare earlier examples with results from postrank 1.1.0 and independent base-R calculations.
+They also run the exported R workflows with postrank 1.2.0. For the multidomain examples, they compare feasible
+reports, optimal reports, and ties with results from postrank 1.2.0 using exact fractions. The live finite-law
+profile examples search every candidate in their stated sets. The forty-site example displays results saved from a separate
+analysis. The repository records the sources, fields, licenses, and checksums for the released data.
 
-Result labels identify the family searched when a report is selected. Numerical agreement is assessed for the
-defined examples and tolerances; it does not establish correctness for every input or calibration of a supplied
-posterior model. Source notes give the conditioning assumptions and scope of the empirical illustrations.
+Each numerical illustration is checked against the values displayed at its stated settings. The result identifies
+the family of reports searched. Agreement in these examples establishes that the implementations agree for the
+inputs tested. Assessing calibration requires evidence about how the posterior model performs outside these
+calculations. The test inputs and comparison code are in `verification/` and `r-export/`.
 
 ## About
 
 The website was developed by JoonHo Lee, The University of Alabama
 ([jlee296@ua.edu](mailto:jlee296@ua.edu)). It accompanies research on posterior ranking and ordered grade reporting.
 
-## Acknowledgements
+## Acknowledgments {#acknowledgements}
 
 The research underlying this website was supported primarily by the National Academy of Education and the Spencer Foundation through the 2025 National Academy of Education/Spencer Postdoctoral Fellowship awarded to JoonHo Lee. Additional support was provided by the Institute of Education Sciences, U.S. Department of Education, through Grant R305D240078 to The University of Alabama.

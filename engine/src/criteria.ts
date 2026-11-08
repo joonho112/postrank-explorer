@@ -1,5 +1,5 @@
 // Additive Part 4 helpers: a declared independent Normal composite, the full fixed-report risk difference,
-// and estimated/exact protection sets. Numerical contracts: engine/API.md (4, 5, 7).
+// and estimated/exact protection sets. See the multiple-criteria contracts in engine/API.md.
 // Protection coefficients are checked for shape, matching labels and range [0, 1], not joint-law realizability.
 // A coefficient tolerance is advisory; actual set inclusions are always checked from every family member.
 

@@ -11,6 +11,34 @@
       "preset": "two-units",
       "expect": [
         {
+          "select": "[data-prx-readout=\"result-grade-A\"]",
+          "about": "Canonical grade in the live result",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "evidenceFlags-tb02-two-unit-ref0-crit1.96",
+            "field": "grade.0"
+          },
+          "format": {
+            "fn": "formatCount"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"result-grade-B\"]",
+          "about": "Canonical grade in the live result",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "evidenceFlags-tb02-two-unit-ref0-crit1.96",
+            "field": "grade.1"
+          },
+          "format": {
+            "fn": "formatCount"
+          },
+          "value": 2
+        },
+        {
           "select": "[data-prx-readout=\"zA\"]",
           "about": "z of unit A against the reference 0 (base-R oracle; theory book ch. 2)",
           "format": {
@@ -197,7 +225,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         }
       ]
     },

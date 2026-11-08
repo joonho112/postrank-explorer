@@ -134,3 +134,6 @@ export {
   type CompareReportPair, type ProtectionEnvelopeOptions, type ProtectionEnvelopes, type ProtectionEnvelopeRow,
   type ProtectionMembership, type ProtectionSlack, type CoefficientCheck, type ActualBracketInclusions,
 } from "./criteria.ts";
+
+// Multidomain finite-law teaching API (postrank 1.2.0 contract).
+export * from './mdomain/index.ts';

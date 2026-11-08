@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for reportCardRows (engine/src/report.ts) (Step 2.12).
 #   postrank-report-card  postrank 1.1.0: the row order of postrank_report_card() (order = "expected_rank", "mean" with
 #                         each criterion, "label") on the package's cached analyses (read with load_or_compute() from
@@ -82,7 +82,7 @@ g1 <- rep(1, 9)
 add(row("reportCardRows-supplied-one-grade-label", "reportCardRows", list(g = vec(g1), summaries = list(ids = vec(ids)), sort = "label"),
         list(rows = vec(pkg_order(g1, rep(0, 9), ids) - 1L))))
 
-# ---- Step 6.14 (G-07; engine/API.md): the 30-site poverty card at tau = .25, at most 4 grades ------
+# ---- Step 6.14 (G-07): the 30-site poverty card at tau = .25, at most 4 grades ------
 # The page's card: postrank_cuts(rule = "optimal") on pr_example_gaussian in ascending expected-rank order with weights
 # (poverty 1, frl 0, snap 0). No cached analysis holds this card (analysis_30x3 weights the three criteria), so the row
 # orders come from the package's own card builder (R/report-card.R .pr_report_card_build) applied to that grade and

@@ -4,12 +4,11 @@ subtitle: "4.5 · commonality costs from postrank, with live and archived exampl
 description: "Increase in each criterion's risk relative to its own optimum in the same report family."
 ---
 
-Requiring a common report can raise each criterion's risk relative to the report it would select separately.
-The commonality cost is this difference, evaluated within the same family and at the same withholding cost. The
-connectors compare each criterion's separate minimum with its risk under the common report. Equal error weights
-need not imply equal commonality costs. The live examples calculate the relevant reports directly; the larger
-archived examples retain the recorded optimisation bounds. These costs concern reporting risk and do not have an
-intrinsic welfare interpretation.
+A criterion may have higher risk under a common report than it would have under grades chosen for that
+criterion alone. We call the difference the commonality cost. Each connector joins the separate minimum to
+the risk of the common report for that criterion. Both evaluations use the same set of possible reports and
+withholding cost. Equal error weights can still give unequal costs. The larger examples use optimization
+bounds saved with the original reports.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -28,15 +27,15 @@ intrinsic welfare interpretation.
   Moving a weight changes the objective used to select the common report.
 - **Score B only.** Two common reports tie. Score A has excess risk .1580 under one and .1697 under the other; score B has zero excess risk. Both common reports and both of score B’s own optima are shown, with their equal-risk tolerance.
 - **Thirty sites, higher price.** The archived common report states 276 pairs. Snap’s cost is .4455, and its
-  expected wrong share among those stated directions is .784. The cost interval comes from optimisation bounds.
+  expected wrong share among those stated directions is .784. The cost interval comes from optimization bounds.
 - **Thirty sites, lower price.** The common report withholds every direction, yet each criterion could prefer a
   report of its own. Costs are .0895, .0749 and .1022 for poverty, frl and snap, respectively.
 
 ::: {.callout-note appearance="simple"}
-The cost is a postrank package quantity, $\Delta_k$: it carries no welfare meaning, and a large cost does not by
-itself say that a weight is wrong. The thirty-site results are fixed draw-based archives with their recorded
-settings, statuses and bounds. They are separate from the Gaussian marginal example. Their intervals describe
-optimisation accuracy, not posterior uncertainty; missing own-report grade vectors are not reconstructed.
+The package writes this risk difference as $\Delta_k$. It measures the cost of a common report under the chosen
+loss. Judging the weights or the consequences of using the report requires additional information. The
+thirty-site results come from archived analyses of posterior draws. Their intervals are bounds on the minimum
+from the search. We show the separate grade vectors where the archive includes them.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

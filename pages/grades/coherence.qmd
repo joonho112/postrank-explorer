@@ -4,12 +4,7 @@ subtitle: "2.6 · after Kline, Rose and Walters (2024), Example 1"
 description: "Compatibility of isolated-pair decisions with an ordered grade report."
 ---
 
-Decisions that minimise loss separately for each pair need not correspond to a coherent grade report. Three
-independent normal posteriors for A, B and C provide an example. Varying B's mean changes the pairwise direction
-probabilities and their loss-minimising actions at withholding cost $\tau$. The density panel describes the posterior
-specification. The remaining panels compare the unconstrained pairwise minimum with the minimum over ordered grade
-reports. Their difference is the additional expected cost imposed by coherence, which requires all pair decisions
-to be represented by a single ordered partition.
+The pairwise actions that minimize expected loss need not fit into a single grade report. Consider three units A, B, and C with independent normal posteriors. Moving B's mean changes the probabilities for pairs that include B and can change which directions are worth stating at the chosen withholding cost $\tau$. The density panel shows the three posteriors. The other panels compare the risk of deciding each pair separately with the risk of the best grade report. Their difference is the additional risk of requiring one ordered partition for all three pairs.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -23,9 +18,8 @@ to be represented by a single ordered partition.
 ## Numerical illustrations {#what-to-try}
 
 - **Middle at 1.00.** A–B and B–C are withheld separately, while A above C has probability .921 and is stated.
-  Transitivity of shared grades contradicts that direction. The minimum coherent risk is .1728. Both optimal reports beneath the curves resolve the conflict by stating an additional direction.
-- **Middle at .50.** B moves closer to C. The choices now form {A} > {B, C}, with risk .1410. The coherent
-  report reaches the pairwise cost: no extra cost is needed to make the local decisions coherent.
+  Transitivity of shared grades contradicts that direction. The minimum coherent risk is .1728. Both optimal reports, named in the read-out, resolve the conflict by stating an additional direction; the strip under the curves shades their extra cost.
+- **Middle at .50.** B moves closer to C. The choices now form {A} > {B, C}, with risk .1410. The same report attains the minimum from deciding each pair separately.
 - **Middle at .80.** The mean is just outside the shaded band and the report reaches risk .1589. Additional displayed digits resolve probabilities near the decision boundary.
 - **Middle at 1.00, τ .10.** The withholding cost decreases. The best report is {A, B, C}, risk .1000; it withholds the
   confident outer pair too. The pairwise choices remain incompatible with a grade report, but the minimum-risk coherent resolution has changed.
@@ -33,9 +27,7 @@ to be represented by a single ordered partition.
   and {A} > {B} > {C} represents the pairwise choices. The density panel is unchanged because τ affects the loss rather than the posterior.
 
 ::: {.callout-note appearance="simple"}
-Shared grades assert no equality of true values. They withhold directions, and sharing a grade is transitive.
-Kline, Rose and Walters call this a form of a “Condorcet cycle in indifferences”: the conflict is in the shared
-grades. These are posteriors set by hand for teaching. The browser evaluates every report of the stated family,
+Sharing a grade is transitive. If A shares a grade with B and B with C, the report must also withhold the comparison of A and C. Kline, Rose and Walters describe the conflict with the separate pair decisions as a “Condorcet cycle in indifferences.” These are posteriors set by hand for teaching. The browser evaluates every report of the stated family,
 lists equal-risk optima and gives their tolerance; the band is an aid to reading the picture, while compatibility is checked directly against the reports.
 :::
 

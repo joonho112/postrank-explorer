@@ -4,12 +4,7 @@ subtitle: "1.9 · two jointly normal posteriors; dependence after the postrank t
 description: "Effect of correlation on direction probabilities under a bivariate normal posterior distribution."
 ---
 
-For a bivariate normal posterior distribution, the variance of A − B depends on the covariance between the two true
-values. Positive correlation reduces this variance, whereas negative correlation increases it. The shaded region
-below the equality line has posterior probability $\pi_{AB}$; the ellipse encloses .90 of the joint posterior
-probability. Correlation is varied while the marginal distributions and mean difference remain fixed. The resulting
-probability approaches or recedes from one half, without crossing it. A second specification derives the dependence
-from uncertainty about a shared prior mean.
+Two units can have the same marginal posterior distributions under different assumptions about how their true values move together. In a bivariate normal posterior, positive correlation reduces the variance of A − B, while negative correlation increases it. The shaded region below the equality line gives $\pi_{AB}$, and the ellipse encloses .90 of the joint posterior probability. The first example holds the marginal distributions and the mean difference fixed as correlation changes. The probability can move closer to or farther from one half, with the same direction remaining more probable. A second example obtains the correlation from uncertainty about a shared prior mean.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -22,15 +17,13 @@ from uncertainty about a shared prior mean.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Correlation .50.** The ellipse leans along the line: the true values move together, so their difference is less
-  uncertain: SD .200 against .283 if independent, and $\pi_{AB}$ = .841 against .760.
+- **Correlation .50.** The ellipse follows the equality line because the two true values move together. The difference has SD .200, compared with .283 under independence, and $\pi_{AB}$ = .841 against .760.
 - **Independent.** Correlation 0 with equal SDs draws a circle: the difference has SD .283, and $\pi_{AB}$ = .760.
 - **Correlation .95.** Strong positive dependence gives a difference with SD .063, and $\pi_{AB}$ = .999.
 - **Correlation −.95.** The ellipse lies across the line, and the difference widens to SD .395: $\pi_{AB}$ falls to
   .694, toward one half, not past it.
 - **Shared prior mean.** Estimates .30 and .10 with SEs .20; true values spread with SD .10 around an uncertain prior
-  mean (SD .50). The model gives correlation .645, SD .126 for the difference and $\pi_{AB}$ = .624; taken
-  as independent, they would give .212 and .575. With prior-mean SD set to 0, the correlation vanishes, each posterior narrows to SD .089, and $\pi_{AB}$ stays .624.
+  mean (SD .50). The model gives correlation .645, SD .126 for the difference and $\pi_{AB}$ = .624; assuming independence for the same marginals gives .212 and .575. With prior-mean SD set to 0, the correlation vanishes, each posterior narrows to SD .089, and $\pi_{AB}$ stays .624.
 
 ::: {.callout-note appearance="simple"}
 **Where the correlation comes from.** Given the prior mean, each posterior mean keeps the share

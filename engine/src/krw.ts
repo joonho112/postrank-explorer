@@ -1,5 +1,5 @@
 // Scalar KRW/postrank correspondence under one declared tie-free law (theory book ch. 10).
-// Step 8.1: engine/API.md Coefficient consistency cannot establish the latent-law declaration.
+// Coefficient consistency cannot establish the latent-law declaration.
 import { type ErrorArray, checkCube, errorCube } from "./pairwise.ts";
 import { type Family, type Grade } from "./report.ts";
 import { type KrwOptions, evaluateReport, krwRisk, lambdaToTau, tauToLambda } from "./risk.ts";

@@ -1,4 +1,10 @@
 // Two pair-action losses under a complete finite law. Numeric risks and decisions are engine calls.
+// Layout (review 044 repair, X-01 and X-16 with G3-F11): base.js's result-first frame, so the read-out sits directly
+// under the controls and the preset row, followed by its result tag and one line saying that a shared grade is not an
+// equality claim. At 1280 the note on the supplied law, then the figure (ctx.primaryGraphic) beside the cost table, as
+// before; below 48em the three-row cost table comes first, then the figure, then the note (CSS order; none of them
+// holds a control, so Tab order is unchanged). Under certain equality the t slider keeps its slot (hidden and
+// disabled) so the preset row never moves.
 import { createWidget } from "../shared/base.js";
 import { numText, plot } from "../shared/chart.js";
 import { formatCount, formatEoverN, formatExpectedCount, formatProb, formatRisk, formatSetting, formatShare } from "../shared/format.js";
@@ -98,13 +104,26 @@ const CSS = `
 .tw .tw-cheapest-mark { width:16px; height:16px; border-width:2px; position:relative; }
 .tw .tw-cheapest-mark::after { content:""; position:absolute; width:6px; height:6px; left:3px; top:3px; border-radius:50%; background:var(--prx-plot-fg); }
 .tw .tw-admissibility { display:block; font-size:.82em; font-weight:400; color:var(--prx-fg-muted); margin-top:.2rem; }
-@media (max-width: 48em) { .tw .tw-grid { grid-template-columns: minmax(0, 1fr); } }
+.tw .tw-claim { font-size: .9em; margin: .4rem 0; }
+.tw .prx-slider[data-tw-unused] { visibility: hidden; }
+/* below 48em (review 044 repair, X-16 with G3-F11): the cost table first, then the figure, then the note on the supplied
+   law; the rest follows in DOM order. CSS order only: the moved boxes hold no control, so Tab order is unchanged */
+@media (max-width: 48em) {
+  .tw .tw-grid { grid-template-columns: minmax(0, 1fr); }
+  .tw .tw-grid > .tw-costs { order: -1; }
+  .tw .prx-charts { display: flex; flex-direction: column; }
+  .tw .prx-charts > * { order: 2; }
+  .tw .prx-charts > .tw-grid { order: 0; }
+  .tw .prx-charts > .tw-law { order: 1; }
+}
 `;
 
 export function mountWidget(el, spec = {}) {
   return createWidget(el, spec, {
     name: CONFIG.name, className: "tw", css: CSS,
     label: "True equality and withholding: the costs of three pair actions under two loss conventions",
+    // review 044 repair (X-01): the read-out directly under the controls and the preset row
+    layout: "result-first",
     keys: {
       t: { type: "number", min: 0, max: CONFIG.tMax, step: .01, value: .4 },
       tau: { type: "number", min: .01, max: .5, step: .01, value: .25 },
@@ -125,22 +144,27 @@ export function mountWidget(el, spec = {}) {
       const scenario = ctx.segmented({ label: "Supplied law", value: ctx.state.scenario,
         options: [{ value: "m4", label: "Vignette law" }, { value: "certain", label: "Certain equality" }], onChange: v => ctx.set({ scenario: v }) });
       ctx.controls.append(t.root, tau.root, loss.root, scenario.root);
-      const law = ctx.part("notes", h("p", { class: "tw-note" }));
+      // the t slider moves the figure's dots and the cost table (base.js primaryControl)
+      ctx.primaryControl(t.root);
+      const law = ctx.part("notes", h("p", { class: "tw-note tw-law" }));
       const label = h("p", { class: "tw-note" });
-      ctx.controls.after(ctx.readout.node);
-      ctx.readout.node.after(label, law);
+      // review 044 repair (G3-F11): the no-equality-claim line next to the result; the full paragraph stays below
+      const claim = h("p", { class: "tw-claim" }, "A shared grade withholds a direction; it is not a claim that A = B.");
+      ctx.readout.node.after(label, claim);
       const figure = h("div");
       const figureTitle = ctx.panelTitle(LOSS.weak);
       const key = (cls, text) => h("span", {}, h("i", { class: `tw-line ${cls}`, "aria-hidden": "true" }), text);
       const legend = ctx.part("legend", h("div", { class: "tw-legend" }, key("", "A above B"), key("tw-line-reverse", "B above A"), key("tw-line-hold", "Withhold"), h("span", {}, h("i", { class:"tw-switch-mark", "aria-hidden":"true" }), "Equal-cost switch point"), h("span", {}, h("i", { class:"tw-cheapest-mark", "aria-hidden":"true" }), "Cheapest at the current t")));
-      const costs = ctx.part("table", h("div"));
-      const panel = h("section", { class: "prx-panel" }, figureTitle, figure, legend);
-      ctx.charts.append(h("div", { class: "tw-grid" }, panel, costs));
+      const costs = ctx.part("table", h("div", { class: "tw-costs" }));
+      // the figure t moves (base.js primaryGraphic); below 48em the cost table is shown above it (CSS order)
+      const panel = ctx.primaryGraphic(h("section", { class: "prx-panel" }, figureTitle, figure, legend));
+      // the note on the supplied law leads the charts (directly above the figure at 1280; after it below 48em)
+      ctx.charts.append(law, h("div", { class: "tw-grid" }, panel, costs));
       const switches = ctx.part("notes", h("section", { class: "tw-summary" }));
       const baselineDefinition = h("p", { class:"tw-note" });
       const baseline = h("div");
       const formula = ctx.part("notes", h("div", { class: "tw-formula tw-scroll" }));
-      const scope = h("p", { class: "tw-note", text: "The superscript s names the supplied law. Neither loss fits a model; the equality-neutral loss changes the consequences assigned to equality." });
+      const scope = h("p", { class: "tw-note", text: "The superscript s identifies the posterior used for both calculations. The equality-neutral loss charges only in states where the targets differ." });
       const denominator = ctx.part("table", h("section", { class: "tw-denominators" }));
       const meaning = ctx.part("notes", h("section", { class: "tw-meaning" }));
       ctx.charts.append(switches, baselineDefinition, baseline, formula, scope, denominator, meaning);
@@ -170,7 +194,7 @@ export function mountWidget(el, spec = {}) {
         const dots = r.rows.map(a => ({ ...a, t: r.t, risk: a[lossKey], best: best.includes(a.id) }));
         const crossings = switchPoints(state.tau, lossKey);
         plot(figure, { height: 300, marginTop: 25, marginRight: 20, marginBottom: 40, marginLeft: 48,
-          alt: "Three action-risk lines against the probability of exact equality. The two stated directions use solid and dashed error-colour lines; withholding is grey. Circles mark switch points of the cheapest action, and rings mark cheapest actions at the selected equality probability.",
+          alt: "Three action-risk lines against the probability of exact equality. The two stated directions use solid and dashed error-color lines; withholding is gray. Circles mark switch points of the cheapest action, and rings mark cheapest actions at the selected equality probability.",
           x: { domain: [0, CONFIG.tMax], ticks: [0, .3, .6, .9], label: "Probability of equal true values, t", labelAnchor: "center", labelArrow: "none" },
           y: { domain: [0, 1], label: "Expected cost", labelArrow: "none", grid: true }, color: { type: "identity" },
           marks: (c, P) => [
@@ -238,7 +262,9 @@ export function mountWidget(el, spec = {}) {
 
       return { render(state) {
         const r = compute(state);
-        t.set(state.t); t.setDisabled(r.certain); t.root.hidden = r.certain; tau.set(state.tau); loss.set(state.loss); scenario.set(state.scenario);
+        // under certain equality t has no role: disabled and not shown, but it keeps its slot, so the controls and the
+        // preset row stay where they are (review 044 repair, frame rule "the preset row stays put")
+        t.set(state.t); t.setDisabled(r.certain); t.root.toggleAttribute("data-tw-unused", r.certain); tau.set(state.tau); loss.set(state.loss); scenario.set(state.scenario);
         drawFigure(state, r); drawCosts(state, r); drawSwitches(state, r); drawBaseline(r); drawDenominators(r);
         law.replaceChildren("B is ", count(null, LAW.tables.states.B[0]), "; A is ", count(null, LAW.tables.states.A[0]), ", ", count(null, LAW.tables.states.A[1]), " or ", count(null, LAW.tables.states.A[2]), " with probabilities ", ...r.probs.flatMap((p, i) => [i ? ", " : "", prob(`mass-${i}`, p)]), ". This is a complete finite law, not a sample.");
         if (r.certain && state.loss === "neutral") {

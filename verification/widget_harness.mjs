@@ -51,7 +51,7 @@ export const CONFIG = Object.freeze({
   presetRow: '[data-prx-part="presets"]',
   reserved: Object.freeze({
     query: Object.freeze(["theme", "preset"]),
-    spec: Object.freeze(["preset", "theme", "query"]),
+    spec: Object.freeze(["preset", "theme", "query", "open"]),
     update: Object.freeze(["preset", "theme"]),
   }),
   // base.js reads these words for a boolean key (base.js sanitize)

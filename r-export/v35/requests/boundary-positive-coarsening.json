@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "postrank-explorer-mdomain-v1",
+  "fixtureId": "boundary-positive-coarsening",
+  "description": "Complete finite teaching law: boundary-positive-coarsening. Policy and candidate banks are explicitly declared.",
+  "input": {
+    "inputId": "boundary-positive-coarsening-input",
+    "lawId": "boundary-positive-coarsening-law",
+    "representation": "exact_finite_law",
+    "coupling": "supplied_joint",
+    "unitIds": [
+      "A",
+      "B",
+      "C"
+    ],
+    "domainIds": [
+      "S"
+    ],
+    "stateIds": [
+      "s1"
+    ],
+    "states": [
+      [
+        [
+          3
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ]
+    ],
+    "masses": [
+      "1"
+    ],
+    "targets": [
+      {
+        "domainId": "S",
+        "definition": "Fictional S priority",
+        "units": "oriented teaching score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "A",
+          "B",
+          "C"
+        ],
+        "equalityProvenance": "Explicit classes of this finite teaching law."
+      }
+    ],
+    "provenance": {
+      "producer": "Self-contained finite teaching law",
+      "conditioningInfo": "Specified fictional law; no observations.",
+      "jointGeneration": "Every labelled state contains all units and domains.",
+      "finiteSupportOrigin": "These states exhaust this finite law, including declared zero-mass states.",
+      "properLaw": true
+    }
+  },
+  "decision": {
+    "decisionId": "boundary-positive-coarsening-policy",
+    "domainIds": [
+      "S"
+    ],
+    "scope": "all_pairs",
+    "weights": [
+      "1"
+    ],
+    "tau": [
+      "1/4"
+    ],
+    "q": [
+      "2/5"
+    ],
+    "t": [
+      "2/5"
+    ],
+    "alpha": "0"
+  },
+  "family": {
+    "familyId": "boundary-positive-coarsening-family",
+    "unitIds": [
+      "A",
+      "B",
+      "C"
+    ],
+    "domainIds": [
+      "S"
+    ],
+    "maxGrades": [
+      3
+    ],
+    "maxActions": 256,
+    "banks": [
+      {
+        "domainId": "S",
+        "columns": [
+          {
+            "columnId": "column-1",
+            "grades": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "column-2",
+            "grades": [
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "columnId": "column-3",
+            "grades": [
+              1,
+              1,
+              2
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -43,6 +43,24 @@ export function riskDigits(c) {
     return d;
 }
 export function archiveControls(ctx, { sort = true } = {}) { const criterion = ctx.radioGroup({ legend: 'Signed contact-gap target', name: 'criterion', options: [{ value: 'race', label: 'Race: white-name advantage' }, { value: 'gender', label: 'Gender: male-name advantage' }], value: ctx.state.criterion, onChange: v => ctx.set({ criterion: v }) }); const lambda = ctx.slider({ label: 'KRW’s λ: the card of KRW’s grid at this value', name: 'lambda', min: .01, max: 1, step: .01, value: ctx.state.lambda, onInput: v => ctx.set({ lambda: v }), hint: 'τ = λ/(1 + λ). The grid starts at the first positive λ.' }); const sorting = sort ? ctx.radioGroup({ legend: 'Within each grade, sort by', name: 'sort', options: SORTS, value: ctx.state.sort, onChange: v => ctx.set({ sort: v }) }) : null; ctx.controls.append(criterion.root, lambda.root, ...(sorting ? [sorting.root] : []), ctx.h('p', { class: 'kr-controls-note' }, 'λ rewards a correct direction; a wrong direction costs ', ctx.num(1, formatCount(1)), ' and silence pays ', ctx.num(0, formatCount(0)), '.')); return { render(s) { criterion.set(s.criterion); lambda.set(s.lambda); sorting?.set(s.sort); } }; }
+// Presentation-only controls for the full card. Archive map/path keep their original controls.
+export function compactArchiveControls(ctx) {
+    const { h } = ctx;
+    const target = ctx.segmented({ label: 'Target', name: 'criterion', value: ctx.state.criterion, options: [
+        { value: 'race', label: 'Race', title: 'White-name contact advantage' },
+        { value: 'gender', label: 'Gender', title: 'Male-name contact advantage' },
+    ], onChange: criterion => ctx.set({ criterion }) });
+    const lambda = ctx.slider({ label: 'KRW’s λ', name: 'lambda', min: .01, max: 1, step: .01, value: ctx.state.lambda, onInput: lambda => ctx.set({ lambda }) });
+    const sort = ctx.select({ label: 'Sort within grades', name: 'sort', value: ctx.state.sort, options: SORTS, onChange: sort => ctx.set({ sort }) });
+    const chip = h('div', { class: 'kr-lambda-chip' });
+    lambda.root.append(chip);
+    const row = h('div', { class: 'kr-compact-controls' }, target.root, ctx.primaryControl(lambda.root), sort.root);
+    ctx.controls.append(row);
+    return { row, render(s, c) {
+        target.set(s.criterion); lambda.set(s.lambda); sort.set(s.sort);
+        chip.replaceChildren('τ ', ro(ctx, null, c.tau, v => riskDigits(c) > 4 ? formatRisk(v, { digits: riskDigits(c) }) : formatSetting(v)));
+    } };
+}
 export function createKrwHeader(ctx, slot) {
     const { h } = ctx;
     return { render(model, c) {
@@ -57,7 +75,7 @@ export function createKrwHeader(ctx, slot) {
             }
             else if (c.d.G > 10)
                 counts.push(' ', n('sizes', c.d.sizes, formatSizes), '.');
-            slot.replaceChildren(h('h4', {}, 'KRW’s ', model.criterion === 'race' ? 'race' : 'gender', ' card, read with postrank’s loss'), h('p', {}, pub ? 'KRW’s published ' + t.figure : 'KRW’s grid card', ' at λ = ', n('lambda', c.lambda, formatSetting), ', which is τ = λ/(', n(null, 1, formatCount), ' + λ) = ', n('tau', c.tau, formatSetting), '.'), h('p', {}, ...counts), h('p', { class: 'kr-note' }, captionNode(ctx, 'krw-card'), '. In plain words: KRW’s own code chose these grades with KRW’s own pair probabilities; we take the card as given. ', captionNode(ctx, 'fixed-report'), '.'), h('p', { class: 'kr-note', text: orientation(model) + ' ' + t.scale }));
+            slot.replaceChildren(h('h4', {}, 'KRW’s ', model.criterion === 'race' ? 'race' : 'gender', ' card, read with postrank’s loss'), h('p', {}, pub ? 'KRW’s published ' + t.figure : 'KRW’s grid card', ' at λ = ', n('lambda', c.lambda, formatSetting), ', which is τ = λ/(', n(null, 1, formatCount), ' + λ) = ', n('tau', c.tau, formatSetting), '.'), h('p', {}, ...counts), h('p', { class: 'kr-note' }, captionNode(ctx, 'krw-card'), '. KRW chose these grades using their own pair probabilities. We evaluate the published grades as a fixed report. ', captionNode(ctx, 'fixed-report'), '.'), h('p', { class: 'kr-note', text: orientation(model) + ' ' + t.scale }));
         } };
 }
 export function createKrwRiskView(ctx, slot) {
@@ -93,8 +111,8 @@ export function createKrwDenominatorView(ctx, slot) {
         } };
 }
 /** Original observation precision against the exact grade vector of the displayed report. */
-export function createKrwPrecisionView(ctx, slot, { prefix = 'card' } = {}) {
-    const { h } = ctx, chart = h('div', { class: 'kr-precision-chart' }), source = h('p', { class: 'kr-note kr-precision-source' }), active = h('p', { class: 'kr-note kr-precision-active', 'aria-live': 'polite' }), vectors = h('details');
+export function createKrwPrecisionView(ctx, slot, { prefix = 'card', onInspect = null } = {}) {
+    const { h } = ctx, chart = h('div', { class: 'kr-precision-chart' }), source = h('p', { class: 'kr-note kr-precision-source' }), active = h('p', { class: 'kr-note kr-precision-active', 'aria-live': onInspect ? undefined : 'polite' }), vectors = h('details');
     slot.classList.add('kr-box', 'prx-light-panel');
     slot.dataset.prxPrecision = prefix;
     slot.append(h('h4', { text: 'Original sampling SE and current grades' }), source, chart, active, vectors, h('p', { class: 'kr-note', text: 'KRW uses a precision-dependent prior. Uncertain firms sharing a middle grade is not evidence of average behavior. This describes the released inputs and current report; it does not establish a causal effect or an accuracy comparison.' }));
@@ -109,7 +127,7 @@ export function createKrwPrecisionView(ctx, slot, { prefix = 'card' } = {}) {
             x: { domain: [0, Math.max(...se) * 1.05], label: 'Original signed-estimate sampling SE', labelAnchor: 'center', labelArrow: 'none', grid: true }, y: { type: 'point', domain: Array.from({ length: c.d.G }, (_, i) => i + 1), label: 'Current grade', labelArrow: 'none', ticks: c.d.G <= 8 ? undefined : 8 },
             alt: `${criterionSpec(model.criterion).label}: original signed-estimate sampling standard error against the exact current report grade, for every firm. Grade one is at the top.`,
             table: { visible: true, caption: 'Complete precision view in released firm-ID order; exact original sampling SE and current report grade', columns: [{ label: 'Firm', value: 'name', name: true }, { label: 'Firm ID', value: 'id', name: true }, { label: 'Original signed-estimate sampling SE', value: 'se', format: fmt }, { label: 'Current grade', value: 'grade', format: formatCount }], rows },
-            keyboard: { data: rows, x: 'se', y: 'grade', key: 'id', sort: false, label: 'All firms in released ID order. Use arrow keys, Home and End to inspect original sampling SE and current grade.', title, onFocus(r) { active.textContent = title(r); chart.querySelectorAll('[data-prx-precision-row]').forEach(row => row.setAttribute('aria-current', row.dataset.prxPrecisionRow === r.id ? 'true' : 'false')); } },
+            keyboard: { data: rows, x: 'se', y: 'grade', key: 'id', sort: false, label: 'All firms in released ID order. Use arrow keys, Home and End to inspect original sampling SE and current grade.', title, onFocus(r) { active.textContent = title(r); onInspect?.(r); chart.querySelectorAll('[data-prx-precision-row]').forEach(row => row.setAttribute('aria-current', row.dataset.prxPrecisionRow === r.id ? 'true' : 'false')); } },
             marks: (k, P) => { const colors = gradeColors(c.d.G, k); return [P.dot(rows, { x: 'se', y: 'grade', fill: r => colors[r.grade - 1], stroke: k.plotFg, strokeWidth: .45, r: 3.8, title }), P.tip(rows, P.pointer({ x: 'se', y: 'grade', title }))]; }
         });
         const table = fig.table;
@@ -119,13 +137,43 @@ export function createKrwPrecisionView(ctx, slot, { prefix = 'card' } = {}) {
         vectors.replaceChildren(h('summary', { text: 'Full current grade vector in released firm-ID order' }), h('p', {}, ro(ctx, `${prefix}-precision-grade`, c.grade, formatGrades)));
     } };
 }
-export function createKrwCardView(ctx, slot) {
+export function createKrwCardView(ctx, slot, { rowPx = 13, topAxis = false, betweenTarget = null, detailsTarget = null, movementTarget = null, onPick = null } = {}) {
     const { h } = ctx, chart = h('div'), scroll = ctx.scrollRegion(h('div', { class: 'kr-card-scroll' }, chart), 'All firms on the report card; scroll to read every firm'), legend = h('div'), grade1 = h('p', { class: 'kr-grade1' }), note = h('p', { class: 'kr-note' }), movement = h('p', { class: 'kr-note' }), disc = h('div'), between = h('div'), betweenBox = h('section', { class: 'kr-box prx-light-panel' }, h('h4', { text: 'How reliable are comparisons between grades?' }), between);
     slot.classList.add('kr-box', 'prx-light-panel');
-    slot.append(h('h4', { text: 'The card' }), h('p', { class: 'kr-note kr-axis-note' }), scroll, legend, grade1, note, movement, disc, betweenBox);
-    return { render(model, c, { sort = 'mean', reveal = 0, sortInstruction = 'Switch the sort to see firms change places inside their grades; no firm ever leaves its grade.' } = {}) {
+    const ruler = topAxis ? h('div', { class: 'kr-top-axis', 'aria-hidden': 'true' }) : null;
+    slot.append(h('h4', { text: 'The card' }), h('p', { class: 'kr-note kr-axis-note' }), ...(ruler ? [ruler] : []), scroll, legend, grade1, note, movement, disc, betweenBox);
+    const axesGuide = topAxis && detailsTarget ? h('p', { class: 'kr-note' }) : null;
+    detailsTarget?.append(...(axesGuide ? [axesGuide] : []), note, disc);
+    betweenTarget?.append(betweenBox);
+    movementTarget?.append(movement);
+    return { scroll, render(model, c, { sort = 'mean', reveal = 0, selected = null, flagged = [], sortInstruction = 'Switch the sort to see firms change places inside their grades; no firm ever leaves its grade.' } = {}) {
             const order = keyOrder(model, sort), narrow = (chart.clientWidth || ctx.width()) < 480, t = criterionSpec(model.criterion), card = { ids: order.map(i => model.ids[i]), names: order.map(i => narrow ? shortName(model.names[i]) : model.names[i]), fullNames: order.map(i => model.names[i]), mean: order.map(i => model.mean[i]), lower: order.map(i => model.lower[i]), upper: order.map(i => model.upper[i]), level: .9, intervalSource: 'supplied central posterior', storedOrder: 'input', axis: narrow ? t.short : t.axis, unit: 'firm', units: 'firms', title: typeof c.lambda==='number'?(model.criterion==='race'?'KRW’s race card':'KRW’s gender card'):(model.criterion==='absolute'?'Computed absolute-gap report':'Computed signed-gender report'), digits: 3 };
-            const out = drawReportCard(chart, card, { grade: order.map(i => c.grade[i]), order: 'grade', reveal, rowPx: 13, title: card.title, keyboardLabel: 'All firms on the report card: use the arrow keys' }), rowsUnits = out.order.map(p => order[p]);
+            const out = drawReportCard(chart, card, { grade: order.map(i => c.grade[i]), order: 'grade', reveal, rowPx, selected: Number.isInteger(selected) ? order.indexOf(selected) : undefined, title: card.title, keyboardLabel: 'All firms on the report card: use the arrow keys' }), rowsUnits = out.order.map(p => order[p]);
+            const svg = chart.querySelector('figure svg');
+            const shownUnits = rowsUnits.filter(i => c.grade[i] <= out.shown);
+            if (flagged.length && svg) {
+                const dots = [...svg.querySelectorAll('g[aria-label="dot"]')].at(-1);
+                const flaggedSet = new Set(flagged);
+                [...(dots?.querySelectorAll('circle') ?? [])].forEach((dot, j) => {
+                    if (!flaggedSet.has(shownUnits[j])) return;
+                    dot.setAttribute('data-kr-doubtful', String(shownUnits[j]));
+                    dot.setAttribute('r', '3.5');
+                });
+            }
+            if (ruler && svg) {
+                const view = svg.viewBox.baseVal, bottom = view.height;
+                const axes = [...svg.querySelectorAll('g[aria-label="x-axis tick"], g[aria-label="x-axis tick label"]')];
+                const strip = ctx.doc.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                strip.setAttribute('viewBox', `0 ${bottom - 39} ${view.width} 22`);
+                strip.setAttribute('width', String(view.width)); strip.setAttribute('height', '22');
+                strip.setAttribute('style', svg.getAttribute('style') ?? '');
+                strip.replaceChildren(...axes.map(n => n.cloneNode(true)));
+                ruler.replaceChildren(strip);
+            }
+            if (onPick) chart.querySelectorAll('.prx-kbd-point').forEach((button, i) => {
+                // Native button activation works with a pointer, touch, Enter, and Space.
+                button.addEventListener('click', () => onPick(shownUnits[i]));
+            });
             const hook = chart.querySelector(':scope > [data-prx-readout="order"]');
             if (hook) {
                 hook.dataset.num = rowsUnits.join(',');
@@ -138,7 +186,9 @@ export function createKrwCardView(ctx, slot) {
                         tr.firstElementChild.textContent = model.names[units[r]];
                 });
             }
-            slot.querySelector('.kr-axis-note').textContent = 'The axis sits at the bottom of the card: ' + t.axis + '; further right is a larger ' + t.target + '.';
+            const axisExplanation = 'The axis sits at the bottom of the card: ' + t.axis + '; further right is a larger ' + t.target + '.';
+            slot.querySelector('.kr-axis-note').textContent = topAxis ? t.short + ' · dot = posterior mean' : axisExplanation;
+            if (axesGuide) axesGuide.textContent = axisExplanation;
             legend.replaceChildren(gradeLegend(ctx.doc, { grade: c.grade, colors: out.colors, unit: 'firm', units: 'firms', grade1: orientation(model), shown: out.shown }));
             const top = blockOrder(model, c.grade, 'mean').filter(i => c.grade[i] === 1);
             grade1.replaceChildren(...(c.d.G === 1 ? ['One grade: the card states no direction.'] : ['Grade 1: ', h('b', { text: top.map(i => model.names[i]).join(', ') }), '.']));
@@ -159,5 +209,6 @@ export function createKrwCardView(ctx, slot) {
             return out;
         } };
 }
-export function createArchiveReadout(ctx, model, c, extra = []) { const f = v => formatRisk(v, { digits: riskDigits(c) }); ctx.readout.set(['At λ = ', ro(ctx, 'ro-lambda', c.lambda, formatSetting), ' (τ = ', ro(ctx, 'ro-tau', c.tau, f), '), the card has ', ro(ctx, 'ro-G', c.d.G, formatCount), c.d.G === 1 ? ' grade and states ' : ' grades and states ', ro(ctx, 'ro-N', c.d.N, formatCount), ' of ', ro(ctx, 'ro-M', model.M, formatCount), ' pairs. Its risk at τ is ', ro(ctx, 'ro-risk', c.ev.risk, f), '. ', ...(c.d.N > 0 ? ['E/N = ', ro(ctx, 'ro-EoverN', c.ev.EoverN[0], formatShare), '. '] : []), 'DR = ', ro(ctx, 'ro-DR', c.DR, formatShare), '. ', ...extra]); }
+export function archiveReadoutParts(ctx, model, c, extra = []) { const f = v => formatRisk(v, { digits: riskDigits(c) }); return ['At λ = ', ro(ctx, 'ro-lambda', c.lambda, formatSetting), ' (τ = ', ro(ctx, 'ro-tau', c.tau, f), '), the card has ', ro(ctx, 'ro-G', c.d.G, formatCount), c.d.G === 1 ? ' grade and states ' : ' grades and states ', ro(ctx, 'ro-N', c.d.N, formatCount), ' of ', ro(ctx, 'ro-M', model.M, formatCount), ' pairs. Its risk at τ is ', ro(ctx, 'ro-risk', c.ev.risk, f), '. ', ...(c.d.N > 0 ? ['E/N = ', ro(ctx, 'ro-EoverN', c.ev.EoverN[0], formatShare), '. '] : []), 'DR = ', ro(ctx, 'ro-DR', c.DR, formatShare), '. ', ...extra]; }
+export function createArchiveReadout(ctx, model, c, extra = []) { ctx.readout.set(archiveReadoutParts(ctx, model, c, extra)); }
 export function previousGridChange(model, c) { return c.index > 1 ? relationChange(model.grid.grade[c.index - 1], c.grade) : null; }

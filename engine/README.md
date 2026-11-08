@@ -210,8 +210,8 @@ builder (which writes `data/numbers.json` display strings). The house rules:
 
   | Value | Displayed | Why |
   |---|---|---|
-  | .1875 | .188 | exact tie; rounds to the even neighbour |
-  | .0625 | .062 | exact tie; rounds to the even neighbour |
+  | .1875 | .188 | exact tie; rounds to the even neighbor |
+  | .0625 | .062 | exact tie; rounds to the even neighbor |
   | 2.675 | 2.67 | stored as 2.67499… |
   | 1.0005 | 1.000 | stored as 1.000499… |
   | .0005 | .001 | stored as .000500…01 |
@@ -444,7 +444,7 @@ half-slope teaching of G-06). `endpointOptima` lists every report optimal at τ 
 `maxTies`; there all 4,683 reports of six units tie, `endpointTieCount`). `EoverN` is per criterion (as in
 `evaluateReport`), `EwOverN` = Ew/N. Six sites: breakpoints .0012, .0038, .1444, .1884, .3618 with N = 0, 8, 12,
 13, 14, 15. **Weight path**: one enumeration stores E_1, E_2 and N per report; each grid weight is then one pass,
-with `exactOptimum`'s tie rule. **Weight breakpoints** (K = 2, the hull analogue of the τ path): with w = (w1,
+with `exactOptimum`'s tie rule. **Weight breakpoints** (K = 2, the hull analog of the τ path): with w = (w1,
 1 − w1) a report's Z = E_2 − τN + w1(E_1 − E_2) is linear in w1, so the optimum over w1 ∈ [0, 1] follows the lower
 hull of the points (E_2 − E_1, E_2 − τN), and the breakpoints are its edge slopes, exact up to floating point
 (registry key `six.AB.cap3.tau20.wpath`). Both ends are closed, so a report optimal exactly at w1 = 0 or 1 gets a
@@ -477,7 +477,7 @@ reports), 0.2 s; a full `enumerateReports` pass at n = 8, 45 ms (27 ms with `reu
 **Cloud and hull** (ch. 16): each report is the point (N, Ew) (the book's A(g)); large clouds are summarized per N
 and never drawn one mark per report (CONTRACT 8.8). The origin (0, 0) is in the cloud exactly when the family
 contains the all-withheld report (it is the only report with N = 0). The hull is the monotone chain on the per-N
-minima; a point on or above the chord of its neighbours, or below it by at most tieTol·M, is not a vertex, so
+minima; a point on or above the chord of its neighbors, or below it by at most tieTol·M, is not a vertex, so
 collinear points are dropped (points given without M or grades fall back to 1e-12·max(1, |Ew|)). `minGrade` and
 `maxGrade` are the lexicographically first reports within tieTol·M of the final minimum and maximum at their N:
 when a run of near-ties moves the minimum past the stored report, that N is settled by a second pass. Each vertex carries the report `minGrade` that attains it. Six sites, all 4,683 reports:
@@ -516,7 +516,7 @@ enumeration (`exactOptimum`), so families above the enumeration budget throw; em
 
 | Function | Contract |
 |---|---|
-| `conflictPairs(E, { tieTol = 1e-12 })` | `{ count, pairs: [{ i, j, iAbove, jAbove }] }`: pairs i < j with e_ij,k < e_ji,k on some criterion (i more likely above: `iAbove`) and e_ij,k > e_ji,k on another (`jAbove`); equal within tieTol favours neither |
+| `conflictPairs(E, { tieTol = 1e-12 })` | `{ count, pairs: [{ i, j, iAbove, jAbove }] }`: pairs i < j with e_ij,k < e_ji,k on some criterion (i more likely above: `iAbove`) and e_ij,k > e_ji,k on another (`jAbove`); equal within tieTol favors neither |
 | `weightedError(E, w)` | the n × n matrix ē_ij = Σ_k w_k e_ij,k (compensated), NaN diagonal; `w` defaults to [1] when K = 1 |
 | `commonalityCost(E, { w, tau, family, tieTol, maxTies })` | `{ empty: false, common, family, tau, w, criteria: [{ k, criterion, weight, commonRk, ownGrade, ownGrades, ownTieCount, ownRk, ownN, ownG, delta, relationAgreement }], containsAllWithheld, label }` |
 | `estimandCosts(state, { w, a, tau, multiplier, pair, ids, criteria })` | `{ pair, c, criterionLoss, compositeLoss, criterionE, compositeE }` at a known state `state[i][k]` |
@@ -740,15 +740,15 @@ every z entry.
 upper, lower and gap are those of the best report found and the bound reached, or null when HiGHS has none: with
 a tiny limit there is usually no incumbent); anything else is the HiGHS status name in lower case. `label` is
 "optimal-within-solver-tolerances" only for an optimal result and null otherwise, so no stopped solve is ever
-labelled optimal. `family` is `familyInfo(n, { kind: "all" })` (CONTRACT 6.2: name and size always shown).
+labeled optimal. `family` is `familyInfo(n, { kind: "all" })` (CONTRACT 6.2: name and size always shown).
 
 **Bundles** (`scripts/build-solver.mjs`; highs.wasm inlined as base64 and passed through the
 `instantiateWasm(imports, done)` hook, since this highs build ignores `Module.wasmBinary`; the highs-js MIT
-licence is kept in the banner; deterministic output):
+license is kept in the banner; deterministic output):
 
 - `js/bundles/solver.js` (4,893,591 bytes): classic script, `window.PRX_SOLVER = { mipSolve, ready }`.
   `ready` (a getter) starts a blob-URL Worker on first use (script-URL workers are blocked on `file://`), sends it
-  the base64 wasm, and resolves to `{ highs: "1.15.4", initSeconds }`; the blob URL is revoked afterwards.
+  the base64 wasm, and resolves to `{ highs: "1.15.4", initSeconds }`; the blob URL is revoked afterward.
   `mipSolve(E, options)` returns a Promise of the result; requests are answered in order by one Worker that keeps
   the persistent model; validation errors reject with the same `RangeError`. An uncaught Worker error rejects
   the pending requests and terminates the Worker; the next call starts a new one. Loading the script twice keeps
@@ -810,7 +810,7 @@ byte-identical to `spikes/solver/`.
 
 | File | Generator | Contents |
 |---|---|---|
-| `tests/fixtures/normal-r.json` | `scripts/fixtures/normal-r.R` (base R 4.6.0) | `pnorm`, `pnorm(upper)`, `dnorm` on 4,025 z (\|z\| ≤ 37: a 0.05 grid, random points, every branch boundary and its neighbouring doubles); `qnorm` on 5,274 p (1e−300 … 1 − 2⁻⁵³); upper-tail `qnorm` on 1,901 p |
+| `tests/fixtures/normal-r.json` | `scripts/fixtures/normal-r.R` (base R 4.6.0) | `pnorm`, `pnorm(upper)`, `dnorm` on 4,025 z (\|z\| ≤ 37: a 0.05 grid, random points, every branch boundary and its neighboring doubles); `qnorm` on 5,274 p (1e−300 … 1 − 2⁻⁵³); upper-tail `qnorm` on 1,901 p |
 | `tests/fixtures/erfc-mpmath.json` | `scripts/fixtures/erfc-mpmath.py` (mpmath, 50 digits) | `erfc` on 2,471 x in [−6, 26.5]. Base R has no `erfc`, and `2 * pnorm(-sqrt(2) * x)` loses precision for large x because `sqrt(2) * x` is rounded |
 | `tests/fixtures/stream-r.json` | `scripts/fixtures/stream-r.R` (base R) | the stream reimplemented from the algorithm above: integers, uniforms and normals for 8 seeds |
 | `tests/fixtures/format-r.json` | `scripts/fixtures/format-r.R` (base R) | `sprintf("%.<d>f", x)` for d = 0 … 6 on exact ties, near ties, random and large values |

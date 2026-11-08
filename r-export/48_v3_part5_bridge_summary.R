@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent R-only summary of the approved exact tau-axis KRW grid.
 # Scientific values use the frozen independently written R44 pure definitions.
 # No old writer is executed; no frontend/TS/JS output or old golden is read.

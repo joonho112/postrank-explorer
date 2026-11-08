@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent estimand-display pins for the Part4 criterion/composite views.
 # No new4.6/4.13 app JS, TypeScript implementation/tests, JS result, solver,
 # browser or network is read/run. Original public inputs and frozen pure

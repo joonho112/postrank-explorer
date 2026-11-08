@@ -4,11 +4,7 @@ subtitle: "5.10 · the public twelve-school CDE example"
 description: "Full-report cost of requiring the F-above-I direction under declared family restrictions."
 ---
 
-Schools F and I share a grade in the three-grade optimum, although F above I has high posterior probability.
-Requiring a specified direction and reoptimising the complete report measures its additional risk within the same
-family. That difference includes the effects on all other stated and withheld comparisons. The tertiles and a
-fixed-order four-grade comparison provide further reports that state the direction. Their results identify the
-roles of the particular grouping and search restrictions without assigning an exclusive cause to the withheld pair.
+The minimum-risk report with at most three grades places F and I in the same grade, even though the posterior strongly favors F above I.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -18,25 +14,30 @@ roles of the particular grouping and search restrictions without assigning an ex
 <script>window.__prxApp = PRX["cde-pair"].mountWidget(document.getElementById("app"));</script>
 ```
 
+Requiring F above I can change comparisons involving other schools. To measure the added risk, the browser
+searches the same report family again with that direction required. The tertiles and a four-grade report based
+on cuts of the posterior mean order also state F above I. These comparisons show how much the outcome depends
+on the grouping and on which reports the search considers.
+
 ## Numerical illustrations {#what-to-try}
 
-- **F above I** shows direction probability .9999. Of 175,099 three-grade reports that state it, the least-risk one has risk .064087, slightly above the overall optimum .063774.
-- **I above F** reverses the required statement. The best report stating this direction has risk .112261; the posterior probability alone does not summarize its full-report cost.
+- **F above I** shows posterior probability .9999 for that direction. Among the 175,099 reports that state it, the lowest risk is .064087, just above the unrestricted minimum of .063774 in the same family.
+- **I above F** requires the reverse. The best report stating that direction has risk .112261. That risk includes all the report's stated and withheld comparisons.
 - **The tertiles state it** uses the two tertile cuts. This fixed report states 48 pairs with risk .082255, so stating F above I does not require a fourth grade.
 - **The higher-cost optimum** sets τ to .45. The optimum itself now states F above I and has risk .143197.
 
-The table ranks the three best reports in the same three-grade family. The report stating F above I is second, while the next displayed report is third. The input check excludes self-comparisons.
+The table ranks the three reports with the lowest risk in the same family. The best report stating F above I ranks second. The school selectors accept pairs of distinct schools.
 
-The four-grade comparison keeps the posterior-mean order and changes the allowed family. Its risk is comparable under the same law, τ and weight, but its order-based optimum is not a global optimum over every four-grade report. The two compared families are not nested. Withholding can reflect several interacting restrictions; the page does not assign a single exclusive cause to every shared-grade pair.
+The four-grade search considers only cuts of the posterior mean order. It admits some reports that the three-grade search excludes and excludes others that the three-grade search admits. Both use the same posterior, τ, and weight, so the risks are comparable. Several restrictions can contribute to withholding the same pair.
 
-Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (`pr_case_cde`). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply; the data are not relicensed, are provided as is without warranty, and imply no CDE endorsement.
+Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (`pr_case_cde`). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply (<https://www.cde.ca.gov/re/di/cr/index.asp>); the data are not relicensed and are provided as is without warranty. No CDE endorsement is implied.
 
-The analysis concerns directional reporting of chronic absence within this subset. It neither computes Dashboard status-and-change colours nor establishes school quality, causal effects, statewide optimality or calibration. Shared grades do not imply equal absence probabilities.
+The pair comparison concerns chronic absence in this subset. When the report places two schools in one grade, it leaves their relative absence rates unstated. The calculation uses its own reporting loss. California's Dashboard colors, school quality, causal effects, statewide optimality, and calibration each require evidence beyond this comparison.
 
 ::: {.callout-note collapse="true"}
 ## In postrank
 
-The following call extracts the F-above-I probability in the original case-study input order.
+This call reads the probability of F above I from the original case-study input.
 
 ```r
 library(postrank)

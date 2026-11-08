@@ -22,11 +22,11 @@
         { "select": "[data-prx-readout=\"card-a-upper\"]", "about": "A's upper end, three half-widths above B's posterior mean", "source": "registry", "ref": "cf.touch.level90.Aupper", "value": 4.934560880854415 },
         { "select": "[data-prx-readout=\"diff-sd\"]", "about": "the SD of the difference A minus B, √2 posterior SDs (v1's verdict number, shown at once in v3)", "source": "registry", "ref": "cf.touch.diffsd", "value": 1.4142135623730947 },
         { "select": "[data-prx-readout=\"diff-z\"]", "about": "the distance between the posterior means in SDs of the difference", "source": "registry", "ref": "cf.touch.level90.z", "value": 2.326174307353347 },
-        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior set by hand for teaching; postrank does not fit it" },
+        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior specified for the example" },
         { "select": "[data-prx-status]", "about": "the status of the pair card", "kind": "text", "attr": "data-prx-status", "source": "literal", "ref": "11.4", "value": "touch" },
         { "select": "[data-prx-status]", "about": "the status line, word for word", "kind": "text", "source": "literal", "ref": "11.4", "value": "They just touch." },
         { "select": ".prx-readout", "about": "the read-out, word for word", "kind": "text", "slots": true, "source": "literal", "ref": "11.4", "value": "The ⟨level⟩ intervals just touch: the posterior means are ⟨gap⟩ posterior SDs apart. The chance that A's true value is larger than B's is ⟨pi⟩." },
-        { "select": ".prx-io-cell .prx-hint a.prx-io-app", "about": "the card's pointer to app 1.8: its title is a link where page links work (as here and on site pages and embeds); elsewhere it stands in quotes, so it never runs into the sentence", "kind": "text", "source": "literal", "ref": "11.4", "value": "Two units, one probability" }
+        { "select": ".prx-io-cell .prx-hint a.prx-io-app", "about": "the card's pointer to app 1.8: its title is a link where page links work (as here and on site pages and embeds); elsewhere it stands in quotes, so it never runs into the sentence", "kind": "text", "source": "literal", "ref": "11.4", "value": "Pairwise posterior direction probabilities" }
       ]
     },
     {
@@ -46,7 +46,7 @@
         { "select": "[data-prx-readout=\"card-a-upper\"]", "about": "A's upper end, three half-widths above B's posterior mean", "source": "registry", "ref": "cf.touch.level95.Aupper", "value": 5.879891953620161 },
         { "select": "[data-prx-readout=\"diff-sd\"]", "about": "the SD of the difference A minus B", "source": "registry", "ref": "cf.touch.diffsd", "value": 1.4142135623730947 },
         { "select": "[data-prx-readout=\"diff-z\"]", "about": "the distance between the posterior means in SDs of the difference", "source": "registry", "ref": "cf.touch.level95.z", "value": 2.771807648699349 },
-        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior set by hand for teaching; postrank does not fit it" }
+        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior specified for the example" }
       ]
     },
     {
@@ -62,7 +62,7 @@
         { "select": "[data-prx-readout=\"card-a-upper\"]", "source": "registry", "ref": "cf.touch.gap2.level90.Aupper", "value": 3.6448536269514715 },
         { "select": "[data-prx-readout=\"card-b-lower\"]", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.05", "field": "quantile" }, "value": -1.64485362695147 },
         { "select": "[data-prx-readout=\"card-b-upper\"]", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.95", "field": "quantile" }, "value": 1.64485362695147 },
-        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior set by hand for teaching; postrank does not fit it" },
+        { "select": "[data-prx-caption=\"teaching-posterior\"]", "about": "the teaching-posterior caption (labels.js, v3 wording)", "kind": "text", "source": "literal", "ref": "6.5", "value": "a posterior specified for the example" },
         { "select": "[data-prx-status]", "about": "the status of the pair card", "kind": "text", "attr": "data-prx-status", "source": "literal", "ref": "11.4", "value": "overlap" },
         { "select": "[data-prx-status]", "about": "the status line, word for word", "kind": "text", "slots": true, "source": "literal", "ref": "11.4", "value": "They overlap by ⟨amount⟩ posterior SDs." },
         { "select": ".prx-io-key-item:has(.prx-io-swatch-edge)", "about": "the key item of the overlap band: its swatch has the thin edge the band has in the figure", "kind": "text", "source": "literal", "ref": "11.4", "value": "gray band: where the two intervals overlap" }

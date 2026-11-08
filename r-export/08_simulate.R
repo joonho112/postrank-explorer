@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/simulate.ts (Step 2.10).
 #   oracle-simulate    base R only: the SR-06 league (engine/API.md "Simulated league specification") and its seeded
 #                      draws through the engine's stream (r-export/_rng.R), the teaching normal-normal posterior,
@@ -265,7 +265,7 @@ seeded_six <- function(seed, S, means) {             # S x 6 x K, theta = mean +
 d200 <- seeded_six(424242, 200, cbind(six_m))
 fp("six-scoreA-S200-seed424242-tau.2", d200, 0.2, 1)
 
-# ---- Step 6.14 Part 2 rows (engine/API.md; shared inputs in r-export/15_part2.R) --------------------
+# ---- Step 6.14 Part 2 rows (shared inputs in r-export/15_part2.R) --------------------
 # G-03 price of silence: misorderedPairs(no-cap optimum, capped optimum) at tau = .10, .20, .40 on the released score-A
 # array. The two grade vectors have ties, so the count is the documented definition (engine/README.md): pairs with
 # sign(a_i - a_j) != sign(b_i - b_j), a pair stated by one report and withheld by the other included.

@@ -1,4 +1,32 @@
 // Linked report evaluation and posterior draws, with six normal sites or the shared three-unit law.
+//
+// Layout (review 044 repair: X-01 result-first frame and the substantial redesign G2-F4/G2-F6 of 2.8). base.js's
+// result-first frame, top to bottom:
+//   controls   one row: the Example radio, the Report select (ctx.primaryControl) and the τ slider; then a closed
+//              "Grades, family and seed" box in the controls row (ctx.disclosure placement "controls": the grade
+//              selects of the law shown, the Family shown radio and the Seed field), which also opens when the
+//              reader picks "Your own" in the Report select; the preset row on its own line
+//   read-out   directly under the controls; it ends with one of three statements: "E ≤ τN guaranteed …" (the exact
+//              optimum of a family with all-withheld), "E ≤ τN holds here but is not guaranteed …" or "E > τN: worse
+//              than withholding every pair" (review 044, G2-F6)
+//   matrix | result column (side by side from a 44rem charts container; CSS container query, no script):
+//     left     the relation matrix (ctx.primaryGraphic) and its legend, then "Possible true values in this draw"
+//     right    the tiles N, E, E/N, all-right (+ the union bound for the finite law) and τ; for the finite law the
+//              coupling slider right under the tiles, then the order table, the formula for E and the fixed pair
+//              errors; the Draw once / Draw 100 / Clear buttons directly above a compact histogram whose zero bin is
+//              labeled "every stated direction right", the running average with the dashed E, the draws summary
+//              and the Monte Carlo caption
+//   bound row  full width: a one-line badge ("E ≤ τN applies: …", "E ≤ τN holds here but is not guaranteed: …" or
+//              "E > τN: …"), the one risk/count diagnostic line, a closed "Why" box with the explanatory sentences
+//              (the bound line, the caution, or the side-by-side line, the reason and the own-risk line), then the
+//              best report of the family shown with the "Use the best report" button
+// The DOM follows the phone order (matrix, result column, this draw, bound row), so at 375 px the tiles, the Draw
+// buttons and the histogram follow the matrix; on a wide container named grid areas put "this draw" under the
+// matrix on the left. Every key, preset, hook (data-prx-readout, data-prx-bound, data-prx-own, data-prx-diagnostic),
+// data-num, hidden table and keyboard reader is unchanged; content was moved, not removed.
+//
+// Exports used by 2.9 reported-and-realized keep their behavior for its calls: createDrawControls,
+// drawHistogram (new options zeroLabel and height, off by default) and drawRunningAverage (new option height).
 import { createWidget, uid } from "../shared/base.js";
 import { gradeColors, labelOn, numText, plot } from "../shared/chart.js";
 import { formatCount, formatDecimal, formatEoverN, formatExpectedCount, formatGrades, formatProb, formatRational, formatRisk, formatSci, formatSetting, formatShare } from "../shared/format.js";
@@ -44,8 +72,15 @@ export const CONFIG = Object.freeze({
     wrongWidth: 3, wrongInset: 2.5, crossShare: 0.26, crossDx: 0.27, crossDy: 0.25, labelHalo: 3,
   }),
   strip: Object.freeze({ row: 24, marginTop: 8, marginBottom: 40, marginLeft: 84, marginRight: 14, domain: Object.freeze([-2, 2.4]), r: 5, tick: 9, labelOffset: 34, link: 2 }),
-  hist: Object.freeze({ height: 176, marginTop: 22, marginBottom: 42, marginLeft: 44, marginRight: 10, half: 0.38, minBins: 3, labelOffset: 36, labelDy: -6 }),
-  run: Object.freeze({ height: 196, marginTop: 18, marginBottom: 42, marginLeft: 44, marginRight: 14, maxPoints: 400, minX: 10, rule: "5 3", labelOffset: 36, top: 1.15, minTop: 0.5 }),
+  // compact: 2.8's own heights in the result column (review 044 repair); 2.9 keeps the defaults. zero: the margins
+  // when the zero bin carries its words under the axis (drawHistogram option zeroLabel)
+  hist: Object.freeze({ height: 176, marginTop: 22, marginBottom: 42, marginLeft: 44, marginRight: 10, half: 0.38, minBins: 3, labelOffset: 36, labelDy: -6,
+    compact: 190, zero: Object.freeze({ marginBottom: 74, labelOffset: 66, dy: 25 }) }),
+  run: Object.freeze({ height: 196, marginTop: 18, marginBottom: 42, marginLeft: 44, marginRight: 14, maxPoints: 400, minX: 10, rule: "5 3", labelOffset: 36, top: 1.15, minTop: 0.5,
+    compact: 150 }),
+  // Observable Plot's default spacing of y ticks (px): a compact figure asks for the tick count the original height gave,
+  // so it shows the same tick values (review 044 repair: moved, not thinned)
+  plotTickSpacing: 35,
   text: Object.freeze({
     lawLegend: "Example",
     lawSix: "Six sites, score A (independent normal posteriors)",
@@ -118,6 +153,27 @@ export const CONFIG = Object.freeze({
     holdsOwnEnd: "≤ τ), though it is not guaranteed by optimality: it holds exactly when the risk is at most τ.",
     failsOwn: "E > τN for this report (risk",
     failsOwnEnd: "> τ): it does worse than withholding every pair.",
+    // review 044 repair (G2-F4, G2-F6): the controls box, the one-line badge, its "Why" box and the read-out's last clause
+    settingsSix: "Grades, family and seed",
+    settingsFinite: "Grades and seed",
+    whyTitle: "Why",
+    seedTag: "seed",
+    zeroBin: "every stated\ndirection right",
+    badgeHolds: "E ≤ τN holds here but is not guaranteed:",
+    badgeFails: "E > τN:",
+    badgeFailsEnd: "worse than withholding every pair.",
+    badgeReason: Object.freeze({
+      notInFamily: "this report is not in the family shown.",
+      noAllWithheld: "the family shown does not include the all-withheld report.",
+      notOptimum: "this report is not the family optimum.",
+    }),
+    readoutApplies: "; E ≤ τN guaranteed (exact optimum of a family with all-withheld).",
+    readoutHolds: Object.freeze({
+      notInFamily: "; E ≤ τN holds here but is not guaranteed (this report is not in the family shown).",
+      noAllWithheld: "; E ≤ τN holds here but is not guaranteed (the family shown does not include the all-withheld report).",
+      notOptimum: "; E ≤ τN holds here but is not guaranteed (this report is not the family optimum).",
+    }),
+    readoutFails: "; E > τN: worse than withholding every pair.",
   }),
 });
 
@@ -274,46 +330,36 @@ const CSS = `.prx-de .prx-de-heading{
   min-width: 0;
   margin: 0 0 1rem;
 }
-.prx-de .prx-de-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-  gap: 0 1.25rem;
-  align-items: start;
-  min-width: 0;
-}
-.prx-de .prx-de-side, .prx-de .prx-de-sub, .prx-de .prx-de-chart, .prx-de .prx-de-matrix, .prx-de .prx-de-thisdraw{
-  min-width: 0;
-  max-width: 100%;
-}
-.prx-de .prx-de-thisdraw{
-  margin-top: 0.75rem;
+/* review 044 repair (G2-F4): the controls row holds the Example radio (its two options stacked), the Report select
+   and the τ slider, their labels on one line; the grade selects, the family radio and the seed sit in the closed box
+   after them */
+.prx-de .prx-controls{
+  align-items: flex-start;
 }
 .prx-de .prx-de-law{
-  display: flex;
-  flex: 0 0 auto;
-  width: 100%;
-  flex-wrap: wrap;
-  column-gap: 1rem;
+  flex: 0 1 auto;
+  min-width: 0;
 }
-.prx-de .prx-de-law > legend, .prx-de .prx-de-family > legend{
-  flex: 1 1 100%;
+.prx-de .prx-de-law .prx-radio{
+  display: flex;
+  margin: 0.15rem 0 0;
 }
 .prx-de .prx-de-family{
   display: flex;
   flex-wrap: wrap;
   column-gap: 1rem;
 }
+.prx-de .prx-de-family > legend{
+  flex: 1 1 100%;
+}
 .prx-de .prx-de-report{
   display: flex;
-  flex: 0 0 auto;
-  width: 100%;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  align-items: flex-end;
+  flex: 0 1 16rem;
   min-width: 0;
 }
 .prx-de .prx-de-report > .prx-select{
-  flex: 0 1 18rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .prx-de .prx-de-report select{
   max-width: 100%;
@@ -341,24 +387,92 @@ const CSS = `.prx-de .prx-de-heading{
 .prx-de .prx-de-grades .prx-select > label{
   margin: 0;
 }
+/* the closed box keeps one width under both laws ("Grades, family and seed" / "Grades and seed"), so the τ slider beside
+   it keeps its width and its hint its lines, and the preset row does not move when a preset changes the law */
+.prx-de .prx-de-settings > summary{
+  min-width: 13.5em;
+}
+/* in the open box the six grade selects share one line where there is room */
+.prx-de .prx-de-settings .prx-de-grades{
+  flex-basis: 27rem;
+}
+.prx-de .prx-de-seed{
+  flex: 0 0 auto;
+  width: auto;
+}
+.prx-de .prx-de-seed input{
+  width: 7em;
+}
+/* the charts: one column (the phone order of the DOM), two from a 44rem charts container: the matrix and "this draw"
+   on the left, the result column on the right, the bound row under both. A container query, so no script switches it */
+.prx-de .prx-de-charts{
+  container: prx-de-charts / inline-size;
+}
+.prx-de .prx-de-main{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 1.5rem;
+  align-items: start;
+  min-width: 0;
+}
+@container prx-de-charts (min-width: 44rem){
+  .prx-de .prx-de-main{
+    grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: "matrix result" "draw result" "bound bound";
+  }
+  .prx-de .prx-de-area-matrix{ grid-area: matrix; }
+  .prx-de .prx-de-area-result{ grid-area: result; }
+  .prx-de .prx-de-area-draw{ grid-area: draw; }
+  .prx-de .prx-de-area-bound{ grid-area: bound; }
+}
+.prx-de .prx-de-side, .prx-de .prx-de-sub, .prx-de .prx-de-chart, .prx-de .prx-de-matrix, .prx-de .prx-de-thisdraw{
+  min-width: 0;
+  max-width: 100%;
+}
+.prx-de .prx-de-thisdraw{
+  margin: 0 0 1rem;
+}
+.prx-de .prx-de-side > .prx-de-panel{
+  margin-bottom: 0.6rem;
+}
+.prx-de .prx-de-coupling{
+  margin: 0.5rem 0 0;
+}
+.prx-de .prx-de-coupling .prx-slider{
+  max-width: 24rem;
+}
+.prx-de .prx-de-coupling-result{
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.95em;
+  font-variant-numeric: tabular-nums;
+}
+/* the draws, directly under the tiles: the buttons above the histogram, then the running average */
+.prx-de .prx-de-draws{
+  margin-top: 0.2rem;
+}
 .prx-de .prx-de-draw-row{
   display: flex;
   flex: 0 1 auto;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: flex-end;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+  margin: 0 0 0.35rem;
 }
 .prx-de .prx-de-draw-buttons{
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
-.prx-de .prx-de-draw-row .prx-number{
-  flex: 0 0 auto;
-  width: auto;
+.prx-de .prx-de-seedtag{
+  align-self: center;
+  font-size: 0.85em;
+  color: var(--prx-fg-muted);
+  font-variant-numeric: tabular-nums;
 }
-.prx-de .prx-de-draw-row .prx-number input{
-  width: 7em;
+.prx-de .prx-de-draws > .prx-de-sub + .prx-de-note + .prx-de-sub, .prx-de .prx-de-draws > .prx-de-sub + .prx-de-sub{
+  margin-top: 0.6rem;
 }
 .prx-de .prx-de-note{
   margin: 0.35rem 0 0.5rem;
@@ -367,7 +481,7 @@ const CSS = `.prx-de .prx-de-heading{
 }
 .prx-de .prx-de-tiles{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
   gap: 0.5rem;
 }
 .prx-de .prx-de-tile{
@@ -399,15 +513,46 @@ const CSS = `.prx-de .prx-de-heading{
   display: block;
   margin-top: 0.15rem;
 }
+/* before a draw the all-right tile keeps the line of its estimate, and its note is as tall as the longer of its two
+   wordings (the other one, hidden, sizes the box through ::after), so the tiles (and the Draw buttons under them) keep
+   their place on the first draw */
+.prx-de .prx-de-tile-pending{
+  display: block;
+  height: 1.4em;
+}
+.prx-de .prx-de-mc-note{
+  display: grid;
+}
+.prx-de .prx-de-mc-note > span, .prx-de .prx-de-mc-note::after{
+  grid-area: 1 / 1;
+}
+.prx-de .prx-de-mc-note::after{
+  content: attr(data-prx-other);
+  visibility: hidden;
+}
 .prx-de .prx-de-caption{
   margin: 0.35rem 0 0.5rem;
   font-size: 0.85em;
   font-style: italic;
   color: var(--prx-fg-muted);
 }
+/* the bound row (full width under both columns): the badge, the diagnostic line, the "Why" box, the best report */
+.prx-de .prx-de-boundrow{
+  min-width: 0;
+  margin: 0 0 0.75rem;
+}
 .prx-de .prx-de-bound p, .prx-de .prx-de-best p{
   margin: 0.4rem 0 0;
   font-size: 0.95em;
+}
+.prx-de .prx-de-bound > .prx-de-badge{
+  margin-top: 0;
+}
+.prx-de .prx-de-why{
+  margin: 0.5rem 0 0;
+}
+.prx-de .prx-de-why .prx-disclosure-body > p:first-child{
+  margin-top: 0;
 }
 .prx-de .prx-de-badge{
   padding: 0.45rem 0.6rem;
@@ -427,7 +572,7 @@ const CSS = `.prx-de .prx-de-heading{
 .prx-de .prx-de-best{
   margin-top: 0.5rem;
 }
-.prx-de .prx-de-panel > .prx-btn{
+.prx-de .prx-de-boundrow > .prx-btn{
   margin-top: 0.5rem;
 }
 .prx-de .prx-de-label{
@@ -447,7 +592,7 @@ const CSS = `.prx-de .prx-de-heading{
 }
 .prx-de .prx-de-lawbox{
   min-width: 0;
-  margin: 0 0 1rem;
+  margin: 0.5rem 0 0.25rem;
 }
 .prx-de .prx-de-table{
   margin: 0 0 0.5rem;
@@ -462,9 +607,15 @@ const CSS = `.prx-de .prx-de-heading{
   color: var(--prx-fg-muted);
 }
 .prx-de .prx-de-table th, .prx-de .prx-de-table td{
-  padding: 0.2rem 0.75rem 0.2rem 0;
+  padding: 0.2rem 0.5rem 0.2rem 0;
   text-align: left;
   border-bottom: 1px solid var(--prx-border);
+}
+.prx-de .prx-de-table :is(th, td):last-child{
+  padding-inline-end: 0;
+}
+.prx-de .prx-de-table thead th{
+  overflow-wrap: normal;
 }
 .prx-de .prx-de-table td{
   text-align: right;
@@ -472,6 +623,7 @@ const CSS = `.prx-de .prx-de-heading{
 .prx-de .prx-de-table td.prx-de-lastcell{
   text-align: left;
   font-style: italic;
+  white-space: nowrap;
 }
 .prx-de .prx-de-table tr.prx-de-last th, .prx-de .prx-de-table tr.prx-de-last td{
   font-weight: 600;
@@ -554,9 +706,13 @@ export function createDrawControls(ctx) {
 }
 
 
-/** Empirical wrong-count histogram with the original top-bin rule and keyboard table. */
-export function drawHistogram(ctx, histSlot, counts, N, { zeroEvent = false } = {}) {
+/** Empirical wrong-count histogram with the original top-bin rule and keyboard table. Options (2.8 only; the defaults
+ *  are the original figure, as 2.9 draws it): zeroEvent fills the zero bin and names its event in the alt text, table
+ *  and keyboard; zeroLabel also writes "every stated direction right" under the zero bin, below its tick (review 044
+ *  repair, G2-F4: the zero bin is labeled on the figure); height sets the figure's height. */
+export function drawHistogram(ctx, histSlot, counts, N, { zeroEvent = false, zeroLabel = false, height = CONFIG.hist.height } = {}) {
   const H = CONFIG.hist;
+  const named = zeroEvent && zeroLabel;
   const top = N < H.minBins ? N : Math.max(H.minBins - 1, Math.min(N, Math.max(0, ...counts)));
   const bins = Array.from({ length: top + 1 }, (_, k) => ({ k, draws: 0 }));
   for (const x of counts) bins[Math.min(top, x)].draws += 1;
@@ -571,21 +727,25 @@ export function drawHistogram(ctx, histSlot, counts, N, { zeroEvent = false } = 
       ],
       rows: bins,
     },
-    height: H.height, marginTop: H.marginTop, marginBottom: H.marginBottom, marginLeft: H.marginLeft, marginRight: H.marginRight,
+    height, marginTop: H.marginTop, marginBottom: named ? H.zero.marginBottom : H.marginBottom, marginLeft: H.marginLeft, marginRight: H.marginRight,
     color: { type: "identity" },
-    x: { domain: [-1 / 2, top + 1 / 2], ticks: bins.map((b) => b.k), label: "wrong stated directions in a draw", labelAnchor: "center", labelArrow: "none", labelOffset: H.labelOffset },
-    y: { label: "draws", labelArrow: "none", grid: true, nice: true },
+    x: { domain: [-1 / 2, top + 1 / 2], ticks: bins.map((b) => b.k), label: "wrong stated directions in a draw", labelAnchor: "center", labelArrow: "none", labelOffset: named ? H.zero.labelOffset : H.labelOffset },
+    y: { label: "draws", labelArrow: "none", grid: true, nice: true,
+      ...(named || height !== H.height ? { ticks: (H.height - H.marginTop - H.marginBottom) / CONFIG.plotTickSpacing } : {}) },
     marks: (c, P) => [
       P.rectY(bins, { x1: (d) => d.k - H.half, x2: (d) => d.k + H.half, y: "draws", fill: d => zeroEvent && d.k === 0 ? c.post : c.plotGrid, stroke: c.plotFg }),
       P.ruleY([0], { stroke: c.plotAxis }),
       numText(bins, { x: "k", y: "draws", value: "draws", format: (v) => formatCount(v), dy: H.labelDy, lineAnchor: "bottom", fill: c.plotFg }),
+      // the zero bin's event in words, on its own lines between the tick labels and the axis label
+      named ? P.text([0], { x: (d) => d, y: () => 0, text: () => T.zeroBin, dy: H.zero.dy, lineAnchor: "top", fill: c.post, fontWeight: 600 }) : null,
     ],
     keyboard: { data: bins, x: "k", y: "draws", sort: false, label: T.histHeading, title: (d) => `${formatCount(d.draws)} ${d.draws === 1 ? "draw" : "draws"} with ${formatCount(d.k)}${d.k === top && top < N ? " or more" : ""} wrong stated directions.${zeroEvent && d.k === 0 ? " Every stated direction is right in this zero bin." : ""}` },
   });
 }
 
-/** Engine running means, at most 400 displayed points, and the expected-count reference. */
-export function drawRunningAverage(ctx, runSlot, counts, E) {
+/** Engine running means, at most 400 displayed points, and the expected-count reference. Option height (2.8's compact
+ *  figure; the default is the original height, as 2.9 draws it). */
+export function drawRunningAverage(ctx, runSlot, counts, E, { height = CONFIG.run.height } = {}) {
   const R = CONFIG.run;
   const S = counts.length;
   const means = runningMean(counts);
@@ -605,9 +765,10 @@ export function drawRunningAverage(ctx, runSlot, counts, E) {
       ],
       rows: pts,
     },
-    height: R.height, marginTop: R.marginTop, marginBottom: R.marginBottom, marginLeft: R.marginLeft, marginRight: R.marginRight,
+    height, marginTop: R.marginTop, marginBottom: R.marginBottom, marginLeft: R.marginLeft, marginRight: R.marginRight,
     x: { domain: [1, Math.max(R.minX, S)], label: "draws so far", labelAnchor: "center", labelArrow: "none", labelOffset: R.labelOffset },
-    y: { domain: [0, top], label: null, nice: true, grid: true },
+    y: { domain: [0, top], label: null, nice: true, grid: true,
+      ...(height !== R.height ? { ticks: (R.height - R.marginTop - R.marginBottom) / CONFIG.plotTickSpacing } : {}) },
     marks: (c, P) => [
       P.ruleY([E], { stroke: c.err, strokeDasharray: R.rule, strokeWidth: 2 }),
       P.line(pts, { x: "s", y: "avg", stroke: c.plotFg, strokeWidth: 2 }),
@@ -702,6 +863,8 @@ export function mountWidget(el, spec = {}) {
     title: CONFIG.title,
     className: CONFIG.className,
     css: CSS,
+    // the shared result-first frame (review 044, X-01): controls and preset row, the read-out, the charts, the caption
+    layout: "result-first",
     keys: {
       law: { type: "choice", values: CONFIG.laws.slice(), value: CONFIG.law },
       grades: { type: "custom", parse: (v) => parseGrades(v), value: CONFIG.grades.value.slice() },
@@ -733,7 +896,10 @@ export function mountWidget(el, spec = {}) {
       const enText = (v, law) => (v === null || v === undefined ? formatEoverN(null) : law === "finite" ? exact(v) : formatShare(v));
       const errText = (v, law) => (law === "finite" ? exact(v) : formatProb(v));
 
-      // --- controls
+      // --- controls (review 044 repair, G2-F4): the Example radio, the Report select and the τ slider in one row; the
+      // grade selects, the family radio and the seed in a closed box after them ("controls" placement: before the preset
+      // row; open, it takes a whole row); choosing "Your own" in the Report select opens it
+      let settings = null;
       const lawRadio = ctx.radioGroup({
         legend: T.lawLegend, name: "law", className: "prx-de-law",
         options: [{ value: "six", label: T.lawSix }, { value: "finite", label: T.lawFinite }],
@@ -748,8 +914,14 @@ export function mountWidget(el, spec = {}) {
         options.push({ value: "custom", label: T.ownReport });
         reportMenus[key] = ctx.select({
           label: T.reportLabel, name: `report-${key}`, options, value: CONFIG.starts[key].join(","),
-          onChange: (v) => { if (v && v !== "custom") ctx.set({ grades: v.split(",").map(Number) }); },
+          onChange: (v) => {
+            // "Your own (set the grades below)": the grade selects are in the box below, so it opens
+            if (v === "custom") { if (settings && !settings.open) settings.open = true; return; }
+            if (v) ctx.set({ grades: v.split(",").map(Number) });
+          },
         });
+        // the control a reader changes first: it moves the matrix, the tiles and the read-out (measurement reads from it)
+        ctx.primaryControl(reportMenus[key].input);
         const n = law.ids.length;
         const selects = law.ids.map((id, i) => ctx.select({
           label: id, name: `grade-${key}-${id}`,
@@ -781,13 +953,16 @@ export function mountWidget(el, spec = {}) {
         name: "tau", hint: ["A wrong stated direction costs ", ctx.num(1, formatCount(1)), "; staying silent on one pair costs τ. E and E/N do not depend on τ."], onInput: (v) => ctx.set({ tau: v }),
       });
       const { row: drawRow, note: drawNote, one: btnOne, many: btnMany, clear: btnReset, seed } = createDrawControls(ctx);
-      const reportBox = h("div", { class: "prx-de-report" }, reportMenus.six.root, reportMenus.finite.root, gradeBoxes.six.box, gradeBoxes.finite.box);
-      ctx.controls.append(lawRadio.root, reportBox, familyRadio.root, tau.root, drawRow, drawNote);
+      const reportBox = h("div", { class: "prx-de-report" }, reportMenus.six.root, reportMenus.finite.root);
+      ctx.controls.append(lawRadio.root, reportBox, tau.root);
+      settings = ctx.disclosure({ name: "settings", title: T.settingsSix, placement: "controls", className: "prx-de-settings" });
+      // the seed field leaves the draw row (2.8 only: 2.9's own draw row keeps it) for the box
+      seed.root.classList.add("prx-de-seed");
+      settings.body.append(gradeBoxes.six.box, gradeBoxes.finite.box, familyRadio.root, seed.root);
 
-      ctx.controls.after(ctx.readout.node);
-
-      // --- panels
-      const matrixSlot = h("div", { class: "prx-de-matrix" });
+      // --- panels (the DOM in the phone order: matrix, result column, this draw, bound row; named grid areas place
+      // them on a wide container, CSS above)
+      const matrixSlot = ctx.primaryGraphic(h("div", { class: "prx-de-matrix" }));
       const matrixLegend = h("div", { class: "prx-de-legend", "data-prx-part": "legend" });
       const stripSlot = h("div", { class: "prx-de-chart" });
       const drawLine = h("p", { class: "prx-de-drawline", "data-prx-part": "readout" });
@@ -797,21 +972,24 @@ export function mountWidget(el, spec = {}) {
       const lawHeading = h("h4", { class: "prx-de-heading", text: T.lawTableHeading });
       const coupling = ctx.slider({ label: "Coupling shift u", ...ctx.key("coupling"), format: v => formatDecimal(v, { digits: 3 }), onInput: u => ctx.set({ coupling: u }),
         hint: "Moves probability among whole orders while keeping every pair's wrong-direction probability unchanged." });
+      const couplingValue = h("strong");
+      const couplingResult = h("p", { class: "prx-de-coupling-result" }, "Exact all-right probability: ", couplingValue);
+      coupling.output.after(couplingResult);
       const pairErrors = h("p", { class: "prx-de-note" });
       ctx.scrollRegion(lawTableSlot, "Finite-law order table");
-      const lawBox = h("div", { class: "prx-de-lawbox" }, lawHeading, coupling.root, lawTableSlot, lawFormula, pairErrors);
-      const thisDraw = h("div", { class: "prx-de-thisdraw" }, h("h4", { class: "prx-de-heading", text: T.drawHeading }), drawLine, stripSlot, stripKey);
-      const matrixPanel = h("section", { class: "prx-de-panel", "aria-label": T.matrixHeading, "data-prx-part": "chart" },
-        h("h4", { class: "prx-de-heading", text: T.matrixHeading }), matrixSlot, matrixLegend, thisDraw);
+      // finite law: the coupling slider directly under the all-right and union tiles; the order table, the formula for E
+      // and the fixed pair errors after the tiles' notes
+      const couplingBox = h("div", { class: "prx-de-coupling" }, coupling.root);
+      const lawBox = h("div", { class: "prx-de-lawbox" }, lawHeading, lawTableSlot, lawFormula, pairErrors);
+      const matrixPanel = h("section", { class: "prx-de-panel prx-de-area-matrix", "aria-label": T.matrixHeading, "data-prx-part": "chart" },
+        h("h4", { class: "prx-de-heading", text: T.matrixHeading }), matrixSlot, matrixLegend);
+      const thisDraw = h("div", { class: "prx-de-thisdraw prx-de-area-draw" }, h("h4", { class: "prx-de-heading", text: T.drawHeading }), drawLine, stripSlot, stripKey);
 
       const tiles = h("div", { class: "prx-de-tiles", "data-prx-part": "readout" });
       const evalCaption = h("p", { class: "prx-de-caption", "data-prx-part": "caption" });
       const eventNote = h("p", { class: "prx-de-note" });
-      const bound = h("div", { class: "prx-de-bound", "data-prx-part": "readout" });
-      const best = h("div", { class: "prx-de-best", "data-prx-part": "readout" });
-      const bestBtn = ctx.button({ label: T.useBest, key: "use-best", onClick: () => { const o = optimumOf(ctx.state.law, ctx.state.cap, ctx.state.tau, ctx.state.coupling); if (!o.empty) ctx.set({ grades: Array.from(o.grade) }); } });
       const resultsPanel = h("section", { class: "prx-de-panel", "aria-label": T.resultsHeading },
-        h("h4", { class: "prx-de-heading", text: T.resultsHeading }), tiles, eventNote, evalCaption, bound, best, bestBtn.root);
+        h("h4", { class: "prx-de-heading", text: T.resultsHeading }), tiles, couplingBox, eventNote, evalCaption, lawBox);
 
       const histSlot = h("div", { class: "prx-de-chart" });
       const histEvent = h("p", { class: "prx-de-note", "data-prx-part": "readout" });
@@ -821,14 +999,33 @@ export function mountWidget(el, spec = {}) {
         h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-rule" }), T.runKeyE));
       const drawsSummary = h("p", { class: "prx-de-summary", "data-prx-part": "readout" });
       const mcCaption = h("p", { class: "prx-de-caption", "data-prx-part": "caption" });
-      const drawsCharts = h("div", { class: "prx-de-grid" },
-        h("div", { class: "prx-de-sub" }, h("h4", { class: "prx-de-heading", text: T.histHeading }), histSlot, histEvent),
-        h("div", { class: "prx-de-sub" }, h("h4", { class: "prx-de-heading", text: T.runHeading }), runSlot, runLegend));
+      // the seed the next draws use, beside the buttons (the field itself is in the box above)
+      const seedTag = h("span", { class: "prx-de-seedtag" });
+      (drawRow.querySelector(".prx-de-draw-buttons") ?? drawRow).append(seedTag);
+      const histSub = h("div", { class: "prx-de-sub" }, h("h4", { class: "prx-de-heading", text: T.histHeading }), histSlot, histEvent);
+      const runSub = h("div", { class: "prx-de-sub" }, h("h4", { class: "prx-de-heading", text: T.runHeading }), runSlot, runLegend);
+      // six sites with stated pairs: the all-right note that changes with the draws (under the zero-bin note, or under
+      // the "No draws yet" note), below the buttons so a first draw does not move them
+      const eventNoteSix = h("p", { class: "prx-de-note" });
       const noDraws = h("p", { class: "prx-de-note", "data-prx-part": "notes" }, `${T.noDraw} `, ctx.num(CONFIG.draws.many, formatCount(CONFIG.draws.many)), ".");
+      // the buttons directly above the histogram (review 044 repair: the draw's result next to the button)
       const drawsPanel = h("section", { class: "prx-de-panel prx-de-draws", "aria-label": T.runHeading, "data-prx-part": "chart" },
-        drawsSummary, noDraws, drawsCharts, mcCaption);
+        drawRow, drawNote, noDraws, histSub, eventNoteSix, runSub, drawsSummary, mcCaption);
+      const resultCol = h("div", { class: "prx-de-side prx-de-area-result" }, resultsPanel, drawsPanel);
 
-      ctx.charts.append(h("div", { class: "prx-de-grid prx-de-top" }, matrixPanel, h("div", { class: "prx-de-side" }, resultsPanel, lawBox)), drawsPanel);
+      // --- the bound row: the one-line badge, the one diagnostic line and a closed "Why" box (data-prx-bound on the
+      // wrapper, so its label, family size and "not a bound" wording stay inside it), then the best report and its button
+      const boundBox = h("div", { class: "prx-de-bound", "data-prx-part": "readout" });
+      const badgeLine = h("p", { class: "prx-de-badge" });
+      const diagLine = h("p", {});
+      const why = ctx.disclosure({ name: "why", title: T.whyTitle, placement: "none", className: "prx-de-why" });
+      boundBox.append(badgeLine, diagLine, why.root);
+      const best = h("div", { class: "prx-de-best", "data-prx-part": "readout" });
+      const bestBtn = ctx.button({ label: T.useBest, key: "use-best", onClick: () => { const o = optimumOf(ctx.state.law, ctx.state.cap, ctx.state.tau, ctx.state.coupling); if (!o.empty) ctx.set({ grades: Array.from(o.grade) }); } });
+      const boundRow = h("div", { class: "prx-de-boundrow prx-de-area-bound" }, boundBox, best, bestBtn.root);
+
+      ctx.charts.classList.add("prx-de-charts");
+      ctx.charts.append(h("div", { class: "prx-de-main" }, matrixPanel, resultCol, thisDraw, boundRow));
       ctx.caption.replaceChildren(h("span", {}, `${T.note} (`), captionNode(ctx, "teaching-posterior"), ").");
 
       // Linked figures
@@ -966,9 +1163,21 @@ export function mountWidget(el, spec = {}) {
 
       // ------------------------------------------------------------------------------------- read-outs and bound
 
-      function tile(name, ...value) {
-        return h("div", { class: "prx-de-tile" }, h("span", { class: "prx-de-tile-name", text: name }), h("span", { class: "prx-de-tile-value" }, ...value));
-      }
+      // the tiles are made once and their values rewritten (review 044 repair: a first draw keeps the reader's place,
+      // since the browser's scroll anchoring can hold on to a tile that is not replaced)
+      const tileEls = {};
+      const tile = (key, name) => {
+        const value = h("span", { class: "prx-de-tile-value" });
+        const root = h("div", { class: "prx-de-tile" }, h("span", { class: "prx-de-tile-name", text: name }), value);
+        tileEls[key] = { root, value };
+        return root;
+      };
+      tiles.append(tile("N", T.tileN), tile("E", T.tileE), tile("EN", T.tileEN), tile("allRight", "Every stated direction right"),
+        tile("union", "Union lower bound"), tile("tau", T.tileTau));
+      // six sites with stated pairs: the note under the estimate in one of two fixed wordings; the other wording sizes
+      // the box (CSS ::after, hidden), so the tile keeps its height when the first draw switches the wording
+      const MC_NOTES = Object.freeze({ none: "Draw to estimate; independent normal latent values", some: "Monte Carlo estimate; independent normal latent values" });
+      const mcNote = (S) => h("span", { class: "prx-de-event-note prx-de-mc-note", "data-prx-other": S ? MC_NOTES.none : MC_NOTES.some }, h("span", {}, S ? MC_NOTES.some : MC_NOTES.none));
 
       function drawTiles(rep, ev, tauV, event, S) {
         const lawKey = rep.law.key;
@@ -976,17 +1185,29 @@ export function mountWidget(el, spec = {}) {
         const enValue = EN === null
           ? [ro("EoverN", null, formatEoverN(null)), h("span", { class: "prx-de-tile-note" }, " (N/M = ", ctx.num(ev.s, formatCount(ev.s)), ": ", T.naNote, ")")]
           : [ro("EoverN", EN, enText(EN, lawKey))];
-        tiles.replaceChildren(
-          tile(T.tileN, ro("N", ev.N, formatCount(ev.N)), " of ", ro("M", ev.M, formatCount(ev.M))),
-          tile(T.tileE, ro("E", ev.Ew, eText(ev.Ew, lawKey))),
-          tile(T.tileEN, ...enValue),
-          tile("Every stated direction right", ...(event ? [ro("allRight", event.pNone, lawKey === "finite" ? exact(event.pNone) : formatProb(event.pNone)), h("span", { class: "prx-de-event-note" }, ev.N === 0 ? "vacuous: no directions stated" : lawKey === "finite" ? "exact finite-law probability" : "Monte Carlo estimate; independent normal latent values")] : [h("span", { class: "prx-de-event-note" }, "Draw to estimate; independent normal latent values")])),
-          ...(lawKey === "finite" ? [tile("Union lower bound", ro("unionLower", event.unionBound, exact(event.unionBound)))] : []),
-          tile(T.tileTau, ro("tau", tauV, formatSetting(tauV))),
-        );
+        tileEls.N.value.replaceChildren(ro("N", ev.N, formatCount(ev.N)), " of ", ro("M", ev.M, formatCount(ev.M)));
+        tileEls.E.value.replaceChildren(ro("E", ev.Ew, eText(ev.Ew, lawKey)));
+        tileEls.EN.value.replaceChildren(...enValue);
+        const six = lawKey === "six" && ev.N > 0;
+        tileEls.allRight.value.replaceChildren(...(event
+          ? [ro("allRight", event.pNone, lawKey === "finite" ? exact(event.pNone) : formatProb(event.pNone)),
+            six ? mcNote(S) : h("span", { class: "prx-de-event-note" }, ev.N === 0 ? "vacuous: no directions stated" : "exact finite-law probability")]
+          : [h("span", { class: "prx-de-tile-pending", "aria-hidden": "true" }), mcNote(0)]));
+        tileEls.union.root.hidden = lawKey !== "finite";
+        if (lawKey === "finite") {
+          tileEls.union.value.replaceChildren(ro("unionLower", event.unionBound, exact(event.unionBound)));
+          couplingValue.replaceChildren(ctx.num(event.pNone, exact(event.pNone)));
+        } else {
+          tileEls.union.value.replaceChildren();
+          couplingValue.replaceChildren();
+        }
+        tileEls.tau.value.replaceChildren(ro("tau", tauV, formatSetting(tauV)));
+        const sixNote = lawKey === "six" && ev.N > 0;
+        eventNote.hidden = sixNote;
+        eventNoteSix.hidden = !sixNote;
         if (ev.N === 0) eventNote.replaceChildren("The all-right event has probability ", ctx.num(event.pNone, formatProb(event.pNone)), " because it makes no assertions. E/N remains ", ctx.num(null, formatEoverN(null)), ".");
         else if (lawKey === "finite") eventNote.replaceChildren("E/N averages errors across stated pairs. The all-right event requires every statement to hold together; its union lower bound is max(", ctx.num(0, formatCount(0)), ", ", ctx.num(1, formatCount(1)), " − E). The coupling control changes this joint event while keeping the pair probabilities fixed.");
-        else eventNote.replaceChildren(...(S ? ["All-right probability is estimated from ", ctx.num(S, formatCount(S)), " draws of independent normal latent values; it is not an exact normal-law calculation. The finite-law mode gives an exact event probability and union bound."] : ["Draw independent normal latent values to estimate the all-right event. The finite-law mode gives an exact event probability and union bound."]));
+        else eventNoteSix.replaceChildren(...(S ? ["All-right probability is estimated from ", ctx.num(S, formatCount(S)), " draws of independent normal latent values; it is not an exact normal-law calculation. The finite-law mode gives an exact event probability and union bound."] : ["Draw independent normal latent values to estimate the all-right event. The finite-law mode gives an exact event probability and union bound."]));
         evalCaption.replaceChildren("(", captionNode(ctx, "fixed-report"), ")");
       }
 
@@ -999,11 +1220,19 @@ export function mountWidget(el, spec = {}) {
         const sa = statedAbove(rep.g, rep.law.E, { tau: tauV });
         const tauN = tauV * ev.N;
         const EN = ev.EoverN[0];
-        const lines = [];
         const holds = ev.risk <= tauV + CONFIG.riskTolerance;
-        lines.push(h("p", { "data-prx-diagnostic": holds ? "holds" : "fails" }, "Risk R = ", ro("diagnosticRisk", ev.risk, lawKey === "finite" ? exact(ev.risk) : formatRisk(ev.risk)), holds ? " ≤ τ = " : " > τ = ", tauNode(tauV), "; equivalently E = ", ro("diagnosticE", ev.Ew, eText(ev.Ew, lawKey)), holds ? " ≤ τN = " : " > τN = ", ro("diagnosticTauN", tauN, tauNText(tauN, lawKey)), "."));
+        const reason = !inFamily ? "notInFamily" : !opt.empty && !opt.containsAllWithheld ? "noAllWithheld" : "notOptimum";
+        // review 044 repair (G2-F4, G2-F6): one badge line, the one diagnostic line, and the explanatory sentences in the
+        // closed "Why" box; the wrapper carries data-prx-bound, so the bound's label and family size stay inside it
+        boundBox.setAttribute("data-prx-bound", applies ? "applies" : "not-shown");
+        diagLine.setAttribute("data-prx-diagnostic", holds ? "holds" : "fails");
+        diagLine.replaceChildren("Risk R = ", ro("diagnosticRisk", ev.risk, lawKey === "finite" ? exact(ev.risk) : formatRisk(ev.risk)), holds ? " ≤ τ = " : " > τ = ", tauNode(tauV), "; equivalently E = ", ro("diagnosticE", ev.Ew, eText(ev.Ew, lawKey)), holds ? " ≤ τN = " : " > τN = ", ro("diagnosticTauN", tauN, tauNText(tauN, lawKey)), ".");
+        const lines = [];
+        // the badge's state (a new hook, review 044 repair: applies, holds without a guarantee, or fails)
+        badgeLine.setAttribute("data-prx-badge", applies ? "applies" : holds ? "holds" : "fails");
         if (applies) {
-          lines.push(h("p", { class: "prx-de-badge", "data-prx-bound": "applies" }, h("strong", {}, `${T.boundYes} `), tagNode(ctx, opt), T.boundYesEnd));
+          badgeLine.className = "prx-de-badge";
+          badgeLine.replaceChildren(h("strong", {}, `${T.boundYes} `), tagNode(ctx, opt), T.boundYesEnd);
           if (ev.N === 0) {
             lines.push(h("p", {}, "Here nothing is stated: E = ", ro("boundE", ev.Ew, eText(ev.Ew, lawKey)), " and τN = ", ro("tauN", tauN, tauNText(tauN, lawKey)), ", and the share E/N is ", ro("boundEN", null, formatEoverN(null)), "."));
           } else {
@@ -1015,24 +1244,25 @@ export function mountWidget(el, spec = {}) {
             lines.push(h("p", { class: "prx-de-caution" }, T.boundAverage, ...over));
           }
         } else {
-          const why = !inFamily ? T.notInFamily : !opt.empty && !opt.containsAllWithheld ? T.noAllWithheld : T.notOptimum;
-          lines.push(h("p", { class: "prx-de-badge prx-de-badge-no", "data-prx-bound": "not-shown" }, h("strong", {}, `${T.boundNo} `),
+          badgeLine.className = "prx-de-badge prx-de-badge-no";
+          badgeLine.replaceChildren(...(holds ? [h("strong", {}, T.badgeHolds), ` ${T.badgeReason[reason]}`] : [h("strong", {}, T.badgeFails), ` ${T.badgeFailsEnd}`]));
+          const whyText = reason === "notInFamily" ? T.notInFamily : reason === "noAllWithheld" ? T.noAllWithheld : T.notOptimum;
+          lines.push(h("p", { class: "prx-de-sidebyside" }, h("strong", {}, `${T.boundNo} `),
             ...(EN === null ? ["E/N is ", ro("boundEN", null, formatEoverN(null)), " (nothing is stated); τ = ", tauNode(tauV), "."]
               : ["E/N = ", ro("boundEN", EN, enText(EN, lawKey)), " and τ = ", tauNode(tauV), "."])));
-          lines.push(h("p", {}, why));
+          lines.push(h("p", {}, whyText));
           if (ev.N > 0) {
-            const holds = ev.risk <= tauV + CONFIG.riskTolerance;
             const r = ro("ownRisk", ev.risk, lawKey === "finite" ? exact(ev.risk) : formatRisk(ev.risk));
             lines.push(h("p", { class: "prx-de-own", "data-prx-own": holds ? "holds" : "fails" },
               ...(holds ? [`${T.holdsOwn} `, r, ` ${T.holdsOwnEnd}`] : [`${T.failsOwn} `, r, ` ${T.failsOwnEnd}`])));
           }
         }
-        bound.replaceChildren(...lines);
+        why.body.replaceChildren(...lines);
         // the best report of the family shown, with its label (exactOptimum)
         if (opt.empty) {
           best.replaceChildren(h("p", {}, "The family shown is empty."));
           bestBtn.root.hidden = true;
-          return { applies, isOpt };
+          return { applies, isOpt, holds, reason };
         }
         const optima = opt.grades.map((x) => Array.from(x));
         const items = optima.flatMap((x, k) => [k ? " or " : "", blocksText(x, rep.law.ids), " (", ro(`optimum${k}`, x, formatGrades(x)), ")"]);
@@ -1043,14 +1273,15 @@ export function mountWidget(el, spec = {}) {
           h("p", {}, h("strong", {}, optima.length > 1 ? "Best reports in the family shown at this τ: " : "Best report in the family shown at this τ: "), ...items, "."),
           h("p", { class: "prx-de-label" }, ...label));
         bestBtn.root.hidden = isOpt;
-        return { applies, isOpt };
+        return { applies, isOpt, holds, reason };
       }
 
       function drawDraws(rep, ev, counts, state) {
         const S = counts.length;
         const N = ev.N;
         noDraws.hidden = S > 0;
-        drawsCharts.hidden = S === 0;
+        histSub.hidden = S === 0;
+        runSub.hidden = S === 0;
         if (S === 0) {
           drawsSummary.replaceChildren();
           mcCaption.replaceChildren();
@@ -1059,11 +1290,11 @@ export function mountWidget(el, spec = {}) {
         }
         const mean = summaryStats(counts).mean;
         const share = N === 0 ? null : mean / N;
-        drawHistogram(ctx, histSlot, counts, N, { zeroEvent: true });
+        drawHistogram(ctx, histSlot, counts, N, { zeroEvent: true, zeroLabel: true, height: CONFIG.hist.compact });
         const zeroCount = counts.filter(x => x === 0).length;
         const pZero = summaryStats(counts.map(x => x === 0 ? 1 : 0)).mean;
         histEvent.replaceChildren("The zero bin is the event “every stated direction right”: ", ro("zeroDraws", zeroCount, formatCount(zeroCount)), " of ", ctx.num(S, formatCount(S)), " draws. Its Monte Carlo frequency is ", ro("zeroFrequency", pZero, formatProb(pZero)), ".", N === 0 ? " With no directions stated, this event is vacuous." : "");
-        drawRunningAverage(ctx, runSlot, counts, ev.Ew);
+        drawRunningAverage(ctx, runSlot, counts, ev.Ew, { height: CONFIG.run.compact });
         const lawKey = rep.law.key;
         drawsSummary.replaceChildren(
           "Over ", ro("S", S, formatCount(S)), S === 1 ? " draw" : " draws", ": on average ", ro("mean", mean, formatDecimal(mean, { digits: CONFIG.digits.mean })),
@@ -1079,7 +1310,7 @@ export function mountWidget(el, spec = {}) {
       // ------------------------------------------------------------------------------------- render
 
       return {
-        render(state) {
+        render(state, info = {}) {
           ctx.root.setAttribute("aria-busy", "true");
           try {
             const rep = reportOf(state);
@@ -1092,13 +1323,16 @@ export function mountWidget(el, spec = {}) {
               gradeBoxes[key].box.hidden = !on;
             }
             const named = CONFIG.named[lawKey].find((x) => same(Array.from(x), rep.g));
-            reportMenus[lawKey].set(named ? named.join(",") : "custom");
+            // a render because the box opened (the reader chose "Your own") keeps the menu on "Your own"
+            if (info.reason !== "disclosure") reportMenus[lawKey].set(named ? named.join(",") : "custom");
+            settings.summary.textContent = lawKey === "six" ? T.settingsSix : T.settingsFinite;
             gradeBoxes[lawKey].selects.forEach((s, i) => s.set(rep.g[i]));
             familyRadio.root.hidden = lawKey !== "six";
             familyRadio.set(state.cap);
             tau.set(state.tau);
             coupling.set(state.coupling);
             seed.set(state.seed);
+            seedTag.replaceChildren(`${T.seedTag} `, ctx.num(state.seed, formatSetting(state.seed)));
             const full = state.draws >= CONFIG.draws.max;
             btnOne.setDisabled(full);
             btnMany.setDisabled(full);
@@ -1131,6 +1365,7 @@ export function mountWidget(el, spec = {}) {
             drawTiles(rep, ev, state.tau, event, S);
             const b = drawBound(rep, ev, opt, state.tau);
             lawBox.hidden = lawKey !== "finite";
+            couplingBox.hidden = lawKey !== "finite";
             if (lawKey === "finite") drawLawTable(rep, S > 0 ? last : null, state.tau);
             const d = drawDraws(rep, ev, counts, { ...state, draws: S });
 
@@ -1140,7 +1375,8 @@ export function mountWidget(el, spec = {}) {
               ...(ev.N === 0 ? ["no direction"] : [ctx.num(ev.N, formatCount(ev.N)), ev.N === 1 ? " direction" : " directions"]), "; E = ", ctx.num(ev.Ew, eText(ev.Ew, lawKey)),
               ", E/N = ", ctx.num(ev.EoverN[0], enText(ev.EoverN[0], lawKey))];
             if (event) parts.push(lawKey === "finite" ? "; exact all-right probability " : ev.N === 0 ? "; vacuous all-right probability " : "; Monte Carlo all-right estimate ", ctx.num(event.pNone, lawKey === "finite" ? exact(event.pNone) : formatProb(event.pNone)));
-            parts.push(b.applies ? "; E ≤ τN applies." : "; E/N and τ side by side, not a bound.");
+            // review 044 (G2-F6): three distinct statements, guaranteed / holds but not guaranteed / fails
+            parts.push(b.applies ? T.readoutApplies : b.holds ? T.readoutHolds[b.reason] : T.readoutFails);
             if (d) parts.push(" After ", ctx.num(S, formatCount(S)), S === 1 ? " draw" : " draws", ", the average is ", ctx.num(d.mean, formatDecimal(d.mean, { digits: CONFIG.digits.mean })), " wrong per draw.");
             ctx.readout.set(parts);
 

@@ -15,9 +15,16 @@ export const COHERENCE_CSS = `
 /*
  * postrank Explorer · coherence (catalog G-04; js/widgets/coherence.js)
  *
- * Layout: the view switch and the sliders, the live read-out, then one view at a time. KRW view: the three posteriors,
- * then the direction probabilities and the pair choices side by side when the widget is wide enough (one column below
- * about 40rem). Finite view: the law and the pair choices side by side, the second prediction, then the reports.
+ * Layout (review 044 repair, X-01, G2-F2, G2-F3): base.js's result-first frame: the sliders, the preset row, the live
+ * read-out, then one view.
+ *   KRW view (2.6): the direction probabilities with the cost strip under them on the same axis of the middle mean
+ *   (the primary graphic), the verdict and the pair choices beside them from a 40rem container on, then the legend,
+ *   the three posteriors and the live formulas. In one column (a phone) the DOM order is the reading order: chart and
+ *   strip, verdict, pair choices and the best report, legend, posteriors, formulas.
+ *   Finite view (2.7): the thirteen reports (the primary graphic) with the verdict, the pair choices and a compact card
+ *   of the law beside them from a 40rem container on (.prx-split); the full law table and the formula of the pairwise
+ *   cost are complete in a closed box under the card. One column: reports, verdict, pair choices, law card, box.
+ * The two-column rules are container queries on the charts (CSS only, so a background tab lays out the same).
  * Legends and figures sit on the plot panel (--prx-plot-bg) so data colors keep their meaning in every theme.
  * Tokens only; nothing here is wider than its container at 375 px.
  */
@@ -200,7 +207,65 @@ export const COHERENCE_CSS = `
   border: 2.5px solid var(--prx-plot-fg);
 }
 
+/* --- review 044 repair (X-01, G2-F2, G2-F3): the result-first views --- */
+.prx-coh .prx-coh-charts { container-type: inline-size; }
 
+/* the cost strip's keys */
+.prx-coh .prx-coh-swatch-solid {
+  height: 0;
+  border: 0;
+  border-top: 2px solid var(--prx-plot-fg);
+}
+
+.prx-coh .prx-coh-swatch-extra {
+  background: var(--prx-neutral-4);
+}
+
+/* KRW view: one column in DOM order; from a 40rem container the chart and its strip on the left, the verdict and the
+   pair choices on the right, the legend, the posteriors and the formulas under the chart */
+.prx-coh .prx-coh-krw {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.6rem 1.25rem;
+  align-items: start;
+  min-width: 0;
+}
+
+.prx-coh .prx-coh-krw > .prx-coh-panel,
+.prx-coh .prx-coh-split .prx-coh-panel { margin: 0; }
+
+.prx-coh .prx-coh-cost { min-width: 0; max-width: 100%; margin-top: 2px; }
+
+/* a phone's column: the panel headings a little smaller, so each stays on one line */
+@container (max-width: 24rem) {
+  .prx-coh .prx-coh-charts .prx-coh-heading { font-size: 0.8em; }
+}
+
+.prx-coh .prx-coh-verdict > .prx-coh-together { margin: 0 0 0.5rem; }
+
+@container (min-width: 40rem) {
+  .prx-coh .prx-coh-krw {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: "curve choices" "legend choices" "dens choices" "formula choices";
+  }
+  .prx-coh .prx-coh-krw > .prx-coh-curvebox { grid-area: curve; }
+  .prx-coh .prx-coh-krw > .prx-coh-choicebox { grid-area: choices; }
+  .prx-coh .prx-coh-krw > .prx-coh-legendbox { grid-area: legend; }
+  .prx-coh .prx-coh-krw > .prx-coh-densbox { grid-area: dens; }
+  .prx-coh .prx-coh-krw > .prx-coh-formulabox { grid-area: formula; }
+}
+
+/* finite view: the reports beside the verdict, the pair choices and the law card (shared .prx-split) */
+.prx-coh .prx-coh-split > .prx-split-main { flex-basis: 30rem; }
+.prx-coh .prx-coh-side { display: grid; gap: 0.6rem; min-width: 0; }
+.prx-coh .prx-coh-lawcard p { margin: 0; font-size: 0.95em; }
+.prx-coh .prx-coh-lawcard .prx-coh-lawsep { color: var(--prx-fg-muted); }
+.prx-coh .prx-coh-lawcard .prx-coh-lawrow { display: block; }
+.prx-coh .prx-coh-lawcard .prx-coh-lawitem { white-space: nowrap; }
+.prx-coh .prx-coh-lawbox .prx-coh-panel + .prx-coh-panel { margin-top: 0.6rem; }
+.prx-coh .prx-coh-reports .prx-coh-label { margin: 0.35rem 0 0.25rem; }
+.prx-coh .prx-coh-reports > .prx-coh-choices p { margin-top: 0.25rem; }
 `;
 
 export const CONFIG = Object.freeze({
@@ -227,7 +292,14 @@ export const CONFIG = Object.freeze({
     // where each curve's name sits, in ω₂ (x) and px above (−) or below (+) its curve; the flat π_AC is named mid-way
     nameAt: Object.freeze([0.15, 1.85, 1.62]), nameDy: Object.freeze([14, 14, -10]),
   }),
-  bars: Object.freeze({ row: 26, marginTop: 22, marginBottom: 36, marginLeft: 92, marginRight: 46, labelOffset: 30, padding: 0.25, rule: "4 3", optimumStroke: 2.5, labelDx: 4, nameDx: -6 }),
+  bars: Object.freeze({ row: 26, marginTop: 22, marginBottom: 36, marginLeft: 92, marginRight: 46, labelOffset: 30, padding: 0.25, rule: "4 3", optimumStroke: 2.5, labelDx: 4, nameDx: -6, tickPx: 80 }),
+  // review 044 repair (G2-F3): the cost strip under the direction probabilities, sharing the chart's axis of the middle
+  // mean (the curve's margins left and right, so the two x scales line up; the chart's axis and its label sit between
+  // them): the best printable risk and the pairwise cost at the curve's grid points and the band's ends. The extra cost
+  // of printing is written at the top of the strip beside the current middle mean, in a band of labelPx kept above
+  // every line (so the label never meets a line), on the side toward the middle of the axis. The y scale leaves
+  // lowPx under the lowest line; a flat strip (τ ≤ .07, every pair withheld) spans at least minSpan.
+  cost: Object.freeze({ height: 74, marginTop: 4, marginBottom: 6, ticks: 2, labelPx: 17, lowPx: 4, minSpan: 0.008, rule: "4 3", dotR: 3.5, labelDx: 6, labelDy: 2, memo: 32 }),
   text: Object.freeze({
     viewLegend: "Example",
     viewKrw: "KRW's three firms (normal posteriors)",
@@ -279,6 +351,22 @@ export const CONFIG = Object.freeze({
     notPrintable: "No grade report prints these choices.",
     overNone: "No direction the best report states has an error above τ.",
     riskAxis: "expected loss per pair (risk)",
+    // review 044 repair (G2-F3): the cost strip
+    costAlt: "Strip under the direction probabilities, on the same axis of the middle mean: the risk of the best report we can print (solid line), the cost of the pairwise choices (dashed line), the extra cost of printing shaded between them, and the current middle mean with the extra cost written above it.",
+    costLabel: "Cost per pair as the middle mean moves",
+    costMark: "extra cost",
+    costKeyBest: "lower strip, solid line: risk of the best report we can print",
+    costKeyPair: "dashed line: cost of the pairwise choices (not a report)",
+    costKeyExtra: "shaded: the extra cost of printing a grade report",
+    // review 044 repair (G2-F3): the review's replacement read-out of the KRW view
+    roAlone: "alone, we would ",
+    roNotPrintable: " — no grade report prints that.",
+    roPrintable: " — a grade report prints that.",
+    roPrintableTied: " — a grade report prints one set of these choices.",
+    roBest: " Best printable: ",
+    // review 044 repair (G2-F2): the finite view's title and its box
+    reportsTitle: Object.freeze(["Best printable ", "{opt}", " vs ", "{relaxed}", " for pairs decided alone"]),
+    lawBoxTitle: Object.freeze(["How the pairwise cost of ", "{relaxed}", " is computed"]),
   }),
 });
 
@@ -341,6 +429,35 @@ function exact(v) {
   try { return formatRational(v); } catch { return formatRisk(v); }
 }
 
+/**
+ * The cost strip of the KRW view at one τ (review 044 repair, G2-F3): at every point of the direction-probability
+ * curve's grid and at the band's two ends, the best printable risk (exactOptimum over 𝒜₃), the cost of the pairwise
+ * choices (relaxedPairRisk) and the extra cost of printing: 0 where the pairwise choices print (printingReports), else
+ * the difference of the two engine values. Kept for the last CONFIG.cost.memo values of τ.
+ */
+const costMemo = new Map();
+export function costRows(tau) {
+  const key = String(tau);
+  if (costMemo.has(key)) return costMemo.get(key);
+  const lo = CONFIG.omega2.min;
+  const hi = CONFIG.omega2.max;
+  const n = CONFIG.curve.points;
+  const band = krwExample1Band(tau);
+  const ws = Array.from({ length: n }, (_, k) => lo + ((hi - lo) * k) / (n - 1));
+  if (!band.empty) for (const w of [band.lower, band.upper]) if (w > lo && w < hi) ws.push(w);
+  ws.sort((a, b) => a - b);
+  const rows = ws.map((w) => {
+    const E = krwErrors(w);
+    const opt = exactOptimum(E, { tau, family: CONFIG.family });
+    const rel = relaxedPairRisk(E, { tau });
+    const prints = printingReports(pairChoices(E, tau)).length > 0;
+    return { w, opt: opt.risk, rel, extra: prints ? 0 : Math.max(0, opt.risk - rel) };
+  });
+  if (costMemo.size >= CONFIG.cost.memo) costMemo.delete(costMemo.keys().next().value);
+  costMemo.set(key, rows);
+  return rows;
+}
+
 // ---------------------------------------------------------------------------------------------- widget
 
 /** Whether a state is the first question's setting (view, ω₂ and τ). */
@@ -353,6 +470,8 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
     label: finite ? "All thirteen reports of the three-unit finite law" : CONFIG.label,
     title: finite ? "Thirteen reports for three units" : CONFIG.title,
     className: "prx-coh",
+    // review 044 repair (X-01): the read-out directly under the sliders and the preset row
+    layout: "result-first",
     css: COHERENCE_CSS,
     keys: {
       ...(finite ? {} : { omega2: { type: "number", ...CONFIG.omega2 } }),
@@ -411,38 +530,54 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
         label: T.tauSlider, min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: ctx.state.tau,
         name: "tau", hint: T.tauHint.join(""), onInput: (v) => ctx.set({ tau: v }),
       });
-      tau.root.querySelector(".prx-hint")?.replaceChildren(...fillParts(T.tauHint, { one }));
-      ctx.controls.append(...(finite ? [] : [omega.root]), tau.root);
+      const tauHint = tau.root.querySelector(".prx-hint");
+      tauHint?.replaceChildren(...fillParts(T.tauHint, { one }));
+      // review 044 repair (G2-F2): the middle mean, the slider the KRW view is about (ctx.primaryControl), sits last,
+      // next to the preset row and the read-out, so that on a phone the read-out, the chart with its strip and the
+      // verdict follow it within one screen; τ comes first (one slider row at 1280, so the order changes nothing there)
+      ctx.controls.append(tau.root, ...(finite ? [] : [ctx.primaryControl(omega.root)]));
+      // (the result-first frame puts the read-out between the controls and the views)
+      ctx.charts.classList.add("prx-coh-charts");
 
-      ctx.controls.after(ctx.readout.node);
-
-      // --- KRW view
+      // --- KRW view (review 044 repair, X-01, G2-F2, G2-F3): the direction probabilities and the cost strip under them
+      // (the primary graphic), the verdict and the pair choices beside them, then the legend, the posteriors and the
+      // formulas; the DOM order is the one-column (phone) reading order, the grid places the columns (COHERENCE_CSS)
       const densSlot = h("div", { class: "prx-coh-chart" });
-      const densBox = h("section", { class: "prx-coh-panel", "aria-label": T.densHeading, "data-prx-part": "chart" },
+      const densBox = h("section", { class: "prx-coh-panel prx-coh-densbox", "aria-label": T.densHeading, "data-prx-part": "chart" },
         h("h4", { class: "prx-coh-heading", text: T.densHeading }), densSlot);
       const curveSlot = h("div", { class: "prx-coh-chart" });
-      const curveLegend = h("div", { class: "prx-coh-legend", "data-prx-part": "legend" });
-      const curveFormula = h("div", { class: "prx-coh-formula", "data-prx-part": "readout" });
+      const costSlot = h("div", { class: "prx-coh-chart prx-coh-cost" });
+      const curveLegend = h("div", { class: "prx-coh-legend prx-coh-legendbox", "data-prx-part": "legend" });
+      const curveFormula = h("div", { class: "prx-coh-formula prx-coh-formulabox", "data-prx-part": "readout" });
       const fCurve = ["pi12", "pi23"].map((name) => h("div", { class: "prx-coh-formula-line", "data-prx-tex": name }));
       curveFormula.append(...fCurve);
-      const curveBox = h("section", { class: "prx-coh-panel", "aria-label": T.probHeading, "data-prx-part": "chart" },
-        h("h4", { class: "prx-coh-heading", text: T.probHeading }), curveSlot, curveLegend, curveFormula);
+      const curveFigure = h("div", { class: "prx-coh-curvefigure" }, curveSlot, costSlot);
+      const curveBox = h("section", { class: "prx-coh-panel prx-coh-curvebox", "aria-label": T.probHeading, "data-prx-part": "chart" },
+        h("h4", { class: "prx-coh-heading", text: T.probHeading }), curveFigure);
+      // the verdict first (it says why the read-out's choices do not print), then the pair choices and the best report
+      const krwVerdict = h("div", { class: "prx-coh-choices prx-coh-verdict", "data-prx-part": "readout" });
       const krwChoices = h("div", { class: "prx-coh-choices", "data-prx-part": "readout" });
-      const krwChoicesBox = h("section", { class: "prx-coh-panel", "aria-label": T.choicesHeading },
-        h("h4", { class: "prx-coh-heading", text: T.choicesHeading }), krwChoices);
-      const krwAnswer = h("div", { class: "prx-coh-grid" }, curveBox, krwChoicesBox);
-      const krwView = h("div", { class: "prx-coh-view-krw" }, densBox, krwAnswer);
+      const krwChoicesBox = h("section", { class: "prx-coh-panel prx-coh-choicebox", "aria-label": T.choicesHeading },
+        krwVerdict, h("h4", { class: "prx-coh-heading", text: T.choicesHeading }), krwChoices);
+      const krwView = h("div", { class: "prx-coh-view-krw prx-coh-krw" }, curveBox, krwChoicesBox, curveLegend, densBox, curveFormula);
 
-      // --- finite view
+      // --- finite view (review 044 repair, X-01, G2-F2): the thirteen reports first (the primary graphic), titled with
+      // the finding; beside them the verdict, the pair choices and a compact card of the law; the full law table and
+      // the formula of the pairwise cost complete in a closed box under the card
       const lawTableSlot = h("div", { class: "prx-coh-law", "data-prx-part": "readout" });
-      const lawBox = h("section", { class: "prx-coh-panel", "aria-label": T.lawHeading },
-        h("h4", { class: "prx-coh-heading", text: T.lawHeading }), lawTableSlot);
+      const lawBox = h("section", { class: "prx-coh-panel", "aria-label": T.lawTable }, lawTableSlot);
+      const lawCardLine = h("p", { class: "prx-coh-lawline" });
+      const lawCard = h("section", { class: "prx-coh-panel prx-coh-lawcard", "aria-label": T.lawHeading, "data-prx-part": "readout" },
+        h("h4", { class: "prx-coh-heading", text: T.lawHeading }), lawCardLine);
+      const lawVerdict = h("div", { class: "prx-coh-choices prx-coh-verdict", "data-prx-part": "readout" });
       const lawChoices = h("div", { class: "prx-coh-choices", "data-prx-part": "readout" });
       const lawFormula = h("div", { class: "prx-coh-formula", "data-prx-part": "readout" });
       const fLaw = ["symbols", "numbers"].map((name) => h("div", { class: "prx-coh-formula-line", "data-prx-tex": `law-${name}` }));
-      lawFormula.append(h("p", { class: "prx-coh-note" }, "M = ", ro("law-pair-count", M, formatCount(M)), " possible unordered pairs; N counts stated pairs in a report; E is its expected number of wrong directions."), ...fLaw);
+      lawFormula.append(...fLaw);
+      // the count key (M, N, E) stays visible beside the bars, whose legend uses it (v3/reader-count-key)
+      const countKey = h("p", { class: "prx-coh-note", "data-prx-part": "readout" }, "M = ", ro("law-pair-count", M, formatCount(M)), " possible unordered pairs; N counts stated pairs in a report; E is its expected number of wrong directions.");
       const lawChoicesBox = h("section", { class: "prx-coh-panel", "aria-label": T.lawPairsHeading },
-        h("h4", { class: "prx-coh-heading", text: T.lawPairsHeading }), lawChoices, lawFormula);
+        h("h4", { class: "prx-coh-heading", text: T.lawPairsHeading }), lawChoices);
       const lawLabel = h("p", { class: "prx-coh-label", "data-prx-part": "readout" });
       const barsSlot = h("div", { class: "prx-coh-chart" });
       const barsLegend = h("div", { class: "prx-coh-legend", "data-prx-part": "legend" },
@@ -450,11 +585,24 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
         h("span", { class: "prx-coh-key" }, h("span", { class: "prx-coh-swatch", style: { background: "var(--prx-wh)" } }), T.whLegend),
         h("span", { class: "prx-coh-key" }, h("span", { class: "prx-coh-swatch prx-coh-swatch-rule" }), T.relaxedLegend),
         h("span", { class: "prx-coh-key" }, h("span", { class: "prx-coh-swatch prx-coh-swatch-outline" }), T.optimumLegend));
+      const lawBest = h("div", { class: "prx-coh-choices", "data-prx-part": "readout" });
       const lawOver = h("div", { class: "prx-coh-choices", "data-prx-part": "readout" });
-      const reportsBox = h("section", { class: "prx-coh-panel prx-coh-reports", "aria-label": T.reportsHeading },
-        h("h4", { class: "prx-coh-heading", text: T.reportsHeading }), lawLabel, barsSlot, barsLegend, lawOver);
-      const finiteView = h("div", { class: "prx-coh-view-finite" },
-        h("div", { class: "prx-coh-grid" }, lawBox, lawChoicesBox), reportsBox);
+      const reportsTitle = h("h4", { class: "prx-coh-heading", "data-prx-part": "readout" });
+      const reportsBox = h("section", { class: "prx-coh-panel prx-coh-reports prx-split-main", "aria-label": T.reportsHeading },
+        reportsTitle, barsSlot, lawBest, lawOver, lawLabel, barsLegend, countKey);
+      // Keep the slider's explanation and aria-describedby link, with the key below the finite report bars.
+      if (finite && tauHint) reportsBox.append(tauHint);
+      const lawSide = h("div", { class: "prx-coh-side prx-split-side" }, lawVerdict, lawChoicesBox, lawCard);
+      const finiteView = h("div", { class: "prx-coh-view-finite prx-split prx-coh-split" }, reportsBox, lawSide);
+      // the box: the law's table with the pair probabilities, then the formula of the pairwise cost (its title names
+      // the cost at the current τ, rewritten in render)
+      const lawDetails = finite ? ctx.disclosure({ name: "law", title: "", placement: "none", className: "prx-coh-lawbox" }) : null;
+      if (lawDetails) {
+        lawDetails.body.append(lawBox, lawFormula);
+        lawSide.append(lawDetails.root);
+      }
+      if (finite) ctx.primaryGraphic(barsSlot);
+      else ctx.primaryGraphic(curveFigure);
 
       ctx.charts.append(finite ? finiteView : krwView);
       ctx.caption.replaceChildren(
@@ -576,6 +724,10 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
             : h("span", { class: "prx-coh-key" }, h("span", { class: "prx-coh-swatch prx-coh-swatch-band" }),
               h("span", {}, T.bandKey, ", ω₂ from ", ro("bandLower", band.lower, formatDecimal(band.lower, { digits: 3 })), " to ",
                 ro("bandUpper", band.upper, formatDecimal(band.upper, { digits: 3 })))),
+          // the cost strip's keys (review 044 repair, G2-F3)
+          h("span", { class: "prx-coh-key" }, h("span", { class: "prx-coh-swatch prx-coh-swatch-solid" }), T.costKeyBest),
+          h("span", { class: "prx-coh-key" }, h("span", { class: "prx-coh-swatch prx-coh-swatch-rule" }), T.costKeyPair),
+          h("span", { class: "prx-coh-key" }, h("span", { class: "prx-coh-swatch prx-coh-swatch-extra" }), T.costKeyExtra),
         );
         // the live formulas π_AB = Φ((ω₁ − ω₂)/√2) and π_BC = Φ((ω₂ − ω₃)/√2), numbers put in
         const tex = (k) => {
@@ -591,6 +743,73 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
         };
         tex(0);
         tex(1);
+      }
+
+      /**
+       * The cost strip (review 044 repair, G2-F3): sharing the direction-probability chart's axis of the middle mean
+       * (same width and side margins, so the two x scales line up), the risk of the best report we can print (solid)
+       * and the cost of the pairwise choices (dashed) from costRows(τ), the extra cost of printing shaded between them
+       * (zero where the choices print), the band in the chart's gray, and the current middle mean as a rule with a dot
+       * on each line; at the top beside the rule, "extra cost" and its value at the current middle mean (a tspan with
+       * data-num, hook cost-extra), the same number as the read-out's. Keyboard: the strip's points, one per grid point.
+       */
+      function drawCost(state, band, current) {
+        const C = CONFIG.cost;
+        const V = CONFIG.curve;
+        const lo = CONFIG.omega2.min;
+        const hi = CONFIG.omega2.max;
+        const rows = costRows(state.tau);
+        const all = [...rows.flatMap((d) => [d.opt, d.rel]), current.opt, current.rel];
+        const yLo = Math.min(...all);
+        const yHi = Math.max(yLo + C.minSpan, Math.max(...all));
+        // the lines use the inner height less a label band on top and a little room below
+        const inner = C.height - C.marginTop - C.marginBottom;
+        const perPx = (yHi - yLo) / Math.max(1, inner - C.labelPx - C.lowPx);
+        const domain = [yLo - C.lowPx * perPx, yHi + C.labelPx * perPx];
+        const width = Math.max(1, Math.round(costSlot.clientWidth || curveSlot.clientWidth || ctx.width()));
+        const bandRow = band.empty ? [] : [{ x1: Math.max(lo, band.lower), x2: Math.min(hi, band.upper) }].filter((b) => b.x2 > b.x1);
+        const here = [{ w: state.omega2, opt: current.opt, rel: current.rel, extra: current.extra }];
+        // the label sits beside the rule on the side toward the middle of the axis (as the chart's dot labels do)
+        const right = state.omega2 <= (lo + hi) / 2;
+        const value = formatRisk(current.extra);
+        const withNumber = (index, scales, values, dims, context, next) => {
+          const g = next(index, scales, values, dims, context);
+          for (const node of g?.querySelectorAll ? g.querySelectorAll("text") : []) {
+            const tspan = node.ownerDocument.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            tspan.setAttribute("data-num", ctx.dataNum(current.extra));
+            tspan.setAttribute("data-prx-readout", "cost-extra");
+            tspan.setAttribute("font-weight", "700");
+            tspan.textContent = value;
+            node.replaceChildren(`${T.costMark} `, tspan);
+          }
+          return g;
+        };
+        const fmtW = (w) => formatDecimal(w, { digits: 3 });
+        plot(costSlot, {
+          alt: T.costAlt,
+          width,
+          height: C.height, marginTop: C.marginTop, marginBottom: C.marginBottom, marginLeft: V.marginLeft, marginRight: V.marginRight,
+          x: { domain: [lo, hi], axis: null },
+          y: { domain, ticks: C.ticks, label: null },
+          color: { type: "identity" },
+          marks: (c, P) => [
+            P.rect(bandRow, { x1: "x1", x2: "x2", y1: domain[0], y2: domain[1], fill: c.plotGrid }),
+            P.areaY(rows, { x: "w", y1: "rel", y2: "opt", fill: c.neutral[3], curve: "linear" }),
+            P.line(rows, { x: "w", y: "rel", stroke: c.plotAxis, strokeWidth: 1.5, strokeDasharray: C.rule }),
+            P.line(rows, { x: "w", y: "opt", stroke: c.plotFg, strokeWidth: 2 }),
+            P.ruleX([state.omega2], { stroke: c.plotFg, strokeWidth: 1 }),
+            P.dot(here, { x: "w", y: "rel", r: C.dotR, fill: c.plotBg, stroke: c.plotFg, strokeWidth: 1.5 }),
+            P.dot(here, { x: "w", y: "opt", r: C.dotR, fill: c.plotFg }),
+            P.text(here, {
+              x: "w", frameAnchor: "top", dy: C.labelDy, dx: right ? C.labelDx : -C.labelDx, lineAnchor: "top", textAnchor: right ? "start" : "end",
+              text: () => `${T.costMark} ${value}`, fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke", render: withNumber,
+            }),
+          ],
+          keyboard: {
+            data: rows, x: "w", y: "opt", sort: false, label: T.costLabel,
+            title: (d) => `ω₂ = ${fmtW(d.w)}: the best report we can print ${formatRisk(d.opt)}, the pairwise choices ${formatRisk(d.rel)}, extra cost ${formatRisk(d.extra)}.`,
+          },
+        });
       }
 
       function choiceLines(kind, choices, tau) {
@@ -651,7 +870,9 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
 
       function drawKrwChoices(state, E, choices, printing, opt, relaxed) {
         const list = h("ul", { class: "prx-coh-list" }, ...choiceLines("krw", choices, state.tau));
-        krwChoices.replaceChildren(list, togetherLine("krw", choices, printing),
+        // the verdict above the pair choices (review 044 repair, G2-F2), the rest in their order
+        krwVerdict.replaceChildren(togetherLine("krw", choices, printing));
+        krwChoices.replaceChildren(list,
           h("p", {}, `${T.pairwiseCost} `, ro("relaxed", relaxed, formatRisk(relaxed)), ` ${T.pairwiseCostEnd}`),
           ...bestLines("krw", opt, E, state.tau));
       }
@@ -668,10 +889,21 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
         const pis = CONFIG.pairs.map(([i, j]) => h("li", {}, "Pr(", theta(i), " > ", theta(j), " ∣ Y) = ", ctx.num(LAW.pi[0][i][j], exact(LAW.pi[0][i][j])),
           ", so ", eName(i, j), " = ", ctx.num(e0[i][j], exact(e0[i][j]))));
         lawTableSlot.replaceChildren(table, h("ul", { class: "prx-coh-list" }, ...pis));
+        // the compact card beside the reports (review 044 repair, G2-F2): the four orders with their probabilities,
+        // then the three pair errors they give (the same values as the table and the list in the box)
+        // one item ("ABC 3/5", "e_AB 1/4") never breaks inside; the orders on one line, the pair errors on the next
+        const item = (...kids) => h("span", { class: "prx-coh-lawitem" }, ...kids);
+        const sep = () => h("span", { class: "prx-coh-lawsep", "aria-hidden": "true", text: " · " });
+        const orders = L.orders.flatMap((o, s) => [s ? sep() : "", item(h("span", { "aria-hidden": "true", text: o }),
+          h("span", { class: "prx-sr-only", text: `${s ? "; " : ""}${o.split("").join(" > ")}` }), " ", ctx.num(L.probs[s], exact(L.probs[s])))]);
+        const errors = CONFIG.pairs.flatMap(([i, j], k) => [k ? ", " : "", item(eName(i, j), " ", ctx.num(e0[i][j], exact(e0[i][j])))]);
+        lawCardLine.replaceChildren(h("span", { class: "prx-coh-lawrow" }, ...orders), h("span", { class: "prx-coh-lawrow" }, "→ ", ...errors));
       }
 
       function drawLawChoices(state, choices, printing, relaxed) {
-        lawChoices.replaceChildren(h("ul", { class: "prx-coh-list" }, ...choiceLines("finite", choices, state.tau)), togetherLine("finite", choices, printing),
+        // the verdict above the pair choices (review 044 repair, G2-F2), the rest in their order
+        lawVerdict.replaceChildren(togetherLine("finite", choices, printing));
+        lawChoices.replaceChildren(h("ul", { class: "prx-coh-list" }, ...choiceLines("finite", choices, state.tau)),
           h("p", {}, `${T.pairwiseCost} `, ro("relaxed", relaxed, exact(relaxed)), ` ${T.pairwiseCostEnd}`));
         const f = formulaNums();
         renderTex(fLaw[0], `\\frac{${f.num(1, "1")}}{M}\\sum_{i<j}\\min(e_{ij},\\,e_{ji},\\,\\tau)`, { display: true, nums: f.raws });
@@ -698,6 +930,9 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
           { key: d.key, part: "wh", x1: d.err, x2: d.err + d.wh },
         ]).filter((s) => s.x2 > s.x1);
         const top = Math.max(...rows.map((d) => d.risk));
+        // review 044 repair: beside the side column the risk axis keeps the ticks it had at the views' full width (Plot's
+        // default count, one per 80 px of the plot, taken from the views' width instead of the reports column's)
+        const fullInner = Math.max(1, (ctx.charts.clientWidth || barsSlot.clientWidth || ctx.width()) - B.marginLeft - B.marginRight);
         plot(barsSlot, {
           alt: T.reportsAlt,
           table: {
@@ -715,7 +950,7 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
           },
           height: B.marginTop + B.marginBottom + rows.length * B.row,
           marginTop: B.marginTop, marginBottom: B.marginBottom, marginLeft: B.marginLeft, marginRight: B.marginRight,
-          x: { domain: [0, top], label: T.riskAxis, labelAnchor: "center", labelArrow: "none", labelOffset: B.labelOffset },
+          x: { domain: [0, top], ticks: fullInner / B.tickPx, label: T.riskAxis, labelAnchor: "center", labelArrow: "none", labelOffset: B.labelOffset },
           y: { domain: rows.map((d) => d.key), axis: null, padding: B.padding },
           color: { type: "identity" },
           marks: (c, P) => [
@@ -736,8 +971,10 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
         label.push(`. ${T.tolerance} `, ctx.num(opt.tieTol, formatSci(opt.tieTol, { trim: true })), ` ${T.toleranceGloss}`);
         lawLabel.replaceChildren(...label);
         const optima = opt.grades.map((g) => Array.from(g));
-        const lines = [h("p", {}, h("strong", {}, `${T.bestPrefix}: `), ...optima.flatMap((g, k) => [k ? " or " : "", ...blocksNodes("finite", g), " (", ro(`optimum${k}`, g, formatGrades(g)), ")"]),
-          ", risk ", ro("optRisk", opt.risk, exact(opt.risk)), ", against ", ctx.num(relaxed, exact(relaxed)), " for the pairwise choices.")];
+        // under the bars: the best line, the stated-above-τ lines, then the label (count of ties and tolerance)
+        lawBest.replaceChildren(h("p", {}, h("strong", {}, `${T.bestPrefix}: `), ...optima.flatMap((g, k) => [k ? " or " : "", ...blocksNodes("finite", g), " (", ro(`optimum${k}`, g, formatGrades(g)), ")"]),
+          ", risk ", ro("optRisk", opt.risk, exact(opt.risk)), ", against ", ctx.num(relaxed, exact(relaxed)), " for the pairwise choices."));
+        const lines = [];
         const over = optima.map((g) => ({ g, s: statedAbove(g, LAW, { tau: state.tau }) }));
         if (over.every((o) => o.s.count === 0)) lines.push(h("p", {}, T.overNone));
         for (const [k, o] of over.entries()) {
@@ -746,6 +983,10 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
           lines.push(h("p", {}, ...blocksNodes("finite", o.g), " states ", ...items, "."));
         }
         lawOver.replaceChildren(...lines);
+        // the title states the finding (review 044 repair, G2-F2): the best printable risk against the pairwise cost
+        const fillTitle = (parts) => parts.map((p) => (p === "{opt}" ? ctx.num(opt.risk, exact(opt.risk)) : p === "{relaxed}" ? ctx.num(relaxed, exact(relaxed)) : p));
+        reportsTitle.replaceChildren(...fillTitle(T.reportsTitle));
+        lawDetails?.summary.replaceChildren(...fillTitle(T.lawBoxTitle));
       }
 
       // ------------------------------------------------------------------------------------- the read-out line
@@ -755,6 +996,42 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
           ? ["Middle mean = ", ctx.num(state.omega2, fmtOmega(state.omega2)), ", τ = ", tauNode(state.tau)]
           : ["Three-unit law, τ = ", tauNode(state.tau)];
         ctx.readout.set([...at, ": ", ...parts]);
+      }
+
+      /**
+       * The KRW view's read-out (review 044 repair, G2-F3: the review's replacement copy, generalized): the setting, the
+       * pairwise choices in a phrase ("alone, we would state only A above C and withhold A–B and B–C"), whether a grade
+       * report prints them, then every best printable report with its grades, its risk and the extra cost of printing
+       * over the pairwise cost ("Best printable: {A, B} > {C} (1/1/2) or {A} > {B, C} (1/2/2), risk .1728, .0133 above
+       * the pairwise .1595."). Where the choices print, the risk equals the cost and both are written.
+       */
+      function krwHeadline(state, choices, printing, opt, relaxed, extra) {
+        const list = (items) => items.flatMap((it, k) => [k ? (k === items.length - 1 ? " and " : ", ") : "", ...it]);
+        const stated = choices.filter((c) => c.best.length === 1 && c.best[0] !== ACTION.withhold);
+        const held = choices.filter((c) => c.best.length === 1 && c.best[0] === ACTION.withhold);
+        const tied = choices.filter((c) => c.best.length > 1);
+        const above = (c) => (c.best[0] === ACTION.up ? [firmName(c.i), " above ", firmName(c.j)] : [firmName(c.j), " above ", firmName(c.i)]);
+        const pairOf = (c) => [firmName(c.i), "–", firmName(c.j)];
+        let alone;
+        if (stated.length === M) alone = [T.roAlone, "state every pair: ", ...list(stated.map(above))];
+        else if (!stated.length && !held.length) alone = ["alone, on ", ...list(tied.map(pairOf)), " two or more actions are equally good"];
+        else if (!stated.length && !tied.length) alone = [T.roAlone, "withhold every pair"];
+        else {
+          alone = [T.roAlone];
+          if (stated.length) alone.push(stated.length === 1 ? "state only " : "state ", ...list(stated.map(above)));
+          if (held.length) alone.push(stated.length > 1 ? ", and withhold " : stated.length ? " and withhold " : "withhold ", ...list(held.map(pairOf)));
+          if (tied.length) alone.push("; on ", ...list(tied.map(pairOf)), " two or more actions are equally good");
+        }
+        const verdict = printing.length ? (tied.length ? T.roPrintableTied : T.roPrintable) : T.roNotPrintable;
+        const optima = opt.grades.map((g) => Array.from(g));
+        const reports = optima.flatMap((g, k) => [k ? " or " : "", ...blocksNodes("krw", g), " (", ro(`ro-optimum${k}`, g, formatGrades(g)), ")"]);
+        const risk = ro("ro-optRisk", opt.risk, formatRisk(opt.risk));
+        const cost = ro("ro-relaxed", relaxed, formatRisk(relaxed));
+        const tail = printing.length
+          ? [", risk ", risk, ", equal to the pairwise ", cost, "."]
+          : [", risk ", risk, ", ", ro("ro-extra", extra, formatRisk(extra)), " above the pairwise ", cost, "."];
+        ctx.readout.set(["Middle mean ", ctx.num(state.omega2, fmtOmega(state.omega2)), ", τ ", tauNode(state.tau), ": ",
+          ...alone, verdict, T.roBest, ...reports, ...tail]);
       }
 
       function statedWords(kind, choices) {
@@ -788,11 +1065,14 @@ export function mountCoherence(el, spec = {}, mode = "krw") {
               const printing = printingReports(choices);
               const opt = exactOptimum(E, { tau: state.tau, family: CONFIG.family });
               const relaxed = relaxedPairRisk(E, { tau: state.tau });
+              // the extra cost of printing: 0 where the pairwise choices print, else the two engine values' difference
+              const extra = printing.length ? 0 : Math.max(0, opt.risk - relaxed);
+              const band = krwExample1Band(state.tau);
               drawDensities(state);
-              drawCurves(state, krwExample1Band(state.tau), choices);
+              drawCurves(state, band, choices);
+              drawCost(state, band, { opt: opt.risk, rel: relaxed, extra });
               drawKrwChoices(state, E, choices, printing, opt, relaxed, false);
-              headline(state, [...statedWords("krw", choices), printing.length ? "; a grade report prints these choices" : "; no grade report prints these choices",
-                ". Best report we can print: risk ", ctx.num(opt.risk, formatRisk(opt.risk)), " (the pairwise choices cost ", ctx.num(relaxed, formatRisk(relaxed)), ")."]);
+              krwHeadline(state, choices, printing, opt, relaxed, extra);
             } else {
               const choices = pairChoices(LAW, state.tau);
               const printing = printingReports(choices);

@@ -71,7 +71,7 @@ export const CONFIG = Object.freeze({
     overLine: Object.freeze(["Stated pairs whose error exceeds τ: ", "{over}", " of the ", "{N}", " stated. The largest error of a stated direction is ", "{max}", "."]),
     overNone: "No pair is stated, so no stated direction can be wrong.",
     overOff: "Switch on the marks to count the stated pairs whose error exceeds τ.",
-    note: Object.freeze(["Simulated league of ", "{n}", " units, the frozen draw (seed ", "{seed}", "). Tiers: ", "{fixed}", ". Errors: ", "{teaching}", " (normal prior, mean ", "{pm}", ", SD ", "{psd}", "). This loss evaluates the directions the tiers state, not the purpose the rule was made for."]),
+    note: Object.freeze(["Simulated league of ", "{n}", " units, the frozen draw (seed ", "{seed}", "). Tiers: ", "{fixed}", ". Errors: ", "{teaching}", " (normal prior, mean ", "{pm}", ", SD ", "{psd}", "). The loss counts expected errors in the stated directions and charges for withholding the rest."]),
     readout: Object.freeze(["G = ", "{G}", " (sizes ", "{sizes}", "): the tiers state ", "{N}", " of ", "{M}", " pairs (N/M ", "{s}", "). Teaching posterior, τ = ", "{tau}", ": E ", "{E}", ", E/N ", "{EN}", ", risk ", "{risk}", "."]),
   }),
 });
@@ -382,6 +382,7 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: CONFIG.className,
     css: CSS,
+    layout: "result-first",
     keys: {
       G: { type: "integer", min: CONFIG.G.min, max: CONFIG.G.max, step: CONFIG.G.step, value: CONFIG.G.value },
       tau: { type: "number", min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: CONFIG.tau.value },
@@ -407,22 +408,23 @@ export function mountWidget(el, spec = {}) {
       const setting = (v) => ctx.num(v, formatSetting(v));
 
       // --- controls
+      const gHint = T.sliderGHint.split(/\b(1)\b/).map((part) => part === "1" ? count(1) : part);
       const sliderG = ctx.slider({
         label: T.sliderG, min: CONFIG.G.min, max: CONFIG.G.max, step: CONFIG.G.step, value: ctx.state.G,
-        name: "G", hint: T.sliderGHint, format: (v) => formatCount(v), onInput: (v) => ctx.set({ G: v }),
+        name: "G", hint: gHint, format: (v) => formatCount(v), onInput: (v) => ctx.set({ G: v }),
       });
       const sliderTau = ctx.slider({
         label: T.sliderTau, min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: ctx.state.tau,
         name: "tau", hint: T.sliderTauHint, onInput: (v) => ctx.set({ tau: v }),
       });
       const outline = ctx.toggle({ label: T.outline, checked: ctx.state.outline, name: "outline", onChange: (b) => ctx.set({ outline: b }) });
-      ctx.controls.append(sliderG.root, sliderTau.root, outline.root);
+      ctx.controls.append(ctx.primaryControl(sliderG.root), sliderTau.root, outline.root);
 
       // --- panels
-      const leagueSlot = h("div", { class: "prx-ft-league-chart" });
+      const leagueSlot = ctx.primaryGraphic(h("div", { class: "prx-ft-league-chart" }));
       const leagueNote = h("p", { class: "prx-ft-note", "data-prx-part": "notes" });
       const leagueBox = h("section", { class: "prx-ft-box prx-light-panel prx-ft-league", "aria-label": T.leagueHeading },
-        ctx.panelTitle(T.leagueHeading, { className: "prx-ft-heading" }), leagueSlot, leagueNote);
+        ctx.panelTitle(T.leagueHeading, { className: "prx-ft-heading" }), leagueSlot, leagueNote, sliderG.root.querySelector(".prx-hint"));
       const mapSlot = h("div", { class: "prx-ft-map-chart" });
       const mapLegend = h("div", { class: "prx-ft-legend", "data-prx-part": "legend" });
       const mapBox = h("section", { class: "prx-ft-box prx-light-panel prx-ft-map", "aria-label": T.mapHeading },
@@ -437,11 +439,9 @@ export function mountWidget(el, spec = {}) {
       const overLine = h("p", { class: "prx-ft-line", "data-prx-part": "readout" });
       const captionLine = h("p", { class: "prx-ft-note", "data-prx-part": "caption" });
       const errorsBox = h("section", { class: "prx-ft-box prx-ft-errors", "aria-label": T.errorsHeading },
-        ctx.panelTitle(T.errorsHeading, { className: "prx-ft-heading" }), tiles, enLine, overLine, captionLine);
+        ctx.panelTitle(T.errorsHeading, { className: "prx-ft-heading" }), tiles, enLine, overLine, captionLine, sliderTau.root.querySelector(".prx-hint"));
 
-      // order inside the widget: controls, the live read-out, the league and the pair map side by side, then the
-      // disclosure and the errors side by side
-      ctx.controls.after(ctx.readout.node);
+      // The frame places the live readout above the linked league and pair map.
       ctx.charts.append(
         h("div", { class: "prx-ft-grid" }, leagueBox, mapBox),
         h("div", { class: "prx-ft-grid" }, disclosureBox, errorsBox),
@@ -577,15 +577,19 @@ export function mountWidget(el, spec = {}) {
         captionLine.replaceChildren("Tier report: ", captionNode(ctx, "fixed-tiers"), "; risks are compared with the all-withheld report at this τ only.");
       }
 
-      function drawReadout(state, t, ev) {
+      function drawReadout(state, t, ev, sa) {
         const d = t.disc;
         const en = ev.EoverN[0];
-        ctx.readout.set(fill(T.readout, {
+        const parts = fill(T.readout, {
           G: () => count(t.G), sizes: () => ro("readout-sizes", d.sizes, formatSizes(d.sizes, { label: false })),
           N: () => count(d.N), M: () => count(d.M), s: () => ctx.num(d.s, formatShare(d.s)), tau: () => setting(state.tau),
           E: () => ctx.num(ev.Ew, formatExpectedCount(ev.Ew)), EN: () => ctx.num(en, formatShare(en)), risk: () => ctx.num(ev.risk, formatRisk(ev.risk)),
-        }));
-
+        });
+        if (state.outline && ev.N > 0) {
+          parts.push(" ", ro("readout-over", sa.count, formatCount(sa.count)),
+            " stated pairs have error above τ. The largest stated error is ", ro("readout-maxStated", sa.max, formatProb(sa.max)), ".");
+        }
+        ctx.readout.set(parts);
       }
 
       return {
@@ -599,7 +603,7 @@ export function mountWidget(el, spec = {}) {
             const ev = evaluateReport(t.grade, ERRORS, { tau: state.tau });
             const sa = statedAbove(t.grade, ERRORS, { tau: state.tau });
             const over = new Set(sa.pairs.map((p) => `${p.i},${p.j}`));
-            drawReadout(state, t, ev);
+            drawReadout(state, t, ev, sa);
             // the league and the disclosure depend on G only: a τ or mark update leaves them as they are
             const gOnly = info.reason === "update" && !(info.changed ?? []).includes("G");
             if (!gOnly) {

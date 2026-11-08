@@ -4,12 +4,11 @@ subtitle: "3.9 · after Kline, Rose and Walters (2024), Figures 2C and 6"
 description: "Evaluation of fixed posterior-mean tiers on KRW's discordance and informativeness axes."
 ---
 
-Quartiles and deciles partition a posterior-mean order into nearly equal groups, with exact score ties retained.
-The resulting reports are evaluated on KRW's discordance-rate and informativeness axes. The archived-card curve uses
-the same released pair probabilities as the fixed-tier points. In each illustrated comparison, an archived card has
-both a lower expected wrong-direction rate DR and higher informativeness I. The comparison separates a fixed
-quantile-grouping convention from selection of grade boundaries under a reporting objective. It evaluates existing
-cards and does not perform a new optimisation under the released law.
+Quartiles and deciles split firms into nearly equal groups by posterior mean, keeping exact score ties together.
+We compare these reports with archived cards using Kline, Rose and Walters's measures of discordance and
+informativeness. Both calculations use the released pair probabilities. In each example below, the selected
+archived card makes fewer expected wrong directions per possible pair and provides more information than the
+fixed tiers. The comparison evaluates reports that have already been chosen.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -22,9 +21,9 @@ cards and does not perform a new optimisation under the released law.
 ## Numerical illustrations {#what-to-try}
 
 - **Race quartiles, card λ .60.** The quartile point has DR .1696 and I .4185. The ringed card has lower DR,
-  .1678, and higher I, .4336. The size patterns distinguish optimised boundary positions from nearly equal tier sizes.
+  .1678, and higher I, .4336. The size patterns show how the card's grade boundaries differ from the nearly equal quartiles.
 - **Race deciles, card λ .82.** Deciles move to DR .2271 and I .4550, while the selected card reaches .2243
-  and .4589. More tiers disclose more pairs; that alone does not make them a better tradeoff on both axes.
+  and .4589. The deciles disclose more pairs than the quartiles. The selected card still has lower DR and higher I.
 - **Gender quartiles, card λ .64.** Under the signed male-name contact-gap target, quartiles have DR .1978
   and I .3621; the card gives .1908 and .3875. These coordinates concern a different target from the race comparisons.
 - **Gender deciles, card λ .80.** Deciles give DR .2525 and I .4042; the card gives .2373 and .4078.
@@ -32,9 +31,9 @@ cards and does not perform a new optimisation under the released law.
 
 ::: {.callout-note appearance="simple"}
 KRW discuss deciles and quartiles in §IV.B and Figure 2C, and reporting possibilities in §V.E and Figure 6.
-The diamonds are constructed fixed-tier comparisons. The curve joins archived grid cards selected under KRW's
-archived probabilities; recomputing their coordinates under the released law supplies no new optimality certificate.
-KRW write τ̄ for the informativeness axis. Gender remains signed, rather than an absolute contact gap.
+The diamonds show the fixed tiers. The curve joins cards that KRW selected using their archived probabilities.
+We recompute each card's coordinates with the released probabilities without rerunning that search. KRW use τ̄
+for informativeness. For gender, the target is the signed contact gap.
 
 Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC,
 noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted; no endorsement is implied.
@@ -51,4 +50,4 @@ b$evaluation[c("N","E_over_N","primary_risk")]
 
 Standalone: [deciles-quartiles](../../embed/deciles-quartiles.html), for example `?criterion=race&G=4&lambda=.60`.
 
-Related applications: [Tiers and optimised cuts of posterior rankings](posterior-tiers.qmd), [Fixed quantile tiers](fixed-tiers.qmd).
+Related applications: [Tiers and optimized cuts of posterior rankings](posterior-tiers.qmd), [Fixed quantile tiers](fixed-tiers.qmd).

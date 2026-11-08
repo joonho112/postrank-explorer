@@ -1,6 +1,6 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # The case half of the number registry (CONTRACT 5.1): data/numbers-cases.json, every summary-route key of the
-# storyboards' registry tables (engine/API.md D, part3-5.md B), read from the released summaries and the
+# storyboards' registry tables (notes/storyboards/part1-2.md D, part3-5.md B), read from the released summaries and the
 # cached analyses they carry. Engine (browser-route) keys are computed by scripts/build_numbers.mjs into data/numbers.json.
 #   Rscript r-export/22_case_registry.R          (after 20, 21 and 23; rerun after scripts/build_numbers.mjs to refresh the
 #                                                 contract's record of data/numbers.json)

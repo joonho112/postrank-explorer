@@ -1,0 +1,33 @@
+<!-- Website navigation groups; generated from catalog/navigation.json. -->
+<noscript><style>.navbar .navbar-collapse{display:block!important}.navbar .navbar-toggler{display:none!important}.navbar .dropdown-menu{display:block!important;position:static!important;max-height:none!important;box-shadow:none!important}.navbar .dropdown-toggle::after{display:none}</style></noscript>
+<script>
+(function(){
+  const groups=[{"key":"uncertainty","label":"Uncertainty","landing":"pages/uncertainty/index.html","slugs":["uncertainty"]},{"key":"grades","label":"Grade reports","landing":"pages/grades/index.html","slugs":["grades"]},{"key":"rules","label":"Reporting rules","landing":"pages/rules/index.html","slugs":["rules"]},{"key":"criteria","label":"Multiple criteria","landing":"pages/criteria/index.html","slugs":["criteria","profiles"]},{"key":"cases","label":"Cases","landing":"pages/cases/index.html","slugs":["cases"]},{"key":"tools","label":"Tools","landing":"pages/tools/index.html","slugs":["tools"]}];
+  function apply(){
+    const brand=document.querySelector('.navbar-brand[href]');if(!brand)return;
+    const root=new URL('.',brand.href),here=new URL(location.href);
+    if(here.protocol!==root.protocol||here.host!==root.host||!here.pathname.startsWith(root.pathname))return;
+    const normal=p=>p.replace(/index\.html$/,'');
+    const links=[...document.querySelectorAll('.navbar .nav-link')];
+    const managed=groups.map(g=>({g,a:document.getElementById('nav-menu-prx-nav-'+g.key)||document.getElementById('prx-nav-'+g.key)||links.find(a=>a.textContent.trim()===g.label)})).filter(x=>x.a);
+    for(const {a}of managed){
+      a.classList.remove('active');a.removeAttribute('aria-current');
+      for(const child of a.closest('.nav-item')?.querySelectorAll('.dropdown-item')||[]){child.classList.remove('active');child.removeAttribute('aria-current');}
+      if(a.classList.contains('dropdown-toggle')){
+        a.setAttribute('role','button');a.setAttribute('aria-haspopup','true');
+        if(!a.dataset.prxKeyboard){a.dataset.prxKeyboard='true';a.addEventListener('keydown',function(e){if(e.key===' '){e.preventDefault();a.click();}});}
+      }
+    }
+    const match=managed.find(({g})=>g.slugs.some(slug=>here.pathname.startsWith(new URL('pages/'+slug+'/',root).pathname)));
+    if(match){
+      match.a.classList.add('active');match.a.setAttribute('aria-current',normal(here.pathname)===normal(new URL(match.g.landing,root).pathname)?'page':'location');
+      const children=[...match.a.closest('.nav-item')?.querySelectorAll('.dropdown-item[href]')||[]].filter(a=>normal(new URL(a.href).pathname)===normal(here.pathname));
+      const current=children.find(a=>new URL(a.href).hash&&new URL(a.href).hash===here.hash)||children.find(a=>!new URL(a.href).hash);
+      if(current){current.classList.add('active');current.setAttribute('aria-current',new URL(current.href).hash?'location':'page');}
+    }
+    const toggle=document.querySelector('.navbar-toggler');if(toggle){toggle.removeAttribute('role');toggle.setAttribute('aria-label','Navigation menu');}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+  window.addEventListener('hashchange',apply);
+})();
+</script>

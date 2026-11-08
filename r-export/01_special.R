@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/special.ts (base R; no postrank).
 source("r-export/_paths.R"); source("r-export/_helpers.R"); source("r-export/_oracle.R")
 assert_no_postrank()

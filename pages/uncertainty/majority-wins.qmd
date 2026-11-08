@@ -4,11 +4,7 @@ subtitle: "1.15 · after the postrank theory book, ch. 10, and Kline, Rose and W
 description: "Relation between majority-win counts, posterior-mean rankings and expected ranks."
 ---
 
-The majority-win count $H_i = \#\{j : \Pr(\theta_i > \theta_j \mid Y) > 1/2\}$ counts the opponents that unit $i$
-is more likely to exceed. Expected rank instead sums the probabilities of being exceeded:
-$\prerank{i} = 1 + \sum_{j \neq i} \Pr(\theta_j > \theta_i \mid Y)$. For independent normal posteriors, the
-majority-win count gives the posterior-mean ordering. Other posterior laws need not have this property. The examples
-compare these summaries with KRW's cards at λ = 1, where correct and incorrect directions have equal reward and cost.
+The majority-win count $H_i = \#\{j : \Pr(\theta_i > \theta_j \mid Y) > 1/2\}$ counts the units that $i$ is more likely to exceed. Expected rank uses the full probabilities, $\prerank{i} = 1 + \sum_{j \neq i} \Pr(\theta_j > \theta_i \mid Y)$. Under independent normal posteriors, ordering the win counts gives the same ranking as ordering the posterior means. The simulated and archived examples show how the rankings can diverge under other distributions. We also compare them with the cards of Kline, Rose and Walters (KRW) at λ = 1, when a correct direction earns as much as an incorrect direction costs.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,11 +17,10 @@ compare these summaries with KRW's cards at λ = 1, where correct and incorrect 
 
 ## Numerical illustrations {#what-to-try}
 
-- **Law on orders.** A beats B and C, each only with probability .51; B's one win is nearly sure (.99). Majority wins
-  put A first, the expected rank B (1.52 against A's 1.98).
+- **Law on orders.** A beats B and C, each only with probability .51; B's one win is nearly sure (.99). A has the most wins. B has the best expected rank, 1.52 compared with A's 1.98.
 - **League.** Majority wins give the posterior-mean order: 0 of the 435 pairs differ. The expected-rank order states 6
   pairs against the majority; U13 is 8th by it (9.59) and 6th by the other two.
-- **League, prior SD .30.** Still 0 of the 435 pairs; the expected-rank order now states 12 pairs against the majority.
+- **League, prior SD .30.** The win count and posterior-mean order still disagree on 0 of the 435 pairs. Expected rank now orders 12 pairs against the majority.
 - **KRW, race.** Majority wins form a strict order. Against it the posterior-mean order states 35 of the 4,656 pairs
   and the expected-rank order 62; KRW's card at λ = 1 states none against it, so no full ranking expects fewer wrong
   claims: 1,248, against 1,249 for the posterior-mean order.

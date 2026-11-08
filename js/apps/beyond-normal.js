@@ -18,8 +18,12 @@
 //              adds little to π_AB (engine mixturePairDirection for the whole posterior, pairDirection per bump,
 //              rankSummaries of the bump centers for A's mean): for w from .10 to .30 the mean and π_AB point to
 //              different units. Dotted rules mark both posterior means.
-// Each panel's text on how to read it sits under its table or figure. A line under the preset row says that a preset
-// sets both panels, while the panels' own controls change only their panel.
+// The app uses the shared result-first frame (base.js layout "result-first"; review 044 repair, X-01): the preset row
+// and the line under it, then the read-out (both panels' answers), then the two panels. In each panel the result sits
+// directly under its table or figure (the answer next to the mark that changed), then the panel's text on how to read
+// it (in the joint-law panel the result and tie lines, then the two key lines of the blue and dashed cells, then the
+// totals line). A line under the preset row says that a preset sets both panels, while the panels' own controls change
+// only their panel.
 // Starting point: postrank Explorer v1 L-07 (js/widgets/two-units.js), its Deeper boxes 2 and 3, shown at once and
 // without the boxes. The shared parts come from app 1.8 (js/apps/two-units.js): its CSS (the panel grid, the symbol
 // names), the density grid, the axis domain, the line styles and the figure frame.
@@ -77,7 +81,8 @@ export const CONFIG = Object.freeze({
     // --- the joint law
     jointTitle: "The same two posteriors, two different answers",
     lawPick: "Joint law",
-    presetNote: "A preset sets both panels; the Joint law buttons, the count boxes and the weight slider each change only their own panel.",
+    presetNote: "These presets set both panels. Controls inside a panel change only that panel.",
+    jointScope: "Choose a law for this table only.",
     jointIntro: Object.freeze([
       "Here each true value is one of ", "{v0}", ", ", "{v1}", " or ", "{v2}",
       ", and the posterior of the pair (A, B), called the joint law, lists equally probable pairs. Each box counts the pairs with those two values (",
@@ -186,9 +191,11 @@ export const CSS = `
 .prx-bn .prx-two-units-panels { align-items: start; gap: 1rem 1.75rem; }
 .prx-bn .prx-bn-panel { min-width: 0; }
 .prx-bn .prx-bn-preset-note { flex: 1 1 100%; margin: -0.2rem 0 0; font-size: 0.92em; color: var(--prx-fg-muted); }
+.prx-bn .prx-bn-law-scope { margin: -.2rem 0 .25rem; font-size: .83em; color: var(--prx-fg-muted); }
 .prx-bn .prx-bn-law { margin: 0 0 0.5rem; font-size: 0.875rem; }
-.prx-bn .prx-two-units-law + .prx-bn-text { margin: 0.4rem 0 0; font-size: 0.92em; }
-.prx-bn .prx-bn-figure + .prx-bn-text { margin: 0.35rem 0 0.5rem; font-size: 0.92em; }
+/* each panel's text on how to read it now follows the panel's result (review 044, X-01), at the size it had; in the
+   joint-law panel the two key lines sit between the result and tie lines and the totals line */
+.prx-bn .prx-two-units-result + .prx-bn-text { margin: 0.5rem 0 0.5rem; font-size: 0.92em; }
 .prx-bn .prx-bn-title.prx-panel-title { margin: 0 0 0.3rem; font-size: 0.95em; color: var(--prx-fg-heading); }
 .prx-bn .prx-bn-text { margin: 0 0 0.5rem; }
 .prx-bn .prx-bn-slider { display: flex; margin: 0.25rem 0 0.4rem; }
@@ -456,6 +463,9 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: `${CONFIG.className} ${TU.className}`,
     css: `${TU_CSS}${CSS}`,
+    // the shared result-first frame (review 044 repair, X-01): the preset row and its line, the read-out directly under
+    // them, then the two panels; base.js only moves nodes (keys, presets, hooks and the live region are the same)
+    layout: "result-first",
     keys: {
       cells: { type: "custom", value: CONFIG.laws[0].cells, parse: (v) => parseCells(v) },
       mixW: { type: "number", min: M.min, max: M.max, step: M.step, value: M.value },
@@ -475,6 +485,8 @@ export function mountWidget(el, spec = {}) {
 
       ctx.charts.classList.add("prx-two-units-charts");
       const panels = h("div", { class: "prx-two-units-panels" });
+      const jointHelp = ctx.disclosure({ name: "joint-law-help", title: "How to read the joint table", placement: "none" });
+      const mixtureHelp = ctx.disclosure({ name: "mixture-help", title: "Why the mean and direction can disagree", placement: "none" });
       ctx.charts.append(panels);
 
       // --- the joint law: a 3 x 3 table on the plot panel, each cell a count box and its probability
@@ -482,6 +494,7 @@ export function mountWidget(el, spec = {}) {
         v0: () => num(V[0], formatCount(V[0]), "joint-v0"), v1: () => num(V[1], formatCount(V[1]), "joint-v1"), v2: () => num(V[2], formatCount(V[2]), "joint-v2"),
         min: () => num(0, formatCount(0), "joint-count-min"), max: () => num(CONFIG.maxCount, formatCount(CONFIG.maxCount), "joint-count-max"),
       }));
+      jointHelp.body.append(intro);
       const capName = h("span");
       const inputs = [];
       const probs = [];
@@ -542,7 +555,7 @@ export function mountWidget(el, spec = {}) {
           h("thead", {}, h("tr", {}, h("td", { class: "prx-two-units-corner" }), ...V.map((b) => head(T.colHead, b, `joint-col-${b}`, "col")),
             h("th", { scope: "col", text: T.total }))),
           h("tbody", {}, ...rows, totals))), T.lawRegion);
-      const keys = h("div", {},
+      const keys = h("div", { class: "prx-bn-keys" },
         para("prx-two-units-key", h("span", { class: "prx-two-units-swatch", "aria-hidden": "true" }),
           h("span", {}, ...fill(T.key, { piAB: () => pi("AB"), zero: () => num(0, formatCount(0), "joint-count-zero") }))),
         para("prx-two-units-key", h("span", { class: "prx-two-units-swatch prx-bn-swatch-tie", "aria-hidden": "true" }), h("span", {}, ...fill(T.tieKey, { t: tSym }))));
@@ -556,9 +569,14 @@ export function mountWidget(el, spec = {}) {
         options: CONFIG.laws.map((l) => ({ value: l.cells, label: h("span", { "data-prx-name": l.id }, l.label) })),
         onChange: (cells) => ctx.set({ cells }),
       });
-      // how to read the table sits under it, so the table comes first
+      // the table first, its result directly under it (review 044, X-01: the answer next to the mark that changed): the
+      // result line and the tie line (π_AB, π_BA and their sum); then the two key lines of its blue and dashed cells (in
+      // the first screen at 1280); then the totals line in its own box; then the paragraph on how to read the table. The
+      // table is a graphic the presets change (primaryGraphic; the first one shown counts)
+      ctx.primaryGraphic(lawTable);
       panels.append(h("div", { class: "prx-two-units-panel prx-bn-panel" },
-        title(T.jointTitle), lawPick.root, lawTable, intro, keys, h("div", { class: "prx-two-units-result" }, jointResult, marginLine, tieLine)));
+        title(T.jointTitle), lawPick.root, para("prx-bn-law-scope", T.jointScope), lawTable, h("div", { class: "prx-two-units-result" }, jointResult, tieLine), keys,
+        h("div", { class: "prx-two-units-result" }, marginLine), jointHelp.root));
 
       // --- the two-bump posterior: the settings, the weight, the figure, the bump-by-bump table and the result
       const mixIntro = para("prx-bn-text", ...fill(T.mixIntro, {
@@ -596,10 +614,13 @@ export function mountWidget(el, spec = {}) {
         from: () => num(range.from, formatSetting(range.from), "mix-flip-from"),
         to: () => num(range.to, formatSetting(range.to), "mix-flip-to"),
       }));
-      // the settings of the two posteriors sit under the figure, so the figure comes first
+      mixtureHelp.body.append(mixIntro, explain);
+      // the figure first, its result directly under it (review 044, X-01), then the settings of the two posteriors, the
+      // bump-by-bump table and why the mean and π_AB disagree; the figure is the graphic the weight changes
+      ctx.primaryGraphic(figure);
       panels.append(h("div", { class: "prx-two-units-panel prx-bn-panel" },
-        title(T.mixTitle), h("div", { class: "prx-bn-slider" }, mixSlider.root), figure, mixIntro,
-        h("div", { class: "prx-two-units-mixtable" }, mixTable), mixResult, explain));
+        title(T.mixTitle), h("div", { class: "prx-bn-slider" }, mixSlider.root), figure, mixResult,
+        h("div", { class: "prx-two-units-mixtable" }, mixTable), mixtureHelp.root));
 
       ctx.caption.replaceChildren(captionNode(ctx, "teaching-posterior"));
       // a line under the preset row (placed at the first render, once base.js has added the row)

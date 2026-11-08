@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for the browser MIP adapter mipSolve (engine/API.md "mip.ts", Step 2.11; solver bundle only).
 #   postrank-mip  postrank 1.1.0 from the project library, backend "highs" chosen explicitly, unrestricted family
 #                 (G_max = n), staged strategy, postrank_control(time_limit = 60, threads = 1L,

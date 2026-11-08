@@ -51,6 +51,8 @@ import {
   formatTuple,
   rationalApprox,
 } from "../pr-core.js";
+import { isCanonicalExact } from "./mdomain/format.js";
+export { formatExactText } from "./mdomain/format.js";
 
 export {
   MINUS,
@@ -136,6 +138,7 @@ export function dataNum(raw) {
   if (Array.isArray(raw) || ArrayBuffer.isView(raw)) return Array.from(raw, (v) => dataNum(v)).join(CONFIG.listSeparator);
   if (typeof raw === "bigint") return raw.toString();
   if (typeof raw === "number" && Number.isFinite(raw)) return String(raw);
+  if (typeof raw === "string" && isCanonicalExact(raw)) return raw;
   if (typeof raw === "string" && raw.trim() !== "" && Number.isFinite(Number(raw))) return String(Number(raw));
   return CONFIG.naRaw;
 }

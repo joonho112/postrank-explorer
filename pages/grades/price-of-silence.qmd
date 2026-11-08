@@ -4,11 +4,7 @@ subtitle: "2.4 · after Kline, Rose and Walters (2024), slides 23–25"
 description: "Expected wrong directions and withholding costs in the posterior risk of a grade report."
 ---
 
-A grade report states directions between grades and withholds comparisons within grades. A wrong direction costs
-one, and withholding a pair costs τ. Let E denote the expected number of wrong directions, M the number of unordered
-pairs and N the number of stated pairs. The posterior risk per pair is
-$R_\tau = E/M + \tau(M-N)/M$. The first term is the expected error cost; the second is the withholding cost.
-The display compares the minimum-risk report in the specified family with a user-supplied report under the same τ.
+A wrong direction costs one and a withheld comparison costs τ. The posterior risk of a grade report averages these costs across all pairs. If E is the expected number of wrong directions, M the number of unordered pairs, and N the number of directions the report states, this risk is $R_\tau = E/M + \tau(M-N)/M$. The first term charges for expected mistakes and the second for withheld comparisons. We use the same τ to evaluate the report entered by the reader and the best report in the selected family.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,15 +17,15 @@ The display compares the minimum-risk report in the specified family with a user
 
 ## Numerical illustrations {#what-to-try}
 
-- **τ .20, at most 3 grades.** The best of 603 reports states 12 of 15 pairs, with risk .0417. The matrix says “2 (A and B; E and F)” for below-τ pairs still withheld. The additional risk of a complete report stating these directions exceeds their isolated-pair saving.
+- **τ .20, at most 3 grades.** The best of 603 reports states 12 of 15 pairs, with risk .0417. The matrix says “2 (A and B; E and F)” for below-τ pairs still withheld. Stating those directions would save risk if the pairs could be handled separately. A complete report under the cap would also have to change other comparisons, at greater cost.
 - **τ .20, no cap.** The best of 4,683 reports states 14 of 15 pairs, with risk .0372. Only C–D stays withheld. The change-point strip identifies subsequent changes in disclosure.
 - **τ .40, no cap.** The strict order states 15 of 15 pairs; risk .0480 consists entirely of expected wrong directions. The all-withheld bar always ends at τ, because it pays that cost on every pair.
 - **τ .30, no cap.** The best report stays the same while its risk becomes .0438. A larger τ changes the charge for every withheld pair. Risk comparisons use the same current τ.
 
-Preset report buttons and grade labels entered in site order specify fixed-report comparisons. Its bar evaluates that fixed report at the current τ. An entered report outside the selected family is identified explicitly; it may beat the capped optimum without belonging to its comparison family.
+Choose a Quick report or enter grade labels in site order. The bar just below the entry evaluates that fixed report at the current τ. An entered report outside the selected family is identified explicitly; it may beat the capped optimum without belonging to its comparison family.
 
 ::: {.callout-note appearance="simple"}
-Six fictional sites from the postrank tutorial, score A only; their normal posteriors are given for teaching. On this slider the uncapped optimum states exactly the pairs whose error is below τ. Risk is an expected cost, not the chance that some direction is wrong. The risk formula follows the postrank theory book, chapters 10–11.
+We use the normal posteriors for score A at six fictional sites from the postrank tutorial. For these posteriors and the costs on the slider, the uncapped optimum states exactly the pairs whose error is below τ. The risk is an expected cost per pair. The chance that at least one direction is wrong is a separate joint probability. The risk formula follows the postrank theory book, chapters 10–11.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

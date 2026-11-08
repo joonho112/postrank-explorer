@@ -97,7 +97,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": ".prx-caption .prx-num",
@@ -106,6 +106,41 @@
           "ref": "settings.seed.league",
           "value": 20261030,
           "index": 0
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-pm-tiers-N\"]",
+          "about": "pm-tiers N on the risk ladder",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.N",
+          "value": 300
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-pm-tiers-risk\"]",
+          "about": "pm-tiers risk on the risk ladder",
+          "source": "registry",
+          "ref": "league.default.prior15.pmtiers3.tau20.risk",
+          "value": 0.17313091636529
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-pm-cuts-N\"]",
+          "about": "pm-cuts N on the risk ladder",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.N",
+          "value": 251
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-pm-cuts-risk\"]",
+          "about": "pm-cuts risk on the risk ladder",
+          "source": "registry",
+          "ref": "league.default.prior15.pmcuts3.tau20.risk",
+          "value": 0.15806797310378426
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-er-cuts-risk\"]",
+          "about": "er-cuts risk on the risk ladder",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank3.tau20.risk",
+          "value": 0.15806797310378426
         }
       ]
     },
@@ -266,6 +301,62 @@
           "source": "literal",
           "ref": "6.2",
           "value": "exact optimum within 𝒜_≤3"
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-pm-cuts-risk\"]",
+          "about": "pm-cuts risk on the risk ladder",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.145504722733723
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-optimum-risk\"]",
+          "about": "optimum risk on the risk ladder",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.145504722733723
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-pm-cuts-N\"]",
+          "about": "pm-cuts N on the risk ladder",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-cap3-tau.20-k3",
+            "field": "N.0"
+          },
+          "value": 17
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-pm-tiers-risk\"]",
+          "about": "pm-tiers risk on the risk ladder",
+          "source": "registry",
+          "ref": "league8.default.prior15.pmtiers3.tau20.risk",
+          "value": 0.16122376619367731
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-pm-tiers-N\"]",
+          "about": "pm-tiers N on the risk ladder",
+          "source": "registry",
+          "ref": "league8.default.prior15.pmtiers3.tau20.N",
+          "value": 21
         }
       ]
     },
@@ -346,6 +437,20 @@
           "source": "literal",
           "ref": "6.2",
           "value": "exact optimum within 𝒜₈"
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-optimum-risk\"]",
+          "about": "optimum risk on the risk ladder",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-part3",
+            "row": "bestReports-league8-all-tau.20-k3",
+            "field": "risk.0"
+          },
+          "value": 0.145504722733723
         }
       ]
     },
@@ -414,6 +519,34 @@
           "source": "registry",
           "ref": "thirty.poverty.order.cap4.size",
           "value": 4090
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-er-cuts-risk\"]",
+          "about": "er-cuts risk on the risk ladder",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "golden",
+          "ref": {
+            "group": "postrank-optimize",
+            "row": "fixedOrderDP-gauss30-poverty-exprank-cap4-tau.25",
+            "field": "risk"
+          },
+          "value": 0.160293809956247
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-pm-cuts-risk\"]",
+          "about": "pm-cuts risk on the risk ladder",
+          "source": "registry",
+          "ref": "thirty.poverty.pmorder.cap4.tau25.risk",
+          "value": 0.16029380995624715
+        },
+        {
+          "select": "[data-prx-readout=\"ladder-er-cuts-N\"]",
+          "about": "er-cuts N on the risk ladder",
+          "source": "registry",
+          "ref": "thirty.poverty.exprank.cap4.tau25.N",
+          "value": 303
         }
       ]
     },
@@ -452,7 +585,7 @@
           "tol": 0
         },
         {
-          "select": ".prx-readout [data-prx-family-size]",
+          "select": "[data-prx-selected-report] [data-prx-family-size]",
           "source": "oracle",
           "ref": {
             "group": "oracle-part3",
@@ -537,7 +670,7 @@
           "tol": 0
         },
         {
-          "select": ".prx-readout [data-prx-label]",
+          "select": "[data-prx-selected-report] [data-prx-label]",
           "kind": "text",
           "source": "literal",
           "ref": "9.1",
@@ -601,7 +734,7 @@
           "tol": 0
         },
         {
-          "select": ".prx-readout [data-prx-family-size]",
+          "select": "[data-prx-selected-report] [data-prx-family-size]",
           "source": "oracle",
           "ref": {
             "group": "oracle-part3",
@@ -686,7 +819,7 @@
           "tol": 0
         },
         {
-          "select": ".prx-readout [data-prx-label]",
+          "select": "[data-prx-selected-report] [data-prx-label]",
           "kind": "text",
           "source": "literal",
           "ref": "9.1",

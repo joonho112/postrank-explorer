@@ -7,6 +7,7 @@ test('local validation is announced and native long-card focus remains in view',
   const {page,errors,failed}=await openTab(browser,{origin:server.origin,width,height:800});st.after(()=>page.close());
   await page.goto(`${server.origin}/${surface==='page'?'pages/tools':'embed'}/your-data.html`);await waitForWidgetIdle(page);await page.evaluate(theme=>__prxApp.update({theme}),theme);await waitForWidgetIdle(page);
   const previous=await page.$eval('[data-prx-readout=grade]',e=>e.dataset.num);
+  if(await page.$('details[data-prx-disclosure="input"]:not([open])'))await page.click('details[data-prx-disclosure="input"] summary');
   await page.focus('[data-prx-input]');await page.$eval('[data-prx-input]',e=>e.select());await page.keyboard.sendCharacter('id,theta_mean,theta_sd\n001,2,0\n1,0,0.2');
   const apply=await page.$('[data-prx-focus-key="input:apply"]');await apply.focus();await page.keyboard.press('Enter');
   const status=await page.$eval('[data-prx-input-status]',e=>({id:e.id,role:e.role,live:e.getAttribute('aria-live'),atomic:e.getAttribute('aria-atomic'),text:e.textContent}));

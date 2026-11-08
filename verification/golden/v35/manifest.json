@@ -1,0 +1,355 @@
+{
+  "schemaVersion": "postrank-explorer-v35-oracles-v1",
+  "referencePackage": "postrank",
+  "referenceVersion": "1.2.0",
+  "sourceCommit": "da02a785f753efb060e149f04650970b0ea1e05b",
+  "fixtures": [
+    {
+      "path": "verification/golden/v35/boundary-inactive-threshold.json",
+      "fixtureId": "boundary-inactive-threshold",
+      "sha256": "ea03d6d88c2d883279258d9ee2e12fdd15e4c7e65d0238194b4fdfd411ed1b56",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/boundary-latent-tie.json",
+      "fixtureId": "boundary-latent-tie",
+      "sha256": "a1c07c4c49293ce75bf26ec1bbe5b7035a6c9d76f2f7bbc00180ceac871c7f94",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/boundary-positive-coarsening.json",
+      "fixtureId": "boundary-positive-coarsening",
+      "sha256": "eac073afd58845146094a9ebed30503645f77a767d573a568cf7cdc9e11a4bba",
+      "candidateCount": 3
+    },
+    {
+      "path": "verification/golden/v35/boundary-structural-identity.json",
+      "fixtureId": "boundary-structural-identity",
+      "sha256": "a3704e630c7e6901aa3fa0ba87e92535e35359e4786d556fe2a8a5882ac464a8",
+      "candidateCount": 3
+    },
+    {
+      "path": "verification/golden/v35/boundary-zero-mass-identity.json",
+      "fixtureId": "boundary-zero-mass-identity",
+      "sha256": "0a62d14cfab375a5e0fa7c563195f11adad9bb275238f8335941bf5d1fbd4b9f",
+      "candidateCount": 2
+    },
+    {
+      "path": "verification/golden/v35/boundary-zero-weight-guard.json",
+      "fixtureId": "boundary-zero-weight-guard",
+      "sha256": "80e658fbb081a5a7ed58553898cb717ce0640175832406889312d949d2bfe31b",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-aligned-boundary-equal.json",
+      "fixtureId": "common-aligned-boundary-equal",
+      "sha256": "be5179cf925970d230059268cd64d961aa45e6208dc73e83b797292e922e3bf9",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-aligned-boundary-one-heavy.json",
+      "fixtureId": "common-aligned-boundary-one-heavy",
+      "sha256": "77319b86ad506a748ff7a98b289b7fadd35786f2b123209509b292a7da844d47",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-aligned-low-equal.json",
+      "fixtureId": "common-aligned-low-equal",
+      "sha256": "f8e60737ebaea93c0b99524ad7eed41861e90454fd9be0eb1778962ed72ad3ba",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-aligned-low-one-heavy.json",
+      "fixtureId": "common-aligned-low-one-heavy",
+      "sha256": "9ef68b3e441ee93220c704b16e6f2c8edf22e269a819e556000462685e486861",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-aligned-ordinary-equal.json",
+      "fixtureId": "common-aligned-ordinary-equal",
+      "sha256": "671cf26541d12b441bf5653fa9dce3c3bc06160ede504bdac55af2042d70df72",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-aligned-ordinary-one-heavy.json",
+      "fixtureId": "common-aligned-ordinary-one-heavy",
+      "sha256": "f8dd222dd1aaf410cbf2c084e9e8fe4eea08477e00e5e5d1ca6d35d30a856d8e",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-crossed-boundary-equal.json",
+      "fixtureId": "common-crossed-boundary-equal",
+      "sha256": "dee0c22467d6c36310f5bdaaaf6f157b6a2679bfe83e7823ed7f8deec533d678",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-crossed-boundary-one-heavy.json",
+      "fixtureId": "common-crossed-boundary-one-heavy",
+      "sha256": "843c363c9001589612396ca9912eeb10a803fb1ee6ad0be3f45ed8b91f03b1c0",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-crossed-low-equal.json",
+      "fixtureId": "common-crossed-low-equal",
+      "sha256": "65d898e904cf51b285a24cdbf7d1954499f251760fd8d56e99dd900d93c971ea",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-crossed-low-one-heavy.json",
+      "fixtureId": "common-crossed-low-one-heavy",
+      "sha256": "457475fa4071e5bfaac47824da58112584d9f1203e0be5214fb263b4510fb497",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-crossed-ordinary-equal.json",
+      "fixtureId": "common-crossed-ordinary-equal",
+      "sha256": "3714d2e901ee753416f7aab5fdc409dde6ceae0a3ed4ee83b7bda8c1c5ee4a99",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/common-crossed-ordinary-one-heavy.json",
+      "fixtureId": "common-crossed-ordinary-one-heavy",
+      "sha256": "ef3e851f1131ff2bbfbabd8be2ff02ea2a7f8674b24598b4c9303e29e6e15e55",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/dependence-above-cap-boundary.json",
+      "fixtureId": "dependence-above-cap-boundary",
+      "sha256": "52a835ac39b14fb1e7612b28637e99a9ba1411177617d3df2b2cf514b617bf70",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/dependence-at-cap-boundary.json",
+      "fixtureId": "dependence-at-cap-boundary",
+      "sha256": "b772a3ceb4bd9ab052bbef690c02d7bbac63231ac783fd4e53b8b62b44b9cebf",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/dependence-below-cap-boundary.json",
+      "fixtureId": "dependence-below-cap-boundary",
+      "sha256": "c11e5cc7b8dfeb8c85e7376f787fea56521c2c722aff11a995c26143f5a630d2",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/dependence-coincident.json",
+      "fixtureId": "dependence-coincident",
+      "sha256": "72487508a0fa0dc728a5d1160a1e68487cff8f6a7a35f144f6e4b6b078e564f2",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/dependence-disjoint.json",
+      "fixtureId": "dependence-disjoint",
+      "sha256": "d032b7668cfb7b08ed9f24d92c3149eb2732f9f7667193976e536f2df1516401",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/dependence-independent.json",
+      "fixtureId": "dependence-independent",
+      "sha256": "cb3f080950a2fdd905497591a8c4b680711968ebad1e70b27fecea9dfca77bf2",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k0-a0.json",
+      "fixtureId": "resolution-k0-a0",
+      "sha256": "a7dd277b0327c24f717966353541cf15097188bf9e883a51dc9bbe4db6b0cf01",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k0-a1.json",
+      "fixtureId": "resolution-k0-a1",
+      "sha256": "5c3e28c770089ac18497f7a6cf6d986417555b78493072ce83539a489fe45d26",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k0-a2.json",
+      "fixtureId": "resolution-k0-a2",
+      "sha256": "c2308af78b2ced083df4a2118db3394afda281fe8be921b4375b8304da80b0de",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k0-a3.json",
+      "fixtureId": "resolution-k0-a3",
+      "sha256": "87a3dd6719212251466fdb225ae50cb70a8da48283efcec8f4d91b32eb26ab5b",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k0-a4.json",
+      "fixtureId": "resolution-k0-a4",
+      "sha256": "a4a67ce2a544166658ac0916e2d78b2d008efe4a7fd3511e1d1c2ae9203bfbdc",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k0-a5.json",
+      "fixtureId": "resolution-k0-a5",
+      "sha256": "002e391ec3b06bec50425aab257b6c684e6f5f3974632a11f7bf8ed4147c9cb0",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k0-a6.json",
+      "fixtureId": "resolution-k0-a6",
+      "sha256": "d449d3cd7a8ac30f1e98c8416272202ce42d21386a43ca54de6e5f1a2fc248e9",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k1-a0.json",
+      "fixtureId": "resolution-k1-a0",
+      "sha256": "6495bf33ab0e02a6d405123fc5e151550cf8ff72642281a9320cc22bd6f7563c",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k1-a1.json",
+      "fixtureId": "resolution-k1-a1",
+      "sha256": "8c415a31e3548ee5443e4933b2d761cd6742d00078626ad87bc0a2efbf3c79cb",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k1-a2.json",
+      "fixtureId": "resolution-k1-a2",
+      "sha256": "efe814af0ff5e11f5703705340d264a75dda0931f8ba6b27a2019cd0a4039928",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k1-a3.json",
+      "fixtureId": "resolution-k1-a3",
+      "sha256": "c9ac73e96691df78f28a3203398bbf1a13601cef15f10510429c52c0e08575a1",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k1-a4.json",
+      "fixtureId": "resolution-k1-a4",
+      "sha256": "c449c03911d670798caafd28a80dbb946bb9c0d1cefa3f78822d4562347a8596",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k1-a5.json",
+      "fixtureId": "resolution-k1-a5",
+      "sha256": "aaf22289bb845ecfea582fc3068deacb55bdb48422d825861f73b3ccb60c34e0",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k1-a6.json",
+      "fixtureId": "resolution-k1-a6",
+      "sha256": "7a70860b5f6330d2ac0ae772d20f6c1be32a813422e8c60bfaa4de4edd923c14",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k2-a0.json",
+      "fixtureId": "resolution-k2-a0",
+      "sha256": "ff4bb830435f7502b17e92e5fd5dc12df76317db7f89b7d4e9efe9c13c23cbba",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k2-a1.json",
+      "fixtureId": "resolution-k2-a1",
+      "sha256": "b069973f781ced280e1a790b86a8dd13b872e242b7d93496d22d03145724481a",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k2-a2.json",
+      "fixtureId": "resolution-k2-a2",
+      "sha256": "301d7b71c53116208ee46bcdf6a9e3ef4c4b5ac3e834846dedb63f85e2b87995",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k2-a3.json",
+      "fixtureId": "resolution-k2-a3",
+      "sha256": "54bf34238e521239848b9c17c0633f9c1abdf8ffb9cc880a07fee561442bc772",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k2-a4.json",
+      "fixtureId": "resolution-k2-a4",
+      "sha256": "d3203f8ddc8658dc848037debe1848cae13528d2bcebec1e578010a08494ecb1",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k2-a5.json",
+      "fixtureId": "resolution-k2-a5",
+      "sha256": "84805d5ade15bc3a6e3744ef2357a06a90cbbb5d7d2c1fb4e7c60a1321ab1206",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/resolution-k2-a6.json",
+      "fixtureId": "resolution-k2-a6",
+      "sha256": "4b723fd2d741f2b3c1e97c7ecca4dc4e8d461ea115a5691b56e68c54390e575b",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-coincident-equal-guard-off.json",
+      "fixtureId": "separable-coincident-equal-guard-off",
+      "sha256": "31d4b7b2508f38c8553c2bd8362682ae47a4f52d391fd464df07169c7dad0e13",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-coincident-equal-guard-on.json",
+      "fixtureId": "separable-coincident-equal-guard-on",
+      "sha256": "d060152b5a9d9c3b1250cd2002487bc9cf41e9cfd02207d49ba745e5ffc1b62f",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-coincident-one-zero-guard-off.json",
+      "fixtureId": "separable-coincident-one-zero-guard-off",
+      "sha256": "f84f03b2168c17e6e5149cde2f460dd10daf23594b5a8f7b2a15c8b056ccee34",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-coincident-one-zero-guard-on.json",
+      "fixtureId": "separable-coincident-one-zero-guard-on",
+      "sha256": "2730f23baf75ee513527d9f6b5ebfd7a71e2e25889c4fed4c89550cfc8da03ef",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-disjoint-equal-guard-off.json",
+      "fixtureId": "separable-disjoint-equal-guard-off",
+      "sha256": "eb2e779099a137a47a4fd76d53ca18c6c3bbedd078c8f55709688ff92e9171a4",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-disjoint-equal-guard-on.json",
+      "fixtureId": "separable-disjoint-equal-guard-on",
+      "sha256": "9614782959f8c9bb9e9ac65fe7894f36bac74f839f7833596d28be66cd55deae",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-disjoint-one-zero-guard-off.json",
+      "fixtureId": "separable-disjoint-one-zero-guard-off",
+      "sha256": "852138c4eb53c527e79446e41c8674920949618b021b8ffa9bb0a01111cca840",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-disjoint-one-zero-guard-on.json",
+      "fixtureId": "separable-disjoint-one-zero-guard-on",
+      "sha256": "9fed677e464b0375cc8d05851d3b2f279e7db043bca9de04c2bc50b4123729d2",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-independent-equal-guard-off.json",
+      "fixtureId": "separable-independent-equal-guard-off",
+      "sha256": "ae9b4f786d18cd410bbbe0b334e8d8108d2e46297c155c707fdae8b8c8e11769",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-independent-equal-guard-on.json",
+      "fixtureId": "separable-independent-equal-guard-on",
+      "sha256": "f2ce0bbc5962ad258b077fa782363262be4ee65af98af6cbc528b0f89ba35483",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-independent-one-zero-guard-off.json",
+      "fixtureId": "separable-independent-one-zero-guard-off",
+      "sha256": "faf59ea3503b5df65cb4eaf713c89c1fb05b8537a2faabccbfd736cb7fcc6f4b",
+      "candidateCount": 9
+    },
+    {
+      "path": "verification/golden/v35/separable-independent-one-zero-guard-on.json",
+      "fixtureId": "separable-independent-one-zero-guard-on",
+      "sha256": "718731c631ed31ab36a7b592b33101fc3761e5db7a777d3d83bd773d9e1ded30",
+      "candidateCount": 9
+    }
+  ],
+  "separateLedgers": [
+    "verification/golden/v35/scalar-boundaries.json",
+    "verification/golden/v35/negative-cases.json"
+  ],
+  "origin": "New independent public-R oracles; original1.1.0 goldens unchanged"
+}

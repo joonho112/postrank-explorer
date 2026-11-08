@@ -4,11 +4,7 @@ subtitle: "1.7 · after Walters (Mixtape slides) and Kline, Rose and Walters (20
 description: "Separation of model fitting, posterior calculation and grade-report selection."
 ---
 
-Posterior reporting involves four stages: observed data $Y$, a model and prior, the posterior distribution
-$\Pr(\theta \mid Y)$, and a decision expressed as a grade report. The analyst specifies the model and computes the
-posterior using other software. postrank takes this posterior as input and selects the report. The diagram identifies
-the quantities and responsibilities at each stage. A two-unit example provides the corresponding calculations, and
-the table describes the operations available for the different posterior representations accepted by postrank.
+A grade report requires a posterior distribution and a rule for deciding which comparisons to state. The analyst chooses a model and prior and fits them to the observed data $Y$ to obtain $\Pr(\theta \mid Y)$. postrank uses the resulting posterior to select a grade report. The four boxes trace these steps for two units and identify which choices the analyst makes. The table beneath the boxes lists which calculations are available for each representation of the posterior.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -32,7 +28,7 @@ the table describes the operations available for the different posterior represe
   postrank states it, {A} > {B}, the best of all 3 reports. At **τ .10** withholding costs less than .144, so
   postrank withholds the pair: {A, B}.
 - **Prior SD .05.** With a narrower prior, A's posterior mean falls to .050 and $\pi$ to .762.
-  Stating A above B would now be wrong with probability .238, so postrank withholds the pair: {A, B}. The change in grades results from the altered model specification and its posterior probabilities.
+  Stating A above B would now be wrong with probability .238, so postrank withholds the pair: {A, B}. The prior changes the report through its effect on the posterior probability.
 
 ::: {.callout-note appearance="simple"}
 Kline, Rose and Walters (2024), Section III.A–B, set out the empirical Bayes posteriors behind their firm grades (KRW
@@ -49,7 +45,7 @@ postrank_coefficient_capabilities(pr_tutorial$one)[c("weighted_at_most_G_problem
 ```
 :::
 
-Standalone: [embed/posterior-pipeline.html](../../embed/posterior-pipeline.html), for example `?box=3` or
+Standalone: [embed/posterior-pipeline.html](../../embed/posterior-pipeline.html), for example `?box=3&open=boxes` or
 `?preset=narrow&theme=dark`.
 
 Related applications: [Normal–normal posterior shrinkage](shrinkage.qmd) (1.5), [Pairwise posterior direction probabilities](two-units.qmd)

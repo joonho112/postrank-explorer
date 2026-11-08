@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/random.ts and the seeded parts of engine/src/simulate.ts (Step 2.12).
 #   oracle-stream  base R only: the pr-core seeded stream reimplemented from engine/README.md "Random stream"
 #                  (r-export/_rng.R): mulberry32 integers, open uniforms (x + 0.5)/2^32, Box-Muller normals (cos first,
@@ -120,7 +120,7 @@ rmc("three-unequal-sd-S50-seed7", c(0, 0.5, 1), c(1, 0.3, 2), 50, 7)
 rmc("league-like-five-S400-seed20261031", c(0.2, -0.1, 0.05, 0.3, -0.25), c(0.2, 0.1, 0.05, 0.2, 0.1), 400, 20261031)
 rmc("two-S1-seed3", c(0, 0.1), c(1, 1), 1, 3)
 
-# ---- Step 5.14: the L-02 noise draws (engine/API.md) ------------------------------------------------
+# ---- Step 5.14: the L-02 noise draws ------------------------------------------------
 # normals(1, 20) and normals(1, 21) (the prediction's 20 draws and one more; registry l02.n20.z, l02.n21.z) and
 # normals(20261030, 7) (l02.n7.z). The 21st value is a cos variate; the prefix property links the two seed-1 rows.
 for (cfg in list(c(1, 20), c(1, 21), c(20261030, 7)))
@@ -128,7 +128,7 @@ for (cfg in list(c(1, 20), c(1, 21), c(20261030, 7)))
           list(values = vec(prx_normals(cfg[1], cfg[2])))))
 stopifnot(identical(prx_normals(1, 21)[1:20], prx_normals(1, 20)), identical(prx_normals(20261030, 7), z1000[1:7]))
 
-# ---- Step 6.14 Part 2 rows (engine/API.md; shared inputs in r-export/15_part2.R) --------------------
+# ---- Step 6.14 Part 2 rows (shared inputs in r-export/15_part2.R) --------------------
 # G-05 deck preset: 100 draws of the six sites (score A, SD .20, data/released/six-sites.json units) with seed 1, and
 # uniforms(1, 100) (the stream the law view of the three-unit law reads; how a uniform picks an order is widget code).
 source("r-export/15_part2.R")

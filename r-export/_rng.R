@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # The pr-core seeded stream (engine/README.md, "Random stream") in base R, for oracle code and released draws.
 # Unsigned 32-bit arithmetic is emulated on doubles; integers and uniforms match the engine bit for bit,
 # normals to within a few ulps (different libm), so parity compares normals with relative tolerance 1e-15.

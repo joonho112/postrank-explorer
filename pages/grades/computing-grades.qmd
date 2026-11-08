@@ -1,14 +1,10 @@
 ---
 title: "Computation of optimal grade reports"
 subtitle: "2.16 · after the postrank theory book, ch. 14, and vignette m5"
-description: "Enumeration, fixed-order dynamic programming and joint optimisation with explicit result bounds."
+description: "Enumeration, fixed-order dynamic programming and joint optimization with explicit result bounds."
 ---
 
-Selection of a minimum-risk grade report requires both a report family and an optimisation method. Candidate counts
-describe the size of the family; the binary relation describes the coherence constraints. Dynamic programming
-optimises contiguous cuts of a specified order, while a joint solver can search across orders. The displays connect
-these formulations and identify the scope of each result. Solver outputs include the incumbent risk, a lower bound
-and the absolute risk gap. Agreement between methods on an example does not extend the scope of a restricted search.
+Enumeration scores every eligible report. Dynamic programming searches among contiguous cuts of one declared order, and joint optimization searches across orders. The binary relations show which pair decisions fit into a grade report. The joint solver returns the best risk found, a lower bound, and their difference.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,14 +17,15 @@ and the absolute risk gap. Agreement between methods on an example does not exte
 
 ## Numerical illustrations {#what-to-try}
 
-- **DP: six sites, τ .20.** The posterior-mean order admits 16 contiguous reports with at most three grades. Its current answer is {A, B} > {C, D} > {E, F}, with risk .0417. Enumeration checks all 603 reports in the capped family and finds the same answer here. The agreement is specific to these inputs.
+- **DP: six sites, τ .20.** The posterior-mean order admits 16 contiguous reports with at most three grades. Its current answer is {A, B} > {C, D} > {E, F}, with risk .0417. Enumeration checks all 603 reports in the capped family and finds the same answer here. Here the capped optimum follows the posterior-mean order.
 - **DP: inspect one cell.** The table has filled 8 of 15 feasible cells. For the current cell's alternatives, the last cut is at b = 2. “Next cell” advances the recursion; “Fill table” shows the backtrack. The selected report remains visible above the recursion controls. Negative savings mean withholding costs more than stating those fixed-order directions.
 - **Twelve units.** The unrestricted family contains 28,091,567,595 reports. At most three grades reduces that to 523,251, while a declared order permits only 67 contiguous cuts. Equal vertical distances on the log axis represent multiplication.
 - **A broken binary pattern.** The pattern is not transitive, though completeness holds: 2 > 1. No grade vector produces this relation. The valid-pattern view enumerates all thirteen coherent reports; setting both directions to one means a shared grade, not latent equality.
 - **Joint search: twenty units.** HiGHS loads only when the joint-search control is activated for 20 league units. The output gives the status, incumbent risk, lower bound and absolute risk gap. The separate four-unit example has risks .1750 and .1500 under different grade-count restrictions, showing why a bound must keep its family.
+- **Joint: six units.** For 6 league units, the fixed-order candidate has risk .1455 from 32 contiguous reports. Press **Load HiGHS and solve** to compare the joint result with the exhaustive enumeration reference of .1455.
 
 ::: {.callout-note appearance="simple"}
-The six fictional sites use the postrank tutorial's score-A normal posteriors. The solver uses a frozen simulated league with independent normal posteriors; its objective includes the constant offset, so $R=\tau+Z/M$ and a raw objective gap is divided by $M$. A relative objective gap is not a risk gap. A solver status or zero gap does not certify exact arithmetic or the posterior model. These distinctions follow theory chapter 14 and vignette m5. The R package selects HiGHS explicitly; Gurobi is its default backend and there is no automatic fallback.
+The six fictional sites use the postrank tutorial's score-A normal posteriors. The solver uses independent normal posteriors for a simulated league. Its objective gives risk $R=\tau+Z/M$. Divide an absolute objective gap by $M$ to obtain a risk gap. A solver status or zero gap does not certify exact arithmetic or the posterior model. These distinctions follow theory chapter 14 and vignette m5. The R package selects HiGHS explicitly; Gurobi is its default backend and there is no automatic fallback.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

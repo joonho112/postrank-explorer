@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R Part 3 experiment pins (3.11 / 3.12).
 # Sources: public engine/API.md contracts and SR-06, public book ch.16 conditional
 # risk / ch.17 repeated-data stability, released six-site marginal normal law,

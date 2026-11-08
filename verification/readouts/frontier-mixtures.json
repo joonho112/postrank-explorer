@@ -1,6 +1,6 @@
 {
   "catalog": "2.11",
-  "about": "Full v1 mixture and linked cloud view: nongated cases retain oracle/registry sources, deep content is always visible, and its controls are ordinary URL keys. The original optimum paragraph stays visible beside a live matched-disclosure summary. Generic result selectors scope to the main result so the added fixed-order result label has its own family/size.",
+  "about": "Full v1 mixture and linked cloud view: nongated cases retain oracle/registry sources, and the deep content's controls are ordinary URL keys. Review 044 repair (owner decision D-1, 2026-11-07): the vertex table and the four endpoint sections sit, unchanged, in closed boxes, and the original optimum paragraph and label line in the Settings box beside tau; every hook is in the DOM, so the cases read them there. The live read-out describes the lottery (the review's copy); the lottery strip and the chart's gap label carry their own hooks (lottery-*, chart-gap). Generic result selectors scope to the main result so the added fixed-order result label has its own family/size.",
   "cases": [
     {
       "id": "preset-tau20",
@@ -2563,6 +2563,128 @@
             1,
             2
           ]
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-lowerN\"]",
+          "about": "review 044 repair: the lottery strip's lower report",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N9",
+            "field": "lowerN"
+          },
+          "value": 8
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-upperN\"]",
+          "about": "review 044 repair: the lottery strip's upper report",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N9",
+            "field": "upperN"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-upperChance\"]",
+          "about": "review 044 repair: the upper report's chance in the lottery strip",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N9",
+            "field": "psi"
+          },
+          "value": 0.25
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-m\"]",
+          "about": "review 044 repair: the average point's N",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N9",
+            "field": "mixN"
+          },
+          "value": 9
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-H\"]",
+          "about": "review 044 repair: the average point's E = H(9)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N9",
+            "field": "H"
+          },
+          "value": 0.0133166530408334
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-lowerGrade\"]",
+          "about": "review 044 repair: the lower report's chip",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "grade.1"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-upperGrade\"]",
+          "about": "review 044 repair: the upper report's chip",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "grade.2"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"chart-gap\"]",
+          "about": "review 044 repair: the gap bracket's label on the chart",
+          "source": "registry",
+          "ref": "g06.six.all.m9.gap",
+          "value": 0.1463829404567667
         }
       ]
     },
@@ -3211,6 +3333,65 @@
           "source": "literal",
           "ref": "6.2",
           "value": "exact optimum within \ud835\udc9c\u2086"
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-lowerN\"]",
+          "about": "review 044 repair: the lottery strip's lower report",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N10",
+            "field": "lowerN"
+          },
+          "value": 8
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-upperN\"]",
+          "about": "review 044 repair: the lottery strip's upper report",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N10",
+            "field": "upperN"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-upperChance\"]",
+          "about": "review 044 repair: the upper report's chance in the lottery strip",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 2
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N10",
+            "field": "psi"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-H\"]",
+          "about": "review 044 repair: the average point's E = H(10)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N10",
+            "field": "H"
+          },
+          "value": 0.0171359684213245
         }
       ],
       "preset": "m10"
@@ -3460,6 +3641,55 @@
             "group": "oracle-frontier",
             "row": "matchedDisclosure-six-A-all-N12",
             "field": "best.grade"
+          },
+          "value": [
+            1,
+            1,
+            2,
+            2,
+            3,
+            3
+          ]
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-vertexN\"]",
+          "about": "review 044 repair: at a vertex the strip shows the vertex report itself",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N12",
+            "field": "mixN"
+          },
+          "value": 12
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-H\"]",
+          "about": "review 044 repair: its point's E = H(12)",
+          "format": {
+            "fn": "formatExpectedCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-six-A-all-N12",
+            "field": "H"
+          },
+          "value": 0.0247745991823067
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-vertexGrade\"]",
+          "about": "review 044 repair: the vertex report's chip",
+          "format": {
+            "fn": "formatGrades"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "lowerHull-six-A-all",
+            "field": "grade.2"
           },
           "value": [
             1,
@@ -4026,6 +4256,69 @@
             1,
             2
           ]
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-lowerN\"]",
+          "about": "review 044 repair: the lottery strip's lower report",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-tb16-all-N4",
+            "field": "lowerN"
+          },
+          "value": 3
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-upperN\"]",
+          "about": "review 044 repair: the lottery strip's upper report",
+          "format": {
+            "fn": "formatCount"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-tb16-all-N4",
+            "field": "upperN"
+          },
+          "value": 5
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-upperChance\"]",
+          "about": "review 044 repair: the upper report's chance, 1/2",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-tb16-all-N4",
+            "field": "psi"
+          },
+          "value": 0.5
+        },
+        {
+          "select": "[data-prx-readout=\"lottery-H\"]",
+          "about": "review 044 repair: the average point's E = 19/40",
+          "format": {
+            "fn": "formatRational"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "matchedDisclosure-tb16-all-N4",
+            "field": "H"
+          },
+          "value": 0.475
+        },
+        {
+          "select": "[data-prx-readout=\"chart-gap\"]",
+          "about": "review 044 repair: the gap bracket's label on the chart, 9/40",
+          "source": "registry",
+          "ref": "g06.tb16.m4.gap",
+          "value": 0.22499999999999998
         }
       ],
       "preset": "tb16"

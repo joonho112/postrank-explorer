@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Released MCMC example for app 1.18 (chain-draws): postrank's pr_toy_mcmc and its postrank_diagnose() summary.
 #   Rscript r-export/24_export_toy_mcmc.R
 # Sources (read-only): postrank 1.1.0 data/pr_toy_mcmc.rda (four stationary two-state chains of 512 iterations, with

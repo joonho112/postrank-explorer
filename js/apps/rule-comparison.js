@@ -1,5 +1,5 @@
 import { createWidget, uid } from "../shared/base.js";
-import { canvasLayer, plot } from "../shared/chart.js";
+import { canvasLayer, numText, plot } from "../shared/chart.js";
 import { formatCount, formatExpectedCount, formatGrades, formatProb, formatRisk, formatSci, formatSetting, formatShare } from "../shared/format.js";
 import { captionNode, familyNameNode, familySizeNode, labelNode } from "../shared/labels.js";
 import {
@@ -27,7 +27,7 @@ export const CONFIG = Object.freeze({
   tierCounts: Object.freeze({ tiers2: 2, tiers3: 3, tiers4: 4 }),
   prior: Object.freeze({ mean: 0, sd: 0.15 }),
   crit: 1.96,
-  // two rule points closer than this (in E, with the same N) are one labelled point
+  // two rule points closer than this (in E, with the same N) are one labeled point
   sameTol: 1e-9,
   // equal-risk tolerance: a risk this close to τ counts as equal to the all-withheld risk
   tieTol: 1e-12,
@@ -70,8 +70,8 @@ export const CONFIG = Object.freeze({
     onBoundary: "on the boundary within this order",
     outside: "outside this family",
     above: "risk above all-withheld at this τ",
-    scope: "Each gap is measured under this loss and at the rule's own disclosure; it does not judge the purpose a rule was made for.",
-    scopeTau: "Each risk is measured under this loss at this τ; it does not judge the purpose a rule was made for.",
+    scope: "The gap compares the rule with the lowest expected error count at its own disclosure.",
+    scopeTau: "Risk combines expected errors and withholding costs at the chosen τ.",
     tauLines: "Points on one line of slope τ have equal risk, and a lower line means a lower risk. The gap between the two lines mixes errors with disclosure.",
     legendTags: "tags as in the table; tags joined by = mark rules at the same (N, E) point",
     legendVertices: "the two vertices it mixes",
@@ -281,17 +281,32 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
         label: T.ruleLabel, name: "rule", value: ctx.state.rule, onChange: (v) => ctx.set({ rule: v }),
         options: CONFIG.rules.map((r) => ({ value: r, label: `${CONFIG.tags[r]}: ${nameOf(r)}` })),
       });
-      ctx.controls.append(...(fullModes ? [dataSwitch.root] : []), familySwitch.root, ...(fullModes ? [matchSwitch.root] : []), tau.root, ruleSelect.root);
+      if (fullModes) {
+        ctx.controls.append(dataSwitch.root, tau.root, ruleSelect.root);
+        ctx.afterPresets(familySwitch.root, matchSwitch.root);
+      } else ctx.controls.append(familySwitch.root, tau.root, ruleSelect.root);
 
       // --- the comparison conditions (always shown), the live read-out and the label
       const conditions = h("section", { class: "prx-rcmp-conditions", "data-prx-part": "notes" });
+      const conditionsDetail = fullModes ? ctx.disclosure({ name: "conditions", title: "What is held fixed", placement: "none" }) : null;
+      const mixture = fullModes ? null : ctx.disclosure({ name: "mixture", title: "How the boundary is reached", placement: "none" });
       const labelLine = h("p", { class: "prx-rcmp-label", "data-prx-part": "readout" });
 
       // --- the figure, its legend, the table
       const chartSlot = h("div", { class: "prx-rcmp-chart" });
       const legend = h("div", { class: "prx-rcmp-legend prx-light-panel", "data-prx-part": "legend" });
       const tableBox = h("section", { class: "prx-rcmp-table-box", "data-prx-part": "table" });
-      ctx.charts.append(chartSlot, legend, ctx.readout.node, labelLine, conditions, tableBox);
+      const rankSlot = fullModes ? h("div", { class: "prx-rcmp-ranks" }) : null;
+      const rankHeading = rankSlot ? h("p", { class: "prx-rcmp-rank-headings" }) : null;
+      const rankChart = rankSlot ? h("div") : null;
+      const rankNote = rankSlot ? h("p", { class: "prx-rcmp-note", text: "Rules outside the family have no gap rank." }) : null;
+      if (rankSlot) rankSlot.append(rankHeading, rankChart, rankNote);
+      ctx.primaryControl(fullModes ? matchSwitch.root : ruleSelect.root);
+      ctx.primaryGraphic(rankSlot ?? chartSlot);
+      if (rankSlot) ctx.charts.append(rankSlot);
+      ctx.charts.append(chartSlot, legend, labelLine);
+      if (mixture) ctx.charts.append(mixture.root);
+      ctx.charts.append(conditions, tableBox);
 
       // ------------------------------------------------------------------------------------- drawing
 
@@ -318,11 +333,22 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
         items.push(h("li", { class: "prx-rcmp-scope" }, state.match === "n" ? T.scope : T.scopeTau));
         const flags = h("p", { class: "prx-rcmp-note" }, "The flags use the cutoff ", ctx.num(CONFIG.crit, formatSetting(CONFIG.crit)),
           " and the mean of the ", ctx.num(UNITS.id.length, formatCount(UNITS.id.length)), " league estimates as the reference.");
-        conditions.replaceChildren(ctx.panelTitle(T.conditionsTitle, { className: "prx-rcmp-heading" }), h("ul", { class: "prx-rcmp-list" }, ...items), flags);
+        if (conditionsDetail) {
+          const [first, ...more] = items;
+          conditionsDetail.body.replaceChildren(h("ul", { class: "prx-rcmp-list" }, ...more), flags);
+          conditions.replaceChildren(ctx.panelTitle(T.conditionsTitle, { className: "prx-rcmp-heading" }),
+            h("ul", { class: "prx-rcmp-list" }, first), conditionsDetail.root);
+        } else {
+          conditions.replaceChildren(ctx.panelTitle(T.conditionsTitle, { className: "prx-rcmp-heading" }), h("ul", { class: "prx-rcmp-list" }, ...items), flags);
+        }
       }
 
       function drawReadout(state, d, f, at) {
         const x = at.byRule[state.rule];
+        if (mixture) {
+          mixture.root.hidden = true;
+          mixture.body.replaceChildren();
+        }
         const name = h("strong", {}, nameOf(state.rule));
         const Nn = (name2) => (name2 ? ro(name2, x.ev.N, formatCount(x.ev.N)) : ctx.num(x.ev.N, formatCount(x.ev.N)));
         const parts = [name, " (", tagNode(state.rule), ") states N = ", Nn("N"), " of ", ctx.num(x.ev.M, formatCount(x.ev.M)), " pairs with E = ", ro("E", x.ev.Ew, E4(x.ev.Ew)), ". "];
@@ -333,16 +359,20 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
             parts.push(x.outside.kind === "grades"
               ? ["It uses ", ro("G", x.G, formatCount(x.G)), " grades, so it is ", T.outside, " (", famNode(f.famResult), "): no benchmark here. Switch the family to compare it."]
               : x.outside.kind === "range" ? ["Its N is outside the boundary range of this family: no benchmark here."] : ["It states ", ro("against", x.outside.against, formatCount(x.outside.against)), " directions against the posterior-mean order, so it is ", T.outside,
-                " (", famNode(f.famResult), "): no benchmark here."]);
+                " (", famNode(f.famResult), "): no benchmark here."], " ");
           } else if (x.gap.gap === 0) {
             parts.push(["Its gap to ", ...boundary, " at N = ", Nn(), " is ", ro("gap", x.gap.gap, E4(x.gap.gap)), ": the rule's report is a vertex, ", onIt, ". "]);
           } else {
             parts.push(["At N = ", Nn(), ", ", ...boundary, " = ", ro("H", x.gap.H, E4(x.gap.H)), ", so its gap is ", ro("gap", x.gap.gap, E4(x.gap.gap)), " expected wrong directions. "]);
             if (x.mix.psi > 0) {
-              parts.push(["No vertex sits at this N: ", ...boundary, " is reached by printing ", gradeNode("upperGrade", x.mix.upper.grade), " (N = ", ro("upperN", x.mix.upper.N, formatCount(x.mix.upper.N)),
+              const steps = [["No vertex sits at this N: ", ...boundary, " is reached by printing ", gradeNode("upperGrade", x.mix.upper.grade), " (N = ", ro("upperN", x.mix.upper.N, formatCount(x.mix.upper.N)),
                 ") with chance ψ = ", ro("psi", x.mix.psi, formatProb(x.mix.psi)), " and ", gradeNode("lowerGrade", x.mix.lower.grade), " (N = ", ro("lowerN", x.mix.lower.N, formatCount(x.mix.lower.N)),
-                ") otherwise, ", captionNode(ctx, "mixture-not-report"), ". "]);
-              if (x.mix.best) parts.push(["The best single report that states exactly ", Nn(), " pairs, ", gradeNode("bestGrade", x.mix.best.grade), ", has E = ", ro("bestE", x.mix.best.Ew, E4(x.mix.best.Ew)), ". "]);
+                ") otherwise, ", captionNode(ctx, "mixture-not-report"), ". "]];
+              if (x.mix.best) steps.push(["The best single report that states exactly ", Nn(), " pairs, ", gradeNode("bestGrade", x.mix.best.grade), ", has E = ", ro("bestE", x.mix.best.Ew, E4(x.mix.best.Ew)), ". "]);
+              if (mixture) {
+                mixture.root.hidden = false;
+                mixture.body.append(...steps.map(line => h("p", {}, ...line)));
+              } else parts.push(...steps);
             } else {
               parts.push(["The vertex at this N is the report ", gradeNode("vertexGrade", x.mix.lower.grade), ", one we can print. "]);
             }
@@ -465,7 +495,7 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
             const marks = [];
             if (cols.length) {
               marks.push(
-                P.dot(cols.filter((r) => r.above), { x: "N", y: () => yTop, symbol: "triangle", r: C.triangle, fill: c.neutral[3] }),
+                ...(fullModes ? [P.dot(cols.filter((r) => r.above), { x: "N", y: () => yTop, symbol: "triangle", r: C.triangle, fill: c.neutral[3] })] : []),
                 P.dot(cols, { x: "N", y: "minEw", r: C.minDot, fill: c.neutral[4] }),
               );
             }
@@ -497,12 +527,34 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
               P.dot([sel.ev], { x: "N", y: "Ew", r: C.ring, fill: "none", stroke: c.plotFg, strokeWidth: C.ringWidth }),
             );
             // tags: to the right of a point, or to its left near the right edge (Plot's dx is a constant, so two marks)
-            const tagged = groups.filter((g) => roomy || g.rules.some((x) => x.rule === state.rule));
-            const tagOpts = { x: "N", y: "Ew", text: "tag", dy: -C.tagGap, fill: c.plotFg, stroke: c.plotBg, strokeWidth: C.halo, paintOrder: "stroke", fontWeight: C.tagWeight };
+            const selectedGroup = groups.find(g => g.rules.some(x => x.rule === state.rule));
+            const tagged = groups.filter(g => !fullModes || roomy || g === selectedGroup);
+            const answer = state.match === "tau" ? { value: sel.ev.risk, display: formatRisk }
+              : sel.outside ? null : show ? { value: sel.gap.gap, display: E4 }
+              : { value: sel.ev.Ew, display: E4 };
+            const tagOpts = { x: "N", y: "Ew", text: "tag", fontSize: !fullModes && !roomy ? 10 : undefined, dy: -C.tagGap, fill: c.plotFg, stroke: c.plotBg, strokeWidth: C.halo, paintOrder: "stroke", fontWeight: C.tagWeight };
+            const tagY = g => {
+              // Alternate labels of nearby groups around the middle cluster in the compact matched-N view.
+              if (fullModes || roomy || g === selectedGroup || Math.abs(g.N - selectedGroup.N) > 3
+                  || Math.abs(g.Ew - selectedGroup.Ew) > yTop / 7) return g.Ew;
+              const span = height - C.marginTop - C.marginBottom;
+              return g.Ew + (g.Ew < selectedGroup.Ew ? -12 : 13) * yTop / span;
+            };
             marks.push(
-              P.text(tagged.filter((g) => g.N <= M * C.tagFlip), { ...tagOpts, dx: C.tagGap, textAnchor: "start" }),
-              P.text(tagged.filter((g) => g.N > M * C.tagFlip), { ...tagOpts, dx: -C.tagGap, textAnchor: "end" }),
+              P.text(tagged.filter((g) => g.N <= M * C.tagFlip), { ...tagOpts, y: tagY, dx: C.tagGap, textAnchor: "start" }),
+              P.text(tagged.filter((g) => g.N > M * C.tagFlip), { ...tagOpts, y: tagY, dx: -C.tagGap, textAnchor: "end" }),
             );
+            const left = selectedGroup.N > M * C.tagFlip;
+            const label = { ...tagOpts, dy: C.tagGap + 4, dx: left ? -C.tagGap : C.tagGap, textAnchor: left ? "end" : "start" };
+            if (answer) {
+              marks.push(numText([selectedGroup], { ...label, value: () => answer.value, format: answer.display }));
+            } else marks.push(P.text([selectedGroup], { ...label, text: () => "no benchmark" }));
+            if (!fullModes && gapOn) {
+              const boundary = [{ N: sel.ev.N, H: sel.gap.H }];
+              const near = { ...tagOpts, y: "H", dy: -10, textAnchor: left ? "start" : "end" };
+              marks.push(P.text(boundary, { ...near, text: () => "H", dx: left ? 10 : -47 }),
+                numText(boundary, { ...near, value: "H", format: E4, dx: left ? 23 : -10 }));
+            }
             return marks;
           },
           keyboard: { data: groups, x: "N", y: "Ew", key: (g) => g.tag, label: T.keyboardLabel, title: titleOf },
@@ -525,7 +577,7 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
         if (show) {
           if (f.cloud) {
             items.push(key("prx-rcmp-sw-cloud", T.legendCloud));
-            if (info.cols.some((r) => r.above)) items.push(key("prx-rcmp-sw-above", T.legendAboveView));
+            if (fullModes && info.cols.some((r) => r.above)) items.push(key("prx-rcmp-sw-above", T.legendAboveView));
           }
           items.push(key("prx-rcmp-sw-hull", f.cloud ? T.legendHull : T.legendHull30));
           const sel = at.byRule[state.rule];
@@ -557,9 +609,18 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
         if (show) headN.push(th(state.data === "league8" ? "H at its N" : "Boundary at its N"), th("Gap"));
         headN.push(th("Note"));
         const headT = [th("Rule"), th("N"), th("E/N"), th(["Risk at τ = ", tauNode(state.tau)]), th("Note")];
+        const combined = [th("Rule"), th("N"), th("E"), th("E/N"), th(state.data === "league8" ? "H at its N" : "Boundary at its N"), th("Gap"), th(["Risk at τ = ", tauNode(state.tau)]), th("Note")];
+        const answerColumn = fullModes ? (state.match === "tau" ? 6 : 5) : state.match === "tau" ? 3 : show ? 4 : 2;
+        const answerFirst = cells => [cells[0], cells[answerColumn], ...cells.slice(1).filter((_, i) => i + 1 !== answerColumn)];
         const rows = at.rows.map((x) => {
           const cells = [h("th", { scope: "row" }, tagNode(x.rule), " ", nameOf(x.rule)), h("td", {}, ro(`tN-${x.rule}`, x.ev.N, formatCount(x.ev.N)))];
-          if (state.match === "n") {
+          if (fullModes) {
+            cells.push(h("td", {}, ro(`tE-${x.rule}`, x.ev.Ew, E4(x.ev.Ew))),
+              h("td", {}, ro(`tEN-${x.rule}`, x.ev.EoverN[0], formatShare(x.ev.EoverN[0]))),
+              h("td", {}, x.outside ? "none" : ro(`tH-${x.rule}`, x.gap.H, E4(x.gap.H))),
+              h("td", {}, x.outside ? "none" : ro(`tGap-${x.rule}`, x.gap.gap, E4(x.gap.gap))),
+              h("td", {}, ro(`tRisk-${x.rule}`, x.ev.risk, formatRisk(x.ev.risk))));
+          } else if (state.match === "n") {
             cells.push(h("td", {}, ro(`tE-${x.rule}`, x.ev.Ew, E4(x.ev.Ew))));
             if (show) {
               cells.push(h("td", {}, x.outside ? "none" : ro(`tH-${x.rule}`, x.gap.H, E4(x.gap.H))),
@@ -571,16 +632,55 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
               h("td", {}, ro(`tRisk-${x.rule}`, x.ev.risk, formatRisk(x.ev.risk))));
           }
           cells.push(h("td", { class: "prx-rcmp-notecell" }, ...notes(x)));
-          return h("tr", { class: x.rule === state.rule ? "prx-rcmp-row-sel" : "" }, ...cells);
+          return h("tr", { class: x.rule === state.rule ? "prx-rcmp-row-sel" : "" }, ...answerFirst(cells));
         });
         const caption = state.match === "tau"
           ? h("p", { class: "prx-rcmp-note" }, "All risks at τ = ", tauNode(state.tau), "; ", captionNode(ctx, "different-disclosure"), ". The all-withheld risk is τ itself.")
           : h("p", { class: "prx-rcmp-note" }, state.data === "league8" ? "The gap is E minus H at the rule’s own N, only for rules inside the family; between vertices H may require a mixture." : "The gap uses the boundary within the posterior-mean order, only for rules inside that order family; it is not H(m).");
         const id = uid("prx-rcmp-table");
         const wrap = ctx.scrollRegion(h("div", { class: "prx-rcmp-table-wrap" },
-          h("table", { class: "prx-rcmp-table", "aria-labelledby": id },
-            h("thead", {}, h("tr", {}, ...(state.match === "n" ? headN : headT))), h("tbody", {}, ...rows))), T.tableTitle);
+          h("table", { class: "prx-rcmp-table prx-sticky-first", "aria-labelledby": id },
+            h("thead", {}, h("tr", {}, ...answerFirst(fullModes ? combined : state.match === "n" ? headN : headT))), h("tbody", {}, ...rows))), T.tableTitle);
         tableBox.replaceChildren(ctx.panelTitle(T.tableTitle, { className: "prx-rcmp-heading", id }), h("p", { class: "prx-rcmp-note", text: "The table keeps all columns. On narrow screens, swipe sideways, or focus the table region and use the arrow keys." }), wrap, caption);
+      }
+
+      function drawRankStrip(at, selected, tau) {
+        const rankBy = (rows, metric) => {
+          const groups = [];
+          for (const row of [...rows].sort((a, b) => metric(a) - metric(b))) {
+            const value = metric(row);
+            const last = groups.at(-1);
+            if (last && Math.abs(value - last.value) <= CONFIG.tieTol) last.rules.push(row.rule);
+            else groups.push({ value, rank: groups.length + 1, rules: [row.rule] });
+          }
+          return groups.map(g => ({ ...g, tag: g.rules.map(rule => CONFIG.tags[rule]).join("=") }));
+        };
+        const risk = rankBy(at.rows, row => row.ev.risk);
+        const gap = rankBy(at.rows.filter(row => !row.outside), row => row.gap.gap);
+        const ranks = new Map(gap.flatMap(g => g.rules.map(rule => [rule, g.rank])));
+        const links = risk.flatMap(g => g.rules.filter(rule => ranks.has(rule)).map(rule => ({ rule, risk: g.rank, gap: ranks.get(rule) })));
+        const maximum = Math.max(risk.length, gap.length);
+        rankHeading.replaceChildren(h("span", {}, "Risk at τ ", tauNode(tau)), h("span", {}, "Gap at own N"));
+        rankNote.hidden = !at.rows.some(row => row.outside);
+        plot(rankChart, {
+          alt: "Rules ranked side by side by their risk at the common withholding cost and by their gap at their own disclosure. Ties share a rank. Outside-family rules have no gap rank.",
+          width: Math.round(rankSlot.clientWidth || ctx.width()), height: 62 + maximum * 21,
+          marginLeft: 83, marginRight: 111, marginTop: 9, marginBottom: 12,
+          x: { domain: [0, 1], axis: null },
+          y: { domain: [maximum + .5, .5], axis: null },
+          table: { caption: "The two rank orders", rows: at.rows, columns: [
+            { label: "Rule", value: row => nameOf(row.rule) },
+            { label: "Risk rank", value: row => risk.find(g => g.rules.includes(row.rule)).rank },
+            { label: "Gap rank", value: row => ranks.get(row.rule) ?? "Outside family" },
+          ] },
+          marks: (c, P) => [
+            P.link(links, { x1: () => 0, x2: () => 1, y1: "risk", y2: "gap", stroke: d => d.rule === selected ? c.plotFg : c.plotMuted, strokeWidth: d => d.rule === selected ? 2.8 : 1, strokeOpacity: d => d.rule === selected ? 1 : .5 }),
+            P.dot(risk, { x: () => 0, y: "rank", r: 3, fill: c.plotFg }),
+            P.dot(gap, { x: () => 1, y: "rank", r: 3, fill: c.plotFg }),
+            P.text(risk, { x: () => 0, y: "rank", text: "tag", dx: -7, textAnchor: "end", fill: c.plotFg }),
+            P.text(gap, { x: () => 1, y: "rank", text: "tag", dx: 7, textAnchor: "start", fill: c.plotFg }),
+          ],
+        });
       }
 
       return { drawConditions, drawReadout, drawLabel, drawChart, drawLegend, drawTable,
@@ -603,6 +703,7 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
             const at = rulesAt(state.data, state.family, state.tau);
             drawConditions(state, d, f);
             drawReadout(state, d, f, at);
+            if (rankSlot) drawRankStrip(at, state.rule, state.tau);
             drawLabel(state, f, at);
             const info = drawChart(state, d, f, at, show);
             drawLegend(state, f, at, show, info);
@@ -617,7 +718,7 @@ export function createComparisonView(ctx, { fullModes = false } = {}) {
 
 export function mountComparison(el, spec = {}, { name = CONFIG.name, fullModes = false, match = "n", preset = "same-n", title = CONFIG.title } = {}) {
   return createWidget(el, {preset, ...spec}, {name, label:fullModes ? "Common rules at one withholding cost or matched disclosure, within a named family" : CONFIG.label, title, className:CONFIG.className,
-    css: COMPARISON_CSS, keys:comparisonKeys({fullModes,match}), build:ctx=>createComparisonView(ctx,{fullModes})});
+    css: COMPARISON_CSS, layout: "result-first", keys:comparisonKeys({fullModes,match}), build:ctx=>createComparisonView(ctx,{fullModes})});
 }
 export function mountWidget(el, spec = {}) { return mountComparison(el,spec); }
 
@@ -703,6 +804,18 @@ export const COMPARISON_CSS = `/*
   margin: 0.15rem 0;
 }
 
+.prx-rcmp .prx-rcmp-ranks {
+  max-width: 34rem;
+  margin: 0 auto .75rem;
+}
+.prx-rcmp .prx-rcmp-rank-headings {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: 0 .45rem;
+  margin: 0;
+  font-weight: 600;
+}
 .prx-rcmp .prx-rcmp-scope {
   color: var(--prx-fg-muted);
 }

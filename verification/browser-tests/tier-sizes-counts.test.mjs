@@ -66,7 +66,7 @@ test("Tier-size count drafts commit whole native values and retain atomic contro
       assert.equal(done.feedback, "");
       if (value === "12") { assert.equal(done.stated, twelve.N); assert.equal(done.pairs, twelve.M); assert.equal(done.focus, "n"); }
     }
-    // Invalid completion keeps the applied result, explains the draft, and can be cancelled.
+    // Invalid completion keeps the applied result, explains the draft, and can be canceled.
     await typeDraft(page, page, "n", "1"); await page.keyboard.press("Enter");
     const bad = await inspect(page);
     assert.equal(bad.n, "1"); assert.equal(bad.nInvalid, "true"); assert.equal(bad.state.n, 19); assert.equal(bad.appliedN, 19);

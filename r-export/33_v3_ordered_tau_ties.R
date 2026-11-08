@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R tie audit for app 3.8's frozen league ordered cuts.
 # Contract read only from engine/API.md: absolute risk-scale tieTol, equal-score
 # blocks remain intact, representative uses fewer grades then earlier cuts.

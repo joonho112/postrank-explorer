@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for the v3 helpers (engine/API.md "v3 helpers (Phase 2, Step 2.1)").
 #   oracle-v3  base R only; postrank is not loaded. topKOvershoot, leagueOvershoot, expectedSquaredDistance,
 #              finiteLawMargins, majorityWins, weightedRadius, regretBound, twoStateChain, chainMeanVariance,

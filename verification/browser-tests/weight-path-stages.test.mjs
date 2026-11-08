@@ -14,6 +14,13 @@ const allCount=r35.find(r=>r.id==='constrained-six-coherence-all').expect.baseFa
 const bOnly=r37.find(r=>r.id==='two-scores-w0-1').expect;
 const balanced=r37.find(r=>r.id==='two-scores-w0.5-0.5').expect;
 const settle=page=>page.waitForFunction(()=>window.__prxApp&&document.querySelector('.prx-widget').getAttribute('aria-busy')!=='true',{timeout:3500});
+async function openDisclosure(page,name){
+ const selector=`details[data-prx-disclosure="${name}"]`;
+ const summary=await page.$(`${selector} > summary`);assert.ok(summary,`native ${name} summary`);
+ await summary.focus();await page.keyboard.press('Enter');
+ assert.equal(await summary.evaluate(s=>s.parentElement.open),true,`${name} opens by keyboard`);
+ await settle(page);
+}
 async function numericReport(page,app,expected,index=0){
  const prefix=app==='weight-path'?'':'weighted-';
  const actual=await page.evaluate(({prefix,index})=>{const raw=k=>document.querySelector(`[data-prx-readout="${prefix}${k}-${index}"]`).dataset.num;return{grade:raw('grade').split(',').map(Number),risk:Number(raw('risk')),N:Number(raw('N'))}},{prefix,index});
@@ -34,7 +41,8 @@ async function geometry(page,expectedRows){
  assert.equal(g.rows,expectedRows);assert.equal(g.uniqueRows,expectedRows);assert.equal(g.segments,expectedRows);assert.equal(g.keyboard,expectedRows);assert.equal(g.exportSegments,expectedRows);assert.ok(g.exportClip);assert.ok(g.maxError<=.00051,JSON.stringify(g));assert.equal(g.invalid,false);assert.equal(g.overflow,false);
 }
 async function cursorPositions(page){
- const positions=await page.evaluate(()=>[...document.querySelectorAll('svg')].filter(s=>s.getAttribute('aria-label')?.startsWith('Each criterion expected')||s.getAttribute('aria-label')?.startsWith('The number of stated')).map(s=>{const chart=s.closest('figure').parentElement.parentElement.__prxChart.handle,line=s.querySelector('g[aria-label=rule] line');return{actual:Number(line.getAttribute('x1')),expected:chart.scale('x').apply(window.__prxApp.state.w)}}));
+ const positions=await page.evaluate(()=>[...document.querySelectorAll('details[data-prx-disclosure="data"][open] svg')].filter(s=>s.checkVisibility()&&(s.getAttribute('aria-label')?.startsWith('Each criterion expected')||s.getAttribute('aria-label')?.startsWith('The number of stated'))).map(s=>{const chart=s.closest('figure').parentElement.parentElement.__prxChart.handle,line=s.querySelector('g[aria-label=rule] line');return{actual:Number(line.getAttribute('x1')),expected:chart.scale('x').apply(window.__prxApp.state.w)}}));
+ assert.equal(positions.length,2,'both exact interval cursors are displayed');
  for(const p of positions)assert.ok(Math.abs(p.actual-p.expected)<1e-9);
 }
 async function accessibleRows(cdp,expected){
@@ -56,23 +64,39 @@ test('Complete risk stages preserve all rows, exports, latest state and focus',{
   await page.evaluateOnNewDocument(()=>{
    const original=window.setTimeout.bind(window);globalThis.__stageProbe={active:false,tasks:[],events:[],original};
    window.setTimeout=(fn,delay=0,...args)=>typeof fn!=='function'?original(fn,delay,...args):original(()=>{const t=performance.now();try{fn(...args)}finally{if(__stageProbe.active&&delay===20){document.querySelector('.prx-widget')?.getBoundingClientRect();const ms=performance.now()-t,table=[...document.querySelectorAll('.wpath-all-endpoints table')].find(t=>!t.closest('[hidden]'));__stageProbe.tasks.push({ms,rows:table?.tBodies[0].rows.length,busy:document.querySelector('.prx-widget')?.getAttribute('aria-busy'),progress:document.querySelector('.wpath-status')?.textContent})}}},delay);
-   const relevant=e=>e.type==='keydown'?e.target.name==='w':Boolean(e.target.closest('.prx-controls'));
-   for(const type of ['click','change','keydown']){window.addEventListener(type,e=>{if(__stageProbe.active&&relevant(e)){__stageProbe.start=performance.now();__stageProbe.eventStart=__stageProbe.start}},true);window.addEventListener(type,e=>{if(__stageProbe.active&&relevant(e)){document.querySelector('.prx-widget').getBoundingClientRect();__stageProbe.events.push({type,ms:performance.now()-__stageProbe.start})}})}
+   const relevant=e=>e.type==='keydown'?e.target.name==='w':Boolean(e.target.closest('.prx-controls,[data-stage-cap-control]'));
+   for(const type of ['click','change','keydown']){window.addEventListener(type,e=>{if(__stageProbe.active&&relevant(e)){__stageProbe.start=performance.now();__stageProbe.eventStart=__stageProbe.start}},true);window.addEventListener(type,e=>{if(__stageProbe.active&&relevant(e)){document.querySelector('.prx-widget').getBoundingClientRect();__stageProbe.events.push({type,ms:performance.now()-__stageProbe.start,cap:e.target.hasAttribute('data-stage-cap-control')})}})}
   });
   await page.goto(`${server.origin}/${config.route}?theme=${config.theme}`);await settle(page);
   await page.evaluate(theme=>{document.documentElement.dataset.theme=theme;window.__prxApp.update({theme,w:.5,tau:.35,cap:'3'})},config.theme);await settle(page);
+  await openDisclosure(page,config.app==='weight-path'?'risk':'settings');
+  const settingsSelector='details[data-prx-disclosure="settings"]';
   const cdp=await page.createCDPSession();await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
-  await page.evaluate(app=>{const control=app==='weight-path'?[...document.querySelectorAll('.prx-controls button')].find(b=>b.textContent.trim()==='No cap'):[...document.querySelectorAll('.prx-controls select')].find(s=>[...s.options].some(o=>o.textContent==='No cap'));control.dataset.stageCapControl='true';control.focus();__stageProbe.active=true;__stageProbe.tasks=[];__stageProbe.events=[]},config.app);
+  await page.evaluate(({app,settingsSelector})=>{
+   const control=app==='weight-path'
+    ?[...document.querySelectorAll('.prx-controls button')].find(b=>b.textContent.trim()==='No cap')
+    :[...document.querySelectorAll(`${settingsSelector}[open] select`)].find(s=>[...s.options].some(o=>o.textContent==='No cap'));
+   if(!control)throw new Error(`${app}: No cap control is unavailable`);
+   control.dataset.stageCapControl='true';control.focus();__stageProbe.active=true;__stageProbe.tasks=[];__stageProbe.events=[];
+  },{app:config.app,settingsSelector});
   if(config.app==='weight-path')await page.keyboard.press('Space');else{const value=await page.$eval('[data-stage-cap-control]',s=>[...s.options].find(o=>o.textContent==='No cap').value);await page.select('[data-stage-cap-control]',value)}
   await settle(page);
   const timed=await page.evaluate(()=>({events:__stageProbe.events,tasks:__stageProbe.tasks,total:performance.now()-__stageProbe.eventStart,focus:document.activeElement.hasAttribute('data-stage-cap-control')}));
   assert.ok(timed.events.length);assert.ok(timed.tasks.length);assert.ok(timed.total<3000);assert.equal(timed.focus,true);
+  if(config.app==='worst-criterion')assert.ok(timed.events.some(e=>e.cap&&e.type==='change'),'the moved cap select change was timed');
   for(const item of [...timed.events,...timed.tasks])assert.ok(item.ms<=150,JSON.stringify(timed));
   assert.ok(timed.tasks.some(s=>s.rows>0&&s.rows<4683));for(const s of timed.tasks)if(s.rows<allCount)assert.equal(s.busy,'true');for(const s of timed.tasks)if(s.busy==='true')assert.equal(s.progress,'Updating reports…');const progress=await page.$eval('.wpath-status',e=>({text:e.textContent,height:e.getBoundingClientRect().height,live:e.hasAttribute('aria-live')||e.getAttribute('role')==='status'}));assert.equal(progress.text,'');assert.ok(progress.height>0);assert.equal(progress.live,false);
   await numericReport(page,config.app,all);await page.focus('[name=w]');await page.keyboard.press('ArrowRight');await page.keyboard.press('ArrowRight');
   const keys=await page.evaluate(()=>__stageProbe.events.filter(e=>e.type==='keydown'));for(const k of keys)assert.ok(k.ms<=150,JSON.stringify(keys));
   await cdp.send('Emulation.setCPUThrottlingRate',{rate:1});await page.evaluate(()=>{__stageProbe.active=false});
-  await geometry(page,allCount);await accessibleRows(cdp,allCount);if(config.app==='weight-path')await cursorPositions(page);
+  const maxEvent=Math.max(...[...timed.events,...keys].map(event=>event.ms));
+  const maxStage=Math.max(...timed.tasks.map(stage=>stage.ms));
+  st.diagnostic(`${config.app} at CPU ×4: max event ${maxEvent.toFixed(1)} ms, max stage ${maxStage.toFixed(1)} ms, total ${timed.total.toFixed(1)} ms`);
+  await geometry(page,allCount);await accessibleRows(cdp,allCount);
+  if(config.app==='weight-path'){
+   await openDisclosure(page,'data');
+   await cursorPositions(page);
+  }
   // Abort a partially attached uncapped model. The final values are independent R37 pins.
   await page.evaluate(()=>window.__prxApp.applyPreset('w0'));await settle(page);
   await page.evaluate(()=>window.__prxApp.update({cap:'all',tau:.217}));

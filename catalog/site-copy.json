@@ -3,327 +3,339 @@
   "apps": {
     "case-zero": {
       "title": "League tables and report cards",
-      "description": "Comparison of pairwise statements in a strict ranking and KRW's report cards for 97 firms."
+      "description": "Compare the directions stated by a strict ranking and by KRW’s report cards for 97 firms."
     },
     "noisy-estimate": {
       "title": "Estimates and sampling error",
-      "description": "Sampling variation of a normally distributed estimate with a fixed true value and known standard error."
+      "description": "Repeated samples give different estimates of the same true value. The spread depends on the standard error."
     },
     "noisy-league": {
       "title": "Ranking noisy estimates",
-      "description": "Effects of unequal sampling precision on the extreme positions of a ranking."
+      "description": "Units estimated with less precision can appear at the extremes of a league table more often."
     },
     "winners-curse": {
       "title": "Selection bias at the extremes of a ranking",
-      "description": "Repeated-sampling bias of selected extreme estimates and its dependence on the prior used for shrinkage."
+      "description": "Selecting the highest or lowest estimates can introduce bias. The choice of prior changes the bias after shrinkage."
     },
     "shrinkage": {
       "title": "Normal–normal posterior shrinkage",
-      "description": "Precision-weighted posterior means and changes in pairwise order under a common normal prior."
+      "description": "Larger standard errors give the prior mean more weight. The units can change order after shrinkage."
     },
     "shrinkage-price": {
       "title": "Sensitivity to the prior standard deviation",
-      "description": "Repeated-sampling squared error and pairwise posterior probabilities across prior standard deviations."
+      "description": "A change in the prior standard deviation affects squared error and the certainty of pairwise comparisons differently."
     },
     "posterior-pipeline": {
       "title": "From data to posterior decisions",
-      "description": "Separation of model fitting, posterior calculation and grade-report selection."
+      "description": "Follow two estimates through posterior shrinkage to a decision about whether to state their order."
     },
     "two-units": {
       "title": "Pairwise posterior direction probabilities",
-      "description": "Direction probabilities from the difference of two independent normal posterior variables."
+      "description": "With two independent normal posteriors, the probability that A is higher depends on the mean and standard deviation of their difference."
     },
     "correlated-units": {
       "title": "Posterior dependence and pairwise comparisons",
-      "description": "Effect of correlation on direction probabilities under a bivariate normal posterior distribution."
+      "description": "Changing posterior correlation can change the probability that one unit is higher even when both marginal distributions stay fixed."
     },
     "beyond-normal": {
       "title": "Marginal summaries and joint direction probabilities",
-      "description": "Dependence and non-normal posterior shape can change direction probabilities without changing marginal means."
+      "description": "Two examples show how posterior shape and dependence can change direction probabilities at fixed marginal means."
     },
     "interval-overlap": {
       "title": "Marginal interval overlap and direction probabilities",
-      "description": "Pairwise direction probabilities associated with overlapping marginal credible intervals."
+      "description": "The probability that one unit is higher can be substantial even when their marginal credible intervals overlap."
     },
     "overlap-in-the-league": {
       "title": "Interval overlap across 435 pairs",
-      "description": "Comparison of marginal interval overlap and direction probabilities in a thirty-unit simulation."
+      "description": "Compare interval overlap and posterior direction probabilities for all 435 pairs in a simulated league."
     },
     "pairwise-matrix": {
       "title": "The matrix of pairwise posterior probabilities",
-      "description": "Pairwise probabilities under alternative orderings of the same units."
+      "description": "Reordering the units moves the cells of the matrix while preserving the probability attached to each pair."
     },
     "which-ranking": {
       "title": "Alternative rankings from a posterior distribution",
-      "description": "Rankings by posterior mean, expected rank and top-group probability need not coincide."
+      "description": "Ranking units by posterior mean, expected rank, or probability of reaching a top group can produce different orders."
     },
     "majority-wins": {
       "title": "Majority comparisons and expected ranks",
-      "description": "Relation between majority-win counts, posterior-mean rankings and expected ranks."
+      "description": "A count of pairwise majority wins records which direction is more likely. Expected rank also uses the size of each probability."
     },
     "ranking-claims": {
       "title": "Expected errors in a strict ranking",
-      "description": "Posterior expected wrong-direction counts among the n(n − 1)/2 statements of a strict ranking."
+      "description": "Add the posterior error probabilities for all pairwise directions in a strict ranking to find its expected wrong count."
     },
     "mc-error": {
       "title": "Monte Carlo error in pairwise probabilities",
-      "description": "Monte Carlo uncertainty in estimated pairwise errors and its implications for report selection."
+      "description": "With a finite set of posterior draws, sampling error can change the report chosen near a decision boundary."
     },
     "chain-draws": {
       "title": "Monte Carlo error with dependent draws",
-      "description": "Finite-sample uncertainty of pair probabilities estimated from a stationary two-state Markov chain."
+      "description": "Draws from a stationary two-state Markov chain show how dependence affects estimates of a direction probability."
     },
     "one-pair": {
       "title": "The decision for an isolated pair",
-      "description": "Posterior expected loss of the two strict directions and withholding for a single pair."
+      "description": "The cheapest action for a single pair depends on its posterior direction probabilities and the cost of withholding."
     },
     "report-builder": {
       "title": "Grade reports as pairwise decisions",
-      "description": "Pairwise statements induced by assigning units to ordered grades."
+      "description": "Assign units to ordered grades to see which pairwise directions the report states and which it leaves open."
     },
     "how-many-reports": {
       "title": "The number of ordered grade reports",
-      "description": "Sizes of unrestricted, grade-restricted and fixed-order report families."
+      "description": "Count the possible reports and see how a grade cap or a fixed order reduces the number of candidates."
     },
     "price-of-silence": {
       "title": "Reporting risk and withholding cost",
-      "description": "Expected wrong directions and withholding costs in the posterior risk of a grade report."
+      "description": "Reporting risk adds expected wrong directions to the cost of leaving comparisons unstated."
     },
     "tau-path": {
       "title": "Optimal reports along the withholding-cost path",
-      "description": "The lower envelope of affine report-risk functions and its change points."
+      "description": "A report’s risk is a line in the withholding cost. The optimal report changes where the lowest line switches."
     },
     "coherence": {
       "title": "Coherence constraints on pairwise decisions",
-      "description": "Compatibility of isolated-pair decisions with an ordered grade report."
+      "description": "Decisions made one pair at a time can conflict with the ordering required by a grade report."
     },
     "coherence-finite": {
       "title": "Coherence in a finite three-unit example",
-      "description": "Evaluation of all 13 reports under a four-state posterior distribution."
+      "description": "Evaluate all 13 reports for three units under the same four-state posterior."
     },
     "disclosed-errors": {
-      "title": "Expected and realised errors among stated directions",
-      "description": "Expected error shares, realised wrong counts and the joint probability that all statements are correct."
+      "title": "Expected and realized errors among stated directions",
+      "description": "Compare the expected wrong share, the wrong count in a posterior state, and the probability that every stated direction is correct."
     },
     "reported-and-realized": {
       "title": "Reported error and reference-law evaluation",
-      "description": "Comparison of conditional error expectations with realised errors at fixed true values."
+      "description": "Compare what the posterior predicts about errors with the errors observed when the true values are held fixed."
     },
     "frontier": {
       "title": "The error–disclosure frontier",
-      "description": "The lower convex boundary of expected wrong counts at different levels of disclosure."
+      "description": "The lower convex boundary shows the smallest expected wrong count attainable at each mean number of stated pairs."
     },
     "frontier-mixtures": {
       "title": "Mixtures of frontier reports",
-      "description": "Randomisation over complete reports at a specified mean disclosure."
+      "description": "Choose between two complete reports at random to reach an intermediate expected number of stated pairs."
     },
     "families": {
       "title": "Restrictions on the report family",
-      "description": "Consequences of grade caps, exact grade counts and fixed-order restrictions for minimum risk."
+      "description": "Grade caps, exact grade counts, and fixed orders restrict the search in different ways. The minimum risk depends on the family."
     },
     "report-card": {
       "title": "Posterior summaries in a grade report",
-      "description": "Marginal intervals and mean pairwise errors between ordered grades."
+      "description": "The card shows each unit’s posterior interval and the expected error of comparisons between grades."
     },
     "two-denominators": {
       "title": "Error rates under two denominators",
-      "description": "Relation between expected errors per possible pair and expected errors per stated pair."
+      "description": "The same expected wrong count can be expressed per possible pair or per stated pair. The two rates answer different questions."
     },
     "ties-and-withholding": {
       "title": "Posterior equality and withholding",
-      "description": "Effect of equality mass on weak-error and equality-neutral reporting losses."
+      "description": "Positive probability of equality changes the cost of making a strict statement. The preferred action depends on how equality is scored."
     },
     "computing-grades": {
       "title": "Computation of optimal grade reports",
-      "description": "Enumeration, fixed-order dynamic programming and joint optimisation with explicit result bounds."
+      "description": "Enumeration, cuts of a fixed order, and a joint search give different kinds of answers about which report is best."
     },
     "another-law": {
       "title": "Evaluation under an alternative posterior law",
-      "description": "Fixed-report risk and regret under distinct selection and evaluation laws."
+      "description": "Evaluate the same report under two posterior laws to see how its risk and regret change."
     },
     "chosen-and-judged": {
       "title": "Selection and evaluation using posterior draws",
-      "description": "Discrepancy between risk estimated on selection draws and risk under the exact posterior law."
+      "description": "A report can look better on the draws that selected it than when evaluated under the exact posterior law."
     },
     "averaging-errors": {
       "title": "Averaging error shares across reports",
-      "description": "Pooled errors, conditional mean error shares and zero-imputed means when disclosure varies."
+      "description": "When reports state different numbers of pairs, pooling their errors and averaging their error shares can give different answers."
     },
     "one-correction": {
       "title": "Sensitivity to corrections and unit removal",
-      "description": "Changes in pairwise reported relations after modifying one marginal distribution or the comparison population."
+      "description": "Compare which pairwise statements change after revising one unit’s marginal distribution or removing a unit."
     },
     "fixed-tiers": {
       "title": "Fixed quantile tiers",
-      "description": "Posterior evaluation of directions stated by quantile groups of the estimates."
+      "description": "Group the estimates by quantiles, then use the posterior to count the expected mistakes in the resulting report."
     },
     "tier-sizes": {
       "title": "Disclosure determined by tier sizes",
-      "description": "Combinatorial disclosure counts and their distribution over ordered positive size vectors."
+      "description": "The number of stated pairs depends on the sizes of the tiers. Compare counts across all ordered size choices."
     },
     "evidence-flags": {
-      "title": "Grades based on standardised evidence",
-      "description": "Directional statements induced by flags constructed from estimates and standard errors."
+      "title": "Grades based on standardized evidence",
+      "description": "Turn estimates and standard errors into evidence flags, then examine the pairwise directions the flags imply."
     },
     "flags-in-the-league": {
-      "title": "Standardised-evidence flags in a league",
-      "description": "Pairwise directions and posterior risk of a thirty-unit flag report."
+      "title": "Standardized-evidence flags in a league",
+      "description": "Evaluate the directions and posterior risk of a flag report for a simulated league of thirty units."
     },
     "posterior-tiers": {
-      "title": "Tiers and optimised cuts of posterior rankings",
-      "description": "Comparison of fixed posterior tiers, optimised boundaries and joint report optimisation."
+      "title": "Tiers and optimized cuts of posterior rankings",
+      "description": "Compare fixed tiers, boundaries chosen along a posterior order, and a search over reports that can change that order."
     },
     "order-misses": {
       "title": "Restrictions imposed by a fixed order",
-      "description": "A finite posterior example in which posterior-mean cuts exclude the unrestricted optimum."
+      "description": "At some withholding costs in this example, cuts of the posterior-mean order miss the best unrestricted report."
     },
     "rule-comparison": {
       "title": "Comparison at matched disclosure",
-      "description": "Excess expected wrong counts relative to a frontier at each rule's disclosure."
+      "description": "For each rule, compare its expected wrong count with the frontier at the same number of stated pairs."
     },
     "same-tau-or-same-n": {
       "title": "Common withholding cost and matched disclosure",
-      "description": "Risk comparisons at a common cost and error comparisons at a common disclosure level."
+      "description": "A common withholding cost compares risk. A common number of stated pairs compares expected errors at the same disclosure."
     },
     "deciles-quartiles": {
       "title": "Deciles and quartiles of posterior means",
-      "description": "Evaluation of fixed posterior-mean tiers on KRW's discordance and informativeness axes."
+      "description": "Compare deciles and quartiles of posterior means on KRW’s measures of discordance and informativeness."
     },
     "naive-thresholding": {
       "title": "Coherence of pairwise threshold decisions",
-      "description": "Incompatible triples and the relations stated by KRW's coherent archived cards."
+      "description": "Pairwise thresholds can produce incompatible triples. KRW’s archived cards show which directions a coherent report states."
     },
     "better-on-average": {
       "title": "Expected and state-specific reporting loss",
-      "description": "Comparison of minimum expected loss with realised losses in paired posterior draws."
+      "description": "A report with smaller posterior expected loss can still have larger loss in an individual posterior draw."
     },
     "stability": {
       "title": "Report stability under repeated measurement",
-      "description": "Changes in pairwise relations across independent datasets at fixed true values."
+      "description": "Repeat measurement at fixed true values to see which directions are newly stated, withheld, or reversed."
     },
     "one-place": {
       "title": "Reporting, allocation and classification",
-      "description": "Distinct objectives for pairwise reporting, place allocation and threshold classification."
+      "description": "Reporting a direction, allocating a place, and classifying a unit at a threshold use different decision rules."
     },
     "several-criteria": {
       "title": "Posterior profiles on multiple criteria",
-      "description": "Criterion-specific scales, orderings and pairwise direction probabilities for common units."
+      "description": "Compare the same units on two scores. Their posterior order and direction probabilities can differ by score."
     },
     "conflict-pairs": {
       "title": "Opposing criterion directions",
-      "description": "Comparison of directional disagreement, posterior uncertainty and isolated-pair expected costs."
+      "description": "When two criteria favor different directions, compare the posterior evidence and the costs of stating either one."
     },
     "two-scores": {
       "title": "A common grade report for two scores",
-      "description": "Weighted directional errors and criterion-specific profiles of a common report."
+      "description": "Use one grade column for both scores and see how its expected errors are distributed across the criteria."
     },
     "weight-path": {
       "title": "Optimal reports along the criterion-weight path",
-      "description": "Exact weight intervals and criterion-specific errors of minimum-risk reports."
+      "description": "As the criterion weights change, a different report can minimize risk. The graph marks the weight ranges for each report."
     },
     "common-grade-cost": {
       "title": "Criterion-specific excess risk of a common report",
-      "description": "Increase in each criterion's risk relative to its own optimum in the same report family."
+      "description": "Compare each criterion’s risk under the common grades with its minimum risk in the same report family."
     },
     "composite-or-criterion": {
       "title": "Composite targets and criterion directions",
-      "description": "Comparison of reporting objectives based on composite values and criterion-specific directions."
+      "description": "A statement about a weighted composite and a statement about the component criteria can favor different reports."
     },
     "error-budgets": {
       "title": "Criterion-specific expected-error budgets",
-      "description": "Feasible report families under bounds on criterion-specific expected error shares."
+      "description": "An error limit on each criterion restricts which grade reports can be selected."
     },
     "criterion-mixture": {
       "title": "A random-criterion representation of weighted risk",
-      "description": "Equality of weighted risk and risk averaged over an auxiliary criterion selected for a fixed report."
+      "description": "For a fixed report, weighting criterion risks gives the same expected risk as randomly drawing a criterion with those weights."
     },
     "worst-criterion": {
-      "title": "Minimising the largest criterion risk",
-      "description": "Comparison of weighted-risk and deterministic minimax report selection."
+      "title": "Minimizing the largest criterion risk",
+      "description": "Compare the report that minimizes weighted risk with the report that minimizes the largest criterion risk."
     },
     "choosing-settings": {
       "title": "Sensitivity to costs, weights and grade restrictions",
-      "description": "Separate effects of changing the reporting loss and the feasible report family."
+      "description": "Change withholding costs, weights, and grade restrictions separately to see why the chosen report changes."
     },
     "draws-to-errors": {
       "title": "Pairwise errors from joint posterior draws",
-      "description": "Dependence of empirical pairwise errors on the alignment of unit values within posterior states."
+      "description": "Pairwise errors depend on which unit values occur together in the same posterior draw."
     },
     "why-withheld": {
       "title": "Reasons for a withheld comparison",
-      "description": "Isolated-pair costs, criterion conflict, coherence and family restrictions in shared-grade decisions."
+      "description": "A pair can share a grade because of its own error probabilities, a conflict between criteria, or restrictions on the full report."
     },
     "pairs-leave-open": {
       "title": "Quantities not identified by pairwise probabilities",
-      "description": "Limits of pairwise probabilities for composite targets and joint-correctness events."
+      "description": "The same pairwise probabilities can accompany different probabilities for a composite direction or for all statements being correct."
     },
     "estimated-budgets": {
       "title": "Error budgets under estimated pairwise probabilities",
-      "description": "Inner and outer feasible families under bounds on Monte Carlo coefficient error."
+      "description": "When a proposed bound on Monte Carlo error holds, it identifies reports that meet an error budget under the exact probabilities."
     },
     "lambda-tau": {
       "title": "KRW's reward and postrank's withholding cost",
-      "description": "Conversion between λ and τ under common posterior and report-family assumptions."
+      "description": "Convert KRW’s reward to postrank’s withholding cost under the assumptions that make the two losses comparable."
     },
     "krw-axes": {
       "title": "Equivalent reporting-loss scales",
-      "description": "Affine equivalence of KRW's loss and postrank's risk over the six-site report family."
+      "description": "The two losses order the six-site reports in the same way under the stated assumptions."
     },
     "krw-card": {
       "title": "KRW's race and gender report cards",
-      "description": "Marginal summaries and pairwise statements in the archived cards for 97 firms."
+      "description": "Read the posterior intervals and directions in KRW’s published race and gender report cards for 97 firms."
     },
     "krw-heatmap": {
       "title": "Firm-pair probabilities and report-card blocks",
-      "description": "Comparison of isolated-pair thresholds with the relations in KRW's coherent cards."
+      "description": "Compare pairwise thresholds with the directions actually stated by KRW’s archived grade reports."
     },
     "krw-lambda": {
       "title": "KRW's archived reward path",
-      "description": "Disclosure and expected errors of archived cards across the λ grid."
+      "description": "As the reward for correct directions changes, KRW’s archived cards state different numbers of pairs and incur different expected errors."
     },
     "signed-or-absolute": {
       "title": "Signed and absolute gender-gap targets",
-      "description": "Target-specific posterior probabilities and fixed-order reports for signed and absolute contact gaps."
+      "description": "A signed gap and its absolute size are different targets. Their pairwise probabilities and fixed-order reports can differ."
     },
     "krw-two": {
       "title": "A common report for race and gender gaps",
-      "description": "Weighted expected-risk evaluation of a common report and two fixed KRW cards."
+      "description": "Compare a common grade report with KRW’s separate race and gender cards using the same weighted expected loss."
     },
     "cde-cuts": {
       "title": "School tertiles and minimum-risk grades",
-      "description": "Fixed cuts and unrestricted three-grade reporting for a twelve-school chronic-absence example."
+      "description": "For twelve schools, compare chronic absence tertiles with the grades that minimize risk under the same posterior."
     },
     "cde-one-disclosure": {
       "title": "School reports at matched disclosure",
-      "description": "Expected-error distribution of the three-grade reports that state 48 pairs."
+      "description": "Compare expected wrong counts across three-grade reports that all state 48 school pairs."
     },
     "cde-pair": {
       "title": "A high-probability school comparison withheld",
-      "description": "Full-report cost of requiring the F-above-I direction under declared family restrictions."
+      "description": "See how requiring the report to put school F above school I changes the best report in the same family."
     },
     "cde-tau-path": {
       "title": "School-report changes along the withholding-cost path",
-      "description": "Exact optimal disclosure and changes in individual school-pair relations as τ varies."
+      "description": "As the cost of withholding rises, the optimal report changes how many school pairs it states and which ones it states."
     },
     "alabama-map": {
       "title": "A common report for Alabama county outcomes",
-      "description": "Criterion-specific evaluation of common grades for historical income and incarceration outcomes."
+      "description": "Compare the same county grades on historical income and incarceration outcomes."
     },
     "your-data": {
       "title": "Reports from supplied posterior summaries",
-      "description": "Local calculation from normal summaries, declared priors or pairwise probability matrices."
+      "description": "Enter normal summaries, estimates with a prior, or pairwise probabilities to calculate a grade report in the browser."
     },
     "report-designer": {
       "title": "Case-report specification and export",
-      "description": "Reports accompanied by target definitions, computation scope, error-budget checks and source information."
+      "description": "Choose settings for a released case, check expected errors by criterion, and export the report and its inputs."
+    },
+    "profile-common-vs-domain": {
+      "title": "Common or profile?",
+      "description": "Compare one shared grade column with two domain columns under the same posterior and loss."
+    },
+    "profile-separability": {
+      "title": "Separate or joint?",
+      "description": "Separate domain choices can minimize additive loss. A joint error limit can make their combination infeasible."
+    },
+    "profile-dependence": {
+      "title": "Error overlap",
+      "description": "The same domain posteriors can lead to different best profiles when their errors overlap differently."
+    },
+    "profile-resolution": {
+      "title": "Budget and grades",
+      "description": "A looser error limit can increase reporting detail in one domain and reduce it in another."
+    },
+    "fictional-site-profiles": {
+      "title": "Site profiles",
+      "description": "Read two grades for each of forty fictional sites and compare the directions stated within each domain."
     }
-  },
-  "navigation": {
-    "1": "1 · Uncertainty",
-    "2": "2 · Grade reports",
-    "3": "3 · Reporting rules",
-    "4": "4 · Multiple criteria",
-    "5": "5 · Cases",
-    "T": "Tools"
   }
 }

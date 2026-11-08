@@ -4,12 +4,7 @@ subtitle: "1.12 · the posterior intervals of a simulated league and the directi
 description: "Comparison of marginal interval overlap and direction probabilities in a thirty-unit simulation."
 ---
 
-The thirty units of the simulated league yield 435 unordered pairs. Their posterior intervals are calculated under
-the normal model used in [normal–normal posterior shrinkage](shrinkage.qmd). For each selected pair, the display gives the
-interval overlap and the posterior probability that the first unit has the larger true value. The table distinguishes
-non-overlapping intervals from overlapping intervals with, or without, a direction probability above .90. This
-classification quantifies the extent to which interval overlap coexists with relatively high posterior support for
-one direction. It also permits comparisons across interval levels and prior standard deviations.
+We compare interval overlap and posterior direction probabilities for all 435 pairs of the thirty simulated units. The intervals come from the model in [normal–normal posterior shrinkage](shrinkage.qmd). For a selected pair, the figure shows how far the intervals overlap and the probability that the first unit has the larger true value. The table counts the pairs with overlapping intervals and identifies those that still have a direction probability above .90. Changing the interval level or the prior standard deviation changes these counts.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -25,7 +20,7 @@ one direction. It also permits comparisons across interval levels and prior stan
   direction above .90. The highest is .988, for U13 above U05, whose intervals overlap by .005: no overlapping pair is
   above .99.
 - **U06 and U20.** These intervals do not overlap (.002 lies between them), and U06 is the higher with probability
-  .988, the same to three decimals as the overlapping pair above: the two comparisons have similar posterior support despite different overlap classifications.
+  .988, the same to three decimals as the preceding pair, whose intervals overlap.
 - **U04 and U18.** A wide overlap, .107, and still U04 is the higher with probability .904: U18's narrow interval ends
   at −.105, below U04's posterior mean, −.014.
 - **95% intervals.** Wider intervals overlap more often, in 413 pairs, and 102 of these have one direction above .90.

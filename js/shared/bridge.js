@@ -2,14 +2,15 @@
  * bridge.js: URL parameters and the postMessage bridge for embedded apps (from postrank Explorer v1, without the
  * prediction-gate and present-mode keys).
  *
- * readQuery({ allowed, types, window }) -> { spec, preset, theme, ignored }
+ * readQuery({ allowed, types, window }) -> { spec, preset, theme, open, ignored }
  *   Reads window.__PRX_QUERY ?? location.search (an empty string in __PRX_QUERY still wins).
  *     spec     the allowed app keys, parsed by `types`. Parsing only: an out-of-range value passes through unchanged
  *              and the app clamps it. Unknown keys and unreadable values are dropped.
  *     preset   a preset id (short plain text) or null; the app looks it up in its catalog entry.
  *     theme    one of CONFIG.themes or null.
+ *     open     the names of the app's disclosures to open at mount (open=data,method), or null (review 044 repair).
  *     ignored  [{ key, value, reason }] for every parameter that was dropped (for checks and debugging).
- *   The reserved keys preset and theme never enter `spec`. A repeated key keeps its first value.
+ *   The reserved keys preset, theme and open never enter `spec`. A repeated key keeps its first value.
  *
  * attachBridge(app, { allowed, parse, window }) -> detach()
  *   Listens for postMessage({ prx: spec }) and calls app.update(partial) with the allowed keys only. A message is
@@ -24,7 +25,7 @@
 
 export const CONFIG = Object.freeze({
   messageKey: "prx",
-  reservedKeys: Object.freeze(["preset", "theme"]),
+  reservedKeys: Object.freeze(["preset", "theme", "open"]),
   themes: Object.freeze(["light", "dark"]),
   onWords: Object.freeze(["on", "true", "1", "yes"]),
   offWords: Object.freeze(["off", "false", "0", "no"]),
@@ -135,7 +136,7 @@ const describe = (t) => (typeof t === "string" ? t : Array.isArray(t) ? `one of 
 export function readQuery({ allowed = [], types, window: win } = {}) {
   const typeMap = checkTypes(types);
   const keys = new Set(allowed.filter((k) => isSafeKey(k) && !CONFIG.reservedKeys.includes(k)));
-  const out = { spec: {}, preset: null, theme: null, ignored: [] };
+  const out = { spec: {}, preset: null, theme: null, open: null, ignored: [] };
   const seen = new Set();
   for (const [key, value] of new URLSearchParams(queryString(win))) {
     const drop = (reason) => out.ignored.push({ key, value, reason });
@@ -151,6 +152,10 @@ export function readQuery({ allowed = [], types, window: win } = {}) {
       const v = toText(value);
       if (v === undefined) drop("preset takes a preset id");
       else out.preset = v;
+    } else if (key === "open") {
+      const v = toList(value, toText);
+      if (v === undefined) drop("open takes disclosure names");
+      else out.open = v;
     } else if (!keys.has(key)) {
       drop("not an allowed key");
     } else {

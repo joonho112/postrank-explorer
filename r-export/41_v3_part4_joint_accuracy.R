@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R fixed-report joint/correct-fraction compositions.
 # No new4.8/4.13 JS or TS implementation is read or executed. Root integrates
 # the4.10 UI: its one extra point is independently recomputed by the separately

@@ -1,15 +1,11 @@
 ---
 title: "Opposing criterion directions"
 subtitle: "4.2 · after the postrank theory book, ch. 12 and 19"
-description: "Comparison of directional disagreement, posterior uncertainty and isolated-pair expected costs."
+description: "How criterion disagreement and posterior uncertainty affect the cost of ranking a pair."
 ---
 
-Criteria can support opposite directions for a given pair. The matrix identifies these disagreements by comparing
-forward and reverse error probabilities on each criterion. The bars evaluate the weighted costs of both strict
-directions and withholding. Supplied normal posteriors and finite known-state examples distinguish disagreement
-within a state from uncertainty about that state. The smaller posterior expected directional cost can reflect both
-sources, and is therefore not generally a measure of criterion conflict alone. A complete coherent report imposes
-constraints beyond this isolated-pair comparison.
+Two criteria can favor opposite directions for the same pair. To identify those pairs, the matrix compares the
+error probabilities for both directions on each criterion.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -18,6 +14,11 @@ constraints beyond this isolated-pair comparison.
 <script src="../../js/bundles/conflict-pairs.js"></script>
 <script>window.__prxApp = PRX["conflict-pairs"].mountWidget(document.getElementById("app"));</script>
 ```
+
+The bars give the weighted costs of stating either direction or withholding the comparison. These costs can be
+similar when the criteria agree within each state but the order changes across states. They can also be similar
+when the criteria disagree about a pair whose values are known. The finite examples distinguish these two
+possibilities. A common grade report must also reconcile the chosen direction with its other comparisons.
 
 ## Numerical illustrations {#what-to-try}
 
@@ -28,19 +29,19 @@ constraints beyond this isolated-pair comparison.
 - **Certain opposition.** The two directions each cost .5000; withholding costs .2000. Here the smaller directional
   cost is also the statewise conflict quantity. The additional boundary preset shows every action sharing the
   minimum when withholding has the same cost.
-- **Uncertain agreement.** The smaller posterior directional cost is still .5000, but statewise γ is .0000 in each
+- **Uncertain agreement.** The smaller posterior directional cost is still .5000, but statewise γ is 0 in each
   state. The criteria agree within every state; uncertainty about which state holds creates the directional cost.
-- **Zero error weight.** The opposing pair stays on the map, while its cheaper direction costs .0000 and the
-  reverse costs 1.0000. A disagreement on a criterion with zero weight does not itself force weighted error.
-- **Latent equality.** One criterion’s reverse errors are .600 and .900, both above one half, yet it prefers the
-  smaller one. The other criterion prefers the opposite direction. Both weighted directions cost .7500; comparing
+- **Zero error weight.** The opposing pair stays on the map, while its cheaper direction costs 0 and the
+  reverse costs 1.0000. The criterion with zero weight still favors the reverse direction, but its error adds nothing to the weighted cost.
+- **Latent equality.** In **Data and exact values**, the first criterion’s two directional errors are .6000 and .9000,
+  both above one half, yet it prefers the smaller one. The other criterion prefers the opposite direction. Both weighted directions cost .7500; comparing
   errors with their reverse detects this disagreement even with equality mass.
 
 ::: {.callout-note appearance="simple"}
-A strict direction counts as wrong at equality. The map compares forward and reverse errors on every criterion;
-it does not use a one-half threshold or discard criteria with zero weight. Statewise γ excludes withholding.
-Posterior uncertainty and substantive conflict need not have a unique additive decomposition. A full coherent
-report can choose differently from an isolated pair.
+A strict direction counts as wrong when the two values are equal. Comparing the two error probabilities
+therefore identifies the preferred direction even if both probabilities exceed one half. The map includes
+criteria with zero weight. In each state, γ is the smaller cost of the two strict directions. Across states,
+uncertainty about the true values can raise the expected cost, and the two sources need not separate uniquely.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

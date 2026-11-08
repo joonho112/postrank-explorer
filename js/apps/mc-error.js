@@ -24,6 +24,10 @@
 //             holds the pair followed in one grade (the cap, read from the same runs with any number of grades, or the
 //             pair's own error)
 //   ledger    what the MCSE and the envelope radius each cover, the radius formula with its numbers, and the notes
+// Layout (review 044 repair, X-01; U3-F2's order): base.js's result-first frame, so the read-out sits directly under
+// the controls and the preset row; "this run" (ctx.primaryGraphic), with the followed pair's estimate written next to
+// its dot, and the 100 runs beside it; then the reports with the counts over the runs, which hold what the presets are
+// about (the report from the estimates against the exact one); then the panel over S, then the ledger.
 // The runs are computed in slices under aria-busy when they are not cached; while they are drawn the previous runs stay
 // on screen, dimmed. Records are kept by score, S and seed, so Redraw (the next seed) reuses 99 of them, and τ, the pair
 // and the cap only read them again (the reports of the runs are memoized by run, τ and cap).
@@ -91,6 +95,11 @@ export const CONFIG = Object.freeze({
     row: 19, marginTop: 26, marginBottom: 38, marginLeft: 56, marginRight: 54, xTicks: 5, font: 11.5,
     dot: 4.5, diamond: 4.5, diamondWidth: 1.5, whisker: 2, capInset: 5, bandInset: 4, bandOpacity: 0.6, outline: 1.5,
     tauWidth: 1.25, tauDash: "5,3", labelGap: 8, tagGap: 6, tauLabelDy: -14, tauLabelGap: 3, narrow: 480,
+    // the followed pair's estimate beside its dot (review 044 repair): this far past its bar and diamond, and about
+    // this share of the font size per character when deciding whether it fits on the right; a halo keeps it legible.
+    // With no room on the right it sits above the dot (the line's bottom anchored estAbove px above the dot's center),
+    // or below it (the line's top anchored estBelow px below the center) when the τ label or the row above is in the way
+    estGap: 4, estChar: 0.62, estHalo: 3, estAbove: 6.5, estBelow: 7.5,
     overS: Object.freeze({ height: 170, marginTop: 18, marginBottom: 38, marginLeft: 48, marginRight: 40, xTicks: 5, yTicks: 4,
       bandOpacity: 0.22, exactWidth: 1.75, shownWidth: 1.5, shownDash: "1.5,2.5", dot: 4, pad: 0.04, labelDy: -6 }),
     hist: Object.freeze({
@@ -119,9 +128,9 @@ export const CONFIG = Object.freeze({
     // this run
     runHead: "This run: {S} draws, seed {seed}",
     xLabel: "Chance that the more likely direction is wrong",
-    xLabelShort: "Error of the more likely direction",
-    xLabelAB: "Weighted error of the more likely direction",
-    xLabelABShort: "Weighted error, more likely direction",
+    xLabelShort: "Posterior probability of a wrong direction",
+    xLabelAB: "Weighted probability of a wrong direction",
+    xLabelABShort: "Weighted probability of a wrong direction",
     keyEst: "estimate from the draws, with its ±{z} MCSE bar (Monte Carlo standard errors)",
     keyExact: "exact value",
     keyBand: "envelope band ±{r}: with chance at least {p}, every diamond lies in its band",
@@ -295,7 +304,7 @@ export const CONFIG = Object.freeze({
     readConstant: "Every draw agrees on this pair, so its MCSE is {zero} and it is not fragile.",
     // caption
     caption1: "Six fictional sites from the postrank tutorial, {score}; their normal law is ",
-    caption2: ". Their error probabilities are estimated here, as a what-if, from posterior draws simulated in this browser (",
+    caption2: ". We estimate the pairwise error probabilities from simulated posterior draws (",
     caption3: "); the {R} runs use seeds {from} to {to}{wrap}.",
   }),
 });
@@ -588,6 +597,8 @@ export function mountWidget(el, spec = {}) {
     name: CONFIG.name,
     label: CONFIG.label,
     className: CONFIG.className,
+    // review 044 repair (X-01): the read-out directly under the controls and the preset row
+    layout: "result-first",
     css: CSS,
     keys: {
       S: { type: "integer", min: CONFIG.S.min, max: CONFIG.S.max, value: CONFIG.S.value },
@@ -646,13 +657,12 @@ export function mountWidget(el, spec = {}) {
         h("div", { class: "prx-mce-row" }, score.root, sSlider.root, tau.root),
         h("div", { class: "prx-mce-row" }, seedBox, pairSelect.root, capSeg.root),
       );
-      ctx.controls.after(ctx.readout.node);
 
       // ------------------------------------------------------------------------------------------- panels
       const panelHead = (cls = "prx-mce-heading", level = 4) => ctx.part("notes", ctx.panelTitle("", { className: cls, level }));
-      // this run
+      // this run: the graphic S, Redraw, the seed and τ change, directly under the read-out (base.js primaryGraphic)
       const runTitle = panelHead();
-      const runSlot = h("div", { class: "prx-mce-chart prx-mce-run-chart" });
+      const runSlot = ctx.primaryGraphic(h("div", { class: "prx-mce-chart prx-mce-run-chart" }));
       const runKey = h("div", { class: "prx-mce-key", "data-prx-part": "legend" });
       const runBox = h("section", { class: "prx-mce-run", "aria-label": T.runTable }, runTitle, runSlot, runKey);
       // over S
@@ -660,7 +670,8 @@ export function mountWidget(el, spec = {}) {
       const overSlot = h("div", { class: "prx-mce-chart" });
       const overKey = h("div", { class: "prx-mce-key", "data-prx-part": "legend" });
       const overNote = h("p", { class: "prx-mce-note", "data-prx-part": "notes" });
-      const overBox = h("section", { class: "prx-mce-over", "aria-label": T.overTable }, overTitle, overSlot, overKey, overNote);
+      // across the whole width, after the reports (review 044 repair, U3-F2's order)
+      const overBox = h("section", { class: "prx-mce-over prx-mce-wide", "aria-label": T.overTable }, overTitle, overSlot, overKey, overNote);
       // the runs
       const runsTitle = panelHead();
       const busyNote = h("p", { class: "prx-mce-busy", "data-prx-part": "notes", hidden: true });
@@ -704,10 +715,12 @@ export function mountWidget(el, spec = {}) {
         h("div", { class: "prx-mce-ledger-grid" }, ledgerWrap, h("div", {}, formula, bookLine, pairLine, ruleLine, sameELine, mcmcLine, othersLine)));
 
       ctx.charts.classList.add("prx-mce-charts");
+      // review 044 repair (X-01; U3-F2's order): this run beside the 100 runs, then the reports and the counts over
+      // the runs (the decision the presets are about), then the panel over S, then the ledger; one column below 56rem
       ctx.charts.append(h("div", { class: "prx-mce-views" },
-        h("div", { class: "prx-mce-col" }, runBox, overBox),
+        h("div", { class: "prx-mce-col" }, runBox),
         h("div", { class: "prx-mce-col" }, runsBox),
-        repBox, ledgerBox));
+        repBox, overBox, ledgerBox));
 
       // the pair followed: a click on a row of the run figure (the keyboard points select by focus)
       let runRows = [];
@@ -890,6 +903,40 @@ export function mountWidget(el, spec = {}) {
         const rows = runRows;
         const width = runSlot.clientWidth || ctx.width();
         const fragile = rows.filter((r) => r.fragile);
+        // the followed pair's estimate, written next to its dot (review 044 repair, X-01: the number on the mark that
+        // S, Redraw and the seed move): past its ±2 MCSE bar and its exact diamond on the right. When the plot has no
+        // room there, above the dot, inside the plot's width (not before the bar, where it could read as the bar's
+        // lower end: Phase 3 review A2); below the dot when the τ label (top row) or the row above has a mark in its
+        // way; before the bar, as before, only when the row below is in the way too
+        const sel = rows.find((r) => r.selected);
+        const inner = Math.max(1, width - C.marginLeft - C.marginRight);
+        const xPx = (v) => (v / xMax) * inner;
+        const estMark = sel ? (() => {
+          const textPx = fmtP(sel.est).length * C.font * C.estChar;
+          const right = Math.max(sel.hi2, sel.exact);
+          if (xPx(right) + C.diamond + C.estGap + textPx <= inner) {
+            return { key: sel.key, x: right, v: sel.est, dx: C.diamond + C.estGap, dy: 0, anchor: "start", line: "middle" };
+          }
+          const at = xPx(sel.est);
+          const anchor = at + textPx / 2 > inner ? "end" : at - textPx / 2 < 0 ? "start" : "middle";
+          const dx = anchor === "end" ? C.dot : anchor === "start" ? -C.dot : 0;
+          const x0 = anchor === "end" ? at + dx - textPx : anchor === "start" ? at + dx : at - textPx / 2;
+          const span = [x0 - C.estHalo, x0 + textPx + C.estHalo];
+          const hits = (spans) => spans.some(([a, b]) => a < span[1] && b > span[0]);
+          // the marks of a neighboring row that reach into the gap between two rows: its dot, its diamond, its caps
+          const marksOf = (r) => [
+            [xPx(r.est) - C.dot - 1, xPx(r.est) + C.dot + 1], [xPx(r.exact) - C.diamond - 1, xPx(r.exact) + C.diamond + 1],
+            ...(r.mcse > 0 ? [r.lo2, r.hi2].map((v) => [xPx(v) - C.whisker, xPx(v) + C.whisker]) : []),
+          ];
+          // the τ label at the top of the frame: "τ" before τ's line, its value after it
+          const tx = xPx(state.tau);
+          const tauSpans = [[tx - C.tauLabelGap - C.font * C.estChar, tx], [tx, tx + C.tauLabelGap + fmtSet(state.tau).length * C.font * C.estChar]];
+          const k = rows.indexOf(sel);
+          const aboveFree = k === 0 ? !hits(tauSpans) : !hits(marksOf(rows[k - 1]));
+          if (aboveFree) return { key: sel.key, x: sel.est, v: sel.est, dx, dy: -C.estAbove, anchor, line: "bottom" };
+          if (k < rows.length - 1 && !hits(marksOf(rows[k + 1]))) return { key: sel.key, x: sel.est, v: sel.est, dx, dy: C.estBelow, anchor, line: "top" };
+          return { key: sel.key, x: Math.min(sel.lo2, sel.exact), v: sel.est, dx: -(C.diamond + C.estGap), dy: 0, anchor: "end", line: "middle" };
+        })() : null;
         const rowTitle = (r) => {
           const flip = r.estAbove !== r.above
             ? words(T.flip, { x: IDS[r.estAbove], y: IDS[r.estAbove === r.i ? r.j : r.i], u: IDS[r.above], v: IDS[r.above === r.i ? r.j : r.i] }) : "";
@@ -938,6 +985,11 @@ export function mountWidget(el, spec = {}) {
               P.text(rows.filter((r) => r.selected), { x: 0, y: "key", text: (r) => `${T.selectedMark}${r.name}`, dx: -C.labelGap, textAnchor: "end", fill: c.plotFg, fontSize: C.font, fontWeight: "bold" }),
               P.text([state.tau], { x: (v) => v, frameAnchor: "top", dy: C.tauLabelDy, dx: -C.tauLabelGap, text: () => T.tauMark, textAnchor: "end", fill: c.plotFg, fontSize: C.font }),
               numText([state.tau], { x: (v) => v, frameAnchor: "top", dy: C.tauLabelDy, dx: C.tauLabelGap, value: (v) => v, format: fmtSet, textAnchor: "start", fill: c.plotFg, fontSize: C.font }),
+              ...(estMark ? [numText([estMark], {
+                x: "x", y: "key", value: "v", format: fmtP, dx: estMark.dx, dy: estMark.dy, textAnchor: estMark.anchor,
+                lineAnchor: estMark.line, fill: c.plotFg, fontSize: C.font, fontWeight: "bold", stroke: c.plotBg,
+                strokeWidth: C.estHalo, paintOrder: "stroke",
+              })] : []),
             ];
           },
           keyboard: {
@@ -1322,7 +1374,7 @@ export function mountWidget(el, spec = {}) {
       }
 
       // ------------------------------------------------------------------------------------------- read-out, caption
-      function writeReadout(state, k) {
+      function writeReadout(state, k, reruns) {
         const f = k.frSel;
         const m = f.mcse ?? 0;
         let frag;
@@ -1331,13 +1383,22 @@ export function mountWidget(el, spec = {}) {
         else frag = fill(T.readNot, { tau: () => num(state.tau, fmtSet(state.tau)), ratio: () => num(f.ratio, fmtRatio(f.ratio), "read-ratio") });
         const estAbove = f.betterDirection === "i_ahead" ? f.i : f.j;
         const flip = estAbove !== k.a ? words(T.readFlip, { x: IDS[estAbove], y: IDS[estAbove === f.i ? f.j : f.i] }) : "";
-        ctx.readout.set(fill(T.readout, {
+        const changed = k.change.changed;
+        const report = !changed ? [" The estimated and exact reports agree."]
+          : inExact(k.optExact, k.optHat.grade) ? [" The estimated report is one of the exact optima."]
+          : inExact(k.optHat, k.optExact.grade) ? [" The exact report is one of the estimated optima."]
+          : [" The reports differ on ", count(changed), changed === 1 ? " pair." : " pairs."];
+        const replay = !reruns ? [] : reruns.flips
+          ? [" The isolated choice flipped in ", count(reruns.flips), " of ", count(reruns.R),
+            " reruns; the full report changed in ", count(reruns.flipChanged), " of those ", count(reruns.flips), "."]
+          : [" The isolated choice never flipped in ", count(reruns.R), " reruns."];
+        ctx.readout.set([...fill(T.readout, {
           name: k.sel.name, S: () => count(state.S, "read-S"), flip,
           est: () => num(f.weightedError, fmtP(f.weightedError), "read-est"),
           exact: () => num(k.exactRow.e, fmtP(k.exactRow.e), "read-exact"),
           m: () => num(m, fmtSe(m), "read-mcse"),
           frag: () => h("span", {}, ...frag),
-        }));
+        }), ...report, ...replay]);
       }
 
       function writeCaption(state) {
@@ -1367,8 +1428,8 @@ export function mountWidget(el, spec = {}) {
           drawOverS(state, k);
           drawReports(state, k);
           drawLedger(state, k);
-          writeReadout(state, k);
           writeCaption(state);
+          let reruns = null;
 
           // a job for another setting is no longer wanted
           if (job && job.key !== recJob(state) && job.key !== optJob(state)) cancelJob();
@@ -1379,7 +1440,9 @@ export function mountWidget(el, spec = {}) {
             drawRuns(state, k, base);
             if (reportsReady(state, base)) {
               tallyBox.classList.remove("prx-mce-stale");
-              drawTally(state, k, base, runsReports(state, k, base));
+              const reports = runsReports(state, k, base);
+              reruns = { ...base, ...reports };
+              drawTally(state, k, base, reports);
             } else {
               // the reports of the runs are chosen in slices; the counts beside the cards stay, dimmed, meanwhile
               tallyBox.classList.add("prx-mce-stale");
@@ -1392,6 +1455,7 @@ export function mountWidget(el, spec = {}) {
             runsBody.classList.add("prx-mce-stale");
             tallyBox.classList.add("prx-mce-stale");
           }
+          writeReadout(state, k, reruns);
         },
       };
     },

@@ -1,0 +1,67 @@
+{
+  "id": "P.1",
+  "name": "profile-common-vs-domain",
+  "part": "P",
+  "title": "Common or profile?",
+  "idea": "Common grades or separate priorities.",
+  "status": "built",
+  "from": "P2 multidomain profile theory",
+  "data": [
+    "engine"
+  ],
+  "credit": "JoonHo Lee; postrank multidomain profile decisions (postrank 1.2.0).",
+  "caption": "Complete finite teaching law; exact arithmetic; optimum within the stated candidate bank.",
+  "presets": [
+    {
+      "id": "aligned",
+      "label": "Aligned priorities",
+      "query": "law=aligned&tauIndex=2&weightIndex=0&unit=A&report=profile&candidate=canonical"
+    },
+    {
+      "id": "crossed",
+      "label": "Crossed priorities",
+      "query": "law=crossed&tauIndex=2&weightIndex=0&unit=A&report=profile&candidate=canonical"
+    },
+    {
+      "id": "low-tau",
+      "label": "Lower withholding cost",
+      "query": "law=crossed&tauIndex=0&weightIndex=0&unit=A&report=profile&candidate=canonical"
+    },
+    {
+      "id": "unequal-weights",
+      "label": "Greater weight on S",
+      "query": "law=crossed&tauIndex=2&weightIndex=1&unit=A&report=profile&candidate=canonical"
+    }
+  ],
+  "try": [
+    {
+      "preset": "aligned",
+      "shows": [
+        "1/10"
+      ]
+    },
+    {
+      "preset": "crossed",
+      "shows": [
+        "1/4",
+        "1/10",
+        "3/20"
+      ]
+    },
+    {
+      "preset": "low-tau",
+      "shows": [
+        "1/20"
+      ]
+    },
+    {
+      "preset": "unequal-weights",
+      "shows": [
+        "9/10",
+        "9/50",
+        "1/10",
+        "2/25"
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # The CDE tau path (S-01): the 12-school problem of pr_case_cde solved with postrank 1.1.0 at every tau of a grid and at
 # the three named breakpoint values, as one released summary (summary route, CONTRACT 6.1).
 #   Rscript r-export/23_cde_taupath.R            (after 21_export_cases.R; run 22_case_registry.R afterwards)

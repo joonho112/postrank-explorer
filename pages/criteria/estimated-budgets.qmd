@@ -1,15 +1,14 @@
 ---
 title: "Error budgets under estimated pairwise probabilities"
 subtitle: "4.14 · after the postrank theory book, ch. 15"
-description: "Inner and outer feasible families under bounds on Monte Carlo coefficient error."
+description: "How a bound on Monte Carlo error changes which reports can satisfy an error budget."
 ---
 
-A report can satisfy an error budget on estimated pairwise probabilities and violate it under the stipulated exact
-law. The budget concerns the expected wrong share among stated pairs. Given a proposed uniform bound on probability
-error, tighter and looser estimated thresholds define inner and outer feasible families. The display checks the
-coefficient bound and the resulting inclusions separately, alongside an advisory numerical tolerance. A fixed-size
-independent-draw illustration distinguishes a probabilistic numerical error guarantee from the deterministic
-membership calculations. Neither calculation establishes calibration of the supplied posterior model.
+An error budget caps the expected share of wrong stated directions. A report may pass that budget when we use
+estimated probabilities and fail it under the exact probabilities. A uniform error bound lets us use a tighter
+estimated budget to find reports that definitely pass, and a looser one to retain every report that passes.
+We check the bound and both claims about the report sets separately. A separate fixed-size simulation shows
+how often a bound of this kind can hold over repeated draws from the same law.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -22,8 +21,8 @@ membership calculations. Neither calculation establishes calibration of the supp
 ## Numerical illustrations {#what-to-try}
 
 - **Estimated pass.** For A above B, the estimated wrong share is .200 and the exact supplied-law share is .300.
-  The budget is .25. Its estimated row passes while its exact row fails; the inner threshold .15 and outer
-  threshold .35 remain separate on the number line.
+  The budget is .25. The estimate passes and the exact probability fails. The number line shows the tighter threshold .15 and
+  looser threshold .35.
 - **Negative inner.** The signed inner threshold is −.05, even though the estimated wrong share is 0. Replacing
   this threshold with zero would wrongly admit A above B. The all-withheld report still passes the count-form
   tests, with no defined wrong share.
@@ -31,20 +30,18 @@ membership calculations. Neither calculation establishes calibration of the supp
   also happens to be empty here. Their separate counters matter: an empty inner family alone would not establish
   exact infeasibility.
 - **Radius too small.** The proposed radius is reduced to .05 with the exact law unchanged.
-  The coefficient checks read “no,” and an inner member fails the exact budget. The app displays the actual
-  inclusion counterexample rather than assuming the bracket.
+  The coefficient checks read “no,” and an inner member fails the exact budget. The report that passes the tighter estimate but fails the exact budget is shown in the table.
 - **Raw comparisons.** With advisory tolerance removed, its coefficient check reads “no.” At the default radius,
   the tiny raw excess explains why the strict check fails while the tolerant comparison passes. The actual
   inclusions are separate tests, not consequences of accepting a soft tolerance.
-- **Fixed-S IID.** The separate illustration uses 1,000 whole-state draws from the six-site independent normal
-  law, reusing the Monte Carlo producer and bound. Score B has error weight 0 but remains protected by its .03
+- **Fixed-S IID.** The simulation uses 1,000 complete states drawn from the independent normal posteriors for six sites. Score B has error weight 0 but remains protected by its .03
   budget. Requiring exactly two grades gives an empty inner family while the exact family remains nonempty.
 
 ::: {.callout-note appearance="simple"}
-“Exact” means the stipulated supplied law. The main two-unit example declares coefficients deterministically and
-makes no sampling-probability claim. In the IID illustration, the fixed-size simultaneous coefficient event has
-probability at least one minus α across repeated numerical samples from the same law. This concerns numerical
-approximation, not model calibration or a posterior probability of compliance. Signed thresholds are never clipped.
+The two-unit example specifies the exact and estimated probabilities directly. In the simulation, the chance
+that all estimated coefficients fall within the bound is at least one minus α across repeated samples of the
+same size from the same law. This probability describes the numerical estimates under that law. Compliance
+under the model is still determined by the exact expected wrong share. The thresholds can be negative.
 :::
 
 Standalone: [Error budgets under estimated pairwise probabilities](../../embed/estimated-budgets.html).

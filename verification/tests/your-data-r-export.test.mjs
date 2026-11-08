@@ -8,6 +8,14 @@ import {yourDataR} from '../../js/shared/your-data-r-export.js';
 import {errorArray,normalInterval} from '../../js/pr-core.js';
 import {publicYourDataInput} from '../../js/shared/your-data-input.js';
 const ROOT=resolve(import.meta.dirname,'../..');
+// The v3.5 gate supplies the isolated 1.2.0 library; unset retains legacy 1.1.0.
+const POSTRANK_LIB=resolve(ROOT,process.env.POSTRANK_LIB || '.R-library');
+const POSTRANK_VERSION=process.env.POSTRANK_LIB ? '1.2.0' : '1.1.0';
+const rBinding=`.libPaths(unique(c(${JSON.stringify(POSTRANK_LIB)},.libPaths())))
+stopifnot(identical(as.character(utils::packageVersion("postrank",lib.loc=${JSON.stringify(POSTRANK_LIB)})),${JSON.stringify(POSTRANK_VERSION)}))
+suppressPackageStartupMessages(library("postrank",lib.loc=${JSON.stringify(POSTRANK_LIB)},character.only=TRUE))
+stopifnot(identical(normalizePath(getNamespaceInfo(asNamespace("postrank"),"path"),mustWork=TRUE),normalizePath(file.path(${JSON.stringify(POSTRANK_LIB)},"postrank"),mustWork=TRUE)))
+`;
 const rows=JSON.parse(readFileSync(join(ROOT,'verification/golden/oracle-v3p5-tools.json'),'utf8')).rows;
 const decode=x=>Array.isArray(x)?x.map(decode):x===null?NaN:x;
 const close=(a,b)=>{if(b===null)return assert.equal(a,null);assert.ok(Math.abs(a-b)<=1e-12,`${a} versus independent ${b}`);};
@@ -16,13 +24,13 @@ function replay(model,grade,runSearch){
  try{
   const script=join(dir,'replay.R'),output=join(dir,'result.json');
   const capture=`\nout <- list(ids = ids, criteria = criteria, e = lapply(seq_along(criteria), function(k) unname(e[,,k])), grade = unname(browser_grade), input = entered_input, weights = unname(weights), tau = settings$tau, means = if(is.null(supplied_summaries)) NULL else unname(supplied_summaries$means), lower = if(is.null(supplied_summaries)) NULL else unname(supplied_summaries$lower), upper = if(is.null(supplied_summaries)) NULL else unname(supplied_summaries$upper), N = browser_evaluation$N, E = unname(browser_evaluation$E), EoverN = unname(browser_evaluation$E_over_N), risk = browser_evaluation$primary_risk, fitted = exists('fit', inherits = FALSE))\nwriteLines(jsonlite::toJSON(out, auto_unbox = FALSE, digits = 17, na = 'null', null = 'null'), ${JSON.stringify(output)})\n`;
-  writeFileSync(script,`.libPaths(c(${JSON.stringify(process.env.POSTRANK_LIB || join(ROOT,'.R-library'))},.libPaths()))\n`+yourDataR(model,grade,{runSearch})+capture);
+  writeFileSync(script,rBinding+yourDataR(model,grade,{runSearch})+capture);
   const result=spawnSync('Rscript',[script],{cwd:ROOT,encoding:'utf8',timeout:30000,maxBuffer:2e6});
   assert.equal(result.status,0,result.stderr+'\n'+result.stdout);return JSON.parse(readFileSync(output,'utf8'));
  }finally{rmSync(dir,{recursive:true,force:true});}
 }
 
-test('public exports replay the exact applied arrays and fixed report in postrank 1.1.0',()=>{
+test(`public exports replay the exact applied arrays and fixed report in postrank ${POSTRANK_VERSION}`,()=>{
  for(const row of rows.filter(r=>/^tool-your-(league8-posterior|league8-flat|league8-normal|six-probabilities|league30-posterior|equal5)$/.test(r.id))){
   const a=row.args,x=row.expect,input=publicYourDataInput(a.example,a.format),model={E:{...x.E,e:decode(x.E.e)},posterior:x.posterior,input,settings:{tau:a.tau,cap:String(a.cap),weights:a.w,orient:a.orient,prior:a.prior,priorMean:0,priorSd:.15,timeLimit:.1},method:x.method,order:x.order,blocks:x.blocks};
   const actual=replay(model,x.optimum.grade,row.id.includes('league30'));

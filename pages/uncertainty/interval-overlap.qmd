@@ -4,12 +4,7 @@ subtitle: "1.11 · two posterior intervals and one direction probability, after 
 description: "Pairwise direction probabilities associated with overlapping marginal credible intervals."
 ---
 
-Consider independent normal posterior distributions for A and B with equal standard deviations. The upper figure
-shows their central credible intervals; the lower figure shows the posterior distribution of the difference A − B.
-The standard deviation of the difference is $\sqrt 2$ times the common posterior SD, whereas the sum of the two
-marginal SDs is 2 times that quantity. Interval overlap and the probability of a positive difference consequently
-measure different features of the posterior. A direction can have high posterior probability even when the marginal
-intervals overlap substantially.
+Marginal credible intervals can overlap even when the posterior strongly favors one direction. For independent normal posteriors with the same standard deviation, the difference A − B has standard deviation $\sqrt 2$ times the common posterior SD. The two marginal SDs sum to 2 times the common SD. The upper figure shows the intervals and where they overlap. The lower figure shows the distribution of A − B, from which we calculate the direction probability.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,8 +16,7 @@ intervals overlap substantially.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Just touch, 90%.** The intervals meet at 1.645, and the posterior means are 3.290 posterior SDs apart. The
-  difference has SD 1.414, so they are 2.326 of its SDs apart, and A is very probably the higher: .990.
+- **Just touch, 90%.** The intervals meet at 1.645, and the posterior means are 3.290 posterior SDs apart. The difference has SD 1.414. The gap in means is 2.326 of those SDs, giving A a probability of .990 of having the larger true value.
 - **Just touch, 95%.** Wider intervals touch only farther apart, at 3.920 posterior SDs, so touching 95% intervals correspond to direction probability .997.
 - **Means 2 SDs apart.** The intervals overlap by 1.290 posterior SDs, and the chance that A's true value is larger is
   still .921.
@@ -32,8 +26,7 @@ intervals overlap substantially.
 When two 90% intervals just touch, A is very probably the higher, .990, for two independent normal posteriors with
 equal SDs (.997 for 95% intervals). With unequal SDs the distance at which the intervals touch and the SD of the
 difference change, and the probability with them. Kline, Rose and Walters (2024, section IV.C and Figure 3) draw a
-credible interval beside each first name, but they grade the names from pairwise posterior probabilities, not from
-whether the intervals overlap.
+credible interval beside each first name and use pairwise posterior probabilities to assign the grades.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

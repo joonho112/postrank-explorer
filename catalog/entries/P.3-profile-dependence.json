@@ -1,0 +1,67 @@
+{
+  "id": "P.3",
+  "name": "profile-dependence",
+  "part": "P",
+  "title": "Error overlap",
+  "idea": "Same domain laws. Different decisions.",
+  "status": "built",
+  "from": "P2 multidomain profile theory",
+  "data": [
+    "engine"
+  ],
+  "credit": "JoonHo Lee; postrank multidomain profile decisions (postrank 1.2.0).",
+  "caption": "Complete finite teaching law; exact arithmetic; optimum within the stated candidate bank.",
+  "presets": [
+    {
+      "id": "disjoint",
+      "label": "Disjoint failures",
+      "query": "couplingIndex=0&candidate=p%3A1%2C2%7C1%2C2"
+    },
+    {
+      "id": "independent",
+      "label": "Independent domains",
+      "query": "couplingIndex=1&candidate=p%3A1%2C2%7C1%2C2"
+    },
+    {
+      "id": "boundary",
+      "label": "At the joint cap",
+      "query": "couplingIndex=5&candidate=p%3A1%2C2%7C1%2C2"
+    },
+    {
+      "id": "coincident",
+      "label": "Coincident failures",
+      "query": "couplingIndex=10&candidate=p%3A1%2C2%7C1%2C2"
+    }
+  ],
+  "try": [
+    {
+      "preset": "coincident",
+      "shows": [
+        "1/10",
+        "3/20"
+      ]
+    },
+    {
+      "preset": "disjoint",
+      "shows": [
+        "1/10",
+        "1/5",
+        "7/40"
+      ]
+    },
+    {
+      "preset": "independent",
+      "shows": [
+        "1/100",
+        "19/100"
+      ]
+    },
+    {
+      "preset": "boundary",
+      "shows": [
+        "1/20",
+        "3/20"
+      ]
+    }
+  ]
+}

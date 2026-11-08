@@ -2,14 +2,19 @@
 
 Project author and maintainer: JoonHo Lee (jlee296@ua.edu).
 
-The website distributes the scoped data assets listed in `data/released/data_contract.json`: 17 released assets
+The original scoped assets in `data/released/data_contract.json` comprise 17 released assets
 and one precomputed synthetic league. The contract records fields, source objects, structural checks, hashes,
-licence scopes and attribution. The JavaScript copies contain the same data as the corresponding JSON files.
-A source-specific licence applies to the data and figures derived from that source.
+license scopes and attribution. The JavaScript copies contain the same data as the corresponding JSON files.
+The v3.5 profile collection separately distributes two frozen fictional forty-site display records in
+`data/precomputed/v35/`, with source hashes and licensing in their manifest and payloads. These postrank 1.2.0
+illustrations retain CC BY 4.0 attribution to JoonHo Lee. They contain stored report summaries and grade tuples;
+they do not distribute new real-site data, joint posterior states or an intended-posterior certificate.
+A source-specific license applies to the data and figures derived from that source.
 
 | Material | Source and scope | Conditions |
 |---|---|---|
 | Fictional sites, synthetic posterior laws and simulations | postrank 1.1.0 tutorial and example objects; calculations by JoonHo Lee | Author material, CC BY 4.0. No real unit records or fitted population models are implied. |
+| Frozen forty-site multidomain profiles | postrank 1.2.0 fictional illustration; two display records, their manifest and original package source notice | CC BY 4.0; JoonHo Lee attribution and source SHA retained. Stored selection and diagnostic summaries retain their original roles; grade-tuple derivations are distinguished from a new fit. |
 | Twelve California schools | California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26; adapted in postrank 1.1.0 | CDE source conditions; attribution and changes retained; no CDE endorsement or logos. The subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. |
 | Firm contact gaps and archived cards | Kline, Rose and Walters (2024), *A Discrimination Report Card*, doi:10.1257/aer.20230700; data and code deposit doi:10.3886/E198284V1 | CC-BY-NC as stated in the deposit, with no version specified; noncommercial use, attribution and change notice. Historical experiment data do not describe current firm conduct. |
 | Alabama county outcomes | Chetty, Friedman, Hendren, Jones and Porter (2022), Opportunity Atlas replication, doi:10.7910/DVN/NKCQM1; Opportunity Insights and U.S. Census Bureau | CC BY 4.0; source attribution and changes retained. Historical conditional associations do not establish current conditions or causal effects. |
@@ -30,5 +35,5 @@ calculation scripts and checksum manifests are provided. They are distinct from 
 
 Original code is covered by [LICENSE](../LICENSE), and original text and figures by
 [LICENSE-DATA](../LICENSE-DATA). KRW-derived material retains its noncommercial conditions. Third-party libraries,
-fonts and solver code retain their own licence and copyright notices. See
+fonts and solver code retain their own license and copyright notices. See
 [the vendor record](../js/vendor/VENDOR.md) and notices retained in the solver bundles.

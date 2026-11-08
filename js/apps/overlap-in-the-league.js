@@ -9,13 +9,18 @@
 //   league figure  the thirty central posterior intervals at the level (engine normalInterval), one row per unit,
 //                  highest posterior mean at the top (engine strictOrder); the two chosen units dark and marked first
 //                  and second, the others dimmed; dashed lines at the two ends of the stretch the two intervals share
-//                  (or of the gap between them), with a gray band over the shared stretch
+//                  (or of the gap between them), with a gray band over the shared stretch. Next to the marks, the
+//                  pair's numbers (review 044 repair, X-01): "chance .988" after first (the probability that its true
+//                  value is larger than the second's) and "overlap .005" or "gap .002" after second (pairLabels)
 //   pair card      the two intervals, whether they overlap and by how much, the posterior means and SDs, and the
 //                  probability that the first unit's true value is larger than the second's (engine pairDirection)
 //   tally          all 435 pairs (engine pairCount) in three classes of engine intervalOverlapTally: intervals apart;
 //                  overlapping, with one direction above .90; overlapping, with neither; a share bar per class (figure
 //                  inks), the chosen pair's row marked, and the overlapping pair with the highest probability
 //   read-out       the chosen pair and the tally in words
+// The app uses the shared result-first frame (base.js layout "result-first"; review 044 repair, X-01): the controls and
+// the preset row, the read-out directly under them, then the league figure (the primary graphic: the chosen pair drawn
+// dark among all thirty) with the pair card and the tally beside it where there is room, under it where not.
 // Choosing units: the two selects, a click at an interval's row in the figure, or Enter on a unit's keyboard point;
 // clicks alternate between the first and the second unit, and a unit already in the other slot swaps places. The
 // button "Overlapping pair with the highest probability" sets pair "overlap-high", the engine's pick, which follows the
@@ -33,8 +38,8 @@
 // Exports (for a later app on the same league): CONFIG, parsePair(v), leagueSummary(priorSd, levelPct),
 // pairInfo(s, a, b), resolvePair(key, s), leagueDomain(s), drawLeagueFigure(el, s, pair, options).
 import { appLink, createWidget } from "../shared/base.js";
-import { plot } from "../shared/chart.js";
-import { formatCount, formatDecimal, formatPercent } from "../shared/format.js";
+import { CONFIG as CHART, numText, palette, plot } from "../shared/chart.js";
+import { formatCount, formatDecimal, formatPercent, formatProb } from "../shared/format.js";
 import { captionNode } from "../shared/labels.js";
 import {
   LEAGUE_SEED, directionMatrix, drawLeague, intervalOverlapTally, league30, normalCdf, normalInterval, normalPosterior,
@@ -59,9 +64,15 @@ export const CONFIG = Object.freeze({
   // league summaries kept for this many (prior SD, level) settings
   memo: 8,
   digits: Object.freeze({ value: 3, amount: 3, threshold: 2 }),
+  // the league figure (review 044 repair, X-01: rows 12.5 px apart and a 4 px top margin, so at 1280 the first
+  // control, the read-out and the whole figure fit one screen, the second unit's mark included; they were 15 and 14)
   leagueChart: Object.freeze({
-    rowPx: 15, marginTop: 14, marginBottom: 40, marginLeft: 40, marginRight: 52, half: 0.5, nameDx: 6,
+    rowPx: 12.5, marginTop: 4, marginBottom: 40, marginLeft: 40, marginRight: 52, half: 0.5, nameDx: 6,
     line: 3.4, dot: 4.2, markDx: 6, step: 0.1, decimals: 12, pad: 0.02, xTicks: 6, halo: 3,
+    // the pair's numbers written next to its marks (review 044 repair, X-01): `gap` px after the mark word, `edge` px
+    // kept from the figure's right edge and the plot's left edge; text widths are measured in the figure's font, or
+    // estimated (`char` and `charBold` px a character) where no canvas measures them
+    label: Object.freeze({ gap: 5, edge: 2, char: 6.6, charBold: 7.2 }),
   }),
   groupWord: Object.freeze({ small: "small", medium: "medium", large: "large" }),
   // a unit's size in words where it names a unit (lists, keyboard titles): size is the number of observations
@@ -106,6 +117,12 @@ export const CONFIG = Object.freeze({
     colUpper: IO.text.colUpper,
     markFirst: "first",
     markSecond: "second",
+    // the pair's numbers next to its marks (review 044 repair, X-01): the probability that the first unit's true value
+    // is larger, after "first"; the overlap of the two intervals (or the gap between them), after "second". Where the
+    // words do not fit on either side of the unit's interval, the number stands alone
+    markChance: "chance",
+    markOverlap: "overlap",
+    markGap: "gap",
     keyInterval: "light navy lines: each unit's {level} posterior interval, with a dot at its posterior mean",
     keyChosen: "darker lines: the two chosen units",
     keyGuides: Object.freeze({
@@ -141,7 +158,7 @@ export const CONFIG = Object.freeze({
     readPi: "and the chance that {a}'s true value is larger than {b}'s is {pi}.",
     readTally: " Of the {M} pairs, {apart} have intervals that do not overlap and {ov} have overlapping ones: {high} of these with one direction above {thr}, {low} with neither.",
     // caption: the teaching-posterior caption of labels.js and its gloss; the one line on the league names the draw
-    gloss: "In plain words: this prior was chosen for teaching, and this browser computes the posterior from it.",
+    gloss: "The normal posterior gives both the marginal intervals and the direction probabilities for the league.",
     note: "The simulated league of {league}, built for this site: thirty units with independent normal posteriors, from the estimates drawn with seed {seed}, under the teaching posterior of {shrinkage} (prior mean {mean}, prior SD {prior}).",
   }),
 });
@@ -230,6 +247,99 @@ export function leagueDomain(s) {
 
 const caseOf = (pair) => (!pair.overlap ? "apart" : pair.inner !== null ? "nested" : "overlap");
 const value3 = (v) => formatDecimal(v, { digits: CONFIG.digits.value });
+// a direction probability written next to a mark: as in the read-out, strictly inside (0, 1), a bound as a relation
+const markProb = (v) => formatProb(v, { open: true, bounds: "symbols" });
+
+/** The width in px of a text in the figure's font (bold for the mark words): measured on a canvas, or estimated where
+ *  there is none (jsdom), so that the pair's numbers can sit next to the marks (pairLabels). */
+function textMeter(el) {
+  const doc = el.ownerDocument;
+  const canvas = typeof doc?.defaultView?.CanvasRenderingContext2D === "function" ? doc.createElement("canvas").getContext("2d") : null;
+  const scale = Number(el.closest?.(".prx-widget")?.getAttribute("data-prx-font-scale")) || 1;
+  const size = CHART.fontSize * scale;
+  const family = palette(el).fontSans || "system-ui, sans-serif";
+  return (text, bold = false) => {
+    if (!canvas) return text.length * (bold ? LC.label.charBold : LC.label.char) * scale;
+    canvas.font = `${bold ? "bold " : ""}${size}px ${family}`;
+    return canvas.measureText(text).width;
+  };
+}
+
+/**
+ * The pair's numbers next to its marks (review 044 repair, X-01: the answer on the changed mark), from the same engine
+ * values as the card and the read-out: after "first", the probability that the first unit's true value is larger than
+ * the second's ("chance .988"); after "second", the overlap of the two intervals ("overlap .005"; when one lies inside
+ * the other, the inner one's length) or the gap between them ("gap .002"). Each stays in its unit's row: after the
+ * mark word when it fits before the figure's right edge, else left of the unit's interval when it fits after the
+ * plot's left edge; a label never crosses a dashed line, it starts (or ends) past it; where the words fit on neither
+ * side, the number stands alone, after the mark word or left of the interval (a sweep of every ordered pair at the
+ * presets' levels and prior SDs, on a site page and standalone at 375 and 1280 px, found every label inside the figure
+ * and clear of the names, its interval, the marks and the dashed lines). width: the figure's width in px;
+ * measure(text, bold): textMeter.
+ */
+function pairLabels(s, pair, [lo, hi], width, measure) {
+  const G = LC.label;
+  const plotW = Math.max(1, width - LC.marginLeft - LC.marginRight);
+  const px = (x) => LC.marginLeft + ((x - lo) / (hi - lo)) * plotW;
+  const amount = Math.abs(pair.amount);
+  // the dashed lines run through both chosen rows: a label never crosses one, it starts (or ends) past it
+  const guides = [px(pair.from), px(pair.to)];
+  return [
+    { i: pair.a, mark: T.markFirst, word: T.markChance, raw: pair.pi, format: markProb, hook: "mark-pi" },
+    { i: pair.b, mark: T.markSecond, word: pair.overlap ? T.markOverlap : T.markGap, raw: amount, format: value3, hook: "mark-amount" },
+  ].map((d) => {
+    const display = d.format(d.raw);
+    const upper = s.iv.upper[d.i];
+    const lower = s.iv.lower[d.i];
+    const xu = px(upper);
+    const xl = px(lower);
+    const full = measure(`${d.word} ${display}`);
+    const num = measure(display);
+    // right of the mark word: where a label of width w starts (px), past a dashed line that would cross it
+    const startRight = (w) => {
+      let x = xu + LC.markDx + measure(d.mark, true) + G.gap;
+      for (const g of [...guides].sort((u, v) => u - v)) if (g > xu && g >= x - G.gap && g <= x + w) x = g + G.gap;
+      return x;
+    };
+    // left of the interval: where a label of width w ends (px), before a dashed line that would cross it
+    const endLeft = (w) => {
+      let x = xl - LC.markDx;
+      for (const g of [...guides].sort((u, v) => v - u)) if (g < xl && g <= x + G.gap && g >= x - w) x = g - G.gap;
+      return x;
+    };
+    const fitsRight = (w) => startRight(w) + w <= width - G.edge;
+    const fitsLeft = (w) => endLeft(w) - w >= LC.marginLeft + G.edge;
+    const [side, withWord] = fitsRight(full) ? ["right", true] : fitsLeft(full) ? ["left", true] : fitsRight(num) ? ["right", false] : ["left", false];
+    const w = withWord ? full : num;
+    // dx from the interval end the label is placed at (the upper end on the right, the lower end on the left)
+    const dx = side === "right" ? startRight(w) - xu : endLeft(w) - xl;
+    return { ...d, y: s.rank[d.i], upper, lower, side, withWord, dx, num, wordRoom: measure(`${d.word} `), space: measure(" ") };
+  });
+}
+
+/** The marks of one pair label (pairLabels): the number (numText, data-num, its read-out hook) and, when it fits, its
+ *  word, both with the marks' halo; right of the mark word (text-anchor start) or left of the interval (end). */
+function labelMarks(c, P, d) {
+  const style = { fill: c.plotFg, stroke: c.plotBg, strokeWidth: LC.halo, paintOrder: "stroke" };
+  const right = d.side === "right";
+  const at = right ? d.upper : d.lower;
+  const hooked = (index, scales, values, dims, context, next) => {
+    const g = next(index, scales, values, dims, context);
+    for (const t of g?.querySelectorAll?.("text") ?? []) t.setAttribute("data-prx-readout", d.hook);
+    return g;
+  };
+  const marks = [numText([d], {
+    x: () => at, y: "y", value: "raw", format: d.format, textAnchor: right ? "start" : "end",
+    dx: right ? d.dx + (d.withWord ? d.wordRoom : 0) : d.dx, render: hooked, ...style,
+  })];
+  if (d.withWord) {
+    marks.push(P.text([d], {
+      x: () => at, y: "y", text: "word", textAnchor: right ? "start" : "end",
+      dx: right ? d.dx : d.dx - d.num - d.space, ...style,
+    }));
+  }
+  return marks;
+}
 
 /** Unit names in a Plot text mark carry data-prx-name (a Plot render hook over the rows of that mark). */
 const nameRender = (list) => (index, scales, values, dims, context, next) => {
@@ -240,10 +350,14 @@ const nameRender = (list) => (index, scales, values, dims, context, next) => {
 };
 
 /** The league figure in el for a summary s and a chosen pair (pairInfo): rows by position, the chosen units dark with
- * their first and second marks, the dashed lines and the band; its hidden table and keyboard reading. Returns
- * { chart, rows } (rows: one per unit, in position order, with i, id, pos). */
+ * their first and second marks and the pair's numbers next to them (pairLabels), the dashed lines and the band; its
+ * hidden table and keyboard reading. Returns { chart, rows } (rows: one per unit, in position order, with i, id, pos). */
 export function drawLeagueFigure(el, s, pair) {
   const [lo, hi] = leagueDomain(s);
+  // the figure's width as chart.js takes it (given explicitly, so the labels' room is computed for the same width)
+  const measured = Math.round(el.clientWidth || el.getBoundingClientRect?.().width || 0);
+  const width = measured > 0 ? Math.max(CHART.minWidth, measured) : CHART.defaultWidth;
+  const labels = pairLabels(s, pair, [lo, hi], width, textMeter(el));
   const rows = LEAGUE.ids.map((id, i) => ({
     i, id, name: id, group: LEAGUE.group[i], pos: s.rank[i], y: s.rank[i], mean: s.post.mean[i], sd: s.post.sd[i],
     lower: s.iv.lower[i], upper: s.iv.upper[i], strong: i === pair.a || i === pair.b,
@@ -267,6 +381,7 @@ export function drawLeagueFigure(el, s, pair) {
       ],
       rows,
     },
+    width,
     height: LC.marginTop + LC.marginBottom + N_UNITS * LC.rowPx,
     marginTop: LC.marginTop, marginBottom: LC.marginBottom, marginLeft: LC.marginLeft, marginRight: LC.marginRight,
     x: { domain: [lo, hi], ticks: LC.xTicks, label: T.xLeague, labelAnchor: "center", labelArrow: "none", grid: true },
@@ -278,6 +393,7 @@ export function drawLeagueFigure(el, s, pair) {
         x: "upper", y: "y", text: "mark", textAnchor: "start", dx: LC.markDx, fill: c.plotFg, fontWeight: "bold",
         stroke: c.plotBg, strokeWidth: LC.halo, paintOrder: "stroke",
       }),
+      ...labels.flatMap((d) => labelMarks(c, P, d)),
     ],
     keyboard: {
       data: rows, x: "mean", y: "pos", key: (d) => d.id, sort: false, label: T.kbdLeague,
@@ -298,6 +414,7 @@ const CSS = `${cssFor(CONFIG.className)}
 .prx-iol .prx-iol-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem 1.25rem; align-items: start; }
 .prx-iol .prx-iol-side { min-width: 0; }
 .prx-iol .prx-iol-side > .prx-io-pair { margin-top: 0; }
+.prx-iol .prx-iol-league > .prx-io-pair { margin: .3rem 0 .45rem; }
 @container (min-width: 46rem) {
   .prx-iol .prx-iol-layout { grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 1fr); }
 }
@@ -320,7 +437,7 @@ const CSS = `${cssFor(CONFIG.className)}
 .prx-iol .prx-iol-tag { display: inline-block; margin-left: 0.4rem; padding: 0 0.35rem; font-size: 0.85em; font-weight: 600;
   border: 1px solid var(--prx-plot-axis); border-radius: var(--prx-radius); }
 .prx-iol .prx-iol-total-row > th, .prx-iol .prx-iol-total-row > td { font-weight: 600; }
-.prx-iol .prx-iol-best { margin: 0; padding: 0.35rem 0.6rem; font-size: 0.9em; border-top: 1px solid var(--prx-plot-grid); }
+.prx-iol .prx-iol-best { margin: 0; padding: 0.35rem 0.6rem; font-size: 0.9em; border-bottom: 1px solid var(--prx-plot-grid); }
 .prx-iol .prx-iol-note { margin: 0.35rem 0 0; font-size: 0.78rem; line-height: 1.35; color: var(--prx-fg-muted); }
 `;
 
@@ -331,6 +448,9 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: CONFIG.className,
     css: CSS,
+    // the shared result-first frame (review 044 repair, X-01): the read-out directly under the controls and the preset
+    // row; base.js only moves nodes (keys, presets, hooks and the live region are the same)
+    layout: "result-first",
     keys: {
       level: { type: "choice", values: CONFIG.levels, value: D.level },
       pair: { type: "custom", value: D.pair, parse: (v) => parsePair(v) },
@@ -396,15 +516,25 @@ export function mountWidget(el, spec = {}) {
       // --- figure (left) and, beside it when there is room, the pair card and the tally
       ctx.charts.classList.add("prx-iol-charts");
       const leagueHead = ctx.panelTitle("", { className: "prx-io-heading" });
-      const leagueSlot = h("div", { class: "prx-io-panel prx-iol-league-chart" });
+      // the figure the units, the level and the prior SD change (review 044, X-01: base.js primaryGraphic)
+      const leagueSlot = ctx.primaryGraphic(h("div", { class: "prx-io-panel prx-iol-league-chart" }));
       const leagueKey = keyNode(ctx);
       const card = pairCard(ctx);
       // the tally sits on the plot panel and scrolls inside its own box (a keyboard stop) when it is too wide
       const tallyWrap = ctx.scrollRegion(h("div", { class: "prx-iol-table-wrap prx-light-panel" }), T.tallyLabel);
       const tally = ctx.part("readout", h("div", { class: "prx-iol-tally" }, tallyWrap));
-      ctx.charts.append(h("div", { class: "prx-iol-layout" },
-        h("section", { class: "prx-io-view prx-iol-league", "aria-label": T.leagueSection }, leagueHead, leagueSlot, leagueKey),
-        h("div", { class: "prx-iol-side" }, card.root, tally)));
+      const leaguePanel = h("section", { class: "prx-io-view prx-iol-league", "aria-label": T.leagueSection }, leagueHead, leagueSlot, leagueKey);
+      const side = h("div", { class: "prx-iol-side" }, card.root, tally);
+      ctx.charts.append(h("div", { class: "prx-iol-layout" }, leaguePanel, side));
+      // On phones show the chosen pair beside the top of the long chart, so
+      // the reader need not go to the bottom to find its direction probability.
+      const narrow = ctx.win.matchMedia?.("(max-width: 37.5em)");
+      const placePair = () => {
+        const to = narrow?.matches ? leaguePanel : side;
+        if (card.root.parentNode !== to) ctx.keepFocus(() => narrow.matches ? leagueHead.after(card.root) : side.prepend(card.root));
+      };
+      placePair();
+      if (narrow) ctx.listen(narrow, "change", placePair);
 
       // --- caption (the teaching-posterior caption and its gloss) and the one line on the league and its draw
       const note = ctx.part("notes", h("p", { class: "prx-iol-note" }));
@@ -504,12 +634,14 @@ export function mountWidget(el, spec = {}) {
         const best = s.best
           ? fill(T.tallyBest, { ov: () => k.count(s.counts.overlapping), pi: () => k.prob(s.best.pi, "tally-best"), a: id(s.best.first), b: id(s.best.second) })
           : T.tallyNoBest;
+        // the overlapping pair with the highest probability opens the box (review 044 repair, X-01: with the read-out
+        // above the figures, it stays in the first screen at 1280 with the preset row that quotes it)
         tallyWrap.replaceChildren(
+          h("p", { class: "prx-iol-best" }, best),
           h("table", { class: "prx-iol-table" },
             h("caption", {}, fill(T.tallyCaption, { M: () => k.count(s.M), prior: () => k.setting(state.priorSd), level: () => k.pct(state.level) })),
             h("thead", {}, h("tr", {}, h("th", { scope: "col" }, T.tallyKind), h("th", { scope: "col" }, T.tallyCount))),
-            h("tbody", {}, body)),
-          h("p", { class: "prx-iol-best" }, best));
+            h("tbody", {}, body)));
       }
 
       function writeReadout(s, pair, state) {

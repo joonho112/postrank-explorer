@@ -184,6 +184,45 @@ export const MODELS = Object.freeze({
 });
 
 const RULES = Object.freeze(["pm-tiers", "pm-cuts", "er-cuts", "optimum"]);
+const LADDER_RULES = ["pm-tiers", "pm-cuts", "optimum", "er-cuts"];
+const FRAME_CSS = `
+.prx-pt .prx-pt-controls { grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.prx-pt .prx-pt-controls .prx-pt-cap { align-content: start; }
+.prx-pt .prx-pt-cap-short { flex-basis: 100%; font-size: .9em; font-weight: 600; }
+.prx-pt .prx-pt-ladder { padding: .4rem .65rem; min-width: 0; }
+.prx-pt .prx-pt-ladder .prx-radio { display: flex; align-items: center; flex-basis: 100%; gap: .4rem; margin: 0; min-width: 0; padding: .15rem .2rem; border-inline-start: 2px solid transparent; }
+.prx-pt .prx-pt-ladder .prx-radio:has(input:checked) { background: var(--prx-bg-raised); font-weight: 600; }
+.prx-pt .prx-pt-ladder .prx-radio > span { display: grid; align-items: center; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 6rem; gap: .35rem; flex: 1; min-width: 0; }
+.prx-pt .prx-pt-ladder .prx-radio[data-nested] { border-inline-start-color: var(--prx-accent); }
+.prx-pt .prx-pt-ladder .prx-radio[data-nested]:first-of-type { border-start-start-radius: 5px; }
+.prx-pt .prx-pt-ladder .prx-radio[data-nested]:nth-of-type(3) { border-end-start-radius: 5px; }
+.prx-pt .prx-pt-ladder .prx-radio:last-of-type { margin-top: .25rem; border-top: 1px solid var(--prx-border); }
+.prx-pt .prx-pt-risk-track { display: block; position: relative; height: 1.35rem; border-block-end: 1px solid var(--prx-border); }
+.prx-pt .prx-pt-risk-track::before { content: ''; position: absolute; left: var(--tau-x); border-inline-start: 1px dashed var(--prx-fg-muted); inset-block: 0; }
+.prx-pt .prx-pt-risk-dot { position: absolute; left: var(--risk-x); top: 50%; width: .62rem; height: .62rem; transform: translate(-50%, -50%); border-radius: 50%; background: var(--prx-accent); border: 1px solid var(--prx-fg); }
+.prx-pt .prx-pt-ladder .prx-radio:has(input:checked) .prx-pt-risk-dot { outline: 1px solid var(--prx-accent); outline-offset: 2px; }
+.prx-pt .prx-pt-risk-value { font-variant-numeric: tabular-nums; font-size: .9em; }
+.prx-pt .prx-pt-risk-axis { margin: .15rem 0; display: flex; justify-content: space-between; gap: .5rem; color: var(--prx-fg-muted); font-size: .86em; }
+.prx-pt .prx-pt-risk-axis > :first-child { white-space: nowrap; }
+.prx-pt .prx-pt-path-keys { display: flex; flex-wrap: wrap; gap: .15rem .65rem; font-size: .88em; }
+.prx-pt .prx-pt-law .prx-pt-state { width: 100%; }
+.prx-pt .prx-pt-state th[scope="row"] { white-space: normal; overflow-wrap: normal; }
+.prx-pt .prx-pt-state th, .prx-pt .prx-pt-state td { padding-inline: .3rem; }
+.prx-pt .prx-pt-table-law th[scope="row"] { white-space: normal; }
+.prx-pt .prx-pt-table-law td:nth-child(2) { white-space: nowrap; }
+.prx-pt .prx-pt-table-path th[scope="row"], .prx-pt .prx-pt-guarantees th[scope="row"] { white-space: normal; min-width: 8rem; }
+.prx-pt .prx-pt-guarantees td { min-width: 8rem; }
+@media (max-width: 540px) {
+  .prx-pt .prx-pt-controls { gap: .25rem; }
+  .prx-pt .prx-pt-controls--tiers { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); }
+  .prx-pt .prx-pt-controls--tiers > .prx-slider { grid-column: 1 / -1; }
+  .prx-pt .prx-pt-controls--tiers .prx-pt-cap { column-gap: .3rem; }
+  .prx-pt .prx-pt-controls--tiers .prx-pt-cap .prx-radio { gap: .1rem; }
+  .prx-pt .prx-pt-controls--tiers select { width: 100%; min-width: 0; }
+  .prx-pt .prx-pt-ladder { padding-inline: .35rem; }
+  .prx-pt .prx-pt-ladder .prx-radio > span { grid-template-columns: minmax(0, 1.4fr) minmax(1.5rem, 1fr) 5.1rem; font-size: .89em; gap: .25rem; }
+}
+`;
 
 /** The three-unit law's fixed views: every report, the members of each order family, the boundaries. */
 const TB19 = (() => {
@@ -246,9 +285,10 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
   const defaultData = lawView ? "tb19" : "league8";
   return createWidget(el, spec, {
     name: appName,
-    css: CSS,
+    css: CSS + FRAME_CSS,
+    layout: "result-first",
     label: CONFIG.label,
-    title: CONFIG.title,
+    title: lawView ? "When do cuts of the chosen order miss the best report?" : CONFIG.title,
     className: "prx-pt",
     keys: {
       data: { type: "choice", values: lawView ? ["tb19"] : ["league", "league8", "thirty"], value: defaultData },
@@ -294,8 +334,8 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
       };
 
       // --- controls
-      const dataRadio = ctx.radioGroup({
-        legend: T.dataLegend, name: "data", className: "prx-pt-data",
+      const dataSelect = ctx.select({
+        label: T.dataLegend, name: "data",
         options: [
           { value: "league", label: T.dataLeague }, { value: "league8", label: T.dataLeague8 },
           { value: "thirty", label: T.dataThirty },
@@ -307,13 +347,27 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
           ctx.set({ data: v, tau: m.tau, cap: m.cap, rule: s.rule === "optimum" && !m.hasOptimum ? CONFIG.rule : s.rule });
         },
       });
+      const ruleNames = { "pm-tiers": T.rulePmTiers, "pm-cuts": T.rulePmCuts, "er-cuts": T.ruleErCuts, optimum: T.ruleOptimum };
+      const ruleName = (r) => ruleNames[r];
+      const rowsOrder = lawView ? RULES : LADDER_RULES;
+      const ladderRows = new Map();
+      const ladderNames = { "pm-tiers": T.rulePmTiers, "pm-cuts": "Mean-order cuts", "er-cuts": "Expected-rank cuts", optimum: "Exact optimum" };
       const ruleRadio = ctx.radioGroup({
-        legend: T.ruleLegend, name: "rule", className: "prx-pt-rule",
-        options: [
-          { value: "pm-tiers", label: T.rulePmTiers }, { value: "pm-cuts", label: T.rulePmCuts },
-          { value: "er-cuts", label: T.ruleErCuts }, { value: "optimum", label: T.ruleOptimum },
-        ],
+        legend: lawView ? "Rule for the detailed report" : "Risk by rule · select a row", name: "rule", className: "prx-pt-rule",
+        options: rowsOrder.map((value) => {
+          if (lawView) return { value, label: ruleName(value) };
+          const dot = h("span", { class: "prx-pt-risk-dot" });
+          const track = h("span", { class: "prx-pt-risk-track", "aria-hidden": "true" }, dot);
+          const numbers = h("span", { class: "prx-pt-risk-value" });
+          ladderRows.set(value, { track, dot, numbers });
+          return { value, label: [h("span", { text: ladderNames[value] }), track, numbers] };
+        }),
         value: ctx.state.rule, onChange: (v) => ctx.set({ rule: v, ...(lawView && ["pm-cuts","er-cuts"].includes(v) ? { order: v === "er-cuts" ? "rank" : "mean" } : {}) }),
+      });
+      if (!lawView) ruleRadio.inputs.forEach((input, i) => {
+        const row = input.parentElement;
+        row.dataset.prxRiskRule = rowsOrder[i];
+        if (i < 3) row.dataset.nested = "";
       });
       const capValues = [];
       for (let g = CONFIG.cap.min; g <= CONFIG.cap.max; g += 1) capValues.push(g);
@@ -322,6 +376,11 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
         options: capValues.map((g) => ({ value: g, label: count(g) })),
         value: ctx.state.cap, onChange: (v) => ctx.set({ cap: v }),
       });
+      if (!lawView) {
+        const legend = capRadio.root.querySelector("legend");
+        legend.classList.add("prx-sr-only");
+        legend.after(h("span", { class: "prx-pt-cap-short", "aria-hidden": "true", text: "Grade limit G" }));
+      }
       const optRadio = ctx.radioGroup({
         legend: T.optLegend, name: "opt", className: "prx-pt-opt",
         options: [{ value: "cap", label: T.optCap }, { value: "all", label: T.optAll }],
@@ -331,19 +390,25 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
         label: T.slider, min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: ctx.state.tau,
         name: "tau", hint: ["A wrong stated direction costs ", count(1), "; staying silent on one pair costs τ."], onInput: (v) => ctx.set({ tau: v }),
       });
+      const tauHint = tau.root.querySelector(".prx-hint");
       const orderControl = lawView ? ctx.segmented({ label: "Order by", name: "order", value: ctx.state.order,
-        options: [{ value: "mean", label: "Posterior mean: A, B, C" }, { value: "rank", label: "Expected rank: B, C, A" }],
+        options: [{ value: "mean", label: "Posterior mean" }, { value: "rank", label: "Expected rank" }],
         onChange: v => ctx.set({ order: v, rule: v === "rank" ? "er-cuts" : "pm-cuts" }) }) : null;
-      const controls = h("div", { class: "prx-pt-controls" }, ...(lawView ? [orderControl.root] : [dataRadio.root]), ruleRadio.root, capRadio.root, optRadio.root, tau.root);
+      const controls = h("div", { class: `prx-pt-controls${lawView ? "" : " prx-pt-controls--tiers"}` },
+        ...(lawView ? [orderControl.root] : [dataSelect.root, capRadio.root]), tau.root);
       ctx.controls.append(controls);
+      ctx.primaryControl(tau.root);
+      const settings = ctx.disclosure({ name: "settings", title: lawView ? "Settings" : "Exact optimum family" });
+      settings.body.append(...(lawView ? [ruleRadio.root, capRadio.root] : []), optRadio.root);
       const hero = h("section", { class: "prx-pt-hero prx-light-panel", "aria-label": lawView ? "Inspected order cuts and joint benchmark" : "Current report preview" });
-      ctx.controls.before(hero);
 
       // --- read-out, the chosen rule's label, the set-back line
       const labelLine = h("p", { class: "prx-pt-label", "data-prx-part": "readout", "data-prx-result-scope": "" });
-
-      ctx.controls.after(ctx.readout.node);
-      ctx.readout.node.after(labelLine);
+      const selectedReadout = h("p", { class: "prx-pt-note", "data-prx-selected-report": "" });
+      const ladderAxis = h("p", { class: "prx-pt-risk-axis" });
+      const nesting = h("p", { class: "prx-pt-note", text: "Each bracketed family contains the one above it, so risk cannot rise." });
+      const ladder = h("section", { class: "prx-pt-ladder prx-light-panel", "aria-label": "Risk at the current withholding cost" },
+        lawView ? null : ruleRadio.root, ladderAxis, nesting);
 
       // --- the rule rows (league, eight units, 30 sites)
       const compareRows = h("ol", { class: "prx-pt-rows" });
@@ -359,28 +424,37 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
       const tableSlot = h("div", { class: "prx-pt-table-scroll" });
       const miniSlot = h("div", { class: "prx-pt-mini" });
       const miniNote = h("p", { class: "prx-pt-note" });
-      const lawInner = h("section", { class: "prx-pt-law" },
-        ctx.panelTitle(T.lawHeading, { className: "prx-pt-heading" }), lawText,
-        ctx.panelTitle(T.compareHeading, { className: "prx-pt-heading" }), lawRows, lawNotes,
-        ctx.panelTitle(T.tableHeading, { className: "prx-pt-heading" }), ctx.scrollRegion(tableSlot, T.tableHeading),
-        ctx.panelTitle(T.miniHeading, { className: "prx-pt-heading" }), miniSlot, miniNote);
+      const matchedNote = h("p", { class: "prx-pt-note" });
+      const lawInner = h("section", { class: "prx-pt-law" }, ctx.panelTitle(T.lawHeading, { className: "prx-pt-heading" }));
       const lawBox = h("div", { class: "prx-pt-law-wrap", "data-prx-part": "chart" }, lawInner);
-      ctx.charts.append(compareBox, lawBox);
 
       const tb = MODELS.tb19, law = CONFIG.tb19;
       const lawNum = x => ctx.num(x, formatProb(x, { digits: 1 }));
       const stateNum = values => ctx.num(Array.from(values), `(${values.map(formatCount).join(", ")})`);
       const lawExtras = h("div", { class: "prx-pt-law-extras" });
       const pathSlot = h("div"), pathLegend = h("div", { class: "prx-legend", "data-prx-part": "legend" }), pathTableSlot = h("div", { class: "prx-pt-table-scroll" });
-      if (lawView) lawText.after(h("p", { class: "prx-pt-note", text: "Tables keep every column. On narrow screens, swipe sideways, or focus a table region and use the arrow keys." }), lawExtras);
-      if (lawView) lawInner.append(ctx.panelTitle("Both orders as the withholding price changes"), pathSlot, pathLegend, ctx.scrollRegion(pathTableSlot, "Complete exact risk-curve intervals"),
-        h("p", { class: "prx-pt-note" }, "Each curve gives the best risk at its own price, not a comparison of risks across prices. In the default unrestricted example, the posterior-mean order misses above ", ctx.num(.15, formatSetting(.15)), "; the expected-rank cuts recover the best report here. One law, not a general failing of posterior-mean orders."));
       const guarantee = h("section", { class: "prx-pt-guarantees" });
-      if (!lawView) compareBox.append(guarantee);
+      const pathStatus = h("p", { class: "prx-pt-note" });
+      const pathScope = h("p", { class: "prx-pt-note" });
+      const pathTitle = ctx.panelTitle("Both orders as the withholding price changes");
+      if (lawView) {
+        ctx.charts.append(pathTitle, pathSlot, pathLegend, pathStatus, hero, lawBox, tauHint);
+        ctx.primaryGraphic(pathSlot);
+        lawInner.append(lawExtras);
+        ctx.disclosure({ name: "reports", title: "Rule cards and scopes" }).body.append(
+          selectedReadout, labelLine, ctx.panelTitle(T.compareHeading, { className: "prx-pt-heading" }), lawRows, lawNotes, lawText);
+        ctx.disclosure({ name: "all-reports", title: T.tableHeading }).body.append(
+          h("p", { class: "prx-pt-note", text: "Tables keep every column. On narrow screens, swipe sideways, or focus a table region and use the arrow keys." }), ctx.scrollRegion(tableSlot, T.tableHeading));
+        ctx.disclosure({ name: "matched", title: T.miniHeading }).body.append(miniSlot, miniNote, matchedNote);
+        ctx.disclosure({ name: "intervals", title: "Exact risk-curve intervals" }).body.append(ctx.scrollRegion(pathTableSlot, "Complete exact risk-curve intervals"), pathScope);
+      } else {
+        ctx.charts.append(ladder, hero, tauHint);
+        ctx.primaryGraphic(ladder);
+        ctx.disclosure({ name: "reports", title: "Reports, orders and scopes" }).body.append(
+          selectedReadout, labelLine, h("p", { class: "prx-pt-note", text: T.capLegend }), compareBox);
+        ctx.disclosure({ name: "guarantees", title: "Which objective does each rule optimize?" }).body.append(guarantee);
+      }
       // ------------------------------------------------------------------------------------- drawing
-
-      const ruleName = (r) => ({ "pm-tiers": T.rulePmTiers, "pm-cuts": T.rulePmCuts, "er-cuts": T.ruleErCuts, optimum: T.ruleOptimum })[r];
-      const orderOf = (mdl, r) => (r === "er-cuts" ? mdl.erOrder : mdl.pmOrder);
 
       const { scopeParts, drawRow } = createRuleCardRenderer(ctx);
 
@@ -396,13 +470,41 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
           if (Math.abs(d) <= opt.tieTol) return [` It has ${T.sameRisk}`];
           return [` The exact optimum has risk `, ro("opt.risk", opt.risk, fracMode ? formatRational(opt.risk) : formatRisk(opt.risk)), "."];
         })() : [];
-        ctx.readout.set([
+        selectedReadout.replaceChildren(
           "τ = ", ctx.num(state.tau, formatSetting(state.tau)), ...head, ": ",
           ro("N", ev.N, formatCount(ev.N)), ` ${T.of} `, count(ev.M), ` ${T.stated}, ${T.eWords} `, ro("E", ev.Ew, fmtE(mdl, ev.Ew)),
           `, ${T.riskWords} `, ro("risk", ev.risk, fracMode ? formatRational(ev.risk) : formatRisk(ev.risk)), ".", ...gap, ...(mdl.key === "league8" ? [Math.abs(results["pm-cuts"].risk - opt.risk) <= CONFIG.tieTol && Math.abs(results["er-cuts"].risk - opt.risk) <= CONFIG.tieTol ? " At these settings, both orders’ best cuts match the best report of the declared family: a property of these units. " : " These orders need not contain the best report; compare the card gaps at these settings. ", h("a", { href: ctx.win.location.pathname.includes("/embed/") ? "../pages/rules/order-misses.html" : "order-misses.html", target: "_parent" }, "See a law where the order misses.")] : []),
-        ]);
+        );
         labelLine.replaceChildren(...scopeParts(mdl, rule, res, G, "chosen"));
+      }
 
+      function drawLadder(mdl, state, results, G) {
+        const risk = value => ctx.num(value, formatRisk(value));
+        const values = LADDER_RULES.flatMap(key => results[key] ? [results[key].ev.risk] : []);
+        const lo = Math.min(state.tau, ...values), hi = Math.max(state.tau, ...values);
+        const span = Math.max(.01, hi - lo);
+        const position = (value) => `${10 + 80 * (value - lo + (span - (hi - lo)) / 2) / span}%`;
+        for (const [key, { track, dot, numbers }] of ladderRows) {
+          track.style.setProperty("--tau-x", position(state.tau));
+          const result = results[key];
+          dot.hidden = !result;
+          if (result) {
+            dot.style.setProperty("--risk-x", position(result.ev.risk));
+            numbers.replaceChildren("N ", ro(`ladder-${key}-N`, result.ev.N, formatCount(result.ev.N)),
+              " · ", ro(`ladder-${key}-risk`, result.ev.risk, formatRisk(result.ev.risk)));
+          } else numbers.replaceChildren("Not searched: ", count(mdl.n), " units");
+        }
+        ladderAxis.replaceChildren(h("span", { text: "Lower risk ←" }),
+          h("span", {}, "Dashed: all-withheld τ ", risk(state.tau)));
+        const [tiers, cuts, exact] = LADDER_RULES.map(key => results[key]);
+        const tied = exact && Math.abs(cuts.ev.risk - exact.ev.risk) <= CONFIG.tieTol;
+        const same = tied && Array.from(cuts.grade).every((grade, i) => grade === exact.grade[i]);
+        const report = ({ ev }) => [risk(ev.risk), " (", count(ev.N), " pairs)"];
+        ctx.readout.set(["τ ", ctx.num(state.tau, formatSetting(state.tau)), ", at most ", count(G), G === 1 ? " grade: " : " grades: ",
+          "tiers ", ...report(tiers), " → mean-order cuts ", ...report(cuts),
+          ...(exact ? [tied ? " = exact " : " → exact ", risk(exact.ev.risk), ...(state.opt === "all" ? [" (all reports)"] : [])] : ["; exact optimum unsearched"]), ". Boundaries save ",
+          risk(Math.max(0, tiers.ev.risk - cuts.ev.risk)), ".", ...(tied ? [same ? " Same report after the joint search." : " The joint search matches the risk with a different report."] : []), " ",
+          h("a", { href: ctx.win.location.pathname.includes("/embed/") ? "../pages/rules/order-misses.html" : "order-misses.html", target: "_parent" }, "See a law where the order misses.")]);
       }
 
       function drawNotes(mdl, target) {
@@ -418,13 +520,14 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
           const j = mdl.erOrder[p];
           return h("tr", {},
             h("th", { scope: "row" }, count(p + 1)),
-            h("td", {}, unit(mdl.ids[i])), h("td", {}, ctx.num(mdl.means[i], formatDecimal(mdl.means[i], { digits: 3 }))),
+            h("td", {}, unit(mdl.ids[i])), h("td", {}, unit(mdl.ids[j])),
+            h("td", {}, ctx.num(mdl.means[i], formatDecimal(mdl.means[i], { digits: 3 }))),
             h("td", {}, ctx.num(mdl.sds[i], formatDecimal(mdl.sds[i], { digits: 3 }))),
-            h("td", {}, unit(mdl.ids[j])), h("td", {}, ctx.num(mdl.er[j], formatDecimal(mdl.er[j], { digits: 2 }))));
+            h("td", {}, ctx.num(mdl.er[j], formatDecimal(mdl.er[j], { digits: 2 }))));
         });
-        const table = h("table", { class: "prx-pt-table" },
+        const table = h("table", { class: "prx-pt-table prx-sticky-first" },
           h("caption", { text: T.ordersCaption }),
-          h("thead", {}, h("tr", {}, ...[T.colPlace, T.colPmUnit, T.colMean, T.colSd, T.colErUnit, T.colEr2].map((t) => h("th", { scope: "col", text: t })))),
+          h("thead", {}, h("tr", {}, ...[T.colPlace, T.colPmUnit, T.colErUnit, T.colMean, T.colSd, T.colEr2].map((t) => h("th", { scope: "col", text: t })))),
           h("tbody", {}, ...rows));
         const open = ordersSlot.querySelector("details")?.open ?? false;
         const details = h("details", { class: "prx-pt-details" }, h("summary", { text: T.ordersSummary }),
@@ -440,8 +543,8 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
           h("p", {}, ...fill(T.lawSummaries, {
             m: ctx.num(Array.from(m.means), `(${m.means.map((x) => formatDecimal(x, { digits: 0 })).join(", ")})`),
             r: ctx.num(Array.from(m.er), `(${m.er.map((x) => formatDecimal(x, { digits: 1 })).join(", ")})`),
-          }), " ", ...fill(T.erDefinition, { one: count(1) })),
-          h("p", {}, ...fill(T.lawLink, { n: count(CONFIG.comparisonN) })));
+          }), " ", ...fill(T.erDefinition, { one: count(1) })));
+        matchedNote.replaceChildren(...fill(T.lawLink, { n: count(CONFIG.comparisonN) }));
         // every report: N, E, risk at τ, membership of each order family, and which rule's best it is
         const evs = TB19.reports.map((g) => ({ g, ev: evaluateReport(g, m.E, { tau: state.tau }) }));
         const best = r => new Set(results[r] ? (results[r].grades ?? [results[r].grade]).map(g => TB19.key(g)) : []);
@@ -452,14 +555,15 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
           const tags = [bestOf.pm.has(k) ? T.bestPm : null, bestOf.er.has(k) ? T.bestEr : null, bestOf.all.has(k) ? T.bestAll : null].filter(Boolean);
           return h("tr", { "data-prx-report": k },
             h("th", { scope: "row" }, ctx.num(g, formatGrades(g)), h("span", { class: "prx-pt-blocks-text", text: ` ${blocksText(g, m.ids)}` })),
-            h("td", {}, ctx.num(ev.N, formatCount(ev.N))), h("td", {}, ctx.num(ev.Ew, formatRational(ev.Ew))),
-            h("td", {}, ctx.num(ev.risk, fracMode ? formatRational(ev.risk) : formatRisk(ev.risk))),
+            h("td", { "data-prx-law-value": "risk" }, ctx.num(ev.risk, fracMode ? formatRational(ev.risk) : formatRisk(ev.risk))),
+            h("td", { "data-prx-law-value": "N" }, ctx.num(ev.N, formatCount(ev.N))),
+            h("td", { "data-prx-law-value": "Ew" }, ctx.num(ev.Ew, formatRational(ev.Ew))),
             h("td", { text: TB19.inPm.has(k) && TB19.inEr.has(k) ? T.both : TB19.inPm.has(k) ? m.pmOrder.map(i => m.ids[i]).join(", ") : TB19.inEr.has(k) ? m.erOrder.map(i => m.ids[i]).join(", ") : "" }),
             h("td", { text: tags.join(T.andWord) }));
         });
-        tableSlot.replaceChildren(h("table", { class: "prx-pt-table prx-pt-table-law" },
+        tableSlot.replaceChildren(h("table", { class: "prx-pt-table prx-pt-table-law prx-sticky-first" },
           h("caption", { text: T.tableCaption }),
-          h("thead", {}, h("tr", {}, ...[T.colReport, T.colN, T.colE, T.colRisk, T.colOrder, T.colBest].map((t) => h("th", { scope: "col", text: t })))),
+          h("thead", {}, h("tr", {}, ...[T.colReport, T.colRisk, T.colN, T.colE, T.colOrder, T.colBest].map((t) => h("th", { scope: "col", text: t })))),
           h("tbody", {}, ...body)));
       }
 
@@ -516,13 +620,14 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
           ["Unrestricted composite-loss grades", "Exact within its family", "No general guarantee", "All reports satisfying the declared restrictions"],
           ["Unrestricted weighted-directional grades", "No general guarantee", "Exact within its family", "All reports satisfying the declared restrictions"],
         ];
-        const table = h("table", { class: "prx-pt-table", "data-prx-guarantees": "" }, h("caption", {}, "Selection guarantees under the supplied law, common cost and stated feasible family"),
-          h("thead", {}, h("tr", {}, ...["Rule", "Composite loss", "Directional loss", "Eligible comparison"].map(x => h("th", { scope: "col" }, x)))),
-          h("tbody", {}, ...rows.map(row => h("tr", {}, ...row.map((v,i) => h(i ? "td" : "th", i ? {} : { scope: "row" }, v))))));
+        const table = h("table", { class: "prx-pt-table prx-sticky-first", "data-prx-guarantees": "" }, h("caption", {}, "Selection guarantees under the supplied law, common cost and stated feasible family"),
+          h("thead", {}, h("tr", {}, ...["Rule", "Directional loss", "Composite loss", "Eligible comparison"].map(x => h("th", { scope: "col" }, x)))),
+          h("tbody", {}, ...rows.map(([rule, composite, directional, comparison]) => h("tr", {},
+            h("th", { scope: "row" }, rule), h("td", {}, directional), h("td", {}, composite), h("td", {}, comparison)))));
         guarantee.replaceChildren(ctx.panelTitle("Which objective does each rule optimize?"),
           h("p", { class: "prx-pt-note" }, "The cards above use one directional criterion. The table separates guarantees for a scalar composite target from guarantees for weighted criterion directions. It does not claim that a method is best under both."),
           ctx.scrollRegion(h("div", { class: "prx-pt-table-scroll" }, table), "Rule guarantees under both reporting targets"),
-          h("p", { class: "prx-pt-note" }, "Exact claims need exact supplied probabilities, feasible reports and optimization over the whole declared family. A different loss or an out-of-family comparator has no sign guarantee. These are conditional mathematical guarantees, not claims of institutional adoption."));
+          h("p", { class: "prx-pt-note" }, "The comparisons apply to the supplied probabilities, the same loss and all reports in the stated family. A report outside that family can have lower risk. Changing the loss changes the comparison."));
       }
 
       function drawLawExtras(state, results) {
@@ -549,7 +654,36 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
       }
       function chipsForLaw(grade) { return createRuleCardRenderer(ctx).chips(tb, Array.from(grade), palette(ctx.root)); }
 
-      function drawTauComparison(state, G) {
+      function findMissBands(mean, best) {
+        const endpoints = [...new Set([...mean, ...best].flatMap(s => [s.tauFrom, s.tauTo]))].sort((a, b) => a - b);
+        const pairs = tb.n * (tb.n - 1) / 2;
+        const riskAt = (intervals, tau) => {
+          const interval = intervals.find(s => s.tauFrom <= tau && s.tauTo >= tau);
+          return (interval.Ew + tau * (pairs - interval.N)) / pairs;
+        };
+        const bands = [];
+        for (let i = 1; i < endpoints.length; i++) {
+          const from = endpoints[i - 1], to = endpoints[i], mid = (from + to) / 2;
+          if (riskAt(mean, mid) <= riskAt(best, mid) + CONFIG.tieTol) continue;
+          const prev = bands.at(-1);
+          if (prev && prev.to === from) prev.to = to;
+          else bands.push({ from, to });
+        }
+        return bands;
+      }
+
+      const fullLawPath = lawView ? {
+        mean: tauPath(tb.E, { family: { kind: "order", order: tb.pmOrder, G: tb.n } }).intervals,
+        best: tauPath(tb.E, { family: { kind: "all" } }).intervals,
+      } : null;
+      const fullMissStart = fullLawPath ? findMissBands(fullLawPath.mean, fullLawPath.best)[0]?.from : null;
+      const tagMark = (name, value = "") => (index, scales, values, dimensions, context, next) => {
+        const group = next(index, scales, values, dimensions, context);
+        group.setAttribute(name, value);
+        return group;
+      };
+
+      function drawTauComparison(state, G, results) {
         const family = state.opt === "all" || G === tb.n ? { kind: "all" } : { kind: "atMost", G };
         const defs = [
           { name: "Posterior-mean cuts", key: "mean", dash: "7 4", family: { kind: "order", order: tb.pmOrder, G } },
@@ -557,16 +691,35 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
           { name: "Best of the declared family", key: "best", dash: null, family },
         ];
         const segments = defs.flatMap(d => tauPath(tb.E, { family: d.family }).intervals.map((segment,k) => ({ ...segment, name: d.name, key: d.key, index: k, segment: `${d.name}-${k}` })));
-        pathTableSlot.replaceChildren(h("table", { class: "prx-pt-table" }, h("caption", {}, "Every exact interval, including zero-length endpoint intervals"),
-          h("thead", {}, h("tr", {}, ...["Family", "From τ", "To τ", "Report", "N", "E", "Risk from", "Risk to"].map(x => h("th", { scope: "col" }, x)))),
+        pathTableSlot.replaceChildren(h("table", { class: "prx-pt-table prx-pt-table-path prx-sticky-first" }, h("caption", {}, "Every exact interval, including zero-length endpoint intervals"),
+          h("thead", {}, h("tr", {}, ...["Family", "Risk from", "Risk to", "From τ", "To τ", "Report", "N", "E"].map(x => h("th", { scope: "col" }, x)))),
           h("tbody", {}, ...segments.map(s => h("tr", { "data-prx-path": s.key, "data-prx-interval": s.index },
             h("th", { scope: "row" }, s.name),
-            ...[["from",s.tauFrom,formatSetting],["to",s.tauTo,formatSetting],["grades",Array.from(s.grade),formatGrades],["N",s.N,formatCount],["E",s.Ew,formatRational],["riskFrom",s.riskFrom,formatRisk],["riskTo",s.riskTo,formatRisk]].map(([key,v,f]) => h("td", {}, ro(`path-${key}`, v, f(v)))))))));
+            ...[["riskFrom",s.riskFrom,formatRisk],["riskTo",s.riskTo,formatRisk],["from",s.tauFrom,formatSetting],["to",s.tauTo,formatSetting],["grades",Array.from(s.grade),formatGrades],["N",s.N,formatCount],["E",s.Ew,formatRational]].map(([key,v,f]) => h("td", {}, ro(`path-${key}`, v, f(v)))))))));
         const points = segments.flatMap(s => [s.tauFrom,s.tauTo].map(tau => ({ ...s, tau, risk: tau === s.tauFrom ? s.riskFrom : s.riskTo })));
+        const [mean, rank, best] = defs.map(d => segments.filter(s => s.key === d.key));
+        const bands = findMissBands(mean, best);
+        const tiePrices = [...new Set([...mean, ...rank, ...best].map(s => s.tauTo).filter(t => t > 0 && t < .5))];
+        const currentCut = results[state.order === "rank" ? "er-cuts" : "pm-cuts"].ev.risk;
+        const currentBest = results.optimum.ev.risk;
+        const different = Math.abs(currentCut - currentBest) > CONFIG.tieTol;
+        const current = [{ tau: state.tau, risk: currentBest }, ...(different ? [{ tau: state.tau, risk: currentCut }] : [])];
+        const yTop = Math.max(...points.map(p => p.risk));
         plot(pathSlot, { height: 260, marginLeft: 60, marginBottom: 40,
           x: { domain: [0,.5], label: "Withholding cost τ" }, y: { label: "Best risk at this τ", grid: true },
           color: { domain: defs.map(d => d.name), range: ["var(--prx-plot-fg)","var(--prx-plot-muted)","var(--prx-plot-fg)"], legend: false },
-          marks: (c,P) => [...defs.slice().reverse().map(d => P.line(points.filter(p => p.key === d.key), { x: "tau", y: "risk", z: "segment", stroke: "name", strokeDasharray: d.dash, strokeWidth: 2 })), P.ruleX([state.tau], { stroke: c.plotMuted, strokeDasharray: "3 3" })],
+          marks: (c,P) => [
+            P.rect(bands, { x1: "from", x2: "to", y1: 0, y2: yTop, fill: c.est, fillOpacity: .12, render: tagMark("data-prx-miss-band") }),
+            P.ruleX(tiePrices, { stroke: c.plotMuted, strokeOpacity: .65, strokeDasharray: "1 4" }),
+            ...defs.slice().reverse().map(d => P.line(points.filter(p => p.key === d.key), { x: "tau", y: "risk", z: "segment", stroke: "name", strokeDasharray: d.dash, strokeWidth: 2 })),
+            P.ruleX([state.tau], { stroke: c.est, strokeWidth: 1.5, render: tagMark("data-prx-current-tau", state.tau) }),
+            P.dot(current, { x: "tau", y: "risk", r: 3, fill: c.est, stroke: c.plotBg }),
+            numText(tiePrices, { x: t => t, y: () => yTop, dy: 10, value: t => t, format: formatSetting, fill: c.plotFg, fontSize: 10,
+              render: tagMark("data-prx-tie-prices") }),
+            ...current.map((p, i) => numText([p], { x: "tau", y: "risk", value: "risk", format: formatRisk,
+              dx: state.tau > .37 ? -7 : 7, dy: i === 0 && different ? 9 : -8, textAnchor: state.tau > .37 ? "end" : "start",
+              fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke", fontWeight: "bold" })),
+          ],
           alt: "The best risk along each declared order and over the declared family at the same withholding price. Exact segment endpoints come from the engine cost paths.",
           keyboard: { data: points, x: "tau", y: "risk", title: p => `${p.name}, tau ${formatSetting(p.tau)}, risk ${formatRisk(p.risk)}, report ${formatGrades(Array.from(p.grade))}.` },
           table: { caption: "Exact risk-curve endpoints", columns: [{ label: "Family", value: "name" }, { label: "τ", value: "tau", format: v => formatSetting(v) }, { label: "Risk", value: "risk", format: v => formatRisk(v) }], rows: points },
@@ -578,6 +731,36 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
           for(const [key,value]of Object.entries({x1:0,y1:5,x2:35,y2:5,stroke:d.key==="rank"?"var(--prx-plot-muted)":"var(--prx-plot-fg)","stroke-width":2,...(d.dash?{"stroke-dasharray":d.dash}:{})}))line.setAttribute(key,String(value));
           svg.append(line);pathLegend.append(h("span",{class:"prx-key"},svg,d.name));
         }
+        pathLegend.classList.add("prx-pt-path-keys");
+        pathStatus.replaceChildren(...(bands.length ? ["Shaded: mean order misses the best report. "] : []),
+          "Dotted vertical lines: tie prices. Solid vertical line: current τ.");
+        pathScope.replaceChildren("Each curve gives the best risk at its own price, not a comparison of risks across prices. In the default unrestricted example, the posterior-mean order misses above ",
+          ctx.num(fullMissStart, formatSetting(fullMissStart)), "; the expected-rank cuts recover the best report here. One law, not a general failing of posterior-mean orders.");
+        return bands;
+      }
+
+      function drawLawReadout(state, results, bands) {
+        const { optimum } = results;
+        const order = state.order === "rank" ? tb.erOrder : tb.pmOrder;
+        const cut = results[state.order === "rank" ? "er-cuts" : "pm-cuts"];
+        const names = order.map(i => tb.ids[i]).join(", ");
+        const action = res => {
+          if (!res.ev.N) return "withholds everything";
+          const grades = Array.from(res.grade);
+          return `puts ${Array.from({ length: Math.max(...grades) }, (_, g) => tb.ids.filter((_, i) => grades[i] === g + 1).join(" and ")).join(" above ")}`;
+        };
+        const risk = raw => {
+          const fraction = formatRational(raw), decimal = formatRisk(raw);
+          return fraction.includes("/") ? [ctx.num(raw, fraction), " = ", ctx.num(raw, decimal)] : [ctx.num(raw, decimal)];
+        };
+        const ties = optimum.grades ?? [optimum.grade];
+        const tieText = ties.length > 1 ? [" Tied at ", ctx.num(optimum.risk, formatRisk(optimum.risk)), ": ",
+          ...ties.flatMap((grade, i) => [i ? "; " : "", ctx.num(Array.from(grade), formatGrades(Array.from(grade))),
+            " (N ", count(disclosure(Array.from(grade)).N), ")"]), "."] : [];
+        const cap = results.G < tb.n ? [", at most ", count(results.G), results.G === 1 ? " grade" : " grades"] : [];
+        ctx.readout.set(["At τ ", ctx.num(state.tau, formatSetting(state.tau)), ...cap, ": the best cut of ", names, " ", action(cut), " (risk ", ...risk(cut.ev.risk),
+          "); the best report ", ...(cap.length && state.opt === "all" ? ["of any grade count "] : []), action(optimum), " (", ...risk(optimum.ev.risk), ").", ...tieText,
+          ...(results.G === tb.n && bands.length === 1 && bands[0].to === CONFIG.tau.max ? [" The mean order misses above ", ctx.num(bands[0].from, formatSetting(bands[0].from)), "."] : [])]);
       }
 
       return {
@@ -595,9 +778,9 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
             const rule = state.rule === "optimum" && !mdl.hasOptimum ? CONFIG.rule : state.rule;
             const results = compute(mdl, state);
             const G = results.G;
-            dataRadio.set(mdl.key);
+            dataSelect.set(mdl.key);
             ruleRadio.set(rule);
-            ruleRadio.inputs[RULES.indexOf("optimum")].disabled = !mdl.hasOptimum;
+            ruleRadio.inputs[rowsOrder.indexOf("optimum")].disabled = !mdl.hasOptimum;
             capRadio.set(G);
             capRadio.inputs.forEach((input, k) => { input.disabled = capValues[k] > mdl.n; });
             optRadio.set(state.opt);
@@ -610,24 +793,22 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
             const opt = results.optimum;
             const rows = shownRules.map((r) => drawRow(mdl, r, results[r], opt, G, r === rule, pal, fracMode));
             const isLaw = mdl.key === "tb19";
-            compareBox.hidden = isLaw;
-            lawInner.hidden = !isLaw;
             if (isLaw) {
-              compareRows.replaceChildren();
               lawRows.replaceChildren(...rows);
               drawNotes(mdl, lawNotes);
               drawLaw(state, results, fracMode);
               drawLawExtras(state, results);
-              drawTauComparison(state, G);
+              const bands = drawTauComparison(state, G, results);
+              drawLawReadout(state, results, bands);
               drawMini(Array.from(results[rule].grade), CONFIG.tieTol);
             } else {
-              lawRows.replaceChildren();
               compareRows.replaceChildren(...rows);
               drawNotes(mdl, compareNotes);
               drawOrders(mdl);
               drawGuarantees();
+              drawLadder(mdl, state, results, G);
               hero.replaceChildren(h("strong", {}, ruleName(rule)), createRuleCardRenderer(ctx).chips(mdl, Array.from(results[rule].grade), pal),
-                h("p", { class: "prx-pt-note" }, "Current report: ", count(results[rule].ev.N), " pairs stated; risk ", ctx.num(results[rule].ev.risk, formatRisk(results[rule].ev.risk)), ". ", ...scopeParts(mdl, rule, results[rule], G, "preview")));
+                h("p", { class: "prx-pt-note" }, "Current report: ", count(results[rule].ev.N), " pairs stated; risk ", ctx.num(results[rule].ev.risk, formatRisk(results[rule].ev.risk)), "; ", ...scopeParts(mdl, rule, results[rule], G, "preview")));
             }
             drawReadout(mdl, state, rule, results[rule], G, opt, fracMode, results);
             ctx.caption.replaceChildren(...captionFor(mdl));
@@ -702,7 +883,10 @@ export function createRuleCardRenderer(ctx) {
         if (same) parts.push(`, ${T.sameReport}`);
         else if (tie) parts.push(`, ${T.sameRisk}`);
         else parts.push(".");
-        if (res.ev.N !== opt.ev.N) parts.push(" ", captionNode(ctx, "different-disclosure"), ".");
+        if (res.ev.N !== opt.ev.N) {
+          if (parts.at(-1) === ".") parts.pop();
+          parts.push("; ", captionNode(ctx, "different-disclosure"), ".");
+        }
         return h("p", { class: "prx-pt-row-gap" }, ...parts);
       }
 

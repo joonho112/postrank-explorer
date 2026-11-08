@@ -3120,6 +3120,19 @@
             "fn": "formatCount"
           },
           "value": 731
+        },
+        {
+          "select": "[data-prx-readout=\"common-risk-mark\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p5-cases",
+            "row": "krw-two-w0.5",
+            "field": "live.evaluation.risk"
+          },
+          "format": {
+            "fn": "formatRisk"
+          },
+          "value": 0.2454704108702616
         }
       ]
     },

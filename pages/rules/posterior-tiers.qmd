@@ -1,14 +1,14 @@
 ---
-title: "Tiers and optimised cuts of posterior rankings"
+title: "Tiers and optimized cuts of posterior rankings"
 subtitle: "3.5 · after the postrank theory book, ch. 17, and postrank's fixed-order cuts"
-description: "Comparison of fixed posterior tiers, optimised boundaries and joint report optimisation."
+description: "Comparison of fixed posterior tiers, optimized boundaries and joint report optimization."
 ---
 
-An ordering and a set of grade boundaries impose separate restrictions on a report. Fixed posterior-mean tiers
-choose both by convention. Optimising the boundaries searches all permitted cuts of the specified posterior-mean or
-expected-rank order. For eight units, enumeration also provides the minimum over all feasible reports. Each card
-identifies its search family and disclosure, allowing risk comparisons under a common posterior and withholding cost.
-The larger examples retain the restriction to one order, so their results do not establish an unrestricted optimum.
+A grade report built from an existing ranking inherits that ranking's order. Quantile tiers also fix the
+boundaries by group size. Optimal cuts allow those boundaries to vary while keeping the order fixed. For eight
+units, we can also enumerate the feasible reports and compare both methods with the unrestricted minimum under
+the same posterior and withholding cost. For the larger examples, we compare cuts of a fixed order. **Reports,
+orders and scopes** lists the reports searched and the resulting disclosure counts.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -26,7 +26,10 @@ The larger examples retain the restriction to one order, so their results do not
 - **Eight units: all reports.** The benchmark expands to 545,835 reports. The reported family determines the scope of the gap for each rule and grade cap.
 
 ::: {.callout-note appearance="simple"}
-The tiers are constructed comparators, not optimised reports. When the same order's tiers belong to its cut family, optimising the boundaries cannot raise risk. Joint optimisation can improve further only within the declared family. The guarantee table separates composite and directional objectives; an optimiser for one need not be best for the other. Larger examples have no joint optimum displayed, so their distance from it is unknown.
+When the quantile boundaries are among the allowed cuts of an order, the minimum over those cuts cannot have
+higher risk than the quantile report. Searching other orders may yield a lower minimum within the grade cap.
+The comparison also depends on the objective. A cut that minimizes directional error can differ from one
+that minimizes error on a composite score. We do not estimate the gap to the joint optimum for the larger examples.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}

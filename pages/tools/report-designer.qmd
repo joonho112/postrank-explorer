@@ -4,10 +4,8 @@ subtitle: "T.2 · after the postrank theory book, chapter 21, and the reading/ex
 description: "Reports accompanied by target definitions, computation scope, error-budget checks and source information."
 ---
 
-Reports are calculated from released probabilities under declared targets, losses and families.
-Error-budget rows evaluate the displayed report without selecting a constrained alternative. The reporting view
-retains assumptions, computation scope and conditioning, with drafting and download controls.
-Browser results are distinguished from archived statuses and bounds.
+The tool builds a grade report from the released probabilities for each case. The budget applies to the report
+on the screen. The reporting view records the outcome, model assumptions, and search used to produce the grades.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,30 +18,30 @@ Browser results are distinguished from archived statuses and bounds.
 ## Numerical illustrations {#what-to-try}
 
 - **CDE: three-grade family.** The browser enumerates all 523,251 capped reports. The chosen report states
-  45 pairs. The family label, criterion profile and fixed-archive comparison define the reported computation scope.
-  These twelve schools are a deliberately spread teaching subset, not a representative statewide sample.
-- **KRW: equal weights.** The report states 636 pairs and is optimal within this order: the weighted expected-rank
-  order. The order and its report family are recomputed when the error weight changes. The supplied marginal intervals describe
-  individual targets; no joint race–gender posterior or Gaussian replacement is created.
-- **Alabama: equal weights.** The report states 1,249 pairs. Grade 1 means favourable historical outcomes,
-  including lower incarceration, rather than greatest need. Source conditioning and the supplied interval level
-  stay attached to the case and its model TXT.
-- **CDE: cap two.** The family contains 4,095 reports. Its risk and the archived risk use the same withholding cost. Changing a cap changes the family; it does not make same-loss evaluations incomparable.
+  45 pairs. The result applies to the twelve schools in the teaching subset.
+- **KRW: equal weights.** The result is labeled “optimal within this order” and states 636 pairs. Changing the weight
+  can change the order and which reports the search considers. The supplied intervals describe race and gender separately.
+- **Alabama: equal weights.** The report states 1,249 pairs. Grade 1 indicates favorable historical outcomes,
+  including lower incarceration. The case and its text download give the population and interval level.
+- **CDE: cap two.** The family contains 4,095 reports. Compare its best report with the archived report at the same withholding cost.
 - **CDE: mean-order cap four.** The computation switches to the posterior-mean order. It is optimal only among
-  cuts of that order. The budget rows still evaluate the displayed report and show signed count-form slack.
+  cuts of that order. The budget table gives the difference between the allowed and expected error counts.
 - **CDE: all withheld.** E/N reads NA: no disclosure. A homogeneous budget passes without stating anything,
-  so passing alone is not evidence of informative or error-free reporting. The reporting view retains these qualifications in the download.
+  so a pass alone does not establish useful or error-free disclosure.
 
 ::: {.callout-note appearance="simple"}
-Current and archived settings appear together; the old status, bound and gap never certify a new browser DP. Shared grades
-withhold directions, not assert equality; expected error shares do not give joint correctness. Allocation needs
-another decision rule. Draft text remains in component memory, outside the URL, iframe state and storage.
+The archived status, bound, and gap apply to the archived computation. The current search has its own scope.
+A shared grade leaves the comparison unstated. The expected error share describes individual comparisons in
+aggregate, and the probability that every stated comparison is correct requires a joint calculation. A decision
+to allocate resources would require a further rule. Draft text stays in the open component's memory.
 
-CDE's prior conditions on the statewide fit. KRW uses historical contact-gap targets from
+CDE uses the fitted statewide prior. KRW uses historical contact-gap estimates from
 [Kline, Rose and Walters](https://doi.org/10.1257/aer.20230700) and their
-[data deposit](https://doi.org/10.3886/E198284V1), under the deposit’s CC-BY-NC terms (no version stated); this extraction does not describe current conduct.
+[data deposit](https://doi.org/10.3886/E198284V1), under the deposit's CC-BY-NC terms (no version stated). The experiment describes historical contact gaps.
 Alabama uses [Opportunity Atlas](https://doi.org/10.7910/DVN/NKCQM1) historical outcomes under CC BY 4.0.
-Each case retains its complete attribution, changes and conditioning below the app and in downloads.
+The case notes and downloads give the source, changes, rights, and conditioning. These details appear on each CSV row.
+Relations use `1` for row above column,
+`-1` for column above row, `0` for withheld, and `NA` on the diagonal.
 :::
 
 ::: {.callout-note collapse="true" title="In postrank"}

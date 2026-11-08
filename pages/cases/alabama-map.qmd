@@ -4,10 +4,9 @@ subtitle: "5.12 · Opportunity Atlas data, one common grade on a map"
 description: "Criterion-specific evaluation of common grades for historical income and incarceration outcomes."
 ---
 
-A common report evaluates Alabama counties on historical income and incarceration outcomes. The weight sets the
-relative cost of criterion errors. The map and table connect grades with marginal intervals. Grade 1 denotes
-higher income and lower incarceration. The live search uses weighted expected-rank cuts; archived reports and
-commonality-cost bounds retain their original optimisation scope.
+A single grade report compares Alabama counties on two historical outcomes, household income and incarceration.
+Grade 1 indicates higher income and lower incarceration. Changing the weight changes the relative cost of mistakes
+on the two outcomes. The map links each county's grade to the marginal intervals in the table.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -19,15 +18,15 @@ commonality-cost bounds retain their original optimisation scope.
 
 ## Numerical illustrations {#what-to-try}
 
-- **“Equal weights.”** Crenshaw County is alone in grade one; Montgomery and Russell share grade five; the shares expected wrong are .0520 on income and .172 on incarceration. Grade one means favourable historical outcomes: higher income and lower incarceration, rather than greater need.
-- **“Income only.”** The report states 1,769 of 2,211 pairs, while its share expected wrong on incarceration rises to .349. **“Income .80”** brings that share to .305 and income’s to .0305; risks at different weights belong to different losses.
-- **“Fixed income D1.”** Its grades stay fixed at equal weights, with risk .1906; D2’s risk is .1998. The corresponding archived map can be displayed beside the selected common-report map.
-- **“Color counties by this report.”** The display accepts an archived baseline or an edited grade vector. The complete table shows every county’s grades and marginal intervals; the relation summary compares it with archived P. **“Incarceration only”** gives shares .312 on income and .0873 on incarceration.
+- **“Equal weights.”** Crenshaw County is the only county in grade one. Montgomery and Russell share grade five. The expected error shares among stated comparisons are .0520 for income and .172 for incarceration.
+- **“Income only.”** The report states 1,769 of 2,211 pairs. The incarceration error share rises to .349. Under **“Income .80”**, the incarceration and income shares are .305 and .0305, respectively. Each risk uses the loss for its own weights.
+- **“Fixed income D1.”** At equal weights the archived D1 grades have risk .1906, compared with .1998 for D2. The corresponding map is available below the main comparison.
+- **“Color counties by this report.”** Choose an archived report or edit the grades. The table gives each county's grades and intervals and shows how the stated comparisons differ from archived P. **“Incarceration only”** gives shares .312 on income and .0873 on incarceration.
 
-The live search is best along the current weighted expected-rank order, which combines the criteria’s posterior average positions. At the original cost and cap, it reproduces archived P at equal weights, D1 for income alone and D2 for incarceration alone. The app retains their solver status and bounds. The archived commonality table answers a separate question: the increase in each criterion's risk under the original common report relative to its separate optimum. Its bounds belong to that original loss and full capped family, when a different live setting is selected.
+The browser searches cuts of one order, based on the counties' weighted average posterior ranks. At the original cost and cap, the search reproduces P at equal weights, D1 for income alone, and D2 for incarceration alone. The archived solver status and bounds apply to those original runs. The commonality table reports how much risk the original common report adds for each outcome compared with a report optimized for that outcome alone. Its bounds apply to the original loss and the full family allowed by the grade cap.
 
 ::: {.callout-note appearance="simple"}
-Outcomes condition on parents’ income at percentile 25, with race and gender pooled, for cohorts born 1978–83: household income in 2014–15 and incarceration on 1 April 2010. These are historical associations, rather than current conditions, causal effects of places, need or eligibility. Separate criterion fits do not supply a joint posterior. Data: Chetty, Friedman, Hendren, Jones and Porter (2022), Opportunity Atlas replication, Harvard Dataverse doi:10.7910/DVN/NKCQM1; Opportunity Insights and U.S. Census Bureau, CC BY 4.0; as adapted in postrank 1.1.0. Changes: Alabama filtering, favorable target orientation, supplied marginal summaries, archived reports and browser searches. Boundaries: U.S. Census Bureau Cartographic Boundary Files 2025, public domain, via usmapdata 1.1.0. No endorsement implied.
+The estimates pool race and gender for cohorts born in 1978–83 whose parents were at the 25th income percentile. The outcomes are household income in 2014–15 and incarceration on April 1, 2010. The grades describe associations for those cohorts. Present-day need, eligibility, and the causal effect of growing up in a county would require other evidence. The two separate fits give marginal distributions for each outcome. Data: Chetty, Friedman, Hendren, Jones and Porter (2022), Opportunity Atlas replication, Harvard Dataverse doi:10.7910/DVN/NKCQM1; Opportunity Insights and U.S. Census Bureau, CC BY 4.0; as adapted in postrank 1.1.0. Changes: Alabama filtering, favorable target orientation, supplied marginal summaries, archived reports and browser searches. Boundaries: U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20m), via usmapdata 1.1.0; public domain. No endorsement implied.
 :::
 
 <details class="prx-recipe">

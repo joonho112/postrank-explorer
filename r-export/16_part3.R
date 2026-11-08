@@ -1,5 +1,5 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
-# Golden values for the Step 7.1 Part 3 helpers (engine/API.md "Step 7.1: Part 3 helpers"; engine/API.md §9):
+# Author: JoonHo Lee (jlee296@ua.edu).
+# Golden values for the Step 7.1 Part 3 helpers (engine/API.md "Step 7.1: Part 3 helpers"; notes/audits/part3-rules.md §9):
 # statedAgainst, relationChange, cutGrade (report.ts), bestReports (optimize.ts), reportsAtN, ruleGap (frontier.ts).
 #   oracle-part3    base R only, written from engine/API.md: double loops over pairs, full enumeration of every family
 #                   (canonical grade vectors in lexicographic order), the lower hull of the per-N minima, exact rationals

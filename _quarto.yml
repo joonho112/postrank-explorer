@@ -20,6 +20,7 @@ project:
     - "/styles/temml.css"
     - "/embed/*.html"
     - "/media/**"
+    - "/data/recipes/*.R"
   # The generator writes embeds, part cards, the catalog tables and the navbar from the catalog (a render of single
   # pages only rebuilds their apps); formulas are typeset to MathML after the render (no script, no network).
   pre-render: node scripts/build.mjs --pre-render
@@ -34,12 +35,12 @@ metadata-files:
 website:
   site-url: "https://joonho112.github.io/postrank-explorer/"
   title: "postrank Explorer"
-  description: "Methods and numerical illustrations for posterior ranking and ordered grade reporting."
+  description: "Methods and numerical illustrations for posterior ranking, common grade reporting and multidomain profiles."
   favicon: media/favicon.svg
   page-navigation: false
   page-footer:
-    left: "postrank Explorer v3 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)"
-    right: "Built on postrank 1.1.0"
+    left: "postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)"
+    right: "Reference package: postrank 1.2.0"
 
 format:
   html:
@@ -49,10 +50,12 @@ format:
       - styles/app.css
     toc: false
     lang: en
-    # Site pages are light: an OS in dark mode must not switch the token colours of cards and apps.
+    # Site pages are light: an OS in dark mode must not switch the token colors of cards and apps.
     include-in-header:
       text: '<script>document.documentElement.setAttribute("data-theme", "light");</script>'
-    include-after-body: js/site/recipe-keyboard.html
+    include-after-body:
+      - js/site/recipe-keyboard.html
+      - js/site/navigation.html
     # Quarto keeps the TeX through this no-op stub; scripts/post-render-math.mjs replaces it with Temml MathML.
     html-math-method:
       method: mathjax

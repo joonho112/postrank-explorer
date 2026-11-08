@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "postrank-explorer-mdomain-v1",
+  "fixtureId": "boundary-latent-tie",
+  "description": "Complete finite teaching law: boundary-latent-tie. Policy and candidate banks are explicitly declared.",
+  "input": {
+    "inputId": "boundary-latent-tie-input",
+    "lawId": "boundary-latent-tie-law",
+    "representation": "exact_finite_law",
+    "coupling": "supplied_joint",
+    "unitIds": [
+      "A",
+      "B"
+    ],
+    "domainIds": [
+      "S",
+      "C"
+    ],
+    "stateIds": [
+      "s1",
+      "s2"
+    ],
+    "states": [
+      [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      [
+        [
+          1,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    ],
+    "masses": [
+      "1/2",
+      "1/2"
+    ],
+    "targets": [
+      {
+        "domainId": "S",
+        "definition": "Fictional S priority",
+        "units": "oriented teaching score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "A",
+          "B"
+        ],
+        "equalityProvenance": "Explicit classes of this finite teaching law."
+      },
+      {
+        "domainId": "C",
+        "definition": "Fictional C priority",
+        "units": "oriented teaching score",
+        "orientation": "larger_is_higher",
+        "equalityClasses": [
+          "A",
+          "B"
+        ],
+        "equalityProvenance": "Explicit classes of this finite teaching law."
+      }
+    ],
+    "provenance": {
+      "producer": "Self-contained finite teaching law",
+      "conditioningInfo": "Specified fictional law; no observations.",
+      "jointGeneration": "Every labelled state contains all units and domains.",
+      "finiteSupportOrigin": "These states exhaust this finite law, including declared zero-mass states.",
+      "properLaw": true
+    }
+  },
+  "decision": {
+    "decisionId": "boundary-latent-tie-policy",
+    "domainIds": [
+      "S",
+      "C"
+    ],
+    "scope": "all_pairs",
+    "weights": [
+      "1/2",
+      "1/2"
+    ],
+    "tau": [
+      "1/4",
+      "1/4"
+    ],
+    "q": null,
+    "t": [
+      "0",
+      "0"
+    ],
+    "alpha": "1"
+  },
+  "family": {
+    "familyId": "boundary-latent-tie-family",
+    "unitIds": [
+      "A",
+      "B"
+    ],
+    "domainIds": [
+      "S",
+      "C"
+    ],
+    "maxGrades": [
+      2,
+      2
+    ],
+    "maxActions": 256,
+    "banks": [
+      {
+        "domainId": "S",
+        "columns": [
+          {
+            "columnId": "column-1",
+            "grades": [
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "column-2",
+            "grades": [
+              1,
+              2
+            ]
+          },
+          {
+            "columnId": "column-3",
+            "grades": [
+              2,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "domainId": "C",
+        "columns": [
+          {
+            "columnId": "column-1",
+            "grades": [
+              1,
+              1
+            ]
+          },
+          {
+            "columnId": "column-2",
+            "grades": [
+              1,
+              2
+            ]
+          },
+          {
+            "columnId": "column-3",
+            "grades": [
+              2,
+              1
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

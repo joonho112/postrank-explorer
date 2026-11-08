@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/frontier.ts and tauPath of engine/src/optimize.ts (Step 2.7).
 #   oracle-frontier  base R only: the report cloud per disclosure N (count, min and max Ew), the lower convex hull
 #                    H(m) of the theory book ch. 16 (matched-disclosure frontier), supporting vertices, matched
@@ -321,7 +321,7 @@ hs("eq6-tiefree", fam_exactly(6), TRUE, TRUE, FALSE)
 hs("order-tiefree", fam_order(0:5), TRUE, TRUE, FALSE)
 hs("order-cap3-ties", fam_order(0:5, 3), FALSE, TRUE, FALSE)
 
-# ---- Step 6.14 Part 2 rows (engine/API.md; shared inputs in r-export/15_part2.R) --------------------
+# ---- Step 6.14 Part 2 rows (shared inputs in r-export/15_part2.R) --------------------
 source("r-export/15_part2.R")
 # G-06 H(m) at every integer m without a row (six sites score A: 0, ..., 15; four-unit law: 0, ..., 6). A disclosure
 # that no report attains (six sites: 1-4, 6, 7, 10; four units: 1, 2) has best = null.

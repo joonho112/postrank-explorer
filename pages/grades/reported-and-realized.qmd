@@ -1,15 +1,10 @@
 ---
 title: "Reported error and reference-law evaluation"
 subtitle: "2.9 · after the postrank theory book, ch. 18"
-description: "Comparison of conditional error expectations with realised errors at fixed true values."
+description: "Comparison of conditional error expectations with realized errors at fixed true values."
 ---
 
-A reported error share is an expectation under the posterior distribution used to select the report. Evaluation
-under a separately specified reference law gives another expectation for the same fixed report. The open point
-shows the realised share of wrong directions at the simulated league's fixed true values. These quantities need
-not coincide. The two lower panels distinguish repeated observation of fixed true values from draws of latent values
-conditional on the selected observations. This distinction is necessary when interpreting apparent agreement between
-reported and realised error.
+The reported error share is the expected fraction of wrong directions under the posterior that selected the report. We can hold the report fixed and compute the same expectation under a separate reference law. The open point gives the share actually wrong at the league's fixed true values. These three quantities can differ. The lower panels show why by comparing what changes when we sample new observations and when we draw latent values conditional on the observations already selected.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -22,8 +17,7 @@ reported and realised error.
 ## Numerical illustrations {#what-to-try}
 
 - **Same conditional laws.** The report states 152 pair directions. Both conditional expectations are .0632,
-  while the fixed-truth realised share is .0526. Matching expectations does not make a single realization equal
-  their common value. Individual repeated datasets give realised shares on either side of this expectation.
+  and the share wrong at the fixed true values is .0526. Across repeated samples, the observed error shares can fall on either side of the common expectation.
 - **Narrow prior, five grades.** The report claims .140, while the reference expectation for that same report
   is .115. Their absolute difference is below the largest pair-error gap, .4981. This setting changes the
   prior, cost and grade cap together. Moving just the prior slider also selects a new report; each setting's
@@ -36,18 +30,16 @@ reported and realised error.
   zero because this report makes no comparisons.
 
 The lower panels separate two experiments. Observation replays keep all true values fixed, redraw estimates,
-and choose a new report each time. Posterior draws instead keep the selected observations and report fixed,
+and choose a new report each time. Choose a replay with the slider or select a point in the replay chart.
+Posterior draws keep the selected observations and report fixed,
 then vary latent values under the chosen conditional law. The histogram and running average describe that
 chosen law; adding draws reduces simulation noise without testing whether the law is correct.
 
 ::: {.callout-note appearance="simple"}
-This is a deterministic teaching league, not true values sampled from the reference prior. Its design scale does
-not establish the reference conditional law as the truth. Fixed-truth observation replays therefore do not
-instantiate chapter 18's conditional calibration identity. The pair-gap bound compares two model expectations
-for one fixed report and does not bound its realised share.
+We hold the league's true values fixed across samples. Chapter 18's conditional calibration identity applies to draws from the reference law, so the replays here do not test that identity. The pair-gap bound limits how far the two model expectations for a fixed report can differ. Its target is the difference in expectations.
 :::
 
-Standalone: [reported and realised shares](../../embed/reported-and-realized.html), for example `?priorSd=.05`.
+Standalone: [reported and realized shares](../../embed/reported-and-realized.html), for example `?priorSd=.05`.
 
-Related applications: [Expected and realised errors among stated directions](disclosed-errors.qmd),
+Related applications: [Expected and realized errors among stated directions](disclosed-errors.qmd),
 [Sensitivity to the prior standard deviation](../uncertainty/shrinkage-price.qmd).

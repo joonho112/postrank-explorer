@@ -1,6 +1,6 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent base-R oracle for all approved Phase7 numerical contracts.
-# Authority: engine/API.md, engine/API.md and README.md;
+# See the multiple-criteria contracts in engine/API.md and the repository README;
 # public theory book ch11--16/19, public R/protection-envelopes.R, and released
 # six-sites/case-krw coefficients. No postrank namespace, new TS implementation,
 # TS tests, app numerical source, solver, browser, network or timing is used.

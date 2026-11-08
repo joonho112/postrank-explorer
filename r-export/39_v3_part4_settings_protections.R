@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent Part4 numerical composition pins for settings grids and a
 # separately labelled fixed-S IID protection illustration. No app4.10/4.14,
 # new TypeScript implementation/tests, JavaScript numerical output, solver,

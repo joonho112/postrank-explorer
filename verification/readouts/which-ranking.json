@@ -3,11 +3,11 @@
   "app": "which-ranking",
   "catalog": "1.14",
   "from": "postrank-explorer-v1 verification/readouts/which-ranking.json",
-  "about": "One posterior ranked three ways (posterior mean, expected rank, probability of being in the top k) for the theory book's ch. 19 three-unit law and the simulated league. Ported from v1 without the two cases that scripted a prediction and without the eleven expectations on the ch. 10 law on orders (v1's Deeper box, now app 1.15); the query key prior_sd is priorSd (v3 preset keys are plain words) and the teaching-posterior caption is in its v3 wording. Added: the scale switch on both data sets (√θ: base-R oracle row transformedMeans-spec-tb19-sqrt; exp(10θ): the unchanged expected rank, top-group probability and rank interval of U13), the unit key (B, U06, and an update to U24), the league ranked by first place (default unit U21) and a clamped prior SD. Three-unit numbers are rows of the base-R oracles (oracle-simulate rankSummaries-tb19-law3: means, expected ranks, pFirst, pTop; oracle-rules expectedRank-tb19-law3; oracle-summaries rankIntervals-tb19-law3-level.9) or keys of v1's frozen registry (tb19.law3.*). League posterior means and SDs are oracle rows (normalPosterior at prior SD .15 and .05); the league's exact expected ranks, its Monte Carlo top-group probabilities (4,000 draws, seed 1) and the count of pairs the posterior-mean and expected-rank orders put differently are registry keys (cross-checked in base R in v1); the rank-interval ends in the card are rows of oracle-summaries. Not covered by expectations (data-num only): the rank-interval ends in the hidden tables and row titles, the league's posterior means on the exp(kθ) scale, the count of pairs a scale moves, the league's count of units with probability 0, the tick labels.",
+  "about": "One posterior ranked three ways (posterior mean, expected rank, probability of being in the top k) for the theory book's ch. 19 three-unit law and the simulated league. Ported from v1 without the two cases that scripted a prediction and without the eleven expectations on the ch. 10 law on orders (v1's Deeper box, now app 1.15); the query key prior_sd is priorSd (v3 preset keys are plain words) and the teaching-posterior caption is in its v3 wording. Added: the scale switch on both data sets (√θ: base-R oracle row transformedMeans-spec-tb19-sqrt; exp(10θ): the unchanged expected rank, top-group probability and rank interval of U13), the unit key (B, U06, and an update to U24), the league ranked by first place (default unit U21) and a clamped prior SD. Three-unit numbers are rows of the base-R oracles (oracle-simulate rankSummaries-tb19-law3: means, expected ranks, pFirst, pTop; oracle-rules expectedRank-tb19-law3; oracle-summaries rankIntervals-tb19-law3-level.9) or keys of v1's frozen registry (tb19.law3.*). League posterior means and SDs are oracle rows (normalPosterior at prior SD .15 and .05); the league's exact expected ranks, its Monte Carlo top-group probabilities (4,000 draws, seed 1) and the count of pairs the posterior-mean and expected-rank orders put differently are registry keys (cross-checked in base R in v1); the rank-interval ends in the card are rows of oracle-summaries. Not covered by expectations (data-num only): the rank-interval ends in the hidden tables and row titles, the league's posterior means on the exp(kθ) scale, the count of pairs a scale moves, the league's count of units with probability 0, the tick labels. Review 044 repair (U3-F1, X-01): the read-out of the three-unit law ranked by posterior mean is the review's replacement copy (hooks kept; new hooks lead-er and lead-first), and under the posterior mean or the expected rank a last sentence names the top group k and its first unit (hook top-lead), so moving k changes the read-out (cases puzzle-mean, puzzle-sqrt, league-er, league-exp and the new puzzle-mean-top-two and league-er-top-ten). Review 044 repair (fix round): ranked by the posterior mean on another scale, the read-out says where the scale takes the listed unit whose place moves most (cases puzzle-sqrt, league-exp); its two places carry data-num (hooks place-theta, place-scale) and are checked as shown numbers only, like the count of pairs a scale moves.",
   "cases": [
     {
       "id": "puzzle-mean",
-      "about": "Load preset: the three-unit law ranked by posterior mean; the read-out lists the posterior means and the pairs that the posterior mean and the expected rank order differently; the default unit is A (first by posterior mean, last by expected rank), whose card and worked formula are checked number by number. v1's expectations on the law on orders moved with that box to app 1.15.",
+      "about": "Load preset: the three-unit law ranked by posterior mean; the read-out is the review 044 replacement copy (U3-F1): A first by posterior mean (6, a value A takes in neither state), ahead of B and C, last by expected rank (2.4), first with probability .3 and last otherwise, the two orders differing on 2 of the 3 pairs, and the top group named (B most likely first, .7); hooks list-1 to list-3, misordered and pairs keep their values, lead-er, lead-first and top-lead are new. The default unit is A (first by posterior mean, last by expected rank), whose card and worked formula are checked number by number. v1's expectations on the law on orders moved with that box to app 1.15.",
       "preset": "puzzle-mean",
       "expect": [
         {
@@ -86,10 +86,61 @@
           "select": "[aria-live]",
           "kind": "text",
           "slots": true,
-          "about": "the read-out word for word, each number a slot",
+          "about": "the read-out word for word, each number a slot: review 044's replacement copy (U3-F1), with B and C kept after A (hooks list-2, list-3) and the top group named",
           "source": "literal",
           "ref": "9.1",
-          "value": "Three-unit law, ranked by posterior mean: A (⟨a⟩), B (⟨b⟩), C (⟨c⟩). Posterior mean and expected rank order ⟨mis⟩ of the ⟨M⟩ pairs differently."
+          "value": "Three-unit law: by posterior mean A is first (⟨a⟩, a value A takes in neither state), ahead of B (⟨b⟩) and C (⟨c⟩); by expected rank A is last (⟨er⟩): it is first with probability ⟨p⟩ and last otherwise. The two orders differ on ⟨mis⟩ of the ⟨M⟩ pairs. The probability of being first is largest for B (⟨q⟩)."
+        },
+        {
+          "select": "[data-prx-readout=\"lead-er\"]",
+          "about": "read-out: A's expected rank, last of three (base-R oracle, rules)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-rules",
+            "row": "expectedRank-tb19-law3",
+            "field": "rank.0"
+          },
+          "value": 2.4
+        },
+        {
+          "select": "[data-prx-readout=\"lead-first\"]",
+          "about": "read-out: A is first with probability .3 (base-R oracle)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.0"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"top-lead\"]",
+          "about": "read-out: the top group named; B is the most likely to be first (base-R oracle)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.1"
+          },
+          "value": 0.7
         },
         {
           "select": "[data-prx-readout=\"card-mean\"]",
@@ -578,7 +629,7 @@
           "about": "the teaching-posterior caption in its v3 wording (js/shared/labels.js)",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": "[data-prx-readout=\"card-ri-lo\"]",
@@ -614,7 +665,23 @@
           "kind": "text",
           "source": "literal",
           "ref": "11.4",
-          "value": "What a posterior adds"
+          "value": "Normal–normal posterior shrinkage"
+        },
+        {
+          "select": "[data-prx-readout=\"top-lead\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top1.U26",
+          "value": 0.3245,
+          "about": "read-out: the top group named; U26 is first most often in the draws (Monte Carlo, registry)"
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U26",
+          "index": 5,
+          "about": "read-out: the unit named by the top-group sentence, after the five listed units"
         }
       ]
     },
@@ -947,7 +1014,7 @@
     },
     {
       "id": "puzzle-sqrt",
-      "about": "The scale switch on the three-unit law (√θ, engine transformedMeans): the posterior-mean column now reads B, C, A with means 2.00, 1.73 and 1.34 (base-R oracle row transformedMeans-spec-tb19-sqrt), while A's expected rank (2.4), its probability of being first (.3) and its rank interval stay those of θ. The table keeps the posterior means of θ beside those of √θ, and the card works out A's mean on the new scale.",
+      "about": "The scale switch on the three-unit law (√θ, engine transformedMeans): the posterior-mean column now reads B, C, A with means 2.00, 1.73 and 1.34 (base-R oracle row transformedMeans-spec-tb19-sqrt), while A's expected rank (2.4), its probability of being first (.3) and its rank interval stay those of θ. The table keeps the posterior means of θ beside those of √θ, and the card works out A's mean on the new scale. Review 044 repair (fix round): the read-out also says where the scale takes A, 1st by the posterior mean of θ and 3rd by that of √θ.",
       "preset": "puzzle-sqrt",
       "expect": [
         {
@@ -1006,9 +1073,26 @@
           "kind": "text",
           "source": "literal",
           "ref": "9.1",
-          "value": "Three-unit law, ranked by the posterior mean of √θ: B (⟨b⟩), C (⟨c⟩), A (⟨a⟩). The posterior mean of √θ and the expected rank order ⟨mis⟩ of the ⟨M⟩ pairs differently.",
+          "value": "Three-unit law, ranked by the posterior mean of √θ: B (⟨b⟩), C (⟨c⟩), A (⟨a⟩). On this scale A falls from ⟨f⟩st to ⟨t⟩rd by posterior mean. The posterior mean of √θ and the expected rank order ⟨mis⟩ of the ⟨M⟩ pairs differently. The probability of being first is largest for B (⟨q⟩).",
           "slots": true,
-          "about": "the read-out word for word, each number a slot"
+          "about": "the read-out word for word, each number a slot; the last sentence names the top group (review 044, U3-F1), and the scale sentence says where √θ takes A (review 044 repair, fix round: the listed unit whose place by posterior mean moves most, its two places data-num with hooks place-theta and place-scale)"
+        },
+        {
+          "select": "[data-prx-readout=\"top-lead\"]",
+          "about": "read-out: the top group named; a change of scale leaves the probabilities of being first as they are (base-R oracle)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.1"
+          },
+          "value": 0.7
         },
         {
           "select": "[data-prx-readout=\"pairs\"]",
@@ -1357,7 +1441,7 @@
     },
     {
       "id": "league-exp",
-      "about": "The scale switch on the league (exp(10θ), engine transformedMeans): the posterior-mean column now starts U26, U08, U13, while U13's expected rank, probability of being first, rank interval and posterior SD stay those of θ (registry and base-R oracle rows) and the Monte Carlo caption names its draws and seed. The transformed means themselves have no oracle row for the league; they are checked as shown numbers (data-num read back).",
+      "about": "The scale switch on the league (exp(10θ), engine transformedMeans): the posterior-mean column now starts U26, U08, U13, while U13's expected rank, probability of being first, rank interval and posterior SD stay those of θ (registry and base-R oracle rows) and the Monte Carlo caption names its draws and seed. The transformed means themselves have no oracle row for the league; they are checked as shown numbers (data-num read back). Review 044 repair (fix round): the read-out says where exp(10θ) takes U13 ('On this scale U13 climbs from 6th to 3rd by posterior mean.'), so the page's numbers 6th and 3rd stand next to the preset row; the two places are data-num (hooks place-theta, place-scale), read back as shown numbers (no golden, oracle or registry row gives places).",
       "preset": "league-exp",
       "expect": [
         {
@@ -1489,8 +1573,33 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it",
+          "value": "a posterior specified for the example",
           "about": "the teaching-posterior caption in its v3 wording"
+        },
+        {
+          "select": "[data-prx-readout=\"top-lead\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top1.U26",
+          "value": 0.3245,
+          "about": "read-out: the top group named; the scale leaves U26's probability of being first as it is (Monte Carlo, registry)"
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U13",
+          "index": 5,
+          "about": "read-out: the scale sentence names U13, the listed unit whose place by posterior mean moves most between θ and exp(10θ) (from 6th to 3rd; review 044 repair, fix round)"
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U26",
+          "index": 6,
+          "about": "read-out: the unit named by the top-group sentence, after the scale sentence"
         }
       ]
     },
@@ -1640,6 +1749,103 @@
           "ref": "settings.prior60",
           "value": 0.6,
           "about": "read-out: the prior SD, clamped"
+        }
+      ]
+    },
+    {
+      "id": "puzzle-mean-top-two",
+      "about": "Raw query: the three-unit law ranked by posterior mean with the top two as the top group. Review 044 (U3-F1): moving k under the posterior mean changes the read-out, whose last sentence names the top two and its first unit, B, in it with probability 1 (base-R oracle pTop row 1); the rest of the sentence is the replacement copy of puzzle-mean.",
+      "query": "?data=puzzle&summary=mean&k=2&priorSd=.15",
+      "expect": [
+        {
+          "select": "[aria-live]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "Three-unit law: by posterior mean A is first (⟨a⟩, a value A takes in neither state), ahead of B (⟨b⟩) and C (⟨c⟩); by expected rank A is last (⟨er⟩): it is first with probability ⟨p⟩ and last otherwise. The two orders differ on ⟨mis⟩ of the ⟨M⟩ pairs. The probability of being in the top two is largest for B (⟨q⟩).",
+          "about": "the read-out word for word, each number a slot: the top group, now the top two, is named in its last sentence",
+          "slots": true
+        },
+        {
+          "select": "[data-prx-readout=\"top-lead\"]",
+          "about": "read-out: B is in the top two with probability 1 (base-R oracle)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pTop.1.1"
+          },
+          "value": 1
+        },
+        {
+          "select": "[data-prx-readout=\"lead-first\"]",
+          "about": "read-out: A is still first with probability .3 (base-R oracle)",
+          "format": {
+            "fn": "formatProb",
+            "options": {
+              "digits": 1
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "pFirst.0"
+          },
+          "value": 0.3
+        },
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "about": "read-out: A first by posterior mean (base-R oracle)",
+          "format": {
+            "fn": "formatDecimal",
+            "options": {
+              "digits": 0
+            }
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-simulate",
+            "row": "rankSummaries-tb19-law3",
+            "field": "mean.0"
+          },
+          "value": 6
+        }
+      ]
+    },
+    {
+      "id": "league-er-top-ten",
+      "about": "Raw query: the league ranked by expected rank with the top ten as the top group. Review 044 (U3-F1): the read-out's last sentence names the top ten and its first unit, U21 (.957 of the 4,000 draws, registry), while the listing still follows the expected rank (U26 first, registry).",
+      "query": "?data=league&summary=expected_rank&k=10&priorSd=.15",
+      "expect": [
+        {
+          "select": "[data-prx-readout=\"top-lead\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.mc4000.s1.top10.U21",
+          "value": 0.957,
+          "about": "read-out: U21 is in the top ten most often (Monte Carlo)"
+        },
+        {
+          "select": "[aria-live] [data-prx-name]",
+          "kind": "text",
+          "source": "literal",
+          "ref": "8.3",
+          "value": "U21",
+          "index": 5,
+          "about": "read-out: the unit named by the top-group sentence"
+        },
+        {
+          "select": "[data-prx-readout=\"list-1\"]",
+          "source": "registry",
+          "ref": "league.default.prior15.exprank.U26",
+          "value": 3.7892373460258706,
+          "about": "read-out: U26 still first by expected rank"
         }
       ]
     }

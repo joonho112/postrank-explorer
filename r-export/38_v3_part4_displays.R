@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Independent display pins for4.2/4.9/4.11. This producer reads original public
 # inputs and previously independently authored PURE base-R functions only.
 # It never imports app JS, TS implementation/tests, or a postrank namespace.

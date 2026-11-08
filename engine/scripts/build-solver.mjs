@@ -30,7 +30,7 @@ const highsClassic = fs.readFileSync(path.join(highsDir, "build", "highs.js"), "
 const license = fs.readFileSync(path.join(highsDir, "LICENSE"), "utf8").trim();
 const notice = (what) =>
   `/* postrank Explorer solver bundle (${what}): engine/src/mip.ts with highs-js ${HIGHS_VERSION} ` +
-  `(HiGHS compiled to WebAssembly; the wasm bytes are inlined as base64). Build script: engine/scripts/build-solver.mjs; do not edit.\n\n` +
+  `(HiGHS compiled to WebAssembly; the wasm bytes are inlined as base64). Built by engine/scripts/build-solver.mjs; do not edit.\n\n` +
   `highs-js license:\n${license.replace(/\*\//g, "* /")}\n*/\n`;
 
 /** Replace a quoted placeholder in built code by a JSON string literal (no `$` patterns involved). */

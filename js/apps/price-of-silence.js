@@ -1,4 +1,24 @@
 // Full six-site risk, linked staged matrix, change-point strip, and fixed-report comparison.
+//
+// Layout (review 044 repair: G1-F1, X-01, X-14; the review's proposed first view): base.js's result-first frame, top
+// to bottom:
+//   controls   the τ slider with the change-point strip drawn directly under its track, on the track's own width and
+//              scale (bands with N, the τ marker; the strip's title and note under it, then the slider's hint), the
+//              family choice beside it (a segmented control whose buttons are the family badges with their sizes),
+//              then the preset row on its own line
+//   read-out   the review's replacement sentence, built from the engine's values (family size, best report, N of M,
+//              risk, the pairs with an error below τ that the best report withholds), then the label line with the
+//              result tag, the grade vector, the equal-risk tolerance and any tie list
+//   charts     the staged matrix (its Step 1/2/3 control directly above it, ctx.primaryGraphic; the "below τ but
+//              withheld" line as its caption, then the step's hint and the legend) beside the risk panel (the bars'
+//              key, the bars, the your-report row directly under the bars, the fixed report's line, the bars' note
+//              and the R_τ formula); the two panels stack where the widget is narrow
+//   disclosures a closed "Details" box with the tiles, the all-withheld sentence, the confident-pair counts and the
+//              family hint
+//   caption
+// The strip, the matrix's step hint and the family hint keep one height in every state (the strip reserves the tick
+// rows the wider of the two families needs; its note shares one grid cell with a hidden copy of the other note), so
+// the preset row never moves when a preset changes the family.
 import { createWidget, uid } from "../shared/base.js";
 import { gradeColors, labelOn, numText, plot } from "../shared/chart.js";
 import { formatCount, formatExpectedCount, formatGrades, formatProb, formatRisk, formatSci, formatSetting, formatShare } from "../shared/format.js";
@@ -18,7 +38,9 @@ export const CONFIG = Object.freeze({
   purpleCuts: Object.freeze([0.01, 0.05, 0.1, 0.2, 0.35, 0.5]),
   matrix: Object.freeze({
     marginTop: 24, marginLeft: 26, marginRight: 6, marginBottom: 6,
-    minCell: 34, maxCell: 58, inset: 0.5, outline: 2.5, outlineThin: 1.25, outlineInset: 3, dotShare: 0.3, labelHalo: 3,
+    // review 044 repair (G1-F1, G1-F16): cells up to 50 px (was 58), so the slider, its strip, the read-out and the
+    // whole matrix still fit one screen at 1280 × 800 with the strip and the family choice in the controls
+    minCell: 34, maxCell: 50, inset: 0.5, outline: 2.5, outlineThin: 1.25, outlineInset: 3, dotShare: 0.3, labelHalo: 3,
     hatchSpacing: 6, hatchWidth: 1.2, columns: 6,
   }),
   // change-point strip: tick labels sit labelDy px below the band; a label closer than minLabelGap px to the previous
@@ -27,6 +49,12 @@ export const CONFIG = Object.freeze({
     height: 62, marginTop: 6, marginBottom: 22, marginLeft: 10, marginRight: 14, band: 0.62, marker: 2.5, rotate: 180,
     labelDy: 9, lineStep: 12, minLabelGap: 36, tauDx: 9,
   }),
+  // the strip under the τ slider (review 044 repair, G1-F1): the native range thumb's center runs from half a thumb
+  // inside the track's left end to half a thumb inside its right end, so the strip's x range is inset by that much on
+  // each side and its τ marker sits under the thumb (Chrome's thumb is 16 px wide); two of its tick labels share a row
+  // when their centers are at least sliderLabelGap px apart (the labels are about 24 px wide)
+  thumbHalf: 8,
+  sliderLabelGap: 30,
   bars: Object.freeze({ row: 30, marginTop: 6, marginBottom: 40, marginLeft: 104, marginRight: 52, labelOffset: 34, minLabelPx: 40, padding: 0.3, rule: "4 3" }),
   stages: Object.freeze([
     Object.freeze({ value: 1, label: "Pair errors" }),
@@ -77,7 +105,7 @@ export const CONFIG = Object.freeze({
     errLegend: "E/M: expected wrong directions per pair",
     whLegend: "τ(M − N)/M: the price of the withheld pairs, per pair",
     axisNote: "The dashed line is at the current τ, the risk of the all-withheld report;",
-    // the second stage's summary: "Change the family: at most 3 grades (shown now) or no cap", with "(shown now)"
+    // the family hint (in Details): "Change the family: at most 3 grades (shown now) or no cap", with "(shown now)"
     // after the family on screen
     stage2: "Change the family:",
     stage2Shown: "(shown now)",
@@ -89,7 +117,7 @@ export const CONFIG = Object.freeze({
     capGrades: "grades",
     noCap: "No cap (all reports)",
     reports: "reports",
-    note: "Six fictional sites from the postrank tutorial, score A only; their normal posteriors are specified for teaching and taken as given. Every report in the family is evaluated in this browser.",
+    note: "We use the normal posteriors for score A at six fictional sites from the postrank tutorial. The calculation evaluates every eligible report.",
     tolerance: "Equal-risk tolerance",
     toleranceGloss: "(risks closer than this count as equal).",
     belowCount: "Pairs with an error below τ in one direction:",
@@ -99,6 +127,17 @@ export const CONFIG = Object.freeze({
     riskWords: "with expected loss per pair (risk)",
     blockAnd: " and ",
     blockThen: ", then ",
+    // the read-out (review 044, G1-F1's replacement copy): "τ = .20, at most 3 grades (603 reports): best report
+    // {A, B} > {C, D} > {E, F}, 12 of 15 stated, risk .0417; A–B and E–F are withheld although each error is below τ."
+    readoutBest: "best report",
+    readoutStated: "stated, risk",
+    readoutAll: "all",
+    readoutOn: "on",
+    readoutUnits: "units",
+    pairDash: "–",
+    withheldOne: " is withheld although its error is below τ",
+    withheldMany: " are withheld although each error is below τ",
+    details: "Details",
   }),
 });
 
@@ -219,7 +258,7 @@ const CSS = `.prx-pos .prx-pos-heading{
   flex: 1 1 100%;
 }
 .prx-pos .prx-pos-stage-hint{
-  margin: 0 0 0.5rem;
+  margin: 0.5rem 0 0;
 }
 .prx-pos .prx-pos-matrix-chart, .prx-pos .prx-pos-bars-chart, .prx-pos .prx-pos-strip-chart{
   min-width: 0;
@@ -271,6 +310,9 @@ const CSS = `.prx-pos .prx-pos-heading{
   margin: 0.35rem 0 0;
   font-size: 0.9em;
 }
+.prx-pos .prx-pos-matrix-caption p{
+  font-size: 0.95em;
+}
 .prx-pos .prx-pos-formula{
   max-width: 100%;
   margin: 0 0 0.5rem;
@@ -283,7 +325,7 @@ const CSS = `.prx-pos .prx-pos-heading{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
   gap: 0.5rem;
-  margin: 0.75rem 0 0;
+  margin: 0.25rem 0 0;
 }
 .prx-pos .prx-pos-tile{
   display: flex;
@@ -308,37 +350,93 @@ const CSS = `.prx-pos .prx-pos-heading{
   margin: 0.5rem 0 0;
   font-size: 0.95em;
 }
-.prx-pos .prx-pos-stage2{
-  margin: 1rem 0 0;
-  padding: 0 0.75rem;
-  background: var(--prx-bg);
-  border: 1px solid var(--prx-border-strong);
-  border-radius: var(--prx-radius, 6px);
-}
-.prx-pos .prx-pos-stage2 > .prx-hint{
-  margin: 0.5rem 0;
-}
-.prx-pos .prx-pos-family{
-  margin: 0 0 0.5rem;
-}
 .prx-pos .prx-pos-badge{
   display: inline;
   overflow-wrap: anywhere;
 }
+.prx-pos .prx-pos-family-heading { margin: 0.75rem 0 0; font-weight: 600; }
+.prx-pos .prx-pos-family-note > .prx-hint { margin: 0.25rem 0 0; }
 
-.prx-pos .prx-pos-stage2 { padding: .65rem .75rem; }
-.prx-pos .prx-pos-family-heading { margin: 0 0 .5rem; font-weight: 600; }
-.prx-pos .prx-pos-entry { margin-top: 1rem; padding: .75rem; border: 1px solid var(--prx-border); border-radius: var(--prx-radius); }
-.prx-pos .prx-pos-entry input { max-width: 100%; width: 100%; box-sizing: border-box; margin: .25rem 0 .5rem; }
+/* review 044 repair (G1-F1): the τ slider and its change-point strip, on the track's own width and scale */
+.prx-pos .prx-controls { row-gap: 0.2rem; margin-bottom: 0.4rem; }
+.prx-pos .prx-pos-tau { flex: 1 1 22rem; max-width: 30rem; align-self: flex-start; }
+.prx-pos .prx-pos-tau > .prx-pos-strip { grid-column: 1; margin: 0.2rem 0 0; }
+.prx-pos .prx-pos-tau > .prx-hint { margin-top: 0.3rem; }
+.prx-pos .prx-pos-strip-notes { grid-column: 1 / -1; display: grid; min-width: 0; margin: 0.1rem 0 0; font-size: 0.9em; line-height: 1.35; color: var(--prx-fg-muted); }
+.prx-pos .prx-pos-strip-notes > .prx-pos-strip-caption { grid-area: 1 / 1; min-width: 0; }
+.prx-pos .prx-pos-strip-caption > p { display: inline; margin: 0; font-size: 1em; }
+.prx-pos .prx-pos-strip-title { font-weight: 600; }
+.prx-pos .prx-pos-strip-title::after { content: " \\00B7"; font-weight: 400; }
+.prx-pos .prx-pos-spare { visibility: hidden; }
+.prx-pos .prx-pos-pair { white-space: nowrap; }
+/* the family choice beside the slider: a fieldset (its legend names the group) around the segmented buttons */
+.prx-pos .prx-pos-family { flex: 0 1 auto; min-width: 0; max-width: 100%; margin: 0; padding: 0; border: 0; align-self: flex-start; }
+.prx-pos .prx-pos-family > legend { display: block; float: none; width: auto; margin: 0 0 0.15rem; padding: 0; font-size: 1em;
+  line-height: 1.3; font-weight: 600; color: var(--prx-fg-muted); }
+.prx-pos .prx-pos-family .prx-seg { text-align: left; }
+@media (max-width: 30em) {
+  .prx-pos .prx-pos-tau { max-width: none; flex-basis: 100%; }
+}
+/* The report input leads to its result without a scroll or focus jump (review 044, G1-F1). */
+.prx-pos .prx-pos-entry { margin-top: 0.5rem; padding: 0.55rem 0.75rem 0.65rem; border: 1px solid var(--prx-border); border-radius: var(--prx-radius, 6px); }
+.prx-pos .prx-pos-entry .prx-panel-title { margin-top: 0; }
+.prx-pos .prx-pos-entry-row { display: flex; flex-wrap: wrap; gap: 0.4rem 0.75rem; align-items: flex-end; }
+.prx-pos .prx-pos-entry-row > .prx-select { flex: 0 1 auto; max-width: 100%; }
+.prx-pos .prx-pos-entry-row > .prx-select select { max-width: 100%; }
+.prx-pos .prx-pos-entry-field { flex: 1 1 9rem; min-width: 0; }
+.prx-pos .prx-pos-entry input { max-width: 100%; width: 100%; box-sizing: border-box; margin: 0.15rem 0 0; }
 .prx-pos .prx-pos-entry label { display: block; }
+.prx-pos .prx-pos-risk > .prx-hint { margin: 0.4rem 0 0; }
+.prx-pos .prx-pos-risk > .prx-pos-legend { margin: 0 0 0.35rem; }
+.prx-pos .prx-pos-risk > .prx-pos-note + .prx-pos-formula { margin-top: 0.35rem; }
 `;
 
-/** Draw the six-site tauPath bands into caller-owned slot and note nodes. */
-export function drawTauStrip(ctx, { slot: stripSlot, note: stripNote }, state, path, { lo = CONFIG.tau.min, hi = CONFIG.tau.max } = {}) {
-  const T = CONFIG.text;
-  const segs = path.intervals
+// ---------------------------------------------------------------------------------------------- change-point strip
+
+/** The stretches of a τ path inside [lo, hi]. */
+function stripSegments(path, lo, hi) {
+  return path.intervals
     .map((iv) => ({ ...iv, from: Math.max(lo, iv.tauFrom), to: Math.min(hi, iv.tauTo) }))
     .filter((iv) => iv.to > iv.from);
+}
+
+/** Place each tick label in the first row with room (d.row, 1 = first); returns the number of rows. */
+function placeTicks(ticks, lo, hi, inner, gap = CONFIG.strip.minLabelGap) {
+  const lastByRow = [];
+  for (const d of ticks) {
+    const px = ((d.t - lo) / (hi - lo)) * inner;
+    let row = lastByRow.findIndex((last) => px - last >= gap);
+    if (row < 0) row = lastByRow.length;
+    lastByRow[row] = px;
+    d.row = row + 1;
+  }
+  return lastByRow.length;
+}
+
+/** The tick rows a strip of this path needs at this width (a caller that keeps one height across paths). */
+export function tauStripRows(path, { lo = CONFIG.tau.min, hi = CONFIG.tau.max, width = 0, marginLeft = CONFIG.strip.marginLeft, marginRight = CONFIG.strip.marginRight, minLabelGap = CONFIG.strip.minLabelGap } = {}) {
+  const segs = stripSegments(path, lo, hi);
+  const ticks = [lo, ...segs.slice(1).map((s) => s.from), hi].map((t) => ({ t }));
+  return placeTicks(ticks, lo, hi, Math.max(1, Math.round(width) - marginLeft - marginRight), minLabelGap);
+}
+
+/**
+ * Draw the six-site tauPath bands into caller-owned slot and note nodes. Options (defaults = the strip's own look):
+ * lo, hi (the band window), axisFrom (optional shared axis start before the bands), width (default: the slot's
+ * width), marginLeft, marginRight (the strip under 2.4's slider
+ * insets its x range by half a thumb, so it shares the track's scale), minLabelGap (px between two tick labels on one
+ * row), minRows (tick rows to reserve, so the strip keeps one height), endAnchors (the two end labels anchored inside
+ * the strip) and markTau (a data-prx-strip-marker attribute on the τ marker's triangle).
+ */
+export function drawTauStrip(ctx, { slot: stripSlot, note: stripNote }, state, path, {
+  lo = CONFIG.tau.min, hi = CONFIG.tau.max, axisFrom = lo, width: givenWidth, marginLeft, marginRight, minLabelGap = CONFIG.strip.minLabelGap,
+  minRows = 1, endAnchors = false, markTau = false,
+} = {}) {
+  const T = CONFIG.text;
+  const S = CONFIG.strip;
+  const ml = Number.isFinite(marginLeft) ? marginLeft : S.marginLeft;
+  const mr = Number.isFinite(marginRight) ? marginRight : S.marginRight;
+  const segs = stripSegments(path, lo, hi);
   const changes = segs.slice(1).map((s, k) => {
     const before = segs[k];
     const r0 = relations(Array.from(before.grade));
@@ -349,33 +447,39 @@ export function drawTauStrip(ctx, { slot: stripSlot, note: stripNote }, state, p
   });
   const ends = [lo, hi];
   const tickText = (d) => (ends.some((x) => Math.abs(x - d) < Number.EPSILON) ? formatSetting(d) : formatProb(d));
-  const S = CONFIG.strip;
   const fills = (pal) => [pal.plotGrid, pal.plotBg];
   // Place each tick in the first row with room; low-cost ranges can need more than two rows.
-  const width = Math.max(1, Math.round(stripSlot.clientWidth || ctx.width()));
-  const inner = Math.max(1, width - S.marginLeft - S.marginRight);
+  const width = Math.max(1, Math.round(Number(givenWidth) > 0 ? givenWidth : stripSlot.clientWidth || ctx.width()));
+  const inner = Math.max(1, width - ml - mr);
   const ticks = [lo, ...changes.map((c) => c.tau), hi].map((t, k) => ({ t, k: String(k), row: 1 }));
-  const lastByRow = [];
-  for (const d of ticks) {
-    const px = ((d.t - lo) / (hi - lo)) * inner;
-    let row = lastByRow.findIndex((last) => px - last >= S.minLabelGap);
-    if (row < 0) row = lastByRow.length;
-    lastByRow[row] = px;
-    d.row = row + 1;
-  }
-  const extraHeight = Math.max(0, lastByRow.length - 1) * S.lineStep;
+  const rowCount = Math.max(placeTicks(ticks, axisFrom, hi, inner, minLabelGap), Math.max(1, Math.round(minRows) || 1));
+  const extraHeight = Math.max(0, rowCount - 1) * S.lineStep;
   const tagTicks = (rows) => (index, scales, values, dims, context, next) => {
     const g = next(index, scales, values, dims, context);
     const nodes = g?.querySelectorAll ? g.querySelectorAll("text") : [];
     Array.from(index).forEach((i, j) => nodes[j]?.setAttribute("data-prx-tick", rows[i].k));
     return g;
   };
+  const tickMark = (c, rows, row, textAnchor) => numText(rows, {
+    x: "t", y: 0, value: "t", format: (v) => tickText(v), dy: S.labelDy + (row - 1) * S.lineStep,
+    lineAnchor: "top", textAnchor, fill: c.plotFg, render: tagTicks(rows),
+  });
   const tickLabels = (c, row) => {
     const rows = ticks.filter((d) => d.row === row);
-    return numText(rows, {
-      x: "t", y: 0, value: "t", format: (v) => tickText(v), dy: S.labelDy + (row - 1) * S.lineStep,
-      lineAnchor: "top", textAnchor: "middle", fill: c.plotFg, render: tagTicks(rows),
-    });
+    if (!endAnchors) return [tickMark(c, rows, row, "middle")];
+    // the end labels anchored inside the strip (the strip under a slider has only half a thumb of margin)
+    const first = ticks[0];
+    const last = ticks.at(-1);
+    return [
+      tickMark(c, rows.filter((d) => d === first), row, "start"),
+      tickMark(c, rows.filter((d) => d !== first && d !== last), row, "middle"),
+      tickMark(c, rows.filter((d) => d === last), row, "end"),
+    ];
+  };
+  const markRender = (index, scales, values, dims, context, next) => {
+    const g = next(index, scales, values, dims, context);
+    g?.setAttribute?.("data-prx-strip-marker", "");
+    return g;
   };
   plot(stripSlot, {
     alt: T.stripAlt,
@@ -391,18 +495,18 @@ export function drawTauStrip(ctx, { slot: stripSlot, note: stripNote }, state, p
     },
     width,
     height: S.height + extraHeight, marginTop: S.marginTop, marginBottom: S.marginBottom + extraHeight,
-    marginLeft: S.marginLeft, marginRight: S.marginRight,
+    marginLeft: ml, marginRight: mr,
     // the axis draws the tick lines; the labels are text marks so that a crowded one can take a second line
-    x: { domain: [lo, hi], ticks: ticks.map((d) => d.t), tickFormat: () => "", label: null },
+    x: { domain: [axisFrom, hi], ticks: ticks.map((d) => d.t), tickFormat: () => "", label: null },
     y: { domain: [0, 1], axis: null },
     color: { type: "identity" },
     marks: (c, P) => [
-      ...lastByRow.map((_, row) => tickLabels(c, row + 1)),
+      ...Array.from({ length: rowCount }, (_, row) => tickLabels(c, row + 1)).flat(),
       P.rect(segs, { x1: "from", x2: "to", y1: 0, y2: S.band, fill: (d, i) => fills(c)[i % 2], stroke: c.cellBorder }),
       numText(segs, { x: (d) => (d.from + d.to) / 2, y: S.band / 2, value: "N", format: (v) => formatCount(v), fill: c.plotFg }),
       P.ruleX(changes, { x: "tau", y1: 0, y2: S.band, stroke: c.plotAxis, strokeWidth: 2 }),
       P.ruleX([state.tau], { y1: 0, y2: 1, stroke: c.plotFg, strokeWidth: S.marker }),
-      P.dot([state.tau], { x: (d) => d, y: 1, symbol: "triangle", r: 4, fill: c.plotFg, rotate: S.rotate }),
+      P.dot([state.tau], { x: (d) => d, y: 1, symbol: "triangle", r: 4, fill: c.plotFg, rotate: S.rotate, ...(markTau ? { render: markRender } : {}) }),
       // the τ mark's letter sits on the side with room (right of the marker in the left half, left of it in the right half)
       P.text([state.tau], { x: (d) => d, y: 1, text: () => "τ", dx: state.tau > (lo + hi) / 2 ? -S.tauDx : S.tauDx, textAnchor: state.tau > (lo + hi) / 2 ? "end" : "start", fill: c.plotFg }),
     ],
@@ -470,6 +574,9 @@ export function mountWidget(el, spec = {}) {
     title: CONFIG.title,
     className: "prx-pos",
     css: CSS,
+    // review 044 repair (G1-F1, X-01): the shared result-first frame; base.js only moves nodes, so keys, presets,
+    // hooks and the one live region are kept
+    layout: "result-first",
     keys: {
       tau: { type: "number", min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: CONFIG.tau.value },
       cap: { type: "custom", value: CONFIG.cap.value, parse: parseCap },
@@ -493,31 +600,61 @@ export function mountWidget(el, spec = {}) {
         n.setAttribute("data-prx-readout", name);
         return n;
       };
-      const wordsNodes = (words) => String(words).split(/(\d+)/).map((part, k) => (k % 2 ? ctx.num(Number(part), formatCount(Number(part))) : part)).filter((x) => x !== "");
       // blocks shown with braces; screen readers get the words form ("A and B, then C and D, then E and F")
       const blocksNodes = (grade) => [
         h("span", { "aria-hidden": "true", text: blocksText(grade) }),
         h("span", { class: "prx-sr-only", text: blocksWords(grade) }),
       ];
 
-      // --- controls: τ
+      // --- controls: τ, with the change-point strip directly under its track (review 044, G1-F1)
       const tau = ctx.slider({
         label: T.slider, min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: ctx.state.tau,
         name: "tau", hint: T.sliderHint.join(""), onInput: (v) => ctx.set({ tau: v }),
       });
-      tau.root.querySelector(".prx-hint")?.replaceChildren(...T.sliderHint.map((p) => (p === "{one}" ? ctx.num(1, formatCount(1)) : p)));
-      ctx.controls.append(tau.root);
-
-      // --- change points (after the matrix and the risk split)
+      const tauHint = tau.root.querySelector(".prx-hint");
+      tauHint?.replaceChildren(...T.sliderHint.map((p) => (p === "{one}" ? ctx.num(1, formatCount(1)) : p)));
+      tau.root.classList.add("prx-pos-tau");
+      // the slider is the control a reader changes first (base.js primaryControl)
+      ctx.primaryControl(tau.root);
       const stripSlot = h("div", { class: "prx-pos-strip-chart" });
       const stripNote = h("p", { class: "prx-pos-note", "data-prx-part": "notes" });
-      const stripBox = h("section", { class: "prx-pos-strip", "aria-label": T.stripHeading, "data-prx-part": "chart" },
-        h("h4", { class: "prx-pos-heading", text: T.stripHeading }), stripSlot, stripNote);
+      // the strip's title runs into its note; a hidden copy with the other family's note shares the same grid cell, so
+      // the cell keeps one height whichever note is shown
+      const stripSpare = h("p", { class: "prx-pos-note" });
+      const stripCaption = (note) => h("div", { class: "prx-pos-strip-caption" }, h("p", { class: "prx-pos-strip-title", text: T.stripHeading }), " ", note);
+      const spareCaption = stripCaption(stripSpare);
+      spareCaption.classList.add("prx-pos-spare");
+      spareCaption.setAttribute("aria-hidden", "true");
+      const stripBox = h("section", { class: "prx-pos-strip", "aria-label": T.stripHeading, "data-prx-part": "chart" }, stripSlot);
+      const stripNotes = h("div", { class: "prx-pos-strip-notes" }, stripCaption(stripNote), spareCaption);
+      // Keep the visual track aligned with the slider; the full strip explanation stays in Details.
+      tau.output.after(stripBox);
 
-      // --- result headline: the live read-out, then the label with the family named in words and its size
+      // --- controls: the family, beside τ (review 044, G1-F1): segmented buttons that are the family badges
+      const badge = (cap) => {
+        const words = cap === CONFIG.cap.none ? [T.noCap] : [`${T.capWords} `, ctx.num(cap, formatSetting(cap)), ` ${T.capGrades}`];
+        // Families are named in words with their sizes; the family symbols arrive on G-04.
+        return h("span", { class: "prx-pos-badge" }, ...words, " · ",
+          ctx.num(sizes.get(cap), formatCount(sizes.get(cap))), ` ${T.reports}`);
+      };
+      const capSwitch = ctx.segmented({
+        name: "cap", className: "prx-pos-family-seg",
+        options: [CONFIG.cap.capped, CONFIG.cap.none].map((c) => ({ value: c, label: badge(c) })),
+        value: ctx.state.cap, onChange: (v) => ctx.set({ cap: v }),
+      });
+      // the fieldset is the group (named by its legend), so the buttons' row needs no group role of its own
+      capSwitch.root.removeAttribute("role");
+      const familyBox = h("fieldset", { class: "prx-control prx-pos-family", "aria-label": T.familyLegend },
+        h("legend", { text: T.familyLegend }), capSwitch.root);
+      ctx.controls.append(tau.root, familyBox);
+
+      // --- result headline: the live read-out (the frame puts it under the controls), then the label with the family
+      // named in words and its size
       const labelLine = h("p", { class: "prx-pos-label", "data-prx-part": "readout" });
+      ctx.readout.node.after(labelLine);
 
-      // --- staged matrix
+      // --- staged matrix: its step control directly above it; the "below τ but withheld" line as its caption, then
+      // the step's hint (under the matrix, so a step change never moves the matrix) and the legend
       const stages = ctx.radioGroup({
         legend: T.stagesLegend, name: "stage", className: "prx-pos-stages",
         options: CONFIG.stages.map((s) => ({ value: s.value, label: `Step ${s.value}: ${s.label}` })),
@@ -526,13 +663,14 @@ export function mountWidget(el, spec = {}) {
       ctx.part("controls", stages.root);
       const stageHintId = uid("prx-pos-stage-hint");
       const stageHint = h("p", { id: stageHintId, class: "prx-hint prx-pos-stage-hint", "data-prx-part": "notes" });
-      const matrixSlot = h("div", { class: "prx-pos-matrix-chart" });
+      // the graphic τ, the family and the step change (base.js primaryGraphic)
+      const matrixSlot = ctx.primaryGraphic(h("div", { class: "prx-pos-matrix-chart" }));
       const matrixLegend = h("div", { class: "prx-pos-legend", "data-prx-part": "legend" });
-      const matrixCounts = h("div", { class: "prx-pos-counts", "data-prx-part": "readout" });
+      const matrixCaption = h("div", { class: "prx-pos-counts prx-pos-matrix-caption", "data-prx-part": "readout" });
       const matrixBox = h("section", { class: "prx-pos-matrix", "aria-label": T.stagesLegend },
-        stages.root, stageHint, matrixSlot, matrixLegend, matrixCounts);
+        stages.root, matrixSlot, matrixCaption, stageHint, matrixLegend);
 
-      // --- risk split
+      // --- risk split: the compact entry, bars and its fixed-report result, followed by the full explanations
       const formulaBox = h("div", { class: "prx-pos-formula", "data-prx-part": "readout", "data-prx-tex": "risk" });
       const barsSlot = h("div", { class: "prx-pos-bars-chart" });
       const barsLegend = h("div", { class: "prx-pos-legend", "data-prx-part": "legend" },
@@ -542,39 +680,6 @@ export function mountWidget(el, spec = {}) {
       const tiles = h("div", { class: "prx-pos-tiles", "data-prx-part": "readout" });
       const reference = h("p", { class: "prx-pos-reference", "data-prx-part": "readout" });
       const yoursLine = h("p", { class: "prx-pos-yours", "data-prx-part": "readout", hidden: true });
-      const riskBox = h("section", { class: "prx-pos-risk", "aria-label": T.riskHeading },
-        h("h4", { class: "prx-pos-heading", text: T.riskHeading }), h("p", { class: "prx-pos-note" }, "E is the expected number of wrong directions; M counts all unordered pairs; N counts stated pairs. Pairs inside one grade are withheld."), formulaBox, barsSlot, barsLegend, barsNote, tiles, reference, yoursLine);
-
-      // order inside the widget: slider, the live read-out and the label, then matrix and risk side by side, then
-      // the change points, then the second stage
-      const grid = h("div", { class: "prx-pos-grid" }, matrixBox, riskBox);
-      ctx.controls.after(ctx.readout.node);
-      ctx.readout.node.after(labelLine);
-      ctx.charts.append(grid, stripBox);
-
-      // --- second stage: the cap switch with the family badges
-      const badge = (cap) => {
-        const words = cap === CONFIG.cap.none ? [T.noCap] : [`${T.capWords} `, ctx.num(cap, formatSetting(cap)), ` ${T.capGrades}`];
-        // Families are named in words with their sizes; the family symbols arrive on G-04.
-        return h("span", { class: "prx-pos-badge" }, ...words, " · ",
-          ctx.num(sizes.get(cap), formatCount(sizes.get(cap))), ` ${T.reports}`);
-      };
-      const capSwitch = ctx.radioGroup({
-        legend: T.familyLegend, name: "cap", className: "prx-pos-family",
-        options: [CONFIG.cap.capped, CONFIG.cap.none].map((c) => ({ value: c, label: badge(c) })),
-        value: ctx.state.cap, onChange: (v) => ctx.set({ cap: v }),
-      });
-      const summary = h("p", { class: "prx-pos-family-heading" });
-      const drawSummary = (cap) => {
-        const shown = (c) => (c === cap ? [` ${T.stage2Shown}`] : []);
-        summary.replaceChildren(`${T.stage2} ${T.capWords.toLowerCase()} `, ctx.num(CONFIG.cap.capped, formatSetting(CONFIG.cap.capped)), ` ${T.capGrades}`,
-          ...shown(CONFIG.cap.capped), ` ${T.stage2Or} ${T.stage2NoCap}`, ...shown(CONFIG.cap.none));
-      };
-      drawSummary(ctx.state.cap);
-      const details = h("section", { class: "prx-pos-stage2", "data-prx-part": "controls", "aria-label": T.familyLegend },
-        summary, h("p", { class: "prx-hint", text: T.stage2Hint }), capSwitch.root);
-      ctx.charts.after(details);
-      ctx.caption.textContent = T.note;
 
       // Every entered report is scored as a fixed report at the current withholding cost.
       const yourId = uid("prx-pos-your-report");
@@ -585,22 +690,54 @@ export function mountWidget(el, spec = {}) {
       function applyYours() {
         const value = parseYourReport(yourInput.value);
         yourInput.setCustomValidity(value === undefined ? "Enter six integer grade labels, or leave the field blank." : "");
-        if (value === undefined) { yourInput.reportValidity(); return; }
+        if (value === undefined) { yourInput.reportValidity(); return false; }
         ctx.set({ yours: value });
+        return true;
       }
       ctx.listen(yourInput, "change", applyYours);
       ctx.listen(yourInput, "keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); applyYours(); } });
       const quick = ctx.select({ label: "Quick report", name: "quick-report",
         options: [{ value: "none", label: "Choose a report" }, ...CONFIG.choices.map((c) => ({ value: c.value, label: c.label }))],
         value: "none", onChange: (v) => ctx.set({ yours: v === "none" ? null : Array.from(CONFIG.choices.find((c) => c.value === v).grade) }) });
+      const score = ctx.button({ label: "Score report", onClick: applyYours });
       const yourBox = h("section", { class: "prx-pos-entry", "aria-label": "Your report" }, ctx.panelTitle("Score your report"),
-        quick.root, h("label", { for: yourId, text: "Grade labels in site order" }), yourInput,
-        ctx.button({ label: "Score report", onClick: applyYours }).root, yourHint);
-      details.after(yourBox);
+        h("div", { class: "prx-pos-entry-row" }, quick.root,
+          h("div", { class: "prx-pos-entry-field" }, h("label", { for: yourId, text: "Grade labels in site order" }), yourInput),
+          score.root));
+      const riskBox = h("section", { class: "prx-pos-risk", "aria-label": T.riskHeading },
+        h("h4", { class: "prx-pos-heading", text: T.riskHeading }), yourBox, barsLegend, barsSlot, yoursLine, yourHint, barsNote,
+        h("p", { class: "prx-pos-note" }, "E is the expected number of wrong directions; M counts all unordered pairs; N counts stated pairs. Pairs inside one grade are withheld."), formulaBox);
+
+      // order inside the charts: matrix and risk side by side (stacked where the widget is narrow)
+      ctx.charts.append(h("div", { class: "prx-pos-grid" }, matrixBox, riskBox));
+
+      // --- Details (review 044, X-14): the tiles, the all-withheld sentence, the confident-pair counts and the
+      // family hint, complete and closed by default
+      const detailCounts = h("div", { class: "prx-pos-counts", "data-prx-part": "readout" });
+      const summary = h("p", { class: "prx-pos-family-heading" });
+      const drawSummary = (cap) => {
+        const shown = (c) => (c === cap ? [` ${T.stage2Shown}`] : []);
+        summary.replaceChildren(`${T.stage2} ${T.capWords.toLowerCase()} `, ctx.num(CONFIG.cap.capped, formatSetting(CONFIG.cap.capped)), ` ${T.capGrades}`,
+          ...shown(CONFIG.cap.capped), ` ${T.stage2Or} ${T.stage2NoCap}`, ...shown(CONFIG.cap.none));
+      };
+      drawSummary(ctx.state.cap);
+      const details = ctx.disclosure({ name: "details", title: T.details });
+      details.body.append(stripNotes, ...(tauHint ? [tauHint] : []), tiles, reference, detailCounts,
+        h("div", { class: "prx-pos-family-note", "data-prx-part": "controls" }, summary, h("p", { class: "prx-hint", text: T.stage2Hint })));
+      ctx.caption.textContent = T.note;
       ctx.scrollRegion(formulaBox, "Risk decomposition formula");
 
       // --------------------------------------------------------------------------------------- drawing
 
+      function drawStrip(state) {
+        // on the slider's own width and scale; the tick rows of the wider family are reserved in both families, so the
+        // strip keeps one height and the preset row under it never moves
+        const width = Math.round(stripSlot.clientWidth || tau.input.clientWidth || 0) || undefined;
+        const geometry = { lo: CONFIG.tau.min, hi: CONFIG.tau.max, width: width ?? ctx.width(), marginLeft: CONFIG.thumbHalf, marginRight: CONFIG.thumbHalf, minLabelGap: CONFIG.sliderLabelGap };
+        const rows = Math.max(...[CONFIG.cap.capped, CONFIG.cap.none].map((c) => tauStripRows(pathOf(c), geometry)));
+        drawTauStrip(ctx, { slot: stripSlot, note: stripNote }, state, pathOf(state.cap), { ...geometry, width, minRows: rows, endAnchors: true, markTau: true });
+        stripSpare.textContent = stripNote.textContent === T.stripNote ? T.stripNone : T.stripNote;
+      }
 
       function drawMatrix(state, opt, st) {
         const rel = st === N_STAGES ? relations(Array.from(opt.grade)) : null;
@@ -726,7 +863,9 @@ export function mountWidget(el, spec = {}) {
       function drawCounts(state, pairs, st, grade) {
         const confidence = confidentPairs(grade, ERRORS, { tau: state.tau });
         const below = pairs.filter((p) => p.below);
+        // the counts of confident pairs go in Details; the "below τ but withheld" line is the matrix's caption
         const lines = [];
+        let caption = null;
         if (st >= 2) {
           lines.push(h("p", {}, `${T.belowCount} `, ro("belowCount", confidence.count, formatCount(confidence.count)),
             " of ", ctx.num(M, formatCount(M)), "."));
@@ -735,12 +874,14 @@ export function mountWidget(el, spec = {}) {
           const kept = below.filter((p) => !p.stated);
           const overCount = pairs.filter((p) => p.stated && p.statedError >= state.tau).length;
           const names = kept.map((p) => `${IDS[p.a]} and ${IDS[p.b]}`).join("; ");
-          lines.push(h("p", {}, `${T.belowWithheld} `, ro("belowWithheld", confidence.withheld, formatCount(confidence.withheld)),
-            kept.length ? ` (${names})` : "", "."));
+          caption = h("p", {}, `${T.belowWithheld} `, ro("belowWithheld", confidence.withheld, formatCount(confidence.withheld)),
+            kept.length ? ` (${names})` : "", ".");
           lines.push(h("p", {}, `${T.statedOver} `, ro("statedOver", overCount, formatCount(overCount)), ` ${T.statedOverNote}.`));
         }
-        matrixCounts.replaceChildren(...lines);
-        matrixCounts.hidden = lines.length === 0;
+        detailCounts.replaceChildren(...lines);
+        detailCounts.hidden = lines.length === 0;
+        matrixCaption.replaceChildren(...(caption ? [caption] : []));
+        matrixCaption.hidden = !caption;
       }
 
       function drawRisk(state, opt, allW, yours) {
@@ -762,6 +903,10 @@ export function mountWidget(el, spec = {}) {
           { key: "withheld", label: T.allWithheld, err: allW.errorTerm, wh: allW.withholdingTerm, risk: allW.risk },
         ];
         if (yours) rows.push({ key: "yours", label: T.yours, err: yours.errorTerm, wh: yours.withholdingTerm, risk: yours.risk });
+        // the bars keep the height of three rows, so the your-report row under them never moves when a report is
+        // scored (a click on "Score report" right after typing must land on the button)
+        const B = CONFIG.bars;
+        barsSlot.style.minHeight = `${B.marginTop + B.marginBottom + 3 * B.row}px`;
         drawRiskBars(ctx, barsSlot, state, rows);
 
         tiles.replaceChildren(
@@ -778,11 +923,29 @@ export function mountWidget(el, spec = {}) {
         return h("div", { class: "prx-pos-tile" }, h("span", { class: "prx-pos-tile-name", text: name }), h("span", { class: "prx-pos-tile-value" }, ...value));
       }
 
+      /** "A–B", "A–B and E–F", "A–B, C–D and E–F": the pairs below τ that the best report withholds (each name one
+       *  unbreakable run, so a line never breaks after its dash). */
+      function pairNames(kept) {
+        const names = kept.map((p) => h("span", { class: "prx-pos-pair", text: `${IDS[p.a]}${T.pairDash}${IDS[p.b]}` }));
+        return names.flatMap((n, k) => (k === 0 ? [n] : [k === names.length - 1 ? T.blockAnd : ", ", n]));
+      }
+
       function drawHeadline(state, opt) {
-        const fam = opt.family;
+        // the review's replacement sentence (G1-F1), every number from the engine: the family and its size, the best
+        // report, the pairs it states, its risk, and the pairs whose error is below τ that it withholds
+        // "at most 3 grades (603 reports)"; without a cap the family keeps the engine's words for it, "all reports on 6
+        // units", with its size: "no cap (all 4,683 reports on 6 units)". The sentence's numbers carry hooks of their
+        // own (readout*), so the hooks the read-out cases already check keep exactly one element each
+        const size = ro("readoutSize", sizes.get(state.cap), formatCount(sizes.get(state.cap)));
+        const family = state.cap === CONFIG.cap.none
+          ? [`${T.stage2NoCap} (${T.readoutAll} `, size, ` ${T.reports} ${T.readoutOn} `, ro("readoutUnits", N_UNITS, formatCount(N_UNITS)), ` ${T.readoutUnits})`]
+          : [`${T.capWords.toLowerCase()} `, ctx.num(state.cap, formatSetting(state.cap)), ` ${T.capGrades} (`, size, ` ${T.reports})`];
+        const kept = pairRows(state.tau, relations(Array.from(opt.grade))).filter((p) => p.below && !p.stated);
         ctx.readout.set([
-          "τ = ", ctx.num(state.tau, formatSetting(state.tau)), ", ", ...wordsNodes(fam.words), ": the best report is ",
-          ...blocksNodes(opt.grade), `, ${T.riskWords} `, ctx.num(opt.risk, formatRisk(opt.risk)), ".",
+          "τ = ", ctx.num(state.tau, formatSetting(state.tau)), ", ", ...family, ": ",
+          `${T.readoutBest} `, ...blocksNodes(opt.grade), ", ", ro("readoutN", opt.N, formatCount(opt.N)), " of ", ro("readoutM", M, formatCount(M)),
+          ` ${T.readoutStated} `, ro("readoutRisk", opt.risk, formatRisk(opt.risk)),
+          ...(kept.length ? ["; ", ...pairNames(kept), kept.length === 1 ? T.withheldOne : T.withheldMany] : []), ".",
         ]);
         const parts = [
           // The family symbols are introduced on G-04, so the label names the family in words.
@@ -796,7 +959,6 @@ export function mountWidget(el, spec = {}) {
             ...listed.flatMap((n, k) => (k ? [", ", n] : [n])), "); the read-outs show the first.");
         }
         labelLine.replaceChildren(...parts);
-
       }
 
       function drawYours(state, opt, yours) {
@@ -806,11 +968,13 @@ export function mountWidget(el, spec = {}) {
         const comparison = inFamily && same ? [", the smallest risk in this family."]
           : inFamily ? [", above the best report's ", ctx.num(opt.risk, formatRisk(opt.risk)), "."]
           : ["; not in this family. The best report in the selected family has risk ", ctx.num(opt.risk, formatRisk(opt.risk)), "."];
+        const different = yours.N === opt.N ? null : captionNode(ctx, "different-disclosure");
+        if (different) different.textContent = "These reports disclose different amounts";
         yoursLine.replaceChildren(`${T.yours}, ${blocksText(state.yours)}: risk `, ro("yoursRisk", yours.risk, formatRisk(yours.risk)),
           " (", captionNode(ctx, "fixed-report"), ")", ...comparison,
           " Your report states ", ro("yoursN", yours.N, formatCount(yours.N)), " of ", ctx.num(M, formatCount(M)),
           " pairs; the best report states ", ro("comparisonBestN", opt.N, formatCount(opt.N)), " of ", ctx.num(M, formatCount(M)), ".",
-          ...(yours.N !== opt.N ? [" ", captionNode(ctx, "different-disclosure"), "."] : []));
+          ...(different ? [" ", different, "."] : []));
         yoursLine.hidden = false;
       }
 
@@ -832,7 +996,7 @@ export function mountWidget(el, spec = {}) {
             const yours = state.yours ? evaluateReport(state.yours, ERRORS, { tau: state.tau }) : null;
 
             drawHeadline(state, opt);
-            drawTauStrip(ctx, { slot: stripSlot, note: stripNote }, state, pathOf(state.cap));
+            drawStrip(state);
             const pairs = drawMatrix(state, opt, state.stage);
             drawMatrixLegend(state, state.stage);
             drawCounts(state, pairs, state.stage, opt.grade);

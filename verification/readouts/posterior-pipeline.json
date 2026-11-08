@@ -3,7 +3,7 @@
   "app": "posterior-pipeline",
   "catalog": "1.7",
   "from": "postrank-explorer-v1 verification/readouts/posterior-pipeline.json",
-  "about": "The diagram of four box buttons (Data, Model, Posterior, Decision) joined by three arrows, the panel of the open box (key box), and the two-unit chain under them. The diagram's expectations are structural strings, as in v1: the open box's accessible name and panel title, who makes the box and the arrow labels (postrank reads a supplied posterior and does not create it), and the diagram's text alternative. The box selector names the box buttons (.prx-pp-box), because the preset row has pressed buttons too. The chain's numbers are checked against base-R oracle rows at two settings: two units of the simulated league (U13 as A and U05 as B, the frozen draw of seed 20261030, prior SD .15), whose posterior and direction probability the league's oracle rows hold, and two equal units at τ .50, where the three actions tie.",
+  "about": "The chain of four stages, each headed by its box button (Data, Model, Posterior, Decision), joined by three arrows, with the panel of the open box (key box) in the closed box \"What each box holds and who makes it\" and the routes table in the closed box \"What postrank can do with each form of posterior\" (review 044 repair, U2-F2; the panel and the table are in the DOM while their boxes are closed). The diagram's expectations are structural strings, as in v1: the open box's accessible name and panel title, who makes the box and the arrow labels (postrank reads a supplied posterior and does not create it; the arrows show only their glyphs, their labels are read by screen readers), and the diagram's text alternative. The box selector names the box buttons (.prx-pp-box), because the preset row has pressed buttons too. The chain's numbers are checked against base-R oracle rows at two settings: two units of the simulated league (U13 as A and U05 as B, the frozen draw of seed 20261030, prior SD .15), whose posterior and direction probability the league's oracle rows hold, and two equal units at τ .50, where the three actions tie. The read-out sits directly under the preset row (the result-first frame) with its sentence unchanged.",
   "cases": [
     {
       "id": "default",
@@ -67,13 +67,110 @@
           "about": "the chain's read-out at the defaults: the likelier direction is wrong less often than τ, so the report states it",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B is wrong with probability ⟨e⟩, below τ = ⟨tau⟩, so postrank states it: {A} > {B}."
+          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. A is higher with posterior probability ⟨pi⟩. Report {A} > {B}: error ⟨err⟩ < τ ⟨tau⟩."
+        },
+        {
+          "select": "[data-prx-disclosure=\"boxes\"] > summary",
+          "kind": "text",
+          "about": "the closed box that holds the panel of the open box (review 044, U2-F2: the review's title)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "What each box holds and who makes it"
+        },
+        {
+          "select": "[data-prx-disclosure=\"boxes\"] .prx-pp-panel .prx-pp-title",
+          "kind": "text",
+          "about": "the panel of the open box is inside that closed box (since review 044 Phase 3, A1-1, the box also holds the other boxes' headings, so the selector names the panel)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 1: Data"
+        },
+        {
+          "select": "[data-prx-disclosure=\"routes\"] > summary",
+          "kind": "text",
+          "about": "the closed box that holds the routes table, its notes and its source (review 044, U2-F2: the review's title)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "What postrank can do with each form of posterior"
+        },
+        {
+          "select": "[data-prx-disclosure=\"routes\"] .prx-pp-routes-notes > li",
+          "index": 0,
+          "kind": "text",
+          "about": "the routes table's first note is inside that closed box",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Every route checks the form of its input, such as unit names, sizes and declarations, not that the draws are joint or have converged. Whether the posterior is the intended joint law, and whether the model behind it is right, stays with the analysis that made it."
+        },
+        {
+          "select": "[data-prx-stage=\"1\"] .prx-pp-by",
+          "kind": "text",
+          "about": "stage 1's header says who: the words of the arrow that leaves box 1 (review 044, U2-F2: the who-words moved into the headers)",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "the analyst"
+        },
+        {
+          "select": "[data-prx-stage=\"2\"] .prx-pp-by",
+          "kind": "text",
+          "about": "stage 2's header says who: the words of the arrow that leaves box 2",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "the analyst's software"
+        },
+        {
+          "select": "[data-prx-stage=\"3\"] .prx-pp-tag",
+          "kind": "text",
+          "about": "stage 3's header: postrank reads the posterior",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "read by postrank"
+        },
+        {
+          "select": "[data-prx-stage=\"4\"] .prx-pp-tag",
+          "kind": "text",
+          "about": "stage 4's header: postrank makes the grades",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "made by postrank"
+        },
+        {
+          "select": "[data-prx-disclosure=\"boxes\"] [aria-current=\"true\"] .prx-pp-title",
+          "kind": "text",
+          "about": "the open box's text comes first in the closed box, marked as the current one (review 044 repair, Phase 3: A1-1)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 1: Data"
+        },
+        {
+          "select": "[data-prx-disclosure=\"boxes\"] .prx-pp-others [data-prx-box-text=\"2\"] .prx-pp-title",
+          "kind": "text",
+          "about": "the closed box also holds the text of every other box, each with its heading (A1-1)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 2: Model"
+        },
+        {
+          "select": "[data-prx-disclosure=\"boxes\"] .prx-pp-others [data-prx-box-text=\"3\"] .prx-pp-title",
+          "kind": "text",
+          "about": "box 3's text, with its heading",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 3: Posterior"
+        },
+        {
+          "select": "[data-prx-disclosure=\"boxes\"] .prx-pp-others [data-prx-box-text=\"4\"] .prx-pp-title",
+          "kind": "text",
+          "about": "box 4's text, with its heading",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 4: Decision"
         }
       ]
     },
     {
       "id": "data",
-      "about": "Preset data (the first preset, the app's defaults): box 1 open; the app caption, the line under the preset row, the chain's teaching-posterior caption and its gloss, and the routes table's first note.",
+      "about": "Preset data (the first preset, the app's defaults): box 1 open; the app caption (reworded for the merged chain, review 044 repair), the line under the preset row, the chain's teaching-posterior caption and its gloss, and the routes table's first note.",
       "preset": "data",
       "expect": [
         {
@@ -91,15 +188,15 @@
           "about": "the chain's scope caption: its posterior comes from estimates and a prior set by hand, and postrank does not fit it",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": "[data-prx-part~=\"caption\"]",
           "kind": "text",
-          "about": "the app caption (catalog): the boxes' sources, and that the diagram shows no computed numbers while the chain computes its numbers in this browser",
+          "about": "the app caption (catalog): the boxes' sources, and that the box headers show no computed numbers while the two units in the stages under them are computed in this browser (review 044 repair, Phase 3: A1-3, B-F1: reworded for the merged chain; the caption said 'The diagram shows no computed numbers; the chain under it computes its numbers in this browser.')",
           "source": "literal",
           "ref": "6.1",
-          "value": "Each box names its source in the theory book or the package documentation. The diagram shows no computed numbers; the chain under it computes its numbers in this browser."
+          "value": "Each box names its source in the theory book or the package documentation. The box headers show no computed numbers; the two units in the stages under them are computed in this browser."
         },
         {
           "select": ".prx-pp-preset-note",
@@ -115,7 +212,7 @@
           "about": "the chain's caption line: the teaching-posterior caption (labels.js, checked on its own above) and its gloss, which says what is set by hand and that this browser, not postrank, computes the posterior",
           "source": "literal",
           "ref": "9.4",
-          "value": "a posterior set by hand for teaching; postrank does not fit it. In plain words: the estimates, SEs and prior are set by hand for teaching; this browser computes the posterior from them."
+          "value": "a posterior specified for the example. The Data and Model boxes supply the estimates, standard errors, and prior used to calculate the posterior."
         },
         {
           "select": ".prx-pp-routes-notes > li",
@@ -197,6 +294,22 @@
           "source": "literal",
           "ref": "9.4",
           "value": "See also. The six input routes, with the package functions that read them, are in the table below. How to judge grades under a second distribution, other than the posterior that chose them, is the subject of Judging a report under another law."
+        },
+        {
+          "select": "[data-prx-disclosure=\"boxes\"] [aria-current=\"true\"] .prx-pp-title",
+          "kind": "text",
+          "about": "with box 3 open its text comes first, marked as the current one (A1-1)",
+          "source": "literal",
+          "ref": "11.4",
+          "value": "Box 3: Posterior"
+        },
+        {
+          "select": "[data-prx-disclosure=\"boxes\"] .prx-pp-others [data-prx-box-text=\"1\"] .prx-pp-who",
+          "kind": "text",
+          "about": "box 1's text stays complete among the other boxes; postrank reads a supplied posterior and does not create it",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "Who makes this box: whoever collected the data. postrank never reads Y itself, only a posterior computed from it."
         }
       ]
     },
@@ -229,7 +342,7 @@
           "about": "the chain's read-out: the likelier direction is wrong less often than τ, so the report states it",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B is wrong with probability ⟨e⟩, below τ = ⟨tau⟩, so postrank states it: {A} > {B}."
+          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. A is higher with posterior probability ⟨pi⟩. Report {A} > {B}: error ⟨err⟩ < τ ⟨tau⟩."
         }
       ]
     },
@@ -302,7 +415,7 @@
           "about": "the chain's read-out: withholding says no direction",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B would be wrong with probability ⟨e⟩, above τ = ⟨tau⟩, so postrank withholds the pair: {A, B}, one grade."
+          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. A is higher with posterior probability ⟨pi⟩. Withhold {A, B}: smallest directional error ⟨err⟩ > τ ⟨tau⟩."
         }
       ]
     },
@@ -335,7 +448,7 @@
           "about": "the chain's read-out: withholding says no direction",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B would be wrong with probability ⟨e⟩, above τ = ⟨tau⟩, so postrank withholds the pair: {A, B}, one grade."
+          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. A is higher with posterior probability ⟨pi⟩. Withhold {A, B}: smallest directional error ⟨err⟩ > τ ⟨tau⟩."
         }
       ]
     },
@@ -544,7 +657,7 @@
     },
     {
       "id": "equal-units",
-      "about": "Two units with equal estimates and SEs at τ .50: π is one half, both directions are wrong with probability one half, and so is the price of silence, so the three actions tie; the read-out says so with the equal-risk tolerance and shows the first of the tied reports, one grade.",
+      "about": "Two units with equal estimates and SEs at τ .50: π is one half, both directions are wrong with probability one half, and so is the price of silence, so the three actions tie; the read-out says so with the equal-risk tolerance and shows the first of the tied reports, one grade. The line under the best report's chips carries the same tie (review 044, X-12).",
       "query": "?estA=.20&seA=.10&estB=.20&seB=.10&tau=.50",
       "expect": [
         {
@@ -618,7 +731,16 @@
           "about": "ties are said in words, with the equal-risk tolerance",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates ⟨estA⟩ and ⟨estB⟩ become posterior means ⟨meanA⟩ and ⟨meanB⟩; the probability that A is truly higher is π = ⟨pi⟩. Stating A above B is wrong with probability ⟨e⟩, equal to τ = ⟨tau⟩: ⟨n⟩ reports share the smallest risk (equal-risk tolerance ⟨tol⟩); the read-out shows the first, {A, B}."
+          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. Both directions have posterior probability ⟨pi⟩. Withhold {A, B}: smallest directional error ⟨err⟩ = τ ⟨tau⟩. ⟨count⟩ reports share the smallest risk (equal-risk tolerance ⟨tol⟩); showing the first."
+        },
+        {
+          "select": "[data-prx-readout=\"report\"] ~ .prx-result-tag .prx-result-ties",
+          "kind": "text",
+          "slots": true,
+          "about": "the line under the best report's chips says that it is one of the tied reports and that the chips show the first (review 044, X-12: labels.js tagNode ties)",
+          "source": "literal",
+          "ref": "9.4",
+          "value": "(one of ⟨k⟩ equal-risk best reports; showing the first)"
         }
       ]
     }

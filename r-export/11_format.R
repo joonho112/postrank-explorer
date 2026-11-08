@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/format.ts and erfc (engine/src/special.ts) (Step 2.12).
 #   oracle-format  base R only: display strings built from R's sprintf (C printf: the exact binary value is rounded,
 #                  ties to even) and the display rules of engine/README.md "format.ts: display rules" (no leading zero

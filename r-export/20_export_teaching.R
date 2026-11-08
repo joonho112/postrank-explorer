@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Released teaching summaries (data/released/) and the frozen simulated league (data/precomputed/league-30.json).
 #   Rscript r-export/20_export_teaching.R
 # Sources (read-only): postrank 1.1.0 from the project library: data/ (pr_tutorial, pr_example_gaussian,
@@ -49,7 +49,7 @@ json_text <- function(x) as.character(jsonlite::toJSON(x, auto_unbox = TRUE, dig
 assert_clean_text <- function(x, where) {
   strings_of <- function(v) if (is.character(v)) as.character(v) else if (is.list(v)) unlist(lapply(v, strings_of), use.names = FALSE) else character(0)
   s <- strings_of(x)
-  bad <- s[grepl("certif|guarant|\\bprov(e|es|ed|en|ing)\\b|no error|\\b(SR|AM|AC|CR|RD|BD)-[0-9]|Step [0-9]+\\.[0-9]|generated[[:space:]]by", s, ignore.case = TRUE)]
+  bad <- s[grepl("certif|guarant|\\bprov(e|es|ed|en|ing)\\b|no error|\\b(SR|AM|AC|CR|RD|BD)-[0-9]|Step [0-9]+\\.[0-9]|generated[ ]by", s, ignore.case = TRUE)]
   if (length(bad)) stop(where, ": reserved or process wording in a shipped string: ", bad[1], call. = FALSE)
   invisible(TRUE)
 }

@@ -4,12 +4,10 @@ subtitle: "4.4 · after the postrank theory book, chapter 11"
 description: "Exact weight intervals and criterion-specific errors of minimum-risk reports."
 ---
 
-With two criteria, the risk of a fixed report varies affinely with the error weight. The lower envelope identifies
-the report or reports with minimum weighted risk at each weight, including the common withholding charge. The path
-is calculated from these functions rather than inferred from a sampled slider grid. Step charts record the
-criterion-specific expected wrong shares and disclosure, while the risk lines explain the change points. Each
-interval retains a fixed report, although its weighted risk continues to vary. Boundary solutions are evaluated
-separately where several reports may be optimal.
+For a fixed report with two criteria, weighted risk moves along a straight line between the two criterion risks.
+The lower envelope of these lines gives the smallest risk at each weight. Its intersections locate exact
+changes in the best report. Within each resulting interval, the report, disclosure count, and criterion-specific
+error shares stay fixed while weighted risk varies. The boundary table lists the optima where lines tie.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -22,14 +20,17 @@ separately where several reports may be optimal.
 ## Numerical illustrations {#what-to-try}
 
 - **Equal weights.** The selected report states 9 pairs. Its expected wrong shares are .0177 on score A and .0267 on score B. The interval table and lower envelope identify the weights for which this report is optimal.
-- **Lower A weight.** The best report states 12 pairs and favours score B's ordering of the conflicting sites. Both criterion shares stay constant through the interior of its interval, although the weighted risk changes.
-- **Higher A weight.** The report again states 12 pairs, with {A, B} > {C, D} > {E, F}. Its expected wrong share on score B is .237. Equal disclosure does not mean equal pair relations.
-- **Score B only.** At the endpoint, 2 reports share the smallest risk. The expected wrong shares on score A are .200 and .215. The boundary table keeps their identities and differing profiles, including the tiny first interval.
+- **Lower A weight.** The best report states 12 pairs and favors score B's ordering of the conflicting sites. Both criterion shares stay fixed across the interval while their weighted average changes.
+- **Higher A weight.** The report again states 12 pairs, with {A, B} > {C, D} > {E, F}. Its expected wrong share on score B is .237. The two twelve-pair reports disagree about which sites rank above the others.
+- **Score B only.** At the endpoint, 2 reports share the smallest risk. The expected wrong shares on score A are .200 and .215. The boundary data keep their identities and differing profiles. The first interval has zero width in the display.
 - **No cap.** The unrestricted calculation searches all 4,683 reports. The current equal-weight report still states 9 pairs, but the complete path can differ away from the selected weight.
 - **Higher withholding cost.** The uncapped current report states 14 pairs. The interval table retains every short interval; both criterion-share paths use these same boundaries.
 
 ::: {.callout-note}
-The path uses the six fictional sites' declared independent normal posteriors. Each exact boundary can have several best reports; the table solves the boundary itself and states the equal-risk tolerance. A zero-width endpoint entry and a tiny positive interval remain visible in the table even when a screen cannot give them a visible width. Risks at different weights correspond to different losses, so a falling line is not an improvement under one fixed objective. The largest lower-envelope risk is a risk value, while its location is a weight.
+The path uses independent normal posteriors for the six fictional sites. When an interval next to zero is at
+the scale of numerical rounding and both reports tie at zero within the tolerance, the chart shows them as
+an endpoint tie. The detailed table retains the computed interval and boundary results. Each point on the
+lower envelope is the minimum for its own weight, which is the horizontal coordinate.
 :::
 
 Standalone: [weight-path](../../embed/weight-path.html), for example `?w=.5&tau=.2&cap=3`.

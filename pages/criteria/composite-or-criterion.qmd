@@ -4,12 +4,8 @@ subtitle: "4.6 · after the postrank vignette m2 and theory book, ch. 12 and 19"
 description: "Comparison of reporting objectives based on composite values and criterion-specific directions."
 ---
 
-Directional reporting on separate criteria and reporting on a weighted composite define different targets. Error
-weights determine the cost of criterion-specific mistakes; composite coefficients combine target magnitudes.
-At the known state A = (1, −2), B = (0, 0), the lower-cost criterion direction can therefore oppose the direction
-of an equally weighted composite. Both displays use a common withholding cost and report family. Cross-evaluation
-of the selected reports distinguishes the consequences of the two objectives, including changes induced by
-rescaling a criterion or transforming the complete finite law.
+Weighting errors on two criteria and comparing a weighted sum of their values can yield opposite directions
+for the same pair.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -19,33 +15,39 @@ rescaling a criterion or transforming the complete finite law.
 <script>window.__prxApp = PRX["composite-or-criterion"].mountWidget(document.getElementById("app"));</script>
 ```
 
+Error weights determine how much a wrong direction on each criterion costs. Composite coefficients determine
+how much each target contributes to the combined value. At A = (1, −2) and B = (0, 0), a direction with
+less weighted error can therefore run against the order of the equally weighted composite. We compare the
+reports under both objectives, holding the withholding cost and available reports fixed.
+
 ## Numerical illustrations {#what-to-try}
 
 - **Different targets.** The criterion-direction costs are .2500, .7500 and .3000 for forward, reverse and
-  withholding. The composite costs are 1.0000, .0000 and .3000. One objective picks 1/2; the other picks 2/1.
-- **Rescale the second criterion.** The composite value of A becomes .250 and its preferred direction flips.
+  withholding. The composite costs are 1.0000, 0 and .3000. One objective picks 1/2; the other picks 2/1.
+- **Rescale the second criterion.** In **Data and exact values**, A’s composite value becomes .250. Its preferred direction flips.
   The criterion-direction cost .2500 stays the same. The positive multiplier applies to every unit, while error
   weights and composite coefficients keep their separate roles.
 - **Composite equality.** Both strict composite directions cost 1.0000. Withholding costs .3000. Each criterion
   still distinguishes the units, but their composite is equal; a shared grade withholds rather than asserting that equality.
-- **Two reports, same disclosure.** Every one of the 75 reports is evaluated. Criterion directions choose
+- **Two reports, same disclosure.** **Data and exact values** shows the evaluations of all 75 reports. Criterion directions choose
   1/2/2/3 with risk .1417; the composite chooses 1/1/2/3 with risk .0333. Both disclose 5 pairs. Both columns evaluate each selected report under the two objectives.
 - **Transform the whole law.** Exponentiating every finite input preserves the criterion best report and its
   risk .1417. The composite now selects 1/1/2/2 with risk .0667. The complete criterion best-report sets before
   and after remain visible under the same settings.
-- **Rescale the Normal composite.** The first composite mean is .635. This analytic calculation uses the six
-  sites’ declared independence across units and criteria; marginal means alone would not specify its uncertainty.
+- **Rescale the Normal composite.** The first composite mean is .635. We compute it assuming independence across the six sites and their criteria. Computing the composite uncertainty
+  requires the same assumptions about dependence.
 
 ::: {.callout-note appearance="simple"}
 All examples are synthetic supplied laws. Composite coefficients stay nonnegative and sum to one, matching the
-package interface. A positive multiplier changes composite magnitudes; a strictly increasing finite-state
-transformation preserves criterion directions without refitting the law. The two risk scales do not choose the
-substantive target. No thirty-site joint law is inferred from marginal releases.
+package interface. A positive multiplier changes the contribution of a criterion to the composite. A strictly increasing
+transformation leaves the ordering within that criterion intact. Choosing which risk to minimize depends on
+whether the report concerns individual criterion directions or the composite. The thirty-site marginal releases
+leave the joint law undetermined.
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}
-This prints composite scores of posterior means; `weights` are composite coefficients. Package scales divide, so a second-criterion scale of ten
-corresponds to the browser’s multiplier .1.
+The code computes composite scores from the posterior means, with `weights` as the composite coefficients.
+The package divides by the supplied scale, so a second-criterion scale of ten corresponds to a multiplier of .1.
 
 ```r
 library(postrank)

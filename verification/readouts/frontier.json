@@ -1,6 +1,6 @@
 {
   "catalog": "2.10",
-  "about": "Hull view from v1: six-site family presets, cloud vertices and slopes, optimum and risk, full-height view, tau clamping, and update. Independent base-R oracle and frozen registry sources retained. Mixture/endpoint/four-unit cases move with their panels to frontier-mixtures; prediction cases removed.",
+  "about": "Hull view from v1: six-site family presets, cloud vertices and slopes, optimum and risk, full-height view, tau clamping, and update. Independent base-R oracle and frozen registry sources retained. Mixture/endpoint/four-unit cases move with their panels to frontier-mixtures; prediction cases removed. Review 044 repair: the read-out adds the touched vertex's tau range (hooks bestFrom, bestTo, from the base-R tau path).",
   "cases": [
     {
       "id": "preset-tau20",
@@ -485,6 +485,34 @@
           "source": "literal",
           "ref": "6.5",
           "value": "a mixture of two complete reports, not a report we can print"
+        },
+        {
+          "select": "[data-prx-readout=\"bestFrom\"]",
+          "about": "review 044 repair: the read-out's \u03c4 range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.4"
+          },
+          "value": 0.188379558905791
+        },
+        {
+          "select": "[data-prx-readout=\"bestTo\"]",
+          "about": "review 044 repair: and ends at the slope of the edge after it, or at \u03c4 = 1/2 for the last vertex (base-R tau path)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.4"
+          },
+          "value": 0.361836804915882
         }
       ]
     },
@@ -612,6 +640,34 @@
           "source": "registry",
           "ref": "six.A.all.tau40.risk",
           "value": 0.04796087641181478
+        },
+        {
+          "select": "[data-prx-readout=\"bestFrom\"]",
+          "about": "review 044 repair: the read-out's \u03c4 range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.5"
+          },
+          "value": 0.361836804915882
+        },
+        {
+          "select": "[data-prx-readout=\"bestTo\"]",
+          "about": "review 044 repair: and ends at the slope of the edge after it, or at \u03c4 = 1/2 for the last vertex (base-R tau path)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.5"
+          },
+          "value": 0.5
         }
       ]
     },
@@ -907,6 +963,34 @@
             3,
             3
           ]
+        },
+        {
+          "select": "[data-prx-readout=\"bestFrom\"]",
+          "about": "review 044 repair: the read-out's \u03c4 range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauFrom.2"
+          },
+          "value": 0.0038193153804911
+        },
+        {
+          "select": "[data-prx-readout=\"bestTo\"]",
+          "about": "review 044 repair: and ends at the slope of the edge after it, or at \u03c4 = 1/2 for the last vertex (base-R tau path)",
+          "format": {
+            "fn": "formatSetting"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-cap3",
+            "field": "tauTo.2"
+          },
+          "value": 0.5
         }
       ]
     },
@@ -1558,6 +1642,34 @@
           "source": "literal",
           "ref": "6.2",
           "value": "exact optimum within \ud835\udc9c\u2086"
+        },
+        {
+          "select": "[data-prx-readout=\"bestFrom\"]",
+          "about": "review 044 repair: the read-out's \u03c4 range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauFrom.3"
+          },
+          "value": 0.144422183173242
+        },
+        {
+          "select": "[data-prx-readout=\"bestTo\"]",
+          "about": "review 044 repair: and ends at the slope of the edge after it, or at \u03c4 = 1/2 for the last vertex (base-R tau path)",
+          "format": {
+            "fn": "formatRisk"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-frontier",
+            "row": "tauPath-six-A-all",
+            "field": "tauTo.3"
+          },
+          "value": 0.188379558905791
         }
       ],
       "preset": "tau15"

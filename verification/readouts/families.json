@@ -1564,6 +1564,29 @@
           "format": {
             "fn": "formatCount"
           }
+        },
+        {
+          "select": ".prx-readout [data-prx-ties]",
+          "kind": "text",
+          "slots": true,
+          "about": "X-12: the read-out names its report as one of the tied ones",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "(one of ⟨k⟩ equal-risk best reports; showing the first)"
+        },
+        {
+          "select": ".prx-readout [data-prx-ties] [data-num]",
+          "about": "the read-out's tie count (review 044 repair, X-12)",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "tau-family-counterpart-boundary",
+            "field": "all.tieCount"
+          },
+          "value": 2,
+          "format": {
+            "fn": "formatCount"
+          }
         }
       ]
     },
@@ -1793,6 +1816,29 @@
             "field": "order.Ns.1"
           },
           "value": 3,
+          "format": {
+            "fn": "formatCount"
+          }
+        },
+        {
+          "select": ".prx-readout [data-prx-ties]",
+          "kind": "text",
+          "slots": true,
+          "about": "X-12: the read-out names its report as one of the tied ones",
+          "source": "literal",
+          "ref": "9.1",
+          "value": "(one of ⟨k⟩ equal-risk best reports; showing the first)"
+        },
+        {
+          "select": ".prx-readout [data-prx-ties] [data-num]",
+          "about": "the read-out's tie count for the contiguous cuts (review 044 repair, X-12)",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p2-readouts",
+            "row": "families-tb14-tau10-ties",
+            "field": "order.tieCount"
+          },
+          "value": 2,
           "format": {
             "fn": "formatCount"
           }

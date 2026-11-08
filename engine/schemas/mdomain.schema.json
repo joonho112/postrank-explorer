@@ -1,0 +1,1058 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:postrank-explorer:mdomain:1",
+  "title": "postrank Explorer v3.5 finite-law fixture",
+  "description": "Portable teaching-law request and optional independent R-oracle results. JSON structure is insufficient for the semantic invariants in engine/MDOMAIN-API.md. Frozen synthetic40 display records and native R objects are excluded.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "postrank-explorer-mdomain-v1"
+    },
+    "fixtureId": {
+      "$ref": "#/$defs/id"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "input": {
+      "$ref": "#/$defs/input"
+    },
+    "decision": {
+      "$ref": "#/$defs/decision"
+    },
+    "family": {
+      "$ref": "#/$defs/family"
+    },
+    "expected": {
+      "$ref": "#/$defs/expected"
+    },
+    "oracle": {
+      "$ref": "#/$defs/oracle"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "fixtureId",
+    "input",
+    "decision",
+    "family"
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "\\S"
+    },
+    "exact": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?:0|[1-9][0-9]*(?:/[1-9][0-9]*)?)$",
+      "description": "Canonical nonnegative reduced rational; reduction, /1 exclusion, exact sums and ranges require semantic validation."
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "ids": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "gradeVector": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": -9007199254740991,
+        "maximum": 9007199254740991
+      },
+      "minItems": 2,
+      "maxItems": 4
+    },
+    "canonicalGradeVector": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 4
+      },
+      "minItems": 2,
+      "maxItems": 4
+    },
+    "gradeMatrix": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "unitIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 2,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "domainIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "minItems": 1,
+            "maxItems": 2
+          },
+          "minItems": 2,
+          "maxItems": 4
+        }
+      },
+      "required": [
+        "unitIds",
+        "domainIds",
+        "values"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domainId": {
+          "$ref": "#/$defs/id"
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "units": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "orientation": {
+          "const": "larger_is_higher"
+        },
+        "equalityClasses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 2,
+          "maxItems": 4
+        },
+        "equalityProvenance": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "domainId",
+        "definition",
+        "units",
+        "orientation",
+        "equalityClasses",
+        "equalityProvenance"
+      ]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "inputId": {
+          "$ref": "#/$defs/id"
+        },
+        "lawId": {
+          "$ref": "#/$defs/id"
+        },
+        "representation": {
+          "const": "exact_finite_law"
+        },
+        "coupling": {
+          "const": "supplied_joint"
+        },
+        "unitIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 2,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "domainIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "stateIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "minItems": 1,
+              "maxItems": 2
+            },
+            "minItems": 2,
+            "maxItems": 4
+          },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "masses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/inputExact"
+          },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/target"
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "producer": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "conditioningInfo": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "jointGeneration": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "finiteSupportOrigin": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "properLaw": {
+              "const": true
+            }
+          },
+          "required": [
+            "producer",
+            "conditioningInfo",
+            "jointGeneration",
+            "finiteSupportOrigin",
+            "properLaw"
+          ]
+        }
+      },
+      "required": [
+        "inputId",
+        "lawId",
+        "representation",
+        "coupling",
+        "unitIds",
+        "domainIds",
+        "stateIds",
+        "states",
+        "masses",
+        "targets",
+        "provenance"
+      ]
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "decisionId": {
+          "$ref": "#/$defs/id"
+        },
+        "domainIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "scope": {
+          "const": "all_pairs"
+        },
+        "weights": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/inputExact"
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "tau": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/inputExact"
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "q": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/inputExact"
+              },
+              "minItems": 1,
+              "maxItems": 2
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "t": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/inputExact"
+              },
+              "minItems": 1,
+              "maxItems": 2
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "alpha": {
+          "$ref": "#/$defs/inputExact"
+        }
+      },
+      "required": [
+        "decisionId",
+        "domainIds",
+        "scope",
+        "weights",
+        "tau",
+        "q",
+        "t",
+        "alpha"
+      ]
+    },
+    "family": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "familyId": {
+          "$ref": "#/$defs/id"
+        },
+        "unitIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 2,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "domainIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true
+        },
+        "maxGrades": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "maxActions": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "banks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "domainId": {
+                "$ref": "#/$defs/id"
+              },
+              "columns": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "columnId": {
+                      "$ref": "#/$defs/id"
+                    },
+                    "grades": {
+                      "$ref": "#/$defs/gradeVector"
+                    }
+                  },
+                  "required": [
+                    "columnId",
+                    "grades"
+                  ]
+                },
+                "minItems": 0,
+                "maxItems": 256
+              }
+            },
+            "required": [
+              "domainId",
+              "columns"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "familyId",
+        "unitIds",
+        "domainIds",
+        "maxGrades",
+        "maxActions",
+        "banks"
+      ]
+    },
+    "assurance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "arithmetic": {
+          "const": "exact_represented_finite_law"
+        },
+        "properLawStatus": {
+          "const": "producer_declaration"
+        },
+        "numericalGuarantee": {
+          "const": false
+        },
+        "intendedPosteriorFeasibilityCertified": {
+          "const": false
+        },
+        "searchOptimality": {
+          "enum": [
+            "fixed_card",
+            "candidate_restricted"
+          ]
+        }
+      },
+      "required": [
+        "arithmetic",
+        "properLawStatus",
+        "numericalGuarantee",
+        "intendedPosteriorFeasibilityCertified",
+        "searchOptimality"
+      ]
+    },
+    "domainResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domainId": {
+          "$ref": "#/$defs/id"
+        },
+        "gradeCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "disclosedPairs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "withheldPairs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "expectedFalseCountExact": {
+          "$ref": "#/$defs/exact"
+        },
+        "expectedFalseProportionExact": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/exact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lossExact": {
+          "$ref": "#/$defs/exact"
+        },
+        "weightedLossExact": {
+          "$ref": "#/$defs/exact"
+        },
+        "meanGuardSatisfied": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "thresholdExact": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/exact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "firstExceedanceCount": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "eventProbabilityExact": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/exact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "eventActive": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "domainId",
+        "gradeCount",
+        "disclosedPairs",
+        "withheldPairs",
+        "expectedFalseCountExact",
+        "expectedFalseProportionExact",
+        "lossExact",
+        "weightedLossExact",
+        "meanGuardSatisfied",
+        "thresholdExact",
+        "firstExceedanceCount",
+        "eventProbabilityExact",
+        "eventActive"
+      ]
+    },
+    "stateResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "stateId": {
+          "$ref": "#/$defs/id"
+        },
+        "falseCounts": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "exceedances": {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "unionExceeded": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "stateId",
+        "falseCounts",
+        "exceedances",
+        "unionExceeded"
+      ]
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "inputId": {
+          "$ref": "#/$defs/id"
+        },
+        "lawId": {
+          "$ref": "#/$defs/id"
+        },
+        "decisionId": {
+          "$ref": "#/$defs/id"
+        },
+        "grades": {
+          "$ref": "#/$defs/gradeMatrix"
+        },
+        "originalPairs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "riskExact": {
+          "$ref": "#/$defs/exact"
+        },
+        "jointProbabilityExact": {
+          "$ref": "#/$defs/exact"
+        },
+        "meanFeasible": {
+          "type": "boolean"
+        },
+        "jointFeasible": {
+          "type": "boolean"
+        },
+        "feasible": {
+          "type": "boolean"
+        },
+        "jointStatus": {
+          "enum": [
+            "disabled",
+            "analytic_zero",
+            "evaluated"
+          ]
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domainResult"
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateResult"
+          },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "assurance": {
+          "$ref": "#/$defs/assurance"
+        }
+      },
+      "required": [
+        "inputId",
+        "lawId",
+        "decisionId",
+        "grades",
+        "originalPairs",
+        "riskExact",
+        "jointProbabilityExact",
+        "meanFeasible",
+        "jointFeasible",
+        "feasible",
+        "jointStatus",
+        "domains",
+        "states",
+        "assurance"
+      ]
+    },
+    "candidateId": {
+      "type": "string",
+      "pattern": "^p:[1-4](?:,[1-4]){1,3}(?:\\|[1-4](?:,[1-4]){1,3})?$"
+    },
+    "candidateRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "candidateId": {
+          "$ref": "#/$defs/candidateId"
+        },
+        "grades": {
+          "$ref": "#/$defs/gradeMatrix"
+        },
+        "riskExact": {
+          "$ref": "#/$defs/exact"
+        },
+        "jointProbabilityExact": {
+          "$ref": "#/$defs/exact"
+        },
+        "meanFeasible": {
+          "type": "boolean"
+        },
+        "jointFeasible": {
+          "type": "boolean"
+        },
+        "feasible": {
+          "type": "boolean"
+        },
+        "disclosedCounts": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "gradeCounts": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "optimal": {
+          "type": "boolean"
+        },
+        "selected": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "candidateId",
+        "grades",
+        "riskExact",
+        "jointProbabilityExact",
+        "meanFeasible",
+        "jointFeasible",
+        "feasible",
+        "disclosedCounts",
+        "gradeCounts",
+        "optimal",
+        "selected"
+      ]
+    },
+    "searchScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "declared_cartesian_product"
+        },
+        "candidateCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "examinedActions": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "fullProductExamined": {
+          "const": true
+        },
+        "unrestrictedOptimalityClaim": {
+          "const": false
+        }
+      },
+      "required": [
+        "type",
+        "candidateCount",
+        "examinedActions",
+        "fullProductExamined",
+        "unrestrictedOptimalityClaim"
+      ]
+    },
+    "fit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "inputId": {
+          "$ref": "#/$defs/id"
+        },
+        "lawId": {
+          "$ref": "#/$defs/id"
+        },
+        "decisionId": {
+          "$ref": "#/$defs/id"
+        },
+        "familyId": {
+          "$ref": "#/$defs/id"
+        },
+        "candidateTable": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidateRow"
+          },
+          "minItems": 1,
+          "maxItems": 256
+        },
+        "optimizerIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidateId"
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "selectedId": {
+          "$ref": "#/$defs/candidateId"
+        },
+        "selectedGrades": {
+          "$ref": "#/$defs/gradeMatrix"
+        },
+        "riskExact": {
+          "$ref": "#/$defs/exact"
+        },
+        "jointProbabilityExact": {
+          "$ref": "#/$defs/exact"
+        },
+        "searchScope": {
+          "$ref": "#/$defs/searchScope"
+        },
+        "assurance": {
+          "$ref": "#/$defs/assurance"
+        }
+      },
+      "required": [
+        "inputId",
+        "lawId",
+        "decisionId",
+        "familyId",
+        "candidateTable",
+        "optimizerIds",
+        "selectedId",
+        "selectedGrades",
+        "riskExact",
+        "jointProbabilityExact",
+        "searchScope",
+        "assurance"
+      ]
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "comparisonId": {
+          "$ref": "#/$defs/id"
+        },
+        "scope": {
+          "const": "listed_subset"
+        },
+        "candidateIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidateId"
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "optimizerIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidateId"
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "selectedId": {
+          "$ref": "#/$defs/candidateId"
+        },
+        "riskExact": {
+          "$ref": "#/$defs/exact"
+        }
+      },
+      "required": [
+        "comparisonId",
+        "scope",
+        "candidateIds",
+        "optimizerIds",
+        "selectedId",
+        "riskExact"
+      ]
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fit": {
+          "$ref": "#/$defs/fit"
+        },
+        "selectedEvaluation": {
+          "$ref": "#/$defs/evaluation"
+        },
+        "fixedCards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "cardId": {
+                "$ref": "#/$defs/id"
+              },
+              "evaluation": {
+                "$ref": "#/$defs/evaluation"
+              }
+            },
+            "required": [
+              "cardId",
+              "evaluation"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "comparisons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/comparison"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "fit"
+      ]
+    },
+    "oracle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "package": {
+          "const": "postrank"
+        },
+        "packageVersion": {
+          "const": "1.2.0"
+        },
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "generator": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "method": {
+          "const": "public_api_exhaustive_fixed_cards"
+        }
+      },
+      "required": [
+        "package",
+        "packageVersion",
+        "sourceCommit",
+        "generator",
+        "method"
+      ]
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "mdomainInputInvalid",
+            "mdomainIdentityMismatch",
+            "mdomainPolicyInvalid",
+            "mdomainGradesInvalid",
+            "mdomainFamilyInvalid",
+            "mdomainResourceCap",
+            "mdomainUnsupported"
+          ]
+        },
+        "field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "details": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "code",
+        "field",
+        "message"
+      ]
+    },
+    "inputExact": {
+      "$ref": "#/$defs/exact",
+      "maxLength": 256,
+      "description": "Input-only text budget. Exact output fractions can be longer after arithmetic."
+    }
+  },
+  "dependentRequired": {
+    "expected": [
+      "oracle"
+    ]
+  }
+}

@@ -2,7 +2,7 @@
 import { createWidget, uid } from "../shared/base.js";
 import { gradeColors, labelOn, palette } from "../shared/chart.js";
 import { formatCount, formatGrades, formatProb, formatRational, formatRisk, formatSci, formatSetting } from "../shared/format.js";
-import { captionNode, familyNameNode, familySizeNode, labelNode } from "../shared/labels.js";
+import { captionNode, familyNameNode, familySizeNode, labelNode, tieNode } from "../shared/labels.js";
 import { evaluateReport, exactOptimum, finiteLawPairwise, fixedOrderDP, rationalApprox, statedAbove, weightedError } from "../pr-core.js";
 import SIX from "../../data/released/six-sites.json" with { type: "json" };
 
@@ -10,10 +10,15 @@ export const FAMILIES_CSS = `
 /*
  * postrank Explorer · families (catalog G-08; js/widgets/families.js)
  *
- * Layout: the controls (example, family, number of grades, τ, the declared order), the live read-out and the chosen
- * family's label, then one row per family: its name, the best report as grade blocks, a risk bar on a scale shared
- * by every row, the numbers and the label. The bars and blocks sit on the plot panel (--prx-plot-bg) so that data
- * colors keep their meaning in every theme. Tokens only; nothing here is wider than its container at 375 px.
+ * Layout (review 044 repair, X-01, G3-F4): base.js's result-first frame. The controls (example, family, number of
+ * grades, a closed "Declared order" box with the order editor, then τ, the primary control), the preset row, the live
+ * read-out, then the rows directly: one compact row per family (its name and its short label, the best report as
+ * grade blocks beside a risk bar on a scale shared by every row, the numbers and the tie note), the chosen family's
+ * row outlined in place. Under the rows one shared line (the equal-risk tolerance once, the dynamic program's check
+ * against enumeration), the legend and the note, then a closed box with each family's complete search line (the
+ * family in the read-out first), then the law panel of the four-unit and dominating-set examples. The bars and blocks
+ * sit on the plot panel (--prx-plot-bg) so that data colors keep their meaning in every theme. Tokens only; nothing
+ * here is wider than its container at 375 px.
  */
 
 .prx-fam .prx-fam-heading {
@@ -138,7 +143,8 @@ export const FAMILIES_CSS = `
 }
 
 .prx-fam .prx-fam-row-chosen {
-  border: 2px solid var(--prx-accent);
+  border-color: var(--prx-accent);
+  box-shadow: inset 0 0 0 1px var(--prx-accent);
 }
 
 .prx-fam .prx-fam-row-head {
@@ -312,6 +318,67 @@ export const FAMILIES_CSS = `
   text-align: left;
 }
 
+/* --- review 044 repair (X-01, G3-F4): compact rows; the order editor in a closed box of the controls --- */
+.prx-fam .prx-fam-rows { gap: 0.3rem; }
+.prx-fam .prx-fam-row {
+  display: grid;
+  grid-template-columns: minmax(min-content, max-content) minmax(0, 1fr);
+  grid-template-areas: "head tag" "mid mid" "low low";
+  align-items: baseline;
+  column-gap: 1rem;
+  padding: 0.3rem 0.6rem 0.3rem;
+}
+.prx-fam .prx-fam-row > .prx-fam-row-head { grid-area: head; }
+.prx-fam .prx-fam-row > .prx-fam-row-tagline { grid-area: tag; justify-self: end; text-align: right; }
+.prx-fam .prx-fam-row > .prx-fam-row-mid { grid-area: mid; }
+.prx-fam .prx-fam-row > .prx-fam-row-low { grid-area: low; }
+.prx-fam .prx-fam-row-tagline {
+  margin: 0;
+  font-size: 0.85em;
+  color: var(--prx-plot-muted);
+}
+.prx-fam .prx-fam-row-tagline .prx-result-label { font-weight: 400; color: inherit; }
+.prx-fam .prx-fam-row-mid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  margin: 0.2rem 0 0.1rem;
+}
+.prx-fam .prx-fam-row-mid > .prx-fam-blocks,
+.prx-fam .prx-fam-row-mid > .prx-fam-bar { min-width: 0; margin: 0; }
+/* the numbers and the tie count run on as one line of text; the tied reports (ties only) follow as lines */
+.prx-fam .prx-fam-row-low > .prx-fam-row-nums,
+.prx-fam .prx-fam-row-low > .prx-fam-note { display: inline; margin: 0; }
+.prx-fam .prx-fam-row-low > .prx-fam-note > p { margin: 0; }
+.prx-fam .prx-fam-row-low > .prx-fam-note > p:first-child { display: inline; margin-left: 0.6em; }
+.prx-fam .prx-fam-charts { container-type: inline-size; }
+/* a phone's column: the heading a little smaller (one line), the rows a little tighter */
+/* a narrow column: the short label under the name */
+@container (max-width: 34rem) {
+  .prx-fam .prx-fam-row { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "tag" "mid" "low"; }
+  .prx-fam .prx-fam-row > .prx-fam-row-tagline { justify-self: start; text-align: left; }
+  .prx-fam .prx-fam-row-mid { grid-template-columns: minmax(0, 1fr); }
+}
+@container (max-width: 24rem) {
+  .prx-fam .prx-fam-compare > .prx-fam-heading { font-size: 0.8em; }
+  .prx-fam .prx-fam-rows { gap: 0.3rem; }
+  .prx-fam .prx-fam-row { padding: 0.3rem 0.5rem 0.35rem; }
+  .prx-fam .prx-fam-row-head { font-size: 0.88em; }
+  .prx-fam .prx-fam-row-head > .prx-fam-row-tag { font-size: 0.9em; }
+  .prx-fam .prx-fam-row-mid { margin: 0.2rem 0 0.1rem; gap: 0.2rem 0.75rem; }
+  .prx-fam .prx-fam-block { padding: 0.08rem 0.4rem; font-size: 0.92em; }
+  .prx-fam .prx-fam-row-low { font-size: 0.95em; }
+}
+.prx-fam .prx-fam-shared { margin: 0.45rem 0 0; font-size: 0.9em; color: var(--prx-fg-muted); }
+.prx-fam .prx-fam-compare > .prx-fam-note { margin: 0.4rem 0 0; }
+.prx-fam .prx-fam-search { margin: 0.5rem 0 0; }
+.prx-fam .prx-fam-search-item { margin: 0 0 0.5rem; }
+.prx-fam .prx-fam-search-item > p { margin: 0; }
+.prx-fam .prx-fam-search-name { font-weight: 600; }
+.prx-fam .prx-fam-search .prx-fam-label { margin: 0; }
+.prx-fam .prx-controls > .prx-disclosure .prx-fam-order { flex: 1 1 100%; }
+
 /* base.css turns transitions off under reduced motion */
 .prx-fam .prx-fam-seg,
 .prx-fam .prx-fam-mark {
@@ -399,7 +466,7 @@ export const CONFIG = Object.freeze({
     barsWords: "Bar: error part ⟨e⟩, withholding part ⟨w⟩, risk ⟨r⟩; τ is ⟨t⟩ and the best of all reports ⟨a⟩.",
     gradeOneSix: "Grade 1 = highest priority on score A (the sites visited first).",
     gradeOneTb14: "Grade 1 = highest target value under the theory book's illustrative law.",
-    noteSix: "Six fictional sites from the postrank tutorial, score A only; their normal posteriors are specified for teaching and taken as given. The at-most and exactly families are searched report by report in this browser; the order family uses the fixed-order dynamic program.",
+    noteSix: "The postrank tutorial supplies normal posteriors for score A at six fictional sites. We enumerate reports for the cap and exact grade count and use dynamic programming for the fixed order.",
     noteTb14: "An illustrative two-state law from the postrank theory book (chapter 14), with two criteria. The at-most and exactly families are searched report by report in this browser; the order family uses the fixed-order dynamic program.",
     lawHeading: "The four-unit law and its weighted pair errors",
     lawState: "State ⟨s⟩, probability ⟨p⟩: criterion 1 orders ⟨o1⟩, criterion 2 orders ⟨o2⟩ (top first).",
@@ -412,6 +479,13 @@ export const CONFIG = Object.freeze({
     blockAnd: " and ",
     blockThen: ", then ",
     above: "above",
+    // review 044 repair (X-01, G3-F4): the order editor's box, the shared line under the rows and the box of search lines
+    orderSettings: "Declared order",
+    sharedTol: "Each family is searched exactly; equal-risk tolerance ⟨tol⟩ (risks closer than this count as equal).",
+    sharedParity: " The contiguous cuts come from the dynamic program; enumerating all ⟨k⟩ of them gives the same report and risk.",
+    sharedParityOff: " The contiguous cuts come from the dynamic program; enumerating them gives a different result; please report this.",
+    searchTitle: "Search and tie rule of each family",
+    searchChosen: "The family in the read-out",
   }),
 });
 
@@ -510,6 +584,8 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     title: CONFIG.title,
     className: "prx-fam",
+    // review 044 repair (X-01): the read-out directly under the controls and the preset row, the rows right after it
+    layout: "result-first",
     css: FAMILIES_CSS,
     keys: {
       example: { type: "choice", values: ["six", "tb14", "dominance"], value: "six" },
@@ -587,22 +663,31 @@ export function mountWidget(el, spec = {}) {
       const orderReset = ctx.button({ label: T.orderReset, key: "order-reset", onClick: () => ctx.set({ order: EXAMPLES[ctx.state.example].ids.slice() }) });
       const orderBox = h("div", { class: "prx-control prx-fam-order", role: "group", "aria-labelledby": orderId },
         h("span", { id: orderId, class: "prx-fam-order-label", text: T.orderLabel }), orderList, orderReset.root);
-      ctx.controls.append(exampleRadio.root, familyRadio.root, gRadio.root, tau.root, orderBox);
+      // review 044 repair (X-01, G3-F4): the order editor, used only by the contiguous-cuts row (whose head names the
+      // order), in a closed box of the controls row; τ, the control the rows answer to, last before the preset row
+      ctx.controls.append(exampleRadio.root, familyRadio.root, gRadio.root);
+      ctx.disclosure({ name: "order", title: T.orderSettings, placement: "controls" }).body.append(orderBox);
+      ctx.controls.append(ctx.primaryControl(tau.root));
 
-      // --- read-out, the chosen family's label, the set-back line
+      // --- the chosen family's complete label line (with the order family's tie rule), kept in the box of search lines
       const labelLine = h("p", { class: "prx-fam-label", "data-prx-part": "readout", "data-prx-result-scope": "" });
-      ctx.controls.after(ctx.readout.node);
-      ctx.readout.node.after(labelLine);
 
-      // --- the comparison
-      const rows = h("ol", { class: "prx-fam-rows" });
+      // --- the comparison: the rows directly under the read-out (the primary graphic), then one shared line, the legend,
+      // the note and the closed box of each family's complete search line
+      const rows = ctx.primaryGraphic(h("ol", { class: "prx-fam-rows" }));
       const legend = h("div", { class: "prx-fam-legend", "data-prx-part": "legend" });
+      const shared = h("p", { class: "prx-fam-shared", "data-prx-part": "notes" });
+      const search = ctx.disclosure({ name: "search", title: T.searchTitle, placement: "none", className: "prx-fam-search" });
+      const searchChosen = h("div", { class: "prx-fam-search-item" }, h("p", { class: "prx-fam-search-name", text: T.searchChosen }), labelLine);
+      const searchRows = h("div", { class: "prx-fam-search-rows", "data-prx-part": "notes" });
+      search.body.append(searchChosen, searchRows);
       const compareBox = h("section", { class: "prx-fam-compare", "aria-label": T.compareHeading, "data-prx-part": "chart" },
         h("h4", { class: "prx-fam-heading", text: T.compareHeading }),
-        h("p", { class: "prx-fam-note", text: T.compareNote }), rows, legend);
+        rows, shared, legend, h("p", { class: "prx-fam-note", text: T.compareNote }), search.root);
 
       // --- the four-unit law (theory book ch. 14)
       const lawBox = h("section", { class: "prx-fam-law", "aria-label": T.lawHeading, "data-prx-part": "notes", hidden: true });
+      ctx.charts.classList.add("prx-fam-charts");
       ctx.charts.append(compareBox, lawBox);
 
       // ------------------------------------------------------------------------------------- drawing
@@ -633,17 +718,27 @@ export function mountWidget(el, spec = {}) {
       function toleranceParts(r) {
         return [` ${T.tolerance} `, ctx.num(r.tieTol, formatSci(r.tieTol, { trim: true })), ` ${T.toleranceGloss}`];
       }
+      // whether enumerating the order family gives the dynamic program's report and risk
+      const sameAsEnumeration = (r, enumR) => Boolean(enumR && !enumR.empty && Math.abs(enumR.risk - r.risk) <= enumR.tieTol
+        && Array.from(enumR.grade).every((g, i) => g === r.grade[i]));
       function labelParts(key, r, ex, order, { resultKey, enumR = null, chosen = false }) {
         if (r.empty) return [];
         if (key === "order") {
           const head = [labelNode(ctx, r, { key: resultKey }), " in ", orderFamilyNode(r, ex, order), " (", familySizeNode(ctx, r), ` ${T.cutReports}). `];
           if (chosen) return [...head, T.dpRule, ...toleranceParts(r)];
-          const same = enumR && !enumR.empty && Math.abs(enumR.risk - r.risk) <= enumR.tieTol
-            && Array.from(enumR.grade).every((g, i) => g === r.grade[i]);
+          const same = sameAsEnumeration(r, enumR);
           return [...head, ...(same ? fill(T.parityOk, { k: ctx.num(r.family.size, formatCount(r.family.size)) }) : [T.parityOff]), ...toleranceParts(r)];
         }
         const head = [labelNode(ctx, r, { key: resultKey }), " (", familySizeNode(ctx, r), ` ${T.reports}, ${T.everyOne}).`];
         return [...head, ...toleranceParts(r)];
+      }
+
+      // a row's short label (review 044 repair, G3-F4): the result label and the family's size, as on the row's search
+      // line, without the tolerance (said once under the rows) and the enumeration check (in the shared line)
+      function shortLabel(key, r, ex, order) {
+        if (r.empty) return [];
+        if (key === "order") return [labelNode(ctx, r, { key }), " in ", orderFamilyNode(r, ex, order), " (", familySizeNode(ctx, r), ` ${T.cutReports})`];
+        return [labelNode(ctx, r, { key }), " (", familySizeNode(ctx, r), ` ${T.reports})`];
       }
 
       function chip(members, grade, color, pal) {
@@ -687,9 +782,31 @@ export function mountWidget(el, spec = {}) {
             ro(`${key}.tie.${i}.grades`, t.grade, formatGrades(t.grade)), " · N = ", ro(`${key}.tie.${i}.N`, t.ev.N, formatCount(t.ev.N)),
             " · E = ", ctx.num(t.ev.Ew, fmtRisk(ex, t.ev.Ew)))) : []),
           ...(new Set(tied.map(t => t.ev.N)).size > 1 ? [captionNode(ctx, "different-disclosure")] : []));
-        const label = h("p", { class: "prx-fam-row-label" }, ...labelParts(key, r, ex, order, { resultKey: key, enumR }));
+        // review 044 repair (G3-F4): one compact row: the name (with its short label beside it where the row is wide),
+        // the blocks beside the bar, the numbers with the tie note; the complete search line goes to the box of search
+        // lines (searchLine). The short label comes last in the DOM, so the row's text keeps its former order up to the
+        // label; the grid of FAMILIES_CSS draws it beside the name (under it in a phone's column).
+        const tagLine = h("p", { class: "prx-fam-row-tagline" }, ...shortLabel(key, r, ex, order));
         return h("li", { class: `prx-fam-row${chosen ? " prx-fam-row-chosen" : ""}`, "data-prx-row": key, "data-prx-result-scope": "" },
-          head, blocksRow(grade, ex.ids, pal), bar, barWords, nums, tie, label);
+          head, h("div", { class: "prx-fam-row-mid" }, blocksRow(grade, ex.ids, pal), bar), barWords,
+          h("div", { class: "prx-fam-row-low" }, nums, tie), tagLine);
+      }
+
+      /** A family's complete search line in the box (its row's former label line, unchanged), after the family's name. */
+      function searchLine(key, r, ex, order, state, enumR) {
+        const n = ex.ids.length;
+        const G = Math.min(state.G, n);
+        return h("div", { class: "prx-fam-search-item" },
+          h("p", { class: "prx-fam-search-name" }, ...familyWords(key, G, n, ex, order)),
+          h("p", { class: "prx-fam-row-label" }, ...labelParts(key, r, ex, order, { resultKey: key, enumR })));
+      }
+
+      /** The shared line under the rows: the equal-risk tolerance once, then the dynamic program's enumeration check. */
+      function drawShared(results, enumOrder) {
+        const o = results.order;
+        const parity = o.empty ? [] : sameAsEnumeration(o, enumOrder)
+          ? fill(T.sharedParity, { k: ctx.num(o.family.size, formatCount(o.family.size)) }) : [T.sharedParityOff];
+        shared.replaceChildren(...fill(T.sharedTol, { tol: ctx.num(results.all.tieTol, formatSci(results.all.tieTol, { trim: true })) }), ...parity);
       }
 
       function drawLegend(ex, all, state) {
@@ -787,21 +904,25 @@ export function mountWidget(el, spec = {}) {
         const over = statedAbove(Array.from(r.grade), ex.E, { tau: state.tau, w: ex.w });
         const pairWords = (p) => `${ex.ids[p.i]} ${T.above} ${ex.ids[p.j]}`;
         const errNum = (p) => ro(`over.${ex.ids[p.i]}${ex.ids[p.j]}`, p.error, fmtErr(ex, p.error));
-        const errName = ex.fraction ? T.statedWeighted : T.errorWord;
+        const multipleCriteria = ex.E.e.length > 1;
+        const errName = multipleCriteria ? T.statedWeighted : T.errorWord;
         let overNodes;
-        if (over.pairs.length === 0) overNodes = [T.statedNone];
+        if (ev.N === 0) overNodes = ["This report states no pair directions."];
+        else if (over.pairs.length === 0) overNodes = [T.statedNone];
         else if (over.pairs.length === 1) {
           const p = over.pairs[0];
           overNodes = fill(T.statedOverOne, { pair: pairWords(p), e: errNum(p) });
-          if (ex.fraction) overNodes = overNodes.map((x) => (typeof x === "string" ? x.replace("its error", `its ${errName}`) : x));
+          if (multipleCriteria) overNodes = overNodes.map((x) => (typeof x === "string" ? x.replace("its error", `its ${errName}`) : x));
         } else {
           const items = over.pairs.map((p) => [`${pairWords(p)} (${errName} `, errNum(p), ")"]);
           const list = items.flatMap((it, k) => (k === 0 ? it : [k === items.length - 1 ? T.blockAnd : ", ", ...it]));
           overNodes = fill(T.statedOverMany, { list });
         }
+        // review 044 repair (X-12): at an optimizer tie the sentence names the shown report as one of the tied ones
+        // (labels.js tieNode: " (one of 2 equal-risk best reports; showing the first)"); the rows list every tied report
         ctx.readout.set([
           "τ = ", ctx.num(state.tau, formatSetting(state.tau)), ", ", ...familyWords(key, G, n, ex, order, { lower: true }),
-          ": the best report is ", ...blocksNodes(Array.from(r.grade), ex.ids), `, ${T.riskWords} `, ro("risk", r.risk, fmtRisk(ex, r.risk)),
+          ": the best report is ", ...blocksNodes(Array.from(r.grade), ex.ids), tieNode(ctx, r), `, ${T.riskWords} `, ro("risk", r.risk, fmtRisk(ex, r.risk)),
           ". ", ...overNodes,
         ]);
         labelLine.replaceChildren(...labelParts(key, r, ex, order, { resultKey: "chosen", chosen: true }));
@@ -841,6 +962,9 @@ export function mountWidget(el, spec = {}) {
             drawHeadline(state, key, results[key], evals[key], ex, order);
             rows.replaceChildren(...["all", "atmost", "exact", "order"].map((k) => drawRow(k, results[k], evals[k], ex, order, all, top, state,
               k === "order" ? enumOrder : null, pal, k === key)));
+            drawShared(results, enumOrder);
+            searchRows.replaceChildren(...["all", "atmost", "exact", "order"].filter((k) => !results[k].empty)
+              .map((k) => searchLine(k, results[k], ex, order, state, k === "order" ? enumOrder : null)));
             drawLegend(ex, all, state);
             drawLaw(ex, state);
             ctx.caption.textContent = ex.key === "six" ? T.noteSix : ex.key === "dominance" ? "An illustrative two-state law from the postrank theory book, chapter 10. The best report is computed separately within each declared family; the separation theorem concerns unrestricted reports." : T.noteTb14;

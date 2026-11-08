@@ -4,12 +4,7 @@ subtitle: "2.19 · after the postrank theory book, chapters 8 and 16"
 description: "Pooled errors, conditional mean error shares and zero-imputed means when disclosure varies."
 ---
 
-When disclosure varies across outcomes, several averages of error shares are possible. The ratio of expected wrong
-and stated counts weights outcomes in proportion to disclosure. The mean of the defined report fractions instead
-conditions on positive disclosure and weights those outcomes by their probabilities. Assigning zero to outcomes with
-no disclosure yields a third quantity. The examples calculate all three from common counts and probabilities,
-including a randomisation over complete reports and a repeated-dataset simulation. Their differences follow from
-their denominators and the treatment of outcomes with no stated direction.
+When the number of stated directions varies across reports, the average error share depends on how the reports enter the calculation. Dividing the expected wrong count by the expected stated count gives more weight to reports that state more pairs. Averaging the report-level fractions instead gives each report its probability weight, conditional on stating at least one direction. A third calculation assigns zero to a report that states none. We apply all three to the same counts and probabilities for a lottery over reports and for a simulation with repeated datasets.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -24,13 +19,11 @@ their denominators and the treatment of outcomes with no stated direction.
 - **Three outcomes.** Pooled pairs give 2/5, the mean among disclosing outcomes is 1/2, and zero-imputation gives
   1/3. The chance of disclosure is 2/3 and mean disclosure is 5/9. Changes to wrong and stated counts affect these summaries differently because their denominators differ. The silent outcome has an undefined fraction.
 - **More weight on errors.** Giving the error-heavy outcome more probability changes the pooled ratio to 4/7,
-  the disclosing mean to 2/3 and the zero-imputed mean to 1/2. Relative weights are normalised; they describe the
-  distribution over outcomes, rather than extra units inside an outcome.
+  the disclosing mean to 2/3 and the zero-imputed mean to 1/2. We normalize the weights to give probabilities for the outcomes. The number of units in each outcome stays fixed.
 - **A complete-report lottery.** The four-unit example mixes entire reports. Pooled expected counts give 1/8,
   while the mean report fraction is 49/400. The lottery probability weights each complete report and its disclosure.
   Expected weighted errors are averaged within a report before the reporting lottery is applied.
-- **All silent.** Both ratio-based summaries read “NA: no disclosure”; the zero-imputed mean is 0. That zero is a
-  convention, not evidence that a disclosed direction was accurate. The probability of any disclosure is reported separately.
+- **All silent.** Both ratio-based summaries read “NA: no disclosure.” The zero-imputed mean is 0 because the convention assigns zero to every silent outcome. The probability of any disclosure is reported separately.
 - **Twenty datasets.** A simulated league gives pooled error .0892 and a disclosing mean .0891. The running curves and individual counts describe the averages over the selected number of datasets. The true values stay fixed while each
   dataset produces fresh estimates and its own graded report.
 
@@ -49,4 +42,4 @@ c(pooled=sum(A)/sum(N), disclosing=mean((A/N)[N>0]), zero_imputed=mean(ifelse(N>
 
 Standalone: [averaging-errors](../../embed/averaging-errors.html), for example `?mode=replays&replays=5&cap=1`.
 
-Related applications: [Expected and realised errors among stated directions](disclosed-errors.qmd), [Error rates under two denominators](two-denominators.qmd).
+Related applications: [Expected and realized errors among stated directions](disclosed-errors.qmd), [Error rates under two denominators](two-denominators.qmd).

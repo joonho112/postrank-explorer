@@ -25,6 +25,10 @@
 // Keys: priorSd (number .02–.60, clamped, not snapped), equalSe (on/off, 1/0, true/false, yes/no), seed (integer; the
 // frozen draw LEAGUE_SEED is the default; no control, the note shows it) and view (1 or 2).
 //
+// Layout (review 044 repair, X-01): base.js's result-first frame, so the read-out sits directly under the controls and
+// the preset row (as it did, moved there by hand before); the units figure, which the prior SD moves, is the primary
+// graphic (ctx.primaryGraphic). The composition is unchanged.
+//
 // Exports for the apps that build on this one (1.4 winners-curse, 1.6 shrinkage-price):
 //   CONFIG, parseOnOff(v)
 //   compute({ priorSd, equalSe, seed })   the posterior and every number both views show, from the engine
@@ -76,7 +80,7 @@ export const CONFIG = Object.freeze({
     dashes: Object.freeze({ small: null, medium: "5,3", large: "1.5,2.5" }),
   }),
   text: Object.freeze({
-    gloss: "In plain words: this prior was chosen for teaching, and this browser computes the posterior from it.",
+    gloss: "The units share a normal prior. The likelihood for each unit uses its estimate and standard error.",
     sliderLabel: "Prior SD",
     // the prior's center is the average of the league's true values (0 by construction, set by hand): the claims about
     // the prior SD rest on it
@@ -221,12 +225,17 @@ const EXPECTED_RAW = expectedMisorderedPairs(THETA.slice(), REAL_SE.slice(), {})
 
 const CSS = `
 /* a wide slider keeps its hint to fewer lines, so the figures start higher; the toggle and its hint take the rest of
-   the row */
-.prx-shrink .prx-controls > .prx-slider { flex: 1 1 26rem; max-width: 32rem; }
-.prx-shrink .prx-controls > .prx-toggle { flex: 1 1 16rem; max-width: 26rem; }
+   the row. Review 044 repair (X-01): with the result-first frame's space under the read-out, the slider takes what the
+   toggle does not need (up to 42rem: two lines of hint on a page at 1280), so the slider, the read-out and the whole
+   units figure still fit one screen; the view radios sit a little closer to the figure */
+.prx-shrink .prx-controls > .prx-slider { flex: 1 1 26rem; max-width: 42rem; }
+.prx-shrink .prx-controls > .prx-toggle { flex: 0 1 16rem; max-width: 26rem; }
+@media (max-width: 30em) {
+  .prx-shrink .prx-controls > .prx-toggle { flex-grow: 1; }
+}
 .prx-shrink .prx-toggle { flex-wrap: wrap; }
 .prx-shrink .prx-toggle > .prx-hint { flex: 1 1 100%; margin: 0.25rem 0 0; }
-.prx-shrink .prx-shrink-views { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin: 0 0 0.5rem; }
+.prx-shrink .prx-shrink-views { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin: 0 0 0.25rem; }
 .prx-shrink .prx-shrink-views > legend { flex: 1 1 100%; }
 .prx-shrink .prx-shrink-charts { container-type: inline-size; }
 .prx-shrink .prx-shrink-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
@@ -400,7 +409,7 @@ export function unitsMarks(c, P, lay, { truth = false, equalSe = false, pxPerUni
   return [
     truth ? P.rect(far, { y1: (d) => d.y - C.band, y2: (d) => d.y + C.band, fill: c.plotGrid }) : null,
     P.ruleX([CONFIG.priorMean], { stroke: c.plotAxis, strokeDasharray: C.rule }),
-    // a halo in the panel colour keeps the dashed prior-mean line from running through a header on a narrow figure
+    // a halo in the panel color keeps the dashed prior-mean line from running through a header on a narrow figure
     P.text(lay.heads, { frameAnchor: "left", y: "y", text: (d) => heads[d.group], dx: -C.marginLeft + C.headInset, textAnchor: "start", fill: c.plotFg, fontWeight: "bold",
       stroke: c.plotBg, strokeWidth: C.headHalo, paintOrder: "stroke" }),
     P.text(lay.rows, { frameAnchor: "left", y: "y", text: "id", dx: C.idDx, textAnchor: "end", fill: c.plotMuted, fontSize: C.idSize }),
@@ -520,6 +529,8 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     title: CONFIG.title,
     className: CONFIG.className,
+    // review 044 repair (X-01): the read-out directly under the controls and the preset row
+    layout: "result-first",
     css: CSS,
     keys: {
       priorSd: { type: "number", min: CONFIG.priorSd.min, max: CONFIG.priorSd.max, step: CONFIG.priorSd.step, value: CONFIG.priorSd.value },
@@ -545,8 +556,7 @@ export function mountWidget(el, spec = {}) {
       equal.root.append(equalHint);
       equal.input.setAttribute("aria-describedby", equalHint.id);
       ctx.controls.append(prior.root, equal.root);
-      // the read-out sits between the controls and the figures
-      ctx.controls.after(ctx.readout.node);
+      // (the result-first frame puts the read-out between the controls and the figures)
 
       // --- views and figures: the units figure, then the side panel (order in view 1, price in view 2)
       const views = ctx.radioGroup({
@@ -557,7 +567,8 @@ export function mountWidget(el, spec = {}) {
       ctx.part("controls", views.root);
       // one Tab stop for the view radios: only the checked radio is tabbable, as in a native group
       const syncViewStops = () => views.inputs.forEach((r) => (r.checked ? r.removeAttribute("tabindex") : r.setAttribute("tabindex", "-1")));
-      const unitsSlot = h("div", { class: "prx-shrink-units-chart" });
+      // the units figure is the graphic the prior SD moves, first under the read-out (base.js primaryGraphic)
+      const unitsSlot = ctx.primaryGraphic(h("div", { class: "prx-shrink-units-chart" }));
       const unitsKey = h("div", { class: "prx-shrink-key", "data-prx-part": "legend" });
       const sizesKey = h("p", { class: "prx-shrink-note", "data-prx-part": "notes" });
       const unitsBox = h("section", { class: "prx-shrink-units", "aria-label": CONFIG.title }, unitsSlot, unitsKey, sizesKey);
@@ -692,15 +703,20 @@ export function mountWidget(el, spec = {}) {
       function drawReadout(state, r) {
         const ps = ro("prior-sd", state.priorSd, formatSetting(state.priorSd));
         const order = [T.readOrder, ro("reordered", r.reordered, formatCount(r.reordered)), T.readOf, ro("pairs", M, formatCount(M)), T.readPairs];
+        const mse = (v) => formatDecimal(v, { digits: CONFIG.digits.mse });
+        const view = state.view !== 2 ? [] : state.equalSe
+          ? [" Against the true values: equal SEs preserve the estimate order."]
+          : [" Against the true values in this draw, average squared error is ", ctx.num(r.mseEst, mse(r.mseEst)),
+            " for the estimates and ", ctx.num(r.msePost, mse(r.msePost)), " for the posterior means."];
         if (state.equalSe) {
           const u = r.bySize[0];
           ctx.readout.set([T.readPrior, ps, T.readEvery, ro("equal-se", CONFIG.equalSe, formatSetting(CONFIG.equalSe)), T.readAll,
-            ro("moved-all", u.moved, fmtShare(u.moved)), T.readWay, zero(), ...order]);
+            ro("moved-all", u.moved, fmtShare(u.moved)), T.readWay, zero(), ...order, ...view]);
           return;
         }
         const [s, m, l] = r.bySize;
         ctx.readout.set([T.readPrior, ps, T.readSmall, ro("moved-small", s.moved, fmtShare(s.moved)), T.readWay, zero(),
-          T.readMedium, ro("moved-medium", m.moved, fmtShare(m.moved)), T.readLarge, ro("moved-large", l.moved, fmtShare(l.moved)), ...order]);
+          T.readMedium, ro("moved-medium", m.moved, fmtShare(m.moved)), T.readLarge, ro("moved-large", l.moved, fmtShare(l.moved)), ...order, ...view]);
       }
 
       return {

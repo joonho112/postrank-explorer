@@ -16,6 +16,9 @@
 //   pair card   the intervals (they touch, overlap by an amount, or lie apart; the four ends) beside the direction (the
 //               probability, and the distance between the posterior means in SDs of the difference)
 //   read-out    the level, the distance between the posterior means and the probability
+// The app uses the shared result-first frame (base.js layout "result-first"; review 044 repair, X-01): the controls and
+// the preset row, the read-out directly under them, the two figures (the difference, with the probability in the key
+// under it, is the primary graphic), then the pair card.
 // Keys: level (90 or 95; other values are ignored) and gap ("touch" in any case, or a distance in posterior SDs clamped
 // to [0, 5]; the slider stores a number, and "touch" follows the level). The app loads on the first preset, v1's
 // default: 90% intervals that just touch.
@@ -84,7 +87,7 @@ export const CONFIG = Object.freeze({
   weak: Object.freeze({ line: 1.6, dot: 2.6, opacity: 0.6 }),
   // the overlap band's thin edge (overlapMarks with outline)
   bandEdge: 1,
-  // the class of a link to another app's page (appLink; its colours are in cssFor)
+  // the class of a link to another app's page (appLink; its colors are in cssFor)
   linkClass: "prx-io-app",
   text: Object.freeze({
     levelLegend: "Interval level",
@@ -378,6 +381,8 @@ export function drawDifference(el, t) {
   const curve = densityPoints(mu, t.sdDiff, lo, hi, [0, mu]);
   const above = curve.filter((p) => p.x >= 0);
   const peakY = normalPdf(0) / t.sdDiff;
+  // Keep the peak label away from the vertical zero reference when they nearly coincide.
+  const nearZero = Math.abs(mu) < .12 * (hi - lo);
   const peak = { x: mu, y: peakY, text: T.diffName };
   const points = [
     { key: "zero", x: 0, y: normalPdf((0 - mu) / t.sdDiff) / t.sdDiff },
@@ -406,7 +411,8 @@ export function drawDifference(el, t) {
       P.lineY(curve, { x: "x", y: "y", stroke: c.post, strokeWidth: TC.diffLine, strokeDasharray: TC.dashDiff }),
       P.ruleX([0], { stroke: c.plotAxis, strokeWidth: TC.diffLine }),
       P.text([peak], {
-        x: "x", y: "y", text: "text", dy: TC.labelDy, textAnchor: "middle", fill: c.plotFg, fontWeight: "bold",
+        x: "x", y: "y", text: "text", dy: TC.labelDy, dx: nearZero ? (mu >= 0 ? 6 : -6) : 0,
+        textAnchor: nearZero ? (mu >= 0 ? "start" : "end") : "middle", fill: c.plotFg, fontWeight: "bold",
         stroke: c.plotBg, strokeWidth: TC.halo, paintOrder: "stroke",
       }),
     ],
@@ -461,6 +467,9 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: CONFIG.className,
     css: cssFor(CONFIG.className),
+    // the shared result-first frame (review 044 repair, X-01): the read-out directly under the controls and the preset
+    // row; base.js only moves nodes (keys, presets, hooks and the live region are the same)
+    layout: "result-first",
     keys: {
       level: { type: "choice", values: CONFIG.levels, value: D.level },
       gap: { type: "custom", value: D.gap, parse: (v) => parseGap(v) },
@@ -493,13 +502,15 @@ export function mountWidget(el, spec = {}) {
       const topKey = keyNode(ctx);
       const diffSlot = h("div", { class: "prx-io-panel" });
       const diffKey = keyNode(ctx);
+      // the difference with the probability in its key: the graphic whose shaded area the slider changes and whose
+      // number answers the question (review 044, X-01; base.js primaryGraphic)
+      const diffView = ctx.primaryGraphic(h("div", { class: "prx-io-diff" }, ctx.panelTitle(T.diffHead, { className: "prx-io-heading" }), diffSlot, diffKey));
       ctx.charts.append(h("section", { class: "prx-io-view prx-io-touch", "aria-label": T.topHead },
-        ctx.panelTitle(T.topHead, { className: "prx-io-heading" }), topSlot, topKey,
-        h("div", { class: "prx-io-diff" }, ctx.panelTitle(T.diffHead, { className: "prx-io-heading" }), diffSlot, diffKey)));
+        ctx.panelTitle(T.topHead, { className: "prx-io-heading" }), topSlot, topKey, diffView));
 
-      // --- pair card (before the read-out) and caption
+      // --- pair card (after the figures; the result-first frame puts the read-out above them) and caption
       const card = pairCard(ctx);
-      ctx.root.insertBefore(card.root, ctx.readout.node);
+      ctx.charts.append(card.root);
       ctx.caption.replaceChildren(captionNode(ctx, "teaching-posterior"), ". ", T.captionScope);
 
       const amountNode = (t, name) => k.dec(Math.abs(t.amount), CONFIG.digits.amount, name);

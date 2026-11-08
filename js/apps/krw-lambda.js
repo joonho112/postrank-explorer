@@ -4,7 +4,7 @@ import { canvasLayer, gradeColors, labelOn, numText, palette, parseColor, plot }
 import { formatCount, formatDecimal, formatRisk, formatProb, formatSetting, formatShare, formatSizes } from '../shared/format.js';
 import { captionNode } from '../shared/labels.js';
 import { relationChange, statedAbove, unitRelationCounts } from '../pr-core.js';
-import { KRW_COMMON_CSS, ARCHIVE_KEYS, archiveControls, archiveSnapshot, readKrwModel, blockOrder, createKrwHeader, createArchiveReadout, appendKrwNotice, ro } from './krw-common.js';
+import { KRW_COMMON_CSS, ARCHIVE_KEYS, archiveControls, archiveSnapshot, readKrwModel, blockOrder, createKrwHeader, riskDigits, appendKrwNotice, ro } from './krw-common.js';
 const layers = new WeakMap();
 const grids = new WeakMap(), changes = new WeakMap(), pairErrors = new WeakMap();
 // Only the paint ramp is prepared here; every probability remains the released value.
@@ -44,11 +44,15 @@ export function drawStatedErrorMatrix(ctx, slot, model, c, { sort = 'mean' } = {
     }
     return fig;
 }
-const CSS = `${KRW_COMMON_CSS}.prx-kr .kr-gridchart{min-width:0}.prx-kr .kr-purples{background:linear-gradient(90deg,var(--prx-purples-1),var(--prx-purples-4),var(--prx-purples-7));width:3rem}.prx-kr .kr-grid-intro{font-size:.85rem}.prx-kr .kr-swatch{flex-shrink:0}.prx-kr .kr-progress{min-height:1.5em;font-size:.85rem;margin:.3rem 0}`;
+const CSS = `${KRW_COMMON_CSS}.prx-kr .kr-gridchart{min-width:0}.prx-kr .kr-purples{background:linear-gradient(90deg,var(--prx-purples-1),var(--prx-purples-4),var(--prx-purples-7));width:3rem}.prx-kr .kr-grid-intro{font-size:.85rem}.prx-kr .kr-swatch{flex-shrink:0}.prx-kr .kr-progress{min-height:1.5em;font-size:.85rem;margin:.3rem 0}
+.prx-kr .kr-lambda-summary,.prx-kr .kr-lambda-change{margin:0}.prx-kr .kr-lambda-change{font-weight:600}`;
 export function mountWidget(el, spec = {}) {
-    return createWidget(el, spec, { name: 'krw-lambda', className: 'prx-kr', css: CSS, label: 'KRW’s complete lambda grid and stated errors', keys: { ...ARCHIVE_KEYS }, build(ctx) {
-            const { h } = ctx, controls = archiveControls(ctx), header = h('section', { class: 'kr-header' }), intro = h('p', { class: 'kr-grid-intro' }), Gchart = h('div'), shares = h('div'), en = h('div'), risk = h('div'), change = h('p', { class: 'kr-note' }), split = h('p', { class: 'kr-note' }), table = h('div', { class: 'kr-scroll kr-table-wrap' }), matrix = h('div', { class: 'kr-map' }), top = h('p', { class: 'kr-grade1' }), doubtful = h('div');
-            const grid = h('section', { class: 'kr-box prx-light-panel' }, h('h4', { text: 'KRW’s λ grid' }), intro, h('p', { class: 'kr-note', text: 'We read each grid card as KRW’s code left it; we do not claim that a grid card is the best card at its λ.' }), Gchart, h('div', { class: 'kr-grid' }, shares, en), risk, h('p', { class: 'kr-note' }, captionNode(ctx, 'tau-not-compared'), '. Each risk is paired with its own all-withheld risk τ. ', captionNode(ctx, 'fixed-report'), '.'), change, split, ctx.scrollRegion(table, 'All archived grid rows, with positive-tau risk unavailable at lambda zero'));
+    return createWidget(el, spec, { name: 'krw-lambda', className: 'prx-kr', css: CSS, layout: 'result-first', label: 'KRW’s complete lambda grid and stated errors', keys: { ...ARCHIVE_KEYS }, build(ctx) {
+            const { h } = ctx, controls = archiveControls(ctx), header = h('section', { class: 'kr-header' }), intro = h('p', { class: 'kr-grid-intro' }), Gchart = ctx.primaryGraphic(h('div')), shares = h('div'), en = h('div'), risk = h('div'), split = h('p', { class: 'kr-note' }), table = h('div', { class: 'kr-scroll kr-table-wrap' }), matrix = h('div', { class: 'kr-map' }), top = h('p', { class: 'kr-grade1' }), doubtful = h('div');
+            const slider = ctx.controls.querySelector('input[type="range"]');
+            ctx.primaryControl(slider);
+            ctx.afterPresets(slider.closest('.prx-control'));
+            const grid = h('section', { class: 'kr-box prx-light-panel' }, h('h4', { text: 'KRW’s λ grid' }), Gchart, intro, h('p', { class: 'kr-note', text: 'We read each grid card as KRW’s code left it; we do not claim that a grid card is the best card at its λ.' }), h('div', { class: 'kr-grid' }, shares, en), risk, h('p', { class: 'kr-note' }, captionNode(ctx, 'tau-not-compared'), '. Each risk is paired with its own all-withheld risk τ. ', captionNode(ctx, 'fixed-report'), '.'), h('p', { class: 'kr-note', text: 'Neighbor changes compare adjacent grid rows, not the last setting you visited.' }), split, ctx.scrollRegion(table, 'All archived grid rows, with positive-tau risk unavailable at lambda zero'));
             ctx.charts.append(grid, header, h('section', { class: 'kr-box prx-light-panel' }, h('h4', { text: 'All pairs of the firms, by grade' }), top, matrix, h('p', { class: 'kr-legend' }, h('span', { class: 'kr-key' }, h('span', { class: 'kr-swatch kr-purples' }), h('span', {}, 'stated: chance its direction is wrong, ', ro(ctx, null, 0, formatCount), ' to ', ro(ctx, null, .5, formatSetting), ' or greater (saturated)')), h('span', { class: 'kr-key' }, h('span', { class: 'kr-swatch', style: { background: 'var(--prx-rel-withheld)' } }), 'withheld: same grade')), doubtful));
             const headerView = createKrwHeader(ctx, header);
             appendKrwNotice(ctx);
@@ -57,7 +61,11 @@ export function mountWidget(el, spec = {}) {
                 let marks;
                 const base = (k, P) => [P.ruleX([c.lambda], { stroke: k.plotMuted, strokeDasharray: '4,3' })];
                 if (kind === 'G')
-                    marks = (k, P) => [...base(k, P), P.line(rows, { x: 'lambda', y: r => r.d.G, stroke: k.plotFg, curve: 'step-after' }), P.dot(rows, { x: 'lambda', y: r => r.d.G, r: 1.8, fill: k.plotFg }), P.dot(cur ? [cur] : [], { x: 'lambda', y: r => r.d.G, r: 5, fill: 'none', stroke: k.plotFg, strokeWidth: 2 }), P.tip(rows, P.pointerX({ x: 'lambda', y: r => r.d.G, title: tip }))];
+                    marks = (k, P) => [...base(k, P), P.line(rows, { x: 'lambda', y: r => r.d.G, stroke: k.plotFg, curve: 'step-after' }), P.dot(rows, { x: 'lambda', y: r => r.d.G, r: 1.8, fill: k.plotFg }), P.dot(cur ? [cur] : [], { x: 'lambda', y: r => r.d.G, r: 5, fill: 'none', stroke: k.plotFg, strokeWidth: 2 }), numText(cur ? [cur] : [], { x: 'lambda', y: r => r.d.G, value: r => r.d.G, format: formatCount, dx: c.lambda >= .83 ? -11 : 11, dy: -8, textAnchor: c.lambda >= .83 ? 'end' : 'start', fill: k.plotFg, stroke: k.plotBg, strokeWidth: 3, paintOrder: 'stroke', fontWeight: 'bold', render(index, scales, values, dims, context, next) {
+                        const group = next(index, scales, values, dims, context);
+                        group.querySelector('text')?.setAttribute('data-prx-readout', 'lambda-selected-grade-mark');
+                        return group;
+                    } }), P.tip(rows, P.pointerX({ x: 'lambda', y: r => r.d.G, title: tip }))];
                 else if (kind === 'shares')
                     marks = (k, P) => [...base(k, P), P.line(rows, { x: 'lambda', y: r => r.d.s, stroke: k.plotFg }), P.line(rows, { x: 'lambda', y: 'DR', stroke: k.err, strokeDasharray: '5,3' }), P.dot(cur ? [cur] : [], { x: 'lambda', y: r => r.d.s, r: 5, fill: 'none', stroke: k.plotFg }), P.dot(cur ? [cur] : [], { x: 'lambda', y: 'DR', r: 5, fill: 'none', stroke: k.err }), P.text(rows.length ? [rows.at(-1)] : [], { x: 'lambda', y: r => r.d.s, text: () => 's = N/M', dx: 4, textAnchor: 'start', fill: k.plotFg }), P.text(rows.length ? [rows.at(-1)] : [], { x: 'lambda', y: 'DR', text: () => 'DR = E/M', dx: 4, textAnchor: 'start', fill: k.errText })];
                 else if (kind === 'risk')
@@ -67,7 +75,7 @@ export function mountWidget(el, spec = {}) {
                 return plot(slot, { width, height: kind === 'G' ? 260 : 230, aspect: false, marginTop: 22, marginBottom: 42, marginLeft: 56, marginRight: kind === 'shares' ? 76 : 20, x: { domain: [0, 1], label: 'KRW’s λ', labelAnchor: 'center', labelArrow: 'none' }, y: { ...(log ? { type: 'log', ticks: [1, 2, 5, 10, 20, 50, 100] } : {}), domain, label: ylabel, labelArrow: 'none', grid: true }, alt: title, table: { caption: title, columns: [{ label: 'λ', value: 'lambda', format: formatSetting }, { label: 'Grades', value: r => r.d.G, format: formatCount }, { label: 'Pairs stated', value: r => r.d.N, format: formatCount }, { label: 's=N/M', value: r => r.d.s, format: formatShare }, { label: 'DR', value: 'DR', format: formatShare }, { label: 'E/N', value: r => r.ev.EoverN[0], format: formatShare }, { label: 'Risk at own τ', value: r => r.ev.risk, format: v => formatRisk(v) }], rows }, keyboard: { data: rows, x: 'lambda', y: kind === 'G' ? r => r.d.G : kind === 'shares' ? r => r.d.s : kind === 'risk' ? r => r.ev.risk : r => r.ev.EoverN[0], sort: false, key: r => String(r.index), label: 'Grid cards along λ. Use arrow keys to read every positive-grid card.', title: tip }, marks });
             }
             const progress = h('p', { class: 'kr-progress', 'aria-hidden': 'true' });
-            ctx.controls.append(progress);
+            grid.append(progress);
             const tables = new WeakMap();
             let generation = 0, cancelNext = null, dead = false;
             const stop = () => { generation++; cancelNext?.(); cancelNext = null; };
@@ -93,18 +101,39 @@ export function mountWidget(el, spec = {}) {
             function appendTableRows(view, all) {
                 const end = Math.min(all.length, view.rows.length + 25), fragment = ctx.doc.createDocumentFragment();
                 while (view.rows.length < end) {
-                    const r = all[view.rows.length], row = h('tr', { 'data-prx-grid-row': String(r.index) }, ...[[r.lambda, formatSetting], [r.d.G, formatCount], [r.d.N, formatCount], [r.d.s, formatShare], [r.DR, formatShare], [r.ev.EoverN[0], formatShare], [r.ev.risk, formatRisk], [r.tau === 0 ? null : r.tau, formatRisk]].map(([v, f]) => h('td', {}, ro(ctx, null, v, f))));
+                    const r = all[view.rows.length], risk = v => formatRisk(v, { digits: riskDigits(r) }),
+                        row = h('tr', { 'data-prx-grid-row': String(r.index) }, ...[[r.lambda, formatSetting], [r.d.G, formatCount], [r.d.N, formatCount], [r.d.s, formatShare], [r.DR, formatShare], [r.ev.EoverN[0], formatShare], [r.ev.risk, risk], [r.tau === 0 ? null : r.tau, risk]].map(([v, f]) => h('td', {}, ro(ctx, null, v, f))));
                     view.rows.push(row);
                     fragment.append(row);
                 }
                 view.body.append(fragment);
             }
-            function drawNotes(model, c, rows) {
+            function adjacentChangeLine(model, c) {
                 if (!changes.has(c)) changes.set(c, c.index > 1 ? relationChange(model.grid.grade[c.index - 1], c.grade) : null);
                 const ch = changes.get(c);
-                change.replaceChildren(...(ch ? ['From λ = ', ro(ctx, 'chg-prev', model.grid.lambda[c.index - 1], formatSetting), ' to ', ro(ctx, null, c.lambda, formatSetting), ': ', ro(ctx, 'chg-stated', ch.nNewDisclosed, formatCount), ' pairs newly stated, ', ro(ctx, 'chg-withheld', ch.nNewWithheld, formatCount), ' newly withheld, ', ro(ctx, 'chg-reversed', ch.nReversed, formatCount), ' reversed.'] : ['This is the first positive λ on the grid: every firm shares one grade.']));
+                return h('p', { class: 'kr-lambda-change' }, ...(ch ? [
+                    'λ ', ro(ctx, 'chg-prev', model.grid.lambda[c.index - 1], formatSetting),
+                    ' → ', ro(ctx, null, c.lambda, formatSetting),
+                    ': ', ro(ctx, 'chg-stated', ch.nNewDisclosed, formatCount), ' newly stated · ',
+                    ro(ctx, 'chg-withheld', ch.nNewWithheld, formatCount), ' withheld · ',
+                    ro(ctx, 'chg-reversed', ch.nReversed, formatCount), ' reversed',
+                ] : ['This is the first positive λ on the grid: every firm shares one grade.']));
+            }
+            function showResult(model, c) {
+                const f = v => formatRisk(v, { digits: riskDigits(c) });
+                ctx.readout.set([
+                    h('p', { class: 'kr-lambda-summary' },
+                        'λ ', ro(ctx, 'ro-lambda', c.lambda, formatSetting), ' (τ ', ro(ctx, 'ro-tau', c.tau, f), ') · ',
+                        ro(ctx, 'ro-G', c.d.G, formatCount), c.d.G === 1 ? ' grade · ' : ' grades · ',
+                        ro(ctx, 'ro-N', c.d.N, formatCount), ' of ', ro(ctx, 'ro-M', model.M, formatCount), ' pairs stated · ',
+                        'risk ', ro(ctx, 'ro-risk', c.ev.risk, f), ' · ',
+                        ...(c.d.N > 0 ? ['E/N ', ro(ctx, 'ro-EoverN', c.ev.EoverN[0], formatShare), ' · '] : []),
+                        'DR ', ro(ctx, 'ro-DR', c.DR, formatShare)), ' ', adjacentChangeLine(model, c),
+                ]);
+            }
+            function drawNotes(model, rows) {
                 const first = rows.find(r => r.d.G > 1), i = first?.grade.indexOf(1), topEstimate = model.estimate.indexOf(Math.max(...model.estimate));
-                split.replaceChildren('First split: λ ', ro(ctx, 'first-lambda', first.lambda, formatSetting), ', τ ', ro(ctx, 'first-tau', first.tau, formatSetting), ', ', model.names[i], ' alone in grade 1, ', ro(ctx, 'first-sizes', first.d.sizes, formatSizes), '. ', ...(i !== topEstimate ? [model.names[i], ' has SE ', ro(ctx, 'first-se', model.se[i], v => formatDecimal(v, { digits: 3 })), ' versus ', ro(ctx, 'top-se', model.se[topEstimate], v => formatDecimal(v, { digits: 3 })), ' for ', model.names[topEstimate], '. KRW (§VI) explain the race reversal by AutoNation’s larger standard error.'] : ['This firm also has the largest estimate.']), ' At small λ, silence is cheap: many uncertain pairs can stay within one grade. Separating one firm above the other ', ro(ctx, 'first-other-firms', model.n - 1, formatCount), ' firms states every one of those directions at once, so its posterior must be sufficiently clear of the others for that tradeoff. This explains the archived split; it is not a new optimality certificate.');
+                split.replaceChildren('First split: λ ', ro(ctx, 'first-lambda', first.lambda, formatSetting), ', τ ', ro(ctx, 'first-tau', first.tau, formatSetting), ', ', model.names[i], ' alone in grade 1, ', ro(ctx, 'first-sizes', first.d.sizes, formatSizes), '. ', ...(i !== topEstimate ? [model.names[i], ' has SE ', ro(ctx, 'first-se', model.se[i], v => formatDecimal(v, { digits: 3 })), ' versus ', ro(ctx, 'top-se', model.se[topEstimate], v => formatDecimal(v, { digits: 3 })), ' for ', model.names[topEstimate], '. KRW (§VI) explain the race reversal by AutoNation’s larger standard error.'] : ['This firm also has the largest estimate.']), ' At small λ, silence is cheap: many uncertain pairs can stay within one grade. Separating one firm above the other ', ro(ctx, 'first-other-firms', model.n - 1, formatCount), ' firms states every one of those directions at once, so its posterior must be sufficiently clear of the others for that tradeoff. The split comes from the archive, where KRW selected the card using their original probabilities.');
             }
             function drawPairNotes(model, c) {
                 if (!pairErrors.has(c)) pairErrors.set(c, statedAbove(c.grade, model.E, { tau: .5 }));
@@ -119,8 +148,8 @@ export function mountWidget(el, spec = {}) {
                 controls.render(s);
                 ctx.root.setAttribute('aria-busy', 'true');
                 progress.textContent = 'Updating the complete grid and pair matrix…';
-                ctx.readout.set(['Updating every archived card and firm pair…']);
-                const model = readKrwModel(s.criterion), cache = gridCache(model);
+                const model = readKrwModel(s.criterion), cache = gridCache(model), c = archiveSnapshot(model, s.lambda);
+                showResult(model, c);
                 let stages = null, stage = 0;
                 const next = () => {
                     if (dead || epoch !== generation) return;
@@ -128,19 +157,19 @@ export function mountWidget(el, spec = {}) {
                     try {
                         ctx.keepFocus(() => {
                             if (!cache.rows) {
-                                // Cache full engine evaluations in bounded slices; cancelled work is reused.
+                                // Cache full engine evaluations in bounded slices; canceled work is reused.
                                 const end = Math.min(model.grid.lambda.length, cache.all.length + 8);
                                 while (cache.all.length < end) cache.all.push(archiveSnapshot(model, model.grid.lambda[cache.all.length]));
                                 if (cache.all.length === model.grid.lambda.length) cache.rows = cache.all.filter(r => r.tau > 0);
                                 return;
                             }
                             if (!stages) {
-                                const { all, rows } = cache, c = archiveSnapshot(model, s.lambda), view = tableView(model);
+                                const { all, rows } = cache, view = tableView(model);
                                 stages = [
                                     () => {
                                         headerView.render(model, c);
                                         intro.replaceChildren('The grid has ', ro(ctx, 'grid-count', all.length, formatCount), ' cards, one per λ from ', ro(ctx, null, 0, formatCount), ' to ', ro(ctx, null, 1, formatCount), ' in steps of ', ro(ctx, null, .01, formatSetting), '; charts start at the first positive λ.');
-                                        drawNotes(model, c, rows);
+                                        drawNotes(model, rows);
                                     },
                                     () => drawCurve(Gchart, rows, c, { kind: 'G', title: 'Number of grades of each archived card on a log scale; current card ringed', ylabel: 'Grades G (log scale)', domain: [1, 100], log: true }),
                                     () => drawCurve(shares, rows, c, { kind: 'shares', title: 's = N/M, solid; DR = E/M, dashed vermillion', ylabel: 'Share of all pairs', domain: [0, 1] }),
@@ -155,7 +184,6 @@ export function mountWidget(el, spec = {}) {
                                     view.current.setAttribute('aria-current', 'true');
                                 }, () => drawStatedErrorMatrix(ctx, matrix, model, c, { sort: s.sort }), () => {
                                     drawPairNotes(model, c);
-                                    createArchiveReadout(ctx, model, c, ['Neighbour changes compare adjacent grid rows, not the last setting you visited.']);
                                 });
                             }
                             stages[stage++]();

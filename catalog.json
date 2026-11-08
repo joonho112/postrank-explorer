@@ -22,8 +22,14 @@
     {
       "key": "4",
       "slug": "criteria",
-      "title": "Several criteria",
-      "lead": "One common grade for two or more criteria: the weights set how much each criterion's wrong directions count; budgets protect each criterion, and a minimax rule guards the worse one. Pair probabilities from whole-state draws are all the weighted risk needs; composite and joint claims need more."
+      "title": "Multiple criteria",
+      "lead": "One common grade column can be assessed across criteria, or separate domain columns can retain a profile. Compare their report spaces, decisions and protection."
+    },
+    {
+      "key": "P",
+      "slug": "profiles",
+      "title": "Multidomain profiles",
+      "lead": "Separate ordered grades retain each domain in a profile. Additive risk can separate across domains, while joint protection can change which complete profile card is optimal."
     },
     {
       "key": "5",
@@ -314,7 +320,7 @@
         "engine"
       ],
       "credit": "Built for this site; the upward bias of the top estimates after Walters (2024, Handbook of Labor Economics), section 3.5, and Andrews, Kitagawa and McCloskey (2024).",
-      "caption": "A simulated league built for this site: thirty fictional units with fixed true values; every replay adds noise of the unit's SE to each true value, computed in this browser. The posterior means come from a posterior set by hand for teaching; postrank does not fit it.",
+      "caption": "Each replay draws new estimates at the same true values and standard errors. The chosen prior gives the posterior means.",
       "presets": [
         {
           "id": "top3",
@@ -407,7 +413,7 @@
       ],
       "math": true,
       "credit": "After Kline, Rose and Walters (2024), sections III, V.B and V.E and slide 49; the postrank theory book, ch. 20; and Walters, Mixtape slides p. 27.",
-      "caption": "a posterior set by hand for teaching; postrank does not fit it. In plain words: this prior was chosen for teaching, and this browser computes the posterior from it.",
+      "caption": "The posterior is calculated from the chosen normal prior and the estimates with their standard errors.",
       "presets": [
         {
           "id": "prior15",
@@ -494,7 +500,7 @@
         "engine"
       ],
       "credit": "Built for this site; normal-normal shrinkage after Walters, Mixtape slides p. 27; a producer's hyperparameters and a fixed-parameter experiment, after the postrank theory book, ch. 18.",
-      "caption": "a posterior set by hand for teaching; postrank does not fit it. In plain words: this prior was chosen for teaching, and this browser computes the posterior from it.",
+      "caption": "The posterior is calculated from the chosen normal prior and the estimates with their standard errors.",
       "presets": [
         {
           "id": "spread",
@@ -587,7 +593,8 @@
       ],
       "credit": "After Walters, Mixtape slides p. 13, and Kline, Rose and Walters (2024), section III.A–B and slides 43–52.",
       "math": true,
-      "caption": "Each box names its source in the theory book or the package documentation. The diagram shows no computed numbers; the chain under it computes its numbers in this browser.",
+      "caption": "Each box names its source in the theory book or the package documentation. The box headers show no computed numbers; the two units in the stages under them are computed in this browser.",
+      "presetLabel": "Worked settings (set every slider)",
       "presets": [
         {
           "id": "data",
@@ -702,7 +709,7 @@
       ],
       "credit": "π for two independent normal posteriors; the case with both SDs equal to 1 is Kline, Rose and Walters (2024), section II.E, Example 1, and slide 27.",
       "math": true,
-      "caption": "a posterior set by hand for teaching; postrank does not fit it",
+      "caption": "A specified joint distribution for two independent normal posterior values.",
       "presets": [
         {
           "id": "gap20",
@@ -770,7 +777,7 @@
       ],
       "credit": "Built for this site (bivariate normal; a shared, uncertain prior mean makes posteriors move together); dependence after the postrank theory book, ch. 9 and 18.",
       "math": true,
-      "caption": "a posterior set by hand for teaching; postrank does not fit it",
+      "caption": "Two posterior values whose dependence can change.",
       "presets": [
         {
           "id": "corr50",
@@ -864,7 +871,7 @@
         "engine"
       ],
       "credit": "Joint laws after the postrank theory book, ch. 9 (Fig. f09b).",
-      "caption": "a posterior set by hand for teaching; postrank does not fit it",
+      "caption": "The examples specify posterior distributions with fixed marginal means.",
       "presets": [
         {
           "id": "law1",
@@ -926,6 +933,9 @@
         },
         {
           "preset": "w50",
+          "open": [
+            "mixture-help"
+          ],
           "shows": [
             ".450",
             ".620",
@@ -947,7 +957,7 @@
         "engine"
       ],
       "credit": "Two posteriors set by hand for this site; interval reading after Kline, Rose and Walters (2024), section IV.C and Figure 3.",
-      "caption": "a posterior set by hand for teaching; postrank does not fit it. Two independent normal posteriors with equal SDs; computed in this browser.",
+      "caption": "Two independent normal posteriors with equal standard deviations.",
       "presets": [
         {
           "id": "touch90",
@@ -1016,7 +1026,7 @@
         "engine"
       ],
       "credit": "Built for this site; interval reading after Kline, Rose and Walters (2024), section IV.C.",
-      "caption": "a posterior set by hand for teaching; postrank does not fit it. In plain words: this prior was chosen for teaching, and this browser computes the posterior from it.",
+      "caption": "A normal posterior gives the marginal intervals and pairwise probabilities for the simulated league.",
       "presets": [
         {
           "id": "league-overlap",
@@ -1103,7 +1113,7 @@
       ],
       "math": true,
       "credit": "After Kline, Rose and Walters (2024), Figure 2A and slide 38 (first names) and slide 54 (firms).",
-      "caption": "a posterior set by hand for teaching; postrank does not fit it",
+      "caption": "The examples use specified posterior distributions for the fictional units.",
       "presets": [
         {
           "id": "six-mean",
@@ -1585,7 +1595,7 @@
         "data/released/toy-mcmc.json"
       ],
       "credit": "After the postrank theory book, ch. 15, and the postrank vignette m6.",
-      "caption": "Two units, one criterion: the posterior gives A above B and A below B one half each, after the postrank theory book, chapter 15; a posterior set by hand for teaching; postrank does not fit it. Every chain's first draw is A above B or A below B with chance one half each; the chains are simulated in this browser.",
+      "caption": "The two directions have probability one half each, as in chapter 15 of the postrank theory book. The chains start from that distribution.",
       "presets": [
         {
           "id": "book",
@@ -1911,7 +1921,7 @@
         "data/released/six-sites.json"
       ],
       "credit": "After Kline, Rose and Walters (2024), slides 23–25, re-expressed as postrank risk.",
-      "caption": "Six fictional sites from the postrank tutorial, score A only; their normal posteriors are specified for teaching and taken as given. Every report in the family is evaluated in this browser.",
+      "caption": "We use the normal posteriors for score A at six fictional sites from the postrank tutorial. The calculation evaluates every eligible report.",
       "presets": [
         {
           "id": "tau20-cap3",
@@ -2602,7 +2612,7 @@
         "data/released/thirty-sites.json"
       ],
       "credit": "After Kline, Rose and Walters (2024), slides 61–63 and 69; card layout after the postrank package's report-card plot.",
-      "caption": "A posterior set by hand for teaching; postrank does not fit it.",
+      "caption": "The grade report uses the posterior specified for the example.",
       "presets": [
         {
           "id": "six-grade",
@@ -2839,6 +2849,11 @@
           "id": "joint-solver",
           "label": "Joint search: twenty units",
           "query": "view=solver&n=6&cap=3&tau=.25&pattern=0&invalid=false&step=15&solverN=20&timeLimit=2"
+        },
+        {
+          "id": "joint-solver-six",
+          "label": "Joint: six units",
+          "query": "view=solver&n=6&cap=3&tau=.25&pattern=0&invalid=false&step=15&solverN=6&timeLimit=2"
         }
       ],
       "try": [
@@ -2879,6 +2894,14 @@
             "20 league units",
             ".1750",
             ".1500"
+          ]
+        },
+        {
+          "preset": "joint-solver-six",
+          "shows": [
+            "6 league units",
+            ".1455",
+            "32 contiguous reports"
           ]
         }
       ],
@@ -2958,6 +2981,9 @@
         },
         {
           "preset": "small",
+          "open": [
+            "bounds"
+          ],
           "shows": [
             ".0132",
             "1",
@@ -3583,6 +3609,9 @@
             "6,051",
             "21",
             ".1612"
+          ],
+          "open": [
+            "reports"
           ]
         },
         {
@@ -3658,6 +3687,9 @@
             "3/10",
             ".2500",
             ".1833"
+          ],
+          "open": [
+            "matched"
           ]
         },
         {
@@ -3694,7 +3726,7 @@
       "id": "3.7",
       "name": "rule-comparison",
       "part": "3",
-      "presetLabel": "Compare",
+      "presetLabel": "Examples",
       "title": "Compare rules at the same disclosure",
       "idea": "A rule is compared with the frontier at its own disclosure, the lowest expected wrong count a report or a mixture of two in the family attains with as many stated pairs, not with the best report at some τ.",
       "status": "built",
@@ -3749,6 +3781,9 @@
       "try": [
         {
           "preset": "same-n",
+          "open": [
+            "mixture"
+          ],
           "shows": [
             "21",
             "3.114",
@@ -3901,7 +3936,7 @@
         }
       ],
       "caption": "Units U01–U08, or all thirty units, of the simulated league under a normal posterior (prior mean 0, SD .15); flags against the mean of all 30 league estimates.",
-      "presetLabel": "Compare"
+      "presetLabel": "Examples"
     },
     {
       "id": "3.9",
@@ -4520,21 +4555,24 @@
           "preset": "uncertain",
           "shows": [
             ".5000",
-            ".0000"
+            "0"
           ]
         },
         {
           "preset": "zero-weight",
           "shows": [
-            ".0000",
+            "0",
             "1.0000"
           ]
         },
         {
           "preset": "latent-ties",
+          "open": [
+            "data"
+          ],
           "shows": [
-            ".600",
-            ".900",
+            ".6000",
+            ".9000",
             ".7500"
           ]
         }
@@ -4890,13 +4928,16 @@
             ".7500",
             ".3000",
             "1.0000",
-            ".0000",
+            "0",
             "1/2",
             "2/1"
           ]
         },
         {
           "preset": "scale25",
+          "open": [
+            "data"
+          ],
           "shows": [
             ".250",
             ".2500"
@@ -4911,6 +4952,9 @@
         },
         {
           "preset": "ch19",
+          "open": [
+            "data"
+          ],
           "shows": [
             "75",
             "1/2/2/3",
@@ -4948,7 +4992,7 @@
         "data/released/six-sites.json"
       ],
       "credit": "Protections after the postrank theory book, ch. 13.",
-      "caption": "Six fictional sites, independent Normal posteriors on scores A and B; a posterior set by hand for teaching; postrank does not fit it.",
+      "caption": "Six fictional sites with independent normal posteriors for scores A and B.",
       "presets": [
         {
           "id": "loose",
@@ -5131,9 +5175,8 @@
         {
           "preset": "zero-weight",
           "shows": [
-            ".0000",
-            "1.0000",
-            "0"
+            "0",
+            "1.0000"
           ]
         },
         {
@@ -5381,7 +5424,7 @@
         "data/released/toy-joint-draws.json"
       ],
       "credit": "After the postrank vignettes m3 and inputs-and-producers.",
-      "caption": "The package toy’s actual 32 complete IID states. Synthetic: no real units, observations or fitted models. Data licence CC BY 4.0.",
+      "caption": "The package toy’s actual 32 complete IID states. Synthetic: no real units, observations or fitted models. Data license CC BY 4.0.",
       "presets": [
         {
           "id": "original",
@@ -5477,7 +5520,7 @@
         "engine"
       ],
       "credit": "After the postrank theory book, ch. 19 and 21. Firms as adapted in postrank 1.1.0 (pr_case_krw). 12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde).",
-      "caption": "Six fictional sites and restated finite teaching laws; case views carry their released conditioning, attribution and licence notices. Four nonexclusive tests under the supplied law; same grade means not compared.",
+      "caption": "Six fictional sites and restated finite teaching laws; case views carry their released conditioning, attribution and license notices. Four nonexclusive tests under the supplied law; same grade means not compared.",
       "presets": [
         {
           "id": "coherence",
@@ -5525,14 +5568,14 @@
           "preset": "coherence",
           "shows": [
             ".1019",
-            ".008513"
+            "+.008513"
           ]
         },
         {
           "preset": "certain-conflict",
           "shows": [
             ".1667",
-            ".025"
+            "+.025000"
           ]
         },
         {
@@ -5625,7 +5668,7 @@
         {
           "preset": "halfway",
           "shows": [
-            ".25"
+            ".250"
           ]
         },
         {
@@ -5644,10 +5687,10 @@
         {
           "preset": "chapter",
           "shows": [
-            ".87",
-            ".75",
+            ".870",
+            ".750",
             "5",
-            "2.6"
+            "2.600"
           ]
         }
       ]
@@ -5746,6 +5789,372 @@
       ]
     },
     {
+      "id": "P.1",
+      "name": "profile-common-vs-domain",
+      "part": "P",
+      "title": "Common or profile?",
+      "idea": "Common grades or separate priorities.",
+      "status": "built",
+      "from": "P2 multidomain profile theory",
+      "data": [
+        "engine"
+      ],
+      "credit": "JoonHo Lee; postrank multidomain profile decisions (postrank 1.2.0).",
+      "caption": "Complete finite teaching law; exact arithmetic; optimum within the stated candidate bank.",
+      "presets": [
+        {
+          "id": "aligned",
+          "label": "Aligned priorities",
+          "query": "law=aligned&tauIndex=2&weightIndex=0&unit=A&report=profile&candidate=canonical"
+        },
+        {
+          "id": "crossed",
+          "label": "Crossed priorities",
+          "query": "law=crossed&tauIndex=2&weightIndex=0&unit=A&report=profile&candidate=canonical"
+        },
+        {
+          "id": "low-tau",
+          "label": "Lower withholding cost",
+          "query": "law=crossed&tauIndex=0&weightIndex=0&unit=A&report=profile&candidate=canonical"
+        },
+        {
+          "id": "unequal-weights",
+          "label": "Greater weight on S",
+          "query": "law=crossed&tauIndex=2&weightIndex=1&unit=A&report=profile&candidate=canonical"
+        }
+      ],
+      "try": [
+        {
+          "preset": "aligned",
+          "shows": [
+            "1/10"
+          ]
+        },
+        {
+          "preset": "crossed",
+          "shows": [
+            "1/4",
+            "1/10",
+            "3/20"
+          ]
+        },
+        {
+          "preset": "low-tau",
+          "shows": [
+            "1/20"
+          ]
+        },
+        {
+          "preset": "unequal-weights",
+          "shows": [
+            "9/10",
+            "9/50",
+            "1/10",
+            "2/25"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P.2",
+      "name": "profile-separability",
+      "part": "P",
+      "title": "Separate or joint?",
+      "idea": "Additive loss. A joint guard can change the choices.",
+      "status": "built",
+      "from": "P2 multidomain profile theory",
+      "data": [
+        "engine"
+      ],
+      "credit": "JoonHo Lee; postrank multidomain profile decisions (postrank 1.2.0).",
+      "caption": "Complete finite teaching law; exact arithmetic; optimum within the stated candidate bank.",
+      "presets": [
+        {
+          "id": "dependent-coincident",
+          "label": "Dependent domains, separate choices",
+          "query": "couplingIndex=10&zeroWeight=false&protected=false&candidate=p%3A1%2C2%7C1%2C2"
+        },
+        {
+          "id": "dependent-disjoint",
+          "label": "Different dependence, same minimum",
+          "query": "couplingIndex=0&zeroWeight=false&protected=false&candidate=p%3A1%2C2%7C1%2C2"
+        },
+        {
+          "id": "zero-weight",
+          "label": "Zero loss weight in S",
+          "query": "couplingIndex=0&zeroWeight=true&protected=false&candidate=p%3A1%2C2%7C1%2C2"
+        },
+        {
+          "id": "independent-joint",
+          "label": "Independent domains with a joint guard",
+          "query": "couplingIndex=1&zeroWeight=false&protected=true&candidate=p%3A1%2C2%7C1%2C2"
+        },
+        {
+          "id": "guarded-coincident",
+          "label": "Joint guard with coincident failures",
+          "query": "couplingIndex=10&zeroWeight=false&protected=true&candidate=p%3A1%2C2%7C1%2C2"
+        }
+      ],
+      "try": [
+        {
+          "preset": "dependent-coincident",
+          "shows": [
+            "1/10"
+          ]
+        },
+        {
+          "preset": "dependent-disjoint",
+          "shows": [
+            "1/10"
+          ]
+        },
+        {
+          "preset": "zero-weight",
+          "shows": [
+            "1/10"
+          ]
+        },
+        {
+          "preset": "independent-joint",
+          "shows": [
+            "1/10",
+            "19/100",
+            "3/20",
+            "7/40"
+          ]
+        },
+        {
+          "preset": "guarded-coincident",
+          "shows": [
+            "1/10"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P.3",
+      "name": "profile-dependence",
+      "part": "P",
+      "title": "Error overlap",
+      "idea": "Same domain laws. Different decisions.",
+      "status": "built",
+      "from": "P2 multidomain profile theory",
+      "data": [
+        "engine"
+      ],
+      "credit": "JoonHo Lee; postrank multidomain profile decisions (postrank 1.2.0).",
+      "caption": "Complete finite teaching law; exact arithmetic; optimum within the stated candidate bank.",
+      "presets": [
+        {
+          "id": "disjoint",
+          "label": "Disjoint failures",
+          "query": "couplingIndex=0&candidate=p%3A1%2C2%7C1%2C2"
+        },
+        {
+          "id": "independent",
+          "label": "Independent domains",
+          "query": "couplingIndex=1&candidate=p%3A1%2C2%7C1%2C2"
+        },
+        {
+          "id": "boundary",
+          "label": "At the joint cap",
+          "query": "couplingIndex=5&candidate=p%3A1%2C2%7C1%2C2"
+        },
+        {
+          "id": "coincident",
+          "label": "Coincident failures",
+          "query": "couplingIndex=10&candidate=p%3A1%2C2%7C1%2C2"
+        }
+      ],
+      "try": [
+        {
+          "preset": "coincident",
+          "shows": [
+            "1/10",
+            "3/20"
+          ]
+        },
+        {
+          "preset": "disjoint",
+          "shows": [
+            "1/10",
+            "1/5",
+            "7/40"
+          ]
+        },
+        {
+          "preset": "independent",
+          "shows": [
+            "1/100",
+            "19/100"
+          ]
+        },
+        {
+          "preset": "boundary",
+          "shows": [
+            "1/20",
+            "3/20"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P.4",
+      "name": "profile-resolution",
+      "part": "P",
+      "title": "Budget and grades",
+      "idea": "More budget can shift detail between domains.",
+      "status": "built",
+      "from": "P2 multidomain profile theory",
+      "data": [
+        "engine"
+      ],
+      "credit": "JoonHo Lee; postrank multidomain profile decisions (postrank 1.2.0).",
+      "caption": "Complete finite teaching law; exact arithmetic; optimum within the stated candidate bank.",
+      "presets": [
+        {
+          "id": "lower-budget",
+          "label": "Tighter joint budget",
+          "query": "noiseIndex=1&budgetIndex=3&candidate=canonical"
+        },
+        {
+          "id": "larger-budget",
+          "label": "Larger joint budget",
+          "query": "noiseIndex=1&budgetIndex=5&candidate=canonical"
+        },
+        {
+          "id": "both-domains",
+          "label": "Both domains disclosed",
+          "query": "noiseIndex=1&budgetIndex=6&candidate=canonical"
+        },
+        {
+          "id": "more-reversals",
+          "label": "More posterior reversals",
+          "query": "noiseIndex=2&budgetIndex=6&candidate=canonical"
+        }
+      ],
+      "try": [
+        {
+          "preset": "lower-budget",
+          "shows": [
+            "1",
+            "3/40",
+            "1/5",
+            "1/20",
+            "2"
+          ]
+        },
+        {
+          "preset": "larger-budget",
+          "shows": [
+            "1/8",
+            "11/80",
+            "1/10",
+            "1",
+            "2"
+          ]
+        },
+        {
+          "preset": "both-domains",
+          "shows": [
+            "3/20",
+            "7/80",
+            "2"
+          ]
+        },
+        {
+          "preset": "more-reversals",
+          "shows": [
+            "2",
+            "3/20",
+            "17/80",
+            "1/10"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P.5",
+      "name": "fictional-site-profiles",
+      "part": "P",
+      "title": "Site profiles",
+      "idea": "Forty sites. Two priorities. Saved fictional reports.",
+      "status": "built",
+      "from": "P2 multidomain profile theory",
+      "data": [
+        "data/precomputed/v35/main-alpha-1_20.json",
+        "data/precomputed/v35/sensitivity-t-wide.json"
+      ],
+      "credit": "JoonHo Lee; postrank multidomain profile decisions (postrank 1.2.0).",
+      "caption": "Saved fictional forty-site cards from postrank 1.2.0; display only, with no runtime reoptimization or intended-posterior certificate.",
+      "presets": [
+        {
+          "id": "primary",
+          "label": "Primary saved card",
+          "query": "scenario=primary&site=S11&pair=S01%7CS02&cell=site"
+        },
+        {
+          "id": "wide",
+          "label": "Wider-threshold saved card",
+          "query": "scenario=wide&site=S11&pair=S11%7CS12&cell=site"
+        },
+        {
+          "id": "crossed",
+          "label": "Crossed site profiles",
+          "query": "scenario=wide&site=S11&pair=S11%7CS18&cell=site"
+        },
+        {
+          "id": "withheld",
+          "label": "Composition comparison withheld",
+          "query": "scenario=primary&site=S11&pair=S11%7CS18&cell=site"
+        },
+        {
+          "id": "empty-cell",
+          "label": "An empty profile cell",
+          "query": "scenario=wide&site=S11&pair=S11%7CS18&cell=3%2C1"
+        }
+      ],
+      "try": [
+        {
+          "preset": "primary",
+          "shows": [
+            "500"
+          ]
+        },
+        {
+          "preset": "wide",
+          "shows": [
+            "1/10",
+            "300",
+            "500",
+            "548",
+            "16"
+          ]
+        },
+        {
+          "preset": "crossed",
+          "shows": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "preset": "withheld",
+          "shows": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "preset": "empty-cell",
+          "shows": [
+            "3",
+            "1"
+          ]
+        }
+      ]
+    },
+    {
       "id": "5.1",
       "name": "lambda-tau",
       "part": "5",
@@ -5758,7 +6167,7 @@
         "data/released/six-sites.json"
       ],
       "credit": "After Kline, Rose and Walters (2024), section II and slides 18–21, 24–26 and 29–30; correspondence after the postrank theory book, ch. 10.",
-      "caption": "Six fictional sites: a posterior set by hand for teaching; postrank does not fit it.",
+      "caption": "Six fictional sites with a specified posterior.",
       "presets": [
         {
           "id": "lambda25",
@@ -6230,7 +6639,7 @@
       "title": "Signed or absolute gender gap",
       "idea": "Grading the signed gender gap and grading its size answer different questions: which firm has the larger gap in size does not follow from the signed pair probabilities.",
       "status": "built",
-      "from": "new angle · builds on 5.3's gender card; adds the absolute (folded) gender target of pr_case_krw with its own pair probabilities, and two reports computed the same way (the best cuts of each target's expected-rank order, at most 4 grades at τ .20, labelled optimal within this order) with the pairs whose order differs",
+      "from": "new angle · builds on 5.3's gender card; adds the absolute (folded) gender target of pr_case_krw with its own pair probabilities, and two reports computed the same way (the best cuts of each target's expected-rank order, at most 4 grades at τ .20, labeled optimal within this order) with the pairs whose order differs",
       "data": [
         "data/released/case-krw.json",
         "data/released/krw-lambda-grid.json",
@@ -6697,7 +7106,7 @@
       "name": "your-data",
       "part": "T",
       "title": "Your own posterior summaries",
-      "idea": "Paste posterior means and SDs (or estimates, SEs and a stated prior), read as independent normal posteriors, and get pair probabilities, a grade report labelled with the family it is best in, and its card.",
+      "idea": "Paste posterior means and SDs (or estimates, SEs and a stated prior), read as independent normal posteriors, and get pair probabilities, a grade report labeled with the family it is best in, and its card.",
       "status": "built",
       "from": "new concept · v1 storyboard X-01; postrank vignettes a5 and quickstart; picture: messages for each failed check, an independence note, the card, relation matrix and profile with the label of the family used, and R code for the same analysis",
       "data": [

@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/multi.ts (Step 2.8).
 #   oracle-multi    base R only (closed forms, full enumeration of small families, theory-book worked examples);
 #                   postrank is not loaded.
@@ -360,7 +360,7 @@ wc("six-221233-tau.2", c(2, 2, 1, 2, 3, 3), e6, six_ids, sixK, 0.2)
 wc("six-strict-tau.2", 1:6, e6, six_ids, sixK, 0.2)
 wc("six-111123-tau.2-none", c(1, 1, 1, 1, 2, 3), e6, six_ids, sixK, 0.2)
 
-# ---- Step 6.14 Part 2 rows (engine/API.md; shared inputs in r-export/15_part2.R) --------------------
+# ---- Step 6.14 Part 2 rows (shared inputs in r-export/15_part2.R) --------------------
 # G-05 the bound E <= tau N (budgetCheck with q = tau, one criterion): the six sites' reports on the released score-A
 # array and the ch. 10 law's report 1/1/2 (E = 7/20 <= 2/5), tau = .20.
 source("r-export/15_part2.R")

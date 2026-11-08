@@ -1,6 +1,6 @@
 // Ordinary budget parsing is separate from the reusable signed feasibility view.
 import {createWidget} from '../shared/base.js';
-import {gradeColors,hiddenTable,labelOn,palette,plot} from '../shared/chart.js';
+import {gradeColors,hiddenTable,labelOn,numText,palette,plot} from '../shared/chart.js';
 import {blocksText,formatCount,formatExpectedCount,formatGrades,formatRisk,formatSetting,formatShare,formatSci} from '../shared/format.js';
 import {familyNameNode,tagNode} from '../shared/labels.js';
 import {budgetCheck,budgetFamily,enumerateReports,evaluateReport,exactOptimum,largestStatedError} from '../pr-core.js';
@@ -53,8 +53,10 @@ export const BUDGET_CSS=`
 .ebu .ebu-pager{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
 .ebu .ebu-swipe{margin:.8rem 0 .25rem;font-size:.8rem;color:var(--prx-fg-muted)}
 .ebu .ebu-legend{background:var(--prx-plot-bg);color:var(--prx-plot-fg);padding:.35rem}
-.ebu .ebu-sw-in{background:var(--prx-plot-fg);border-radius:50%}
-.ebu .ebu-sw-out{background:var(--prx-plot-muted);border-radius:50%}
+.ebu .ebu-sw-in{background:var(--prx-plot-focus);border-radius:50%}
+.ebu .ebu-sw-out{background:transparent;border:1px solid var(--prx-plot-muted);border-radius:50%}
+.ebu .ebu-exact-budgets{display:flex;flex-wrap:wrap;gap:.5rem 1rem}
+.ebu .ebu-exact-budgets input{max-width:6rem}
 .ebu .ebu-sw-best{background:transparent;border:2.5px solid var(--prx-plot-fg);border-radius:50%}
 .ebu .ebu-sw-free{background:transparent;border:0;position:relative}
 .ebu .ebu-sw-free::before,.ebu .ebu-sw-free::after{content:'';position:absolute;left:45%;top:-10%;width:2.5px;height:120%;background:var(--prx-plot-fg);transform:rotate(45deg)}
@@ -67,7 +69,7 @@ function formatted(columns){return columns.map(c=>({...c,...(c.format?{format:va
 function table(ctx,caption,columns,rows){const n=hiddenTable(ctx.doc,{caption,columns:formatted(columns),rows,visible:true});n.classList.add('ebu-table-wrap');ctx.scrollRegion(n,caption);return n;}
 
 /** Actual cloud renderer used by the parent; explicit model, no implicit solve or mount. */
-export function createBudgetCloudView(ctx,slot){
+export function createBudgetCloudView(ctx,slot,{annotateRisk=false}={}){
  const {h}=ctx,figure=h('div'),note=h('p',{class:'ebu-note'}),key=(cls,text)=>h('span',{class:'prx-key'},h('span',{class:`prx-swatch ${cls}`,'aria-hidden':'true'}),text);
  slot.append(figure,h('div',{class:'prx-legend ebu-legend','data-prx-part':'legend'},key('ebu-sw-in','meets every budget'),key('ebu-sw-out','fails a budget'),key('ebu-sw-best','best of those'),key('ebu-sw-free','best with no budget')),note);
  return {render(model){
@@ -79,9 +81,11 @@ export function createBudgetCloudView(ctx,slot){
    y:{type:'sqrt',domain:C.domain,ticks:C.ticks,label:'↑ wrong on score B, square-root scale',grid:true},r:{domain:[0,data.M],range:[1.5,5]},
    marks:(c,P)=>[P.rect([{x1:0,y1:0,x2:q[0]??1,y2:q[1]??1}],{x1:'x1',y1:'y1',x2:'x2',y2:'y2',fill:c.plotMuted,fillOpacity:.09}),
     q[0]===null?null:P.ruleX([q[0]],{stroke:c.crit[0],strokeDasharray:'5 3'}),q[1]===null?null:P.ruleY([q[1]],{stroke:c.crit[1],strokeDasharray:'5 3'}),
-    P.dot(dots,{x:'ea',y:'eb',r:'N',fill:row=>row.meets?c.plotFg:c.plotMuted,stroke:c.plotBg,strokeWidth:.4,title}),
+    P.dot(dots.filter(row=>!row.meets),{x:'ea',y:'eb',r:'N',fill:'none',stroke:c.plotMuted,strokeOpacity:.52,strokeWidth:.75,title}),
+    P.dot(dots.filter(row=>row.meets),{x:'ea',y:'eb',r:'N',fill:c.plotFocus,stroke:c.plotBg,strokeWidth:.65,title}),
     freeRow?.N>0?P.dot([freeRow],{x:'ea',y:'eb',r:8,symbol:'times',stroke:c.plotFg,strokeWidth:2.4}):null,
     bestRow?.N>0?P.dot([bestRow],{x:'ea',y:'eb',r:10,fill:'none',stroke:c.plotFg,strokeWidth:2.5}):null,
+    annotateRisk&&bestRow?.N>0?numText([bestRow],{x:'ea',y:'eb',value:()=>model.result.optimum.risk,format:formatRisk,dx:bestRow.ea>.45?-10:10,dy:-10,textAnchor:bestRow.ea>.45?'end':'start',fontWeight:700,fill:c.plotFg,stroke:c.plotBg,strokeWidth:3,paintOrder:'stroke'}):null,
     P.tip(dots,P.pointer({x:'ea',y:'eb',title,maxRadius:20}))].filter(Boolean),
    keyboard:{data:dots,x:'ea',y:'eb',title},
    table:{caption:'All reports with stated pairs',columns:formatted([{label:'Grade vector',value:'grade',format:formatGrades},{label:'Stated pairs N',value:'N',format:formatCount},{label:'E/N on score A',value:'ea',num:true,format:formatShare},{label:'E/N on score B',value:'eb',num:true,format:formatShare},{label:'Budget status',value:row=>row.meets?'meets every budget':'fails a budget'}]),rows:dots}});
@@ -107,7 +111,7 @@ export function createBudgetProfileView(ctx,slot){return {render(model){
 }};}
 function chips(ctx,grade,ids){const pal=palette(ctx.root),colors=gradeColors(Math.max(...grade),pal),nodes=[];colors.forEach((color,k)=>{if(k)nodes.push(ctx.h('span',{'aria-hidden':'true'},'>'));nodes.push(ctx.h('span',{class:'ebu-chip',style:{background:color,color:labelOn(color,pal)}},ids.filter((_,i)=>grade[i]===k+1).join(' ')));});return ctx.h('div',{class:'ebu-chips prx-light-panel',role:'img','aria-label':`Best report: ${blocksText(grade,ids)}; grade one is highest priority`},...nodes);}
 
-export function mountWidget(el,spec={}){return createWidget(el,spec,{name:CONFIG.name,className:'ebu',css:BUDGET_CSS,
+export function mountWidget(el,spec={}){return createWidget(el,spec,{name:CONFIG.name,className:'ebu',css:BUDGET_CSS,layout:'result-first',
  keys:{qa:{type:'custom',value:null,parse:parseBudgetQ},qb:{type:'custom',value:.03,parse:parseBudgetQ},w:{type:'number',min:0,max:1,step:.01,value:.5},tau:{type:'number',min:.01,max:.5,step:.01,value:.2},cap:{type:'choice',values:['2','3','all','exact3'],value:'3'},fa:{type:'integer',min:0,max:400,value:0},fb:{type:'integer',min:0,max:400,value:0}},
  build(ctx){
   const {h}=ctx,controls=h('div',{class:'ebu-controls'});
@@ -115,26 +119,33 @@ export function mountWidget(el,spec={}){return createWidget(el,spec,{name:CONFIG
    const enabled=ctx.toggle({label:`Budget on score ${k?'B':'A'}`,name:`${name}-enabled`,onChange:yes=>ctx.set({[name]:yes ? .1 : null,fa:0,fb:0})});
    const slider=ctx.slider({label:`Maximum expected wrong share on score ${k?'B':'A'}`,name,min:0,max:1,step:.001,value:.03,format:formatSetting,onInput:value=>ctx.set({[name]:value,fa:0,fb:0})});
    slider.input.step='any';
-   controls.append(h('div',{class:'ebu-budget-controls'},enabled.root,slider.root));return {enabled,slider};
+   const exact=ctx.numberInput({label:`Exact budget for score ${k?'B':'A'}`,name:`${name}-exact`,min:0,max:1,step:'any',
+    onInput:value=>ctx.set({[name]:value,fa:0,fb:0})});
+   controls.append(h('div',{class:'ebu-budget-controls'},enabled.root,slider.root));return {enabled,slider,exact};
   });
   const weight=ctx.slider({label:'Error weight on score A (score B gets the remainder)',...ctx.key('w'),onInput:w=>ctx.set({w})}),tau=ctx.slider({label:'Cost τ per withheld pair',...ctx.key('tau'),onInput:tau=>ctx.set({tau})}),cap=ctx.select({label:'Allowed grade reports',name:'cap',options:[{value:'2',label:'At most two grades'},{value:'3',label:'At most three grades'},{value:'all',label:'Any number of grades'},{value:'exact3',label:'Exactly three grades'}],onChange:cap=>ctx.set({cap,fa:0,fb:0})});
   weight.input.step='any';tau.input.step='any';
-  controls.append(weight.root,tau.root,cap.root);ctx.controls.append(controls);
+  ctx.controls.append(controls);
+  ctx.disclosure({name:'settings',title:'Settings',placement:'controls'}).body.append(weight.root,tau.root,cap.root,
+   h('div',{class:'ebu-exact-budgets'},...budgets.map(b=>b.exact.root)));
+  ctx.primaryControl(budgets[1].slider.root);
   const cloudSlot=h('div'),reportSlot=h('div'),slackSlot=h('div'),profileSlot=h('div'),familySlot=h('p',{class:'ebu-facts'}),withheldSlot=h('p',{class:'ebu-note'}),failSlots=[h('div'),h('div')];
-  ctx.charts.append(h('div',{class:'ebu-grid'},h('section',{class:'prx-panel'},ctx.panelTitle('Every report: expected wrong shares'),cloudSlot),h('section',{class:'prx-panel'},ctx.panelTitle('Best report that meets the budgets'),familySlot,reportSlot,ctx.readout.node,withheldSlot)),
+  ctx.charts.append(h('div',{class:'ebu-grid'},h('section',{class:'prx-panel'},ctx.panelTitle('Every report: expected wrong shares'),cloudSlot),h('section',{class:'prx-panel'},ctx.panelTitle('Best report that meets the budgets'),familySlot,reportSlot,withheldSlot)),
    h('p',{class:'ebu-swipe'},'Tables scroll horizontally. Focus a table and use the arrow keys, or swipe.'),
    h('section',{class:'prx-panel'},ctx.panelTitle('Budget checks and criterion profiles'),h('p',{class:'ebu-note'},'E is the expected number of wrong stated directions on a criterion; N is the number stated; M is the number of all pairs. Grade one has highest priority on both scores; a shared grade leaves a pair unreported.'),slackSlot,profileSlot),
    h('section',{class:'prx-panel'},ctx.panelTitle('Reports failing each budget'),h('p',{class:'ebu-note'},'A report can fail both budgets. Each list is in grade-vector order.'),h('div',{class:'ebu-failures'},...failSlots)),
    h('p',{class:'ebu-note'},'A budget limits the posterior expected average over stated pairs, not each pair or the realized share. It only removes reports, so the minimum risk at the same weights, τ and base family stays the same or rises. A criterion with zero error weight can still carry a budget.'),
    h('p',{class:'ebu-note'},'Another rule, minimax, chooses the report with the smallest largest expected criterion risk. It can keep withholding where a weighted rule discloses. That is a maximum of expectations, not an expected maximum.'));
-  const cloud=createBudgetCloudView(ctx,cloudSlot),feasibility=createBudgetFeasibilityView(ctx,slackSlot),profiles=createBudgetProfileView(ctx,profileSlot);
+  ctx.primaryGraphic(cloudSlot);
+  const cloud=createBudgetCloudView(ctx,cloudSlot,{annotateRisk:true}),feasibility=createBudgetFeasibilityView(ctx,slackSlot),profiles=createBudgetProfileView(ctx,profileSlot);
   const pagers=failSlots.map((slot,k)=>{const content=h('div'),label=h('span'),previous=ctx.button({label:'Previous reports',onClick:()=>ctx.set({[k?'fb':'fa']:Math.max(0,ctx.state[k?'fb':'fa']-1)})}),next=ctx.button({label:'Next reports',onClick:()=>ctx.set({[k?'fb':'fa']:ctx.state[k?'fb':'fa']+1})});slot.append(ctx.panelTitle(`Fails score ${k?'B':'A'}'s budget`),content,h('div',{class:'ebu-pager'},previous.root,label,next.root));return {content,label,previous,next};});
   let currentKey,model;
   return {render(state){
-   budgets.forEach(({enabled,slider},k)=>{const value=state[k?'qb':'qa'];enabled.set(value!==null);slider.set(value??0);slider.setDisabled(value===null);});weight.set(state.w);tau.set(state.tau);cap.set(state.cap);
+   budgets.forEach(({enabled,slider,exact},k)=>{const value=state[k?'qb':'qa'];enabled.set(value!==null);slider.set(value??0);slider.setDisabled(value===null);
+    if(ctx.doc.activeElement!==exact.input||Number(exact.input.value)!==value)exact.set(value);exact.setDisabled(value===null);});weight.set(state.w);tau.set(state.tau);cap.set(state.cap);
    const key=JSON.stringify([state.qa,state.qb,state.w,state.tau,state.cap]);if(key!==currentKey){model=budgetModel(state);currentKey=key;cloud.render(model);}
    const {result,free,data}=model;
-   familySlot.replaceChildren(num(ctx,result.size,formatCount,'size'),' reports meet every budget, within ',num(ctx,result.baseSize,formatCount,'baseSize'),' allowed reports · ',familyNameNode(ctx,result));
+   familySlot.replaceChildren(num(ctx,result.size,formatCount,'size'),result.size===1?' report meets every budget, within ':' reports meet every budget, within ',num(ctx,result.baseSize,formatCount,'baseSize'),' allowed reports · ',familyNameNode(ctx,result));
    if(result.empty){reportSlot.replaceChildren(h('p',{class:'ebu-empty','data-prx-readout':'empty'},state.cap==='exact3'?'No report meets these budgets with exactly three grades.':'No report meets these budgets.'));ctx.readout.set(['The budget family is empty. There is no best feasible report.']);slackSlot.replaceChildren();profiles.render(model);}
    else{
     const opt=result.optimum;reportSlot.replaceChildren(chips(ctx,opt.grade,data.ids),h('p',{class:'ebu-facts'},num(ctx,opt.N,formatCount,'N'),' of ',num(ctx,data.M,formatCount),' pairs stated · ',tagNode(ctx,model.q.every(q=>q===null)?free:opt)));
@@ -144,6 +155,6 @@ export function mountWidget(el,spec={}){return createWidget(el,spec,{name:CONFIG
    }
    withheldSlot.replaceChildren(result.containsAllWithheld?'All-withheld belongs to this family and meets every count-form budget: ':'The exact grade count excludes all-withheld. Its count-form budget check would be ',num(ctx,0,formatCount),' ≤ ',num(ctx,0,formatCount),'; its expected wrong share is ',num(ctx,null,formatShare),'.');
    pagers.forEach((pager,k)=>{const failed=model.failures[k],page=state[k?'fb':'fa'],begin=page*CONFIG.pageSize;if(begin>=failed.length&&page>0)ctx.set({[k?'fb':'fa']:0});pager.content.replaceChildren(state[k?'qb':'qa']===null?h('p',{class:'ebu-note'},'No budget on this score.'):failed.length?table(ctx,`Reports failing score ${k?'B':'A'}'s budget`,[{label:'Grade vector',value:'grade',format:formatGrades},{label:'N',value:'N',format:formatCount},{label:'E/N',value:'EoverN',num:true,format:formatShare},{label:'Slack qN − E',value:'slack',format:formatExpectedCount}],failed.slice(begin,begin+CONFIG.pageSize)):h('p',{class:'ebu-note'},'Every allowed report meets this budget.'));pager.label.replaceChildren(...(failed.length?['List page ',num(ctx,page+1,formatCount)]:[]));pager.previous.setDisabled(page===0);pager.next.setDisabled(begin+CONFIG.pageSize>=failed.length);});
-   ctx.caption.replaceChildren('Six fictional sites, independent Normal posteriors on scores A and B; a posterior set by hand for teaching; postrank does not fit it. τ = ',num(ctx,state.tau,formatSetting),'; error weights ',num(ctx,model.w,v=>v.map(x=>formatSetting(x)).join(', ')),'.');
+   ctx.caption.replaceChildren('Six fictional sites with independent normal posteriors for scores A and B. τ = ',num(ctx,state.tau,formatSetting),'; error weights ',num(ctx,model.w,v=>v.map(x=>formatSetting(x)).join(', ')),'.');
   }};
  }});}

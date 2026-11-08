@@ -3,7 +3,7 @@
   "app": "overlap-in-the-league",
   "catalog": "1.12",
   "from": "postrank-explorer-v1 verification/readouts/interval-overlap.json",
-  "about": "The league view of v1 L-06: the simulated league (frozen draw, seed 20261030) under the teaching posterior (prior mean 0), thirty 90% or 95% posterior intervals, a chosen pair and the tally of the 435 pairs. Ported from v1's four league cases (league-overlap, league-wide, league-pick95, league-reversed), with the touch-view keys dropped from the queries (mode, gap: the touch view is app 1.11), prior_sd renamed priorSd (a preset key is one plain word), the caption in its v3 wording, and v1's registry keys and base-R oracle rows as sources. New in v3: the apart row's bound at three decimals (.950 and .975), the tally's line on the highest probability among overlapping pairs, the note's seed and prior SD, the chosen-row marking, the key's third item (which follows the pair), an apart pair as probable as the overlapping pick (U06 and U20, from the oracle direction matrix), prior SD .05 (oracle tally and posterior rows), a nested pair, and the pick following the level. The overlap amounts have no independent source in these files: the general rules read their displays back.",
+  "about": "The league view of v1 L-06: the simulated league (frozen draw, seed 20261030) under the teaching posterior (prior mean 0), thirty 90% or 95% posterior intervals, a chosen pair and the tally of the 435 pairs. Ported from v1's four league cases (league-overlap, league-wide, league-pick95, league-reversed), with the touch-view keys dropped from the queries (mode, gap: the touch view is app 1.11), prior_sd renamed priorSd (a preset key is one plain word), the caption in its v3 wording, and v1's registry keys and base-R oracle rows as sources. New in v3: the apart row's bound at three decimals (.950 and .975), the tally's line on the highest probability among overlapping pairs, the note's seed and prior SD, the chosen-row marking, the key's third item (which follows the pair), an apart pair as probable as the overlapping pick (U06 and U20, from the oracle direction matrix), prior SD .05 (oracle tally and posterior rows), a nested pair, and the pick following the level. The overlap amounts have no independent source in these files: the general rules read their displays back. Review 044 repair (X-01, fix round): the league figure writes the pair's numbers next to its marks, the probability after 'first' (hook mark-pi, checked wherever the card's card-pi is, against the same sources) and the overlap or the gap after 'second' (hook mark-amount, read back with every data-num).",
   "cases": [
     {
       "id": "league-overlap",
@@ -392,7 +392,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": "[data-prx-status]",
@@ -444,7 +444,7 @@
           "about": "the caption line: the teaching-posterior caption and its gloss (CR-016), as in 1.5 and 1.9",
           "source": "literal",
           "ref": "11.4",
-          "value": "a posterior set by hand for teaching; postrank does not fit it. In plain words: this prior was chosen for teaching, and this browser computes the posterior from it."
+          "value": "a posterior specified for the example. The normal posterior gives both the marginal intervals and the direction probabilities for the league."
         },
         {
           "select": ".prx-iol-note a.prx-io-app",
@@ -462,7 +462,7 @@
           "about": "and app 1.5, whose teaching posterior the league uses",
           "source": "literal",
           "ref": "11.4",
-          "value": "What a posterior adds"
+          "value": "Normal–normal posterior shrinkage"
         },
         {
           "select": ".prx-io-key-item",
@@ -472,6 +472,13 @@
           "source": "literal",
           "ref": "11.4",
           "value": "light navy lines: each unit's 90% posterior interval, with a dot at its posterior mean"
+        },
+        {
+          "select": "[data-prx-readout=\"mark-pi\"]",
+          "about": "the same probability written after the first unit's mark in the league figure (review 044 repair, X-01: the number on the changed mark)",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.pi",
+          "value": 0.98781943458425
         }
       ]
     },
@@ -756,7 +763,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": ".prx-iol-table tbody tr:nth-child(3) th > span:first-child",
@@ -765,6 +772,20 @@
           "source": "literal",
           "ref": "11.4",
           "value": "Intervals overlap, and neither direction has a probability above .90"
+        },
+        {
+          "select": "[data-prx-readout=\"mark-pi\"]",
+          "about": "the same probability written after the first unit's mark in the league figure (review 044 repair, X-01: the number on the changed mark)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-pairwise",
+            "row": "directionMatrix-league-seed20261030-prior.15",
+            "field": "pi.5.19"
+          },
+          "value": 0.988289543604141
         }
       ]
     },
@@ -1004,7 +1025,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         },
         {
           "select": "[data-prx-status]",
@@ -1023,6 +1044,13 @@
           "source": "literal",
           "ref": "11.4",
           "value": "Intervals overlap, and one direction has a probability above ⟨thr⟩"
+        },
+        {
+          "select": "[data-prx-readout=\"mark-pi\"]",
+          "about": "the same probability written after the first unit's mark in the league figure (review 044 repair, X-01: the number on the changed mark)",
+          "source": "registry",
+          "ref": "league.default.prior15.u04u18.pi",
+          "value": 0.903905960652863
         }
       ]
     },
@@ -1341,7 +1369,14 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"mark-pi\"]",
+          "about": "the same probability written after the first unit's mark in the league figure (review 044 repair, X-01: the number on the changed mark)",
+          "source": "registry",
+          "ref": "league.default.prior15.u03u15.pi",
+          "value": 0.9969515549415986
         }
       ]
     },
@@ -1484,7 +1519,14 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"mark-pi\"]",
+          "about": "the same probability written after the first unit's mark in the league figure (review 044 repair, X-01: the number on the changed mark)",
+          "source": "registry",
+          "ref": "league.default.prior15.overlapbest.reverse.pi",
+          "value": 0.012180565415750019
         }
       ]
     },
@@ -1773,7 +1815,21 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
+        },
+        {
+          "select": "[data-prx-readout=\"mark-pi\"]",
+          "about": "the same probability written after the first unit's mark in the league figure (review 044 repair, X-01: the number on the changed mark)",
+          "format": {
+            "fn": "formatProb"
+          },
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-summaries",
+            "row": "intervalOverlapTally-league-seed20261030-prior.05-level.90-threshold.9",
+            "field": "best.pi"
+          },
+          "value": 0.989584165772695
         }
       ]
     },
@@ -1897,7 +1953,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         }
       ]
     },

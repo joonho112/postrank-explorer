@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Writing helpers for golden files and released summaries.
 # Golden files: verification/golden/<group>.json, one manifest fragment per file in
 # verification/golden/manifest.d/<group>.json. Numbers keep 15 significant digits.

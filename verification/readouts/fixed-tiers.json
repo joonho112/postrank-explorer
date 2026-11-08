@@ -139,7 +139,7 @@
           "about": "caption of the posterior",
           "source": "literal",
           "ref": "6.5",
-          "value": "a posterior set by hand for teaching; postrank does not fit it"
+          "value": "a posterior specified for the example"
         }
       ]
     },
@@ -148,6 +148,20 @@
       "about": "ten tiers of 3 at tau .20 with the outlines on: N, E, E/N, risk (registry), the stated pairs whose error exceeds tau and the largest stated error (registry, statedAbove), the share in both formulas (share formula numbers: 1, 2, 2, 1, 10, 3, 2, 30, 2, 1, 30, 435, N/M).",
       "preset": "ten-tiers",
       "expect": [
+        {
+          "select": "[data-prx-readout=\"readout-over\"]",
+          "about": "stated pairs whose error exceeds tau",
+          "source": "registry",
+          "ref": "r01.tiers10.tau20.over",
+          "value": 197
+        },
+        {
+          "select": "[data-prx-readout=\"readout-maxStated\"]",
+          "about": "largest error of a stated direction",
+          "source": "registry",
+          "ref": "r01.tiers10.tau20.maxstated",
+          "value": 0.8016595628677452
+        },
         {
           "select": "[data-prx-readout=\"N\"]",
           "about": "pairs stated by ten tiers",
@@ -371,6 +385,20 @@
       "about": "three tiers with the outlines on: the stated pairs whose error exceeds tau and the largest stated error (registry statedAbove keys)",
       "query": "?G=3&tau=.20&outline=1",
       "expect": [
+        {
+          "select": "[data-prx-readout=\"readout-over\"]",
+          "about": "stated pairs whose error exceeds tau",
+          "source": "registry",
+          "ref": "r01.tiers3.tau20.over",
+          "value": 113
+        },
+        {
+          "select": "[data-prx-readout=\"readout-maxStated\"]",
+          "about": "largest error of a stated direction",
+          "source": "registry",
+          "ref": "r01.tiers3.tau20.maxstated",
+          "value": 0.6388012455882287
+        },
         {
           "select": "[data-prx-readout=\"over\"]",
           "about": "stated pairs whose error exceeds tau",

@@ -11,6 +11,16 @@
       "preset": "league-196",
       "expect": [
         {
+          "select": "[data-prx-readout=\"result-allWithheld\"]",
+          "about": "risk of withholding every pair, which equals tau",
+          "source": "registry",
+          "ref": "settings.tau20",
+          "value": 0.2,
+          "format": {
+            "fn": "formatRisk"
+          }
+        },
+        {
           "select": "[data-prx-readout=\"above\"]",
           "about": "units flagged above at cutoff 1.96",
           "source": "registry",

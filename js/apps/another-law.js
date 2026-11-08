@@ -1,6 +1,14 @@
 // One declared report family, two normal laws, and a frozen selected report evaluated under both.
+// Layout (review 044 repair, X-01 with G4-F7 and G4-F6): base.js's result-first frame, so the read-out sits directly
+// under the controls and the preset row, in the review's replacement copy: the same report's risk under both laws,
+// the evaluation law's own best, the regret, and whether the bounds say anything (both bounds of 1 or more say
+// nothing about a risk difference, since risks lie in [0, 1]). Then the law plot with its key, then the regret bars
+// directly under it (ctx.primaryGraphic), labeled on the marks: each row named in the margin, each risk written at
+// its bar's end, an arrow for the same report under the other law with its change, and a bracket for the regret
+// between the two evaluation-law risks. The full report cards, exact risks and bound derivation sit in native
+// disclosures. Every number comes from compareLaws (engine calls).
 import { createWidget } from '../shared/base.js';
-import { plot } from '../shared/chart.js';
+import { numText, plot } from '../shared/chart.js';
 import { blocksText, formatCount, formatDecimal, formatExpectedCount, formatGrades, formatProb, formatRisk, formatSetting, formatShare, formatSigned, formatSci } from '../shared/format.js';
 import { tagNode } from '../shared/labels.js';
 import { errorArray, evaluateReport, exactOptimum, maxCoefficientError, normalInterval, pairCount, regretBound, relationChange, weightedRadius } from '../pr-core.js';
@@ -29,6 +37,9 @@ export function compareLaws({tau=.2,shift=0,scale=1,unit='C',cap=3}={}){
  cache.set(key,r);if(cache.size>40)cache.delete(cache.keys().next().value);return r;
 }
 const CSS=`
+@media (min-width: 64rem) {
+  .prx-al > .prx-controls { row-gap: 0.35rem; }
+}
 .prx-al .prx-al-note {font-size:.9em;color:var(--prx-fg-muted);margin:.4rem 0}
 .prx-al .prx-al-legend {display:flex;flex-wrap:wrap;gap:.35rem 1rem;padding:.4rem;background:var(--prx-plot-bg);color:var(--prx-plot-fg);font-size:.85em}
 .prx-al .prx-al-legend span {display:inline-flex;align-items:center;gap:.3rem}
@@ -45,9 +56,13 @@ const CSS=`
 .prx-al .prx-al-bound-row {padding:.45rem 0;border-top:1px solid var(--prx-border)}
 .prx-al .prx-al-bound-row p {margin:.25rem 0}
 .prx-al .prx-al-bound {margin:.75rem 0;padding:.65rem;border-left:3px solid var(--prx-accent);background:var(--prx-bg)}
+.prx-al .prx-al-rowname {display:inline-block;margin:0 0 .15rem;font-size:.82em;font-weight:600;color:var(--prx-fg-muted)}
+.prx-al .prx-al-cards {margin:.5rem 0 .7rem}
 `;
 export function mountWidget(el,spec={}){
  return createWidget(el,spec,{name:CONFIG.name,className:CONFIG.className,label:'Judging a report under another law: the same report under selection and evaluation laws, regret within one family, and discrepancy bounds.',css:CSS,
+ // review 044 repair (X-01): the read-out directly under the controls and the preset row
+ layout:'result-first',
  keys:{tau:{type:'number',...CONFIG.tau},shift:{type:'number',...CONFIG.shift},scale:{type:'number',...CONFIG.scale},unit:{type:'choice',values:IDS,value:'C'},cap:{type:'choice',values:[3,'none'],value:3}},
  build(ctx){
   const {h}=ctx,ro=(name,value,format=formatCount)=>{const e=ctx.num(value,format(value));e.dataset.prxReadout=name;return e;};
@@ -57,13 +72,19 @@ export function mountWidget(el,spec={}){
   const unit=ctx.select({label:'Unit whose evaluation mean changes',options:IDS.map(id=>({value:id,label:`Site ${id}`})),value:ctx.state.unit,onChange:v=>ctx.set({unit:v})});
   const cap=ctx.segmented({label:'Same family for both laws',options:[{value:3,label:'At most three grades'},{value:'none',label:'All reports'}],value:ctx.state.cap,onChange:v=>ctx.set({cap:v})});
   ctx.controls.append(shift.root,scale.root,unit.root,tau.root,cap.root);
+  // the shift slider moves the law plot and the regret bars (base.js primaryControl)
+  ctx.primaryControl(shift.root);
   const laws=h('div'),legend=h('div',{class:'prx-al-legend','data-prx-part':'legend'},h('span',{},h('i',{class:'prx-al-key'}),'selection law: filled mean, solid interval'),h('span',{},h('i',{class:'prx-al-key prx-al-key-eval'}),'evaluation law: open mean, dashed interval'));
   const lawNote=h('p',{class:'prx-al-note'});
   const cards=h('div',{class:'prx-al-cards'}),risks=h('div');
   const tableSlot=ctx.scrollRegion(h('div',{class:'prx-al-scroll'}),'Both reports evaluated under both laws');
   const boundBox=h('section',{class:'prx-al-bound'}),gapPair=h('p',{class:'prx-al-note'}),relations=h('p',{class:'prx-al-note'});
-  ctx.charts.append(laws,legend,lawNote,cards,ctx.panelTitle('Hold the report fixed when changing the law'),h('p',{class:'prx-al-note'},'In each bar row, the upper bar uses the selection law; the lower bar uses the evaluation law. In the table, read across a row to change only the law; compare down the evaluation-risk column to find evaluation regret.'),risks,tableSlot,boundBox,gapPair,relations);
-  ctx.charts.before(ctx.readout.node);
+  const reportDetails=ctx.disclosure({name:'reports',title:'Reports and exact risks'});
+  const boundDetails=ctx.disclosure({name:'bounds',title:'How the bounds are calculated'});
+  reportDetails.body.append(cards,h('p',{class:'prx-al-note'},'Read across a row to change only the law. Compare the evaluation-risk column to find regret.'),tableSlot);
+  boundDetails.body.append(boundBox,gapPair);
+  ctx.primaryGraphic(risks);
+  ctx.charts.append(laws,legend,lawNote,ctx.panelTitle('Hold the report fixed when changing the law'),risks,relations);
   return {render(state){
    tau.set(state.tau);shift.set(state.shift);scale.set(state.scale);unit.set(state.unit);cap.set(state.cap);
    const r=compareLaws(state),rows=IDS.flatMap((id,i)=>[
@@ -79,15 +100,46 @@ export function mountWidget(el,spec={}){
     keyboard:{data:rows,x:'mean',y:'id',key:d=>`${d.law}-${d.id}`,sort:false,title:d=>`${d.id}, ${d.law} law: mean ${formatDecimal(d.mean,{digits:2})}, 95 percent interval ${formatDecimal(d.lower,{digits:3})} to ${formatDecimal(d.upper,{digits:3})}.`},
    });
    lawNote.replaceChildren('Both are independent normal laws declared for these fictional sites, with ',ctx.num(.95,'95%'),' marginal intervals. The evaluation mean of ',h('span',{'data-prx-name':''},state.unit),' shifts by ',ro('shift',state.shift,v=>formatSigned(v,{digits:2})),', and every evaluation SD is multiplied by ',ro('scale',state.scale,formatSetting),'. Neither law is identified as an empirically verified truth.');
-   ctx.readout.set(['The selected report has risk ',ro('selection-risk',r.chosenSelection.risk,formatRisk),' under its selection law and ',ro('evaluation-risk',r.chosenEvaluation.risk,formatRisk),' under the evaluation law. Its evaluation regret is ',ro('regret',r.regret,formatRisk),', bounded by ',ro('uniform-bound',r.bound.uniform,formatRisk),' within the same family.']);
-   const card=(title,opt,grade,key)=>h('section',{class:'prx-al-card'},ctx.panelTitle(title),h('p',{'data-prx-readout':key},blocksText(grade,IDS)),tagNode(ctx,opt),h('p',{class:'prx-al-note'},ro(`${key}-N`,opt.N),' of ',ctx.num(M,formatCount(M)),' pair directions stated.'));
-   cards.replaceChildren(card('Chosen under the selection law',r.selected,r.selected.grade,'selection-report'),card('Best under the evaluation law',r.evaluationBest,r.evaluationBest.grade,'evaluation-report'));
-   const riskRows=[{report:'Selected report',law:'selection',risk:r.chosenSelection.risk},{report:'Selected report',law:'evaluation',risk:r.chosenEvaluation.risk},{report:'Evaluation best',law:'selection',risk:r.bestSelection.risk},{report:'Evaluation best',law:'evaluation',risk:r.bestEvaluation.risk}];
-   plot(risks,{width,height:170,marginLeft:112,marginRight:60,marginTop:18,marginBottom:40,x:{domain:[0,Math.max(...riskRows.map(d=>d.risk)) *1.08],label:'Risk (same cost and family)',ticks:4},y:{domain:['Selected report','Evaluation best'],label:null,tickSize:0},
+   // review 044 repair (G4-F6 and the review's replacement copy): the same report under the other law, the evaluation
+   // law's own best and the regret; then whether the bounds can inform: risks lie in [0, 1], so a bound of 1 or more
+   // says nothing about a risk difference. All existing read-out hooks are kept.
+   const sharp=r.bound.regret,uniform=r.bound.uniform;
+   const bounds=r.radius===0?['The two laws give the same pair errors (δ = ',ro('ro-delta',r.radius,v=>formatProb(v,{digits:4})),'), so both bounds are ',ro('uniform-bound',uniform,formatRisk),'.']
+    :sharp>=1?['Here δ = ',ro('ro-delta',r.radius,v=>formatProb(v,{digits:4})),', so both bounds (',ro('ro-sharp-bound',sharp,formatRisk),' and ',ro('uniform-bound',uniform,formatRisk),') are at least ',ctx.num(1,formatCount(1)),' and give no tighter limit.']
+    :uniform>=1?['Regret ',ctx.num(r.regret,formatRisk(r.regret)),' is at most the sharper bound ',ro('ro-sharp-bound',sharp,formatRisk),'; the uniform bound ',ro('uniform-bound',uniform,formatRisk),' is at least ',ctx.num(1,formatCount(1)),' and gives no tighter limit.']
+    :['Regret ',ctx.num(r.regret,formatRisk(r.regret)),' is at most the sharper bound ',ro('ro-sharp-bound',sharp,formatRisk),' and the uniform bound ',ctx.num(2,formatCount(2)),'δ + η = ',ro('uniform-bound',uniform,formatRisk),'.'];
+   ctx.readout.set(['Same report, other law: risk ',ro('selection-risk',r.chosenSelection.risk,formatRisk),' → ',ro('evaluation-risk',r.chosenEvaluation.risk,formatRisk),'. The evaluation law’s own best report has ',ro('ro-best-evaluation',r.bestEvaluation.risk,formatRisk),', so regret within the same family is ',ro('regret',r.regret,formatRisk),'. ',...bounds]);
+   // the cards follow the bars as their row details; each names the bar row it describes
+   const card=(row,title,opt,grade,key)=>h('section',{class:'prx-al-card'},h('span',{class:'prx-al-rowname'},row),ctx.panelTitle(title),h('p',{'data-prx-readout':key},blocksText(grade,IDS)),tagNode(ctx,opt),h('p',{class:'prx-al-note'},ro(`${key}-N`,opt.N),' of ',ctx.num(M,formatCount(M)),' pair directions stated.'));
+   cards.replaceChildren(card('Selected report','Chosen under the selection law',r.selected,r.selected.grade,'selection-report'),card('Evaluation best','Best under the evaluation law',r.evaluationBest,r.evaluationBest.grade,'evaluation-report'));
+   // review 044 repair (G4-F7): the bars labeled on the marks. One band per line: each report's name with its unit
+   // blocks, its two bars (selection law above, evaluation law below) with the risk at each bar's end, the same
+   // report's change under the other law (arrow) and the regret between the two evaluation-law risks (bracket)
+   const riskRows=[{report:'Selected report',law:'selection',risk:r.chosenSelection.risk,row:'sel:selection'},{report:'Selected report',law:'evaluation',risk:r.chosenEvaluation.risk,row:'sel:evaluation'},{report:'Evaluation best',law:'selection',risk:r.bestSelection.risk,row:'best:selection'},{report:'Evaluation best',law:'evaluation',risk:r.bestEvaluation.risk,row:'best:evaluation'}];
+   // drawn at the box's own width; below 560 px the long margin label takes two lines and the bands grow to fit it
+   const barsWidth=Math.max(250,Math.round(risks.clientWidth||0)||width),narrow=barsWidth<560;
+   const LINES=[['sel:title',''],['sel:selection','selection law'],['sel:change',narrow?'same report,\nother law':'same report, other law'],['sel:evaluation','evaluation law'],['best:title',''],['best:selection','selection law'],['best:evaluation','evaluation law'],['best:regret','regret']];
+   const lineLabel=Object.fromEntries(LINES),titles=[{row:'sel:title',name:'Selected report',grade:r.selected.grade},{row:'best:title',name:'Evaluation best',grade:r.evaluationBest.grade}].map(d=>({...d,blocks:blocksText(d.grade,IDS)}));
+   const change={row:'sel:change',from:r.chosenSelection.risk,to:r.chosenEvaluation.risk,delta:r.chosenEvaluation.risk-r.chosenSelection.risk};
+   const gap={row:'best:regret',lo:Math.min(r.bestEvaluation.risk,r.chosenEvaluation.risk),hi:Math.max(r.bestEvaluation.risk,r.chosenEvaluation.risk),regret:r.regret};
+   const signed=v=>Math.abs(v)>=5e-5?formatSigned(v,{digits:4}):formatSigned(v,{sig:2});
+   const marginLeft=Math.round(Math.max(...[...LINES.map(([,t])=>t),...titles.map(d=>d.name)].flatMap(t=>t.split('\n')).map(t=>t.length))*6.6)+14;
+   plot(risks,{width:barsWidth,height:LINES.length*(narrow?27:19)+46,marginLeft,marginRight:58,marginTop:8,marginBottom:38,x:{domain:[0,Math.max(...riskRows.map(d=>d.risk)) *1.08],label:'Risk (same cost and family)',ticks:4},y:{domain:LINES.map(([k])=>k),label:null,tickSize:0,tickFormat:k=>lineLabel[k]},
     alt:'Each report is evaluated under both laws. Evaluation regret is the difference between the selected report’s evaluation risk and the evaluation-law minimum.',
     table:{caption:'Risk of each report under each law',columns:[{label:'Report',value:'report',num:false},{label:'Law',value:'law',num:false},{label:'Risk',value:'risk',format:v=>formatRisk(v)}],rows:riskRows},
-    marks:(c,P)=>[P.barX(riskRows.filter(d=>d.law==='selection'),{x:'risk',y:'report',fill:c.plotFg,insetTop:7,insetBottom:32}),P.barX(riskRows.filter(d=>d.law==='evaluation'),{x:'risk',y:'report',fill:c.plotMuted,insetTop:32,insetBottom:7})],
-    keyboard:{data:riskRows,x:'risk',y:'report',key:d=>`${d.report}-${d.law}`,sort:false,title:d=>`${d.report}, ${d.law} law: risk ${formatRisk(d.risk)}.`},
+    marks:(c,P)=>[
+     P.barX(riskRows.filter(d=>d.law==='selection'),{x:'risk',y:'row',fill:c.plotFg,insetTop:2,insetBottom:2}),
+     P.barX(riskRows.filter(d=>d.law==='evaluation'),{x:'risk',y:'row',fill:c.plotMuted,insetTop:2,insetBottom:2}),
+     numText(riskRows,{x:'risk',y:'row',value:'risk',format:v=>formatRisk(v),dx:5,textAnchor:'start',fill:c.plotFg}),
+     P.text(titles,{x:0,y:'row',text:'name',textAnchor:'end',dx:-3,fill:c.plotFg,fontWeight:600}),
+     P.text(titles,{x:0,y:'row',text:'blocks',textAnchor:'start',fill:c.plotFg,fontWeight:600}),
+     P.arrow([change],{x1:'from',x2:'to',y1:'row',y2:'row',stroke:c.plotFg,strokeWidth:1.5,headLength:7}),
+     numText([change],{x:d=>Math.max(d.from,d.to),y:'row',value:'delta',format:signed,dx:6,textAnchor:'start',fill:c.plotFg}),
+     P.ruleY([gap],{y:'row',x1:'lo',x2:'hi',stroke:c.plotFg,strokeWidth:1.5}),
+     P.tickX([gap.lo,gap.hi],{x:d=>d,y:()=>gap.row,stroke:c.plotFg,strokeWidth:1.5,insetTop:4,insetBottom:4}),
+     numText([gap],{x:'hi',y:'row',value:'regret',format:v=>formatRisk(v),dx:6,textAnchor:'start',fill:c.plotFg}),
+    ],
+    keyboard:{data:riskRows,x:'risk',y:'row',key:d=>`${d.report}-${d.law}`,sort:false,title:d=>`${d.report}, ${d.law} law: risk ${formatRisk(d.risk)}.`},
    });
    const table=h('table',{class:'prx-al-table'},h('caption',{},'Evaluation of each fixed report; the law changes across columns'),h('thead',{},h('tr',{},...['Fixed report','Selection-law risk','Evaluation-law risk','Expected wrong share among stated pairs (evaluation law)'].map(t=>h('th',{scope:'col'},t)))),h('tbody',{},
     h('tr',{},h('th',{scope:'row'},'Selected report'),h('td',{},ro('table-selected-selection',r.chosenSelection.risk,formatRisk)),h('td',{},ro('table-selected-evaluation',r.chosenEvaluation.risk,formatRisk)),h('td',{},ro('selected-share',r.chosenEvaluation.EoverN[0],formatShare))),

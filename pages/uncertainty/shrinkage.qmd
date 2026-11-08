@@ -4,12 +4,7 @@ subtitle: "1.5 · a teaching prior, after Kline, Rose and Walters (2024) and Wal
 description: "Precision-weighted posterior means and changes in pairwise order under a common normal prior."
 ---
 
-Under a normal likelihood and a common normal prior, each posterior mean is a precision-weighted average of the
-estimate and the prior mean. The two precisions are the inverse squared standard error and the inverse prior
-variance. The posterior mean minimises posterior expected squared error. Each row displays an estimate
-$\hat\theta_i$ in vermillion and its posterior mean in navy. Less precise estimates receive greater shrinkage towards
-the prior mean. Unequal sampling precisions can therefore change the order of the units; equal precisions preserve
-the order under this model.
+Under a normal likelihood and a common normal prior, the posterior mean averages the estimate and the prior mean, weighting each by its precision. Those precisions are the inverse squared standard error and the inverse prior variance. The resulting mean minimizes posterior expected squared error. The figure traces the change from each estimate $\hat\theta_i$ in vermilion to its posterior mean in navy. Estimates with larger standard errors move farther toward the prior mean. When the standard errors differ, the order can change. A common standard error preserves the order.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -22,7 +17,7 @@ the order under this model.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Prior SD .15.** Small units move .64 of the way to 0, medium units .31 and large units .10, so greater shrinkage towards 0 changes the order of imprecise units relative to precise units: in this draw the order changes for 37 of the 435 pairs.
+- **Prior SD .15.** Small units move .64 of the way to 0, medium units .31 and large units .10. The units move toward 0 by different amounts, reversing the estimated order for 37 of the 435 pairs in this draw.
 - **Prior SD .05.** A narrower prior increases shrinkage: small units move .94, large units .50, and in this draw 71 of the
   435 pairs change order.
 - **Every SE .10.** A common SE gives a common retained share, .69, for every unit: no lines cross, and 0 of the 435 pairs change

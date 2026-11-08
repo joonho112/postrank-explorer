@@ -28,8 +28,8 @@
 //   trace      the chain shown: each draw's state as a thin step line just outside [0, 1] (so a constant trace stays
 //              visible beside an estimate of 0 or 1), the running estimate and a band of ±2 MCSE around it: pretend
 //              iid, the iid MCSE of the draws so far (engine mcse of the prefix); chain-aware, the exact SD of the
-//              estimate of that many draws (engine chainMeanVariance); π dashed. At most CONFIG.grid points. The
-//              read-out sits under it.
+//              estimate of that many draws (engine chainMeanVariance); π dashed. At most CONFIG.grid points. It is the
+//              graphic the stay, S and the chain shown change (ctx.primaryGraphic), first under the read-out.
 //   histograms beside the trace (two columns from a 50rem container): the estimate after S draws of every chain
 //              (vermillion) and, below, of every independent run (gray), on one x axis, each with its own count scale;
 //              a gray band π ± 2 SD (iid formula; for the chains in chain-aware mode their exact SD), the iid error
@@ -43,8 +43,10 @@
 // Keys: stay (.5–.999, step .001), draws (S: 10, 20, 50, 100, 200, 500, 1000), chains (200, 500, 1000, 2000),
 // chain (the chain shown: 1 to the chains run; a larger value is set back while drawing), seed, mode (iid | chain),
 // toy (pair | loss: the trace of postrank's example).
-// The preset row is moved to the top of the controls. A run of more than CONFIG.stageLimit draws in all that is not
-// memoized is simulated in a second stage under aria-busy (never at mount); the update itself only marks the app busy.
+// The preset row is moved to the top of the controls. Layout (review 044 repair, X-01): base.js's result-first frame,
+// so the read-out sits directly under the controls (it used to sit under the trace), and the trace with the histograms
+// beside it follows. A run of more than CONFIG.stageLimit draws in all that is not memoized is simulated in a second
+// stage under aria-busy (never at mount); the update itself only marks the app busy.
 //
 // Exports: CONFIG, switchOf(stay), estimateBins(S, means), chainRun(p, S, chains, seed) (memoized simulation).
 import { createWidget, uid } from "../shared/base.js";
@@ -196,7 +198,7 @@ export const CONFIG = Object.freeze({
     failNoteIndependent: "At stay {stay} the draws are independent. ",
     failNoteWide: "At this S the radius of the iid error bound is at least one half, so no estimate can fall outside it.",
     radiusNote: "The bound is the theory book's (failure chance {alpha}, one pair); postrank's form, for pairs that cannot tie, has radius {rp} and fails in {sharePkg} of these chains (exact chance {exactPkg}).",
-    eqNote: "Both equivalent counts come from the stay chance, not from an effective sample size (ESS) estimated from a chain; they describe numerical precision but cannot be put in place of S in the iid error bound. Dependent draws need a bound of their own.",
+    eqNote: "We calculate both equivalent counts from the probability of staying in the same state. They summarize the precision of the estimate. The independence-based bound requires independent draws and cannot use these counts in place of S.",
     curveHead: "Exact variance of the estimate by the number of draws",
     curveX: "Draws per chain, S",
     curveY: "Variance of the estimate",
@@ -496,8 +498,8 @@ const CSS = `
 .prx-cd .prx-cd-sym sub { font-size: 0.75em; }
 .prx-cd .prx-cd-charts { container-type: inline-size; }
 .prx-cd .prx-cd-views { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem 1.5rem; align-items: start; }
-/* two columns: the trace (with the read-out) beside the histograms; the table under the trace, the variance panel
-   under the histograms, each starting where the panel above it ends */
+/* two columns: the trace beside the histograms (the read-out above both, under the controls: review 044 repair); the
+   table under the trace, the variance panel under the histograms, each starting where the panel above it ends */
 @container (min-width: 50rem) {
   .prx-cd .prx-cd-views { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto auto 1fr auto;
     grid-template-areas: "trace dist" "numbers dist" "numbers curve" "toy toy"; }
@@ -523,7 +525,6 @@ const CSS = `
 .prx-cd .prx-cd-sw-mcmc { width: 1.6rem; height: 0; border-top: 2px solid var(--prx-est); }
 .prx-cd .prx-cd-sw-mcmc::after { content: ""; position: absolute; left: 50%; top: -5px; width: 8px; height: 8px; margin-left: -4px;
   background: var(--prx-est); border-radius: 50%; }
-.prx-cd .prx-cd-trace .prx-readout { margin-top: 0.6rem; }
 .prx-cd .prx-cd-heading { margin: 0 0 0.25rem; font-size: 0.95em; font-weight: 600; line-height: 1.3; color: var(--prx-fg-heading); }
 .prx-cd .prx-cd-sub { margin: 0.45rem 0 0.15rem; font-size: 0.875em; font-weight: 600; line-height: 1.3; color: var(--prx-fg); }
 .prx-cd .prx-cd-note { margin: 0.35rem 0 0; font-size: 0.875em; color: var(--prx-fg-muted); }
@@ -579,6 +580,8 @@ export function mountWidget(el, spec = {}) {
     name: CONFIG.name,
     label: CONFIG.label,
     className: CONFIG.className,
+    // review 044 repair (X-01): the read-out directly under the controls (the preset row leads them, as before)
+    layout: "result-first",
     css: CSS,
     keys: {
       stay: { type: "number", min: CONFIG.stay.min, max: CONFIG.stay.max, step: CONFIG.stay.step, value: CONFIG.stay.value },
@@ -625,6 +628,7 @@ export function mountWidget(el, spec = {}) {
       // the chain shown: a slider over 1 … chains, made again when the number of chains changes
       const chainSlot = h("div", { class: "prx-cd-chain" });
       const chainHint = h("p", { class: "prx-hint", id: uid("prx-cd-chain-hint") });
+      let chainLimit = null;
       let chainSlider = null;
       let chainMax = 0;
       const makeChainSlider = (max, value) => {
@@ -656,13 +660,14 @@ export function mountWidget(el, spec = {}) {
       seed.root.classList.add("prx-cd-seed");
       const runsRow = h("div", { class: "prx-cd-runs" }, chains.root, seed.root);
 
-      // --- the trace of the chain shown, with the read-out under it
+      // --- the trace of the chain shown: the graphic the stay, S and the chain shown change, first under the read-out
+      // (review 044 repair, X-01: the read-out now sits directly under the controls, base.js's result-first frame)
       const traceTitle = ctx.panelTitle("", { className: "prx-cd-heading" });
-      const traceSlot = h("div", { class: "prx-cd-trace-chart" });
+      const traceSlot = ctx.primaryGraphic(h("div", { class: "prx-cd-trace-chart" }));
       const traceKey = h("div", { class: "prx-cd-key prx-light-panel", "data-prx-part": "legend" });
       const chainLine = h("p", { class: "prx-cd-line", "data-prx-part": "readout", "data-prx-note": "chain" });
       const traceBox = h("section", { class: "prx-cd-trace", "aria-label": T.traceY },
-        traceTitle, traceSlot, traceKey, chainLine, ctx.readout.node);
+        traceTitle, traceSlot, traceKey, chainLine);
 
       // --- the estimates of every chain and every independent run, beside the trace
       const distTitle = ctx.panelTitle("", { className: "prx-cd-heading" });
@@ -720,7 +725,7 @@ export function mountWidget(el, spec = {}) {
       ctx.charts.classList.add("prx-cd-charts");
       ctx.charts.append(h("div", { class: "prx-cd-views" }, traceBox, distBox, numbersBox, curveBox, toyBox));
       // the example's data notice (author scope, from the released file), after the caption with the app's own notes;
-      // outside the figure parts, so the package and licence versions are words, not shown numbers
+      // outside the figure parts, so the package and license versions are words, not shown numbers
       ctx.root.append(h("p", { class: "prx-cd-notice", "data-prx-note": "toy-notice" }, `${T.toyNotice}${TOY.notice}`));
 
       // ------------------------------------------------------------------------------------------- drawing
@@ -1109,7 +1114,10 @@ export function mountWidget(el, spec = {}) {
           const chainsRun = state.chains;
           // the chain shown is never beyond the chains run: a larger value is set back to the last chain
           const c = Math.max(CONFIG.chain.min, Math.min(state.chain, chainsRun));
-          if (c !== state.chain) ctx.set({ chain: c });
+          if (c !== state.chain) {
+            chainLimit = { from: state.chain, to: c, chains: chainsRun };
+            ctx.set({ chain: c });
+          } else if (chainLimit && (c !== chainLimit.to || chainsRun !== chainLimit.chains)) chainLimit = null;
           stay.set(state.stay);
           draws.set(state.draws);
           chains.set(state.chains);
@@ -1117,7 +1125,9 @@ export function mountWidget(el, spec = {}) {
           if (chainMax !== chainsRun) ctx.keepFocus(() => makeChainSlider(chainsRun, c));
           else chainSlider.set(c);
           if (Number(seed.input.value) !== state.seed) seed.set(state.seed);
-          chainHint.replaceChildren(...fill(T.chainHint, { c: () => num(c, F.count(c)), C: () => num(chainsRun, F.count(chainsRun)) }));
+          chainHint.replaceChildren(...fill(T.chainHint, { c: () => num(c, F.count(c)), C: () => num(chainsRun, F.count(chainsRun)) }),
+            ...(chainLimit ? [" Chain ", num(chainLimit.from, F.count(chainLimit.from)),
+              " is no longer in this run; showing the last available chain."] : []));
           modeHint.replaceChildren(...fill(T.modeHint, { stay: () => num(state.stay, F.setting(state.stay)) }));
           toySeg.set(state.toy);
           // postrank's example depends on its own key only: drawn at mount, when its trace changes, and on resize or theme

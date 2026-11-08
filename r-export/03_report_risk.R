@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Golden values for engine/src/report.ts and engine/src/risk.ts (Step 2.5).
 #   oracle-report-risk    base R only (exact counts, closed forms, theory-book worked examples); postrank not loaded.
 #   postrank-report-risk  postrank_evaluate() on the six tutorial sites (one and two criteria) and the KRW race card,
@@ -378,7 +378,7 @@ for (tau in c(0.05, 0.15, 0.25, 0.40, 0.50)) {
   r <- ev(sprintf("six-K1-tau%s-all_withheld", sub("^0", "", sprintf("%g", tau))), rep(1, 6), e_rel, six_ids, "score_A", tau, 1)
   stopifnot(r$M == 15, r$N == 0, r$E == 0, r$errorTerm == 0, identical(r$withholdingTerm, tau), identical(r$risk, tau))
 }
-# Step 5.14 (engine/API.md): the all-withheld report at the remaining tau values the Part 1 pages show
+# Step 5.14: the all-withheld report at the remaining tau values the Part 1 pages show
 # (same input). Here tau (M - N)/M = 15 tau / 15 need not return tau bit for bit, so only near-equality is asserted.
 for (tau in c(0.02, 0.14, 0.18, 0.19, 0.36, 0.37)) {
   r <- ev(sprintf("six-K1-tau%s-all_withheld", sub("^0", "", sprintf("%g", tau))), rep(1, 6), e_rel, six_ids, "score_A", tau, 1)
@@ -415,7 +415,7 @@ for (fam in c("all", "cap3")) for (tau in (2:50) / 100) {
 Ns <- function(fam) vapply(grid_opt[startsWith(names(grid_opt), paste0("six-K1-optimum-", fam, "-"))], `[[`, 0, "N")
 stopifnot(!is.unsorted(Ns("all")), !is.unsorted(Ns("cap3")))      # disclosure of the optimum never falls as tau rises
 
-# ---- Step 6.14 Part 2 rows (engine/API.md; shared inputs in r-export/15_part2.R) --------------------
+# ---- Step 6.14 Part 2 rows (shared inputs in r-export/15_part2.R) --------------------
 source("r-export/15_part2.R")
 stopifnot(identical(p2$six$e, e_rel))                                    # the same released score-A array
 ftau <- function(tau) sub("^0", "", sprintf("%g", tau))

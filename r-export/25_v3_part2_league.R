@@ -1,4 +1,4 @@
-# Author: JoonHo Lee (jlee296@ua.edu)
+# Author: JoonHo Lee (jlee296@ua.edu).
 # Part 2 reported-and-realized UI pins. Independent base R only; no JS or postrank.
 # Reports are FIXED inputs from the existing independently enumerated oracle-v3 league rows.
 # This supplement checks their evaluation, not a second implementation of report selection.

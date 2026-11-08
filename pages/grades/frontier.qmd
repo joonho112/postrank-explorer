@@ -4,11 +4,7 @@ subtitle: "2.10 · after the postrank theory book, ch. 16, and Kline, Rose and W
 description: "The lower convex boundary of expected wrong counts at different levels of disclosure."
 ---
 
-Each point represents a report, with its number of stated pairs on the horizontal axis and expected wrong count on
-the vertical axis. A supporting line of slope $\tau$ identifies a report with minimum posterior risk in the
-selected family. The lower convex boundary summarises these choices across withholding costs. Its vertices are
-attained by reports; points within its edges may require mixtures of complete reports. The display distinguishes
-this convex boundary from the minimum error attainable by a single report at each discrete disclosure level.
+Each point represents one report. The horizontal axis gives the number of directions it states, and the vertical axis gives the expected number it gets wrong. A line of slope $\tau$ supporting the cloud from below identifies the report with the lowest posterior risk at that withholding cost. As τ changes, the points touched by these lines trace the lower convex boundary. Each vertex is attainable by a single report. Points between vertices may require randomizing between whole reports. The circles identify the best single report at each attainable number of stated pairs.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,19 +17,17 @@ this convex boundary from the minimum error attainable by a single report at eac
 ## Numerical illustrations {#what-to-try}
 
 - **τ .20, all reports.** The touched vertex states 14 pairs and expects .3576 wrong directions, with risk .0372.
-  The vertex table records this report and its adjacent slopes. The circles below the grey columns mark the smallest error at each attainable
+  The vertex table records this report and its adjacent slopes. The circles below the gray columns mark the smallest error at each attainable
   disclosure; only some of those circles are corners of the dashed boundary.
 - **τ .15, all reports.** A lower withholding cost selects a smaller disclosure: 13 pairs, .1692 expected wrong directions and risk
-  .0313. The posterior did not change. The smaller slope reduces the loss reduction available from additional disclosure.
+  .0313. A smaller τ reduces the savings from replacing a withheld comparison with a stated direction. The posterior is the same.
 - **τ .40, all reports.** The line reaches the last vertex: 15 stated pairs, .7194 expected wrong directions and
   risk .0480. This is the strict order. The **Every report (full height)** view gives the full vertical range; the close view resolves reports near the frontier.
 - **τ .20, at most 3 grades.** Only 603 reports are available. The boundary ends at 12 stated pairs and .02477
   expected wrong directions; the selected report has risk .0417. The missing corners belong to reports outside this
   family, so they cannot be selected even when withholding becomes costly.
 
-The table's edge slopes are the withholding costs where the selected report changes. They are also the change points
-in *The withholding cost*: each measures the extra expected wrong directions per extra stated pair. When the line
-lies along an edge, both endpoint reports have the same risk.
+Each edge slope gives the additional expected wrong directions per additional stated pair. It is also the withholding cost at which both endpoint reports have equal risk. The same change points appear in *The withholding cost*.
 
 ::: {.callout-note appearance="simple"}
 The dashed segments describe mixtures of complete reports, so a point between corners need not be a deterministic report. These are fictional tutorial sites under one supplied posterior and one criterion. KRW's related
@@ -45,11 +39,11 @@ law.
 ```r
 library(postrank)
 p <- postrank_frontier(pr_tutorial$one, weights=c(score_A=1), tau=c(.15,.20,.40), G_max=6L, backend="highs")
-p$table[, c("tau", "N", "primary_risk")]
+p$table[, c("tau", "N", "primary_risk", "status")]
 ```
 
-This returns selected reports along a withholding-cost path. It does not compute the convex boundary or the mixtures
-between its vertices.
+HiGHS solves one optimization at each requested τ and returns its solver status. The browser enumerates the six-site
+family once to draw the whole convex boundary, including mixtures between vertices.
 :::
 
 Standalone: [embed/frontier.html](../../embed/frontier.html), for example `?tau=.15&family=all&view=near`.

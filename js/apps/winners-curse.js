@@ -14,14 +14,26 @@
 //   league table  1.3's drawLeagueTable for the replay shown (seed + draw), true values shown; the k units followed are
 //                 ringed, with an arrow from the estimate to the navy posterior mean (1.5's compute for that draw); its
 //                 x axis holds every estimate of the run, so it never moves while the replay shown moves; its key, on the
-//                 plot panel, ends with 1.3's dot-size sentence and size groups; the replay shown and the seed sit
+//                 plot panel, ends with 1.3's dot-size sentence and size groups; the seed and the two sliders' hints sit
 //                 under it
 //   histograms    one average per replay, stacked in bins: estimate minus true value (vermillion) above and posterior
 //                 mean minus true value of the same units (navy) below, on one x axis and one count scale; a solid line
-//                 at 0 (no gap), a dashed line at the mean over the replays, a triangle and a dotted line at the replay shown
+//                 at 0 (no gap), a dashed line at the mean over the replays with "mean" and its value written at its
+//                 top end, one row above the triangle and the dotted line at the replay shown
 //   summary       the replay shown beside the average over the replays (a table), one sentence on what the posterior
 //                 means did on average (words chosen by what is left of the gap against the gap, CONFIG.band, with both
 //                 averages), the Monte Carlo SEs of the two averages
+//
+// Layout (review 044 repair, X-01 with U1-F5, and X-16 with U1-F6): base.js's result-first frame. The controls are one
+// row: the end, k, the prior SD, the replays and the replay shown (its slider and hint, which sat under the league
+// table out of sight of what it moves), then the preset row and the read-out, which reports the replay shown too. The
+// two histograms are the primary graphic (ctx.primaryGraphic), each with its mean written on its dashed line, and no
+// note sits between them and the read-out (the note on replays and bins follows their key). The views are in a phone's
+// reading order (one column): the histograms with their key, the league table of the replay shown (with its key, the
+// seed and the hints), then the lead, the summary table and the Monte Carlo SEs; from a 56rem container on, two columns
+// as before, placed by named grid areas: the league table on the left, the histograms and the summary on the right. Tab
+// follows the DOM, so on a page it visits the histograms (right) before the league table (left).
+//
 // Keys: seed (integer), replays (20, 200 or 2000), k (1–15, so the two ends never overlap), side (top or bottom),
 // priorSd (.02–.60 as in 1.5, clamped, not snapped), draw (the replay shown: 1 to the replays run; a larger value is set
 // back to the last replay while drawing).
@@ -33,7 +45,7 @@
 // Exports: CONFIG, overshootRun(state) (memoized leagueOvershoot), runDomain(state) (the league table's x domain for a
 // run), replayBins(R, est, post) (the histograms' bins).
 import { createWidget, uid } from "../shared/base.js";
-import { plot } from "../shared/chart.js";
+import { numText, plot } from "../shared/chart.js";
 import { formatCount, formatDecimal, formatSetting } from "../shared/format.js";
 import { captionNode } from "../shared/labels.js";
 import { LEAGUE_SEED, drawLeague, leagueOvershoot, mcse, summaryStats } from "../pr-core.js";
@@ -65,8 +77,13 @@ export const CONFIG = Object.freeze({
   // estimates only, so moving the prior SD never re-bins the upper histogram)
   bins: Object.freeze({ target: Object.freeze({ 20: 12, 200: 24, 2000: 36 }), fallback: 30, widths: Object.freeze([0.005, 0.01, 0.02, 0.025, 0.05, 0.1, 0.2, 0.5]), eps: 1e-9, decimals: 6 }),
   chart: Object.freeze({
-    height: 150, marginTop: 18, marginBottom: 40, marginLeft: 46, marginRight: 14, xTicks: 6, yTicks: 4,
+    // the top margin holds two rows: on top "mean" and the mean, written at the end of the dashed line, which reaches up
+    // to them (review 044 repair, X-01: the decisive number on the changed mark); below, the triangle of the replay
+    // shown, so the label never sits on the triangle (fix round, review A1). px: the label's center is lineTop − 7 from
+    // the top, the dashed line starts at lineTop, the triangle's center is markerDy above the plot area
+    height: 172, marginTop: 40, marginBottom: 40, marginLeft: 46, marginRight: 14, xTicks: 6, yTicks: 4,
     zeroWidth: 1.25, meanWidth: 1.75, meanDash: "5,3", shownWidth: 1.5, shownDash: "1.5,2.5", marker: 4.5, markerDy: -8, barRim: 0.5,
+    meanLabel: Object.freeze({ dy: -32, lineTop: 15, gap: 3, char: 6.2, edge: 2, minWidth: 200, defaultWidth: 640 }),
     // league table additions: a ring around the estimate dot, then 1.5's posterior-mean dot and arrow (its sizes) drawn
     // in 1.3's table; the arrow starts clear of the largest estimate dot, and 1.3's diamond is drawn again on top
     ringPad: 3, ringWidth: 1.5, arrowWidth: 1.4,
@@ -103,7 +120,7 @@ export const CONFIG = Object.freeze({
     keyOther: " Posterior mean {pm}.",
     // histograms
     distHead: "{R} replays: the {end} {k} by estimate against their true values",
-    distNote: "Each replay adds new noise to the same true values and picks its own {end} {k} by estimate. Each bar counts the replays whose average falls in its bin.",
+    distNote: "Each replay keeps the true values fixed, draws new estimates, and selects its {end} {k} units by estimate. The bars count how many replays fall in each range of the average error.",
     estHead: "Estimate minus true value, averaged over the {k} units: mean {mean} (dashed line)",
     postHead: "Posterior mean minus true value, same units, prior SD {sd}: mean {mean} (dashed line)",
     estX: "Average of estimate minus true value",
@@ -118,6 +135,8 @@ export const CONFIG = Object.freeze({
     tReplays: "Replays",
     estKbd: "Estimates: one point per bin of replays",
     postKbd: "Posterior means: one point per bin of replays",
+    // the word before the mean written on its dashed line
+    meanWord: "mean",
     kbdBin: "{which}: {n} of {R} replays average from {lo} to {hi}.",
     kbdEst: "Estimates",
     kbdPost: "Posterior means",
@@ -236,23 +255,36 @@ export function replayBins(R, est, post) {
 
 // ---------------------------------------------------------------------------------------------- CSS
 
+// Layout (review 044 repair, X-01/U1-F5 and X-16/U1-F6): the controls row holds the replay shown after the replays, so
+// on a page at 1280 the five controls share one row (the two sliders narrower than before) and the replay hint keeps
+// two lines in every state, so the row never changes height while the replay moves. The views are in a phone's reading
+// order (histograms, league table, summary); from a 56rem container on, named grid areas put the league table on the
+// left and the histograms over the summary on the right, as before (row gap 0: the parts keep their own spacing).
 const CSS = `${cssFor(CONFIG.className)}
-.prx-wc .prx-wc-row { display: flex; flex: 1 1 100%; flex-wrap: wrap; gap: 0.5rem 1.4rem; align-items: flex-start; min-width: 0; }
-.prx-wc .prx-wc-row > .prx-slider { max-width: 22rem; }
+.prx-wc .prx-wc-row { display: flex; flex: 1 1 100%; flex-wrap: wrap; gap: 0.5rem 0.9rem; align-items: flex-start; min-width: 0; }
+.prx-wc .prx-wc-row > .prx-slider { flex: 1 1 8rem; max-width: 13rem; }
 .prx-wc .prx-wc-seed { flex: 1 1 14rem; max-width: 22rem; }
 .prx-wc .prx-wc-seed input[type="number"] { width: 9rem; max-width: 100%; }
 .prx-wc .prx-wc-seed .prx-hint, .prx-wc .prx-wc-draw .prx-hint { margin: 0.15rem 0 0; }
-.prx-wc .prx-wc-draw { flex: 1 1 14rem; max-width: 22rem; min-width: 0; }
+.prx-wc .prx-wc-draw { flex: 1 1 15rem; max-width: 22rem; min-width: 0; }
 .prx-wc .prx-wc-draw > .prx-slider { max-width: none; }
+.prx-wc .prx-wc-draw .prx-hint { min-height: 2.8em; }
+@media (max-width: 30em) {
+  .prx-wc .prx-wc-row > .prx-slider, .prx-wc .prx-wc-row > .prx-wc-draw { flex-basis: 100%; max-width: none; }
+}
 .prx-wc .prx-wc-charts { container-type: inline-size; }
 .prx-wc .prx-wc-views { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem 1.5rem; align-items: start; }
 @container (min-width: 56rem) {
-  .prx-wc .prx-wc-views { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prx-wc .prx-wc-views { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto 1fr; row-gap: 0;
+    grid-template-areas: "league dist" "league sum"; }
+  .prx-wc .prx-wc-league { grid-area: league; }
+  .prx-wc .prx-wc-dist { grid-area: dist; }
+  .prx-wc .prx-wc-sum { grid-area: sum; }
 }
-.prx-wc .prx-wc-league, .prx-wc .prx-wc-dist, .prx-wc .prx-wc-hist { min-width: 0; max-width: 100%; }
+.prx-wc .prx-wc-league, .prx-wc .prx-wc-dist, .prx-wc .prx-wc-sum, .prx-wc .prx-wc-hists, .prx-wc .prx-wc-hist { min-width: 0; max-width: 100%; }
 .prx-wc .prx-wc-hist + .prx-wc-hist { margin-top: 0.6rem; }
 .prx-wc .prx-wc-hist-head { margin: 0 0 0.2rem; font-size: 0.875em; font-weight: 600; line-height: 1.3; color: var(--prx-fg); }
-.prx-wc .prx-wc-note { margin: 0 0 0.5rem; font-size: 0.9em; color: var(--prx-fg-muted); }
+.prx-wc .prx-wc-note { margin: 0.4rem 0 0; font-size: 0.9em; color: var(--prx-fg-muted); }
 /* the league key on the plot panel: its items in two columns where there is room, then the dot-size sentence and the
    three sizes on rows of their own */
 .prx-wc .prx-wc-league-key { display: block; column-gap: 1.25rem; }
@@ -296,6 +328,8 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     title: CONFIG.title,
     className: CONFIG.className,
+    // review 044 repair (X-01): the read-out directly under the controls and the preset row
+    layout: "result-first",
     css: CSS,
     keys: {
       seed: { type: "integer", min: CONFIG.seed.min, max: CONFIG.seed.max, value: CONFIG.seed.value },
@@ -325,6 +359,9 @@ export function mountWidget(el, spec = {}) {
         label: SHRINK.text.sliderLabel, ...ctx.key("priorSd"), name: "priorSd",
         onInput: (v) => ctx.set({ priorSd: v }),
       });
+      // the prior SD is the primary control: it moves the posterior histogram and the read-out's second average
+      // (review 044 fix round: base.js primaryControl, so the probe measures the read-out from it)
+      ctx.primaryControl(prior.input);
       // the two sliders' hints sit under the league table (the figures come first); each still describes its slider
       const kHint = h("span", { id: uid("prx-wc-k-hint") }, T.kHint);
       const priorHint = h("span", { id: uid("prx-wc-prior-hint") }, ...fill(T.priorHint, { zero, spread: () => ro("spread", SPREAD, fmtValue(SPREAD)) }));
@@ -361,21 +398,23 @@ export function mountWidget(el, spec = {}) {
       seed.input.setAttribute("aria-describedby", seedHintId);
       seed.root.append(h("p", { id: seedHintId, class: "prx-hint", text: NL.seedHint }));
       seed.root.classList.add("prx-wc-seed");
-      // one row: which units (the end, k, the prior SD of their posterior means) and how many replays; the replay shown
-      // and the seed go under the league table, so the figures start within the first screen
-      ctx.controls.append(h("div", { class: "prx-wc-row" }, side.root, kSlider.root, prior.root, replays.root));
-      // the read-out sits between the controls (with the preset row) and the figures
-      ctx.controls.after(ctx.readout.node);
+      // one row: which units (the end, k, the prior SD of their posterior means), how many replays and the replay shown
+      // (review 044 repair, X-01/U1-F5: it moves the league table, the triangles on the histograms and the read-out's
+      // second sentence, so it sits with the controls, above all three); the seed stays under the league table with the
+      // sliders' hints. (The result-first frame puts the read-out between the controls, with the preset row, and the
+      // figures.)
+      ctx.controls.append(h("div", { class: "prx-wc-row" }, side.root, kSlider.root, prior.root, replays.root, drawSlot));
 
-      // --- league table of the replay shown, with the replay shown and the seed under it
+      // --- league table of the replay shown, with the seed and the hints under it
       const drawLine = h("p", { class: "prx-nl-drawline", "data-prx-part": "notes" });
       const leagueSlot = h("div", { class: "prx-nl-league-chart" });
       const leagueKey = h("div", { class: "prx-nl-key prx-wc-league-key", "data-prx-part": "legend" });
-      const replayRow = ctx.part("controls", h("div", { class: "prx-wc-row prx-wc-replay-row" }, drawSlot, seed.root));
+      const replayRow = ctx.part("controls", h("div", { class: "prx-wc-row prx-wc-replay-row" }, seed.root));
       const leagueBox = h("section", { class: "prx-wc-league", "aria-label": T.leagueHead },
         ctx.panelTitle(T.leagueHead, { className: "prx-nl-heading" }), drawLine, leagueSlot, leagueKey, replayRow, hints);
 
-      // --- the replays: the two histograms, their key, the summary
+      // --- the replays: the two histograms (the primary graphic, base.js primaryGraphic) and their key; then the
+      // summary: the lead, the table and the Monte Carlo SEs
       const distTitle = ctx.panelTitle("", { className: "prx-nl-heading" });
       const distNote = h("p", { class: "prx-wc-note", "data-prx-part": "notes" });
       const estHead = ctx.part("notes", ctx.panelTitle("", { level: 5, className: "prx-wc-hist-head" }));
@@ -386,13 +425,17 @@ export function mountWidget(el, spec = {}) {
       const lead = h("p", { class: "prx-wc-lead", "data-prx-part": "readout" });
       const summary = h("div", { class: "prx-wc-summary", "data-prx-part": "readout" });
       const mcseNote = h("p", { class: "prx-wc-mcse", "data-prx-part": "notes" });
-      const distBox = h("section", { class: "prx-wc-dist", "aria-label": T.replays },
-        distTitle, distNote,
+      const hists = ctx.primaryGraphic(h("div", { class: "prx-wc-hists" },
         h("div", { class: "prx-wc-hist" }, estHead, estSlot),
-        h("div", { class: "prx-wc-hist" }, postHead, postSlot),
-        distKey, lead, summary, mcseNote);
+        h("div", { class: "prx-wc-hist" }, postHead, postSlot)));
+      // the note on what a replay and a bar are follows the key, so no note sits between the read-out and the
+      // histograms (review 044 repair, X-01/X-16)
+      const distBox = h("section", { class: "prx-wc-dist", "aria-label": T.replays }, distTitle, hists, distKey, distNote);
+      const sumBox = h("div", { class: "prx-wc-sum" }, lead, summary, mcseNote);
       ctx.charts.classList.add("prx-wc-charts");
-      ctx.charts.append(h("div", { class: "prx-wc-views" }, leagueBox, distBox));
+      // a phone's reading order (review 044 repair, X-16/U1-F6): the histograms, the evidence across replays, before the
+      // league table of one replay, then the summary; two columns from a 56rem container on (CSS grid areas)
+      ctx.charts.append(h("div", { class: "prx-wc-views" }, distBox, leagueBox, sumBox));
 
       // ------------------------------------------------------------------------------------------- drawing
 
@@ -446,8 +489,38 @@ export function mountWidget(el, spec = {}) {
         });
       }
 
+      /**
+       * "mean" and the mean over the replays at the top end of the dashed line (review 044 repair, X-01: the decisive
+       * number on the changed mark): the word ends just left of the line and the number starts just right of it, in the
+       * top row of the top margin, one row above the triangle of the replay shown (the dashed line reaches up to the
+       * label, CONFIG.chart.meanLabel.lineTop); near an edge of the figure both move inward. The number is data-num with
+       * the hook chart-mean-est or chart-mean-post.
+       */
+      function meanMarks(c, P, { which, mean, lo, hi, width }) {
+        const L = C.meanLabel;
+        const inner = Math.max(1, width - C.marginLeft - C.marginRight);
+        const x = C.marginLeft + ((mean - lo) / (hi - lo)) * inner;
+        const text = fmtGap(mean);
+        const left = x - L.gap - L.char * T.meanWord.length;
+        const right = x + L.gap + L.char * text.length;
+        const dx = left < L.edge ? L.edge - left : right > width - L.edge ? width - L.edge - right : 0;
+        const hook = (index, scales, values, dims, context, next) => {
+          const g = next(index, scales, values, dims, context);
+          for (const node of g?.querySelectorAll ? g.querySelectorAll("text") : []) node.setAttribute("data-prx-readout", `chart-mean-${which}`);
+          return g;
+        };
+        const at = { x: (v) => v, frameAnchor: "top", dy: L.dy, lineAnchor: "middle", fill: c.plotFg };
+        return [
+          P.text([mean], { ...at, text: () => T.meanWord, dx: dx - L.gap, textAnchor: "end" }),
+          numText([mean], { ...at, value: (v) => v, format: fmtGap, dx: dx + L.gap, textAnchor: "start", fontWeight: 600, render: hook }),
+        ];
+      }
+
       function drawHistogram(slot, { which, bins, lo, hi, yMax, mean, shown, R }) {
         const est = which === "est";
+        const L = C.meanLabel;
+        const measured = Math.round(slot.clientWidth || 0);
+        const width = measured > 0 ? Math.max(L.minWidth, measured) : L.defaultWidth;
         plot(slot, {
           alt: est ? T.estAlt : T.postAlt,
           table: {
@@ -459,6 +532,7 @@ export function mountWidget(el, spec = {}) {
             ],
             rows: bins,
           },
+          width,
           height: C.height,
           marginTop: C.marginTop, marginBottom: C.marginBottom, marginLeft: C.marginLeft, marginRight: C.marginRight,
           x: { domain: [lo, hi], label: est ? T.estX : T.postX, labelAnchor: "center", labelArrow: "none", grid: true, ticks: C.xTicks },
@@ -467,9 +541,11 @@ export function mountWidget(el, spec = {}) {
             P.rect(bins, { x1: "lo", x2: "hi", y1: 0, y2: "n", fill: est ? c.est : c.post, stroke: c.plotBg, strokeWidth: C.barRim }),
             P.ruleY([0], { stroke: c.plotAxis }),
             P.ruleX([ZERO], { stroke: c.plotAxis, strokeWidth: C.zeroWidth }),
-            P.ruleX([mean], { stroke: c.plotFg, strokeWidth: C.meanWidth, strokeDasharray: C.meanDash }),
+            // the dashed mean line runs from the label row (above the triangle's row) down through the plot area
+            P.ruleX([mean], { stroke: c.plotFg, strokeWidth: C.meanWidth, strokeDasharray: C.meanDash, insetTop: C.meanLabel.lineTop - C.marginTop }),
             P.ruleX([shown], { stroke: c.plotMuted, strokeWidth: C.shownWidth, strokeDasharray: C.shownDash }),
             P.dot([shown], { x: (v) => v, frameAnchor: "top", dy: C.markerDy, symbol: "triangle", rotate: 180, r: C.marker, fill: c.plotFg }),
+            ...meanMarks(c, P, { which, mean, lo, hi, width }),
           ],
           keyboard: {
             data: bins, x: (b) => (b.lo + b.hi) / 2, y: "n", key: (b) => `${which}${b.i}`, label: est ? T.estKbd : T.postKbd,

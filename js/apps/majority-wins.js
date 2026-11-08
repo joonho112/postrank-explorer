@@ -24,9 +24,9 @@
 //            beside the posterior-mean and expected-rank orders (the pairs each states against the majority, its
 //            expected wrong claims and DR), the cycle (engine majorityWins' cycleTriples) and the card's shared grade
 //   unit     the selected unit (or the one under the pointer): its wins, expected rank and posterior mean with their
-//            places; its pairs as bars (navy: the chance it is above the other unit; grey: the chance the other is
+//            places; its pairs as bars (navy: the chance it is above the other unit; gray: the chance the other is
 //            above it), surest win first, with a dashed line at one half, so the wins are the navy bars that pass
-//            the line and the expected rank is one plus the grey parts; the two formulas worked
+//            the line and the expected rank is one plus the gray parts; the two formulas worked
 // Numbers: majorityWins (wins, cycles, strict order), expectedRank (exact, as postrank_expected_rank) or rankSummaries
 // (the law), scoreOrder (orders and equal-value blocks), statedAbove at τ = 1/2 (the stated pairs whose direction is
 // more likely wrong than right: against the majority, for these tie-free laws), misorderedPairs (majority wins
@@ -195,7 +195,7 @@ export const CONFIG = Object.freeze({
     cardCycle: "{id} is one of the three firms in the majority cycle.",
     groupWords: Object.freeze({ small: "small", medium: "medium", large: "large" }),
     pairsHeading: "The pairs of {id}, surest win first",
-    pairsAlt: "Bar chart of the pairs of {id}: one bar per other unit, sorted from the surest win to the surest loss; navy up to the chance that {id} is above the other unit, grey above it to one; a dashed line at one half.",
+    pairsAlt: "Bar chart of the pairs of {id}: one bar per other unit, sorted from the surest win to the surest loss; navy up to the chance that {id} is above the other unit, gray above it to one; a dashed line at one half.",
     pairsTableCaption: "The pairs of {id}, surest win first",
     colOther: "Other unit",
     colAbove: "Chance {id} is above it",
@@ -205,7 +205,7 @@ export const CONFIG = Object.freeze({
     keyAbove: "{id} above the other unit",
     keyBelow: "the other unit above {id}",
     keyHalf: "one half",
-    pairsNote: "Majority wins count the navy bars that pass one half; the expected rank is one plus the grey parts, so it also counts how sure each win is.",
+    pairsNote: "Majority wins count the navy bars that pass one half; the expected rank is one plus the gray parts, so it also counts how sure each win is.",
     texWorked: "The two counts worked",
     formulaNote: "A unit beats another by a majority when stating it above the other is less often wrong than the reverse: with no equal true values, a probability above one half (theory book, chapter 10). The expected rank is the unit's average position under the posterior, {one} at the top; θ is a true value and Y the data. No two units here can have equal true values; where they can, postrank's expected rank also counts each unit with an equal value as higher.",
     formulaNoteKrw: " In the formulas, u is the firm named above.",
@@ -217,7 +217,7 @@ export const CONFIG = Object.freeze({
     readOrdersAgainst: " The expected-rank order states {b} of the {M} pairs against the majority.",
     readLeagueSame: "majority wins give the posterior-mean order exactly ({mis} of the {M} pairs differ).",
     readLeagueDiff: "majority wins and the posterior means order {mis} of the {M} pairs differently.",
-    readLeagueAgainst: " The expected-rank order states {b} pairs against the majority.",
+    readLeagueAgainst: " The expected-rank order states {b} {pairs} against the majority.",
     readStrict: "the majority relation is a strict order.",
     readCycleOne: "the majority relation has {c} cycle of three firms, so no full ranking follows it.",
     readCycleMany: "the majority relation has {c} cycles of three firms, so no full ranking follows it.",
@@ -228,7 +228,7 @@ export const CONFIG = Object.freeze({
     noteLeague: "Simulated league of {n} units (ten small, ten medium, ten large), one fixed draw of the estimates (seed {seed}); teaching posterior with a normal prior of mean {zero} and SD {prior}. Majority wins and expected ranks are exact.",
     noteKrw: "KRW's firms: the log contact gap of white-named minus Black-named applications (race) or of male-named minus female-named applications (gender), with a smoothed version of KRW's posteriors (continuous cells in place of KRW's posterior grids); the cards come from KRW's code.",
     postLead: "The league's posterior: ",
-    // one KRW notice (data_contract.json scope cc-by-nc-krw; CR-054): DOIs, the licence as the deposit states it (no
+    // one KRW notice (data_contract.json scope cc-by-nc-krw; CR-054): DOIs, the license as the deposit states it (no
     // version), noncommercial, a change note, no endorsement, the conduct line
     noticeKrw: "Data: Kline, Rose and Walters (2024), A Discrimination Report Card, American Economic Review, doi:10.1257/aer.20230700; replication deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. The data shown here are provided as is and without warranty. No endorsement by the authors is implied.",
     noticeKrwChanges: "Changes: the pair probabilities as adapted in postrank 1.1.0 (pr_case_krw), a smoothed version of KRW's posteriors. The cards at λ = 1 computed with KRW's code (KRW replication companion) under KRW's archived pair probabilities. Majority wins, expected ranks and the counts computed in this browser.",
@@ -533,7 +533,7 @@ export function mountWidget(el, spec = {}) {
       ctx.charts.classList.add("prx-wr-charts");
       ctx.charts.append(h("div", { class: "prx-mw-grid" }, bumpBox, card), panel);
 
-      // --- the source note after the caption; on a standalone page also KRW's notice (licence, changes, conduct line;
+      // --- the source note after the caption; on a standalone page also KRW's notice (license, changes, conduct line;
       // its citation carries DOIs and a year, so it sits outside the parts whose numbers the checks read)
       const sourceNote = ctx.part("notes", h("p", { class: "prx-wr-note prx-wr-source" }));
       ctx.caption.after(sourceNote);
@@ -858,16 +858,28 @@ export function mountWidget(el, spec = {}) {
         if (d.geom === "league") {
           ctx.readout.set([...fill(T.headLeague, { prior: () => ro("prior-sd", d.priorSd, formatSetting(d.priorSd)) }),
             ...fill(d.misMean === 0 ? T.readLeagueSame : T.readLeagueDiff, { mis: () => ro("mis-mean", d.misMean, formatCount(d.misMean)), M }),
-            ...fill(T.readLeagueAgainst, { b: () => ro("against-er", d.against.er, formatCount(d.against.er)) })]);
+            ...fill(T.readLeagueAgainst, { b: () => ro("against-er", d.against.er, formatCount(d.against.er)),
+              pairs: d.against.er === 1 ? "pair" : "pairs" })]);
           return;
         }
         const relation = d.mw.strictOrder ? [T.readStrict]
           : fill(d.mw.cycles === 1 ? T.readCycleOne : T.readCycleMany, { c: () => ro("cycles", d.mw.cycles, formatCount(d.mw.cycles)) });
+        const cycle = soleCycle(d);
+        const cycleLead = cycle ? (() => {
+          const [a, b, c] = cycle;
+          const pi = (i, j) => ctx.num(1 - d.e[i][j], fmtProb(d, 1 - d.e[i][j]));
+          return [" Cycle: ", unitNode(d, a), " → ", unitNode(d, b), " → ", unitNode(d, c),
+            " → ", unitNode(d, a), ". Direction probabilities: ", pi(a, b), ", ", pi(b, c), ", ", pi(c, a), "."];
+        })() : [];
+        const comparison = d.criterion === "race" && d.mw.strictOrder && d.against.card === 0 && d.cardMis === 0 && d.evals.card.N === d.M
+          ? [" Expected wrong directions: ", ctx.num(d.evals.card.E[0], formatDecimal(d.evals.card.E[0], { digits: 2 })),
+            " for KRW’s card, versus ", ctx.num(d.evals.mean.E[0], formatDecimal(d.evals.mean.E[0], { digits: 2 })), " in posterior-mean order."]
+          : [];
         const c = d.against.card === 0 ? T.none : () => ro("against-card", d.against.card, formatCount(d.against.card));
         ctx.readout.set([...fill(T.headKrw, { n: () => ro("units", d.n, formatCount(d.n)), gap: T.gapWords[d.criterion] }), ...relation,
           ...fill(T.readKrwAgainst, {
             a: () => ro("against-mean", d.against.mean, formatCount(d.against.mean)), M, b: () => ro("against-er", d.against.er, formatCount(d.against.er)), one, c,
-          })]);
+          }), ...cycleLead, ...comparison]);
       }
 
       function drawNotes(d) {
