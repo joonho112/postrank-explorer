@@ -1,10 +1,12 @@
 /*
- * postrank Explorer v2 · shared app styles (js/shared/base.js, chart.js, labels.js)
+ * postrank Explorer · shared app styles (js/shared/base.js, chart.js, labels.js)
  *
  * Every color is a token from styles/tokens.css. The look follows DPprior Explorer: a light raised frame, one compact
- * row of controls and presets, the figure, a one- or two-sentence read-out with an accent rule, a one-line caption.
+ * row of controls and presets, a one- or two-sentence read-out with an accent rule, the primary figure stage, optional
+ * progressive disclosures, and a one-line caption.
  * An app's own rules live in its file (def.css in js/apps/<name>.js); base.js injects them once per document.
- * Sizes: an app must fit 960 x 540 CSS px (embed and host) and stay on screen at 1280 x 800 on its page.
+ * Sizes: responsive across 375 px mobile and 1280 x 800 desktop viewports, keeping controls, read-out and primary
+ * stage visible in the first screen.
  */
 
 /* --- frame --- */
@@ -33,6 +35,7 @@
 /* A table inside a disclosure takes the box's own surface (review 044 repair: PL-B request 2); light panels still win. */
 .page-columns .column-page .prx-widget .prx-disclosure table { background-color: transparent; }
 .page-columns .column-page .prx-widget .prx-light-panel table,
+.page-columns .column-page .prx-widget .prx-stage table,
 .page-columns .column-page .prx-widget table.prx-light-panel { background-color: var(--prx-plot-bg); }
 /* Bootstrap tables and disclosure headings must inherit the widget's local surface palette. */
 .prx-widget table {
@@ -234,9 +237,11 @@
 .prx-math-overlay, .prx-kbd-layer { position: absolute; inset: 0; pointer-events: none; }
 .prx-math-label { position: absolute; color: var(--prx-plot-fg); white-space: nowrap; pointer-events: none; }
 
-/* Paper, including a figure's separate legend, keeps its own palette inside dark chrome. */
+/* Paper, including a figure's separate legend and v2 stage, keeps its own palette inside dark chrome. */
 .prx-chart-area,
 .prx-light-panel,
+.prx-stage,
+.mdv .mdv-stage,
 .prx-widget [data-prx-part="legend"] {
   color-scheme: light;
   --prx-bg: var(--prx-plot-bg);
@@ -247,7 +252,7 @@
   --prx-fg-muted: var(--prx-plot-muted);
   --prx-link: var(--prx-plot-fg);
   --prx-link-hover: var(--prx-plot-muted);
-  --prx-accent: var(--prx-plot-fg);
+  --prx-accent: #17645E;
   --prx-on-accent: var(--prx-plot-bg);
   --prx-border: var(--prx-plot-grid);
   --prx-border-strong: var(--prx-cell-border);
@@ -258,8 +263,28 @@
   --prx-post-text: #1f3a5f;
   color: var(--prx-plot-fg);
 }
+.prx-chart-area,
+.prx-light-panel,
+.prx-stage,
+.prx-widget [data-prx-part="legend"] {
+  --prx-accent: var(--prx-plot-fg);
+}
 .prx-light-panel,
 .prx-widget [data-prx-part="legend"] { background: var(--prx-plot-bg); }
+.prx-stage {
+  min-width: 0;
+  padding: 0.65rem 0.8rem;
+  background: var(--prx-plot-bg);
+  color: var(--prx-plot-fg);
+  border: 1px solid var(--prx-border);
+  border-radius: var(--prx-stage-radius, 10px);
+}
+.prx-scope {
+  margin: 0.35rem 0 0;
+  font-size: var(--prx-text-sm, 0.84375rem);
+  color: var(--prx-fg-muted);
+}
+.prx-scope:empty { display: none; }
 .prx-panel-probe { display: none !important; }
 
 .prx-kbd-point {
@@ -322,6 +347,104 @@
 /* B2 (pilot review): the preset row is its own line, so a control that appears, or a Settings box that wraps,
    never moves the preset buttons sideways */
 .prx-widget[data-prx-layout="result-first"] > .prx-controls > .prx-presets { flex-basis: 100%; }
+
+/* --- frame v2 (base.js def.frame = "v2") ---
+   Base-owned reading order: toolbar (controls + wrapping presets + optional Settings) -> readout -> stage -> scope -> disclosures -> caption. */
+.prx-widget[data-prx-frame="v2"] {
+  font-size: var(--prx-text-base, 0.9375rem);
+}
+.prx-widget[data-prx-frame="v2"] .prx-title {
+  font-size: var(--prx-text-title, 1.0625rem);
+}
+.prx-widget[data-prx-frame="v2"] .prx-panel-title {
+  font-size: var(--prx-text-panel, 0.9375rem);
+}
+.prx-widget[data-prx-frame="v2"] .prx-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--prx-space-2, 0.5rem) var(--prx-space-3, 0.75rem);
+  align-items: flex-end;
+  margin-bottom: var(--prx-space-2, 0.5rem);
+  min-width: 0;
+  font-size: var(--prx-text-sm, 0.84375rem);
+}
+.prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-controls {
+  margin: 0;
+  font-size: inherit;
+  gap: var(--prx-space-2, 0.5rem) var(--prx-space-4, 1rem);
+}
+.prx-widget[data-prx-frame="v2"] .prx-hint {
+  font-size: var(--prx-text-xs, 0.75rem);
+}
+.prx-widget[data-prx-frame="v2"] .prx-presets {
+  min-width: 0;
+  max-width: 100%;
+}
+.prx-widget[data-prx-frame="v2"] .prx-presets .prx-seg-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  overflow: visible;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+.prx-widget[data-prx-frame="v2"] .prx-presets .prx-seg {
+  white-space: normal;
+  text-align: left;
+}
+.prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-disclosure {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  padding: 0 0.65rem;
+}
+.prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-disclosure > summary {
+  min-height: var(--prx-control-height, 2.25rem);
+  padding: 0.2rem 0;
+  font-weight: 600;
+}
+.prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-disclosure[open] {
+  flex-basis: 100%;
+}
+.prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-disclosure > .prx-disclosure-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--prx-space-2, 0.5rem) var(--prx-space-4, 1rem);
+  align-items: flex-end;
+  padding: 0.3rem 0 0.6rem;
+}
+.prx-widget[data-prx-frame="v2"] .prx-seg,
+.prx-widget[data-prx-frame="v2"] .prx-btn,
+.prx-widget[data-prx-frame="v2"] .prx-toggle,
+.prx-widget[data-prx-frame="v2"] .prx-radio,
+.prx-widget[data-prx-frame="v2"] .prx-controls > .prx-disclosure > summary,
+.prx-widget[data-prx-frame="v2"] select,
+.prx-widget[data-prx-frame="v2"] input[type="number"],
+.prx-widget[data-prx-frame="v2"] input[type="text"] {
+  min-height: var(--prx-control-height, 2.25rem);
+}
+.prx-widget[data-prx-frame="v2"] > .prx-readout,
+.prx-widget[data-prx-frame="v2"] .prx-readout {
+  margin: 0 0 var(--prx-space-3, 0.75rem);
+  font-size: var(--prx-text-readout, 1rem);
+  line-height: 1.45;
+}
+.prx-widget[data-prx-frame="v2"] > .prx-disclosures {
+  margin: var(--prx-space-3, 0.75rem) 0 0;
+}
+@media (pointer: coarse), (max-width: 48em) {
+  .prx-widget[data-prx-frame="v2"] input[type="range"],
+  .prx-widget[data-prx-frame="v2"] .prx-toggle,
+  .prx-widget[data-prx-frame="v2"] .prx-radio,
+  .prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-disclosure > summary,
+  .prx-widget[data-prx-frame="v2"] .prx-controls > .prx-disclosure > summary,
+  .prx-widget[data-prx-frame="v2"] .prx-seg,
+  .prx-widget[data-prx-frame="v2"] .prx-btn,
+  .prx-widget[data-prx-frame="v2"] select,
+  .prx-widget[data-prx-frame="v2"] input[type="number"],
+  .prx-widget[data-prx-frame="v2"] input[type="text"] {
+    min-height: var(--prx-touch-target, 2.75rem);
+  }
+}
 
 /* --- disclosures (base.js ctx.disclosure; review 044, X-14): complete secondary material, closed by default.
    The same box as the profile apps' Settings and Data (js/shared/mdomain/visual.js): a 44 px summary. */
@@ -435,10 +558,36 @@
 
 /* --- standalone embed pages (embed/<name>.html) --- */
 body.prx-embed { margin: 0; background: var(--prx-bg); color: var(--prx-fg); font-family: var(--prx-font-sans); }
-.prx-embed main { box-sizing: border-box; max-width: 1180px; margin: 0 auto; padding: 0.5rem 0.75rem; }
-.prx-embed-title { margin: 0 0 0.35rem; font-size: 1.05rem; font-weight: 700; color: var(--prx-fg-heading); }
-.prx-embed-credit { margin: 0.3rem 0 0; font-size: 0.75rem; line-height: 1.35; color: var(--prx-fg-muted); }
+.prx-embed main { box-sizing: border-box; max-width: 1180px; margin: 0 auto; padding: 0.45rem 0.75rem; }
+.prx-embed-title { margin: 0 0 0.3rem; font-size: 1.05rem; font-weight: 700; color: var(--prx-fg-heading); }
+.prx-embed-credit { margin: 0.35rem 0 0; font-size: 0.75rem; line-height: 1.38; color: var(--prx-fg-muted); }
 .prx-embed-credit a { color: var(--prx-link); }
+.prx-embed-credit a.prx-embed-open { font-weight: 600; text-decoration: underline; text-underline-offset: 0.15em; white-space: nowrap; }
+html[data-prx-hide~="title"] .prx-embed-title,
+html[data-prx-hide~="title"] .prx-widget > .prx-title,
+html[data-prx-hide~="title"] .prx-widget .prx-frame > .prx-title { display: none !important; }
+html[data-prx-hide~="caption"] .prx-widget .prx-caption { display: none !important; }
+html[data-prx-hide~="presets"] .prx-widget .prx-presets { display: none !important; }
+html[data-prx-hide~="disclosures"] .prx-widget .prx-disclosures,
+html[data-prx-hide~="disclosures"] .prx-embed-theory,
+html[data-prx-hide~="disclosures"] .prx-widget .mdv-disclosures { display: none !important; }
+
+.prx-embed-theory { margin: .25rem 0; color: var(--prx-fg); font-size: .9rem; }
+.prx-embed-theory summary { cursor: pointer; width: fit-content; padding-block: .35rem; }
+.prx-embed-theory a { color: var(--prx-link); }
+
+/* shared grade blocks, legends, and roving pair-matrix primitives (js/shared/cards.js) */
+.prx-grade-blocks { display: grid; gap: 0.45rem; min-width: 0; }
+.prx-grade-block { padding: 0.45rem 0.65rem; border: 1.5px solid var(--prx-border-strong, #7f857e); border-style: var(--prx-grade-border-style, solid); border-radius: 6px; background: var(--prx-bg-raised, #f3f1e8); }
+.prx-grade-header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.35rem; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.25rem; }
+.prx-grade-members { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.prx-grade-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem 0.85rem; font-size: 0.8125rem; }
+.prx-grade-legend-item { display: inline-flex; align-items: center; gap: 0.35rem; }
+.prx-grade-swatch { display: inline-block; width: 0.9rem; height: 0.9rem; border: 1.5px solid currentColor; border-radius: 3px; background: var(--prx-bg-sunken, #e9e6dc); }
+.prx-pair-matrix { border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 0.8125rem; }
+.prx-pair-cell { padding: 1px; }
+.prx-pair-cell-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 2rem; min-height: 2rem; padding: 0.15rem 0.3rem; border: 1.5px solid var(--prx-border-strong, #7f857e); border-radius: 3px; background: var(--prx-plot-bg, #fdfbf6); color: var(--prx-plot-fg, #242424); font: inherit; cursor: pointer; }
+.prx-pair-cell-btn[aria-pressed="true"], .prx-pair-cell-btn:focus-visible { outline: 2px solid var(--prx-focus, #17645E); outline-offset: 1px; }
 
 /* the short result tag beside a best report ("best of all 4,683 reports") */
 .prx-result-tag {
@@ -477,4 +626,16 @@ body.prx-embed { margin: 0; background: var(--prx-bg); color: var(--prx-fg); fon
 .prx-scroll-region:focus-visible {
   outline: var(--prx-focus-width, 2px) solid var(--prx-focus, #17645E);
   outline-offset: var(--prx-focus-offset, 2px);
+}
+
+/* Preserve the complete 44px preset targets on phones while keeping the primary
+   mark close to its control. Each button remains reachable by touch and Tab. */
+@media (max-width: 600px) {
+  .prx-widget[data-prx-frame="v2"] .prx-toolbar { gap: .3rem .5rem; }
+  .prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-presets { flex: 1 1 100%; width: 100%; }
+  .prx-widget[data-prx-frame="v2"] > .prx-toolbar > .prx-control.prx-presets .prx-seg-buttons {
+    display: flex; flex-wrap: nowrap; max-width: 100%; min-width: 0; overflow-x: auto;
+    overscroll-behavior-x: contain; scrollbar-width: thin; padding: 2px;
+  }
+  .prx-widget[data-prx-frame="v2"] > .prx-toolbar > .prx-control.prx-presets .prx-seg { flex: 0 0 auto; max-width: 100%; }
 }

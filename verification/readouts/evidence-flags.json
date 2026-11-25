@@ -3,7 +3,7 @@
   "app": "evidence-flags",
   "catalog": "3.3",
   "from": "v1 verification/readouts/evidence-flags.json",
-  "about": "Full R-02 view split. Original numeric expectations preserved; gates removed and posterior caption uses v3 wording.",
+  "about": "Full R-02 view split (Frame v2, 3-sig-fig readouts). Original numeric expectations preserved; gates removed and posterior caption uses v3 wording.",
   "cases": [
     {
       "id": "preset-two-units",
@@ -77,7 +77,10 @@
           "about": "error of the stated direction A above B under the flat-prior posterior",
           "source": "registry",
           "ref": "cf.flags.two.flat.eAB",
-          "value": 0.6861870974858203
+          "value": 0.6861870974858203,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"risk\"]",
@@ -86,7 +89,7 @@
           "ref": "cf.flags.two.flat.eAB",
           "value": 0.6861870974858203,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           }
         },
         {
@@ -130,7 +133,7 @@
           "ref": "settings.tau20",
           "value": 0.2,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           }
         },
         {
@@ -194,21 +197,30 @@
           "about": "error of A above B under the teaching posterior (prior mean 0, prior SD .15)",
           "source": "registry",
           "ref": "r02.two.teaching.eAB",
-          "value": 0.2884260618443868
+          "value": 0.2884260618443868,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"meanA\"]",
           "about": "teaching posterior mean of A",
           "source": "registry",
           "ref": "r02.two.teaching.meanA",
-          "value": 0.18
+          "value": 0.18,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"meanB\"]",
           "about": "teaching posterior mean of B",
           "source": "registry",
           "ref": "r02.two.teaching.meanB",
-          "value": 0.108
+          "value": 0.108,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"risk\"]",
@@ -217,7 +229,7 @@
           "ref": "r02.two.teaching.eAB",
           "value": 0.2884260618443868,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           }
         },
         {
@@ -260,7 +272,7 @@
           "ref": "settings.tau20",
           "value": 0.2,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           }
         },
         {
@@ -270,7 +282,7 @@
           "ref": "settings.tau20",
           "value": 0.2,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           }
         }
       ],

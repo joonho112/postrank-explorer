@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/report-card.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Posterior summaries in a grade report – postrank Explorer">
+<meta property="og:description" content="Marginal intervals and mean pairwise errors between ordered grades.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/report-card.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/report-card.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Each row of the report card shows a unit’s posterior mean and marginal interval, and color identifies its grade. A comparison across grades states a direction. A comparison within a grade is withheld. In the table, each cell below the diagonal averages the error probabilities for the stated pairs between those grades. It measures the expected share of wrong comparisons in that group of pairs. Showing one grade at a time makes it possible to see which comparisons enter as grades are added.</p>
+<p>Each row plots a unit’s posterior mean and marginal interval in its grade’s color. Cross-grade pairs state a direction; same-grade pairs are withheld; below-diagonal cells average cross-grade error probabilities.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,21 +635,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Six sites.</strong> The card states 12 of 15 pairs, a share .800, with risk .0417 and expected share wrong .00206. Adjacent-grade comparisons have average errors .0024 and .0038. The purple cells compare these errors with those between distant grades. The diagonal marks withheld pairs. Grade means appear separately above the matrix.</li>
-<li><strong>Reveal by grade.</strong> Only Grade 1 is drawn initially; the table says “With one grade shown there is nothing to compare yet.” Displaying another grade introduces the corresponding between-grade comparisons. Later grades retain their colored bands and numbers while their rows are hidden.</li>
-<li><strong>Thirty sites.</strong> The card states 303 of 435 pairs, with risk .1603 and expected share wrong .121. Adjacent-grade shares are .2019, .1672 and .0640. These are averages for the stated pairs. The joint probability that every unit in one grade exceeds every unit in another would require a separate calculation.</li>
+<li><strong>Six sites.</strong> The card states 12 of 15 pairs (share .800), with risk .0417 and expected share wrong .00206. Adjacent-grade cells show .0024 and .0038; the diagonal marks withheld pairs.</li>
+<li><strong>Reveal by grade.</strong> Only Grade 1 is drawn first, and the matrix notes “With one grade shown there is nothing to compare yet.” Revealing later grades adds their cross-grade cells.</li>
+<li><strong>Thirty sites.</strong> The card states 303 of 435 pairs, with risk .160 and expected share wrong .121. Adjacent-grade shares are .2019, .1672 and .0640.</li>
 </ul>
-<p>Expected rank averages a unit’s position under the posterior, with the top position first. Sorting by posterior mean can rearrange rows within a grade. The comparison of two sites in that grade remains withheld, and the report retains the same risk.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>These synthetic posteriors are taken as given. Grade 1 declares priority; in the poverty example it means the highest synthetic need. The intervals describe individual units, and their overlap does not determine grades. In these cards the least certain stated comparisons are between adjacent grades. The larger example keeps one expected-rank order and chooses where to cut it into grades; its optimum is restricted to that declared order.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>Sorting within grades and marginal intervals</summary>
+<p>Expected rank averages a unit's position under the posterior, with the top position first. Sorting by posterior mean can rearrange rows within a grade while keeping same-grade comparisons withheld and preserving the report's risk. These synthetic posteriors are taken as given; Grade 1 declares priority (highest synthetic need in the poverty example). Each interval describes one unit alone, and overlap does not determine grades. The larger example restricts its search to contiguous cuts of the expected-rank order from the poverty criterion of <code>pr_example_gaussian</code>; the card follows the package's report-card plot and the between-grade table follows Figure 10 and Section VI.B of Kline, Rose and Walters.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -643,7 +661,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The larger dataset is the poverty criterion of <code>pr_example_gaussian</code>, an analytic posterior law. The card follows the package’s report-card plot. The between-grade table follows Figure 10 and Section VI.B of Kline, Rose and Walters.</p>
 <p>Standalone: <a href="../../embed/report-card.html">open the app</a>, for example <code>?data=thirty&amp;tau=.25&amp;cap=4&amp;order=mean</code>.</p>
 <p>Related applications: <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a> · <a href="../../pages/grades/disclosed-errors.html">Expected and realized errors among stated directions</a>.</p>
 
@@ -1118,7 +1135,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

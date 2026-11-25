@@ -1,5 +1,5 @@
-// 2.4 price-of-silence after the review 044 repair (G1-F1, X-01, X-14): the proposed first view in the result-first
-// frame (jsdom from tools/node_modules).
+// 2.4 price-of-silence in frame v2: primary τ slider + strip in toolbar controls, family & step in Settings,
+// concise 3-sig-fig read-out, linked matrix + risk bars on stage, and Score your report + Details disclosures.
 //   node --test verification/tests/price-of-silence-layout.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -18,7 +18,12 @@ const TEMML = readFileSync(`${ROOT}js/vendor/temml/temml.min.js`, "utf8");
 function mountAt(query) {
   const virtualConsole = new VirtualConsole();
   virtualConsole.sendTo(console, { omitJSDOMErrors: true });
-  const dom = new JSDOM('<!doctype html><html><body><div id="app"></div></body></html>', { url: "https://app.test/", runScripts: "outside-only", pretendToBeVisual: true, virtualConsole });
+  const dom = new JSDOM('<!doctype html><html><body><div id="app"></div></body></html>', {
+    url: "https://app.test/",
+    runScripts: "outside-only",
+    pretendToBeVisual: true,
+    virtualConsole,
+  });
   const win = dom.window;
   win.__PRX_QUERY = query;
   win.eval(D3);
@@ -34,46 +39,73 @@ function readout(root) {
   return node.textContent;
 }
 
-test("2.4: controls hold the τ slider with its strip and the family switch; the read-out is the review's sentence", async () => {
+test("2.4: toolbar holds the τ slider, presets, and Settings family switch; strip sits in riskBox on stage; read-out uses 3 sig figs", async () => {
   const { el } = mountAt("?preset=tau20-cap3");
   const { mountWidget } = await import(`${ROOT}js/apps/price-of-silence.js`);
   const app = mountWidget(el);
   const root = el.querySelector(".prx-widget");
-  assert.equal(root.getAttribute("data-prx-layout"), "result-first");
-  const controls = root.querySelector(".prx-controls");
-  // the strip is drawn inside the τ slider's control, under its track
+  assert.equal(root.getAttribute("data-prx-frame"), "v2");
+  assert.equal(root.getAttribute("data-prx-layout"), "v2");
+  const toolbar = root.querySelector(".prx-toolbar");
+  const controls = toolbar.querySelector(".prx-controls");
   const tau = controls.querySelector(".prx-pos-tau");
-  assert.ok(tau.querySelector("input[type=range]") && tau.querySelector(".prx-pos-strip-chart svg"), "strip in the slider's control");
-  assert.ok(tau.querySelector("[data-prx-strip-marker]"), "the strip's τ marker");
+  assert.ok(tau.querySelector("input[type=range]"), "τ slider in controls");
+  assert.equal(controls.querySelector(".prx-pos-strip-chart"), null, "strip moved out of dark-mode toolbar controls");
+  const riskBox = root.querySelector(".prx-stage .prx-pos-risk");
+  assert.ok(riskBox.querySelector(".prx-pos-strip-chart svg"), "strip in riskBox inside .prx-stage");
+  assert.ok(riskBox.querySelector("[data-prx-strip-marker]"), "the strip's τ marker");
+  assert.ok(riskBox.querySelector(".prx-pos-strip .prx-pos-note")?.textContent.length > 0, "stripNote mounted in DOM");
+  assert.match(riskBox.querySelector(".prx-pos-strip-chart svg").textContent, /N = 12/, "wide segment labeled N = 12");
   assert.equal(root.querySelectorAll(".prx-pos-strip-chart").length, 1, "one strip");
-  // the family switch beside it, before the preset row; its buttons are the family badges
-  const family = controls.querySelector("fieldset.prx-pos-family");
+  // secondary family switch sits cleanly inside Settings in the v2 toolbar
+  const settings = toolbar.querySelector('details[data-prx-disclosure="settings"]');
+  assert.equal(settings.open, false);
+  const family = settings.querySelector("fieldset.prx-pos-family");
   assert.equal(family.querySelector("legend").textContent, "Family of reports");
-  assert.deepEqual([...family.querySelectorAll(".prx-seg")].map((b) => b.textContent), ["At most 3 grades · 603 reports", "No cap (all reports) · 4,683 reports"]);
-  assert.ok(family.compareDocumentPosition(controls.querySelector(".prx-presets")) & 4, "family before the presets");
-  assert.ok(root.querySelector(".prx-readout").previousElementSibling === controls, "read-out right under the controls");
-  assert.equal(readout(root), "τ = .20, at most 3 grades (603 reports): best report {A, B} > {C, D} > {E, F}, 12 of 15 stated, risk .0417; A–B and E–F are withheld although each error is below τ.");
+  assert.deepEqual(
+    [...family.querySelectorAll(".prx-seg")].map((b) => b.textContent),
+    ["At most 3 grades · 603 reports", "No cap (all reports) · 4,683 reports"],
+  );
+  assert.ok(root.querySelector(".prx-readout").previousElementSibling === toolbar, "read-out right under the toolbar");
+  assert.equal(
+    readout(root),
+    "τ = .20, at most 3 grades (603 reports): best report {A, B} > {C, D} > {E, F}, 12 of 15 stated, risk .0417; A–B and E–F are withheld although each error is below τ.",
+  );
   // a click on the family switch changes the family
   family.querySelector('.prx-seg[data-value="none"]').click();
   assert.equal(app.state.cap, "none");
-  assert.equal(readout(root), "τ = .20, no cap (all 4,683 reports on 6 units): best report {A} > {B} > {C, D} > {E} > {F}, 14 of 15 stated, risk .0372.");
+  assert.equal(
+    readout(root),
+    "τ = .20, no cap (all 4,683 reports on 6 units): best report {A} > {B} > {C, D} > {E} > {F}, 14 of 15 stated, risk .0372.",
+  );
   app.update({ tau: 0.15, cap: 3 });
-  assert.equal(readout(root), "τ = .15, at most 3 grades (603 reports): best report {A, B} > {C, D} > {E, F}, 12 of 15 stated, risk .0317; E–F is withheld although its error is below τ.");
+  assert.equal(
+    readout(root),
+    "τ = .15, at most 3 grades (603 reports): best report {A, B} > {C, D} > {E, F}, 12 of 15 stated, risk .0317; E–F is withheld although its error is below τ.",
+  );
   app.destroy();
 });
 
-test("2.4: the scoring input leads to the bars and result; the matrix and Details keep every hook", async () => {
-  const { el } = mountAt("");
+test("2.4: stage pairs matrix and risk bars; Score your report keeps Enter focus & yoursRisk; Details keeps every hook", async () => {
+  const { win, el } = mountAt("");
   const { mountWidget } = await import(`${ROOT}js/apps/price-of-silence.js`);
   const app = mountWidget(el);
   const root = el.querySelector(".prx-widget");
-  assert.match(root.querySelector(".prx-pos-matrix .prx-pos-matrix-caption").textContent, /^Below τ but withheld by the best report: 2 \(A and B; E and F\)\.$/);
-  assert.ok(root.querySelector(".prx-pos-matrix-chart").hasAttribute("data-prx-primary"), "the matrix is the primary graphic");
-  // Review 044 G1-F1: the form precedes its result so scoring with Enter does not scroll away from focus.
-  const bars = root.querySelector(".prx-pos-bars-chart");
-  const entry = root.querySelector(".prx-pos-entry");
-  assert.ok(entry.compareDocumentPosition(bars) & root.ownerDocument.defaultView.Node.DOCUMENT_POSITION_FOLLOWING);
-  assert.ok(bars.nextElementSibling.classList.contains("prx-pos-yours"));
+  const stage = root.querySelector(".prx-stage");
+  assert.match(
+    stage.querySelector(".prx-pos-matrix .prx-pos-matrix-caption").textContent,
+    /^Below τ but withheld by the best report: 2 \(A and B; E and F\)\.$/,
+  );
+  assert.ok(stage.querySelector(".prx-pos-matrix-chart").hasAttribute("data-prx-primary"), "the matrix is the primary graphic");
+  assert.ok(stage.querySelector(".prx-pos-bars-chart svg"), "linked risk bars on stage");
+
+  // Score your report disclosure: entry precedes result line; Enter scores and retains input focus
+  const scoreBox = root.querySelector('details[data-prx-disclosure="score"]');
+  assert.equal(scoreBox.open, false);
+  const entry = scoreBox.querySelector(".prx-pos-entry");
+  const yoursLine = scoreBox.querySelector(".prx-pos-yours");
+  assert.ok(entry.compareDocumentPosition(yoursLine) & win.Node.DOCUMENT_POSITION_FOLLOWING);
+
   // Details: closed, with the tiles, the all-withheld sentence, the confident-pair counts and the family hint
   const details = root.querySelector('details[data-prx-disclosure="details"]');
   assert.equal(details.open, false);
@@ -83,9 +115,16 @@ test("2.4: the scoring input leads to the bars and result; the matrix and Detail
     assert.ok(details.querySelector(`[data-prx-readout="${hook}"]`), `${hook} in Details`);
   }
   assert.match(details.textContent, /Change the family: at most 3 grades \(shown now\) or no cap/);
-  // a scored report: a third bar, the line under the row, hooks once each
-  app.update({ yours: [1, 2, 3, 4, 5, 6] });
+
+  // Enter-to-score retains focus on the text input and reveals yoursRisk + a third bar
+  scoreBox.open = true;
+  const input = entry.querySelector('input[name="yours"]');
+  input.focus();
+  input.value = "1,2,3,4,5,6";
+  input.dispatchEvent(new win.KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }));
+  assert.deepEqual(app.state.yours, [1, 2, 3, 4, 5, 6]);
+  assert.equal(win.document.activeElement, input, "Enter-to-score keeps focus on the input");
   assert.equal(root.querySelectorAll('[data-prx-readout="yoursRisk"]').length, 1);
-  assert.equal(root.querySelector(".prx-pos-yours").hidden, false);
+  assert.equal(yoursLine.hidden, false);
   app.destroy();
 });

@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/families.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Restrictions on the report family – postrank Explorer">
+<meta property="og:description" content="Consequences of grade caps, exact grade counts and fixed-order restrictions for minimum risk.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/families.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/families.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -579,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Restrictions on the report family</h1>
-<p class="subtitle lead">2.12 · postrank’s report families; four-unit example after the theory book, chapter 14</p>
+<p class="subtitle lead">2.12 · postrank’s report families; four-unit example after the theory book, chapters 9 and 25</p>
 </div>
 
 <div>
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The report with the smallest risk depends on which reports the analyst allows. A cap permits any number of occupied grades up to a limit. An exact count requires every permitted grade to be occupied, and a fixed order allows only cuts between adjacent units in that order. The figure compares the best report in each family at the same withholding cost and on the same scale. Rearranging the units changes the possible cuts of the fixed order while leaving the unrestricted family intact.</p>
+<p>Minimum reporting risk depends on which grade reports are allowed: all reports, at most <em>G</em> grades, exactly <em>G</em> occupied grades, or contiguous cuts of one declared unit order.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,22 +635,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><p><strong>Exactly six.</strong> The family contains 720 strict rankings. Its best report costs .0480, while the unrestricted reference costs .0372. Requiring every site to have its own grade forces the report to state an uncertain direction. The selected row identifies this direction and its error probability.</p></li>
-<li><p><strong>At most three.</strong> The capped family contains 603 reports, including reports that use fewer grades. Exactly the required number gives a smaller family of 540. Here both best risks are .0417; the shared scale makes that equality visible. Further grade restrictions can change the minimum at this fixed cost.</p></li>
-<li><p><strong>B before A.</strong> The declared order allows 32 contiguous reports. Its best cut costs .0379, above the unrestricted .0372. The arrows in the Declared order box modify the declared order. The dynamic program searches cuts of the declared order, and the line under the rows checks its answer against enumeration of those same cuts.</p></li>
-<li><p><strong>Two criteria.</strong> The four-unit example has 24 reports with every grade distinct, 75 in the unrestricted family, and 8 contiguous cuts. The exact-count row costs 7/40. The law’s table gives the criterion-specific errors and their weighted average: the orange segment now measures expected weighted wrong directions.</p></li>
-<li><p><strong>A dominating set.</strong> At τ = 4/9, every unrestricted best report separates {A, B} above {X, Y}, at risk 4/15. The best report with the grade cap costs 17/54 and puts X with A. The cap can make the separating rearrangement infeasible. The law panel checks the strict cross-set premise again whenever you change the price.</p></li>
+<li><strong>Exactly six.</strong> Across 720 strict rankings, minimum risk is .0480 versus .0372 unrestricted.</li>
+<li><strong>At most three.</strong> Both the 603 capped reports and 540 three-grade reports reach .0417.</li>
+<li><strong>B before A.</strong> Cutting the declared order searches 32 reports at risk .0379 versus .0372.</li>
+<li><strong>Two criteria.</strong> Among 24 strict orders, 75 total reports, and 8 cuts, four grades cost 7/40.</li>
+<li><strong>A dominating set.</strong> At τ = 4/9, unrestricted optima cost 4/15 while a two-grade cap costs 17/54.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>At a fixed withholding cost, adding eligible reports can only lower the minimum risk or leave it unchanged. The dashed mark gives the risk of withholding every pair. A family that requires several occupied grades excludes that report. Equal-risk reports are identified in the rows and the read-out, and the box of search lines states the order family’s tie rule. All examples are specified for teaching.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Family nesting and tie rules
+</summary>
+<p>At a fixed withholding cost, enlarging the allowed family can only lower the minimum risk or leave it unchanged. The dashed mark gives the risk of withholding every pair; requiring multiple occupied grades excludes that report. Equal-risk ties and the fixed-order dynamic program’s tie rule appear in <strong>Data and family search details</strong>. All examples are specified for teaching.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -647,6 +668,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Standalone: <a href="../../embed/families.html">families</a>, for example <code>?family=exact&amp;G=2&amp;tau=.40</code>.</p>
 <p>Related applications: <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a>, <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/09-targets-actions-laws.html#sec-grade-actions">Grade actions and disclosed comparisons</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-exact-common-grade">Common grades under an exact joint target law</a>.</p>
 
 
 </section>
@@ -1119,7 +1141,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

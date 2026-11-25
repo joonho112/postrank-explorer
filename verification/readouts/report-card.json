@@ -148,6 +148,9 @@
         },
         {
           "select": "[data-prx-readout=\"ro-risk\"]",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "six.A.cap3.tau20.risk",
           "value": 0.04165163994548712
@@ -370,7 +373,7 @@
           "about": "the panel title is a heading",
           "source": "literal",
           "ref": "11.4",
-          "value": "4"
+          "value": "2"
         },
         {
           "select": "[data-prx-readout=\"ro-N\"]",
@@ -403,6 +406,9 @@
         {
           "select": "[data-prx-readout=\"ro-adj-1-2\"]",
           "about": "the read-out: the least certain stated comparisons, grades 1 and 2 (adjacent)",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "six.A.cap3.tau20.between12",
           "value": 0.00237429721448715
@@ -410,6 +416,9 @@
         {
           "select": "[data-prx-readout=\"ro-adj-2-3\"]",
           "about": "the read-out: grades 2 and 3 (adjacent)",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "six.A.cap3.tau20.between23",
           "value": 0.0038193153804910976
@@ -698,6 +707,9 @@
         },
         {
           "select": "[data-prx-readout=\"ro-risk\"]",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "thirty.poverty.exprank.cap4.tau25.risk",
           "value": 0.16029380995624715
@@ -1244,7 +1256,7 @@
           "select": "[data-prx-readout=\"ro-adj-1-2\"]",
           "about": "the read-out: adjacent grades 1 and 2 (base-R betweenGradeErrors)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1258,7 +1270,7 @@
           "select": "[data-prx-readout=\"ro-adj-2-3\"]",
           "about": "the read-out: adjacent grades 2 and 3 (base-R betweenGradeErrors)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1272,7 +1284,7 @@
           "select": "[data-prx-readout=\"ro-adj-3-4\"]",
           "about": "the read-out: adjacent grades 3 and 4 (base-R betweenGradeErrors)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {

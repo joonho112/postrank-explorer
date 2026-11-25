@@ -3,7 +3,7 @@
   const root=document.querySelector('[data-catalog]');if(!root)return;
   const form=root.querySelector('form'),cards=[...root.querySelectorAll('.prx-card')],status=root.querySelector('[role=status]'),empty=root.querySelector('.prx-catalog-empty');
   const keys=['query','part','topic','data'],controls=Object.fromEntries(keys.map(k=>[k,form.elements.namedItem(k)]));
-  const normalize=s=>String(s??'').normalize('NFKC').toLowerCase().replace(/[‘’]/g,"'").replace(/τ/g,' tau ').replace(/λ/g,' lambda ').replace(/π/g,' pi ').replace(/δ/g,' delta ');
+  const normalize=s=>String(s??'').normalize('NFKC').toLowerCase().replace(/[‘’]/g,"'").replace(/[–—−-]/g,' ').replace(/τ/g,' tau ').replace(/λ/g,' lambda ').replace(/π/g,' pi ').replace(/δ/g,' delta ').replace(/θ/g,' theta ').replace(/α/g,' alpha ');
   const index=cards.map(card=>({card,text:normalize(card.dataset.search),part:card.dataset.part,topics:card.dataset.topics.split(' '),data:card.dataset.data.split(' ')}));
   const apply=(save=true)=>{
     const state=Object.fromEntries(keys.map(k=>[k,controls[k].value])),words=normalize(state.query).trim().split(/\s+/).filter(Boolean);let count=0;

@@ -4,7 +4,7 @@ subtitle: "1.15 · after the postrank theory book, ch. 10, and Kline, Rose and W
 description: "Relation between majority-win counts, posterior-mean rankings and expected ranks."
 ---
 
-The majority-win count $H_i = \#\{j : \Pr(\theta_i > \theta_j \mid Y) > 1/2\}$ counts the units that $i$ is more likely to exceed. Expected rank uses the full probabilities, $\prerank{i} = 1 + \sum_{j \neq i} \Pr(\theta_j > \theta_i \mid Y)$. Under independent normal posteriors, ordering the win counts gives the same ranking as ordering the posterior means. The simulated and archived examples show how the rankings can diverge under other distributions. We also compare them with the cards of Kline, Rose and Walters (KRW) at λ = 1, when a correct direction earns as much as an incorrect direction costs.
+Counting pairs a unit more likely wins matches posterior-mean order under independent normal posteriors, yet diverges from expected rank and general laws.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,26 +17,14 @@ The majority-win count $H_i = \#\{j : \Pr(\theta_i > \theta_j \mid Y) > 1/2\}$ c
 
 ## Numerical illustrations {#what-to-try}
 
-- **Law on orders.** A beats B and C, each only with probability .51; B's one win is nearly sure (.99). A has the most wins. B has the best expected rank, 1.52 compared with A's 1.98.
-- **League.** Majority wins give the posterior-mean order: 0 of the 435 pairs differ. The expected-rank order states 6
-  pairs against the majority; U13 is 8th by it (9.59) and 6th by the other two.
-- **League, prior SD .30.** The win count and posterior-mean order still disagree on 0 of the 435 pairs. Expected rank now orders 12 pairs against the majority.
-- **KRW, race.** Majority wins form a strict order. Against it the posterior-mean order states 35 of the 4,656 pairs
-  and the expected-rank order 62; KRW's card at λ = 1 states none against it, so no full ranking expects fewer wrong
-  claims: 1,248, against 1,249 for the posterior-mean order.
-- **KRW, gender.** Macy's beats Jones Lang LaSalle (.5008), which beats Dollar General (.5022), which beats Macy's
-  (.5014): a cycle, and the three win 45 pairs each. KRW's card at λ = 1 (96 grades) puts Macy's and Dollar General
-  in one grade, within KRW's solver tolerances.
+- **Law on orders.** A wins two pairs (.51 each); B's .99 win puts B first by expected rank (1.52 vs. 1.98).
+- **League.** Majority wins match posterior means (0 of the 435 pairs differ); expected rank reverses 6 pairs (U13: 8th, 9.59 vs. 6th).
+- **League, prior SD .30.** Majority wins and posterior means differ on 0 of the 435 pairs; expected rank reverses 12 pairs.
+- **KRW, race.** Posterior mean reverses 35 of the 4,656 pairs (1,249 wrong) and expected rank 62; λ = 1 card reverses none (1,248).
+- **KRW, gender.** Macy's (.5008), Jones Lang LaSalle (.502), and Dollar General (.5014) cycle at 45 pairs each; the card uses 96 grades.
 
 ::: {.callout-note appearance="simple"}
-KRW call the grades at λ = 1 Condorcet ranks (Section II.F). Their remark there that the count of wins is equivalent
-to the posterior mean rank (the expected rank) does not hold in general: on the race gaps, majority wins and the
-expected rank order 62 pairs differently. The data describe KRW's correspondence experiment, not any firm's current
-conduct. Data: Kline, Rose and Walters (2024), *A Discrimination Report Card*, American Economic Review,
-doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version),
-noncommercial use only. Pair probabilities as adapted in postrank 1.1.0 (pr_case_krw). Cards computed with KRW's code
-(KRW replication companion) under KRW's archived pair probabilities ([KRW's cards along λ](../cases/krw-lambda.qmd)).
-Changes noted; no endorsement by the authors is implied.
+Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only (`pr_case_krw`; [KRW's cards along λ](../cases/krw-lambda.qmd)). No endorsement is implied. **Data describe KRW's experiment, not current conduct.**
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}
@@ -47,7 +35,6 @@ c(mean = sum(outer(w, w, ">") & outer(pm, pm, "<")), rank = sum(outer(w, w, ">")
 ```
 :::
 
-Standalone: [embed/majority-wins.html](../../embed/majority-wins.html), for example
-`?data=krw&criterion=gender&unit=95`.
+Standalone: [embed/majority-wins.html](../../embed/majority-wins.html). Related: [Alternative rankings from a posterior distribution](which-ranking.qmd), [Expected errors in a strict ranking](ranking-claims.qmd).
 
-Related applications: [Alternative rankings from a posterior distribution](which-ranking.qmd) (1.14) and [Expected errors in a strict ranking](ranking-claims.qmd) (1.16).
+Theory book · [Expected rank, probability scores, and signed-order distance](https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-rank-score-distance-bridge) · [Comparing reports at matched disclosure](https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier).

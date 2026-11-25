@@ -25,23 +25,28 @@ function patternsOnThree() {
   return out;
 }
 
-test("2.16: the preset row stays between the view chips and each view's own controls; every view has its scope line", async () => {
+test("2.16: frame v2 keeps view chips and view-scoped controls inside ctx.controls before Presets; every view has its scope line", async () => {
   for (const [view, own] of Object.entries(VIEWS)) {
     const m = await mountCase({ module: MODULE, query: `?view=${view}` });
     try {
       const { root } = m;
-      assert.equal(root.getAttribute("data-prx-layout"), "result-first");
-      const controls = root.querySelector(".prx-controls");
-      const kids = [...controls.children];
-      const chips = kids.findIndex((n) => n.querySelector?.('[data-value="count"]'));
+      assert.equal(root.getAttribute("data-prx-frame"), "v2");
+      const toolbar = root.querySelector('[data-prx-part="toolbar"]');
+      assert.ok(toolbar, `${view}: v2 toolbar`);
+      const kids = [...toolbar.children];
+      const controlsIdx = kids.findIndex((n) => n.matches('[data-prx-part="controls"]'));
       const presets = kids.findIndex((n) => n.matches('[data-prx-part~="presets"]'));
-      const rowOf = kids.findIndex((n) => n.classList.contains("prx-cg-controls"));
-      assert.ok(chips >= 0 && chips < presets && presets < rowOf, `${view}: chips, presets, then the view's controls`);
-      // the read-out follows the controls, the scope line opens the charts
-      assert.equal(controls.nextElementSibling, root.querySelector(".prx-readout"), view);
-      const scope = root.querySelector(".prx-charts > [data-prx-scope]");
+      assert.ok(controlsIdx >= 0 && controlsIdx < presets, `${view}: controls precede presets in toolbar`);
+      const controlKids = [...kids[controlsIdx].children];
+      const chips = controlKids.findIndex((n) => n.querySelector?.('[data-value="count"]'));
+      const rowOf = controlKids.findIndex((n) => n.classList.contains("prx-cg-controls"));
+      assert.ok(chips === 0 && rowOf === 1, `${view}: view chips then view controls inside ctx.controls`);
+      // the read-out follows the toolbar, then the primary stage, then the scope line
+      assert.equal(toolbar.nextElementSibling, root.querySelector(".prx-readout"), view);
+      assert.equal(root.querySelector(".prx-readout").nextElementSibling, root.querySelector(".prx-stage"), view);
+      const scope = root.querySelector("[data-prx-scope]");
       assert.ok(scope && scope.textContent.trim().length > 20, `${view}: scope line`);
-      assert.equal(root.querySelector(".prx-charts").firstElementChild, scope, `${view}: scope line first`);
+      assert.equal(root.querySelector(".prx-stage").nextElementSibling, scope, `${view}: scope line follows stage`);
       for (const name of ALL_CONTROLS) {
         const input = root.querySelector(`input[name="${name}"]`);
         assert.ok(input, `${name} kept in the DOM`);

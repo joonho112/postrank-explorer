@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/averaging-errors.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Averaging error shares across reports – postrank Explorer">
+<meta property="og:description" content="Pooled errors, conditional mean error shares and zero-imputed means when disclosure varies.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/averaging-errors.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/averaging-errors.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -579,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Averaging error shares across reports</h1>
-<p class="subtitle lead">2.19 · after the postrank theory book, chapters 8 and 16</p>
+<p class="subtitle lead">2.19 · after the postrank theory book, chapters 8 and 22</p>
 </div>
 
 <div>
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>When the number of stated directions varies across reports, the average error share depends on how the reports enter the calculation. Dividing the expected wrong count by the expected stated count gives more weight to reports that state more pairs. Averaging the report-level fractions instead gives each report its probability weight, conditional on stating at least one direction. A third calculation assigns zero to a report that states none. We apply all three to the same counts and probabilities for a lottery over reports and for a simulation with repeated datasets.</p>
+<p>When stated pair counts vary across reports or datasets, the average error share depends on whether we pool counts, average over disclosing outcomes only, or impute zero for silent reports.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,22 +635,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Three outcomes.</strong> Pooled pairs give 2/5, the mean among disclosing outcomes is 1/2, and zero-imputation gives 1/3. The chance of disclosure is 2/3 and mean disclosure is 5/9. Changes to wrong and stated counts affect these summaries differently because their denominators differ. The silent outcome has an undefined fraction.</li>
-<li><strong>More weight on errors.</strong> Giving the error-heavy outcome more probability changes the pooled ratio to 4/7, the disclosing mean to 2/3 and the zero-imputed mean to 1/2. We normalize the weights to give probabilities for the outcomes. The number of units in each outcome stays fixed.</li>
-<li><strong>A complete-report lottery.</strong> The four-unit example mixes entire reports. Pooled expected counts give 1/8, while the mean report fraction is 49/400. The lottery probability weights each complete report and its disclosure. Expected weighted errors are averaged within a report before the reporting lottery is applied.</li>
-<li><strong>All silent.</strong> Both ratio-based summaries read “NA: no disclosure.” The zero-imputed mean is 0 because the convention assigns zero to every silent outcome. The probability of any disclosure is reported separately.</li>
-<li><strong>Twenty datasets.</strong> A simulated league gives pooled error .0892 and a disclosing mean .0891. The running curves and individual counts describe the averages over the selected number of datasets. The true values stay fixed while each dataset produces fresh estimates and its own graded report.</li>
+<li><strong>Three outcomes.</strong> Pooled pairs give 2/5, disclosing outcomes give 1/2, and zero-imputation gives 1/3 (disclosure chance 2/3, mean disclosure 5/9).</li>
+<li><strong>More weight on errors.</strong> Increasing the error-heavy outcome’s weight shifts the pooled ratio to 4/7, the disclosing mean to 2/3, and the zero-imputed mean to 1/2.</li>
+<li><strong>A complete-report lottery.</strong> Mixing complete reports yields 1/8 for pooled expected counts versus 49/400 for the mean report fraction.</li>
+<li><strong>All silent.</strong> Both ratio-based summaries read “NA: no disclosure,” while the zero-imputed mean is 0.</li>
+<li><strong>Twenty datasets.</strong> Simulated league replays yield pooled error .0892 and disclosing mean .0891 against fixed true values.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>A ratio estimated from a small sample need not be unbiased for a ratio of expectations. The hand-set outcomes provide an exact single-observation example; one trajectory of simulated datasets shows variability, rather than measuring that bias. Simple rational values use fractions in the finite examples; simulated shares use the site’s decimal format.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Small-sample ratio note
+</summary>
+<p>A ratio estimated from a small sample need not be unbiased for a ratio of expectations. The hand-set outcomes provide an exact single-observation counterexample, while one trajectory of simulated datasets illustrates variability rather than repeated-sample bias.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In R">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -645,6 +666,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Standalone: <a href="../../embed/averaging-errors.html">averaging-errors</a>, for example <code>?mode=replays&amp;replays=5&amp;cap=1</code>.</p>
 <p>Related applications: <a href="../../pages/grades/disclosed-errors.html">Expected and realized errors among stated directions</a>, <a href="../../pages/grades/two-denominators.html">Error rates under two denominators</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/08-selection-abstention.html#a-realized-fraction-and-three-probability-laws">Realized false discovery proportions and three probability laws</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-disclosed-error-estimands">Averaging conventions for disclosed-error fractions</a>.</p>
 
 
 </section>
@@ -1117,7 +1139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

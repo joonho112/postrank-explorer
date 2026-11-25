@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/profiles/profile-common-vs-domain.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Common or profile? – postrank Explorer">
+<meta property="og:description" content="Common grades or separate priorities.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/profiles/profile-common-vs-domain.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/profile-common-vs-domain.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -615,8 +640,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><strong>Aligned priorities.</strong> Both reports place A ahead of B in both domains. Each has risk 1/10, so the difference is zero.</li>
 <li><strong>Crossed priorities.</strong> Under equal weights and withholding cost 1/4, the common optimum withholds both directions at risk 1/4. The profile reports A ahead in S and B ahead in C at risk 1/10. Allowing that combination reduces risk by 3/20 under the same loss.</li>
-<li><strong>Lower withholding cost.</strong> At cost 1/20, both reports withhold every direction. The risk is 1/20 because withholding itself carries a cost.</li>
-<li><strong>Greater weight on S.</strong> At weights 9/10 and 1/10, the common report follows S and has risk 9/50. The profile still states the crossed directions and has risk 1/10. The difference under these weights is 2/25.</li>
+<li><strong>Lower cost.</strong> At withholding cost 1/20, both reports withhold every direction. The risk is 1/20 because withholding itself carries a cost.</li>
+<li><strong>More weight on S.</strong> At weights 9/10 and 1/10, the common report follows S and has risk 9/50. The profile still states the crossed directions and has risk 1/10. The difference under these weights is 2/25.</li>
 </ul>
 <p>With crossed priorities and equal weights, four profiles share the minimum risk of 1/10 at withholding cost 1/10. The app lists all four, including the report that withholds both directions.</p>
 <div class="callout callout-style-simple callout-note">
@@ -649,9 +674,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Source: <a href="https://joonho112.github.io/postrank/articles/mdomain-decisions.html">postrank multidomain decisions</a>.</p>
+</section></details>
 <p>Standalone: <a href="../../embed/profile-common-vs-domain.html">open this app</a>, for example <code>?preset=crossed&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="../../pages/profiles/profile-separability.html">Separate optimization under additive loss</a>, <a href="../../pages/profiles/profile-dependence.html">Error overlap</a> and <a href="../../pages/criteria/common-grade-cost.html">Criterion-specific excess risk of a common report</a>.</p>
-</section></details>
 
 
 
@@ -1124,7 +1149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

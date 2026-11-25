@@ -1,11 +1,10 @@
 ---
 title: "Signed and absolute gender-gap targets"
-subtitle: "5.6 · after the postrank theory book, chapters 4 and 20; KRW’s gender data"
+subtitle: "5.6 · after the postrank theory book, chapters 4 and 26; KRW’s gender data"
 description: "Target-specific posterior probabilities and fixed-order reports for signed and absolute contact gaps."
 ---
 
-A firm with a large female-name contact advantage can rank low on the signed scale and high on the absolute
-scale. Each line connects the same firm's grades under the two targets.
+A firm with a female-name contact advantage ranks low on the signed gap yet high in absolute gap size.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,35 +16,23 @@ scale. Each line connects the same firm's grades under the two targets.
 
 ## Numerical illustrations {#what-to-try}
 
-The two reports use different posterior pair probabilities. For each target, the app orders firms by expected
-rank and searches cuts of that order. To compute probabilities for absolute gaps, the transformation applies
-to the gaps throughout the posterior distribution. Signed means or signed direction probabilities alone cannot
-recover the absolute report.
+- **Both target-specific cards.** Searches each expected-rank order using at most 4 grades at τ .20; each report is optimal within this order.
+- **Every changed pair.** The “Complete list of changed unordered pairs” shows every relation that appears, disappears, or reverses.
+- **All firm summaries.** “All firms in released ID order” lists central intervals, expected ranks, and grades across all 97 firms.
 
-- **Both target-specific cards.** Both searches allow at most 4 grades at withholding cost τ .20. Each result
-  is labeled “optimal within this order.” A different order can admit different grade reports.
-- **Every changed pair.** The “Complete list of changed unordered pairs” keeps every relation that changes from the signed report to the absolute
-  report. A direction can appear, disappear or reverse. Each row names both firms and shows the wrong-direction
-  probability under the posterior for that target. The signed and absolute risk values answer different questions.
-- **All firm summaries.** “All firms in released ID order” keeps all 97 firms together. The table keeps the supplied means and
-  central 90% intervals for both targets, their expected ranks, and their chosen grades.
+<details>
+<summary>Target-specific probabilities and precision notes</summary>
 
-The dots and intervals describe individual firms. The grades depend on the pair probabilities, order, grade cap,
-and withholding cost. The report leaves the direction unstated for two firms in the same grade. The absolute-gap
-probabilities come from the public postrank data, which supplies separate signed and folded distributions.
+The two reports use different posterior pair probabilities. To compute probabilities for absolute gaps, the transformation applies throughout the posterior distribution (`pr_case_krw` supplies separate signed and folded cells); signed means or signed direction probabilities alone cannot recover the absolute report. A shared grade leaves the direction between two firms unstated.
 
-Both precision plots use the original sampling SE of the signed estimate. In the plot of absolute gaps, that SE
-describes the precision of the original signed estimate. Firms in the middle grade can still differ in their
-contact gaps.
+Both precision plots use the original sampling SE of the signed estimate as a precision covariate. Firms in the middle grade can still differ in their contact gaps.
+
+</details>
 
 ::: {.callout-note appearance="simple"}
-The app checks its signed grade assignments against KRW's published gender card.
-Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC,
-noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), exact signed and folded posterior cells and
-supplied central intervals. Changes noted; provided as is, without warranty; no endorsement is implied.
-**These historical data do not describe any firm’s current conduct.**
+The app checks its signed grade assignments against KRW's published gender card. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), exact signed and folded posterior cells and supplied central intervals. Changes noted; provided as is, without warranty; no endorsement is implied. **These historical data do not describe any firm’s current conduct.**
 :::
 
-Standalone: [signed-or-absolute](../../embed/signed-or-absolute.html).
+Standalone: [signed-or-absolute](../../embed/signed-or-absolute.html). Related: [Error rates under two denominators](../grades/two-denominators.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).
 
-Related applications: [Error rates under two denominators](../grades/two-denominators.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).
+Theory book · [Signed and absolute disparities](https://joonho112.github.io/postrank-theory-book/chapters/04-measurement-values.html#sec-signed-absolute-targets) · [Signed race and gender targets](https://joonho112.github.io/postrank-theory-book/chapters/26-krw-illustration.html#sec-krw-signed-targets).

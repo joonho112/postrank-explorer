@@ -99,10 +99,19 @@ test("Grade report first views and exact details preserve their meanings", async
         await open("one-correction", "preset=mean");
         assert.match(await headline(page), /^Correcting C changes 2 of 10 pairs between units whose inputs stayed fixed/);
         assert.deepEqual(await page.$$eval(".oc-change-chip", nodes => nodes.map(node => node.innerText)), ["D–E", "E–F"]);
+        assert.equal(await page.$eval(".prx-stage .oc-change-witness", node => node.innerText), "For D–E, D above E → withheld.");
+        await page.click('details[data-prx-disclosure="data"] > summary');
+        await page.waitForSelector(".oc-list tbody tr");
+        const changed = await page.$$eval(".oc-list tbody tr", rows => rows.map(row => [...row.cells].map(cell => cell.innerText)));
+        assert.deepEqual(changed.map(row => row[0]), ["D–E", "E–F"]);
+        assert.deepEqual(changed[0].slice(1), ["D above E", "withheld"]);
         assert.equal(await raw(page, "coefficientGap"), 0);
         await open("one-correction", "preset=drop");
         assert.match(await headline(page), /^Removing E changes 1 of 10 pairs/);
         assert.equal(await page.$$eval(".oc-change-chip", nodes => nodes.length), 1);
+        await open("one-correction", "preset=none");
+        assert.match(await headline(page), /changes 0 of 10 pairs/);
+        assert.equal(await page.$(".oc-change-witness"), null);
         await open("one-correction", "unit=C&mode=mean&mean=.15&tau=.5&cap=6");
         const single = await page.$$eval('.prx-sr-only [data-prx-readout$="TieCount"]', nodes =>
           nodes.map(node => [Number(node.dataset.num), node.parentElement.getAttribute("aria-hidden")]));

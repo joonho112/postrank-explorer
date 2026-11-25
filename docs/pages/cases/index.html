@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Twelve empirical case applications on firm contact gaps, California school chronic absence, and Alabama county outcomes.">
 
-<title>5 · Cases – postrank Explorer</title>
+<title>Cases – postrank Explorer</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -43,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,15 +72,40 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/cases/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cases – postrank Explorer">
+<meta property="og:description" content="Twelve empirical case applications on firm contact gaps, California school chronic absence, and Alabama county outcomes.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/cases/index.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/alabama-map.png">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -533,21 +559,27 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">5 · Cases</h1>
+<h1 class="title">Cases</h1>
+<p class="subtitle lead">Part 5 · Firms, schools and counties · 12 applications</p>
+</div>
+
+<div>
+  <div class="description">
+    Twelve empirical case applications on firm contact gaps, California school chronic absence, and Alabama county outcomes.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -561,130 +593,133 @@ ul.task-list li input[type="checkbox"] {
 
 <p>The firm, school, and county cases show how grades depend on the outcomes and the reports under consideration. The firm case compares <a href="../../pages/cases/lambda-tau.html">KRW’s and postrank’s loss scales</a>, examines the <a href="../../pages/cases/krw-card.html">archived cards</a>, and compares <a href="../../pages/cases/signed-or-absolute.html">signed and absolute contact gaps</a> and <a href="../../pages/cases/krw-two.html">common grades for race and gender</a>. For the twelve schools, compare <a href="../../pages/cases/cde-cuts.html">grade boundaries</a> and <a href="../../pages/cases/cde-one-disclosure.html">reports at matched disclosure</a>, then examine <a href="../../pages/cases/cde-pair.html">why a likely direction is withheld</a> or how <a href="../../pages/cases/cde-tau-path.html">reports change with the cost of withholding</a>. The <a href="../../pages/cases/alabama-map.html">Alabama county case</a> maps grades for historical income and incarceration and shows the added risk of using one report for both outcomes.</p>
 <p>The <a href="../../pages/profiles/fictional-site-profiles.html">forty fictional sites</a> illustrate what separate grades can report. The browser counts comparisons from the saved grades and displays the risk and joint-event summaries from the original analysis.</p>
+<section id="applications" class="level2">
+<h2 class="anchored" data-anchor-id="applications">Applications</h2>
 <!-- Build inputs: the catalog; do not edit. -->
 <div class="prx-cards">
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/lambda-tau.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/lambda-tau.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/lambda-tau.html" tabindex="-1"><img src="../../media/thumbs/lambda-tau.png" alt="5.1 KRW's reward and postrank's withholding cost chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.1</p>
-<h3 class="anchored"><a href="../../pages/cases/lambda-tau.html">KRW's reward and postrank's withholding cost</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/lambda-tau.html">KRW's reward and postrank's withholding cost</a></h3>
 <p>Convert KRW’s reward to postrank’s withholding cost under the assumptions that make the two losses comparable.</p>
-<p class="prx-card-links"><a href="../../embed/lambda-tau.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/lambda-tau.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/krw-axes.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/krw-axes.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/krw-axes.html" tabindex="-1"><img src="../../media/thumbs/krw-axes.png" alt="5.2 Equivalent reporting-loss scales chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.2</p>
-<h3 class="anchored"><a href="../../pages/cases/krw-axes.html">Equivalent reporting-loss scales</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/krw-axes.html">Equivalent reporting-loss scales</a></h3>
 <p>The two losses order the six-site reports in the same way under the stated assumptions.</p>
 <p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
-<p class="prx-card-links"><a href="../../embed/krw-axes.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/krw-axes.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/krw-card.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/krw-card.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/krw-card.html" tabindex="-1"><img src="../../media/thumbs/krw-card.png" alt="5.3 KRW's race and gender report cards chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.3</p>
-<h3 class="anchored"><a href="../../pages/cases/krw-card.html">KRW's race and gender report cards</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/krw-card.html">KRW's race and gender report cards</a></h3>
 <p>Read the posterior intervals and directions in KRW’s published race and gender report cards for 97 firms.</p>
 <p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
-<p class="prx-card-links"><a href="../../embed/krw-card.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/krw-card.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/krw-heatmap.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/krw-heatmap.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/krw-heatmap.html" tabindex="-1"><img src="../../media/thumbs/krw-heatmap.png" alt="5.4 Firm-pair probabilities and report-card blocks chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.4</p>
-<h3 class="anchored"><a href="../../pages/cases/krw-heatmap.html">Firm-pair probabilities and report-card blocks</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/krw-heatmap.html">Firm-pair probabilities and report-card blocks</a></h3>
 <p>Compare pairwise thresholds with the directions actually stated by KRW’s archived grade reports.</p>
 <p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
-<p class="prx-card-links"><a href="../../embed/krw-heatmap.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/krw-heatmap.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/krw-lambda.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/krw-lambda.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/krw-lambda.html" tabindex="-1"><img src="../../media/thumbs/krw-lambda.png" alt="5.5 KRW's archived reward path chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.5</p>
-<h3 class="anchored"><a href="../../pages/cases/krw-lambda.html">KRW's archived reward path</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/krw-lambda.html">KRW's archived reward path</a></h3>
 <p>As the reward for correct directions changes, KRW’s archived cards state different numbers of pairs and incur different expected errors.</p>
 <p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
-<p class="prx-card-links"><a href="../../embed/krw-lambda.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/krw-lambda.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/signed-or-absolute.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/signed-or-absolute.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/signed-or-absolute.html" tabindex="-1"><img src="../../media/thumbs/signed-or-absolute.png" alt="5.6 Signed and absolute gender-gap targets chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.6</p>
-<h3 class="anchored"><a href="../../pages/cases/signed-or-absolute.html">Signed and absolute gender-gap targets</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/signed-or-absolute.html">Signed and absolute gender-gap targets</a></h3>
 <p>A signed gap and its absolute size are different targets. Their pairwise probabilities and fixed-order reports can differ.</p>
 <p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
-<p class="prx-card-links"><a href="../../embed/signed-or-absolute.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/signed-or-absolute.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/krw-two.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/krw-two.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/krw-two.html" tabindex="-1"><img src="../../media/thumbs/krw-two.png" alt="5.7 A common report for race and gender gaps chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.7</p>
-<h3 class="anchored"><a href="../../pages/cases/krw-two.html">A common report for race and gender gaps</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/krw-two.html">A common report for race and gender gaps</a></h3>
 <p>Compare a common grade report with KRW’s separate race and gender cards using the same weighted expected loss.</p>
 <p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
-<p class="prx-card-links"><a href="../../embed/krw-two.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/krw-two.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/cde-cuts.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/cde-cuts.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/cde-cuts.html" tabindex="-1"><img src="../../media/thumbs/cde-cuts.png" alt="5.8 School tertiles and minimum-risk grades chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.8</p>
-<h3 class="anchored"><a href="../../pages/cases/cde-cuts.html">School tertiles and minimum-risk grades</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/cde-cuts.html">School tertiles and minimum-risk grades</a></h3>
 <p>For twelve schools, compare chronic absence tertiles with the grades that minimize risk under the same posterior.</p>
 <p class="prx-card-credit">Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied</p>
-<p class="prx-card-links"><a href="../../embed/cde-cuts.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/cde-cuts.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/cde-one-disclosure.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/cde-one-disclosure.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/cde-one-disclosure.html" tabindex="-1"><img src="../../media/thumbs/cde-one-disclosure.png" alt="5.9 School reports at matched disclosure chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.9</p>
-<h3 class="anchored"><a href="../../pages/cases/cde-one-disclosure.html">School reports at matched disclosure</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/cde-one-disclosure.html">School reports at matched disclosure</a></h3>
 <p>Compare expected wrong counts across three-grade reports that all state 48 school pairs.</p>
 <p class="prx-card-credit">Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied</p>
-<p class="prx-card-links"><a href="../../embed/cde-one-disclosure.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/cde-one-disclosure.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/cde-pair.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/cde-pair.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/cde-pair.html" tabindex="-1"><img src="../../media/thumbs/cde-pair.png" alt="5.10 A high-probability school comparison withheld chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.10</p>
-<h3 class="anchored"><a href="../../pages/cases/cde-pair.html">A high-probability school comparison withheld</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/cde-pair.html">A high-probability school comparison withheld</a></h3>
 <p>See how requiring the report to put school F above school I changes the best report in the same family.</p>
 <p class="prx-card-credit">Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied</p>
-<p class="prx-card-links"><a href="../../embed/cde-pair.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/cde-pair.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/cde-tau-path.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/cde-tau-path.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/cde-tau-path.html" tabindex="-1"><img src="../../media/thumbs/cde-tau-path.png" alt="5.11 School-report changes along the withholding-cost path chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.11</p>
-<h3 class="anchored"><a href="../../pages/cases/cde-tau-path.html">School-report changes along the withholding-cost path</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/cde-tau-path.html">School-report changes along the withholding-cost path</a></h3>
 <p>As the cost of withholding rises, the optimal report changes how many school pairs it states and which ones it states.</p>
 <p class="prx-card-credit">Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied</p>
-<p class="prx-card-links"><a href="../../embed/cde-tau-path.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/cde-tau-path.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/cases/alabama-map.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/alabama-map.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/cases/alabama-map.html" tabindex="-1"><img src="../../media/thumbs/alabama-map.png" alt="5.12 A common report for Alabama county outcomes chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">5.12</p>
-<h3 class="anchored"><a href="../../pages/cases/alabama-map.html">A common report for Alabama county outcomes</a></h3>
+<h3 class="no-anchor"><a href="../../pages/cases/alabama-map.html">A common report for Alabama county outcomes</a></h3>
 <p>Compare the same county grades on historical income and incarceration outcomes.</p>
 <p class="prx-card-credit">Data: Chetty, Friedman, Hendren, Jones and Porter (2022) · CC BY 4.0 · Opportunity Insights and U.S. Census Bureau · U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20m), via usmapdata 1.1.0</p>
-<p class="prx-card-links"><a href="../../embed/alabama-map.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/alabama-map.html">Open standalone</a></p>
 </div>
 </article>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="prx-recipe-keyboard">
@@ -1150,7 +1185,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -67,7 +67,7 @@
           "about": "the chain's read-out at the defaults: the likelier direction is wrong less often than τ, so the report states it",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. A is higher with posterior probability ⟨pi⟩. Report {A} > {B}: error ⟨err⟩ < τ ⟨tau⟩."
+          "value": "Data stage (analyst): A ⟨estA⟩ → ⟨meanA⟩, B ⟨estB⟩ → ⟨meanB⟩; Pr(A > B) = ⟨pi⟩, so report {A} > {B} (error ⟨err⟩ < τ ⟨tau⟩)."
         },
         {
           "select": "[data-prx-disclosure=\"boxes\"] > summary",
@@ -342,7 +342,7 @@
           "about": "the chain's read-out: the likelier direction is wrong less often than τ, so the report states it",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. A is higher with posterior probability ⟨pi⟩. Report {A} > {B}: error ⟨err⟩ < τ ⟨tau⟩."
+          "value": "Posterior stage (supplied): A ⟨estA⟩ → ⟨meanA⟩, B ⟨estB⟩ → ⟨meanB⟩; Pr(A > B) = ⟨pi⟩, so report {A} > {B} (error ⟨err⟩ < τ ⟨tau⟩)."
         }
       ]
     },
@@ -415,7 +415,7 @@
           "about": "the chain's read-out: withholding says no direction",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. A is higher with posterior probability ⟨pi⟩. Withhold {A, B}: smallest directional error ⟨err⟩ > τ ⟨tau⟩."
+          "value": "Decision stage (postrank): A ⟨estA⟩ → ⟨meanA⟩, B ⟨estB⟩ → ⟨meanB⟩; Pr(A > B) = ⟨pi⟩, so withhold {A, B} (error ⟨err⟩ > τ ⟨tau⟩)."
         }
       ]
     },
@@ -448,7 +448,7 @@
           "about": "the chain's read-out: withholding says no direction",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. A is higher with posterior probability ⟨pi⟩. Withhold {A, B}: smallest directional error ⟨err⟩ > τ ⟨tau⟩."
+          "value": "Model stage (analyst): A ⟨estA⟩ → ⟨meanA⟩, B ⟨estB⟩ → ⟨meanB⟩; Pr(A > B) = ⟨pi⟩, so withhold {A, B} (error ⟨err⟩ > τ ⟨tau⟩)."
         }
       ]
     },
@@ -532,10 +532,7 @@
         {
           "select": "[data-prx-readout=\"meanA\"]",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "about": "A's posterior mean (U13)",
           "source": "oracle",
@@ -549,10 +546,7 @@
         {
           "select": "[data-prx-readout=\"sdA\"]",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "about": "A's posterior SD",
           "source": "oracle",
@@ -566,10 +560,7 @@
         {
           "select": "[data-prx-readout=\"keepA\"]",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatShare"
           },
           "about": "the share of its estimate A's posterior mean keeps",
           "source": "oracle",
@@ -583,10 +574,7 @@
         {
           "select": "[data-prx-readout=\"meanB\"]",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "about": "B's posterior mean (U05)",
           "source": "oracle",
@@ -600,10 +588,7 @@
         {
           "select": "[data-prx-readout=\"sdB\"]",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "about": "B's posterior SD",
           "source": "oracle",
@@ -617,10 +602,7 @@
         {
           "select": "[data-prx-readout=\"keepB\"]",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatShare"
           },
           "about": "the share of its estimate B's posterior mean keeps",
           "source": "oracle",
@@ -634,7 +616,7 @@
         {
           "select": "[data-prx-readout=\"pi\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "about": "π = Pr(θ_A > θ_B ∣ Y): U13 over U05 under the league's posterior at prior SD .15",
           "source": "oracle",
@@ -663,7 +645,7 @@
         {
           "select": "[data-prx-readout=\"pi\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "about": "equal posterior means give π = 1/2 whatever the SDs",
           "source": "oracle",
@@ -677,7 +659,7 @@
         {
           "select": "[data-prx-readout=\"costAB\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "about": "the cost of stating A above B",
           "source": "oracle",
@@ -691,7 +673,7 @@
         {
           "select": "[data-prx-readout=\"costBA\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "about": "the cost of stating B above A",
           "source": "oracle",
@@ -731,7 +713,7 @@
           "about": "ties are said in words, with the equal-risk tolerance",
           "source": "literal",
           "ref": "9.4",
-          "value": "Estimates → posterior means: A ⟨estA⟩ → ⟨meanA⟩; B ⟨estB⟩ → ⟨meanB⟩. Both directions have posterior probability ⟨pi⟩. Withhold {A, B}: smallest directional error ⟨err⟩ = τ ⟨tau⟩. ⟨count⟩ reports share the smallest risk (equal-risk tolerance ⟨tol⟩); showing the first."
+          "value": "Data stage (analyst): A ⟨estA⟩ → ⟨meanA⟩, B ⟨estB⟩ → ⟨meanB⟩; Pr(A > B) = ⟨pi⟩, so withhold {A, B} (error ⟨err⟩ = τ ⟨tau⟩). ⟨count⟩ reports share the smallest risk (equal-risk tolerance ⟨tol⟩); showing the first."
         },
         {
           "select": "[data-prx-readout=\"report\"] ~ .prx-result-tag .prx-result-ties",

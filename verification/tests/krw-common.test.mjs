@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeWindow } from '../dom-env.mjs';
 import { createWidget } from '../../js/shared/base.js';
-import { archiveSnapshot, readKrwModel, publishedCardMatches, riskDigits, createKrwCardView, createKrwRiskView, createKrwDenominatorView } from '../../js/apps/krw-common.js';
+import { archiveSnapshot, readKrwModel, publishedCardMatches, riskDigits, createKrwCardView, createKrwRiskView, createKrwDenominatorView } from '../../js/shared/domain/krw.js';
 test('archived zero endpoint cannot expose the positive-tau surrogate as any risk term', () => {
     const model = readKrwModel('race'), zero = archiveSnapshot(model, 0);
     assert.equal(zero.ev.risk, null);

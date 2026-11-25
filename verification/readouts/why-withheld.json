@@ -65,6 +65,48 @@
           "format": {
             "fn": "formatCount"
           }
+        },
+        {
+          "select": "[data-prx-readout=\"selected-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-withholding",
+            "row": "withholding-compare-six-all-identity",
+            "field": "after.risk"
+          },
+          "value": 0.09334318607505901,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-forward-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "constrained-six-coherence-all",
+            "field": "risk"
+          },
+          "value": 0.10185594083767419,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-withholding",
+            "row": "withholding-compare-six-all-to-forward-ab-tie1",
+            "field": "deltaRisk"
+          },
+          "value": 0.008512754762615177,
+          "format": {
+            "fn": "formatReadoutRisk",
+            "options": {
+              "signed": true
+            }
+          }
         }
       ]
     },
@@ -129,6 +171,48 @@
           "value": 1,
           "format": {
             "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"selected-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-withholding",
+            "row": "withholding-compare-six-cap3-identity",
+            "field": "after.risk"
+          },
+          "value": 0.09334318607505901,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-forward-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "constrained-six-cap3",
+            "field": "risk"
+          },
+          "value": 0.1023835326954502,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-withholding",
+            "row": "withholding-compare-six-cap3-to-forward-ab-tie1",
+            "field": "deltaRisk"
+          },
+          "value": 0.009040346620391188,
+          "format": {
+            "fn": "formatReadoutRisk",
+            "options": {
+              "signed": true
+            }
           }
         }
       ]
@@ -306,6 +390,48 @@
           "value": 1,
           "format": {
             "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"selected-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "constrained-chapter19-base",
+            "field": "risk"
+          },
+          "value": 0.14166666666666666,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-forward-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "constrained-chapter19-B-above-C",
+            "field": "risk"
+          },
+          "value": 0.16666666666666666,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-withholding",
+            "row": "withholding-compare-chapter19-all-to-forward-bc-tie1",
+            "field": "deltaRisk"
+          },
+          "value": 0.024999999999999994,
+          "format": {
+            "fn": "formatReadoutRisk",
+            "options": {
+              "signed": true
+            }
           }
         }
       ]
@@ -507,6 +633,48 @@
           "value": 1,
           "format": {
             "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"selected-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "constrained-cde12-cap3-baseline",
+            "field": "risk"
+          },
+          "value": 0.07968355668026646,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-forward-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "constrained-cde12-cap3-F-above-I",
+            "field": "risk"
+          },
+          "value": 0.07999597946212818,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-withholding",
+            "row": "withholding-compare-cde12-cap3-to-forward-fi-tie1",
+            "field": "deltaRisk"
+          },
+          "value": 0.0003124227818617209,
+          "format": {
+            "fn": "formatReadoutRisk",
+            "options": {
+              "signed": true
+            }
           }
         }
       ]
@@ -813,6 +981,48 @@
           "value": 1,
           "format": {
             "fn": "formatCount"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"selected-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "constrained-krw97-cap4-baseline",
+            "field": "risk"
+          },
+          "value": 0.2454704108702616,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-forward-risk\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4",
+            "row": "constrained-krw97-cap4-stated",
+            "field": "risk"
+          },
+          "value": 0.2836545555733828,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
+        },
+        {
+          "select": "[data-prx-readout=\"readout-delta\"]",
+          "source": "oracle",
+          "ref": {
+            "group": "oracle-v3p4-withholding",
+            "row": "withholding-compare-krw97-order-cap4-to-forward-55-35-tie1",
+            "field": "deltaRisk"
+          },
+          "value": 0.0381841447031212,
+          "format": {
+            "fn": "formatReadoutRisk",
+            "options": {
+              "signed": true
+            }
           }
         }
       ]

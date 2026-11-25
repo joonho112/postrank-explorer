@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/ranking-claims.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Expected errors in a strict ranking – postrank Explorer">
+<meta property="og:description" content="Posterior expected wrong-direction counts among the n(n − 1)/2 statements of a strict ranking.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/ranking-claims.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/ranking-claims.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>A strict ranking makes a statement about every unordered pair. With <span class="math inline"><math><mi>n</mi></math></span> units, the triangular matrix contains the <span class="math inline"><math><mrow><mi>M</mi><mo>=</mo><mi>n</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>/</mi><mn>2</mn></mrow></math></span> statements. If the ranking places <span class="math inline"><math><mi>i</mi></math></span> above <span class="math inline"><math><mi>j</mi></math></span>, the statement has posterior error probability <span class="math inline"><math><mrow><mn>1</mn><mo>−</mo><msub><mi>π</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow></math></span>, where <span class="math inline"><math><msub><mi>π</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math></span> is the probability that <span class="math inline"><math><mi>i</mi></math></span> has the larger true value. We sum these probabilities to obtain the expected number of wrong statements. Many of the most uncertain pairs contain nearby ranks. As the <a href="../../pages/uncertainty/pairwise-matrix.html">pairwise probability matrix</a> shows, imprecise units can be difficult to order even when the ranking places them far apart.</p>
+<p>A strict ranking of <span class="math inline"><math><mi>n</mi></math></span> units asserts a direction for all <span class="math inline"><math><mrow><mi>M</mi><mo>=</mo><mi>n</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>/</mi><mn>2</mn></mrow></math></span> pairs; summing each claim’s posterior error probability <span class="math inline"><math><mrow><mn>1</mn><mo>−</mo><msub><mi>π</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow></math></span> gives the expected number of wrong claims.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -638,10 +663,10 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>97 firms.</strong> Kline, Rose and Walters’ (KRW) firms, ranked by posterior mean, make 4,656 claims; the posterior expected wrong count is 1,249, more than one in four. Ranked by estimate they expect 1,395 (the two orders disagree on 639 pairs); KRW find the posterior-mean order close to their best strict ranking (Section V.E), but that is not a general rule. Here 35 claims sit above one half.</li>
-<li><strong>Top 10 by posterior mean.</strong> 45 claims, 18.22 expected wrong. By comparison, ranking all 5,834 California elementary-type schools with at least 30 students counted in the case study would make 17,014,861 pairwise claims.</li>
-<li><strong>Six sites.</strong> 15 claims, .7194 expected wrong. The highest dot, C above D, is a claim between neighbors, wrong with probability .362.</li>
-<li><strong>League of 30.</strong> 435 claims; 94.48 expected wrong, 102.2 by estimate (37 pairs differ). In the simulation we can compare the ranking with the known true values. The ranking makes 88 wrong claims in this draw and 80.69 on average.</li>
+<li><strong>97 firms.</strong> Ranking KRW’s firms by posterior mean makes 4,656 claims: 1,249 expected wrong vs.&nbsp;1,395 by estimate (in <strong>Data</strong>, 639 pairs differ), with 35 claims above one half.</li>
+<li><strong>Top 10 by posterior mean.</strong> 45 claims, 18.2 expected wrong; in <strong>Data</strong>, 5,834 California schools make 17,014,861 claims.</li>
+<li><strong>Six sites.</strong> 15 claims, .719 expected wrong; C above D is least certain (.362).</li>
+<li><strong>League of 30.</strong> 435 claims, 94.5 expected wrong vs.&nbsp;102 by estimate (in <strong>Data</strong>: 37 differ; 88 wrong in this draw, 80.69 on average).</li>
 </ul>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -649,10 +674,14 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>KRW’s race card at λ = 1 is also a full ranking, in a slightly different order, so it expects 1,248 wrong claims where the posterior-mean order expects 1,249 (<a href="../../pages/cases/krw-lambda.html">KRW’s archived reward path</a>). The expected count is a sum of probabilities over all the claims, not a list of particular claims. The data describe KRW’s correspondence experiment, not any firm’s current conduct. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. Changes: race pair probabilities as adapted in postrank 1.1.0 (pr_case_krw); firms ranked here by posterior mean, top-n blocks and expected counts computed in this browser. No endorsement is implied. School count: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, via postrank 1.1.0 (pr_case_cde); CDE source conditions apply (<a href="https://www.cde.ca.gov/re/di/cr/index.asp" style="word-break: break-all">https://www.cde.ca.gov/re/di/cr/index.asp</a>); only the statewide count is shown (changes noted); no CDE endorsement is implied.</p>
+<p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only (<code>pr_case_krw</code>, no endorsement; <strong>describes KRW’s experiment, not current conduct</strong>). School count: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 (<code>pr_case_cde</code>, <a href="https://www.cde.ca.gov/re/di/cr/index.asp">source conditions</a>); no CDE endorsement is implied.</p>
 </div>
 </div>
 </div>
+<details>
+<summary>Further notes</summary>
+<p>KRW's race card at λ = 1 is also a full ranking, in a slightly different order, so it expects 1,248 wrong claims where the posterior-mean order expects 1,249 (<a href="../../pages/cases/krw-lambda.html">KRW's archived reward path</a>). The expected count is a sum of probabilities over all stated claims, not a list of particular wrong claims.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -671,8 +700,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Standalone: <a href="../../embed/ranking-claims.html">embed/ranking-claims.html</a>, for example <code>?data=krw&amp;n=20</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/pairwise-matrix.html">The matrix of pairwise posterior probabilities</a> (1.13), <a href="../../pages/uncertainty/which-ranking.html">Alternative rankings from a posterior distribution</a> (1.14), <a href="../../pages/uncertainty/majority-wins.html">Majority comparisons and expected ranks</a> (1.15) and <a href="../../pages/uncertainty/noisy-league.html">Ranking noisy estimates</a> (1.3).</p>
+<p>Standalone: <a href="../../embed/ranking-claims.html">embed/ranking-claims.html</a> · Related: <a href="../../pages/uncertainty/pairwise-matrix.html">1.13</a>, <a href="../../pages/uncertainty/which-ranking.html">1.14</a>, <a href="../../pages/uncertainty/majority-wins.html">1.15</a>, <a href="../../pages/uncertainty/noisy-league.html">1.3</a>.</p>
 
 
 </section>
@@ -1145,7 +1173,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -4,7 +4,7 @@ subtitle: "1.12 · the posterior intervals of a simulated league and the directi
 description: "Comparison of marginal interval overlap and direction probabilities in a thirty-unit simulation."
 ---
 
-We compare interval overlap and posterior direction probabilities for all 435 pairs of the thirty simulated units. The intervals come from the model in [normal–normal posterior shrinkage](shrinkage.qmd). For a selected pair, the figure shows how far the intervals overlap and the probability that the first unit has the larger true value. The table counts the pairs with overlapping intervals and identifies those that still have a direction probability above .90. Changing the interval level or the prior standard deviation changes these counts.
+Across all 435 pairs in the thirty-unit [shrunk league](shrinkage.qmd), marginal credible intervals frequently overlap even when the posterior favors one direction with probability above .90.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,28 +16,17 @@ We compare interval overlap and posterior direction probabilities for all 435 pa
 
 ## Numerical illustrations {#what-to-try}
 
-- **Overlap, highest probability.** 399 of the 435 pairs have overlapping 90% intervals, and 88 of them still have one
-  direction above .90. The highest is .988, for U13 above U05, whose intervals overlap by .005: no overlapping pair is
-  above .99.
-- **U06 and U20.** These intervals do not overlap (.002 lies between them), and U06 is the higher with probability
-  .988, the same to three decimals as the preceding pair, whose intervals overlap.
-- **U04 and U18.** A wide overlap, .107, and still U04 is the higher with probability .904: U18's narrow interval ends
-  at −.105, below U04's posterior mean, −.014.
-- **95% intervals.** Wider intervals overlap more often, in 413 pairs, and 102 of these have one direction above .90.
-  The highest is now .997, for U03 above U15.
-- **Prior SD .05.** A narrow prior pulls every posterior mean toward zero: 427 pairs overlap, only 58 of them with one
-  direction above .90.
+- **Overlap, highest probability.** 399 of 435 pairs overlap at 90%, and 88 favor one direction above .90 — led by U13 above U05 at .988 (overlap .00549).
+- **U06 and U20.** Intervals lie .00219 apart with Pr(U06 > U20) = .988, matching the top overlapping pair.
+- **U04 and U18.** Overlap .107 yet Pr(U04 > U18) = .904: U18 ends at −.105, below U04's mean (−.0143).
+- **95% intervals.** 413 pairs overlap, 102 above .90, led by U03 above U15 at .997.
+- **Prior SD .05.** Stronger shrinkage yields 427 overlapping pairs, 58 above .90.
 
-::: {.callout-note appearance="simple"}
-For two independent normal posteriors, whatever their SDs, the more likely direction has a probability above .950 when
-their 90% intervals do not overlap. When they overlap, it is at most .990, the value for equal SDs and intervals that
-just touch (.975 and .997 for 95% intervals). Kline, Rose and Walters (2024, section IV.C) draw a credible interval
-beside each name, but they grade the names from pairwise posterior probabilities.
-:::
+<details>
+<summary>Probability bounds and source note</summary>
 
-Standalone: [embed/overlap-in-the-league.html](../../embed/overlap-in-the-league.html), for example `?pair=U05-U13`
-(U05 first: the card gives .012) or `?preset=league-95&theme=dark`.
+For two independent normal posteriors, whatever their SDs, the more likely direction has probability above .950 when their 90% intervals do not overlap, and at most .990 when they overlap (.975 and .997 for 95% intervals). Kline, Rose and Walters (2024, section IV.C) draw a credible interval beside each name, while grading names from pairwise posterior probabilities.
 
-Related applications: [Marginal interval overlap and direction probabilities](interval-overlap.qmd) (1.11) takes one pair with equal
-SDs and shows why; [Pairwise posterior direction probabilities](two-units.qmd) (1.8) computes the probability for any two normal
-posteriors; [The matrix of pairwise posterior probabilities](pairwise-matrix.qmd) (1.13) shows it for every pair of this league.
+</details>
+
+Standalone: [embed/overlap-in-the-league.html](../../embed/overlap-in-the-league.html) (`?pair=U05-U13` or `?preset=league-95&theme=dark`). Related: [Interval overlap](interval-overlap.qmd) (1.11) · [Two units](two-units.qmd) (1.8) · [Pairwise matrix](pairwise-matrix.qmd) (1.13).

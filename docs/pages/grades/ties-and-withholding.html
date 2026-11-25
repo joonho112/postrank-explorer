@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,7 +72,27 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -105,6 +125,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/ties-and-withholding.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Posterior equality and withholding – postrank Explorer">
+<meta property="og:description" content="Effect of equality mass on weak-error and equality-neutral reporting losses.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/ties-and-withholding.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/ties-and-withholding.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -593,7 +618,7 @@ window.Quarto = {
 </header>
 
 
-<p>When two true values can be equal, the treatment of equality changes the loss of a directional statement. Weak-error loss charges for a strict direction when the values are equal. Equality-neutral loss assigns zero cost to that outcome. We compare the two directions and withholding as the probability of equality changes. The crossings identify the settings at which two actions have the same expected cost. Under either loss, assigning two units to the same grade withholds their comparison.</p>
+<p>When two true values can coincide, weak-error loss penalizes any strict direction at equality, whereas equality-neutral loss charges zero there. Assigning a shared grade withholds direction under either loss.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -603,22 +628,18 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Equality .40, weak loss.</strong> Withholding costs .2500; stating A above B costs .5000 and stating the reverse costs .9000. Equality counts against both strict directions. The gray action has the lowest cost even though A is more likely to be above B than below it.</li>
-<li><strong>Equality .40, neutral loss.</strong> The same law now gives A above B cost .1000 and withholding cost .1500. The difference comes from consequences at equality. Along the equality slider, weak loss changes its minimum-cost action at .150; neutral loss changes at .600 and approximately .867. The open circles mark the boundaries, where competing actions have equal cost.</li>
-<li><strong>No equality.</strong> Both loss columns agree, and the all-withheld baseline returns to .2500. Under this law the two targets are always distinct, so charging only for distinct states changes nothing.</li>
-<li><strong>Equality .90.</strong> B above A has neutral cost 0, while withholding costs .0250. A strict reversal is impossible under this law, but the targets can still be equal.</li>
-<li><strong>Certain equality.</strong> Every neutral action costs 0. Here the targets are identical in every state, so the same-grade guard admits <strong>only withholding</strong>. The raw disclosed-pair count and the distinct mass are different quantities. A strict row has N = 1 but Q = 0: its Errors / Q reads “NA: no distinct mass”. “No disclosure” is reserved for N = 0.</li>
+<li><strong>Equality .40, weak loss.</strong> Withholding costs .250, below A above B (.500) and B above A (.900): equality counts against strict directions.</li>
+<li><strong>Equality .40, neutral loss.</strong> A above B costs .100 against withholding .150; <strong>Method</strong> lists crossings at .150 (weak) and .600, .867 (neutral).</li>
+<li><strong>No equality.</strong> Both losses agree and neutral all-withheld risk returns to .250.</li>
+<li><strong>Equality .90.</strong> B above A costs 0 while withholding costs .0250.</li>
+<li><strong>Certain equality.</strong> Neutral actions cost 0, the guard admits <strong>only withholding</strong>, and <strong>Data</strong> shows “NA: no distinct mass”.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
+<details>
+<summary>
+Further notes on equality mass
+</summary>
 <p>The joint posterior assigns probability to exact equality. Equal posterior means or equal rounded observations do not establish that the targets can coincide. Each risk is specific to its own loss. The risks of withholding every pair coincide when both problems use the same action family and exact equality has zero probability for every criterion with positive weight.</p>
-</div>
-</div>
-</div>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -637,6 +658,7 @@ window.Quarto = {
 </div>
 <p>Standalone: <a href="../../embed/ties-and-withholding.html">embed/ties-and-withholding.html</a>, for example <code>?preset=neutral</code>.</p>
 <p>Related applications: <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a> · <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a> · <a href="../../pages/grades/frontier-mixtures.html">Mixtures of frontier reports</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/11-multicriteria-loss.html#sec-tie-aware-loss">An equality-neutral extension of directional loss</a>.</p>
 
 
 </section>
@@ -1109,7 +1131,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

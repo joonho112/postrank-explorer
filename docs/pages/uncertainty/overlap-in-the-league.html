@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/overlap-in-the-league.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Interval overlap across 435 pairs – postrank Explorer">
+<meta property="og:description" content="Comparison of marginal interval overlap and direction probabilities in a thirty-unit simulation.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/overlap-in-the-league.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/overlap-in-the-league.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>We compare interval overlap and posterior direction probabilities for all 435 pairs of the thirty simulated units. The intervals come from the model in <a href="../../pages/uncertainty/shrinkage.html">normal–normal posterior shrinkage</a>. For a selected pair, the figure shows how far the intervals overlap and the probability that the first unit has the larger true value. The table counts the pairs with overlapping intervals and identifies those that still have a direction probability above .90. Changing the interval level or the prior standard deviation changes these counts.</p>
+<p>Across all 435 pairs in the thirty-unit <a href="../../pages/uncertainty/shrinkage.html">shrunk league</a>, marginal credible intervals frequently overlap even when the posterior favors one direction with probability above .90.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,24 +600,19 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Overlap, highest probability.</strong> 399 of the 435 pairs have overlapping 90% intervals, and 88 of them still have one direction above .90. The highest is .988, for U13 above U05, whose intervals overlap by .005: no overlapping pair is above .99.</li>
-<li><strong>U06 and U20.</strong> These intervals do not overlap (.002 lies between them), and U06 is the higher with probability .988, the same to three decimals as the preceding pair, whose intervals overlap.</li>
-<li><strong>U04 and U18.</strong> A wide overlap, .107, and still U04 is the higher with probability .904: U18’s narrow interval ends at −.105, below U04’s posterior mean, −.014.</li>
-<li><strong>95% intervals.</strong> Wider intervals overlap more often, in 413 pairs, and 102 of these have one direction above .90. The highest is now .997, for U03 above U15.</li>
-<li><strong>Prior SD .05.</strong> A narrow prior pulls every posterior mean toward zero: 427 pairs overlap, only 58 of them with one direction above .90.</li>
+<li><strong>Overlap, highest probability.</strong> 399 of 435 pairs overlap at 90%, and 88 favor one direction above .90 — led by U13 above U05 at .988 (overlap .00549).</li>
+<li><strong>U06 and U20.</strong> Intervals lie .00219 apart with Pr(U06 &gt; U20) = .988, matching the top overlapping pair.</li>
+<li><strong>U04 and U18.</strong> Overlap .107 yet Pr(U04 &gt; U18) = .904: U18 ends at −.105, below U04’s mean (−.0143).</li>
+<li><strong>95% intervals.</strong> 413 pairs overlap, 102 above .90, led by U03 above U15 at .997.</li>
+<li><strong>Prior SD .05.</strong> Stronger shrinkage yields 427 overlapping pairs, 58 above .90.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>For two independent normal posteriors, whatever their SDs, the more likely direction has a probability above .950 when their 90% intervals do not overlap. When they overlap, it is at most .990, the value for equal SDs and intervals that just touch (.975 and .997 for 95% intervals). Kline, Rose and Walters (2024, section IV.C) draw a credible interval beside each name, but they grade the names from pairwise posterior probabilities.</p>
-</div>
-</div>
-</div>
-<p>Standalone: <a href="../../embed/overlap-in-the-league.html">embed/overlap-in-the-league.html</a>, for example <code>?pair=U05-U13</code> (U05 first: the card gives .012) or <code>?preset=league-95&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/interval-overlap.html">Marginal interval overlap and direction probabilities</a> (1.11) takes one pair with equal SDs and shows why; <a href="../../pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a> (1.8) computes the probability for any two normal posteriors; <a href="../../pages/uncertainty/pairwise-matrix.html">The matrix of pairwise posterior probabilities</a> (1.13) shows it for every pair of this league.</p>
+<details>
+<summary>
+Probability bounds and source note
+</summary>
+<p>For two independent normal posteriors, whatever their SDs, the more likely direction has probability above .950 when their 90% intervals do not overlap, and at most .990 when they overlap (.975 and .997 for 95% intervals). Kline, Rose and Walters (2024, section IV.C) draw a credible interval beside each name, while grading names from pairwise posterior probabilities.</p>
+</details>
+<p>Standalone: <a href="../../embed/overlap-in-the-league.html">embed/overlap-in-the-league.html</a> (<code>?pair=U05-U13</code> or <code>?preset=league-95&amp;theme=dark</code>). Related: <a href="../../pages/uncertainty/interval-overlap.html">Interval overlap</a> (1.11) · <a href="../../pages/uncertainty/two-units.html">Two units</a> (1.8) · <a href="../../pages/uncertainty/pairwise-matrix.html">Pairwise matrix</a> (1.13).</p>
 
 
 </section>
@@ -1065,7 +1085,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

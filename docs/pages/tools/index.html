@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Browser tools for computing ordered grade reports from supplied posterior summaries or configuring and exporting released case analyses.">
 
 <title>Tools – postrank Explorer</title>
 <style>
@@ -43,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,15 +72,40 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/tools/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tools – postrank Explorer">
+<meta property="og:description" content="Browser tools for computing ordered grade reports from supplied posterior summaries or configuring and exporting released case analyses.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/tools/index.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/report-designer.png">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -533,21 +559,27 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Tools</h1>
+<p class="subtitle lead">Part T · Interactive report builders · 2 applications</p>
+</div>
+
+<div>
+  <div class="description">
+    Browser tools for computing ordered grade reports from supplied posterior summaries or configuring and exporting released case analyses.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -560,30 +592,33 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p><a href="../../pages/tools/your-data.html">Reports from supplied posterior summaries</a> uses your own summaries or pair probabilities. The result identifies the set of reports searched, whether the tool enumerated a family, considered cuts of one order, or used the optional joint solver. The <a href="../../pages/tools/report-designer.html">case-report tool</a> uses released cases and records the target, settings, error denominators, and search in the report. Both tools let you download the inputs and results.</p>
+<section id="applications" class="level2">
+<h2 class="anchored" data-anchor-id="applications">Applications</h2>
 <!-- Build inputs: the catalog; do not edit. -->
 <div class="prx-cards">
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/tools/your-data.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/your-data.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/tools/your-data.html" tabindex="-1"><img src="../../media/thumbs/your-data.png" alt="T.1 Reports from supplied posterior summaries chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">T.1</p>
-<h3 class="anchored"><a href="../../pages/tools/your-data.html">Reports from supplied posterior summaries</a></h3>
+<h3 class="no-anchor"><a href="../../pages/tools/your-data.html">Reports from supplied posterior summaries</a></h3>
 <p>Enter normal summaries, estimates with a prior, or pairwise probabilities to calculate a grade report in the browser.</p>
-<p class="prx-card-links"><a href="../../embed/your-data.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/your-data.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/tools/report-designer.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/report-designer.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/tools/report-designer.html" tabindex="-1"><img src="../../media/thumbs/report-designer.png" alt="T.2 Case-report specification and export chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">T.2</p>
-<h3 class="anchored"><a href="../../pages/tools/report-designer.html">Case-report specification and export</a></h3>
+<h3 class="no-anchor"><a href="../../pages/tools/report-designer.html">Case-report specification and export</a></h3>
 <p>Choose settings for a released case, check expected errors by criterion, and export the report and its inputs.</p>
 <p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC · California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · No CDE endorsement is implied · Chetty, Friedman, Hendren, Jones and Porter (2022) · CC BY 4.0 · Opportunity Insights and U.S. Census Bureau</p>
-<p class="prx-card-links"><a href="../../embed/report-designer.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/report-designer.html">Open standalone</a></p>
 </div>
 </article>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="prx-recipe-keyboard">
@@ -1049,7 +1084,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/disclosed-errors.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Expected and realized errors among stated directions – postrank Explorer">
+<meta property="og:description" content="Expected error shares, realized wrong counts and the joint probability that all statements are correct.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/disclosed-errors.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/disclosed-errors.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>A report that states N directions has expected error share <span class="math inline"><math><mrow><mi>E</mi><mi>/</mi><mi>N</mi></mrow></math></span> when <span class="math inline"><math><mrow><mi>N</mi><mo>&gt;</mo><mn>0</mn></mrow></math></span>, where <span class="math inline"><math><mi>E</mi></math></span> is the sum of the error probabilities of the stated pairs. The probability that all of the statements are correct depends on how the errors occur together. The draws show how the realized wrong count varies for the same report. When the report withholds every pair, the error share is undefined because N is zero.</p>
+<p>A report stating <span class="math inline"><math><mrow><mi>N</mi><mo>&gt;</mo><mn>0</mn></mrow></math></span> directions has expected wrong share <span class="math inline"><math><mrow><mi>E</mi><mi>/</mi><mi>N</mi></mrow></math></span>; when <span class="math inline"><math><mrow><mi>N</mi><mo>=</mo><mn>0</mn></mrow></math></span>, the share is undefined. Joint draws show how realized wrong counts and the all-right probability vary around <span class="math inline"><math><mi>E</mi></math></span>.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -638,23 +663,18 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Start without draws.</strong> The report states 14 of 15 pairs, and its expected share wrong is .0255. The blue cells give the stated-pair errors. The optimality badge is reassessed after changes to the grades or eligible family.</li>
-<li><strong>Best report, draws.</strong> Across 100 draws, the mean count is .360 wrong directions per draw, with mean share .0257; the expected count is .3576. The matrix crosses the directions wrong in the final draw. The histogram counts draws, while the line shows their running average.</li>
-<li><strong>All withheld.</strong> The share reads “NA: no disclosure.” There are no statements that could be wrong, so the probability that all are correct is 1. The error share has no denominator. The drawn values remain visible, and the histogram records no wrong statements. The best-report button evaluates an alternative report on the same draws.</li>
-<li><strong>Three-unit law.</strong> The expected share wrong is 7/40, while B above C has error 1/4, above τ. The exact all-right probability is 3/4, with union lower bound 13/20. The final draw’s wrong share is 1/2.</li>
-<li><strong>Another coupling.</strong> The expected share stays 7/40, but the exact all-right probability becomes 13/20, meeting the same union lower bound. As the coupling varies, the order table, draws and zero histogram bin change together.</li>
+<li><strong>Start without draws.</strong> States 14 of 15 pairs; expected share wrong is .0255 (<span class="math inline"><math><mrow><mi>E</mi><mo>≤</mo><mi>τ</mi><mi>N</mi></mrow></math></span> guaranteed).</li>
+<li><strong>Best report, draws.</strong> Over 100 draws, mean wrong count is .360 (share .0257) vs.&nbsp;<span class="math inline"><math><mrow><mi>E</mi><mo>=</mo><mn>.358</mn></mrow></math></span>.</li>
+<li><strong>All withheld.</strong> Every share reads “NA: no disclosure,” with vacuous all-right probability 1.</li>
+<li><strong>Three-unit law.</strong> Expected share is 7/40 (B above C error 1/4, draw share 1/2); all-right is 3/4 (union bound 13/20).</li>
+<li><strong>Another coupling.</strong> Pair errors and 7/40 stay fixed while exact all-right probability meets 13/20.</li>
 </ul>
-<p>The same draws can be used to score several reports. For a fixed report, changing τ affects only the withholding charge. Its expected wrong count stays fixed.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The badge “<span class="math inline"><math><mrow><mi>E</mi><mo>≤</mo><mi>τ</mi><mi>N</mi></mrow></math></span> applies” appears only for an exact optimum of the shown family when that family includes the all-withheld report; for any other report the badge says only whether <span class="math inline"><math><mrow><mi>E</mi><mo>≤</mo><mi>τ</mi><mi>N</mi></mrow></math></span> holds. Every report also shows the defined risk/count diagnostic, including when nothing is stated: <span class="math inline"><math><mrow><mi>E</mi><mo>≤</mo><mi>τ</mi><mi>N</mi></mrow></math></span> exactly when risk is at most τ. The six-site draws use independent normal latent values: their all-right values are Monte Carlo estimates, while the finite-law values and union bounds are exact. Both posteriors are stipulated; the joint-event interpretation and finite example follow the theory book, chapters 6 and 10.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Optimality badge and joint-law notes
+</summary>
+<p>The badge “<span class="math inline"><math><mrow><mi>E</mi><mo>≤</mo><mi>τ</mi><mi>N</mi></mrow></math></span> applies” appears only for an exact optimum of the shown family when that family includes the all-withheld report; for any other report the badge states only whether <span class="math inline"><math><mrow><mi>E</mi><mo>≤</mo><mi>τ</mi><mi>N</mi></mrow></math></span> holds (<span class="math inline"><math><mrow><mi>R</mi><mo>≤</mo><mi>τ</mi></mrow></math></span>). Six-site draws sample independent normal latent values (Monte Carlo all-right estimates), whereas the three-unit law gives exact joint probabilities and union lower bounds (postrank theory book, chapters 10 and 15). Same-seed draws score any alternative report on the identical latent realizations.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -675,6 +695,7 @@ window.Quarto = {
 </div>
 <p>Standalone: <a href="../../embed/disclosed-errors.html">open the app</a>, for example <code>?draws=100&amp;seed=1</code>.</p>
 <p>Related applications: <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a> · <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-pair-versus-grade">Withholding a pair and constructing a common grade</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/15-joint-protection.html#sec-profile-scope-protection">Mean and joint protection on declared scopes</a>.</p>
 
 
 </section>
@@ -1147,7 +1168,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

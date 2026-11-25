@@ -1,8 +1,7 @@
-// noisy-estimate-layout.test.mjs (review 044 repair, Phase 3, group U-D): app 1.2's result-first layout. The read-out
-// sits directly under the controls, the dot plot is the primary graphic, the DOM keeps the plot, legend, parts order
-// (the phone order is CSS only), and the full note's words are always in the page, marked shown only at the cap, so
-// on a phone it can share the draws hint's cell and the preset row never moves. Fix round: Draw is the primary
-// control, and the arrow carries the latest noise ("noise −.271") with the parts box's raw value.
+// noisy-estimate-layout.test.mjs: app 1.2's Frame v2 layout. The toolbar holds the primary
+// sliders and draw actions with Seed in Settings, the read-out sits directly under the toolbar, the stage is the
+// primary graphic (holding the dot plot, legend, and parts breakdown), and the cap note's words remain in the DOM
+// marked shown only at 200 draws so phone layout never shifts.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { mountCase, settle } from "../widget_harness.mjs";
@@ -11,18 +10,30 @@ const MODULE = "js/apps/noisy-estimate.js";
 const partsOf = (root) => [...root.children].map((n) => n.getAttribute("data-prx-part") ?? n.tagName.toLowerCase());
 const NOTE = "The app holds at most 200 estimates; press Clear to start again.";
 
-test("1.2: result-first frame; the dot plot is the primary graphic; DOM order of the charts unchanged", async () => {
+test("1.2: frame v2 layout; stage holds plot, parts, legend; Seed lives in Settings; slider order preserved", async () => {
   const m = await mountCase({ module: MODULE, query: "?preset=se20" });
   try {
     const root = m.root;
-    assert.equal(root.getAttribute("data-prx-layout"), "result-first");
-    assert.deepEqual(partsOf(root), ["controls", "readout", "chart", "caption"]);
-    const charts = root.querySelector('[data-prx-part="chart"]');
-    assert.deepEqual([...charts.children].map((n) => n.classList.contains("nse-chart") ? "plot" : n.classList.contains("nse-legend") ? "legend"
-      : n.classList.contains("nse-parts") ? "parts" : n.className), ["plot", "legend", "parts"]);
+    assert.equal(root.getAttribute("data-prx-frame"), "v2");
+    assert.equal(root.getAttribute("data-prx-layout"), "v2");
+    assert.deepEqual(partsOf(root), ["toolbar", "readout", "chart", "scope", "disclosures", "caption"]);
+    const toolbar = root.querySelector('[data-prx-part="toolbar"]');
+    assert.deepEqual(
+      [...toolbar.children].map((n) => n.getAttribute("data-prx-part") ?? n.getAttribute("data-prx-disclosure")),
+      ["controls", "presets", "settings"],
+    );
+    const seed = root.querySelector('input[name="seed"]');
+    assert.ok(toolbar.querySelector('details[data-prx-disclosure="settings"]').contains(seed), "Seed moved to Settings");
+    const stage = root.querySelector('[data-prx-part="chart"]');
+    assert.deepEqual(
+      [...stage.children].map((n) => (n.classList.contains("nse-chart") ? "plot" : n.classList.contains("nse-legend") ? "legend"
+        : n.classList.contains("nse-parts") ? "parts" : n.className)),
+      ["plot", "parts", "legend"],
+    );
     const primary = root.querySelectorAll("[data-prx-primary]");
     assert.equal(primary.length, 1);
-    assert.ok(primary[0].classList.contains("nse-chart") && primary[0].querySelector("svg"));
+    assert.equal(primary[0], stage);
+    assert.ok(stage.querySelector(".nse-chart svg"));
     // the sliders keep their order (read-out cases read .prx-slider output by index)
     assert.deepEqual([...root.querySelectorAll(".prx-slider input")].map((i) => i.name), ["truth", "se"]);
   } finally { m.close(); }
@@ -66,7 +77,7 @@ test("1.2: Draw is the primary control; the arrow's label carries the parts box'
     const raw = (hook) => m.root.querySelector(`[data-prx-readout="${hook}"]`).getAttribute("data-num");
     assert.equal(label.getAttribute("data-num"), raw("parts-noise"), "the same raw value as the parts box");
     assert.equal(label.getAttribute("data-num"), raw("noise"), "and as the read-out");
-    // an arrow shorter than 6 px is not drawn, so neither is its label (200 draws: the latest noise is +.004)
+    // an arrow shorter than 6 px is not drawn, so neither is its label (200 draws: the latest noise is +.00391)
     m.handle.update({ draws: 200 });
     await settle(m.win, m.el);
     assert.equal(m.root.querySelector('[data-prx-readout="chart-noise"]'), null);

@@ -29,7 +29,10 @@
           "about": "expected count, 20 (Phi(1) - Phi(-1))",
           "source": "registry",
           "ref": "cf.estimate.within1.count20",
-          "value": 13.653789842741716
+          "value": 13.653789842741716,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"draws-expected\"]",
@@ -39,10 +42,13 @@
         },
         {
           "select": "[data-prx-readout=\"share\"]",
-          "about": "share expected within one SE, to four decimals (N-03)",
+          "about": "share expected within one SE, at 3 sig figs (CP-1.2)",
           "source": "registry",
           "ref": "l02.share.within1",
-          "value": 0.6826894921370859
+          "value": 0.6826894921370859,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"latest-draw\"]",
@@ -55,10 +61,7 @@
           "select": "[data-prx-readout=\"latest\"]",
           "about": "the 20th estimate (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -73,7 +76,10 @@
           "about": "the 20th estimate equals the registry value",
           "source": "registry",
           "ref": "l02.q.latest",
-          "value": 0.22883494600552085
+          "value": 0.22883494600552085,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"truth\"]",
@@ -86,23 +92,32 @@
           "about": "the noise of the 20th estimate",
           "source": "registry",
           "ref": "l02.q.noise",
-          "value": -0.27116505399447915
+          "value": -0.27116505399447915,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the noise of the 20th estimate in SEs",
           "source": "registry",
           "ref": "l02.n20.z",
-          "value": -1.3558252699723958
+          "value": -1.3558252699723958,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"parts-estimate\"]",
           "about": "the parts: the estimate",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -124,14 +139,26 @@
           "about": "the parts: the noise",
           "source": "registry",
           "ref": "l02.q.noise",
-          "value": -0.27116505399447915
+          "value": -0.27116505399447915,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"parts-noise-se\"]",
           "about": "the parts: the noise in SEs",
           "source": "registry",
           "ref": "l02.n20.z",
-          "value": -1.3558252699723958
+          "value": -1.3558252699723958,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"parts-draw\"]",
@@ -246,9 +273,9 @@
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the 20th draw's noise in SEs (base-R oracle stream)",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",
@@ -263,9 +290,9 @@
           "select": "[data-prx-readout=\"parts-noise-se\"]",
           "about": "the same in the parts box (base-R oracle stream)",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",
@@ -281,7 +308,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "11.4",
-          "value": "Within one SE of the true value: ⟨within⟩ of ⟨draws⟩ estimates, compared with ⟨expected⟩ of ⟨draws⟩ expected on average (a share of ⟨share⟩). The latest estimate, from draw ⟨draw⟩, is ⟨latest⟩: the true value ⟨truth⟩ plus noise ⟨noise⟩, or ⟨z⟩ SEs.",
+          "value": "Within one SE: ⟨within⟩ of ⟨draws⟩ estimates, vs. ⟨expected⟩ of ⟨draws⟩ expected (share ⟨share⟩). Draw ⟨draw⟩ gives ⟨latest⟩: true value ⟨truth⟩ plus noise ⟨noise⟩ (⟨z⟩ SEs).",
           "slots": true,
           "about": "the read-out sentence, word for word (its numbers are the slots, checked above)"
         },
@@ -374,32 +401,53 @@
           "select": "[data-prx-readout=\"expected\"]",
           "source": "registry",
           "ref": "cf.estimate.within1.count20",
-          "value": 13.653789842741716
+          "value": 13.653789842741716,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"latest\"]",
           "source": "registry",
           "ref": "l02.se10.latest",
-          "value": 0.3644174730027604
+          "value": 0.3644174730027604,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"noise\"]",
           "source": "registry",
           "ref": "l02.se10.noise",
-          "value": -0.13558252699723958
+          "value": -0.13558252699723958,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the same size in SEs as at SE .20",
           "source": "registry",
           "ref": "l02.n20.z",
-          "value": -1.3558252699723958
+          "value": -1.3558252699723958,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"parts-estimate\"]",
           "source": "registry",
           "ref": "l02.se10.latest",
-          "value": 0.3644174730027604
+          "value": 0.3644174730027604,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": ".prx-slider output",
@@ -427,10 +475,7 @@
           "select": "[data-prx-readout=\"latest\"]",
           "about": "the 20th estimate at SE .10 (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -444,10 +489,7 @@
           "select": "[data-prx-readout=\"parts-estimate\"]",
           "about": "the same in the parts box (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -461,9 +503,9 @@
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the noise in SEs is the same draw at every SE (base-R oracle stream)",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",
@@ -491,32 +533,53 @@
           "select": "[data-prx-readout=\"expected\"]",
           "source": "registry",
           "ref": "cf.estimate.within1.count20",
-          "value": 13.653789842741716
+          "value": 13.653789842741716,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"latest\"]",
           "source": "registry",
           "ref": "l02.se05.latest",
-          "value": 0.4322087365013802
+          "value": 0.4322087365013802,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"noise\"]",
           "source": "registry",
           "ref": "l02.se05.noise",
-          "value": -0.06779126349861979
+          "value": -0.06779126349861979,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the same size in SEs as at SE .20",
           "source": "registry",
           "ref": "l02.n20.z",
-          "value": -1.3558252699723958
+          "value": -1.3558252699723958,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"parts-estimate\"]",
           "source": "registry",
           "ref": "l02.se05.latest",
-          "value": 0.4322087365013802
+          "value": 0.4322087365013802,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": ".prx-slider output",
@@ -544,10 +607,7 @@
           "select": "[data-prx-readout=\"latest\"]",
           "about": "the 20th estimate at SE .05 (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -561,10 +621,7 @@
           "select": "[data-prx-readout=\"parts-estimate\"]",
           "about": "the same in the parts box (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -578,9 +635,9 @@
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the noise in SEs is the same draw at every SE (base-R oracle stream)",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",
@@ -614,20 +671,29 @@
           "about": "expected count, 200 (Phi(1) - Phi(-1))",
           "source": "registry",
           "ref": "l02.n200.expected",
-          "value": 136.5378984274172
+          "value": 136.5378984274172,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"share\"]",
           "source": "registry",
           "ref": "l02.share.within1",
           "value": 0.6826894921370859,
-          "about": "share expected within one SE, to four decimals (N-03)"
+          "about": "share expected within one SE, at 3 sig figs (CP-1.2)",
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"latest\"]",
           "source": "registry",
           "ref": "l02.n200.latest",
-          "value": 0.5039137183859074
+          "value": 0.5039137183859074,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
@@ -659,10 +725,7 @@
           "select": "[data-prx-readout=\"latest\"]",
           "about": "the 200th estimate (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -693,10 +756,7 @@
           "select": "[data-prx-readout=\"latest\"]",
           "about": "the 11th estimate",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -710,9 +770,9 @@
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the 11th normal of seed 1",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",
@@ -726,9 +786,9 @@
         {
           "select": "[data-prx-readout=\"parts-noise-se\"]",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",
@@ -751,7 +811,7 @@
           "kind": "text",
           "source": "literal",
           "ref": "11.4",
-          "value": "Within one SE of the true value: ⟨within⟩ of ⟨draws⟩ estimate, compared with ⟨expected⟩ of ⟨draws⟩ expected on average (a share of ⟨share⟩). The latest estimate, from draw ⟨draw⟩, is ⟨latest⟩: the true value ⟨truth⟩ plus noise ⟨noise⟩, or ⟨z⟩ SEs.",
+          "value": "Within one SE: ⟨within⟩ of ⟨draws⟩ estimate, vs. ⟨expected⟩ of ⟨draws⟩ expected (share ⟨share⟩). Draw ⟨draw⟩ gives ⟨latest⟩: true value ⟨truth⟩ plus noise ⟨noise⟩ (⟨z⟩ SEs).",
           "slots": true,
           "about": "the read-out sentence with one draw (singular)"
         },
@@ -759,10 +819,7 @@
           "select": "[data-prx-readout=\"latest\"]",
           "about": "the first estimate",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -776,10 +833,7 @@
           "select": "[data-prx-readout=\"parts-estimate\"]",
           "about": "the same in the parts box",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -793,9 +847,9 @@
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the first normal of seed 1",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",
@@ -817,10 +871,7 @@
           "select": "[data-prx-readout=\"latest\"]",
           "about": "the 7th estimate (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -833,10 +884,7 @@
         {
           "select": "[data-prx-readout=\"parts-estimate\"]",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -857,19 +905,34 @@
           "about": "expected count, 7 (Phi(1) - Phi(-1))",
           "source": "registry",
           "ref": "l02.n7.expected",
-          "value": 4.7788264449596
+          "value": 4.7788264449596,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"noise\"]",
           "source": "registry",
           "ref": "l02.n7.noise",
-          "value": -0.02934591648200063
+          "value": -0.02934591648200063,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"noise-se\"]",
           "source": "registry",
           "ref": "l02.n7.z",
-          "value": -0.5869183296400126
+          "value": -0.5869183296400126,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-caption=\"monte-carlo\"] [data-num]",
@@ -1009,9 +1072,9 @@
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the 7th draw's noise in SEs (base-R oracle stream)",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",
@@ -1033,7 +1096,10 @@
           "select": "[data-prx-readout=\"latest\"]",
           "source": "registry",
           "ref": "l02.clamp.latest",
-          "value": 1.0097842959647683
+          "value": 1.0097842959647683,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"within\"]",
@@ -1051,16 +1117,16 @@
           "select": "[data-prx-readout=\"expected\"]",
           "source": "registry",
           "ref": "l02.n200.expected",
-          "value": 136.5378984274172
+          "value": 136.5378984274172,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"latest\"]",
           "about": "the 200th estimate at true value 1 and SE .50, the clamped setting (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1092,28 +1158,37 @@
           "select": "[data-prx-readout=\"expected\"]",
           "source": "registry",
           "ref": "l02.n21.expected",
-          "value": 14.336479334878803
+          "value": 14.336479334878803,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"latest\"]",
           "source": "registry",
           "ref": "l02.n21.latest",
-          "value": 0.6148987629267355
+          "value": 0.6148987629267355,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"noise-se\"]",
           "source": "registry",
           "ref": "l02.n21.z",
-          "value": 0.5744938146336773
+          "value": 0.5744938146336773,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": "[data-prx-readout=\"latest\"]",
           "about": "the 21st estimate after one more draw (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1127,9 +1202,9 @@
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the 21st draw's noise in SEs (base-R oracle stream)",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",
@@ -1162,13 +1237,22 @@
           "select": "[data-prx-readout=\"latest\"]",
           "source": "registry",
           "ref": "l02.se10.latest",
-          "value": 0.3644174730027604
+          "value": 0.3644174730027604,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"noise-se\"]",
           "source": "registry",
           "ref": "l02.n20.z",
-          "value": -1.3558252699723958
+          "value": -1.3558252699723958,
+          "format": {
+            "fn": "formatReadoutEst",
+            "options": {
+              "signed": true
+            }
+          }
         },
         {
           "select": ".prx-slider output",
@@ -1181,10 +1265,7 @@
           "select": "[data-prx-readout=\"latest\"]",
           "about": "after the update to SE .10, the 20th estimate (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1198,9 +1279,9 @@
           "select": "[data-prx-readout=\"noise-se\"]",
           "about": "the noise in SEs is unchanged by the SE (base-R oracle stream)",
           "format": {
-            "fn": "formatSigned",
+            "fn": "formatReadoutEst",
             "options": {
-              "digits": 2
+              "signed": true
             }
           },
           "source": "oracle",

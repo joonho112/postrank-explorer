@@ -58,9 +58,8 @@ const CSS=`${VISUAL_CSS}
 .mds{min-width:0}.mds .mds-layout{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,25rem),1fr));gap:1rem;min-width:0}.mds .mds-section{min-width:0;margin:.9rem 0}.mds .mds-note{font-size:.88rem;line-height:1.45}.mds .mds-scroll{overflow-x:auto;max-width:100%;min-width:0}
 .mds .mds-table{width:max-content;min-width:100%;max-width:none;border-collapse:collapse;font-size:.88rem}.mds .mds-table th,.mds .mds-table td{padding:.4rem;text-align:left;white-space:nowrap;border-bottom:1px solid var(--prx-border)}.mds .mds-grid{table-layout:fixed;min-width:23rem}.mds .mds-grid th:first-child{width:6rem}
 .mds .mds-card{display:block;width:100%;padding:.45rem;border:1px solid var(--prx-border-strong);border-radius:.25rem;background:var(--prx-bg);color:var(--prx-fg);text-align:left}.mds .mds-card[aria-pressed=true]{outline:3px solid var(--prx-accent);outline-offset:1px}.mds .mds-card.mds-optimal{border:3px double var(--prx-fg)}.mds .mds-card.mds-canonical{box-shadow:inset 0 0 0 2px var(--prx-fg)}.mds .mds-card:focus-visible{outline:3px solid var(--prx-focus)}.mds .mds-card span{white-space:nowrap}.mds .mds-list{margin:.4rem 0}.mds .mds-conclusion{font-weight:600}
-.mds .mds-visual-node{cursor:pointer;outline:none}.mds .mds-visual-node:focus .mds-focus-hit{stroke:var(--prx-plot-focus);stroke-width:3}.mds .mds-visual-legend{display:flex;flex-wrap:wrap;gap:.2rem .9rem;padding:.1rem .8rem .35rem;font-size:.88rem;line-height:1.5;color:var(--prx-plot-fg)}.mds .mds-visual-inspector{padding:.35rem .8rem .7rem;font-size:.9rem;line-height:1.5;color:var(--prx-plot-fg)}
-.mds .mds-guard-example{display:block;margin-top:.25rem;color:var(--prx-plot-fg)}
-.mds .mds-worked-state{display:block;min-height:44px;margin-top:.35rem;font-size:max(14px,.85rem)}
+.mds .mdv-stage .mdv-figure figcaption{font-size:max(14px,.88rem)}
+.mds .mds-visual-node{cursor:pointer;outline:none}.mds .mds-visual-node:focus .mds-focus-hit{stroke:var(--prx-plot-focus);stroke-width:3}.mds .mds-visual-legend{display:flex;flex-wrap:wrap;gap:.15rem .35rem;padding:.1rem .8rem .35rem;font-size:max(14px,.88rem);line-height:1.45;color:var(--prx-plot-fg)}.mds .mds-visual-inspector{padding:.35rem .8rem .7rem;font-size:max(14px,.9rem);line-height:1.5;color:var(--prx-plot-fg)}
 .mds [data-prx-part=controls] .prx-toggle>label{display:flex;align-items:center;min-height:44px;min-width:100px;cursor:pointer}
 `;
 function number(ctx,value,hook){const n=ctx.num(value,formatCount(value));if(hook)n.dataset.prxReadout=hook;return n;}
@@ -79,13 +78,7 @@ function drawFeasibleLattice(ctx,visual,result,state){
  const {fit,summary:s}=result;
  const {svg,figure,width,colors}=scene(ctx,visual.stage,{height:364,label:'Feasible profile actions, their projection product and separate weighted minima.'});
  svg.setAttribute('role','group');
- const dual='p:1,2|1,2';
- const excluded=result.missingPreferredIds.includes(dual)?result.evaluations.get(dual):null;
- const worked=ctx.h('button',{type:'button',class:'prx-btn mds-worked-state','data-prx-focus-key':'separate-worked-bound',
-  'aria-pressed':String(state.couplingIndex===1&&state.zeroWeight&&state.protected),onclick:()=>ctx.set({couplingIndex:1,zeroWeight:true,protected:true,candidate:dual})},'Zero S weight under the guard');
- figure.insertBefore(ctx.h('figcaption',{},'S composition · C community. A → B puts A first. Shared grades withhold.',
-  ...(excluded?[ctx.h('strong',{class:'mds-guard-example','data-mds-guard-example':''},'A above B in both gives ',exactNum(ctx,excluded.jointProbabilityExact),' joint error, above the ',exactNum(ctx,result.request.decision.alpha),' cap. ',
-   s.lowerBoundAttained?['Other preferred cards attain ',exactNum(ctx,s.lowerBoundExact),'.']:['Best feasible loss ',exactNum(ctx,s.riskExact),' vs separate bound ',exactNum(ctx,s.lowerBoundExact),'.'])]:[]),worked),svg);
+ figure.insertBefore(ctx.h('figcaption',{},'S composition · C community · A → B puts A first · shared grades withhold.'),svg);
  const left=65,right=15,top=80,cellW=(width-left-right)/3,cellH=64;
  const x=i=>left+cellW*(i+.5),y=i=>top+cellH*(i+.5);
  svg.setAttribute('data-mds-grid-left',String(left));svg.setAttribute('data-mds-grid-top',String(top));svg.setAttribute('data-mds-cell-width',String(cellW));svg.setAttribute('data-mds-cell-height',String(cellH));
@@ -95,10 +88,10 @@ function drawFeasibleLattice(ctx,visual,result,state){
  const projection=svgNode(ctx,'rect',{x:x(Math.min(...indices[0]))-cellW/2+3,y:y(Math.min(...indices[1]))-cellH/2+3,width:(Math.max(...indices[0])-Math.min(...indices[0])+1)*cellW-6,height:(Math.max(...indices[1])-Math.min(...indices[1])+1)*cellH-6,rx:5,fill:colors.plotBg,stroke:colors.plotFg,'stroke-width':1.5,'stroke-dasharray':'5 4','data-mdv-role':'projection-product','data-mds-projection-S':result.projectionIds[0].join('|'),'data-mds-projection-C':result.projectionIds[1].join('|')});
  svg.append(projection);
  for(let d=0;d<2;d++)for(let i=0;i<3;i++)if(minima[d][i])svg.append(svgNode(ctx,'rect',{x:d===0?left+i*cellW+5:left+5,y:d===0?top+5:top+i*cellH+5,width:d===0?cellW-10:3*cellW-10,height:d===0?3*cellH-10:cellH-10,fill:colors.crit[d],opacity:.16,'data-mdv-role':'weighted-minimum-band','data-mdv-domain':['S','C'][d],'data-mdv-column':ACTIONS[i].key}));
- svg.append(svgText(ctx,(left+width-right)/2,22,'S actions →',{'font-size':16,'text-anchor':'middle','font-weight':600}),svgText(ctx,5,69,'C ↓',{'font-size':16,'font-weight':600}));
+ svg.append(svgText(ctx,(left+width-right)/2,22,'S actions →',{'font-size':16,'text-anchor':'middle','font-weight':600}),svgText(ctx,left-3,69,'C ↓',{'font-size':16,'text-anchor':'end','font-weight':600}));
  for(let i=0;i<3;i++){
   const short=['Withhold','A → B','B → A'][i];
-  svg.append(svgText(ctx,x(i),54,short,{'font-size':15,'text-anchor':'middle','text-decoration':minima[0][i]?'underline':undefined,'font-weight':minima[0][i]?600:400}),svgText(ctx,4,y(i)+5,short,{'font-size':15,'text-decoration':minima[1][i]?'underline':undefined,'font-weight':minima[1][i]?600:400}));
+  svg.append(svgText(ctx,x(i),54,short,{'font-size':15,'text-anchor':'middle','text-decoration':minima[0][i]?'underline':undefined,'font-weight':minima[0][i]?600:400}),svgText(ctx,left-3,y(i)+5,short,{'font-size':15,'text-anchor':'end','letter-spacing':'-.025em','text-decoration':minima[1][i]?'underline':undefined,'font-weight':minima[1][i]?600:400}));
  }
  const inspector=ctx.h('div',{class:'mds-visual-inspector','data-mds-visual-inspector':'','role':'group','aria-label':'Inspected profile'});
  for(let row=0;row<3;row++)for(let col=0;col<3;col++){
@@ -119,10 +112,12 @@ function drawFeasibleLattice(ctx,visual,result,state){
   svg.append(node);
  }
  svg.append(svgText(ctx,18,309,'Separate bound',{'font-size':15}),svgExact(ctx,18,338,s.lowerBoundExact,{}, {'font-size':20,'font-weight':600,'data-mdv-role':'separate-bound'}),svgText(ctx,width/2+8,309,'Minimum loss',{'font-size':15}),svgExact(ctx,width/2+8,338,s.riskExact,{}, {'font-size':20,'font-weight':600,'data-mdv-role':'feasible-minimum'}));
- const legend=ctx.h('div',{class:'mds-visual-legend'},ctx.h('span',{},'● Feasible · × Excluded'),ctx.h('span',{},'Double ring: optimal · ◆ Canonical'),ctx.h('span',{},'Dashed box: projection product'),ctx.h('span',{},'Minima: shaded + underlined'),ctx.h('span',{},'Dotted box: inspected'));
+ const legend=ctx.h('div',{class:'mds-visual-legend'},ctx.h('span',{},'●\u00a0Feasible · ×\u00a0Excluded ·'),ctx.h('span',{},'◎\u00a0Optimal · ◆\u00a0Canonical ·'),ctx.h('span',{},'⬚\u00a0Projection · Band/underline:\u00a0domain\u00a0min'));
  const card=result.focus;inspector.replaceChildren('S: ',named(ctx,actionName(card.grades,0)),' · C: ',named(ctx,actionName(card.grades,1)),' · ',card.feasible?'Feasible':'Excluded',' · loss ',exactNum(ctx,card.riskExact),
   ...(state.protected?[' · joint error ',exactNum(ctx,card.jointProbabilityExact),card.feasible?' at or below cap ':' above cap ',exactNum(ctx,result.request.decision.alpha)]:[]),'.');
- figure.append(legend,inspector);
+ const guardNote=ctx.h('p',{class:'mds-note'},number(ctx,s.feasibleCount),' feasible of ',number(ctx,result.fit.searchScope.candidateCount),' candidate cards. ',
+  state.protected?'The joint cap checks both domains, including any domain assigned zero loss weight.':'The joint cap is off.');
+ figure.append(legend,inspector,guardNote);
 }
 
 export function mountWidget(el,spec={}){

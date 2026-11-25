@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/composite-or-criterion.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Composite targets and criterion directions – postrank Explorer">
+<meta property="og:description" content="Comparison of reporting objectives based on composite values and criterion-specific directions.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/composite-or-criterion.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/composite-or-criterion.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -579,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Composite targets and criterion directions</h1>
-<p class="subtitle lead">4.6 · after the postrank vignette m2 and theory book, ch.&nbsp;12 and 19</p>
+<p class="subtitle lead">4.6 · after the postrank vignette m2 and theory book, ch.&nbsp;12 and 25</p>
 </div>
 
 <div>
@@ -601,33 +626,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Weighting errors on two criteria and comparing a weighted sum of their values can yield opposite directions for the same pair.</p>
+<p>Weighting directional errors across criteria and ordering a weighted composite of their values can select opposite directions for the same pair.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
 <script src="../../js/bundles/composite-or-criterion.js"></script>
 <script>window.__prxApp = PRX["composite-or-criterion"].mountWidget(document.getElementById("app"));</script>
-<p>Error weights determine how much a wrong direction on each criterion costs. Composite coefficients determine how much each target contributes to the combined value. At A = (1, −2) and B = (0, 0), a direction with less weighted error can therefore run against the order of the equally weighted composite. We compare the reports under both objectives, holding the withholding cost and available reports fixed.</p>
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Different targets.</strong> The criterion-direction costs are .2500, .7500 and .3000 for forward, reverse and withholding. The composite costs are 1.0000, 0 and .3000. One objective picks 1/2; the other picks 2/1.</li>
-<li><strong>Rescale the second criterion.</strong> In <strong>Data and exact values</strong>, A’s composite value becomes .250. Its preferred direction flips. The criterion-direction cost .2500 stays the same. The positive multiplier applies to every unit, while error weights and composite coefficients keep their separate roles.</li>
-<li><strong>Composite equality.</strong> Both strict composite directions cost 1.0000. Withholding costs .3000. Each criterion still distinguishes the units, but their composite is equal; a shared grade withholds rather than asserting that equality.</li>
-<li><strong>Two reports, same disclosure.</strong> <strong>Data and exact values</strong> shows the evaluations of all 75 reports. Criterion directions choose 1/2/2/3 with risk .1417; the composite chooses 1/1/2/3 with risk .0333. Both disclose 5 pairs. Both columns evaluate each selected report under the two objectives.</li>
-<li><strong>Transform the whole law.</strong> Exponentiating every finite input preserves the criterion best report and its risk .1417. The composite now selects 1/1/2/2 with risk .0667. The complete criterion best-report sets before and after remain visible under the same settings.</li>
-<li><strong>Rescale the Normal composite.</strong> The first composite mean is .635. We compute it assuming independence across the six sites and their criteria. Computing the composite uncertainty requires the same assumptions about dependence.</li>
+<li><strong>Different targets.</strong> Criterion costs .250, .750, .300 vs.&nbsp;composite costs 1.00, 0, .300 pick 1/2 and 2/1.</li>
+<li><strong>Rescale the second criterion.</strong> In <strong>Data and exact values</strong>, A’s composite becomes .250 and flips direction.</li>
+<li><strong>Composite equality.</strong> Strict composite directions cost 1.00 vs.&nbsp;.300 to withhold; sharing a grade withholds.</li>
+<li><strong>Two reports, same disclosure.</strong> Across 75 reports in <strong>Data and exact values</strong>, criterion picks 1/2/2/3 (.142) and composite picks 1/1/2/3 (.0333), each stating 5 pairs.</li>
+<li><strong>Transform the whole law.</strong> Exponentiating keeps criterion risk .142 while moving composite to 1/1/2/2 (.0667).</li>
+<li><strong>Rescale the Normal composite.</strong> Independent Normal margins give first-site composite mean .635.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>All examples are synthetic supplied laws. Composite coefficients stay nonnegative and sum to one, matching the package interface. A positive multiplier changes the contribution of a criterion to the composite. A strictly increasing transformation leaves the ordering within that criterion intact. Choosing which risk to minimize depends on whether the report concerns individual criterion directions or the composite. The thirty-site marginal releases leave the joint law undetermined.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Weights, rescaling, and synthetic laws
+</summary>
+<p>Error weights set the cost of wrong criterion directions, whereas nonnegative composite coefficients summing to one combine magnitudes into a new target. A positive multiplier rescales a criterion inside the composite, while any strictly increasing whole-law transformation leaves criterion orderings intact. All examples use synthetic supplied laws; marginal-only releases leave cross-criterion dependence undetermined.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -648,6 +668,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Standalone: <a href="../../embed/composite-or-criterion.html">open this app</a>, for example <code>?preset=ch19&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="conflict-pairs.html">Opposing criterion directions</a> · <a href="several-criteria.html">Posterior profiles on multiple criteria</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/12-conflict-estimands.html#sec-two-estimands">Composite and criterion-specific reporting targets</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-exact-common-grade">Common grades under an exact joint target law</a>.</p>
 
 
 </section>
@@ -1120,7 +1141,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

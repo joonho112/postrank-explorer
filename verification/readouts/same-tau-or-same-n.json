@@ -26,7 +26,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "their expected wrong directions",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -40,7 +40,7 @@
           "select": "[data-prx-readout=\"H\"]",
           "about": "H at N = 21 within all 545,835 reports (base-R ruleGap)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -54,7 +54,7 @@
           "select": "[data-prx-readout=\"gap\"]",
           "about": "gap E - H at its own N",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -346,6 +346,9 @@
         {
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the posterior-mean tiers at tau .20",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "r04.league8.tau20.pmtiers.risk",
           "value": 0.16122376619367731
@@ -354,7 +357,7 @@
           "select": "[data-prx-readout=\"bestRisk\"]",
           "about": "risk of the best report at tau .20 (base-R bestReports)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -465,7 +468,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "its E",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -479,7 +482,7 @@
           "select": "[data-prx-readout=\"H\"]",
           "about": "H(28): the best strict order",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -493,7 +496,7 @@
           "select": "[data-prx-readout=\"gap\"]",
           "about": "gap at its own N (no tau in it)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -543,7 +546,7 @@
           "select": "[data-prx-readout=\"H\"]",
           "about": "H(21) within at most three grades: the last vertex",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -557,7 +560,7 @@
           "select": "[data-prx-readout=\"gap\"]",
           "about": "gap within the cap",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -655,7 +658,10 @@
         },
         {
           "select": "[data-prx-readout=\"E\"]",
-          "about": "their E (same 4-significant display)",
+          "about": "their E (3-sig-fig readout display)",
+          "format": {
+            "fn": "formatReadoutExpected"
+          },
           "source": "registry",
           "ref": "league.default.prior15.pmtiers3.tau20.E",
           "value": 48.311948618901134
@@ -727,6 +733,9 @@
         {
           "select": "[data-prx-readout=\"bestRisk\"]",
           "about": "its risk",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "r04.league8.all.tau05.best.risk",
           "value": 0.04788705195592012
@@ -769,6 +778,9 @@
         {
           "select": "[data-prx-readout=\"risk\"]",
           "about": "all-thirty PT risk under the same posterior and tau",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "league.default.prior15.pmtiers3.tau20.risk",
           "value": 0.17313091636529
@@ -827,6 +839,9 @@
         {
           "select": "[data-prx-readout=\"risk\"]",
           "about": "all-thirty PT risk under the same posterior and tau",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "league.default.prior15.pmtiers3.tau20.risk",
           "value": 0.17313091636529

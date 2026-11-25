@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/noisy-estimate.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Estimates and sampling error – postrank Explorer">
+<meta property="og:description" content="Sampling variation of a normally distributed estimate with a fixed true value and known standard error.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/noisy-estimate.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/noisy-estimate.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>An estimate can change from one sample to the next even when the quantity it measures stays fixed. In this simulation, we add normally distributed sampling error to the same true value on each draw. The standard error (SE) is the standard deviation of the estimates across draws. About two-thirds of the estimates fall within one SE of the true value. The figure separates the latest estimate into its true value and the sampling error that moved it away from that value.</p>
+<p>Repeated samples add fresh random noise of standard deviation SE to a fixed true value, placing about two-thirds of estimates within one SE.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,24 +600,14 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>SE .20.</strong> Twenty estimates of a unit whose true value is .50: 12 of 20 fall within one SE (the filled dots), against 13.65 expected on average. The ringed latest estimate, .229, is the true value plus noise −.271.</li>
-<li><strong>200 draws.</strong> With ten times as many draws, the count within one SE moves from 12 of 20 to 132 of 200, against 136.54 expected, while the share expected on average stays .6827.</li>
-<li><strong>Seed 2.</strong> With a different sample, 18 of 20 estimates for the same unit fall within one SE. The model still predicts an average count of 13.65.</li>
-<li><strong>SE .10.</strong> Seed 1 again with half the SE: every estimate moves halfway toward the true value and the noise arrow halves to −.136, yet each draw keeps its noise in SEs (−1.36), so the count stays 12 of 20.</li>
-<li><strong>SE .05.</strong> Halving the SE again gives the same standardized errors: the noise is −.068, and still 12 of 20 fall within one SE. The three SEs are those of the small, medium and large units in <a href="../../pages/uncertainty/noisy-league.html">Ranking noisy estimates</a>.</li>
+<li><strong>SE .20.</strong> Across 20 estimates of true value .50, 12 of 20 fall within one SE (vs.&nbsp;13.7 expected); draw 20 gives .229 (.50 plus noise −.271).</li>
+<li><strong>200 draws.</strong> Over 200 draws, 132 of 200 fall within one SE against 137 expected (expected share .683).</li>
+<li><strong>Seed 2.</strong> A second sample places 18 of 20 estimates within one SE against the same 13.7 expected average.</li>
+<li><strong>SE .10.</strong> Halving the SE shrinks the noise arrow to −.136 while preserving standardized noise (−1.36 SEs) and 12 of 20 within one SE.</li>
+<li><strong>SE .05.</strong> Halving the SE again shrinks noise to −.0678 and keeps 12 of 20 within one SE.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>We generate sampling errors by multiplying standard normal draws by the SE. Returning to the same seed reproduces the same draws. This is the model of Kline, Rose and Walters (2024), Section III, Assumption 1 (stated before Section III.A), and talk slide 17. Walters’ Mixtape slides (pp.&nbsp;5–6) set it up the same way, and the postrank theory book, ch.&nbsp;2, “Teacher growth categories: evidence, precision, and the choice of assessment”, reads estimates together with their standard errors.</p>
-</div>
-</div>
-</div>
-<p>Standalone: <a href="../../embed/noisy-estimate.html">embed/noisy-estimate.html</a>, for example <code>?se=.10&amp;draws=50</code> or <code>?preset=seed2&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/noisy-league.html">Ranking noisy estimates</a> · <a href="../../pages/uncertainty/shrinkage.html">Normal–normal posterior shrinkage</a>.</p>
+<p>Source: Simulated normal estimate-plus-noise model after Kline, Rose and Walters (2024, Section III, Assumption 1; talk slide 17), Walters (Mixtape slides, pp.&nbsp;5–6), and postrank theory book, ch.&nbsp;2. Standalone: <a href="../../embed/noisy-estimate.html">embed/noisy-estimate.html</a>. Related: <a href="../../pages/uncertainty/noisy-league.html">Ranking noisy estimates</a> · <a href="../../pages/uncertainty/shrinkage.html">Normal–normal posterior shrinkage</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/02-education-access.html#sec-educational-performance">Teacher growth categories: evidence, precision, and the choice of assessment</a>.</p>
 
 
 </section>
@@ -1065,7 +1080,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

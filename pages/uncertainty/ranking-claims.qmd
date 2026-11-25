@@ -4,7 +4,7 @@ subtitle: "1.16 · after Kline, Rose and Walters (2024), section II.B and slides
 description: "Posterior expected wrong-direction counts among the n(n − 1)/2 statements of a strict ranking."
 ---
 
-A strict ranking makes a statement about every unordered pair. With $n$ units, the triangular matrix contains the $M = n(n-1)/2$ statements. If the ranking places $i$ above $j$, the statement has posterior error probability $1 - \pi_{ij}$, where $\pi_{ij}$ is the probability that $i$ has the larger true value. We sum these probabilities to obtain the expected number of wrong statements. Many of the most uncertain pairs contain nearby ranks. As the [pairwise probability matrix](pairwise-matrix.qmd) shows, imprecise units can be difficult to order even when the ranking places them far apart.
+A strict ranking of $n$ units asserts a direction for all $M = n(n - 1)/2$ pairs; summing each claim's posterior error probability $1 - \pi_{ij}$ gives the expected number of wrong claims.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,27 +17,21 @@ A strict ranking makes a statement about every unordered pair. With $n$ units, t
 
 ## Numerical illustrations {#what-to-try}
 
-- **97 firms.** Kline, Rose and Walters' (KRW) firms, ranked by posterior mean, make 4,656 claims; the posterior expected wrong count is 1,249, more than one in four. Ranked by estimate they expect 1,395 (the two orders disagree on 639
-  pairs); KRW find the posterior-mean order close to their best strict ranking (Section V.E), but that is not a general
-  rule. Here 35 claims sit above one half.
-- **Top 10 by posterior mean.** 45 claims, 18.22 expected wrong. By comparison, ranking all 5,834 California elementary-type schools with at least 30 students counted in the case study would make 17,014,861 pairwise claims.
-- **Six sites.** 15 claims, .7194 expected wrong. The highest dot, C above D, is a claim between neighbors, wrong with
-  probability .362.
-- **League of 30.** 435 claims; 94.48 expected wrong, 102.2 by estimate (37 pairs differ). In the simulation we can compare the ranking with the known true values. The ranking makes 88 wrong claims in this draw and 80.69 on average.
+- **97 firms.** Ranking KRW's firms by posterior mean makes 4,656 claims: 1,249 expected wrong vs. 1,395 by estimate (in **Data**, 639 pairs differ), with 35 claims above one half.
+- **Top 10 by posterior mean.** 45 claims, 18.2 expected wrong; in **Data**, 5,834 California schools make 17,014,861 claims.
+- **Six sites.** 15 claims, .719 expected wrong; C above D is least certain (.362).
+- **League of 30.** 435 claims, 94.5 expected wrong vs. 102 by estimate (in **Data**: 37 differ; 88 wrong in this draw, 80.69 on average).
 
 ::: {.callout-note appearance="simple"}
-KRW's race card at λ = 1 is also a full ranking, in a slightly different order, so it expects 1,248 wrong claims where
-the posterior-mean order expects 1,249 ([KRW's archived reward path](../cases/krw-lambda.qmd)). The expected count is a sum
-of probabilities over all the claims, not a list of particular claims. The data describe KRW's correspondence
-experiment, not any firm's current conduct. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit
-doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. Changes: race pair
-probabilities as adapted in postrank 1.1.0 (pr_case_krw); firms ranked here by posterior mean, top-n blocks and
-expected counts computed in this browser. No endorsement is implied. School count: California Department of
-Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, via postrank 1.1.0
-(pr_case_cde); CDE source conditions apply
-([https://www.cde.ca.gov/re/di/cr/index.asp](https://www.cde.ca.gov/re/di/cr/index.asp){style="word-break: break-all"});
-only the statewide count is shown (changes noted); no CDE endorsement is implied.
+Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only (`pr_case_krw`, no endorsement; **describes KRW's experiment, not current conduct**). School count: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 (`pr_case_cde`, [source conditions](https://www.cde.ca.gov/re/di/cr/index.asp)); no CDE endorsement is implied.
 :::
+
+```{=html}
+<details>
+<summary>Further notes</summary>
+<p>KRW's race card at &lambda; = 1 is also a full ranking, in a slightly different order, so it expects 1,248 wrong claims where the posterior-mean order expects 1,249 (<a href="../cases/krw-lambda.qmd">KRW's archived reward path</a>). The expected count is a sum of probabilities over all stated claims, not a list of particular wrong claims.</p>
+</details>
+```
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -47,6 +41,4 @@ postrank_evaluate(rank(-m), pr_case_krw$input, weights = c(race_signed = 1, gend
 ```
 :::
 
-Standalone: [embed/ranking-claims.html](../../embed/ranking-claims.html), for example `?data=krw&n=20`.
-
-Related applications: [The matrix of pairwise posterior probabilities](pairwise-matrix.qmd) (1.13), [Alternative rankings from a posterior distribution](which-ranking.qmd) (1.14), [Majority comparisons and expected ranks](majority-wins.qmd) (1.15) and [Ranking noisy estimates](noisy-league.qmd) (1.3).
+Standalone: [embed/ranking-claims.html](../../embed/ranking-claims.html) · Related: [1.13](pairwise-matrix.qmd), [1.14](which-ranking.qmd), [1.15](majority-wins.qmd), [1.3](noisy-league.qmd).

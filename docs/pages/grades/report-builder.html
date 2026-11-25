@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/report-builder.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Grade reports as pairwise decisions – postrank Explorer">
+<meta property="og:description" content="Pairwise statements induced by assigning units to ordered grades.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/report-builder.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/report-builder.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A grade report compares every pair of sites in different grades and withholds every pair in the same grade. Sharing a grade means the report makes no statement about which site has the larger true value. The labels order grades from highest priority to lowest. They do not measure the distance between grades. Moving a site to another grade changes the corresponding cells in the matrix. The totals show how many comparisons the report states and withholds.</p>
+<p>Assigning sites to ordered grades states a direction for every pair in different grades and withholds every pair sharing a grade — without claiming shared-grade sites are equal.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,21 +635,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>A, then B to E, then F.</strong> The report states 9 of the 15 pairs and withholds 6, a share stated of .600. Every comparison involving either end is stated; the middle grade withholds its internal pairs. Moving a middle site into an end grade changes the outlined matrix cells.</li>
-<li><strong>Three grades of two sites.</strong> The same number of grades now states 12 of the 15 pairs and withholds only 3, a share of .800. Each grade withholds the comparison between its two sites. Together, the first two examples show how grade sizes affect disclosure even when the number of grades stays fixed.</li>
-<li><strong>Four sites: 1/2/2/2.</strong> The smaller report states 3 of the 6 pairs, a share of .500. A focused site button accepts a destination grade number. Enter selects the site. Use Up or Down to choose a destination, or Home or End for either boundary. A second Enter completes the move. The dashed boxes create a new grade at either end.</li>
-<li><strong>Beyond letter order.</strong> The report {B, D} &gt; {C, F} &gt; {A, E} still states 12 of the 15 pairs. Any grouping and ordering can be built. The blue and orange transposed cells represent the same unordered pair: each stated pair appears in both triangles, while the pair count includes it once.</li>
+<li><strong>A, then B to E, then F.</strong> States 9 of the 15 pairs (share .600) and withholds 6 inside the four-site middle grade.</li>
+<li><strong>Three grades of two sites.</strong> Three grades now state 12 of the 15 pairs (share .800) and withhold 3, showing how grade sizes govern disclosure.</li>
+<li><strong>Four sites: 1/2/2/2.</strong> States 3 of the 6 pairs (share .500). Focus a site and press a grade number, or press Enter, use Up/Down/Home/End, and press Enter to place it.</li>
+<li><strong>Beyond letter order.</strong> The report {B, D} &gt; {C, F} &gt; {A, E} also states 12 of the 15 pairs; mirrored cells represent one unordered pair.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>In this example, an evaluation office plans practice-documentation visits to fictional after-school sites. The grades carry no funding consequence. The exercise counts the directions in the report the reader supplies. It does not use posterior probabilities to judge whether those directions are likely to be right. When a move empties a grade, the remaining grades keep their relative order.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Context and scope notes
+</summary>
+<p>In this example, an evaluation office plans practice-documentation visits to fictional after-school sites. The grades carry no funding consequence. The exercise counts the directions in the report the reader supplies; it does not use posterior probabilities to judge whether those directions are likely to be right. When a move empties a grade, the remaining grades keep their relative order.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1117,7 +1138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

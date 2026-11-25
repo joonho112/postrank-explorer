@@ -4,7 +4,7 @@ subtitle: "2.1 · after the postrank theory book, ch. 10, and Kline, Rose and Wa
 description: "Posterior expected loss of the two strict directions and withholding for a single pair."
 ---
 
-A report can state A above B, state B above A, or withhold the comparison. Each stated direction costs its posterior probability of being wrong, while withholding costs a fixed amount τ. The lower horizontal scale gives $e_{AB}=1-\pi_{AB}$, the error probability for stating A above B. A higher $\pi_{AB}$ moves the marker to the left on that scale. The lowest line at the marker gives the action with the smallest expected loss. At an intersection, two or more actions may tie.
+When exact equality has zero posterior probability, the two directions cost $1-\pi_{AB}$ and $\pi_{AB}$, where $\pi_{AB}=\Pr(\theta_A>\theta_B\mid Y)$. Withholding costs $\tau$. The lowest line gives the best action.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,26 +17,18 @@ A report can state A above B, state B above A, or withhold the comparison. Each 
 
 ## Numerical illustrations {#what-to-try}
 
-- **π .85, τ .10.** Stating A above B is wrong with probability .15, more than the .10 cost of withholding. The gray dot marks withholding as the action with the lowest expected loss. Its height varies with the withholding cost.
-- **π .85, τ .20.** The posterior is unchanged, but the withholding cost increases. The error remains .15, below .20, so the selected action is “state A above B”.
-  Only the horizontal line moved; the posterior probability and both directional costs stayed fixed.
-- **π .80, τ .20.** The error equals .20: stating A above B and withholding have equal expected loss, labeled “equally good”. The open circle marks
-  their crossing, and both dots receive a ring. A ring marks an action that minimizes expected loss under the specified posterior.
-- **π .50, τ .50.** Both directions cost .50 and withholding also costs .50. The summary reads “all three actions are equally good”.
-  The crossing circles merge, while the table marks every action as minimum-cost.
+- **π .85, τ .10.** Error $e_{AB}$ = .15 exceeds τ = .10, so the lowest-cost action is to withhold.
+- **π .85, τ .20.** Raising τ to .20 lifts only the horizontal line; $e_{AB}$ stays .15, selecting “state A above B”.
+- **π .80, τ .20.** At $e_{AB}$ = .20 = τ, stating A above B and withholding are “equally good” at the open-circle crossing.
+- **π .50, τ .50.** All three costs equal .50, so “all three actions are equally good”.
 
-The shaded area follows the smallest cost along the bottom error axis. The top scale shows the direction
-probability π in reverse. The marker links the two values, and the table gives the three costs at that point.
+```{=html}
+<details>
+<summary>Isolated-pair rule and multi-pair reports</summary>
+<p>With zero posterior probability of equal true values, an isolated pair discloses a direction only when its posterior probability exceeds 1 &minus; &tau; (tying with withholding at equality). A shared grade withholds a direction rather than asserting equal true values; combining many pair decisions into one coherent report adds a global transitivity constraint beyond this isolated-pair rule.</p>
+</details>
+```
 
-::: {.callout-note appearance="simple"}
-This example gives equal true values probability zero. For an isolated pair, disclose only when the posterior
-probability of the direction exceeds $1-\tau$; at equality, disclosing and withholding tie. A shared grade withholds a
-direction rather than asserting equal true values. Combining many pair decisions into one coherent report adds a
-constraint that this isolated-pair rule does not impose.
-:::
+Standalone: [embed/one-pair.html](../../embed/one-pair.html) (`?pi=.9&tau=.05` or `?preset=pi80&theme=dark`). Related: [Pairwise posterior direction probabilities](../uncertainty/two-units.qmd) · [Grade reports as pairwise decisions](report-builder.qmd) · [Reporting risk and withholding cost](price-of-silence.qmd) · [Positive probability of equality](ties-and-withholding.qmd).
 
-Standalone: [embed/one-pair.html](../../embed/one-pair.html), for example `?pi=.9&tau=.05` or
-`?preset=pi80&theme=dark`.
-
-Related applications: [Pairwise posterior direction probabilities](../uncertainty/two-units.qmd) ·
-[Grade reports as pairwise decisions](report-builder.qmd) · [Reporting risk and withholding cost](price-of-silence.qmd).
+Theory book · [Withholding a pair and constructing a common grade](https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-pair-versus-grade).

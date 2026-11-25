@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,7 +72,27 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -105,6 +125,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/correlated-units.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Posterior dependence and pairwise comparisons – postrank Explorer">
+<meta property="og:description" content="Effect of correlation on direction probabilities under a bivariate normal posterior distribution.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/correlated-units.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/correlated-units.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -571,7 +596,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Posterior dependence and pairwise comparisons</h1>
-<p class="subtitle lead">1.9 · two jointly normal posteriors; dependence after the postrank theory book, ch.&nbsp;9 and 18</p>
+<p class="subtitle lead">1.9 · two jointly normal posteriors; dependence after the postrank theory book, ch.&nbsp;9 and 24</p>
 </div>
 
 <div>
@@ -593,7 +618,7 @@ window.Quarto = {
 </header>
 
 
-<p>Two units can have the same marginal posterior distributions under different assumptions about how their true values move together. In a bivariate normal posterior, positive correlation reduces the variance of A − B, while negative correlation increases it. The shaded region below the equality line gives <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span>, and the ellipse encloses .90 of the joint posterior probability. The first example holds the marginal distributions and the mean difference fixed as correlation changes. The probability can move closer to or farther from one half, with the same direction remaining more probable. A second example obtains the correlation from uncertainty about a shared prior mean.</p>
+<p>Two units with fixed marginal posteriors can still move together. Under joint normality, correlation rescales the spread of <span class="math inline"><math><mrow><msub><mi>θ</mi><mi>A</mi></msub><mo>−</mo><msub><mi>θ</mi><mi>B</mi></msub></mrow></math></span> without changing which direction exceeds one half.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -603,24 +628,20 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Correlation .50.</strong> The ellipse follows the equality line because the two true values move together. The difference has SD .200, compared with .283 under independence, and <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .841 against .760.</li>
-<li><strong>Independent.</strong> Correlation 0 with equal SDs draws a circle: the difference has SD .283, and <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .760.</li>
-<li><strong>Correlation .95.</strong> Strong positive dependence gives a difference with SD .063, and <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .999.</li>
-<li><strong>Correlation −.95.</strong> The ellipse lies across the line, and the difference widens to SD .395: <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> falls to .694, toward one half, not past it.</li>
-<li><strong>Shared prior mean.</strong> Estimates .30 and .10 with SEs .20; true values spread with SD .10 around an uncertain prior mean (SD .50). The model gives correlation .645, SD .126 for the difference and <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .624; assuming independence for the same marginals gives .212 and .575. With prior-mean SD set to 0, the correlation vanishes, each posterior narrows to SD .089, and <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> stays .624.</li>
+<li><strong>Correlation .50.</strong> Difference SD narrows from .283 to .200; <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> rises from .760 to .841.</li>
+<li><strong>Independent.</strong> Correlation 0 draws a circle (SD .283, <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .760).</li>
+<li><strong>Correlation .95.</strong> Difference SD narrows to .0632; <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> rises above .999.</li>
+<li><strong>Correlation −.95.</strong> Difference SD widens to .395; <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> falls to .694.</li>
+<li><strong>Shared prior mean.</strong> Estimates .30, .10 (SE .20, prior SD .10, prior-mean SD .50) give ρ = .645, SD .126, <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .624 (vs.&nbsp;.212, .575 independent); prior-mean SD 0 gives unit SDs .0894 and <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .624.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><strong>Where the correlation comes from.</strong> Given the prior mean, each posterior mean keeps the share <span class="math inline"><math><mrow><mi>k</mi><mo>=</mo><msup><mtext>prior SD</mtext><mn>2</mn></msup><mi>/</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msup><mtext>prior SD</mtext><mn>2</mn></msup><mo>+</mo><msup><mtext>SE</mtext><mn>2</mn></msup><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span> of its estimate, independently. Both posterior variables depend on the uncertain prior mean, so their covariance is <span class="math inline"><math><mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1</mn><mo>−</mo><msub><mi>k</mi><mi>A</mi></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1</mn><mo>−</mo><msub><mi>k</mi><mi>B</mi></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mspace width="0.1667em"></mspace><mi>v</mi></mrow></math></span>, with <span class="math inline"><math><mi>v</mi></math></span> the prior mean’s variance given both estimates (theory book, ch.&nbsp;18); with equal SEs the shared part cancels from the difference. postrank takes such posteriors as joint draws, or as normal laws averaged over the prior mean (<code>postrank_mixture_coefficients()</code>).</p>
-</div>
-</div>
-</div>
-<p>Standalone: <a href="../../embed/correlated-units.html">embed/correlated-units.html</a>, for example <code>?corr=-.50</code> or <code>?preset=shared-mean&amp;meanSd=0</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a> (1.8) works the independent case; <a href="../../pages/uncertainty/beyond-normal.html">Marginal summaries and joint direction probabilities</a> (1.10) drops joint normality: there the means no longer fix the side of one half.</p>
+<details>
+<summary>
+Where the correlation comes from
+</summary>
+Given the prior mean, each posterior mean keeps the share <span class="math inline"><math><mrow><mi>k</mi><mo>=</mo><msup><mtext>prior SD</mtext><mn>2</mn></msup><mi>/</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msup><mtext>prior SD</mtext><mn>2</mn></msup><mo>+</mo><msup><mtext>SE</mtext><mn>2</mn></msup><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span> of its estimate, independently. Both posterior variables depend on the uncertain prior mean, so their covariance is <span class="math inline"><math><mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1</mn><mo>−</mo><msub><mi>k</mi><mi>A</mi></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1</mn><mo>−</mo><msub><mi>k</mi><mi>B</mi></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mspace width="0.1667em"></mspace><mi>v</mi></mrow></math></span>, with <span class="math inline"><math><mi>v</mi></math></span> the prior mean’s variance given both estimates (theory book, ch.&nbsp;24); with equal SEs the shared part cancels from the difference. <code>postrank</code> takes such posteriors as joint draws, or as normal laws averaged over the prior mean (<code>postrank_mixture_coefficients()</code>).
+</details>
+<p>Standalone: <a href="../../embed/correlated-units.html">embed/correlated-units.html</a> (<code>?corr=-.50</code> or <code>?preset=shared-mean&amp;meanSd=0</code>). Related: <a href="../../pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a> (1.8); <a href="../../pages/uncertainty/beyond-normal.html">Marginal summaries and joint direction probabilities</a> (1.10).</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/09-targets-actions-laws.html#a-joint-distribution-cannot-be-replaced-by-unrelated-marginals">Dependence and pairwise comparison probabilities</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/24-misspecification-calibration.html#sec-producer-model-error">Hyperparameters, precision and represented uncertainty</a>.</p>
 
 
 </section>
@@ -1093,7 +1114,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

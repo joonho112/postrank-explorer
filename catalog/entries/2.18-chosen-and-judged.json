@@ -5,13 +5,13 @@
   "title": "Scored on the draws that chose it",
   "idea": "A report chosen on posterior draws can look better or worse on them than under the exact law, though better on average; the gap is at most N/M times the draws' largest pair-probability error, which shrinks as draws grow.",
   "status": "built",
-  "from": "new concept · postrank vignette m6 (fixed and selected actions; cross-fitting as the package view of fold grades) and theory book ch. 15 (the envelope covers selection on the same draws); picture: reruns of S draws, each run's chosen report scored on its own draws against its exact risk, the signed gap over runs, and the regret bound 2δ_w + η",
+  "from": "new concept · postrank vignette m6 (fixed and selected actions; cross-fitting as the package view of fold grades) and theory book ch. 21 (the envelope covers selection on the same draws); picture: reruns of S draws, each run's chosen report scored on its own draws against its exact risk, the signed gap over runs, and the regret bound 2δ_w + η",
   "data": [
     "data/released/six-sites.json",
     "data/released/cache-toy.json",
     "engine"
   ],
-  "credit": "After the postrank vignette m6 and the theory book, ch. 15.",
+  "credit": "After the postrank vignette m6 and the postrank theory book, ch. 21 (“Effects of coefficient error on risk and feasibility”).",
   "caption": "Six fictional normal posteriors; reports selected from independent posterior draws and evaluated on those same draws and the exact declared law. A separate cached package toy shows fold reports.",
   "presets": [
     {
@@ -45,20 +45,20 @@
       "preset": "own",
       "shows": [
         "33 look worse",
-        "−.00061"
+        "−.000613"
       ]
     },
     {
       "preset": "worse",
       "shows": [
-        "+.00072"
+        "+.000720"
       ]
     },
     {
       "preset": "more",
       "shows": [
         "4,000 draws",
-        "−.00025"
+        "−.000246"
       ]
     },
     {

@@ -2,7 +2,7 @@
   "$schema": "./_schema.json",
   "app": "chain-draws",
   "catalog": "1.18",
-  "about": "The stationary two-state chain of the postrank theory book, ch. 15, restated with pi: two equally likely states, a chain that stays with the stay probability (p01 = p10 = 1 - stay; at stay .99 the switch probability is exactly .01, the book's chain). Expected values: the base-R oracle rows of oracle-v3 (chainMeanVariance at p01 = p10 = .01, S = 100, the book's example: variance, iid variance, equivalent draws, long-run equivalent, chance of no switch, rho) and of oracle-simulate (envelopeRadius at M = 1, S = 100, alpha .05: the book's form, the iid error bound, and postrank's). The iid variance of 100 draws is .25/100 whatever the stay (pi = 1/2 for every symmetric chain), and at stay .5 (rho = 0) the chain's variance equals it, so the book row's iidVariance is also the source of both variances at stay .5. The exact chance that the estimate lands outside the iid error bound comes from chainCountLaw, pinned by oracle-v3p1 rows at stay .99 and .5, S 100 and 1,000, the book's and postrank's radii. The SDs (square roots of these variances), the counts over simulated chains (outside the bound, never switching), the estimates, MCSEs and pretend-iid bands of single chains and every setting at S = 1,000 have no oracle row and are checked as shown numbers (data-num read back). postrank's own example (released data, toy-mcmc.json) is checked as shown numbers. Literals: the teaching-posterior and Monte Carlo captions (6.5, v3 wording), and sentences that follow the theory book and the package (1.1): both read-out forms in each mode, the pretend-iid band that misses pi, the equivalent counts that cannot be put in place of S in the iid error bound, and a constant trace that is not a probability of 0 or 1.",
+  "about": "The stationary two-state chain of the postrank theory book, ch. 15, restated with pi: two equally likely states, a chain that stays with the stay probability (p01 = p10 = 1 - stay; at stay .99 the switch probability is exactly .01, the book's chain). Expected values: the base-R oracle rows of oracle-v3 (chainMeanVariance at p01 = p10 = .01, S = 100, the book's example: variance, iid variance, equivalent draws, long-run equivalent, chance of no switch, rho) and of oracle-simulate (envelopeRadius at M = 1, S = 100, alpha .05: the book's form, the iid error bound, and postrank's). Primary read-out values follow the 3-sig-fig policy (formatReadoutEst, formatReadoutRisk, formatReadoutProb), while Data disclosure tables retain 4-sig-fig / exact values.",
   "cases": [
     {
       "id": "book",
@@ -75,8 +75,8 @@
         },
         {
           "select": "[data-prx-readout=\"read-radius\"]",
-          "about": "read-out: the same radius",
-          "format": { "fn": "formatDecimal", "options": { "digits": 3 } },
+          "about": "read-out: the same radius at 3 sig figs",
+          "format": { "fn": "formatReadoutEst" },
           "source": "oracle",
           "ref": { "group": "oracle-simulate", "row": "envelopeRadius-M1-S100-alpha0.05-book", "field": "radius" },
           "value": 0.14802071873008
@@ -99,12 +99,12 @@
         },
         {
           "select": ".prx-readout",
-          "about": "read-out, pretend iid: SD by the iid formula, the real SD, and the iid error bound with its failure chance, the share over these chains beside the exact chance (chainCountLaw), word for word, numbers as slots",
+          "about": "read-out, pretend iid (v2 3-sig-fig concise form): naive iid SD vs exact SD, iid bound radius, failure count and share beside exact chance",
           "kind": "text",
           "source": "literal",
           "ref": "1.1",
           "slots": true,
-          "value": "Treated as independent, the ⟨S⟩ draws give the estimate an SD of ⟨sdIid⟩ (its real SD is ⟨sd⟩), and the iid error bound says it lands more than ⟨r⟩ from πAB in at most ⟨alpha⟩ of runs. In these ⟨C⟩ chains it does in ⟨share⟩ (⟨count⟩ chains), against an exact chance of ⟨exact⟩."
+          "value": "For ⟨S⟩ draws, naive iid SD is ⟨sdIid⟩ vs. exact ⟨sd⟩. Outside iid bound ±⟨r⟩ (nominal ⟨alpha⟩): ⟨count⟩ of the ⟨C⟩ chains (⟨share⟩; exact ⟨exact⟩)."
         },
         {
           "select": "[data-prx-note=\"chain\"]",
@@ -135,7 +135,7 @@
         {
           "select": "[data-prx-readout=\"read-exact\"]",
           "about": "read-out: the exact chance that the estimate of 100 draws of the book's chain lands outside the iid error bound (the book's .804, beside the share .801 over these chains)",
-          "format": { "fn": "formatProb", "options": { "digits": 3 } },
+          "format": { "fn": "formatReadoutProb" },
           "source": "oracle",
           "ref": { "group": "oracle-v3p1", "row": "chainCountLaw-pin-1.18-stay.99-S100-book", "field": "outside" },
           "value": 0.804345459102859
@@ -202,21 +202,21 @@
     },
     {
       "id": "aware",
-      "about": "Preset aware (Stay .99, chain-aware): the same chains, chain-aware. The read-out gives the SD and the variance from the stay chance against the independent ones and the equivalent count, exact for these draws, beside the long-run count for long chains; the note says the counts cannot be put in place of S in the iid error bound.",
+      "about": "Preset aware (Stay .99, chain-aware): the same chains, chain-aware. The read-out gives the SD and 3-sig-fig variance from the stay chance against the independent ones and the equivalent count beside the long-run count; the note says the counts cannot be put in place of S in the iid error bound.",
       "preset": "aware",
       "expect": [
         {
           "select": "[data-prx-readout=\"read-variance\"]",
-          "about": "read-out: the exact variance of the estimate",
-          "format": { "fn": "formatSig", "options": { "sig": 4 } },
+          "about": "read-out: the exact variance of the estimate at 3 sig figs",
+          "format": { "fn": "formatReadoutRisk" },
           "source": "oracle",
           "ref": { "group": "oracle-v3", "row": "chainMeanVariance-book-p01.01-p10.01-S100", "field": "variance" },
           "value": 0.141245895597107
         },
         {
           "select": "[data-prx-readout=\"read-iid-variance\"]",
-          "about": "read-out: the iid variance it is set against",
-          "format": { "fn": "formatSig", "options": { "sig": 4 } },
+          "about": "read-out: the iid variance it is set against at 3 sig figs",
+          "format": { "fn": "formatReadoutRisk" },
           "source": "oracle",
           "ref": { "group": "oracle-v3", "row": "chainMeanVariance-book-p01.01-p10.01-S100", "field": "iidVariance" },
           "value": 0.0025
@@ -224,7 +224,7 @@
         {
           "select": "[data-prx-readout=\"read-eq\"]",
           "about": "read-out: equivalent independent draws, exact for these 100 draws",
-          "format": { "fn": "formatSig", "options": { "sig": 3 } },
+          "format": { "fn": "formatReadoutEst" },
           "source": "oracle",
           "ref": { "group": "oracle-v3", "row": "chainMeanVariance-book-p01.01-p10.01-S100", "field": "equivalentDraws" },
           "value": 1.76996293551145
@@ -232,7 +232,7 @@
         {
           "select": "[data-prx-readout=\"read-asym\"]",
           "about": "read-out: the long-run equivalent, which holds only for long chains",
-          "format": { "fn": "formatSig", "options": { "sig": 3 } },
+          "format": { "fn": "formatReadoutEst" },
           "source": "oracle",
           "ref": { "group": "oracle-v3", "row": "chainMeanVariance-book-p01.01-p10.01-S100", "field": "asymptoticEquivalent" },
           "value": 1.01010101010101
@@ -247,12 +247,12 @@
         },
         {
           "select": ".prx-readout",
-          "about": "read-out, chain-aware: SD (variance) against the independent ones, and the equivalent count with the long-run count's scope, word for word",
+          "about": "read-out, chain-aware (v2 3-sig-fig concise form): SD (variance) against the independent ones, and equivalent count with long-run count",
           "kind": "text",
           "source": "literal",
           "ref": "1.1",
           "slots": true,
-          "value": "From the stay chance, the estimate's SD after ⟨S⟩ draws is ⟨sd⟩ (variance ⟨variance⟩), against ⟨sdIid⟩ (⟨iidVariance⟩) for independent draws. That is the variance of ⟨eq⟩ independent draws (exact for these ⟨S⟩ draws; the long-run formula, ⟨asym⟩, holds only for long chains)."
+          "value": "After ⟨S⟩ draws, chain-aware SD is ⟨sd⟩ (variance ⟨variance⟩) vs. iid ⟨sdIid⟩ (⟨iidVariance⟩), matching ⟨eq⟩ independent draws (exact at ⟨S⟩; long-run ⟨asym⟩)."
         },
         {
           "select": "[data-prx-note=\"equivalent\"]",
@@ -324,12 +324,12 @@
           "source": "literal",
           "ref": "1.1",
           "slots": true,
-          "value": "The ⟨S⟩ draws are independent here, so the estimate's SD is ⟨sdIid⟩, and the iid error bound says it lands more than ⟨r⟩ from πAB in at most ⟨alpha⟩ of runs. In these ⟨C⟩ chains it does in ⟨share⟩ (⟨count⟩ chains), against an exact chance of ⟨exact⟩."
+          "value": "With independent draws (⟨S⟩ draws, SD ⟨sdIid⟩), outside iid bound ±⟨r⟩ (nominal ⟨alpha⟩): ⟨count⟩ of the ⟨C⟩ chains (⟨share⟩; exact ⟨exact⟩)."
         },
         {
           "select": "[data-prx-readout=\"read-exact\"]",
-          "about": "read-out: the exact chance at stay .5, S 100 (beside the share .005)",
-          "format": { "fn": "formatProb", "options": { "digits": 3 } },
+          "about": "read-out: the exact chance at stay .5, S 100 at 3 sig figs (beside the share .00500)",
+          "format": { "fn": "formatReadoutProb" },
           "source": "oracle",
           "ref": { "group": "oracle-v3p1", "row": "chainCountLaw-pin-1.18-stay.5-S100-book", "field": "outside" },
           "value": 0.00351764172297016
@@ -347,13 +347,13 @@
     },
     {
       "id": "independent-aware",
-      "about": "Stay .5 in chain-aware mode: the SD and the variance print as the independent ones, so the read-out says \"the same as for independent draws\" instead of setting a number against itself.",
+      "about": "Stay .5 in chain-aware mode: the SD and the variance print as the independent ones, so the read-out says \"the same as for ... independent draws\" instead of setting a number against itself.",
       "query": "?stay=.5&draws=100&chains=2000&chain=1&seed=20261030&mode=chain",
       "expect": [
         {
           "select": "[data-prx-readout=\"read-variance\"]",
-          "about": "read-out: at rho = 0 the chain's variance is the iid variance of 100 draws",
-          "format": { "fn": "formatSig", "options": { "sig": 4 } },
+          "about": "read-out: at rho = 0 the chain's variance is the iid variance of 100 draws at 3 sig figs",
+          "format": { "fn": "formatReadoutRisk" },
           "source": "oracle",
           "ref": { "group": "oracle-v3", "row": "chainMeanVariance-book-p01.01-p10.01-S100", "field": "iidVariance" },
           "value": 0.0025
@@ -365,7 +365,7 @@
           "source": "literal",
           "ref": "1.1",
           "slots": true,
-          "value": "From the stay chance, the estimate's SD after ⟨S⟩ draws is ⟨sd⟩ (variance ⟨variance⟩), the same as for independent draws. That is the variance of ⟨eq⟩ independent draws."
+          "value": "After ⟨S⟩ draws, chain-aware SD is ⟨sd⟩ (variance ⟨variance⟩), the same as for ⟨eq⟩ independent draws."
         }
       ]
     },
@@ -394,7 +394,7 @@
         {
           "select": "[data-prx-readout=\"read-exact\"]",
           "about": "read-out: the exact chance at stay .99, S 1,000 (beside the share .777)",
-          "format": { "fn": "formatProb", "options": { "digits": 3 } },
+          "format": { "fn": "formatReadoutProb" },
           "source": "oracle",
           "ref": { "group": "oracle-v3p1", "row": "chainCountLaw-pin-1.18-stay.99-S1000-book", "field": "outside" },
           "value": 0.770173951294839
@@ -437,8 +437,8 @@
       "expect": [
         {
           "select": "[data-prx-readout=\"read-variance\"]",
-          "about": "read-out: the exact variance after the round trip",
-          "format": { "fn": "formatSig", "options": { "sig": 4 } },
+          "about": "read-out: the exact variance after the round trip at 3 sig figs",
+          "format": { "fn": "formatReadoutRisk" },
           "source": "oracle",
           "ref": { "group": "oracle-v3", "row": "chainMeanVariance-book-p01.01-p10.01-S100", "field": "variance" },
           "value": 0.141245895597107
@@ -446,7 +446,7 @@
         {
           "select": "[data-prx-readout=\"read-eq\"]",
           "about": "read-out: equivalent independent draws after the round trip",
-          "format": { "fn": "formatSig", "options": { "sig": 3 } },
+          "format": { "fn": "formatReadoutEst" },
           "source": "oracle",
           "ref": { "group": "oracle-v3", "row": "chainMeanVariance-book-p01.01-p10.01-S100", "field": "equivalentDraws" },
           "value": 1.76996293551145
@@ -455,9 +455,18 @@
     },
     {
       "id": "toy",
-      "about": "Preset toy (postrank's chains): the main views as in the book preset, and postrank's own example (data/released/toy-mcmc.json: pr_toy_mcmc's four chains of 512 states and vignette m6's postrank_diagnose() summary, postrank 1.1.0) with the fixed report's loss in its rows. The example's numbers are released data and engine calls on it (runningMean, summaryStats, mcse) and have no oracle row; they are checked as shown numbers. The sentences are checked word for word.",
+      "about": "Preset toy (postrank's chains): the main views as in the book preset, and postrank's own example (data/released/toy-mcmc.json: pr_toy_mcmc's four chains of 512 states and vignette m6's postrank_diagnose() summary, postrank 1.1.0) with the fixed report's loss in its rows.",
       "preset": "toy",
       "expect": [
+        {
+          "select": ".prx-readout",
+          "about": "read-out on preset toy (postrank's chains): highlights pr_toy_mcmc fixed-report loss diagnostics alongside the stage chain summary",
+          "kind": "text",
+          "source": "literal",
+          "ref": "1.1",
+          "slots": true,
+          "value": "postrank's chains: loss ⟨toyLoss⟩ vs. ⟨toyKnown⟩ (MCSE ⟨toyMcmc⟩ vs. iid ⟨toyIid⟩; R-hat ⟨toyRhat⟩, ESS ⟨toyEss⟩). Stage (⟨S⟩ draws, SD ⟨sdIid⟩ vs. ⟨sd⟩): ⟨count⟩/⟨C⟩ (⟨share⟩; exact ⟨exact⟩) miss ±⟨r⟩ (α = ⟨alpha⟩)."
+        },
         {
           "select": "[data-prx-note=\"toy-reading\"]",
           "about": "the guidelines flag problems and establish nothing",

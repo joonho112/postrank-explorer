@@ -1,10 +1,10 @@
 ---
 title: "Selection and evaluation using posterior draws"
-subtitle: "2.18 · after the postrank vignette m6 and theory book, chapter 15"
+subtitle: "2.18 · after the postrank vignette m6 and theory book, chapter 21"
 description: "Discrepancy between risk estimated on selection draws and risk under the exact posterior law."
 ---
 
-In each repetition, we draw from a specified posterior and estimate the pairwise probabilities from those draws. We select a report using the estimates. We then hold that report fixed and score it twice, once with the selection draws and once with the exact probabilities. The estimated risk can be above or below the exact risk. A separate calculation compares the selected report with the exact-law optimum in the same family. This comparison measures the cost of the selection itself.
+Each repetition selects a report on posterior draws and scores that fixed report twice: on those selection draws and under the exact law.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,17 +16,17 @@ In each repetition, we draw from a specified posterior and estimate the pairwise
 
 ## Numerical illustrations {#what-to-try}
 
-- **Own draws.** The graph reads “33 look worse” for the displayed selections. Those reruns have higher risk on their own draws than under the exact law. Choosing other tied reports can change the count. The selected run's gap of −.00061 means its own draws give the lower risk.
-- **Looks worse.** Another selected report from the same experiment has a positive discrepancy. Its gap is +.00072 even though it minimizes risk for its own estimated probabilities.
-- **More draws.** With 4,000 draws per run, the followed gap is −.00025. The cloud and coefficient radius describe the remaining numerical variation. Realized errors need not shrink on every step.
-- **Tighter family.** Search the 603 reports with at most three grades. The followed gap is +.00102. Both evaluations still refer to that run's same selected report. The gray intervals show that a bound can be much larger than the observed gap.
-- **Both scores.** The two scores receive equal weights. The followed gap is −.00322. The discrepancy radius now averages each score's largest pair-error discrepancy with those same weights.
+- **Own draws.** “33 look worse” (33–37 across ties); Run 1's gap is −.000613.
+- **Looks worse.** Run 6 minimizes own-draw risk yet has gap +.000720.
+- **More draws.** At 4,000 draws, Run 1's gap narrows to −.000246.
+- **Tighter family.** Across 603 reports (at most three grades), Run 1's gap is +.00102.
+- **Both scores.** Equal-weight scores A and B give gap −.00322.
 
-The gray intervals bound the absolute difference between the two risk evaluations for each selected report. Regret compares that report's exact-law risk with the exact-law minimum. The regret bound allows for numerical optimization. Two grade assignments can differ even when their risks are close.
+<details>
+<summary>Bounds, regret and fold evaluation</summary>
 
-::: {.callout-note appearance="simple"}
-The example uses independent draws from normal posteriors specified for six fictional sites. The exact risks come from those same distributions. The separate package example selects a report on one fold and evaluates it on the other. Both folds contain draws from the same posterior, so that exercise cannot assess how the model would perform on new observations.
-:::
+Gray intervals bound the absolute difference between the two risk evaluations for each selected report, while regret compares that report's exact-law risk with the exact-law minimum. The example uses independent draws from normal posteriors for six fictional sites; the separate package fold example selects on one half of posterior draws and evaluates on the other, so it does not test performance on new observations.
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -40,3 +40,5 @@ This reproduces the separate package fold example, not the browser's six-site dr
 Standalone: [open the app](../../embed/chosen-and-judged.html), for example `?S=100&seed=1&run=6`.
 
 Related applications: [Monte Carlo error in pairwise probabilities](../uncertainty/mc-error.qmd) · [Evaluation under an alternative posterior law](another-law.qmd).
+
+Theory book · [Effects of coefficient error on risk and feasibility](https://joonho112.github.io/postrank-theory-book/chapters/21-numerical-uncertainty.html#sec-coefficient-error).

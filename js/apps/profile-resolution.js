@@ -49,7 +49,13 @@ const CSS = `${VISUAL_CSS}
 .prr .prr-table{width:max-content;min-width:100%;max-width:none;border-collapse:collapse;font-size:.88rem}.prr .prr-table th,.prr .prr-table td{padding:.35rem;text-align:left;white-space:nowrap;border-bottom:1px solid var(--prx-border)}
 .prr .prr-current{background:var(--prx-bg-raised)}.prr .prr-budget[aria-pressed=true]{outline:2px solid var(--prx-accent);outline-offset:1px}.prr .prr-budget:focus-visible{outline:3px solid var(--prx-focus)}
 .prr select{min-height:44px}.prr .prr-track-point{cursor:pointer;outline:none}.prr .prr-track-point:focus .prr-track-hit{stroke:var(--prx-plot-focus);stroke-width:3}
-.prr .prr-visual-optima-title{margin:.1rem .8rem;text-align:center;font-size:max(14px,.85rem);color:var(--prx-plot-fg)}
+.prr .mdv-stage .mdv-figure figcaption{padding:.25rem .85rem .05rem;font-size:max(14px,.88rem);line-height:1.3;color:var(--prx-plot-fg)}
+.prr .prr-visual-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem .9rem;padding:.3rem .75rem .45rem}
+.prr .prr-visual-footer .mdv-optima{padding:0;gap:.45rem}
+.prr .prr-visual-footer .mdv-report-button{padding:.25rem .55rem;min-width:132px;flex:0 1 auto}
+.prr .prr-visual-footer .mdv-report-label{margin-bottom:0;line-height:1.25;font-size:14px}
+.prr .prr-visual-footer .mdv-report-line{line-height:1.28;font-size:max(14px,.88rem)}
+.prr .prr-visual-footer .mdv-inspector{margin:0;padding:0;min-height:0;font-size:max(14px,.9rem);line-height:1.35;color:var(--prx-plot-fg);text-align:center}
 `;
 const named = (ctx, text) => ctx.h("span", { "data-prx-name": true }, text);
 function number(ctx, value, hook) { const node = ctx.num(value, formatCount(value)); if (hook) node.dataset.prxReadout = hook; return node; }
@@ -61,18 +67,33 @@ function capDigits(raw) { const [n, d = "1"] = raw.split("/"); return (100n * Bi
 function region(ctx, node, caption) { return ctx.scrollRegion(ctx.h("div", { class: "prr-scroll" }, node), caption); }
 function table(ctx, caption, headers, rows) { return ctx.h("table", { class: "prr-table" }, ctx.h("caption", {}, caption), ctx.h("thead", {}, ctx.h("tr", {}, ...headers.map((header) => ctx.h("th", { scope: "col" }, header)))), ctx.h("tbody", {}, ...rows)); }
 
+function gradeRungY(domain, count) {
+  if (domain === 0) return count === 2 ? 218 : 246;
+  return count === 2 ? 286 : 314;
+}
+
+function handleTrackKey(ctx, stage, budgetIndex, alphaExact, event) {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    ctx.set({ budgetIndex, candidate: "canonical" });
+    return;
+  }
+  const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+  if (step === undefined && event.key !== "Home" && event.key !== "End") return;
+  event.preventDefault();
+  const next = event.key === "Home" ? 0 : event.key === "End" ? 6 : Math.max(0, Math.min(6, budgetIndex + step));
+  ctx.set({ budgetIndex: next, candidate: "canonical" });
+  stage.querySelector(`[data-prx-focus-key="budget-track:${next}"]`)?.focus?.();
+}
+
 // Only evaluated budgets are marked. No interpolation asserts results between them.
 function drawBudgetTrack(ctx, visual, result, state) {
   const {svg,figure,width,colors}=scene(ctx,visual.stage,{height:384,label:'Seven evaluated joint caps: minimum expected loss and occupied grade counts of canonical reports in S and C.'});
   svg.setAttribute('role','group');
-  const tighter=result.path[3],larger=result.path[5];
-  const gradeCounts=row=>[number(ctx,row.gradeCounts[0]),'/',number(ctx,row.gradeCounts[1])];
-  figure.insertBefore(ctx.h('figcaption',{},'S composition · C community. ',number(ctx,2),' grades state the direction. Same law and loss.',
-    ...(state.noiseIndex===1?[ctx.h('div',{},'S/C detail moves from ',...gradeCounts(tighter),' at ',exactNum(ctx,tighter.alphaExact),' to ',...gradeCounts(larger),' at ',exactNum(ctx,larger.alphaExact),'.')]:[])),svg);
+  figure.insertBefore(ctx.h('figcaption',{},'S composition · C community · ',number(ctx,2),' grades state the direction'),svg);
   const left=40,span=width-left-23,maxAlpha='3/20',maxRisk='1/4',riskTop=49,riskBottom=153;
   const x=alpha=>left+coordinate(alpha)/coordinate(maxAlpha)*span;
   const riskY=risk=>riskBottom-coordinate(risk)/coordinate(maxRisk)*(riskBottom-riskTop);
-  const gradeY=(domain,count)=>domain===0?(count===2?218:246):(count===2?286:314);
   svg.setAttribute('data-prr-alpha-left',left);svg.setAttribute('data-prr-alpha-width',span);svg.setAttribute('data-prr-alpha-max',maxAlpha);
   svg.setAttribute('data-prr-risk-top',riskTop);svg.setAttribute('data-prr-risk-bottom',riskBottom);svg.setAttribute('data-prr-risk-max',maxRisk);
   const selectedX=x(result.summary.alphaExact);
@@ -86,7 +107,10 @@ function drawBudgetTrack(ctx, visual, result, state) {
   svg.append(svgText(ctx,16,187,'Canonical occupied grades',{'font-size':15,'font-weight':600}));
   for(let d=0;d<2;d++){
     svg.append(svgText(ctx,7,d===0?238:306,result.input.domainIds[d],{'font-size':17,'font-weight':600}));
-    for(const count of[1,2])svg.append(svgNode(ctx,'line',{x1:left,x2:left+span,y1:gradeY(d,count),y2:gradeY(d,count),stroke:colors.plotGrid,'stroke-width':1}),svgCount(ctx,left-8,gradeY(d,count)+5,count,{dx:-4,'font-size':15,'text-anchor':'end'}));
+    for(const count of[1,2]){
+      const gy=gradeRungY(d,count);
+      svg.append(svgNode(ctx,'line',{x1:left,x2:left+span,y1:gy,y2:gy,stroke:colors.plotGrid,'stroke-width':1}),svgCount(ctx,left-8,gy+5,count,{dx:-4,'font-size':15,'text-anchor':'end'}));
+    }
   }
   for(const row of result.path){
     const xx=x(row.alphaExact),selected=row.budgetIndex===state.budgetIndex;
@@ -95,24 +119,22 @@ function drawBudgetTrack(ctx, visual, result, state) {
     point.append(svgNode(ctx,'rect',{class:'prr-track-hit','data-prx-focus-ring':'',x:xx-22,y:riskY(row.riskExact)-22,width:44,height:44,rx:5,fill:'transparent',stroke:'transparent'}));
     point.append(svgNode(ctx,'circle',{cx:xx,cy:riskY(row.riskExact),r:selected?6:4,fill:selected?colors.accent:colors.plotFg,stroke:colors.plotFg,'stroke-width':1.2,'data-mdv-role':'risk-point','data-mdv-alpha':row.alphaExact,'data-mdv-exact':row.riskExact,'data-mdv-budget-index':row.budgetIndex,'data-mdv-selected':String(selected)}));
     point.addEventListener('click',()=>ctx.set({budgetIndex:row.budgetIndex,candidate:'canonical'}));
-    point.addEventListener('keydown',event=>{
-      const direction={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[event.key];
-      if(event.key==='Enter'||event.key===' '){event.preventDefault();ctx.set({budgetIndex:row.budgetIndex,candidate:'canonical'});return;}
-      if(direction===undefined&&event.key!=='Home'&&event.key!=='End')return;
-      event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?6:Math.max(0,Math.min(6,row.budgetIndex+direction));ctx.set({budgetIndex:next,candidate:'canonical'});visual.stage.querySelector(`[data-prx-focus-key="budget-track:${next}"]`)?.focus?.();
-    });svg.append(point);
+    point.addEventListener('keydown',event=>handleTrackKey(ctx,visual.stage,row.budgetIndex,row.alphaExact,event));
+    svg.append(point);
     row.gradeCounts.forEach((count,d)=>{
-      const yy=gradeY(d,count),attributes={fill:selected?colors.crit[d]:colors.plotBg,stroke:colors.plotFg,'stroke-width':selected?2:1.5,'data-mdv-role':'grade-count-point','data-mdv-alpha':row.alphaExact,'data-mdv-budget-index':row.budgetIndex,'data-mdv-domain':result.input.domainIds[d],'data-mdv-exact':String(count),'data-mdv-canonical':row.selectedId};
+      const yy=gradeRungY(d,count),attributes={fill:selected?colors.crit[d]:colors.plotBg,stroke:colors.plotFg,'stroke-width':selected?2:1.5,'data-mdv-role':'grade-count-point','data-mdv-alpha':row.alphaExact,'data-mdv-budget-index':row.budgetIndex,'data-mdv-domain':result.input.domainIds[d],'data-mdv-exact':String(count),'data-mdv-canonical':row.selectedId};
       svg.append(d===0?svgNode(ctx,'rect',{x:xx-5,y:yy-5,width:10,height:10,...attributes}):svgNode(ctx,'path',{d:`M${xx},${yy-6}l6,6l-6,6l-6,-6Z`,...attributes}));
     });
-    svg.append(svgNode(ctx,'line',{x1:xx,x2:xx,y1:338,y2:344,stroke:colors.plotAxis}),svgExact(ctx,xx,362,row.alphaExact,{style:'percent',digits:capDigits(row.alphaExact)},{'font-size':15,'text-anchor':'middle','data-mdv-role':'budget-tick','data-mdv-budget-index':row.budgetIndex}));
+    svg.append(svgNode(ctx,'line',{x1:xx,x2:xx,y1:338,y2:343,stroke:colors.plotAxis}),svgExact(ctx,xx,357,row.alphaExact,{style:'percent',digits:capDigits(row.alphaExact)},{'font-size':15,'text-anchor':'middle','data-mdv-role':'budget-tick','data-mdv-budget-index':row.budgetIndex}));
   }
-  svg.append(svgNode(ctx,'line',{x1:left,x2:left+span,y1:338,y2:338,stroke:colors.plotAxis,'stroke-width':1.5}),svgText(ctx,(left+width-23)/2,382,'Joint error cap',{'font-size':15,'text-anchor':'middle'}));
-  const heading=ctx.h('p',{class:'prr-visual-optima-title'},'Exact optima · ',number(ctx,result.fit.optimizerIds.length));
+  svg.append(svgNode(ctx,'line',{x1:left,x2:left+span,y1:338,y2:338,stroke:colors.plotAxis,'stroke-width':1.5}),svgText(ctx,(left+width-23)/2,376,'Joint error cap',{'font-size':15,'text-anchor':'middle'}));
   const optima=ctx.h('div',{class:'mdv-optima'});
   for(const id of result.fit.optimizerIds){const button=reportButton(ctx,result.evaluations.get(id).grades,{id,key:`resolution-visual:${id}`,label:id===result.fit.selectedId?'Canonical optimum':'Also optimal',selected:result.focusedId===id,onSelect:()=>ctx.set({candidate:id})});button.dataset.prrOptimizer=id;button.dataset.prrCanonical=String(id===result.fit.selectedId);optima.append(button);}
   const card=CARDS.find(row=>row.id===result.focusedId);
-  figure.append(heading,optima,ctx.h('p',{class:'mdv-inspector','data-prr-visual-inspector':''},'Inspecting ',named(ctx,card.label),' · loss ',exactNum(ctx,result.focus.riskExact),' · joint error ',exactNum(ctx,result.focus.jointProbabilityExact),'. Equal grades withhold.'));
+  const inspector=state.candidate==='canonical'
+    ? ctx.h('p',{class:'mdv-inspector','data-prr-visual-inspector':''},'Card loss ',exactNum(ctx,result.focus.riskExact),' · ',number(ctx,result.fit.optimizerIds.length),result.fit.optimizerIds.length===1?' exact optimum':' exact optima')
+    : ctx.h('p',{class:'mdv-inspector','data-prr-visual-inspector':''},named(ctx,card.label),' · loss ',exactNum(ctx,result.focus.riskExact),' · joint error ',exactNum(ctx,result.focus.jointProbabilityExact,{style:'percent',digits:capDigits(result.focus.jointProbabilityExact)}));
+  figure.append(ctx.h('div',{class:'prr-visual-footer'},optima,inspector));
 }
 
 export function mountWidget(el, spec = {}) {
@@ -164,7 +186,7 @@ export function mountWidget(el, spec = {}) {
         setSliderFace(ctx,budget,summary.alphaExact,{digits:capDigits(summary.alphaExact)});
         drawBudgetTrack(ctx,visual,r,state);
         ctx.readout.set(['Minimum loss ',exactNum(ctx,fit.riskExact),'; canonical grade counts S ',number(ctx,summary.gradeCounts[0]),', C ',number(ctx,summary.gradeCounts[1]),'.']);
-        visual.setScope([['No reversals','Baseline reversal law','More reversals'][state.noiseIndex],' · ',number(ctx,fit.searchScope.candidateCount),' candidate profiles · canonical joint event ',exactNum(ctx,fit.jointProbabilityExact),'.']);
+        visual.setScope([['No reversals','Baseline reversal law','More reversals'][state.noiseIndex],' · ',number(ctx,fit.searchScope.candidateCount),' candidate profiles · canonical joint error ',exactNum(ctx,fit.jointProbabilityExact,{style:'percent',digits:capDigits(fit.jointProbabilityExact)}),'.']);
       }, destroy() { riskChart?.destroy(); gradeChart?.destroy(); } };
     },
   });

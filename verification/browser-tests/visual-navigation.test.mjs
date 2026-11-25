@@ -68,6 +68,17 @@ test('Multiple criteria exposes two readable grade drawings and all14+5stableapp
  assert.deepEqual(await tab.page.$$eval('#organisation .prx-story > ul > li > ul strong a',nodes=>nodes.map(a=>[a.textContent.trim(),a.hash])),[['Common grades','#common-grades'],['Domain profiles','#domain-profiles']]);
  await tab.page.goto(server.origin+'/pages/words.html#multidomain-profiles-and-joint-protection',{waitUntil:'load'});
  assert.equal(await tab.page.$eval('#multidomain-profiles-and-joint-protection h2',n=>n.textContent.trim()),'Domain profiles and joint protection');
+ // Real pointer clicks on card heading, card body description, and Open standalone must navigate cleanly (never hijacked by AnchorJS # links).
+ for(const selector of['.prx-card .prx-card-body h3','.prx-card .prx-card-body > p:not(.prx-card-id):not(.prx-card-links):not(.prx-card-credit)']){
+  await tab.page.goto(server.origin+'/pages/uncertainty/',{waitUntil:'load'});
+  const box=await tab.page.$eval(selector,el=>{el.scrollIntoView({block:'center'});const r=el.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2};});
+  await Promise.all([tab.page.waitForNavigation({waitUntil:'load'}),tab.page.mouse.click(box.x,box.y)]);
+  assert.ok(tab.page.url().endsWith('/pages/uncertainty/case-zero.html'),`click on ${selector} navigated to ${tab.page.url()}`);
+ }
+ await tab.page.goto(server.origin+'/pages/uncertainty/',{waitUntil:'load'});
+ const standaloneBox=await tab.page.$eval('.prx-card .prx-card-links a',el=>{el.scrollIntoView({block:'center'});const r=el.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2};});
+ await Promise.all([tab.page.waitForNavigation({waitUntil:'load'}),tab.page.mouse.click(standaloneBox.x,standaloneBox.y)]);
+ assert.ok(tab.page.url().endsWith('/embed/case-zero.html'));
  assert.deepEqual(tab.errors,[]);assert.deepEqual(tab.failed,[]);
 });
 test('subpath child highlights parent; static mobile navigation and SVG entries work withoutJavaScript',async t=>{

@@ -16,7 +16,8 @@ const MIX = ["H", "psi", "upperN", "lowerN", "upperGrade", "lowerGrade", "bestGr
 test("2.11 (D-1): the endpoint sections and the mini figure sit, complete, in a closed box; the vertex table in another", async () => {
   const m = await mountCase({ module: APP, query: "?preset=m9" });
   try {
-    assert.deepEqual([...m.root.children].map((n) => n.getAttribute("data-prx-part")), ["title", "controls", "readout", "chart", "disclosures", "caption"]);
+    assert.equal(m.root.getAttribute("data-prx-frame"), "v2");
+    assert.deepEqual([...m.root.children].map((n) => n.getAttribute("data-prx-part")), ["title", "toolbar", "readout", "chart", "scope", "disclosures", "caption"]);
     const endpoint = box(m.root, "endpoint");
     const data = box(m.root, "data");
     const settings = box(m.root, "settings");

@@ -89,7 +89,7 @@ const trust = (ctx) => ctx.command === "\\class";
 // group is written as \text{...}, which renders the same upright letters and every digit.
 export const fixMathrmDigits = (tex) => String(tex).replace(/\\mathrm\{([^{}]*\d[^{}]*)\}/g, "\\text{$1}");
 
-export function texToMathML(tex, { display = false } = {}) {
+export function texToMathML(tex, { display = false, temml: hostTemml } = {}) {
   const expanded = fixMathrmDigits(String(tex));
   const key = (display ? "D:" : "I:") + expanded;
   const hit = cache.get(key);
@@ -97,7 +97,7 @@ export function texToMathML(tex, { display = false } = {}) {
     if (hit.error) throw hit.error;
     return hit.html;
   }
-  const temml = globalThis.temml;
+  const temml = hostTemml ?? globalThis.temml;
   let entry;
   if (!temml || typeof temml.renderToString !== "function") {
     entry = { error: new Error("temml.min.js is not loaded") };   // not cached: the script may arrive later
@@ -123,7 +123,7 @@ export function renderTex(el, tex, { display = false, nums } = {}) {
   const stamp = (display ? "D:" : "I:") + tex;
   let ok = true, changed = false;
   try {
-    const html = texToMathML(tex, { display });
+    const html = texToMathML(tex, { display, temml: el?.ownerDocument?.defaultView?.temml });
     if (el.__prxMath !== stamp || el.__prxMathHtml !== html) {
       el.innerHTML = html;
       el.classList?.remove(CONFIG.fallbackClass);

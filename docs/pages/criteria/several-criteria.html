@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/several-criteria.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Posterior profiles on multiple criteria – postrank Explorer">
+<meta property="og:description" content="Criterion-specific scales, orderings and pairwise direction probabilities for common units.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/several-criteria.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/several-criteria.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -601,32 +626,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The same sites can rank differently on reading growth and family engagement. The site with the largest posterior mean on one measure may rank lower on the other.</p>
+<p>The same units can rank differently across criteria, and each criterion carries its own pairwise direction probabilities. Compare posterior-mean orders and marginal intervals for any pair of sites.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
 <script src="../../js/bundles/several-criteria.js"></script>
 <script>window.__prxApp = PRX["several-criteria"].mountWidget(document.getElementById("app"));</script>
-<p>The panels show the posterior means and marginal intervals on their original scales. Lines connect the same site across the two orders. Selecting a pair gives the probability that the proposed direction is wrong on each criterion. This comparison can show strong support for opposite directions or weak support on either measure. The priority order also depends on whether a higher or lower score calls for an earlier visit.</p>
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Thirty sites.</strong> There are 397 opposing pairs among 435 pairs. The highest posterior mean belongs to a different site on each criterion. Alignment by unit labels displays each unit’s criterion-specific profiles.</li>
-<li><strong>Six sites, B–C.</strong> The error of stating B above C is .007 on score A and .961 on score B. The complete list has 3 opposing pairs. A very likely direction on one criterion can be very unlikely on another.</li>
-<li><strong>Six sites, B–D.</strong> The errors are .002 on score A and .760 on score B. The difference remains visible when both panels use the same order of site labels.</li>
-<li><strong>Reverse score B.</strong> Lower score B now means higher priority. The error of stating B above C on the oriented score becomes .039. This change reverses the direction that counts as higher priority without changing the underlying scores.</li>
-<li><strong>Wider intervals.</strong> The marginal level becomes 95%, while the 397 opposing pairs stay the same. Interval level changes the displayed uncertainty bands, not the supplied posterior probabilities or mean orders.</li>
+<li><strong>Thirty sites.</strong> Across 435 pairs, 397 have opposing preferred directions, and a different site leads each criterion’s mean order.</li>
+<li><strong>Six sites, B–C.</strong> Stating B above C has error .00666 on score A and .961 on score B, one of 3 opposing pairs.</li>
+<li><strong>Six sites, B–D.</strong> Stating B above D has error .00234 on score A and .760 on score B under aligned unit labels.</li>
+<li><strong>Reverse score B.</strong> Treating lower score B as higher priority reduces the B-above-C error on score B to .0385.</li>
+<li><strong>Wider intervals.</strong> Raising marginal intervals to 95% widens uncertainty bands while keeping all 397 opposing pairs unchanged.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>In the six-site example, score A measures standardized reading growth and score B is a standardized index of family engagement. Higher scores ordinarily imply earlier visits to document site practices. The example assigns no funding. Each interval describes one marginal normal posterior. The released marginal summaries for thirty sites leave the joint draws and the distribution of a composite undetermined.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Marginal normal summaries and scope
+</summary>
+<p>In the six-site example, score A represents standardized reading growth and score B represents standardized family engagement, where higher scores ordinarily indicate earlier site visits without assigning funding. Each interval summarizes one marginal normal posterior; the thirty-site marginal release leaves cross-criterion joint draws and composite distributions undetermined.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -647,6 +667,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Standalone: <a href="../../embed/several-criteria.html">open this app</a>, for example <code>?preset=six-bc&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="../grades/one-pair.html">The decision for an isolated pair</a> · <a href="../uncertainty/pairwise-matrix.html">The matrix of pairwise posterior probabilities</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/12-conflict-estimands.html#sec-two-estimands">Composite and criterion-specific reporting targets</a>.</p>
 
 
 </section>
@@ -1119,7 +1140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

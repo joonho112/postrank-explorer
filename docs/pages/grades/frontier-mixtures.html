@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/frontier-mixtures.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mixtures of frontier reports – postrank Explorer">
+<meta property="og:description" content="Randomization over complete reports at a specified mean disclosure.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/frontier-mixtures.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/frontier-mixtures.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -606,7 +631,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Mixtures of frontier reports</h1>
-<p class="subtitle lead">2.11 · after the postrank theory book, ch.&nbsp;16 and 19</p>
+<p class="subtitle lead">2.11 · after the postrank theory book, ch.&nbsp;22 and 25</p>
 </div>
 
 <div>
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>A lottery between two complete grade reports can achieve an expected number of stated pairs between the counts of those reports. The diamond gives the mixture’s expected wrong count at that level of disclosure. The square gives the smallest expected wrong count among single reports with the same number of stated pairs, when one exists. Every realized report remains coherent because the lottery selects a complete grade assignment. The examples compare how much the lottery can accomplish in unrestricted and restricted families.</p>
+<p>Randomizing between two frontier corner reports achieves any intermediate mean number of stated pairs along <span class="math inline"><math><mrow><mi>H</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>m</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span>, often with far fewer expected wrong directions than any single report at that disclosure.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -637,22 +662,18 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Six sites, mean 10.</strong> The mixture selects the report stating 12 pairs with probability .50 and the report stating 8 pairs otherwise. The average error count is .01714. No single report states exactly this many pairs. The diamond is an average over the two reports.</li>
-<li><strong>Six sites, mean 9.</strong> The more-disclosing report now has chance .25. The mixture expects .01332 wrong directions; the best single report at this disclosure expects .1597, a gap of .1464. The square and diamond share the same horizontal coordinate.</li>
-<li><strong>Six sites, mean 12.</strong> The selected point is a corner with .02477 expected wrong directions: no mixture is needed. Moving the mean-disclosure slider changes the lottery, while moving the withholding cost changes the supporting line and its best report.</li>
-<li><strong>Four units, mean 4.</strong> With two criteria, the quantities are expected <strong>weighted</strong> wrong directions. The mixture has 19/40 against the best single report’s 7/10, a gap of 9/40. Its two complete reports each have chance 1/2.</li>
-<li><strong>At most 3 grades, mean 9.</strong> The family has 603 reports and ends at 12 stated pairs. The unrestricted endpoint conclusion is <strong>not guaranteed for this family</strong>. The fixed-order example in the box on the endpoint at <span class="math inline"><math><mrow><mi>τ</mi><mo>=</mo><mn>1</mn><mi>/</mi><mn>2</mn></mrow></math></span> gives a different reason that a restricted family can miss the unrestricted endpoint.</li>
+<li><strong>Six sites, mean 10.</strong> Mixing the 12-pair report (chance .50) and the 8-pair report yields .0171 expected wrong directions; no single report states this count.</li>
+<li><strong>Six sites, mean 9.</strong> Giving the upper report chance .25 yields .0133 expected wrong directions versus .160 for the best single report, a gap of .146.</li>
+<li><strong>Six sites, mean 12.</strong> At a frontier corner (.0248 expected wrong directions), no mixture is needed.</li>
+<li><strong>Four units, mean 4.</strong> Mixing the two endpoint reports with chance 1/2 gives 19/40 expected weighted wrong directions against 7/10 for the best single report (gap 9/40).</li>
+<li><strong>At most 3 grades, mean 9.</strong> The capped family of 603 reports ends at 12 stated pairs, so the half-cost endpoint is <strong>not guaranteed for this family</strong>.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The half-cost endpoint requires the full report family and no latent ties on positive-weight criteria. The small fixed-order figure shows the boundary for that order. The six sites and the finite laws use posteriors specified for the examples.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Endpoint conditions and notes
+</summary>
+<p>The half-cost endpoint requires the full report family and no latent ties on positive-weight criteria. In the endpoint disclosure, the fixed-order example shows a different restriction whose boundary misses the full ranking at <span class="math inline"><math><mrow><mi>τ</mi><mo>=</mo><mn>1</mn><mi>/</mi><mn>2</mn></mrow></math></span>. The six sites and the finite laws use posteriors specified for the examples.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -674,6 +695,7 @@ window.Quarto = {
 </div>
 <p>Standalone: <a href="../../embed/frontier-mixtures.html">embed/frontier-mixtures.html</a>, for example <code>?preset=tb16</code>.</p>
 <p>Related applications: <a href="../../pages/grades/frontier.html">The error–disclosure frontier</a> · <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a> · <a href="../../pages/uncertainty/which-ranking.html">Alternative rankings from a posterior distribution</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier">Comparing reports at matched disclosure</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-exact-common-grade">Common grades under an exact joint target law</a>.</p>
 
 
 </section>
@@ -1146,7 +1168,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

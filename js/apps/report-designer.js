@@ -1,12 +1,13 @@
 // Public case inputs -> a named report family -> fixed-report checks and a reproducible account.
+import { mobileControls } from "../shared/mobile-controls.js";
 import { createWidget, uid } from '../shared/base.js';
 import { caseInput, caseCard, CASE_KEYS } from '../shared/case-inputs.js';
-import { drawReportCard, gradeLegend, REPORT_CARD_CSS } from './report-card.js';
-import { drawRelationMatrix, REPORT_BUILDER_CSS } from './report-builder.js';
-import { createBudgetFeasibilityView, createBudgetProfileView, BUDGET_CSS, parseBudgetQ } from './error-budgets.js';
+import { drawReportCard, gradeLegend, REPORT_CARD_CSS } from '../shared/domain/report-card.js';
+import { drawRelationMatrix, REPORT_BUILDER_CSS } from '../shared/domain/report-builder.js';
+import { createBudgetFeasibilityView, createBudgetProfileView, BUDGET_CSS, parseBudgetQ } from '../shared/domain/error-budgets.js';
 import { budgetCheck, compareReports, disclosure, evaluateReport, exactOptimum, expectedRank, familySize, fixedOrderDP, largestStatedError, relations, scoreOrder } from '../pr-core.js';
 import { captionNode, labelId, labelNode, labelText, tagNode } from '../shared/labels.js';
-import { formatCount, formatDecimal, formatExpectedCount, formatGrades, formatPercent, formatRisk, formatSci, formatSetting, formatShare, formatSizes, formatSigned, formatTuple } from '../shared/format.js';
+import { formatCount, formatDecimal, formatExpectedCount, formatGrades, formatPercent, formatReadoutExpected, formatReadoutProb, formatReadoutRisk, formatRisk, formatSci, formatSetting, formatShare, formatSizes, formatSigned, formatTuple } from '../shared/format.js';
 export const DEFAULTS = Object.freeze({ cde: { tau: .2, cap: 3, w: 1 }, krw: { tau: .25, cap: 4, w: .5 }, alabama: { tau: .2, cap: 5, w: .5 } });
 export const KEYS = { case: { type: 'choice', values: CASE_KEYS, value: 'cde' }, tau: { type: 'number', min: .01, max: .5, step: .01, value: .2 }, cap: { type: 'integer', min: 1, max: 97, value: 3 }, w: { type: 'number', min: 0, max: 1, step: .01, value: 1 }, qa: { type: 'custom', value: null, parse: parseBudgetQ }, qb: { type: 'custom', value: null, parse: parseBudgetQ }, view: { type: 'choice', values: ['card', 'relations', 'report'], value: 'card' }, criterion: { type: 'integer', min: 0, max: 1, value: 0 }, focus: { type: 'string', value: 'auto' } };
 const cache = new Map();
@@ -112,28 +113,100 @@ export function sentenceHints(text, model = null) {
     return hits;
 }
 const CSS = `${REPORT_CARD_CSS}${REPORT_BUILDER_CSS}${BUDGET_CSS}
-.des .des-box{border:1px solid var(--prx-border);border-radius:6px;padding:.65rem .8rem;margin:.65rem 0;min-width:0}.des .des-box h4{margin:0 0 .45rem;font-size:1rem}.des .des-note{font-size:.86rem;line-height:1.5;color:var(--prx-fg-muted)}.des .des-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,21rem),1fr));gap:.75rem}.des .des-card-scroll{max-height:32rem;overflow:auto}.des .des-scroll{max-width:100%;overflow:auto}.des .des-matrix-scroll{max-height:30rem;overflow:auto;max-width:100%}.des table.des-table{width:100%;border-collapse:collapse;font-size:.84rem}.des .des-table th,.des .des-table td{padding:.35rem .45rem;border-bottom:1px solid var(--prx-border);text-align:left;vertical-align:top}.des .des-wide{min-width:46rem}.des .des-export-buttons{display:flex;flex-wrap:wrap;gap:.4rem}.des .des-export-buttons [aria-disabled=true]{cursor:not-allowed;border-style:dashed;color:var(--prx-fg-muted)}.des textarea{width:100%;min-height:8rem;box-sizing:border-box;background:var(--prx-bg);color:var(--prx-fg);border:1px solid var(--prx-border);border-radius:4px;padding:.5rem;font:inherit}.des .des-status{font-size:.9rem;font-weight:600}.des .des-grade{overflow-wrap:anywhere}.des .ebu-table-wrap{color:var(--prx-plot-fg)}.des .des-pair{font-size:.9rem}.des .des-controls-help{font-size:.85rem;margin:.25rem 0}.des .des-setting-table{min-width:26rem}.des .des-checklist table{min-width:44rem}.des .des-checklist th:first-child{min-width:9rem}.des .des-checklist td:last-child{min-width:12rem;overflow-wrap:anywhere}.des .des-checklist code{font-size:.8rem}.des [data-prx-readout="grades"],.des .des-grade .prx-num{white-space:normal;overflow-wrap:anywhere}
-.des .des-budget-strip{display:flex;flex-wrap:wrap;gap:.25rem .65rem;margin-bottom:.45rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls{flex:1 1 100%;align-items:flex-end;gap:.4rem .75rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-slider{flex:1 1 10.5rem;max-width:14rem}
+.des[data-prx-frame="v2"] .prx-number input[type="number"]{width:4.4rem}
+.des .prx-radio-group{display:flex;flex-wrap:wrap;gap:.28rem;align-items:center}
+.des .prx-radio-group>legend{flex:1 1 100%;margin:0 0 .12rem;font-size:1em;line-height:1.25;font-weight:600;color:var(--prx-fg-muted)}
+.des .prx-radio{position:relative;display:inline-flex;align-items:center;justify-content:center;margin:0;padding:.18rem .52rem;min-height:var(--prx-control-height,2.25rem);color:var(--prx-fg);background:var(--prx-bg);border:1px solid var(--prx-border-strong);border-radius:5px;font-weight:400;line-height:1.2;cursor:pointer}
+.des .prx-radio:hover{border-color:var(--prx-accent)}
+.des .prx-radio:has(input:checked){color:var(--prx-on-accent);background:var(--prx-accent);border-color:var(--prx-accent)}
+.des .prx-radio>input[type="radio"]{appearance:none;-webkit-appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;background:transparent;border:0;border-radius:inherit;cursor:pointer}
+.des .prx-radio>input[type="radio"]:focus-visible{outline:var(--prx-focus-width) solid var(--prx-focus);outline-offset:var(--prx-focus-offset)}
+.des .prx-radio>span{position:relative;pointer-events:none}
+.des .des-quick{margin:0 0 .3rem;font-size:.88rem;line-height:1.35;color:var(--prx-fg)}
+.des .des-panel,.des .des-sec{margin:0;min-width:0}
+.des .des-panel+.des-panel,.des .des-downloads{margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--prx-border);min-width:0}
+.des .des-sec+.des-sec{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--prx-border)}
+.des .des-panel h4,.des .des-sec h4,.des .des-downloads h4,.des .des-checklist h4{margin:0 0 .3rem;font-size:.95rem;font-weight:600}
+.des .des-note{margin:.25rem 0;font-size:.84rem;line-height:1.42;color:var(--prx-fg-muted)}
+.des .des-rights{margin-top:.45rem;padding-top:.4rem;border-top:1px solid var(--prx-border);font-size:.76rem;line-height:1.34;color:var(--prx-fg-muted)}
+.des .des-rights p{margin:.12rem 0}
+.des .des-card-scroll{max-height:28rem;overflow:auto}
+.des .des-scroll{max-width:100%;overflow-x:auto}
+.des .des-matrix-scroll{max-height:28rem;overflow:auto;max-width:100%}
+.des table.des-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.des .des-table th,.des .des-table td{padding:.3rem .45rem;border-bottom:1px solid var(--prx-border);text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.des .des-export-buttons{display:flex;flex-wrap:wrap;gap:.4rem}
+.des .des-export-buttons [aria-disabled=true]{cursor:not-allowed;border-style:dashed;color:var(--prx-fg-muted)}
+.des textarea{width:100%;min-height:7rem;box-sizing:border-box;background:var(--prx-bg);color:var(--prx-fg);border:1px solid var(--prx-border-strong);border-radius:4px;padding:.5rem;font:inherit}
+.des .des-status{margin:0 0 .35rem;font-size:.88rem;font-weight:600;color:var(--prx-err-text)}
+.des .des-grade{overflow-wrap:anywhere}
+.des .des-pair{margin:.25rem 0 0;font-size:.85rem}
+.des .des-checklist code{font-size:.8rem}
+.des [data-prx-readout="grades"],.des .des-grade .prx-num{white-space:normal;overflow-wrap:anywhere}
+.des .des-budget-strip{display:inline-flex;flex-wrap:wrap;gap:.2rem .45rem;margin-right:.35rem;vertical-align:baseline}
 .des .des-budget-strip[hidden]{display:none}
-.des .des-budget-outcome{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:.1rem .35rem;border:1px solid var(--prx-border);border-radius:4px;padding:.2rem .4rem}
+.des .des-budget-outcome{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:.1rem .3rem;border:1px solid var(--prx-border-strong);border-radius:4px;padding:.06rem .35rem;font-size:.86em}
 .des .des-budget-outcome[data-budget-meets=false] strong{color:var(--prx-err-text)}
-@media(max-width:40em){.des .des-box{padding:.5rem}.des .des-card-scroll{max-height:26rem}}
+@media (min-width:48.01em){
+.des[data-prx-frame="v2"] .prx-toolbar{gap:.25rem .55rem;margin-bottom:.35rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls{gap:.3rem .55rem;align-items:flex-end}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-select select{max-width:11.5rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-number input[type="number"]{width:3.8rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-slider{flex:0 1 10.5rem;min-width:8.75rem;max-width:11.5rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-radio-group{align-items:center;gap:.24rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-radio-group>legend{flex:0 0 auto;margin:0 .25rem 0 0;font-size:.84rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-radio{min-height:1.85rem;padding:.14rem .42rem;font-size:.82rem}
+.des[data-prx-frame="v2"] .prx-presets>.prx-seg-label{font-size:.78rem;line-height:1.15;margin-bottom:.08rem}
+.des[data-prx-frame="v2"] .prx-presets .prx-seg-buttons{gap:.2rem}
+.des[data-prx-frame="v2"] .prx-presets .prx-seg{min-height:1.8rem;padding:.12rem .32rem;font-size:.78rem;line-height:1.16}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-disclosure>summary{min-height:1.82rem;padding:.12rem 0}
+}
+@media (min-width:52em){.des .des-checklist th:first-child{min-width:9rem}.des .des-checklist td:last-child{min-width:11rem}}
+@media (pointer:coarse),(max-width:48em){.des .prx-radio{min-height:var(--prx-touch-target,2.75rem)}}
+@media (max-width:40em){
+.des[data-prx-frame="v2"]{padding:.45rem .5rem}
+.des[data-prx-frame="v2"] .prx-toolbar{gap:.25rem .45rem;margin-bottom:.3rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls{gap:.28rem .45rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-select{flex:1 1 9.5rem}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-number{flex:0 0 auto}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-controls .prx-slider{flex:1 1 100%;max-width:none}
+.des[data-prx-frame="v2"] .prx-radio-group{gap:.22rem}
+.des[data-prx-frame="v2"] .prx-radio{padding:.12rem .38rem;font-size:.77rem;line-height:1.15}
+.des[data-prx-frame="v2"] .prx-presets>.prx-seg-label{font-size:.76rem;margin-bottom:.06rem}
+.des[data-prx-frame="v2"] .prx-presets .prx-seg-buttons{gap:.2rem}
+.des[data-prx-frame="v2"] .prx-presets .prx-seg{padding:.1rem .32rem;font-size:.76rem;line-height:1.15}
+.des[data-prx-frame="v2"] .prx-toolbar>.prx-disclosure>summary{padding:.1rem 0}
+.des[data-prx-frame="v2"]>.prx-readout,.des[data-prx-frame="v2"] .prx-readout{padding:.22rem .45rem;margin-bottom:.3rem;font-size:.85rem;line-height:1.28}
+.des[data-prx-frame="v2"]>.prx-disclosures{margin-top:.35rem;gap:.3rem}
+.des .prx-caption{margin-top:.2rem;font-size:.76rem;line-height:1.3}
+.des .prx-stage{padding:.4rem .5rem}
+.des .des-card-scroll{max-height:15.25rem}
+.des .des-matrix-scroll svg text{font-size:16.5px}
+.des .prx-rc-legend{font-size:.78rem;gap:.12rem .55rem}
+.des .des-note,.des .des-pair,.des .des-quick{font-size:.78rem;line-height:1.28;margin:.18rem 0}
+.des .des-rights{margin-top:.35rem;padding-top:.3rem;font-size:.76rem;line-height:1.3}
+}
 `;
 function focusPair(input, key) { const ids = String(key).split(','), i = input.ids.indexOf(ids[0]), j = input.ids.indexOf(ids[1]); return i >= 0 && j >= 0 ? { i, j } : { i: 0, j: Math.min(1, input.n - 1) }; }
 function num(ctx, key, value, format = formatDecimal) { const n = ctx.num(value, format(value)); if (key)
     n.dataset.prxReadout = key; return n; }
+const fmtReadoutShareItem = x => x === null ? formatShare(x) : formatReadoutProb(x);
+const fmtReadoutShares = v => Array.isArray(v) && v.length === 1 ? fmtReadoutShareItem(v[0]) : formatTuple(v, fmtReadoutShareItem);
 // Preserve source wording verbatim while annotating its literal counts, dates, versions and DOI components.
 // These are supplied metadata, not computed statistics or numeric-audit exemptions.
 function sourceFragments(ctx, text) { const out = []; let at = 0; for (const m of String(text).matchAll(/\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?/g)) {
     out.push(String(text).slice(at, m.index), ctx.num(Number(m[0].replaceAll(',', '')), m[0]));
     at = m.index + m[0].length;
 } out.push(String(text).slice(at)); return out; }
-function smallTable(ctx, caption, heads, rows, { wide = false } = {}) { const { h } = ctx; const table = h('table', { class: `des-table${wide ? ' des-wide' : ''}` }, h('caption', { text: caption }), h('thead', {}, h('tr', {}, ...heads.map(text => h('th', { scope: 'col', text })))), h('tbody', {}, ...rows.map(row => h('tr', {}, ...row.map((cell, j) => h(j ? 'td' : 'th', j ? {} : { scope: 'row' }, cell)))))); return ctx.scrollRegion(h('div', { class: 'des-scroll' }, table), caption); }
+function smallTable(ctx, caption, heads, rows) { const { h } = ctx; const table = h('table', { class: 'des-table' }, h('caption', { text: caption }), h('thead', {}, h('tr', {}, ...heads.map(text => h('th', { scope: 'col', text })))), h('tbody', {}, ...rows.map(row => h('tr', {}, ...row.map((cell, j) => h(j ? 'td' : 'th', j ? {} : { scope: 'row' }, cell)))))); return ctx.scrollRegion(h('div', { class: 'des-scroll' }, table), caption); }
 export function mountWidget(el, spec = {}) {
-    return createWidget(el, spec, { name: 'report-designer', className: 'des prx-rc prx-rb ebu', css: CSS, label: 'Compare grades for a public case and export the report', keys: KEYS, layout: 'result-first', presetLabel: 'Load full example settings, including the view', build(ctx) {
+    return createWidget(el, spec, { name: 'report-designer', frame: 'v2', className: 'des prx-rc prx-rb ebu', css: CSS, label: 'Compare grades for a public case and export the report', keys: KEYS, build(ctx) {
             const { h } = ctx;
+            ctx.root.setAttribute('data-prx-font-scale', String(13 / 12));
             const budgetStrip = h('span', { class: 'des-budget-strip', role: 'group', 'aria-label': 'Budget checks for the displayed report' });
-            let current = null, generation = 0, closed = false, timer = null, lastCase = null;
+            let current = null, closed = false, lastCase = null;
             const exportHint = h('p', { id: uid('des-export-hint'), class: 'des-note', hidden: true });
             const capHint = h('p', { id: uid('des-cap-hint'), class: 'des-note', hidden: true });
             const refreshExportButtons = () => {
@@ -147,7 +220,40 @@ export function mountWidget(el, spec = {}) {
                 exportHint.hidden = Boolean(current) && !empty;
                 exportHint.textContent = current ? 'Write a draft to enable its download.' : 'Downloads are available after a complete report is ready.';
             };
-            const note = h('p', { class: 'des-status', role: 'status' }), quick = h('p', { class: 'des-note' }), membership = h('details', {}, h('summary', { text: 'Every unit and its displayed grade' })), summary = h('section', { class: 'des-box prx-light-panel' }), cardBox = h('section', { class: 'des-box prx-light-panel' }), cardChart = h('div'), axisNote = h('p', { class: 'des-note' }), cardLegend = h('div'), matrixSlot = h('div'), matrixLegend = h('div'), matrixRegion = ctx.scrollRegion(h('div', { class: 'des-matrix-scroll' }, matrixSlot), 'Complete relation matrix; scroll both axes'), relationBox = h('section', { class: 'des-box prx-light-panel' }, h('h4', { text: 'Every relation in the displayed report' }), h('p', { class: 'des-note', text: 'Use the arrow keys to read cells and Home or End to move to a corner. The full pair table is below the matrix.' }), matrixRegion, matrixLegend), pairNote = h('p', { class: 'des-pair' }), changesBox = h('section', { class: 'des-box prx-light-panel' }), profileBox = h('section', { class: 'des-box prx-light-panel' }), budgetBox = h('section', { class: 'des-box prx-light-panel' }), archiveBox = h('section', { class: 'des-box prx-light-panel' }), reportBox = h('section', { class: 'des-box' }), provenance = h('details', {}, h('summary', { text: 'Case sources and how the settings were chosen' })), provenanceBody = h('div'), rights = h('div', { class: 'des-note' }), modelSentence = h('p', { 'data-prx-readout': 'model-sentence' }), checklist = h('section', { class: 'des-checklist', 'data-prx-readout': 'reporting-checklist' }), draft = h('textarea', { 'aria-label': 'Your reporting draft', placeholder: 'Describe this report in your own words.' }), feedback = h('div'), downloads = h('div', { class: 'des-export-buttons' });
+            const errorNote = h('p', { class: 'des-status', role: 'status', hidden: true });
+            const quick = h('p', { class: 'des-quick' });
+            const membership = h('details', {}, h('summary', { text: 'Every unit and its displayed grade' }));
+            const summary = h('section', { class: 'des-sec' });
+            const cardBox = h('section', { class: 'des-panel' });
+            const cardChart = h('div');
+            const axisNote = h('p', { class: 'des-note' });
+            const cardLegend = h('div');
+            const matrixSlot = h('div');
+            const matrixLegend = h('div');
+            const matrixRegion = ctx.scrollRegion(h('div', { class: 'des-matrix-scroll' }, matrixSlot), 'Complete relation matrix; scroll both axes');
+            const relationBox = h('section', { class: 'des-panel' }, h('h4', { text: 'Every relation in the displayed report' }), h('p', { class: 'des-note', text: 'Use the arrow keys to read cells and Home or End to move to a corner. The full pair table is below the matrix.' }), matrixRegion, matrixLegend);
+            const pairNote = h('p', { class: 'des-pair' });
+            const changesBox = h('section', { class: 'des-panel' });
+            const profileBox = h('section', { class: 'des-sec' });
+            const budgetBox = h('section', { class: 'des-sec' });
+            const archiveBox = h('section', { class: 'des-sec' });
+            const reportBox = h('section', { class: 'des-panel' });
+            const provenanceBody = h('div', { class: 'des-sec' });
+            const rights = h('div', { class: 'des-rights' });
+            const modelSentence = h('p', { 'data-prx-readout': 'model-sentence' });
+            const checklist = h('section', { class: 'des-checklist', 'data-prx-readout': 'reporting-checklist' });
+            const draft = h('textarea', { 'aria-label': 'Your reporting draft', placeholder: 'Describe this report in your own words.' });
+            const feedback = h('div');
+            const downloads = h('div', { class: 'des-export-buttons' });
+            const exportContext = () => h('p', { class: 'des-note', 'data-prx-readout': 'export-case-family' });
+            const selectorContext = exportContext(), downloadContext = exportContext();
+            const downloadsBox = h('section', { class: 'des-downloads' },
+                h('h4', { text: 'Download the exact inputs and report' }),
+                downloadContext, downloads,
+                exportHint,
+                h('p', { class: 'des-note', text: 'The CSV files include every row. The R script uses the released probabilities and summaries to evaluate the displayed grades and check their error budgets. The files are created in your browser.' }),
+                h('p', { class: 'des-note' }, 'In the relations CSV, ', ctx.num(1, '1'), ' means first (row) above second (column), ',
+                    ctx.num(-1, '−1'), ' means second above first, ', ctx.num(0, '0'), ' means withheld, and NA marks self-comparisons.'));
             // The reused chart places its tip in the target-phase focus handler. Reveal the focused
             // native point first, within this card's own bounded scroller, without moving the outer page.
             const revealCardPoint = event => {
@@ -158,31 +264,38 @@ export function mountWidget(el, spec = {}) {
             };
             ctx.listen(cardChart, 'focus', revealCardPoint, { capture: true });
             ctx.listen(cardChart, 'keydown', event => { if (/^(?:Arrow(?:Up|Down|Left|Right)|Home|End)$/.test(event.key)) revealCardPoint(event); }, { capture: true });
-            provenance.append(provenanceBody);
-            cardBox.append(h('h4', { text: 'The displayed report: supplied marginal intervals' }), axisNote, ctx.scrollRegion(h('div', { class: 'des-card-scroll' }, cardChart), 'All units on the report card'), cardLegend, pairNote);
-            reportBox.append(h('h4', { text: 'Example report text' }), modelSentence, membership, checklist, h('h4', { text: 'Draft your report' }), h('p', { class: 'des-note', text: 'The editor flags wording that could change the meaning of a result. Your draft stays in this page until you download it.' }), draft, feedback);
-            ctx.charts.append(note, quick, ctx.primaryGraphic(cardBox), ctx.primaryGraphic(relationBox), ctx.primaryGraphic(reportBox), summary, profileBox, budgetBox, changesBox, archiveBox, provenance, h('section', { class: 'des-box' }, h('h4', { text: 'Download the exact inputs and report' }), downloads, exportHint, h('p', { class: 'des-note', text: 'The CSV files include every row. The R script uses the released probabilities and summaries to evaluate the displayed grades and check their error budgets. The files are created in your browser.' }),
-                h('p', { class: 'des-note' }, 'In the relations CSV, ', ctx.num(1, '1'), ' means first (row) above second (column), ',
-                    ctx.num(-1, '−1'), ' means second above first, ', ctx.num(0, '0'), ' means withheld, and NA marks self-comparisons.')), rights);
+            cardBox.append(axisNote, ctx.scrollRegion(h('div', { class: 'des-card-scroll' }, cardChart), 'All units on the report card'), cardLegend, pairNote);
+            reportBox.append(h('h4', { text: 'Example report text' }), modelSentence, membership, checklist, h('h4', { text: 'Draft your report' }), h('p', { class: 'des-note', text: 'The editor flags wording that could change the meaning of a result. Your draft stays in this page until you download it.' }), draft, feedback, downloadsBox);
+            ctx.stage.append(errorNote, quick, cardBox, relationBox, changesBox, reportBox, rights);
+            const dataBox = ctx.dataBox('Data, profile, and archived solve');
+            dataBox.body.append(summary, profileBox, budgetBox, archiveBox);
+            const methodBox = ctx.methodBox('Method and sources');
+            methodBox.body.append(provenanceBody);
             const profile = createBudgetProfileView(ctx, profileBox);
-            const choose = ctx.select({ label: 'Public case', name: 'case', options: [{ value: 'cde', label: 'CDE: twelve schools' }, { value: 'krw', label: 'KRW: all 97 firms' }, { value: 'alabama', label: 'Alabama: all 67 counties' }], value: ctx.state.case, onChange: key => ctx.set({ case: key, ...DEFAULTS[key], qa: null, qb: null, criterion: 0, focus: 'auto' }) }), tau = ctx.slider({ label: 'Cost per withheld pair, τ', ...ctx.key('tau'), onInput: tau => ctx.set({ tau }) }), cap = ctx.numberInput({ label: 'At most this many grades', min: 1, max: 97, step: 1, value: ctx.state.cap, name: 'cap', onInput: value => {
+            const choose = ctx.select({ label: 'Public case', name: 'case', options: [{ value: 'cde', label: 'CDE: twelve schools' }, { value: 'krw', label: 'KRW: all 97 firms' }, { value: 'alabama', label: 'Alabama: all 67 counties' }], value: ctx.state.case, onChange: key => ctx.set({ case: key, ...DEFAULTS[key], qa: null, qb: null, criterion: 0, focus: 'auto' }) });
+            const tau = ctx.slider({ label: 'Withholding cost τ', ...ctx.key('tau'), onInput: tau => ctx.set({ tau }) });
+            const cap = ctx.numberInput({ label: 'Grade cap', min: 1, max: 97, step: 1, value: ctx.state.cap, name: 'cap', onInput: value => {
                 const max = caseInput(ctx.state.case).n, rounded = Math.round(Number(cap.input.value) || value);
                 showCapLimit(rounded > max ? max : null);
                 if (rounded > max) cap.set(max);
                 ctx.set({ cap: Math.min(max, rounded) });
-            } }), weight = ctx.slider({ label: 'Error weight on the first criterion (the second gets the remainder)', ...ctx.key('w'), onInput: w => ctx.set({ w }) }), view = ctx.radioGroup({ legend: 'Inspect', name: 'view', options: [{ value: 'card', label: 'Report card' }, { value: 'relations', label: 'All relations and changes' }, { value: 'report', label: 'Reporting sentence' }], value: ctx.state.view, onChange: view => ctx.set({ view }) }), criterion = ctx.radioGroup({ legend: 'Supplied marginal shown on the card', name: 'criterion', options: [{ value: 0, label: 'First criterion' }, { value: 1, label: 'Second criterion' }], value: ctx.state.criterion, onChange: v => ctx.set({ criterion: Number(v) }) });
+            } });
+            const weight = ctx.slider({ label: 'First-criterion weight', ...ctx.key('w'), onInput: w => ctx.set({ w }) });
+            const view = ctx.radioGroup({ legend: 'Inspect', name: 'view', options: [{ value: 'card', label: 'Report card' }, { value: 'relations', label: 'All relations and changes' }, { value: 'report', label: 'Sentence & export' }], value: ctx.state.view, onChange: view => ctx.set({ view }) });
+            const criterion = ctx.radioGroup({ legend: 'Supplied marginal shown on the card', name: 'criterion', options: [{ value: 0, label: 'First criterion' }, { value: 1, label: 'Second criterion' }], value: ctx.state.criterion, onChange: v => ctx.set({ criterion: Number(v) }) });
             function showCapLimit(max) {
                 capHint.hidden = max === null;
                 if (max !== null) capHint.replaceChildren('The cap was set to ', num(ctx, null, max, formatCount), ', the number of assessed units.');
             }
             cap.root.append(capHint);
             cap.input.setAttribute('aria-describedby', capHint.id);
-            ctx.controls.append(choose.root, ctx.primaryControl(tau.root), cap.root);
+            ctx.controls.append(choose.root, cap.root, ctx.primaryControl(tau.root), weight.root, view.root, selectorContext);
             const budgets = ['qa', 'qb'].map((key, k) => { let value = .1; const enabled = ctx.toggle({ label: `Check a budget on criterion ${k + 1}`, name: key + '-enabled', checked: false, onChange: yes => ctx.set({ [key]: yes ? value : null }) }), slider = ctx.slider({ label: 'Maximum expected wrong share among stated pairs', name: key, valueType: 'number', min: 0, max: 1, step: .01, value: .1, onInput: v => { value = v; ctx.set({ [key]: v }); } }), root = h('div', { class: 'prx-control' }, enabled.root, slider.root); return { root, enabled, slider, set(v) { enabled.set(v !== null); slider.root.hidden = v === null; if (v !== null) {
                     value = v;
                     slider.set(v);
                 } } }; });
-            ctx.afterPresets(view.root, weight.root, criterion.root, ...budgets.map(b => b.root));
+            const settingsBox = ctx.settingsBox('Settings and budgets');
+            settingsBox.body.append(criterion.root, ...budgets.map(b => b.root));
             function updateHints() { const hits = sentenceHints(draft.value, current); feedback.replaceChildren(h('p', { class: 'des-note' }, draft.value.trim() ? (hits.length ? 'Check these phrases and scope items:' : 'No listed wording issue found. Check the numbers, target, family and scope against the model sentence.') : 'Begin with the target, settings and family; then state N of M and each E/N.'), ...hits.map(hit => h('p', { class: 'des-note' }, h('q', { text: hit.phrase }), ' — ', hit.repair))); }
             ctx.listen(draft, 'input', () => { updateHints(); refreshExportButtons(); });
             updateHints();
@@ -205,9 +318,8 @@ export function mountWidget(el, spec = {}) {
                 if (narrow) {
                     chosen.axis = d.key === 'cde' ? 'Negative absence probability' : d.key === 'krw' ? (s.criterion === 0 ? 'Log gap, white − Black' : 'Log gap, male − female') : (s.criterion === 0 ? 'Income rank (percentile)' : 'Negative incarceration (%)');
                 }
-                axisNote.replaceChildren(d.axes[s.criterion], '. Dots: posterior means. Lines: ',
-                    num(ctx, null, d.marginals.level, formatPercent), ' ', d.marginals.intervalSource,
-                    ' from this case; they are not intervals for grade membership.');
+                axisNote.replaceChildren(d.axes[s.criterion], '. Dots: posterior means; lines: ',
+                    num(ctx, null, d.marginals.level, formatPercent), ' ', d.marginals.intervalSource, '.');
                 if (narrow)
                     chosen.names = d.labels.map(name => { const clean = name.replace(/\s*\([^)]*\)\s*$/, ''); return clean.length > 17 ? clean.slice(0, 16) + '…' : clean; });
                 cardBox.hidden = s.view !== 'card';
@@ -215,7 +327,7 @@ export function mountWidget(el, spec = {}) {
                 changesBox.hidden = s.view !== 'relations';
                 reportBox.hidden = s.view !== 'report';
                 if (s.view === 'card') {
-                const out = drawReportCard(cardChart, chosen, { grade: m.grade, order: 'expected_rank', rowPx: d.n > 40 ? 13 : 23, selected: pair.i, keyboardLabel: 'Read all supplied case marginals and their report grades' });
+                const out = drawReportCard(cardChart, chosen, { grade: m.grade, order: 'expected_rank', rowPx: narrow || d.n > 40 ? 15 : 20, selected: pair.i, keyboardLabel: 'Read all supplied case marginals and their report grades' });
                 for (const [r, i] of Array.from(cardChart.querySelectorAll('tbody tr')).map((r, j) => [r, out.order[j]])) {
                     const cell = r.querySelector('th,td');
                     if (cell)
@@ -223,9 +335,15 @@ export function mountWidget(el, spec = {}) {
                 }
                 cardLegend.replaceChildren(gradeLegend(ctx.doc, { grade: m.grade, colors: out.colors, unit: d.unit, units: d.units, grade1: d.grade1 }));
                 }
-                quick.replaceChildren(labelNode(ctx, m.optimum), ' (', tagNode(ctx, m.optimum, {orderWords:m.method==='enumeration'?undefined:'the '+m.method}), '). N ', num(ctx, null, e.N, formatCount), ' of ', num(ctx, null, e.M, formatCount), ' pairs stated.');
+                for (const context of [selectorContext, downloadContext]) {
+                    context.replaceChildren(h('strong', { 'data-prx-name': '', text: d.title }), ' · ',
+                        m.method === 'enumeration' ? 'Browser enumeration of every report' : 'Browser optimization over cuts in the ' + m.method,
+                        ' with at most ', num(ctx, null, m.cap, formatCount), ' grades. Archived solve status: ',
+                        d.archive.status, ' (stored settings).');
+                }
+                quick.replaceChildren('Search result: ', labelNode(ctx, m.optimum), ' (', tagNode(ctx, m.optimum, { orderWords: m.method === 'enumeration' ? undefined : 'the ' + m.method }), ').');
                 membership.replaceChildren(h('summary', { text: 'Every unit and its displayed grade' }), smallTable(ctx, 'Complete displayed grade membership', ['ID', 'Unit', 'Grade'], d.ids.map((id, i) => [h('span', { 'data-prx-name': '', text: id }), h('span', { 'data-prx-name': '', text: d.labels[i] }), num(ctx, null, m.grade[i], formatCount)])));
-                summary.replaceChildren(h('h4', {}, d.key === 'cde' ? 'California teaching subset' : d.key === 'krw' ? 'KRW correspondence experiment' : 'Alabama historical outcomes', ': ', num(ctx, 'n', d.n, formatCount), ' assessed ', d.units), h('p', {}, labelNode(ctx, m.optimum), ' (', tagNode(ctx, m.optimum, {orderWords:m.method==='enumeration'?undefined:'the '+m.method}), '). ', num(ctx, 'tieCount', m.optimum.tieCount, formatCount), m.optimum.tieCount === 1 ? ' equal-risk optimum' : ' equal-risk optima', '; tolerance ', num(ctx, 'tieTol', m.optimum.tieTol, formatSci), '.'), h('p', {}, 'N = ', num(ctx, 'N', e.N, formatCount), ' of M = ', num(ctx, 'M', e.M, formatCount), ' pairs stated; ', num(ctx, 'sizes', disclosure(m.grade).sizes, formatSizes), '. Risk ', num(ctx, 'risk', e.risk, formatRisk), ' ≈ ', h('span', { class: 'prx-err' }, num(ctx, 'errorTerm', e.errorTerm, formatRisk)), ' + ', h('span', { class: 'prx-wh' }, num(ctx, 'withholdingTerm', e.withholdingTerm, formatRisk)), '.'), h('p', { class: 'des-note' }, 'E is expected wrong directions; risk divides the weighted count by all pairs and adds the cost of withholding. ', d.grade1, ' The row order within a grade makes no additional comparison.'), h('p', { class: 'des-note', 'data-prx-readout':'scope-method' }, m.method === 'enumeration' ? 'The browser enumerates every report in this capped family.' : 'Cuts are optimal only within the declared ' + m.method + '. Equal order scores stay in one grade; no cut splits an exact-score block. Equal-risk cuts prefer fewer grades, then the earlier cut. ' + (d.key==='cde'?'The supplied posterior means define this order; the single criterion has weight one.':'Changing weights recomputes the weighted expected-rank order; no joint cross-criterion posterior is constructed.')), h('p', { class: 'des-note', text: 'Expected wrong shares do not give the probability that every stated direction is correct. These grades are neither causal effects nor an allocation rule. Units outside the declared assessment frame are suppressed, not assigned a bottom grade.' }));
+                summary.replaceChildren(h('h4', {}, d.key === 'cde' ? 'California teaching subset' : d.key === 'krw' ? 'KRW correspondence experiment' : 'Alabama historical outcomes', ': ', num(ctx, 'n', d.n, formatCount), ' assessed ', d.units), h('p', {}, labelNode(ctx, m.optimum), ' (', tagNode(ctx, m.optimum, { orderWords: m.method === 'enumeration' ? undefined : 'the ' + m.method }), '). ', num(ctx, 'tieCount', m.optimum.tieCount, formatCount), m.optimum.tieCount === 1 ? ' equal-risk optimum' : ' equal-risk optima', '; tolerance ', num(ctx, 'tieTol', m.optimum.tieTol, formatSci), '.'), h('p', {}, 'N = ', num(ctx, 'N', e.N, formatCount), ' of M = ', num(ctx, 'M', e.M, formatCount), ' pairs stated; ', num(ctx, 'sizes', disclosure(m.grade).sizes, formatSizes), '. Risk ', num(ctx, 'risk', e.risk, formatRisk), ' ≈ ', h('span', { class: 'prx-err' }, num(ctx, 'errorTerm', e.errorTerm, formatRisk)), ' + ', h('span', { class: 'prx-wh' }, num(ctx, 'withholdingTerm', e.withholdingTerm, formatRisk)), '.'), h('p', { class: 'des-note' }, 'E is expected wrong directions; risk divides the weighted count by all pairs and adds the cost of withholding. ', d.grade1, ' The row order within a grade makes no additional comparison, and supplied marginal intervals are not intervals for grade membership.'), h('p', { class: 'des-note', 'data-prx-readout': 'scope-method' }, m.method === 'enumeration' ? 'The browser enumerates every report in this capped family.' : 'Cuts are optimal only within the declared ' + m.method + '. Equal order scores stay in one grade; no cut splits an exact-score block. Equal-risk cuts prefer fewer grades, then the earlier cut. ' + (d.key === 'cde' ? 'The supplied posterior means define this order; the single criterion has weight one.' : 'Changing weights recomputes the weighted expected-rank order; no joint cross-criterion posterior is constructed.')), h('p', { class: 'des-note', text: 'Expected wrong shares do not give the probability that every stated direction is correct. These grades are neither causal effects nor an allocation rule. Units outside the declared assessment frame are suppressed, not assigned a bottom grade.' }));
                 if (m.optimum.tieCount > 1) {
                     const details = h('details', {}, h('summary', { text: 'Returned equal-risk reports and their disclosure' }));
                     for (const g of m.optimum.grades) {
@@ -246,7 +364,7 @@ export function mountWidget(el, spec = {}) {
                     }
                     drawRelationMatrix(ctx, matrixSlot, matrixLegend, { n: d.n, ids: d.key === 'cde' ? d.labels : d.ids, names: d.labels, g: m.grade, unit: d.unit, units: d.units }, { large, selected: pair, changed: { after: m.grade, cells: changed }, onPick: p => ctx.set({ focus: d.ids[p.i] + ',' + d.ids[p.j] }) });
                     const word = (r, i, j) => r === 'withheld' ? 'withheld' : r === 'above' ? d.labels[i] + ' above ' + d.labels[j] : d.labels[j] + ' above ' + d.labels[i];
-                    changesBox.replaceChildren(h('h4', { text: 'Every change from the fixed archive to the displayed report' }), smallTable(ctx, 'Complete changed-pair list', ['First', 'Second', 'Archived relation', 'Displayed relation'], m.comparison.change.pairs.map(p => [h('span', { 'data-prx-name': '', text: d.labels[p.i] }), h('span', { 'data-prx-name': '', text: d.labels[p.j] }), h('span', { 'data-prx-name': '', text: word(p.from, p.i, p.j) }), h('span', { 'data-prx-name': '', text: word(p.to, p.i, p.j) })]), { wide: true }));
+                    changesBox.replaceChildren(h('h4', { text: 'Every change from the fixed archive to the displayed report' }), smallTable(ctx, 'Complete changed-pair list', ['First', 'Second', 'Archived relation', 'Displayed relation'], m.comparison.change.pairs.map(p => [h('span', { 'data-prx-name': '', text: d.labels[p.i] }), h('span', { 'data-prx-name': '', text: d.labels[p.j] }), h('span', { 'data-prx-name': '', text: word(p.from, p.i, p.j) }), h('span', { 'data-prx-name': '', text: word(p.to, p.i, p.j) })])));
                 }
                 const rel = relations(m.grade)[pair.i][pair.j];
                 pairNote.replaceChildren('Selected: ', h('span', { 'data-prx-name': '', text: d.labels[pair.i] }), ' / ', h('span', { 'data-prx-name': '', text: d.labels[pair.j] }), '. ', pair.i === pair.j ? 'Self-comparison: no direction.' : rel === 0 ? 'The report withholds this pair.' : rel > 0 ? 'The row unit is stated above the column unit.' : 'The column unit is stated above the row unit.');
@@ -268,7 +386,7 @@ export function mountWidget(el, spec = {}) {
                     archiveBox.append(h('p', { class: 'des-note', 'data-prx-readout': 'krw-settings' }, 'Separate source settings: common analysis τ = ', num(ctx, 'krw-common-tau', facts.common_settings.tau, formatSetting), '; KRW’s published single-criterion cards λ = ', num(ctx, 'krw-card-lambda', facts.card_lambda, formatSetting), ', corresponding to τ = ', num(ctx, 'krw-card-tau', facts.card_tau, formatSetting), '. The published-card parameter and certificate do not describe the common archive or this new browser computation.'));
                 }
                 const reasons = [['Withholding cost τ', num(ctx, null, m.tau, formatSetting), m.tau === a.settings.tau ? 'recorded reference setting' : 'sensitivity scenario'], ['Grade cap', num(ctx, null, m.cap, formatCount), m.cap === a.settings.G_max ? 'recorded reference setting' : 'sensitivity scenario'], ['Error weights', num(ctx, null, m.w, v => formatTuple(v, formatSetting)), m.w.every((v, k) => v === a.settings.w[k]) ? 'recorded reference setting' : 'sensitivity scenario']];
-                provenanceBody.replaceChildren(h('p', { class: 'des-note' }, ...sourceFragments(ctx, d.conditioning)), h('p', { class: 'des-note' }, ...sourceFragments(ctx, d.dependenceScope ?? d.source.facts.scientific_scope ?? 'Targets and conditioning are supplied by the released case, not refitted in this browser.')), smallTable(ctx, 'Where each setting comes from', ['Setting', 'Value', 'Source'], reasons), h('p', { class: 'des-note', text: 'Equal weights assign the same cost to a wrong direction on each criterion. The source supplies the probability level for each marginal interval. Error budgets apply to comparisons between units.' }), h('p', { class: 'des-note' }, 'Supplied intervals: ', num(ctx, 'interval-level', d.marginals.level, formatPercent), '. Estimating Monte Carlo error or the probability that every statement is correct would require more than the released pair probabilities.'));
+                provenanceBody.replaceChildren(h('p', { class: 'des-note' }, ...sourceFragments(ctx, d.conditioning)), h('p', { class: 'des-note' }, ...sourceFragments(ctx, d.dependenceScope ?? d.source.facts.scientific_scope ?? 'Targets and conditioning are supplied by the released case, not refitted in this browser.')), h('p', { class: 'des-note' }, ...sourceFragments(ctx, d.notice.changes)), smallTable(ctx, 'Where each setting comes from', ['Setting', 'Value', 'Source'], reasons), h('p', { class: 'des-note', text: 'Equal weights assign the same cost to a wrong direction on each criterion. The source supplies the probability level for each marginal interval. Error budgets apply to comparisons between units.' }), h('p', { class: 'des-note' }, 'Supplied intervals: ', num(ctx, 'interval-level', d.marginals.level, formatPercent), '. Estimating Monte Carlo error or the probability that every statement is correct would require more than the released pair probabilities.'));
                 modelSentence.replaceChildren(...reportSentenceParts(m).flatMap(part => typeof part === 'string' ? sourceFragments(ctx, part) : part.result ? [labelNode(ctx, part.result)] : [num(ctx, part.key, part.value, part.format)]));
                 const appLink = (name, text) => h('a', { href: (ctx.win.location.pathname.includes('/embed/') ? '' : '../../embed/') + name + '.html', text });
                 const mapping = text => h('code', { text });
@@ -287,47 +405,77 @@ export function mountWidget(el, spec = {}) {
                     ['Limits and wording', 'Shared grades assert no equality. Use grade rather than tier or rank; expected shares do not establish joint correctness, causality, need or an allocation rule.', 'postrank_report() carries reporting items']
                 ];
                 checklist.replaceChildren(h('h4', { text: 'What to include in the report' }), h('p', { class: 'des-note', text: 'The table lists what to report and where to find each item in postrank. Links explain quantities that require a separate calculation.' }), smallTable(ctx, 'Report items and where to find them in postrank', ['Report item', 'What to declare or inspect', 'In postrank'], guidance.map(([item, advice, field]) => [item, typeof advice === 'string' ? h('span', {}, ...sourceFragments(ctx, advice)) : advice, mapping(field)])), h('p', { class: 'des-note', 'data-prx-readout': 'selection-evaluation-scope' }, 'The supplied case posterior selects the report and gives its expected wrong share. External calibration requires an evaluation law or new data. Across datasets, averaging the error share gives each report equal weight. Dividing expected wrong counts by expected stated counts gives more weight to reports that state more pairs. See ', appLink('chosen-and-judged', 'Chosen and judged'), ' and ', appLink('averaging-errors', 'Averaging errors'), '.'));
-                rights.replaceChildren(h('p', {}, ...sourceFragments(ctx, d.notice.attribution)), h('p', {}, ...sourceFragments(ctx, d.notice.changes)), h('p', {}, ...sourceFragments(ctx, d.notice.text), d.key === 'krw' ? h('strong', { text: ' These data describe the historical experiment, not any firm’s current conduct.' }) : ''));
+                rights.replaceChildren(h('p', {}, ...sourceFragments(ctx, d.notice.attribution)), h('p', {}, ...sourceFragments(ctx, d.notice.text), d.key === 'krw' ? h('strong', { text: ' These data describe the historical experiment, not any firm’s current conduct.' }) : ''));
                 budgetStrip.replaceChildren(...m.budget.rows.map(row => h('span', { class: 'des-budget-outcome', 'data-budget-meets': String(row.meets) },
                     h('span', { 'data-prx-name': '', text: d.criterionLabels[row.k] }), ' ',
                     h('strong', { text: row.meets ? 'Meets' : 'Fails' }), ' ',
-                    h('span', { title: 'Slack is qN minus the expected wrong count E.' }, 'slack ', num(ctx, null, row.slack, formatExpectedCount)),
+                    h('span', { title: 'Slack is qN minus the expected wrong count E.' }, 'slack ', num(ctx, null, row.slack, formatReadoutExpected)),
                     e.N === 0 ? h('span', { text: ' · no disclosure' }) : null)));
-                budgetStrip.hidden = false;
-                ctx.readout.set([...(m.budget.rows.length ? [budgetStrip, ' '] : []),
-                    'The displayed report states ', num(ctx, 'ro-N', e.N, formatCount), ' of ', num(ctx, 'ro-M', e.M, formatCount), ' pairs. Expected wrong shares: ', num(ctx, 'ro-shares', e.EoverN, v => formatTuple(v, formatShare)), '. Budgets evaluate this report and do not reselect it.']);
+                budgetStrip.hidden = m.budget.rows.length === 0;
+                ctx.readout.set([
+                    ...(m.budget.rows.length ? [budgetStrip, ' · '] : []),
+                    'At τ = ', num(ctx, 'ro-tau', m.tau, formatSetting),
+                    ' (cap ', num(ctx, 'ro-cap', m.cap, formatCount),
+                    ...(d.K > 1 ? [', weights ', num(ctx, 'ro-weights', m.w, v => formatTuple(v, formatSetting))] : []),
+                    '): states ', num(ctx, 'ro-N', e.N, formatCount), ' of ', num(ctx, 'ro-M', e.M, formatCount),
+                    ' pairs; risk ', num(ctx, 'ro-risk', e.risk, formatReadoutRisk),
+                    d.K > 1 ? ', wrong shares E/N = ' : ', wrong share E/N = ',
+                    num(ctx, 'ro-shares', e.EoverN, fmtReadoutShares), '.',
+                ]);
                 updateHints();
             }
-            function render(s) { const d = caseInput(s.case), patch = {};
-                if (lastCase !== s.case) { lastCase = s.case; showCapLimit(null); }
-                if (s.cap > d.n) { showCapLimit(d.n); patch.cap = d.n; } if (s.criterion >= d.K)
-                patch.criterion = 0; if (d.K === 1 && s.w !== 1)
-                patch.w = 1; const parts = s.focus.split(','); if (s.focus !== 'auto' && (parts.length !== 2 || parts.some(id => !d.ids.includes(id))))
-                patch.focus = 'auto'; if (Object.keys(patch).length) {
-                ctx.set(patch);
-                return;
-            } choose.set(s.case); tau.set(s.tau); cap.input.max = String(d.n); cap.set(s.cap); weight.root.hidden = d.K === 1; weight.set(s.w); view.set(s.view); criterion.root.hidden = d.K === 1; criterion.set(s.criterion); criterion.inputs.forEach((input, k) => { input.parentElement.querySelector('span').textContent = d.criterionLabels[k] ?? 'Inactive criterion'; }); budgets.forEach((b, k) => { b.root.hidden = k >= d.K; b.set(k === 0 ? s.qa : s.qb); }); const mine = ++generation; current = null; budgetStrip.hidden = true; ctx.root.setAttribute('aria-busy', 'true'); note.textContent = 'Computing the declared family. Any results still visible are from the previous completed setting; budget settings do not reselect the report…'; refreshExportButtons(); if (timer !== null)
-                ctx.win.clearTimeout(timer); timer = ctx.win.setTimeout(() => { timer = null; if (closed || mine !== generation)
-                return; try {
-                const m = designerModel(s);
-                if (closed || mine !== generation)
+            function render(s, info) {
+                if (info?.reason === 'disclosure')
                     return;
-                current = m;
-                draw(m, s);
-                note.textContent = 'Report ready. Check its family and source before exporting.';
-            }
-            catch (error) {
-                note.textContent = 'This setting could not be computed: ' + error.message;
-                current = null;
-            }
-            finally {
-                if (!closed && mine === generation) {
-                    ctx.root.removeAttribute('aria-busy');
-                    refreshExportButtons();
+                const d = caseInput(s.case), patch = {};
+                if (lastCase !== s.case) { lastCase = s.case; showCapLimit(null); }
+                if (s.cap > d.n) { showCapLimit(d.n); patch.cap = d.n; }
+                if (s.criterion >= d.K)
+                    patch.criterion = 0;
+                if (d.K === 1 && s.w !== 1)
+                    patch.w = 1;
+                const parts = s.focus.split(',');
+                if (s.focus !== 'auto' && (parts.length !== 2 || parts.some(id => !d.ids.includes(id))))
+                    patch.focus = 'auto';
+                if (Object.keys(patch).length) {
+                    ctx.set(patch);
+                    return;
                 }
-            } }, 0); }
-            ctx.onCleanup(() => { closed = true; generation++; if (timer !== null)
-                ctx.win.clearTimeout(timer); });
+                choose.set(s.case);
+                tau.set(s.tau);
+                cap.input.max = String(d.n);
+                cap.set(s.cap);
+                weight.root.hidden = d.K === 1;
+                weight.set(s.w);
+                view.set(s.view);
+                criterion.root.hidden = d.K === 1;
+                criterion.set(s.criterion);
+                criterion.inputs.forEach((input, k) => { input.parentElement.querySelector('span').textContent = d.criterionLabels[k] ?? 'Inactive criterion'; });
+                budgets.forEach((b, k) => { b.root.hidden = k >= d.K; b.set(k === 0 ? s.qa : s.qb); });
+                ctx.root.setAttribute('aria-busy', 'true');
+                try {
+                    const m = designerModel(s);
+                    if (closed)
+                        return;
+                    current = m;
+                    errorNote.hidden = true;
+                    errorNote.textContent = '';
+                    draw(m, s);
+                }
+                catch (error) {
+                    errorNote.hidden = false;
+                    errorNote.textContent = 'This setting could not be computed: ' + error.message;
+                    current = null;
+                }
+                finally {
+                    if (!closed) {
+                        ctx.root.removeAttribute('aria-busy');
+                        refreshExportButtons();
+                    }
+                }
+            }
+            ctx.onCleanup(() => { closed = true; });
+            mobileControls(ctx, { primary: [choose.root, tau.root] });
             return { render };
         } });
 }

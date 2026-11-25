@@ -1,13 +1,10 @@
 ---
 title: "Common withholding cost and matched disclosure"
-subtitle: "3.8 · after the postrank theory book, ch. 16–17"
+subtitle: "3.8 · after the postrank theory book, ch. 22–23"
 description: "Risk comparisons at a common cost and error comparisons at a common disclosure level."
 ---
 
-There are two ways to compare reports that disclose different numbers of pairs. At a common withholding cost,
-risk includes both expected wrong directions and the cost of the pairs left unranked. At a common number of
-stated pairs, we compare expected wrong counts directly. We apply both comparisons to the same rules under
-one posterior. In the thirty-unit example, the comparison family consists of contiguous cuts of one order.
+Rules that disclose different numbers of pairs can be compared two ways: by total risk at a common withholding price τ, or by expected wrong directions at matched disclosure N under one posterior.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -19,23 +16,22 @@ one posterior. In the thirty-unit example, the comparison family consists of con
 
 ## Numerical illustrations {#what-to-try}
 
-- **Same τ, .20.** Posterior-mean tiers state 21 pairs with risk .1612, while the best report states 17 with risk
-  .1455. The solid and dashed lines have the same slope. The lower line has lower risk at this τ.
-- **Same N, eight units.** The tiers' gap is .1634 at N 21. The diamond is a frontier mixture, while the square
-  marks the best single report at that N. The rank strip and table compare risk and gap side by side.
-- **Thirty units, one order.** The capped family has 436 reports. Posterior-mean tiers state 300 pairs with E 48.31.
-  The boundary gives the lowest expected wrong count available among cuts of this order.
-- **Thirty units, same τ.** Without the cap, the family contains 536,870,912 contiguous cuts of the posterior-mean order. There is no enumerated cloud here. Both comparison modes use the same units.
-- **Flags outside the order.** The flag report is outside this family: it still has an evaluated risk, but no matched-disclosure
-  benchmark in this order family. The hollow mark records this restriction.
-- **All-withheld.** N is 0 and the risk at τ .20 is .2000. Its fraction of stated pairs that are wrong is undefined.
+- **Same τ, .20.** Posterior-mean tiers state 21 pairs with risk .161, while the best report states 17 pairs with risk .146.
+- **Same N, eight units.** At matched disclosure N 21, posterior-mean tiers leave excess-error gap .163 above H(21).
+- **Thirty units, one order.** Among 436 three-grade cuts, posterior-mean tiers state 300 pairs with E 48.3 on the order boundary.
+- **Thirty units, same τ.** Without the grade cap, the order family spans 536,870,912 contiguous cuts of the posterior-mean order.
+- **Flags outside the order.** Evidence flags lie outside this family: risk is still evaluated, without an order-family benchmark.
+- **All-withheld.** Disclosing 0 pairs gives risk .200 at τ .20, with undefined wrong share among stated pairs.
 
-::: {.callout-note appearance="simple"}
+<details>
+<summary>Scope and posterior notes</summary>
+
 We evaluate the rules under the same normal posterior. The flags use the mean of all thirty estimates as their
 reference. For thirty units, the boundary comes from the hull of contiguous cuts in the given order. The
 withholding cost determines the loss, and the report family determines which benchmarks are available. An
 allocation or classification decision would require its own objective.
-:::
+
+</details>
 
 ::: {.callout-note collapse="true" title="In postrank"}
 
@@ -43,6 +39,7 @@ The package's synthetic `pr_example_gaussian` poverty example uses its own thirt
 grades, this prints quantile cuts with N 337 and risk .1758, versus optimal cuts with N 303 and risk .1603. The risks correspond to different N; H(m) is not a package output.
 
 ```r
+library(postrank)
 w <- c(poverty=1, frl=0, snap=0); s <- postrank_settings(weights=w, tau=.25, G_max=4L); sc <- pr_example_gaussian$means[, "poverty"]
 sapply(c("quantile", "optimal"), function(r) unlist(postrank_cuts(sc, pr_example_gaussian, s, direction="descending", rule=r)$evaluation[c("N", "primary_risk")]))
 ```
@@ -52,3 +49,5 @@ sapply(c("quantile", "optimal"), function(r) unlist(postrank_cuts(sc, pr_example
 Standalone: [open this app](../../embed/same-tau-or-same-n.html), for example `?preset=thirty&theme=dark`.
 
 Related applications: [Comparison at matched disclosure](rule-comparison.html) · [The error–disclosure frontier](../grades/frontier.html).
+
+Theory book · [Comparing reports at matched disclosure](https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier) · [Comparator definitions and scope](https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-fair-comparator-framework).

@@ -1,18 +1,282 @@
 // Full v1 S-01 shared model and drawing implementation, split into four v3 case apps.
 // Source views, cut controls, tables and keyboard figures are retained; course gates are removed.
-import { appLink, createWidget } from "../shared/base.js";
-import { gradeColors, labelOn, numText, plot } from "../shared/chart.js";
-import { formatCount, formatExpectedCount, formatGrades, formatPercent, formatProb, formatRisk, formatSci, formatSetting, formatShare, formatSig, formatSizes } from "../shared/format.js";
-import { captionNode, exposeResult, familyNameNode, familySizeNode, labelNode } from "../shared/labels.js";
+import { appLink, createWidget } from "../base.js";
+import { gradeColors, labelOn, numText, placeDirectLabels, plot, svgScene } from "../chart.js";
+import { formatCount, formatExpectedCount, formatGrades, formatPercent, formatProb, formatReadoutExpected, formatReadoutRisk, formatRisk, formatSci, formatSetting, formatShare, formatSig, formatSizes, tickLabel } from "../format.js";
+import { captionNode, exposeResult, familyNameNode, familySizeNode, labelNode } from "../labels.js";
+import { ro } from "../readout.js";
 import {
   bestReports, cutGrade, disclosure, evaluateReport, exactOptimum, fixedOrderDP, lowerHull, matchedDisclosure, pairCount,
   relationChange, reportCloud, reportsAtN, ruleGap, scoreOrder, tauPath,
-} from "../pr-core.js";
+} from "../../pr-core.js";
 import { fill } from "./report-card.js";
-import CDE from "../../data/released/case-cde.json" with { type: "json" };
-import TAUPATH from "../../data/released/cde-taupath.json" with { type: "json" };
+import CDE from "../../../data/released/case-cde.json" with { type: "json" };
+import TAUPATH from "../../../data/released/cde-taupath.json" with { type: "json" };
 
-export const CDE_COMMON_CSS = '.prx-cd .prx-predict legend,\n.prx-cd .prx-radio-group legend {\n  font-size: 1em;\n  line-height: inherit;\n}\n\n.prx-cd .prx-predict .prx-radio {\n  display: flex;\n  font-weight: 400;\n}\n\n.prx-cd .prx-controls {\n  align-items: flex-start;\n}\n\n.prx-cd .prx-cd-inline .prx-radio {\n  display: inline-flex;\n  margin-right: 1rem;\n  font-weight: 400;\n}\n\n.prx-cd .prx-cd-pairpick {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem 1rem;\n}\n\n/* --- the setting --- */\n.prx-cd .prx-cd-settings {\n  margin: 0 0 0.75rem;\n  padding: 0.5rem 0.75rem;\n  background: var(--prx-bg);\n  border-left: 4px solid var(--prx-border-strong);\n  border-radius: var(--prx-radius, 6px);\n}\n\n.prx-cd .prx-cd-settings p {\n  margin: 0 0 0.25rem;\n}\n\n.prx-cd .prx-cd-settings .prx-cd-heading {\n  color: var(--prx-fg-heading);\n}\n\n.prx-cd .prx-cd-settings .prx-cd-note {\n  color: var(--prx-fg-muted);\n}\n\n/* --- boxes --- */\n.prx-cd .prx-cd-heading {\n  margin: 0 0 0.25rem;\n  font-size: 1em;\n  font-weight: 600;\n  color: var(--prx-plot-fg);\n}\n\n.prx-cd .prx-cd-box {\n  margin: 0.75rem 0 0;\n  padding: 0.5rem 0.75rem 0.75rem;\n  background: var(--prx-plot-bg);\n  color: var(--prx-plot-fg);\n  border: 1px solid var(--prx-border);\n  border-radius: var(--prx-radius, 6px);\n  min-width: 0;\n}\n\n.prx-cd .prx-cd-box p {\n  margin: 0 0 0.3rem;\n}\n\n.prx-cd .prx-cd-box .prx-cd-heading:not(:first-child) {\n  margin-top: 0.75rem;\n}\n\n.prx-cd .prx-cd-note {\n  margin: 0.4rem 0 0;\n  font-size: 0.9em;\n  color: var(--prx-plot-muted);\n}\n\n.prx-cd .prx-cd-cuts {\n  font-weight: 600;\n}\n\n.prx-cd .prx-cd-school {\n  font-weight: 600;\n}\n\n.prx-cd .prx-cd-groups {\n  font-weight: 400;\n  overflow-wrap: anywhere;\n}\n\n/* stands in the place of a box while its question waits */\n.prx-cd .prx-cd-wait {\n  margin: 0.75rem 0 0;\n  padding: 0.6rem 0.75rem;\n  text-align: center;\n  color: var(--prx-fg-muted);\n  border: 1px dashed var(--prx-border-strong);\n  border-radius: var(--prx-radius, 6px);\n}\n\n.prx-cd .prx-cd-card-chart,\n.prx-cd .prx-cd-cloud-chart,\n.prx-cd .prx-cd-path-chart {\n  min-width: 0;\n  max-width: 100%;\n}\n\n/* --- legends --- */\n.prx-cd .prx-cd-legend {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 0.25rem 0.8rem;\n  margin: 0.3rem 0 0;\n  font-size: 0.88em;\n}\n\n.prx-cd .prx-cd-key {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.3rem;\n}\n\n.prx-cd .prx-cd-swatch {\n  display: inline-block;\n  width: 0.9rem;\n  height: 0.9rem;\n  background: var(--prx-cd-swatch, var(--prx-grade-1));\n  border: 1px solid var(--prx-cell-border);\n  border-radius: 2px;\n  flex: 0 0 auto;\n}\n\n.prx-cd .prx-cd-orient {\n  margin: 0.3rem 0 0;\n  font-weight: 600;\n}\n\n.prx-cd .prx-cd-mark {\n  display: inline-block;\n  width: 0.8rem;\n  height: 0.8rem;\n  flex: 0 0 auto;\n}\n\n.prx-cd .prx-cd-mark-hull,\n.prx-cd .prx-cd-mark-steps {\n  height: 0;\n  width: 1.2rem;\n  border-top: 2px solid var(--prx-plot-fg);\n}\n\n.prx-cd .prx-cd-mark-steps {\n  border-top-color: var(--prx-plot-muted);\n}\n\n.prx-cd .prx-cd-mark-you {\n  background: var(--prx-plot-fg);\n  transform: rotate(45deg) scale(0.75);\n}\n\n.prx-cd .prx-cd-mark-tert {\n  width: 0;\n  height: 0;\n  border-left: 0.45rem solid transparent;\n  border-right: 0.45rem solid transparent;\n  border-bottom: 0.8rem solid var(--prx-plot-fg);\n}\n\n.prx-cd .prx-cd-mark-opt {\n  border: 2px solid var(--prx-plot-fg);\n}\n\n.prx-cd .prx-cd-mark-solve {\n  border-radius: 50%;\n  background: var(--prx-plot-fg);\n}\n\n/* --- tables --- */\n.prx-cd .prx-cd-scroll {\n  max-width: 100%;\n  overflow-x: auto;\n}\n\n.prx-cd .prx-cd-table {\n  border-collapse: collapse;\n  font-size: 0.92em;\n}\n\n.prx-cd .prx-cd-table caption {\n  caption-side: top;\n  padding: 0 0 0.3rem;\n  color: var(--prx-plot-muted);\n  font-size: 0.95em;\n  text-align: left;\n}\n\n.prx-cd .prx-cd-table th,\n.prx-cd .prx-cd-table td {\n  padding: 0.2rem 0.6rem;\n  border-bottom: 1px solid var(--prx-plot-grid);\n  text-align: left;\n}\n\n.prx-cd .prx-cd-table thead th {\n  font-weight: 600;\n  vertical-align: bottom;\n  white-space: nowrap;\n}\n\n.prx-cd .prx-cd-notice {\n  margin: 0.75rem 0 0;\n  font-size: 0.85em;\n  color: var(--prx-fg-muted);\n}\n\n@media (max-width: 30rem) {\n  .prx-cd .prx-cd-inline .prx-radio {\n    display: flex;\n    margin-right: 0;\n  }\n\n  .prx-cd .prx-cd-table th,\n  .prx-cd .prx-cd-table td {\n    padding: 0.2rem 0.3rem;\n  }\n}\n.prx-cd .prx-cd-scroll { min-width:0; }\n.prx-cd .prx-cd-table { min-width:30rem; }\n';
+export const CDE_COMMON_CSS = `.prx-cd .prx-predict legend,
+.prx-cd .prx-radio-group legend {
+  font-size: 1em;
+  line-height: inherit;
+}
+
+.prx-cd .prx-predict .prx-radio {
+  display: flex;
+  font-weight: 400;
+}
+
+.prx-cd .prx-controls {
+  align-items: flex-start;
+}
+
+.prx-cd .prx-cd-inline .prx-radio {
+  display: inline-flex;
+  margin-right: 1rem;
+  font-weight: 400;
+}
+
+.prx-cd .prx-cd-pairpick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+/* --- the setting --- */
+.prx-cd .prx-cd-settings {
+  margin: 0 0 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--prx-bg);
+  border-left: 4px solid var(--prx-border-strong);
+  border-radius: var(--prx-radius, 6px);
+}
+
+.prx-cd .prx-cd-settings p {
+  margin: 0 0 0.25rem;
+}
+
+.prx-cd .prx-cd-settings .prx-cd-heading {
+  color: var(--prx-fg-heading);
+}
+
+.prx-cd .prx-cd-settings .prx-cd-note {
+  color: var(--prx-fg-muted);
+}
+
+/* --- boxes (always carry paper-surface tokens so dark embeds keep >= 4.5:1 contrast, B14) --- */
+.prx-cd .prx-cd-heading {
+  margin: 0 0 0.25rem;
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--prx-fg-heading);
+}
+
+.prx-cd .prx-cd-box {
+  color-scheme: light;
+  --prx-bg: var(--prx-plot-bg);
+  --prx-bg-raised: var(--prx-plot-bg);
+  --prx-bg-sunken: var(--prx-plot-grid);
+  --prx-fg: var(--prx-plot-fg);
+  --prx-fg-heading: var(--prx-plot-fg);
+  --prx-fg-muted: var(--prx-plot-muted);
+  --prx-link: var(--prx-plot-fg);
+  --prx-link-hover: var(--prx-plot-muted);
+  --prx-border: var(--prx-plot-grid);
+  --prx-border-strong: var(--prx-cell-border);
+  --prx-err-text: #b04800;
+  --prx-wh-text: #6b6b6b;
+  --prx-est-text: #b04800;
+  --prx-post-text: #1f3a5f;
+  margin: 0.75rem 0 0;
+  padding: 0.5rem 0.75rem 0.75rem;
+  background: var(--prx-plot-bg);
+  color: var(--prx-plot-fg);
+  border: 1px solid var(--prx-border);
+  border-radius: var(--prx-radius, 6px);
+  min-width: 0;
+}
+
+.prx-cd .prx-cd-box .prx-cd-heading {
+  color: var(--prx-plot-fg);
+}
+
+.prx-cd .prx-cd-box p {
+  margin: 0 0 0.3rem;
+}
+
+.prx-cd .prx-cd-box .prx-cd-heading:not(:first-child) {
+  margin-top: 0.75rem;
+}
+
+.prx-cd .prx-err {
+  color: var(--prx-err-text);
+}
+
+.prx-cd .prx-wh {
+  color: var(--prx-wh-text);
+}
+
+.prx-cd .prx-cd-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.9em;
+  color: var(--prx-fg-muted);
+}
+
+.prx-cd .prx-cd-cuts {
+  font-weight: 600;
+}
+
+.prx-cd .prx-cd-school {
+  font-weight: 600;
+}
+
+.prx-cd .prx-cd-groups {
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+/* stands in the place of a box while its question waits */
+.prx-cd .prx-cd-wait {
+  margin: 0.75rem 0 0;
+  padding: 0.6rem 0.75rem;
+  text-align: center;
+  color: var(--prx-fg-muted);
+  border: 1px dashed var(--prx-border-strong);
+  border-radius: var(--prx-radius, 6px);
+}
+
+.prx-cd .prx-cd-card-chart,
+.prx-cd .prx-cd-cloud-chart,
+.prx-cd .prx-cd-path-chart {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* --- legends --- */
+.prx-cd .prx-cd-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.8rem;
+  margin: 0.3rem 0 0;
+  font-size: 0.88em;
+}
+
+.prx-cd .prx-cd-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.prx-cd .prx-cd-swatch {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: var(--prx-cd-swatch, var(--prx-grade-1));
+  border: 1px solid var(--prx-cell-border);
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.prx-cd .prx-cd-orient {
+  margin: 0.3rem 0 0;
+  font-weight: 600;
+}
+
+.prx-cd .prx-cd-mark {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  flex: 0 0 auto;
+}
+
+.prx-cd .prx-cd-mark-hull,
+.prx-cd .prx-cd-mark-steps {
+  height: 0;
+  width: 1.2rem;
+  border-top: 2px solid var(--prx-fg);
+}
+
+.prx-cd .prx-cd-mark-steps {
+  border-top-color: var(--prx-fg-muted);
+}
+
+.prx-cd .prx-cd-mark-you {
+  background: var(--prx-fg);
+  transform: rotate(45deg) scale(0.75);
+}
+
+.prx-cd .prx-cd-mark-tert {
+  width: 0;
+  height: 0;
+  border-left: 0.45rem solid transparent;
+  border-right: 0.45rem solid transparent;
+  border-bottom: 0.8rem solid var(--prx-fg);
+}
+
+.prx-cd .prx-cd-mark-opt {
+  border: 2px solid var(--prx-fg);
+}
+
+.prx-cd .prx-cd-mark-solve {
+  border-radius: 50%;
+  background: var(--prx-fg);
+}
+
+/* --- tables --- */
+.prx-cd .prx-cd-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.prx-cd .prx-cd-table {
+  border-collapse: collapse;
+  font-size: 0.92em;
+  min-width: 30rem;
+}
+
+.prx-cd .prx-cd-table caption {
+  caption-side: top;
+  padding: 0 0 0.3rem;
+  color: var(--prx-fg-muted);
+  font-size: 0.95em;
+  text-align: left;
+}
+
+.prx-cd .prx-cd-box .prx-cd-table caption {
+  color: var(--prx-plot-muted);
+}
+
+.prx-cd .prx-cd-table th,
+.prx-cd .prx-cd-table td {
+  padding: 0.2rem 0.6rem;
+  border-bottom: 1px solid var(--prx-border);
+  text-align: left;
+}
+
+.prx-cd .prx-cd-table thead th {
+  font-weight: 600;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.prx-cd .prx-cd-notice {
+  margin: 0.75rem 0 0;
+  font-size: 0.85em;
+  color: var(--prx-fg-muted);
+}
+
+@media (max-width: 30rem) {
+  .prx-cd .prx-cd-inline .prx-radio {
+    display: flex;
+    margin-right: 0;
+  }
+
+  .prx-cd .prx-cd-table th,
+  .prx-cd .prx-cd-table td {
+    padding: 0.2rem 0.3rem;
+  }
+}
+`;
 
 const CDE_RESULT_CSS = `
 .prx-cd .prx-cd-primary-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:.65rem;align-items:start}
@@ -22,10 +286,11 @@ const CDE_RESULT_CSS = `
 .prx-cd .prx-cd-cut-controls .prx-slider{max-width:none}
 .prx-cd .prx-cd-quick p{margin:.32rem 0}
 .prx-cd .prx-cd-quick .prx-cd-note{margin:.34rem 0}
-.prx-cd .prx-cd-cue{font-size:.82rem;margin:.25rem 0;color:var(--prx-plot-muted)}
-.prx-cd .prx-cd-cue-chips{display:flex;flex-wrap:wrap;gap:.25rem .45rem}
-.prx-cd .prx-cd-cue-chips > span{background:var(--prx-plot-grid);padding:.12rem .35rem;border-radius:.2rem}
+.prx-cd .prx-cd-cue{font-size:.82rem;margin:.25rem 0;color:var(--prx-fg-muted)}
+.prx-cd .prx-cd-cue-chips{display:flex;flex-wrap:wrap;gap:.25rem .45rem;margin:.2rem 0}
+.prx-cd .prx-cd-cue-chips > span{background:var(--prx-bg-sunken);color:var(--prx-fg);border:1px solid var(--prx-border);padding:.12rem .4rem;border-radius:.25rem;font-size:.82rem}
 .prx-cd .prx-cd-extras{margin:.35rem 0}
+.prx-cd .prx-cd-extras.prx-light-panel{padding:.35rem .6rem;border:1px solid var(--prx-border);border-radius:var(--prx-radius,6px)}
 .prx-cd .prx-cd-pair-controls{display:flex;flex-wrap:wrap;gap:.45rem 1rem;align-items:end}
 .prx-cd .prx-cd-pair-controls .prx-select{min-width:4rem}
 .prx-cd .prx-cd-pair-controls .prx-cd-pairpick{width:auto;flex-basis:auto}
@@ -44,7 +309,7 @@ const CDE_RESULT_CSS = `
 .prx-cd .prx-cd-ladder-dot{position:absolute;left:var(--position);top:50%;transform:translate(-50%,-50%);height:.58rem;width:.58rem;background:var(--prx-plot-fg);border-radius:50%}
 .prx-cd .prx-cd-ladder-row > :last-child{text-align:right;font-variant-numeric:tabular-nums}
 .prx-cd .prx-cd-toplist{margin-top:.55rem}
-.prx-cd .prx-cd-top-row{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(7rem,1fr);gap:.5rem;padding:.35rem .1rem;border-bottom:1px solid var(--prx-plot-grid);font-size:.87rem}
+.prx-cd .prx-cd-top-row{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(7rem,1fr);gap:.5rem;padding:.35rem .1rem;border-bottom:1px solid var(--prx-border);font-size:.87rem}
 .prx-cd .prx-cd-top-row p{margin:0}
 .prx-cd .prx-cd-focus-chart{cursor:pointer}
 @media(min-width:661px){.prx-cd .prx-cd-pair-grid > .prx-cd-focus-card{order:-1}}
@@ -54,6 +319,37 @@ const CDE_RESULT_CSS = `
 @media(max-width:660px){
  .prx-cd .prx-cd-primary-grid,.prx-cd .prx-cd-view-matched{grid-template-columns:minmax(0,1fr)}
  .prx-cd .prx-cd-cut-controls{gap:.35rem}
+}
+/* --- frame: "v2" stage & toolbar refinements --- */
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-toolbar > .prx-controls{align-items:flex-end;flex:0 1 auto}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-toolbar > .prx-controls > .prx-cd-cut-controls{display:grid;grid-template-columns:repeat(2,minmax(6.25rem,8.75rem));gap:.35rem .7rem;width:auto}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-toolbar > .prx-controls > .prx-slider{min-width:10.5rem;max-width:13.25rem}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage > .prx-cd-stage-inner > .prx-cd-box{margin:0;padding:0;border:0;border-radius:0;background:transparent}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-cd-cut-strip{margin:.3rem 0 0;padding-top:.3rem;border-top:1px solid var(--prx-border);font-size:.86rem;line-height:1.35}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-cd-cut-strip p{margin:.15rem 0}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage > .prx-cd-pair-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:.7rem;align-items:start}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage > .prx-cd-pair-grid > *{order:0;margin:0;min-width:0}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage .prx-cd-pair-right{display:flex;flex-direction:column;gap:.5rem;min-width:0}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage .prx-cd-pair-right > *{order:0;margin:0}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage .prx-cd-ladder-row{margin:.24rem 0}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage .prx-cd-ladder-track{height:2px;background:var(--prx-border-strong)}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage .prx-cd-ladder-dot{width:.62rem;height:.62rem;border:1.5px solid var(--prx-plot-bg)}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-cd-top-chart{min-width:0;max-width:100%;margin-top:.15rem}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage > .prx-cd-path-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:.5rem}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-stage > .prx-cd-path-grid > *{margin:0;min-width:0}
+.prx-widget[data-prx-frame="v2"].prx-cd .prx-cd-path-y-label{margin:0 0 .15rem}
+@media(max-width:660px){
+ .prx-widget[data-prx-frame="v2"].prx-cd .prx-stage > .prx-cd-pair-grid{grid-template-columns:minmax(0,1fr);gap:.45rem}
+ .prx-widget[data-prx-frame="v2"].prx-cd .prx-stage > .prx-cd-path-grid{gap:.4rem}
+}
+@media(max-width:30rem){
+ .prx-widget[data-prx-frame="v2"].prx-cd .prx-toolbar{gap:.35rem .5rem;margin-bottom:.35rem}
+ .prx-widget[data-prx-frame="v2"].prx-cd .prx-toolbar > .prx-controls{width:100%}
+ .prx-widget[data-prx-frame="v2"].prx-cd .prx-toolbar > .prx-controls > .prx-cd-cut-controls{width:100%;grid-template-columns:repeat(2,minmax(0,1fr));gap:.25rem .6rem}
+ .prx-widget[data-prx-frame="v2"].prx-cd .prx-toolbar > .prx-controls > .prx-slider{max-width:none;width:100%}
+ .prx-widget[data-prx-frame="v2"].prx-cd > .prx-readout{margin-bottom:.45rem;padding:.3rem .55rem}
+ .prx-widget[data-prx-frame="v2"].prx-cd .prx-stage{padding:.45rem .5rem}
+ .prx-widget[data-prx-frame="v2"].prx-cd .prx-stage .prx-cd-box{padding:.4rem .55rem .45rem}
 }
 `;
 
@@ -78,9 +374,9 @@ export const CONFIG = Object.freeze({
   heavyPerRender: 1,
   tolerance: 1e-9,
   digits: Object.freeze({ p: 3, risk: 6, pi: 4, error: 4, sig: 3, tauSig: 2 }),
-  card: Object.freeze({ rowPx: 24, marginTop: 8, marginBottom: 40, marginLeft: 70, marginRight: 14, stripePx: 20, nameDx: 6, dot: 4, line: 3, ticks: 5, narrowPx: 420, narrowTicks: 4, pad: 0.06, bandOpacity: 0.55, dash: "5,3" }),
-  cloud: Object.freeze({ height: 240, marginLeft: 48, marginRight: 16, marginTop: 14, marginBottom: 38, zoom: 2.1, dot: 3, mark: 6, ticks: 5 }),
-  path: Object.freeze({ height: 200, marginLeft: 44, marginRight: 16, marginTop: 14, marginBottom: 38, dot: 4, current: 6, ticks: 5, nTicks: Object.freeze([0, 27, 45, 66]) }),
+  card: Object.freeze({ rowPx: 24, marginTop: 8, marginBottom: 40, marginLeft: 74, marginRight: 18, stripePx: 20, nameDx: 6, dot: 4, line: 3, ticks: 5, narrowPx: 420, narrowTicks: 4, pad: 0.06, bandOpacity: 0.55, dash: "5,3" }),
+  cloud: Object.freeze({ height: 240, marginLeft: 48, marginRight: 22, marginTop: 28, marginBottom: 40, zoom: 2.1, dot: 3.5, mark: 6, ticks: 5 }),
+  path: Object.freeze({ height: 200, marginLeft: 44, marginRight: 22, marginTop: 24, marginBottom: 38, dot: 4, current: 6, ticks: 5, nTicks: Object.freeze([0, 27, 45, 66]) }),
   text: Object.freeze({
     missing: "The California data did not load, so this widget cannot show the schools.",
     viewLegend: "Show",
@@ -89,6 +385,7 @@ export const CONFIG = Object.freeze({
     cut1Label: "Cut 1: after this many schools of the posterior-mean order",
     cut2Label: "Cut 2: after this many schools (equal cuts give two grades)",
     nLabel: "Compare reports that state this many directions (N)",
+    nLabelV2: "Compare reports at disclosure N",
     fullLabel: "Show the largest E at each N too",
     pairLabel1: "School",
     pairLabel2: "against school",
@@ -280,14 +577,15 @@ const sameList = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]
 
 export const CDE_VIEWS = Object.freeze({ 'cde-cuts': 'cuts', 'cde-one-disclosure': 'matched', 'cde-pair': 'pair', 'cde-tau-path': 'path' });
 
-export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label } = {}) {
+export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label, frame = "result-first", readout3Sig = frame === "v2" } = {}) {
   if (CDE_VIEWS[name] !== view || !CONFIG.views.includes(view)) throw new TypeError("A matching CDE app name and fixed view are required");
+  const isV2 = frame === "v2";
   const handle = createWidget(el, spec, {
     name,
     label,
     css: CDE_COMMON_CSS + CDE_RESULT_CSS + "\n.prx-cd .prx-controls { row-gap:.2rem; }\n.prx-cd .prx-cd-card { padding-top:.15rem; }\n",
     className: CONFIG.className,
-    layout: "result-first",
+    ...(isV2 ? { frame: "v2" } : { layout: frame }),
     keys: {
       tau: { type: "number", ...CONFIG.tau, snap: true },
       cuts: { type: "custom", value: [...(view === "pair" || view === "path" ? CONFIG.cuts.archived : CONFIG.cuts.value)], parse: (v, prev) => parseCuts(v, prev) },
@@ -297,6 +595,7 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
     },
     build(ctx) {
       const { h } = ctx;
+      const ro3 = ro(ctx);
       const model = readModel(ctx.win);
       if (!model) {
         ctx.charts.append(h("p", { class: "prx-cd-missing", text: T.missing }));
@@ -371,12 +670,12 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           label: "Cut", min: CONFIG.cuts.min, max: n - 1, step: 1, value: ctx.state.cuts[k], name: `cut${k + 1}`, format: cutFormat,
           onInput: (v) => { const c = [...ctx.state.cuts]; c[k] = v; ctx.set({ cuts: c }); },
         });
-        slider.root.querySelector("label").replaceChildren("Cut ", count(k + 1), view === "cuts" ? "" : label.slice(5));
+        slider.root.querySelector("label").replaceChildren("Cut ", count(k + 1), view === "cuts" || (isV2 && view === "matched") ? "" : label.slice(5));
         return slider;
       };
       const cut1 = cutSlider(0, T.cut1Label);
       const cut2 = cutSlider(1, T.cut2Label);
-      const nSlider = ctx.slider({ label: T.nLabel, ...CONFIG.n, step: 1, value: ctx.state.n, name: "n", format: (v) => formatCount(v), onInput: (v) => ctx.set({ n: v }) });
+      const nSlider = ctx.slider({ label: isV2 && view === "matched" ? T.nLabelV2 : T.nLabel, ...CONFIG.n, step: 1, value: ctx.state.n, name: "n", format: (v) => formatCount(v), onInput: (v) => ctx.set({ n: v }) });
       const fullToggle = ctx.toggle({ label: T.fullLabel, checked: ctx.state.full, name: "full", onChange: (v) => ctx.set({ full: v }) });
       const schoolOptions = labels.map((l) => ({ value: l, label: l }));
       const pairA = ctx.select({ label: T.pairLabel1, options: schoolOptions, value: ctx.state.pair[0], name: "pair-a", onChange: (v) => ctx.set({ pair: [v, ctx.state.pair[1]] }) });
@@ -384,20 +683,34 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
       const pairBox = h("div", { class: "prx-control prx-cd-pairpick" }, pairA.root, pairB.root);
       const cutControls = h("div", { class: "prx-cd-cut-controls" }, cut1.root, cut2.root);
       if (view === "cuts") {
-        const settings = ctx.disclosure({ name: "settings", title: "Settings", placement: "controls" });
+        const settings = isV2 ? ctx.settingsBox("Settings") : ctx.disclosure({ name: "settings", title: "Settings", placement: "controls" });
         settings.body.append(tauSlider.root);
-        ctx.afterPresets(cutControls);
+        if (isV2) ctx.controls.append(cutControls);
+        else ctx.afterPresets(cutControls);
         ctx.primaryControl(cutControls);
       } else if (view === "matched") {
-        const settings = ctx.disclosure({ name: "settings", title: "Settings", placement: "controls" });
-        settings.body.append(tauSlider.root, cutControls);
-        ctx.afterPresets(h("div", { class: "prx-cd-matched-controls" }, nSlider.root, fullToggle.root));
+        const settings = isV2 ? ctx.settingsBox("Settings") : ctx.disclosure({ name: "settings", title: "Settings", placement: "controls" });
+        if (isV2) {
+          settings.body.append(fullToggle.root, tauSlider.root, cutControls);
+          ctx.controls.append(nSlider.root);
+        } else {
+          settings.body.append(tauSlider.root, cutControls);
+          ctx.afterPresets(h("div", { class: "prx-cd-matched-controls" }, nSlider.root, fullToggle.root));
+        }
         ctx.primaryControl(nSlider.root);
       } else if (view === "pair") {
-        ctx.controls.append(h("div", { class: "prx-cd-pair-controls" }, pairBox, tauSlider.root));
-        ctx.primaryControl(pairBox);
+        if (isV2) {
+          const settings = ctx.settingsBox("Settings");
+          settings.body.append(pairBox, cutControls);
+          ctx.controls.append(tauSlider.root);
+          ctx.primaryControl(tauSlider.root);
+        } else {
+          ctx.controls.append(h("div", { class: "prx-cd-pair-controls" }, pairBox, tauSlider.root));
+          ctx.primaryControl(pairBox);
+        }
       } else {
-        ctx.afterPresets(tauSlider.root);
+        if (isV2) ctx.controls.append(tauSlider.root);
+        else ctx.afterPresets(tauSlider.root);
         ctx.primaryControl(tauSlider.root);
       }
 
@@ -420,11 +733,15 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
       const cutsWrap = h("div", { class: "prx-cd-view-cuts" }, compareBox, relBox);
       const cloudChart = h("div", { class: "prx-cd-cloud-chart" });
       const cloudKey = ctx.part("legend", h("p", { class: "prx-cd-legend" }));
+      const matchedGuide = h("p", { class: "prx-cd-note" });
       const matchedBody = h("div", { class: "prx-cd-matched-body" });
-      const matchedBox = h("section", { class: "prx-cd-box prx-light-panel prx-cd-matched", "aria-label": T.matchedHeading }, title(T.matchedHeading), cloudChart, cloudKey, matchedBody);
+      const matchedBox = h("section", { class: "prx-cd-box prx-light-panel prx-cd-matched", "aria-label": T.matchedHeading }, title(T.matchedHeading), cloudChart, cloudKey, ...(isV2 ? [matchedGuide] : [matchedBody]));
       const histogramChart = h("div", { class: "prx-cd-cloud-chart" });
       const histogramBody = h("div");
       const histogramBox = h("section", { class: "prx-cd-box prx-light-panel", "aria-label": "Complete distribution at the tertiles' disclosure" }, title("All reports at the tertiles’ disclosure"), histogramChart, histogramBody);
+      const histogramTable = h("div");
+      const referenceSlot = h("div");
+      const selectedDistribution = h("section", { class: "prx-cd-box prx-light-panel", "aria-label": "Distribution at the selected disclosure" });
       const matchedWrap = h("div", { class: "prx-cd-view-matched" }, matchedBox, histogramBox);
       const pairBody = h("div", { class: "prx-cd-pair-body" });
       const pairMore = h("div", { class: "prx-cd-pair-more" });
@@ -437,51 +754,101 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
       const pathBrief = h("p", { class: "prx-cd-note" }), latestStep = h("p", { class: "prx-cd-note" });
       const archivedPathTable = h("div");
       const originalSummary = h("p");
-      const cutSummary = h("section", { class: "prx-cd-box prx-light-panel prx-cd-quick" });
+      const cutSummary = isV2 && view === "cuts"
+        ? h("div", { class: "prx-cd-cut-strip" })
+        : h("section", { class: "prx-cd-box prx-light-panel prx-cd-quick" });
       const cutCardKey = h("p", { class: "prx-cd-cue" });
       const optimumChart = h("div", { class: "prx-cd-optimum-chart" });
       const optimumLegend = h("div"), optimumNote = h("p", { class: "prx-cd-note" });
-      const optimumCardTitle = title("The optimum at the current τ");
+      const optimumCardTitle = title(isV2 ? "Optimum at current τ" : "The optimum at the current τ");
       const optimumCardCue = h("p", { class: "prx-cd-cue" });
       const optimumCard = h("section", { class: "prx-cd-box prx-light-panel prx-cd-focus-card" },
         optimumCardTitle, optimumCardCue, optimumChart);
       const pairLadder = h("section", { class: "prx-cd-box prx-light-panel prx-cd-quick" });
+      const pairTopChart = h("div", { class: "prx-cd-top-chart" });
       const pairTop = h("section", { class: "prx-cd-box prx-light-panel prx-cd-toplist" });
       const pairBoundaries = h("p", { class: "prx-cd-cue" }), pairBoundaryDetails = h("p", { class: "prx-cd-note" });
       const pairFourth = h("p", { class: "prx-cd-note" });
+      const pathStepCue = h("p", { class: "prx-cd-cue" });
       if (view === "cuts") {
         cardChart.before(cutCardKey);
-        const extras = h("div", { class: "prx-cd-extras prx-light-panel" }, legendSlot, cardNote);
-        ctx.charts.append(h("div", { class: "prx-cd-primary-grid" }, cardBox, cutSummary), extras);
-        ctx.primaryGraphic(cardChart);
-        const details = ctx.disclosure({ name: "details", title: "Report and relation details" });
-        details.body.append(originalSummary, resultBox, cutsWrap);
-        const method = ctx.disclosure({ name: "method", title: "Method and scope" });
-        method.body.append(settingsBox,
-          h("p", {}, "Cut ", count(1), T.cut1Label.slice(5)), h("p", {}, "Cut ", count(2), T.cut2Label.slice(5)));
+        if (isV2) {
+          cardBox.replaceChildren(title(T.cardHeading), cutCardKey, cardChart, cutSummary);
+          ctx.stage.append(h("div", { class: "prx-cd-stage-inner" }, cardBox));
+          ctx.primaryGraphic(cardChart);
+          const data = ctx.dataBox("Data, reports and pair changes");
+          data.body.append(h("div", { class: "prx-cd-extras prx-light-panel" }, legendSlot, cardNote), originalSummary, resultBox, cutsWrap);
+          const method = ctx.methodBox("Method and scope");
+          method.body.append(settingsBox,
+            h("p", {}, "Cut ", count(1), T.cut1Label.slice(5)), h("p", {}, "Cut ", count(2), T.cut2Label.slice(5)));
+        } else {
+          const extras = h("div", { class: "prx-cd-extras prx-light-panel" }, legendSlot, cardNote);
+          ctx.charts.append(h("div", { class: "prx-cd-primary-grid" }, cardBox, cutSummary), extras);
+          ctx.primaryGraphic(cardChart);
+          const details = ctx.disclosure({ name: "details", title: "Report and relation details" });
+          details.body.append(originalSummary, resultBox, cutsWrap);
+          const method = ctx.disclosure({ name: "method", title: "Method and scope" });
+          method.body.append(settingsBox,
+            h("p", {}, "Cut ", count(1), T.cut1Label.slice(5)), h("p", {}, "Cut ", count(2), T.cut2Label.slice(5)));
+        }
       } else if (view === "matched") {
-        ctx.charts.append(matchedWrap);
-        ctx.primaryGraphic(cloudChart);
-        ctx.disclosure({ name: "schools", title: "Schools and setting" }).body.append(originalSummary, cardBox, settingsBox, resultBox);
+        if (isV2) {
+          ctx.stage.append(matchedWrap);
+          ctx.primaryGraphic(cloudChart);
+          const data = ctx.dataBox("Data, distribution and school card");
+          data.body.append(matchedBody, referenceSlot, histogramTable, originalSummary, cardBox, resultBox);
+          const method = ctx.methodBox("Method and scope");
+          const maxN = disclosure(tertGrade).N;
+          method.body.append(settingsBox,
+            h("p", {}, ...filled(T.atMax, { n: () => count(maxN), cap: () => count(CONFIG.cap), n2: () => count(maxN) })),
+            h("p", { class: "prx-cd-note" }, "Cut ", count(1), T.cut1Label.slice(5), "; Cut ", count(2), T.cut2Label.slice(5), "."));
+        } else {
+          ctx.charts.append(matchedWrap, histogramTable);
+          ctx.primaryGraphic(cloudChart);
+          ctx.disclosure({ name: "schools", title: "Schools and setting" }).body.append(originalSummary, cardBox, settingsBox, resultBox);
+        }
       } else if (view === "pair") {
         optimumChart.classList.add("prx-cd-focus-chart");
         optimumCard.append(pairBoundaries);
-        ctx.charts.append(h("div", { class: "prx-cd-primary-grid prx-cd-pair-grid" },
-          h("div", { class: "prx-cd-pair-right" }, pairLadder, pairTop), optimumCard), pairFourth,
-          h("div", { class: "prx-cd-extras prx-light-panel" }, optimumLegend, optimumNote));
-        ctx.primaryGraphic(pairLadder);
-        ctx.disclosure({ name: "your-report", title: "Your report" }).body.append(cutControls, cardBox, resultBox);
-        ctx.disclosure({ name: "details", title: "Pair and report details" }).body.append(originalSummary, pairPanel, pairBoundaryDetails);
-        ctx.disclosure({ name: "method", title: "Method and scope" }).body.append(settingsBox);
+        if (isV2) {
+          pairTop.replaceChildren(title("Three lowest-risk reports"), pairTopChart);
+          const pairStage = h("div", { class: "prx-cd-primary-grid prx-cd-pair-grid" },
+            optimumCard, h("div", { class: "prx-cd-pair-right" }, pairTop, pairLadder));
+          ctx.stage.append(pairStage);
+          ctx.primaryGraphic(pairStage);
+          const data = ctx.dataBox("Data, pair and report details");
+          data.body.append(originalSummary, pairPanel, pairBoundaryDetails, cardBox, resultBox);
+          const method = ctx.methodBox("Method and scope");
+          method.body.append(settingsBox, pairFourth, h("div", { class: "prx-cd-extras prx-light-panel" }, optimumLegend, optimumNote));
+        } else {
+          ctx.charts.append(h("div", { class: "prx-cd-primary-grid prx-cd-pair-grid" },
+            h("div", { class: "prx-cd-pair-right" }, pairLadder, pairTop), optimumCard), pairFourth,
+            h("div", { class: "prx-cd-extras prx-light-panel" }, optimumLegend, optimumNote));
+          ctx.primaryGraphic(pairLadder);
+          ctx.disclosure({ name: "your-report", title: "Your report" }).body.append(cutControls, cardBox, resultBox);
+          ctx.disclosure({ name: "details", title: "Pair and report details" }).body.append(originalSummary, pairPanel, pairBoundaryDetails);
+          ctx.disclosure({ name: "method", title: "Method and scope" }).body.append(settingsBox);
+        }
       } else {
         pathPanel.replaceChildren(title(T.pathHeading), h("p", { class: "prx-cd-note prx-cd-path-y-label" }, T.pathAxisY),
           pathChart, pathKey, pathBrief);
-        ctx.charts.append(pathPanel, optimumCard, latestStep, h("div", { class: "prx-cd-extras prx-light-panel" }, optimumLegend, optimumNote));
-        ctx.primaryGraphic(pathChart);
-        ctx.disclosure({ name: "fixed", title: "Compare a fixed report" }).body.append(cutControls, originalSummary, cardBox, resultBox);
-        ctx.disclosure({ name: "steps", title: "Exact steps and boundary ties" }).body.append(pathChanges);
-        ctx.disclosure({ name: "archived", title: "Archived solves and exact path" }).body.append(pathBody, archivedPathTable);
-        ctx.disclosure({ name: "method", title: "Method and scope" }).body.append(settingsBox);
+        if (isV2) {
+          optimumCard.append(pathStepCue);
+          const pathStage = h("div", { class: "prx-cd-path-grid" }, pathPanel, optimumCard);
+          ctx.stage.append(pathStage);
+          ctx.primaryGraphic(pathStage);
+          const data = ctx.dataBox("Data, steps and archived solves");
+          data.body.append(latestStep, pathChanges, pathBody, archivedPathTable, cutControls, originalSummary, cardBox, resultBox);
+          const method = ctx.methodBox("Method and scope");
+          method.body.append(settingsBox, h("div", { class: "prx-cd-extras prx-light-panel" }, optimumLegend, optimumNote));
+        } else {
+          ctx.charts.append(pathPanel, optimumCard, latestStep, h("div", { class: "prx-cd-extras prx-light-panel" }, optimumLegend, optimumNote));
+          ctx.primaryGraphic(pathChart);
+          ctx.disclosure({ name: "fixed", title: "Compare a fixed report" }).body.append(cutControls, originalSummary, cardBox, resultBox);
+          ctx.disclosure({ name: "steps", title: "Exact steps and boundary ties" }).body.append(pathChanges);
+          ctx.disclosure({ name: "archived", title: "Archived solves and exact path" }).body.append(pathBody, archivedPathTable);
+          ctx.disclosure({ name: "method", title: "Method and scope" }).body.append(settingsBox);
+        }
       }
       if (!ctx.doc.querySelector?.('meta[name="quarto:offset"]')) ctx.root.append(h("p", { class: "prx-cd-notice", text: T.notice }));
 
@@ -562,12 +929,15 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         const half = CONFIG.half;
         const cutRows = cutSet(cuts).map((c) => ({ y: c - half }));
         const optimumCuts = compareGrade ? changesInOrder(compareGrade).map(cut => ({ y: cut - half })) : [];
-        const stripes = compareGrade ? [{ field: "grade", left: 1, right: 16 }, { field: "compareGrade", left: 18, right: 33 }] : [];
-        const rowPx = compact && narrow ? 18 : C.rowPx, height = Math.round(C.marginTop + C.marginBottom + n * rowPx);
+        const stripes = compareGrade ? [{ field: "grade", left: 2, right: 18 }, { field: "compareGrade", left: 20, right: 36 }] : [];
+        const rowPx = isV2 && view === "cuts" && chart === cardChart
+          ? (narrow ? 19.5 : 24)
+          : (compact ? (isV2 ? (narrow ? 17.5 : 19.5) : (narrow ? 20 : C.rowPx)) : C.rowPx);
+        const height = Math.round(C.marginTop + C.marginBottom + n * rowPx);
         if (interactive) pairCardGeometry = { height, margin: C.marginTop, rowPx };
         const sameGrade = highlighted.length === 2 && grade[highlighted[0]] === grade[highlighted[1]];
         const positions = highlighted.map(i => model.position[i]).sort((a, b) => a - b);
-        const bracketX = leftOf(C.marginLeft - 43), bracketEnd = leftOf(C.marginLeft - 48);
+        const bracketX = leftOf(C.marginLeft - 45), bracketEnd = leftOf(C.marginLeft - 50);
         let colors = null;
         plot(chart, {
           alt: solid ? T.cardAlt.replace(/ The cuts.*$/, " Solid lines show boundaries of the current optimum.") : T.cardAlt,
@@ -585,6 +955,7 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             rows,
           },
           width, height, aspect: false,
+          style: { fontSize: "13px" },
           marginTop: C.marginTop, marginBottom: C.marginBottom, marginLeft: C.marginLeft, marginRight: C.marginRight,
           x: { domain, ticks: narrow ? C.narrowTicks : C.ticks, label: narrow ? T.cardAxisShort : T.cardAxis, labelAnchor: "center", labelArrow: "none", grid: true },
           y: { domain: [n - half, -half], axis: null },
@@ -608,13 +979,13 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
                 P.rect(shown, { x1: () => sx1, x2: () => sx2, y1: (b) => b.first - half, y2: (b) => b.last + half, fill: (b) => colors[b.grade - 1], inset: 1 }),
                 numText(shown, { x: () => smid, y: "mid", value: "grade", format: (v) => formatCount(v), fill: (b) => labelOn(colors[b.grade - 1], k), fontWeight: "bold", textAnchor: "middle" }),
               ]),
-              P.ruleY(optimumCuts, { y: "y", x1: () => leftOf(C.marginLeft - 18), x2: () => domain[1], stroke: k.plotMuted, strokeWidth: 2 }),
+              P.ruleY(optimumCuts, { y: "y", x1: () => leftOf(C.marginLeft - 20), x2: () => domain[1], stroke: k.plotMuted, strokeWidth: 2 }),
               P.ruleY(cutRows, { y: "y", x1: () => sx1, x2: () => domain[1], stroke: k.plotFg, strokeWidth: 2, ...(solid ? {} : { strokeDasharray: C.dash }) }),
               ...(sameGrade ? [
                 P.ruleX([{ x: bracketX, a: positions[0], b: positions[1] }], { x: "x", y1: "a", y2: "b", stroke: k.plotFg, strokeWidth: 1.6 }),
                 P.ruleY(positions, { y: d => d, x1: () => bracketX, x2: () => bracketEnd, stroke: k.plotFg, strokeWidth: 1.6 }),
               ] : []),
-              P.dot(rows.filter(r => changedRows.includes(r.i)), { x: () => leftOf(C.marginLeft - 39), y: "pos", r: 2.5, fill: k.plotFg }),
+              P.dot(rows.filter(r => changedRows.includes(r.i)), { x: () => leftOf(C.marginLeft - 43), y: "pos", r: 2.5, fill: k.plotFg }),
               P.text(rows, { x: () => domain[0], y: "pos", text: "name", dx: -C.nameDx, textAnchor: "end", fill: k.plotFg, fontWeight: "bold" }),
               P.ruleY(rows, { y: "pos", x1: "lo", x2: "hi", stroke: ink, strokeWidth: C.line }),
               P.dot(rows, { x: "p", y: "pos", r: C.dot, fill: ink, stroke: k.plotBg }),
@@ -732,8 +1103,41 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         const changes = relationChange(opt.grade, grade, E);
         const rows = [...new Set(changes.pairs.flatMap(pair => [pair.i, pair.j]))];
         drawCard(grade, state.cuts, { compareGrade: opt.grade, changedRows: rows, compact: true });
-        cutCardKey.textContent = "Grade strips: yours | optimum. Dashed: your cut. Solid: optimum boundary. Dots by school labels mark changed relations.";
         const boundaryNodes = cuts => cutSet(cuts).flatMap((cut, i) => [i ? "|" : "", count(cut)]);
+        const near = changes.pairs.filter(pair => pair.error !== null && pair.error >= .4);
+        if (isV2 || readout3Sig) {
+          cutCardKey.replaceChildren("Strips: yours | optimum (grade ", ro3.count(1), " = lowest absence). Dashed: your cuts; solid: optimum.");
+          const cs = cutSet(state.cuts);
+          const optCuts = changesInOrder(opt.grade);
+          const sameAsOpt = sameList(Array.from(grade), Array.from(opt.grade));
+          const stripParts = [
+            sameAsOpt
+              ? h("p", {}, "Matches every pair relation of the optimum. Same-disclosure view: ", appLink(ctx, "cde-one-disclosure"), ".")
+              : h("p", {}, "Vs. optimum: ", ro3.count(changes.nNewDisclosed), " newly stated, ", ro3.count(changes.nNewWithheld), " withheld",
+                ...(changes.nReversed ? [", ", ro3.count(changes.nReversed), " reversed"] : []), ". Same-disclosure view: ", appLink(ctx, "cde-one-disclosure"), "."),
+          ];
+          stripParts.unshift(h("p", { "data-prx-readout": "cuts-excess-risk" },
+            count(changes.changed), " of ", count(M), " pair relations change. Excess risk of your cuts at the same τ: ",
+            risk(Math.max(0, ev.risk - opt.risk)), "."));
+          if (near.length) stripParts.push(
+            h("div", { class: "prx-cd-cue-chips" },
+              h("span", {}, "Coin-flip stated: ", ...near.flatMap((pair, idx) => [idx ? " · " : "", `${relationText(pair.to, pair.i, pair.j)} `, ro3.prob(pair.error)]))),
+          );
+          cutSummary.replaceChildren(...stripParts);
+          if (sameAsOpt) {
+            ro3.set(["Cuts ", ...boundaryNodes(state.cuts), " match the τ = ", ro3.setting(state.tau), " optimum, stating ",
+              ro3.count(ev.N), " of ", ro3.count(M), " pairs (E = ", ro3.expected(ev.Ew), ", risk ", ro3.risk(ev.risk), ")."]);
+          } else {
+            const nearTie = formatReadoutRisk(ev.risk) === formatReadoutRisk(opt.risk) && !close(ev.risk, opt.risk);
+            const evRisk = nearTie ? ro3.distinguishing(ev.risk, opt.risk) : ro3.risk(ev.risk);
+            const optRisk = nearTie ? ro3.distinguishing(opt.risk, ev.risk) : ro3.risk(opt.risk);
+            ro3.set([cs.length === 1 ? "Cut " : "Cuts ", ...boundaryNodes(state.cuts), cs.length === 1 ? " states " : " state ",
+              ro3.count(ev.N), " pairs (E = ", ro3.expected(ev.Ew), ", risk ", evRisk, "); the τ = ", ro3.setting(state.tau),
+              " optimum", ...(optCuts.length ? [" ", ...boundaryNodes(optCuts)] : []), " states ", ro3.count(opt.N), " (risk ", optRisk, ")."]);
+          }
+          return;
+        }
+        cutCardKey.textContent = "Grade strips: yours | optimum. Dashed: your cut. Solid: optimum boundary. Dots by school labels mark changed relations.";
         const match = atN(disclosure(tertGrade).N);
         const tertilesBest = match?.reports[0] && sameList(Array.from(tertGrade), Array.from(match.reports[0].grade));
         cutSummary.replaceChildren(
@@ -743,7 +1147,6 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           h("p", {}, "Risk ", risk(ev.risk), " vs ", risk(opt.risk)),
           h("p", {}, count(changes.nNewDisclosed), " newly stated · ", count(changes.nNewWithheld), " withheld", changes.nReversed ? [" · ", count(changes.nReversed), " reversed"] : []),
         );
-        const near = changes.pairs.filter(pair => pair.error !== null && pair.error >= .4);
         if (near.length) cutSummary.append(
           h("p", { class: "prx-cd-cue" }, "New directions near a coin flip"),
           h("div", { class: "prx-cd-cue-chips" }, ...near.map(pair => h("span", {}, relationText(pair.to, pair.i, pair.j), " ", prob(pair.error)))),
@@ -759,7 +1162,7 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         if (!ch) {
           cloudChart.replaceChildren();
           pinTable(cloudChart, "cloud-cell");
-        cloudKey.replaceChildren();
+          cloudKey.replaceChildren();
           matchedBody.replaceChildren(busyNote());
           return;
         }
@@ -777,8 +1180,55 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           ...(opt ? [{ N: opt.N, Ew: opt.Ew, kind: "opt" }] : []),
         ];
         const inView = marks.filter((m) => m.Ew <= zoom);
+        const md = matchedDisclosure(cl, hull, state.n);
         const atMinimum = r?.reports[0]?.Ew;
         const selectedMinimum = atMinimum !== undefined && atMinimum <= zoom ? [{ N: state.n, Ew: atMinimum }] : [];
+        const mixtureMark = isV2 && r?.count === 0 && md.H !== null && md.H !== undefined && md.H <= zoom ? [{ N: state.n, Ew: md.H }] : [];
+        const chartHeight = isV2 ? (width < CONFIG.card.narrowPx ? 225 : 285) : Cc.height;
+        const placeLeft = (state.n > M / 2 && state.n < 46) || state.n > 58;
+        const renderBackedValue = (k) => (index, scales, values, dims, context, next) => {
+          const g = next(index, scales, values, dims, context);
+          const doc = context.document;
+          const svgW = Number(dims?.width) || width || 320;
+          const yTopPx = Number(dims?.marginTop) || Cc.marginTop;
+          const yBotPx = (Number(dims?.height) || chartHeight) - (Number(dims?.marginBottom) || Cc.marginBottom);
+          const nodes = [...(g?.querySelectorAll("text") ?? [])];
+          Array.from(index).forEach((idx, j) => {
+            const tNode = nodes[j];
+            if (!tNode) return;
+            const rawX = Number(values.x?.[idx]) || 0;
+            const rawY = Number(values.y?.[idx]) || 0;
+            const labelStr = (tNode.textContent ?? "").trim();
+            const textW = Math.ceil([...labelStr].reduce((s, ch) => s + (ch === "." ? 4.2 : 7.8), 0));
+            const pillW = Math.max(20, textW + 10);
+            const pillH = 18;
+            let pillX = placeLeft ? rawX - 8 - pillW : rawX + 8;
+            if (pillX + pillW > svgW - 3) pillX = Math.max(3, rawX - 8 - pillW);
+            if (pillX < 3) pillX = Math.min(svgW - 3 - pillW, rawX + 8);
+            pillX = Math.max(3, Math.min(svgW - 3 - pillW, pillX));
+            const cx = pillX + pillW / 2;
+            const cy = Math.min(yBotPx - pillH / 2 - 2, Math.max(yTopPx + pillH / 2 - 6, rawY - 10));
+            tNode.removeAttribute("transform");
+            tNode.removeAttribute("dx");
+            tNode.removeAttribute("dy");
+            tNode.setAttribute("x", cx.toFixed(1));
+            tNode.setAttribute("y", cy.toFixed(1));
+            tNode.setAttribute("text-anchor", "middle");
+            tNode.setAttribute("dominant-baseline", "central");
+            tNode.style.setProperty("text-anchor", "middle");
+            const rect = doc.createElementNS("http://www.w3.org/2000/svg", "rect");
+            rect.setAttribute("x", pillX.toFixed(1));
+            rect.setAttribute("y", (cy - pillH / 2).toFixed(1));
+            rect.setAttribute("width", String(pillW));
+            rect.setAttribute("height", String(pillH));
+            rect.setAttribute("rx", "3");
+            rect.setAttribute("fill", k.plotBg);
+            rect.setAttribute("stroke", k.cellBorder);
+            rect.setAttribute("stroke-width", "1");
+            g.insertBefore(rect, tNode);
+          });
+          return g;
+        };
         plot(cloudChart, {
           alt: T.cloudAlt,
           table: {
@@ -791,7 +1241,9 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             ],
             rows,
           },
-          width, height: Cc.height, aspect: false, marginLeft: Cc.marginLeft, marginRight: Cc.marginRight, marginTop: Cc.marginTop, marginBottom: Cc.marginBottom,
+          width, height: chartHeight, aspect: false,
+          style: { fontSize: "13px" },
+          marginLeft: Cc.marginLeft, marginRight: Cc.marginRight, marginTop: Cc.marginTop, marginBottom: Cc.marginBottom,
           x: { domain: [0, M], ticks: Cc.ticks, label: T.cloudAxisX, labelAnchor: "center", labelArrow: "none" },
           y: { domain: [0, zoom], ticks: Cc.ticks, label: T.cloudAxisY, labelArrow: "none", grid: true },
           marks: (k, P) => [
@@ -802,9 +1254,13 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             P.dot(inView.filter((m) => m.kind === "opt"), { x: "N", y: "Ew", r: Cc.mark, symbol: "square", fill: "none", stroke: k.plotFg, strokeWidth: 2 }),
             P.dot(inView.filter((m) => m.kind === "tert"), { x: "N", y: "Ew", r: Cc.mark, symbol: "triangle", fill: "none", stroke: k.plotFg, strokeWidth: 2 }),
             P.dot(inView.filter((m) => m.kind === "you"), { x: "N", y: "Ew", r: Cc.mark - 2, symbol: "diamond", fill: k.plotFg, stroke: k.plotBg }),
-            numText(selectedMinimum, { x: "N", y: "Ew", value: "Ew", format: formatExpectedCount,
-              dx: state.n > M / 2 ? -9 : 9, dy: -8, textAnchor: state.n > M / 2 ? "end" : "start",
-              fill: k.plotFg, stroke: k.plotBg, strokeWidth: 3, paintOrder: "stroke", fontWeight: 700 }),
+            ...(mixtureMark.length ? [
+              P.dot(mixtureMark, { x: "N", y: "Ew", r: 4.5, fill: k.plotBg, stroke: k.plotFg, strokeWidth: 2 }),
+              numText(mixtureMark, { x: "N", y: "Ew", value: "Ew", format: formatReadoutExpected,
+                textAnchor: "middle", fill: k.plotFg, fontWeight: 700, render: renderBackedValue(k) }),
+            ] : []),
+            numText(selectedMinimum, { x: "N", y: "Ew", value: "Ew", format: isV2 ? formatReadoutExpected : formatExpectedCount,
+              textAnchor: "middle", fill: k.plotFg, fontWeight: 700, render: renderBackedValue(k) }),
             P.tip(rows, P.pointerX({ x: "N", y: (d) => clip(d.minEw), title: (d) => `N ${formatCount(d.N)}: ${formatCount(d.count)} reports, E from ${formatExpectedCount(d.minEw)} to ${formatExpectedCount(d.maxEw)}` })),
           ],
           keyboard: { data: rows, x: "N", y: (d) => clip(d.minEw), key: (d) => `n${d.N}`, sort: false, label: T.cloudTable, title: (d) => `N ${formatCount(d.N)}: ${formatCount(d.count)} reports, E from ${formatExpectedCount(d.minEw)} to ${formatExpectedCount(d.maxEw)}` },
@@ -812,6 +1268,13 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         const key = (cls, text) => h("span", { class: "prx-cd-key" }, h("span", { class: `prx-cd-mark ${cls}`, "aria-hidden": "true" }), text);
         pinTable(cloudChart, "cloud-cell");
         cloudKey.replaceChildren(key("prx-cd-mark-hull", T.keyHull), key("prx-cd-mark-you", T.keyYou), key("prx-cd-mark-tert", T.keyTert), key("prx-cd-mark-opt", T.keyOpt));
+        if (isV2) {
+          matchedGuide.replaceChildren(
+            ...(state.full
+              ? ["Bars span expected errors E at each disclosure N up to ", ro3.expected(top), "."]
+              : ["Bars span expected errors E at each N (clipped at ", ro3.num(Cc.zoom, formatSetting(Cc.zoom)), "; full range in Settings)."]),
+          );
+        }
         const parts = [];
         if (!state.full) parts.push(h("p", { class: "prx-cd-note" }, ...filled(T.cloudZoom, { z: () => num(Cc.zoom, formatSetting(Cc.zoom)), max: () => expected(top) })));
         // at the chosen N
@@ -825,7 +1288,6 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         }
         parts.push(h("p", {}, ...at));
         if (state.n === cl.byN.at(-1).N) parts.push(h("p", {}, ...filled(T.atMax, { n: () => count(state.n), cap: () => count(CONFIG.cap), n2: () => count(state.n) })));
-        const md = matchedDisclosure(cl, hull, state.n);
         if (md.psi === null || md.psi === undefined || md.lower?.N === md.upper?.N) {
           parts.push(h("p", {}, ...filled(T.hVertex, { n: () => count(state.n), H: () => expected(md.H, "H") })));
         } else {
@@ -839,6 +1301,24 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           N: () => count(gap.N, "gap-N"), N2: () => count(gap.N), E: () => expected(gap.Ew, "gap-E"), H: () => expected(gap.H, "gap-H"), gap: () => expected(gap.gap, "gap"),
         })));
         matchedBody.replaceChildren(...parts);
+        if (isV2 || readout3Sig) {
+          if (!r) {
+            ro3.set([T.computing]);
+          } else if (r.reports.length) {
+            const isTert = sameList(Array.from(r.reports[0].grade), Array.from(tertGrade));
+            ro3.set(["At N = ", ro3.count(state.n), ", ", ro3.count(r.count),
+              r.count === 1 ? " report states " : " reports state ", ro3.count(state.n), " pairs; ",
+              ...(isTert ? ["the tertiles win with E = "] : ["fewest expected errors E = "]),
+              ro3.expected(r.reports[0].Ew),
+              ...(r.reports[1] ? [" (next ", ro3.expected(r.reports[1].Ew), ")"] : []), "."]);
+          } else {
+            ro3.set(["No report states N = ", ro3.count(state.n), " pairs; the lower hull reaches E = ", ro3.expected(md.H),
+              ...(md.psi !== null && md.psi !== undefined && md.lower?.N !== md.upper?.N
+                ? [" by mixing N = ", ro3.count(md.lower.N), " and ", ro3.count(md.upper.N), " (ψ = ", ro3.share(md.psi), ")"]
+                : []), "."]);
+          }
+          return;
+        }
         const countText = r ? ["N = ", count(state.n), ": ", count(r.count), r.count === 1 ? " report" : " reports"] : [T.computing];
         if (r?.reports.length) {
           countText.push("; least expected error ", expected(r.reports[0].Ew));
@@ -909,7 +1389,9 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             ctx.scrollRegion(h("div", { class: "prx-cd-scroll" }, table), T.bestTable));
         } else parts.push(title(T.bestHeading), busyNote());
         const showBoundaries = labels[a] === CONFIG.pair[0] && labels[b] === CONFIG.pair[1] && close(tau, model.archived.facts.tau);
-        pairBoundaries.textContent = showBoundaries ? "Three clear gaps follow A, C, B; F, E, D; and H, G, I. The optimum uses the first and third." : "";
+        pairBoundaries.textContent = showBoundaries
+          ? (isV2 ? "Gaps follow B, D, I; optimum cuts after B and I." : "Three clear gaps follow A, C, B; F, E, D; and H, G, I. The optimum uses the first and third.")
+          : "";
         pairBoundaryDetails.textContent = showBoundaries ? T.boundaries : "";
         // a fourth grade along the posterior-mean order
         const dp = dpAt(tau);
@@ -923,7 +1405,80 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         return { best, sb, reverse };
       }
 
-      function drawPairOverview(state, a, b, result) {
+      function drawPairTopVisual(reports, a, b) {
+        const rowStep = 23, barH = 17, topPad = 21;
+        svgScene(pairTopChart, {
+          height: topPad + reports.length * rowStep + 3,
+          alt: "Grade strips of the three lowest-risk reports along the twelve-school posterior-mean order, highlighting the selected pair.",
+        }, (scene) => {
+          const { palette: pal, width: w } = scene;
+          const rightW = 120;
+          const x0 = 20, x1 = Math.max(x0 + 110, w - rightW), stripW = x1 - x0, cellW = stripW / n;
+          const posA = model.position[a], posB = model.position[b];
+          const cxA = x0 + (posA + 0.5) * cellW, cxB = x0 + (posB + 0.5) * cellW;
+          const guideBottom = topPad + reports.length * rowStep - 2;
+          scene.add(
+            scene.el("line", { x1: cxA.toFixed(1), y1: 16, x2: cxA.toFixed(1), y2: guideBottom, stroke: pal.plotMuted, strokeWidth: 1.2, strokeDasharray: "2,2" }),
+            scene.el("line", { x1: cxB.toFixed(1), y1: 16, x2: cxB.toFixed(1), y2: guideBottom, stroke: pal.plotMuted, strokeWidth: 1.2, strokeDasharray: "2,2" }),
+          );
+          if (Math.abs(cxA - cxB) < 22) {
+            const first = posA <= posB ? labels[a] : labels[b], second = posA <= posB ? labels[b] : labels[a];
+            scene.add(scene.el("text", { x: ((cxA + cxB) / 2).toFixed(1), y: 9, textAnchor: "middle", dominantBaseline: "central", fontWeight: 700, fill: pal.plotFg, text: `${first}·${second}` }));
+          } else {
+            scene.add(
+              scene.el("text", { x: cxA.toFixed(1), y: 9, textAnchor: "middle", dominantBaseline: "central", fontWeight: 700, fill: pal.plotFg, text: labels[a] }),
+              scene.el("text", { x: cxB.toFixed(1), y: 9, textAnchor: "middle", dominantBaseline: "central", fontWeight: 700, fill: pal.plotFg, text: labels[b] }),
+            );
+          }
+          reports.forEach((r, idx) => {
+            const rowTop = topPad + idx * rowStep, cy = rowTop + barH / 2;
+            const G = Math.max(...r.grade);
+            const colors = gradeColors(G, pal);
+            const runs = [];
+            for (let p = 0; p < n; p += 1) {
+              const g = r.grade[model.order[p]];
+              const last = runs[runs.length - 1];
+              if (last && last.g === g) last.end = p;
+              else runs.push({ start: p, end: p, g });
+            }
+            scene.add(scene.numText({ x: 4, y: cy.toFixed(1), dominantBaseline: "central", fontWeight: 600, fill: pal.plotMuted }, idx + 1, formatCount(idx + 1)));
+            for (const run of runs) {
+              const rx0 = x0 + run.start * cellW + 0.6;
+              const rw = Math.max(2, (run.end - run.start + 1) * cellW - 1.2);
+              const fillCol = colors[run.g - 1];
+              scene.add(scene.el("rect", { x: rx0.toFixed(1), y: rowTop, width: rw.toFixed(1), height: barH, rx: 2.5, fill: fillCol }));
+              if (rw >= 18) {
+                scene.add(scene.numText({
+                  x: (rx0 + rw / 2).toFixed(1), y: cy.toFixed(1), textAnchor: "middle", dominantBaseline: "central",
+                  fontWeight: 700, fill: labelOn(fillCol, pal),
+                }, run.g, formatCount(run.g)));
+              }
+            }
+            for (const pos of [posA, posB]) {
+              const tickX0 = x0 + pos * cellW + 1.5, tickW = Math.max(3, cellW - 3);
+              scene.add(scene.el("line", {
+                x1: tickX0.toFixed(1), y1: (rowTop - 1.5).toFixed(1),
+                x2: (tickX0 + tickW).toFixed(1), y2: (rowTop - 1.5).toFixed(1),
+                stroke: pal.plotFg, strokeWidth: 2,
+              }));
+            }
+            const shortRel = r.grade[a] === r.grade[b] ? "withheld"
+              : (r.grade[a] < r.grade[b] ? `${labels[a]} > ${labels[b]}` : `${labels[b]} > ${labels[a]}`);
+            scene.add(
+              scene.numText({
+                x: (x1 + 8).toFixed(1), y: cy.toFixed(1), textAnchor: "start", dominantBaseline: "central",
+                fill: pal.plotFg, fontWeight: 600,
+              }, r.risk, formatReadoutRisk(r.risk)),
+              scene.el("text", {
+                x: (w - 1).toFixed(1), y: cy.toFixed(1), textAnchor: "end", dominantBaseline: "central",
+                fill: pal.plotMuted, text: shortRel,
+              }),
+            );
+          });
+        });
+      }
+
+      function drawPairOverview(state, a, b, result, grade, ev) {
         pairTop.hidden = a === b;
         optimumCard.hidden = a === b;
         if (a === b) {
@@ -937,41 +1492,74 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
           ctx.readout.set([T.computing]);
           return;
         }
-        const relation = (grade) => grade[a] === grade[b] ? "Withheld"
-          : grade[a] < grade[b] ? `${labels[a]} above ${labels[b]}` : `${labels[b]} above ${labels[a]}`;
+        const relation = (gradeVec) => gradeVec[a] === gradeVec[b] ? "Withheld"
+          : gradeVec[a] < gradeVec[b] ? `${labels[a]} above ${labels[b]}` : `${labels[b]} above ${labels[a]}`;
         const comparison = [
           { title: "Optimum", value: best.risk },
           { title: `Best ${labels[a]} > ${labels[b]}`, value: forward.risk },
-          { title: ["Tertiles (N ", count(disclosure(tertGrade).N), ")"], value: evaluateReport(tertGrade, E, { tau: state.tau }).risk },
+          { title: isV2 ? ["Tertiles (", count(disclosure(tertGrade).N), ")"] : ["Tertiles (N ", count(disclosure(tertGrade).N), ")"], value: evaluateReport(tertGrade, E, { tau: state.tau }).risk },
           { title: `Best ${labels[b]} > ${labels[a]}`, value: reverse.risk },
         ];
         const min = Math.min(...comparison.map(row => row.value)), max = Math.max(...comparison.map(row => row.value));
-        pairLadder.replaceChildren(title("Risk at the same withholding cost"),
+        pairLadder.replaceChildren(title(isV2 ? "Risk at current τ" : "Risk at the same withholding cost"),
           ...comparison.map(({ title: label, value }, i) => h("div", { class: "prx-cd-ladder-row" },
             h("span", {}, label),
             h("span", { class: "prx-cd-ladder-track", "aria-hidden": "true" }, h("span", {
               class: "prx-cd-ladder-dot", style: `--position:${8 + 84 * (value - min) / Math.max(max - min, Number.EPSILON)}%`,
-            })), h("span", {}, risk(value, `ladder-risk-${i}`)))),
-          h("p", { class: "prx-cd-cue" }, "Shared risk scale · lower ←"),
+            })), h("span", {}, isV2 || readout3Sig ? ro3.risk(value, { hook: `ladder-risk-${i}` }) : risk(value, `ladder-risk-${i}`)))),
+          h("p", { class: "prx-cd-cue" }, isV2 ? [ro3.count(result.sb.matched), " reports state ", school(a), " > ", school(b), " · lower ←"] : "Shared risk scale · lower ←"),
         );
-        const diff = Math.max(0, forward.risk - best.risk);
-        pairLadder.append(h("p", { class: "prx-cd-cue" }, count(result.sb.matched), " reports state ", school(a), " above ", school(b), "."));
-        if (firstSchool === null) optimumCardCue.replaceChildren(
-          ...(best.grade[a] === best.grade[b] ? ["The bracket connects ", school(a), " and ", school(b), " within grade ", count(best.grade[a]), ". The optimum withholds this pair. "] : []),
-          "Select two school rows to compare them.",
-        );
+        const diff = close(forward.risk, best.risk) ? 0 : Math.max(0, forward.risk - best.risk);
+        if (isV2) pairLadder.append(h("div", { class: "prx-cd-note", "data-prx-readout": "constrained-grade-patterns" },
+          h("p", {}, "Optimum: ", groups(best.grade)),
+          h("p", {}, "Best stating ", school(a), " above ", school(b), ": ", groups(forward.grade),
+            ". Excess risk ", ro3.risk(diff), ".")));
+        if (!isV2) pairLadder.append(h("p", { class: "prx-cd-cue" }, count(result.sb.matched), " reports state ", school(a), " above ", school(b), "."));
+        if (firstSchool === null) {
+          if (isV2) {
+            optimumCardCue.replaceChildren(
+              ...(best.grade[a] === best.grade[b]
+                ? ["Bracket: ", school(a), "–", school(b), " withheld in grade ", ro3.count(best.grade[a]), " · "]
+                : [school(best.grade[a] < best.grade[b] ? a : b), " > ", school(best.grade[a] < best.grade[b] ? b : a), " stated · "]),
+              "click two rows",
+            );
+          } else {
+            optimumCardCue.replaceChildren(
+              ...(best.grade[a] === best.grade[b] ? ["The bracket connects ", school(a), " and ", school(b), " within grade ", count(best.grade[a]), ". The optimum withholds this pair. "] : []),
+              "Select two school rows to compare them.",
+            );
+          }
+        }
         drawCard(best.grade, changesInOrder(best.grade), { chart: optimumChart, legendTarget: optimumLegend, noteTarget: optimumNote,
           hookPrefix: "optimum-school-grade", compact: true, solid: true, highlighted: [a, b], interactive: true });
-        pairTop.replaceChildren(title("The three lowest risks"),
-          h("div", { class: "prx-cd-top-row" }, h("strong", {}, "Report"), h("strong", {}, "Risk · stated direction")),
-          ...result.best.reports.map(r => h("div", { class: "prx-cd-top-row" },
-            h("p", {}, groups(r.grade)),
-            h("p", {}, risk(r.risk), " · ", relation(r.grade)))),
-        );
+        if (isV2) {
+          drawPairTopVisual(result.best.reports, a, b);
+        } else {
+          pairTop.replaceChildren(title("The three lowest risks"),
+            h("div", { class: "prx-cd-top-row" }, h("strong", {}, "Report"), h("strong", {}, "Risk · stated direction")),
+            ...result.best.reports.map(r => h("div", { class: "prx-cd-top-row" },
+              h("p", {}, groups(r.grade)),
+              h("p", {}, risk(r.risk), " · ", relation(r.grade)))),
+          );
+        }
         const relationWords = best.grade[a] === best.grade[b] ? "withholds the pair" : `states ${relation(best.grade)}`;
-        ctx.readout.set([school(a), " above ", school(b), " has posterior probability ", prob(1 - E.e[0][a][b], null, CONFIG.digits.pi),
-          ". The τ ", setting(state.tau), " optimum ", relationWords, ". Best risk for this direction ",
-          risk(forward.risk), " (+", risk(diff, "direction-risk-increase"), ")."]);
+        if (readout3Sig) {
+          const isTert = grade && ev && sameList(Array.from(grade), Array.from(tertGrade));
+          if (isTert) {
+            ro3.set([school(a), " above ", school(b), " (", ro3.prob(1 - E.e[0][a][b]),
+              "): τ = ", ro3.setting(state.tau), " optimum ", relationWords, "; best stating it ",
+              ro3.risk(forward.risk), " (", ro3.risk(diff, { signed: true, hook: "direction-risk-increase" }),
+              "); tertiles (", ro3.count(ev.N), ") ", ro3.risk(ev.risk), "."]);
+          } else {
+            ro3.set([school(a), " above ", school(b), " has posterior probability ", ro3.prob(1 - E.e[0][a][b]),
+              ". The τ = ", ro3.setting(state.tau), " optimum ", relationWords, "; best risk stating it is ",
+              ro3.risk(forward.risk), " (", ro3.risk(diff, { signed: true, hook: "direction-risk-increase" }), ")."]);
+          }
+        } else {
+          ctx.readout.set([school(a), " above ", school(b), " has posterior probability ", prob(1 - E.e[0][a][b], null, CONFIG.digits.pi),
+            ". The τ ", setting(state.tau), " optimum ", relationWords, ". Best risk for this direction ",
+            risk(forward.risk), " (+", risk(diff, "direction-risk-increase"), ")."]);
+        }
       }
 
       function drawPath(state, width) {
@@ -980,20 +1568,70 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         if (!tp) {
           pathChart.replaceChildren();
           pinTable(pathChart, "archive-cell");
-        pathKey.replaceChildren();
+          pathKey.replaceChildren();
           pathBody.replaceChildren(busyNote());
           ctx.readout.set([T.computing]);
           return null;
         }
         exposeResult(ctx, tp, "path");
-        const axisMin = .0001, steps = [];
+        const axisMin = .0001, axisMax = CONFIG.tau.max, steps = [];
         for (const iv of tp.intervals) steps.push({ tau: Math.max(axisMin, iv.tauFrom), N: iv.N }, { tau: iv.tauTo, N: iv.N });
-        const levelLabels = tp.intervals.filter(iv => iv.tauTo > iv.tauFrom).map(iv => ({
-          tau: Math.sqrt(Math.max(axisMin, iv.tauFrom) * iv.tauTo), N: iv.N,
-        }));
+        // Give neighboring steps and their callouts room on both a phone and a wide page.
+        const chartHeight = isV2
+          ? Math.max(246, Math.min(338, Math.round(width * 0.42)))
+          : (width < CONFIG.card.narrowPx ? 180 : Pc.height);
+        const x0 = Pc.marginLeft, x1 = Math.max(x0 + 40, width - Pc.marginRight), innerW = x1 - x0;
+        const yTop = Pc.marginTop, yBot = Math.max(yTop + 40, chartHeight - Pc.marginBottom), innerH = yBot - yTop;
+        const logMin = Math.log10(axisMin), logSpan = Math.log10(axisMax) - logMin;
+        const xPx = (t) => x0 + ((Math.log10(t) - logMin) / logSpan) * innerW;
+        const fromXPx = (px) => 10 ** (logMin + ((px - x0) / innerW) * logSpan);
+        const yPx = (Nval) => yBot - (Nval / M) * innerH;
+        const fromYPx = (py) => ((yBot - py) / innerH) * M;
+        const rawStepItems = tp.intervals.filter(iv => iv.tauTo > iv.tauFrom).map((iv, idx) => {
+          const loT = Math.max(axisMin, iv.tauFrom), hiT = Math.min(axisMax, iv.tauTo);
+          const midT = Math.sqrt(loT * hiT);
+          const spanPx = xPx(hiT) - xPx(loT);
+          const txt = formatCount(iv.N);
+          const pillW = Math.ceil(txt.length * 7.8 + 10), pillH = 18;
+          const rawPy = yPx(iv.N);
+          let centerPx = xPx(midT);
+          let leaderX = xPx(midT);
+          let targetY = rawPy - 15;
+          if (hiT >= axisMax * 0.95 && spanPx < pillW + 24) {
+            centerPx = Math.min(width - pillW / 2 - 3, xPx(midT));
+            leaderX = xPx(midT);
+            targetY = rawPy - 19;
+          } else if (spanPx < pillW + 16 && iv.N > 0 && loT > axisMin) {
+            centerPx = Math.min(x1 - pillW / 2 - 4, xPx(hiT) + pillW / 2 + 10);
+            leaderX = (xPx(loT) + xPx(hiT)) / 2;
+            targetY = rawPy;
+          } else if (iv.N > 0 && loT < .001 && hiT > .1) {
+            centerPx = xPx(.0035);
+            leaderX = centerPx;
+          } else {
+            centerPx = Math.max(x0 + pillW / 2 + 4, centerPx + 6);
+            leaderX = Math.min(xPx(hiT), centerPx);
+            if (iv.N === 0) targetY = rawPy - 16;
+          }
+          return { id: `step-${idx}`, N: iv.N, pillW, pillH, centerPx, leaderX, rawPy, y: targetY, height: pillH };
+        });
+        // Group horizontally overlapping pills before 1D vertical relaxation, mapped strictly by item.id
+        const sortedByX = [...rawStepItems].sort((a, b) => a.centerPx - b.centerPx);
+        const clusters = [];
+        for (const it of sortedByX) {
+          const prev = clusters[clusters.length - 1];
+          if (prev && prev.some((p) => Math.abs(p.centerPx - it.centerPx) < (p.pillW + it.pillW) / 2 + 8)) prev.push(it);
+          else clusters.push([it]);
+        }
+        const placedAll = clusters.flatMap((cl) => placeDirectLabels(cl, { minGapPx: 20, minY: Math.max(11, yTop - 6), maxY: yBot - 11 }));
+        const placedById = new Map(placedAll.map((p) => [p.id, p]));
+        const levelLabels = rawStepItems.map((it) => {
+          const p = placedById.get(it.id) ?? it;
+          return { ...it, tau: Math.min(axisMax, Math.max(axisMin, fromXPx(it.centerPx))), yData: Math.min(M, Math.max(0, fromYPx(p.y))), placedY: p.y };
+        });
         const rel = model.path;
         const solves = rel ? rel.rows.tau.map((t, k) => ({ tau: t, N: rel.rows.N[k], sizes: disclosure(rel.grades[k]).sizes, E: rel.rows.E[k], risk: rel.rows.risk[k], status: rel.rows.status[k], gap: rel.rows.gap[k] })) : [];
-        // tau values below the .01 grid (the two named breakpoint values) keep two significant digits
+        // tau values below the .01 grid (the two named breakpoint values) keep two significant digits in archive table & tips
         const tauText = (v) => (v < CONFIG.tau.step ? formatSig(v, { sig: CONFIG.digits.tauSig }) : formatSetting(v));
         const cur = tp.intervals.find((iv) => state.tau > iv.tauFrom && state.tau <= iv.tauTo) ?? tp.intervals.at(-1);
         plot(pathChart, {
@@ -1011,18 +1649,66 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             ],
             rows: solves,
           },
-          width, height: width < CONFIG.card.narrowPx ? 180 : Pc.height, aspect: false, marginLeft: Pc.marginLeft, marginRight: Pc.marginRight, marginTop: 24, marginBottom: Pc.marginBottom,
-          x: { type: "log", domain: [axisMin, CONFIG.tau.max], ticks: [axisMin, .001, .01, .1, CONFIG.tau.max],
-            tickFormat: tauText, label: T.pathAxisX, labelAnchor: "center", labelArrow: "none" },
+          width, height: chartHeight, aspect: false,
+          style: { fontSize: "13px" },
+          marginLeft: Pc.marginLeft, marginRight: Pc.marginRight, marginTop: Pc.marginTop, marginBottom: Pc.marginBottom,
+          x: { type: "log", domain: [axisMin, axisMax], ticks: [axisMin, .001, .01, .1, axisMax],
+            tickFormat: isV2 ? (v) => tickLabel(v) : tauText, label: T.pathAxisX, labelAnchor: "center", labelArrow: "none" },
           y: { domain: [0, M], ticks: Pc.nTicks.slice(), label: null, labelArrow: "none", grid: true },
           marks: (k, P) => [
             P.ruleX([state.tau], { stroke: k.plotMuted, strokeDasharray: "4,3" }),
             P.line(steps, { x: "tau", y: "N", stroke: k.plotMuted, strokeWidth: 2 }),
             P.dot(solves, { x: "tau", y: "N", r: Pc.dot, fill: k.plotFg, stroke: k.plotBg }),
             P.dot(cur ? [{ tau: state.tau, N: cur.N }] : [], { x: "tau", y: "N", r: Pc.current, fill: "none", stroke: k.plotFg, strokeWidth: 2 }),
-            numText(levelLabels, { x: "tau", y: "N", value: "N", format: formatCount,
-              dx: -3, textAnchor: "middle", dy: -10,
-              fill: k.plotFg, stroke: k.plotBg, strokeWidth: 3, paintOrder: "stroke", fontWeight: 700 }),
+            numText(levelLabels, {
+              x: "tau", y: "yData", value: "N", format: formatCount,
+              textAnchor: "middle", fill: k.plotFg, fontWeight: 700,
+              render(index, scales, values, dims, context, next) {
+                const g = next(index, scales, values, dims, context);
+                const doc = context.document;
+                const nodes = [...(g?.querySelectorAll("text") ?? [])];
+                Array.from(index).forEach((idx, j) => {
+                  const tNode = nodes[j];
+                  const d = levelLabels[idx];
+                  if (!tNode || !d) return;
+                  const cx = d.centerPx;
+                  const cy = d.placedY;
+                  tNode.removeAttribute("transform");
+                  tNode.removeAttribute("dx");
+                  tNode.removeAttribute("dy");
+                  tNode.setAttribute("x", cx.toFixed(1));
+                  tNode.setAttribute("y", cy.toFixed(1));
+                  tNode.setAttribute("text-anchor", "middle");
+                  tNode.setAttribute("dominant-baseline", "central");
+                  tNode.style.setProperty("text-anchor", "middle");
+                  const targetEdgeY = cur && cur.N === d.N && Math.abs(xPx(state.tau) - d.leaderX) < 8 && cy < d.rawPy
+                    ? d.rawPy - Pc.current - 1
+                    : d.rawPy;
+                  if (Math.hypot(cx - d.leaderX, cy - targetEdgeY) > 10) {
+                    const line = doc.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", d.leaderX.toFixed(1));
+                    line.setAttribute("y1", targetEdgeY.toFixed(1));
+                    line.setAttribute("x2", cx.toFixed(1));
+                    line.setAttribute("y2", cy.toFixed(1));
+                    line.setAttribute("stroke", k.plotMuted);
+                    line.setAttribute("stroke-width", "1");
+                    line.setAttribute("stroke-dasharray", "2,2");
+                    g.insertBefore(line, tNode);
+                  }
+                  const rect = doc.createElementNS("http://www.w3.org/2000/svg", "rect");
+                  rect.setAttribute("x", (cx - d.pillW / 2).toFixed(1));
+                  rect.setAttribute("y", (cy - d.pillH / 2).toFixed(1));
+                  rect.setAttribute("width", String(d.pillW));
+                  rect.setAttribute("height", String(d.pillH));
+                  rect.setAttribute("rx", "3");
+                  rect.setAttribute("fill", k.plotBg);
+                  rect.setAttribute("stroke", cur && cur.N === d.N ? k.plotFg : k.cellBorder);
+                  rect.setAttribute("stroke-width", cur && cur.N === d.N ? "1.3" : "0.9");
+                  g.insertBefore(rect, tNode);
+                });
+                return g;
+              },
+            }),
             P.tip(solves, P.pointerX({ x: "tau", y: "N", title: (d) => `τ ${tauText(d.tau)}: ${formatSizes(d.sizes)}, N ${formatCount(d.N)}, risk ${formatRisk(d.risk, { digits: CONFIG.digits.risk })}, ${d.status}` })),
           ],
           keyboard: { data: solves, x: "tau", y: "N", key: (d, i) => `s${i}`, sort: false, label: T.pathTable, title: (d) => `τ ${tauText(d.tau)}: ${formatSizes(d.sizes)}, N ${formatCount(d.N)}, risk ${formatRisk(d.risk, { digits: CONFIG.digits.risk })}, ${d.status}` },
@@ -1032,8 +1718,8 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         pathKey.replaceChildren(key("prx-cd-mark-steps", T.stepsKey), key("prx-cd-mark-solve", T.dotsKey));
         const solveRec = { status: "optimal", family: tp.family };
         const bp = tp.intervals.slice(0, -1).map((iv) => iv.tauTo);
-        pathBrief.replaceChildren("Log scale. Exact changes at τ ", ...bp.flatMap((value, i) => [i ? ", " : "", num(value, formatSig(value, { sig: CONFIG.digits.sig }))]),
-          ". ", count(solves.length), " archived solves.");
+        pathBrief.replaceChildren("Log scale. Exact steps at τ = ", ...bp.flatMap((value, i) => [i ? ", " : "", num(value, formatSig(value, { sig: CONFIG.digits.sig }))]),
+          " · ", count(solves.length), " archived solves.");
         const tableCopy = pathChart.querySelector("table")?.cloneNode(true);
         if (tableCopy) {
           tableCopy.className = "prx-cd-table";
@@ -1058,11 +1744,13 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         const sizes = disclosure(cur.grade).sizes;
         const index = tp.intervals.indexOf(cur), last = index > 0 ? cur.tauFrom : null;
         const breakpoint = t => num(t, formatSig(t, { sig: CONFIG.digits.sig }));
-        optimumCardCue.replaceChildren(sizesNode(sizes), " · ", count(result.N), " stated pairs. Solid boundaries show the current optimum.");
+        optimumCardCue.replaceChildren(sizesNode(sizes), " · ", count(result.N), isV2 ? " stated pairs · solid cuts" : " stated pairs. Solid boundaries show the current optimum.");
         drawCard(cur.grade, changesInOrder(cur.grade), { chart: optimumChart, legendTarget: optimumLegend, noteTarget: optimumNote,
           hookPrefix: "optimum-school-grade", compact: true, solid: true });
-        if (last === null) latestStep.textContent = "No earlier change in the exact path.";
-        else {
+        if (last === null) {
+          latestStep.textContent = "No earlier change in the exact path.";
+          pathStepCue.textContent = "No earlier step in the exact path.";
+        } else {
           const change = relationChange(tp.intervals[index - 1].grade, cur.grade, E);
           const flagged = change.pairs.filter(pair => pair.error !== null && pair.error > last);
           const pairNames = change.pairs.length <= 10 ? change.pairs.map(pair => pair.to === "withheld"
@@ -1071,15 +1759,38 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             count(change.nNewWithheld), " withheld", ...(change.nReversed ? [", ", count(change.nReversed), " reversed"] : []), ".",
             ...(pairNames ? [" ", pairNames, "."] : []),
             ...flagged.flatMap(pair => [" ", relationText(pair.to, pair.i, pair.j), " has error ", prob(pair.error), " above that boundary τ."]));
+          const example = flagged[0] ?? change.pairs[0];
+          const direction = example?.to === "withheld" ? example.from : example?.to;
+          const pairError = example ? direction === "above" ? E.e[0][example.i][example.j] : E.e[0][example.j][example.i] : null;
+          pathStepCue.replaceChildren("Step at τ = ", ro3.est(last), ": +", ro3.count(change.nNewDisclosed), " stated, ",
+            ro3.count(change.nNewWithheld), " withheld", ...(change.nReversed ? [", ", ro3.count(change.nReversed), " reversed"] : []),
+            ...(example ? [". ", relationText(direction, example.i, example.j),
+              example.to === "withheld" ? " was withheld" : example.from === "withheld" ? " was newly stated" : " replaced the reverse direction",
+              ". Posterior probability of this direction: ", ro3.prob(1 - pairError)] : []), ".");
         }
-        ctx.readout.set(["At τ ", setting(state.tau), " the optimum states ", count(result.N), " of ", count(M), " pairs (", sizesNode(sizes),
-          "), risk ", risk(result.risk), ...(last === null ? [] : ["; last change at τ ", breakpoint(last)]), "."]);
+        if (readout3Sig) {
+          ro3.set(["At τ = ", ro3.setting(state.tau), " the optimum states ", ro3.count(result.N), " of ", ro3.count(M), " pairs (", sizesNode(sizes),
+            "), risk ", ro3.risk(result.risk), ...(last === null ? [] : ["; last change at τ = ", ro3.est(last)]), "."]);
+        } else {
+          ctx.readout.set(["At τ ", setting(state.tau), " the optimum states ", count(result.N), " of ", count(M), " pairs (", sizesNode(sizes),
+            "), risk ", risk(result.risk), ...(last === null ? [] : ["; last change at τ ", breakpoint(last)]), "."]);
+        }
       }
 
       // The complete distribution added in v2 remains beside the full v1 matched-disclosure view.
       const histogramCache = new WeakMap();
       function drawDistribution(state) {
         const N = disclosure(tertGrade).N;
+        if (isV2) {
+          if (state.n === N) {
+            selectedDistribution.remove();
+            if (histogramBox.parentElement !== matchedWrap) matchedWrap.append(histogramBox);
+          } else {
+            if (histogramBox.parentElement !== referenceSlot) referenceSlot.append(histogramBox);
+            if (selectedDistribution.parentElement !== matchedWrap) matchedWrap.append(selectedDistribution);
+            drawSelectedDistribution(state.n);
+          }
+        }
         const first = atN(N);
         if (!first) { histogramBody.replaceChildren(busyNote()); return; }
         const all = call(`distribution|${N}`, () => reportsAtN(E, { family, N, k: first.count }));
@@ -1087,31 +1798,63 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
         let bins = histogramCache.get(all);
         if (!bins) {
           // Width-one display grouping; every input is an engine-returned report.
-          const bucket = new Map();
-          for (const report of all.reports) { const from = Math.floor(report.Ew); bucket.set(from, (bucket.get(from) ?? 0) + 1); }
-          const from = Math.min(...bucket.keys()), to = Math.max(...bucket.keys());
-          bins = Array.from({ length: to - from + 1 }, (_, i) => ({ from: from + i, to: from + i + 1, count: bucket.get(from + i) ?? 0 }));
+          bins = distributionBins(all.reports);
           histogramCache.set(all, bins);
         }
         exposeResult(ctx, all, "distribution");
         exposeResult(ctx, { bins }, "histogram");
         const ter = evaluateReport(tertGrade, E, { tau: state.tau });
         const mark = [{ E: ter.Ew }];
-        const width = Math.round(histogramChart.clientWidth || 0) || ctx.width();
+        drawBins(histogramChart, bins, mark, "Every report at the tertiles’ disclosure, with the minimum expected error marked.");
+        const table = h("table", { class: "prx-cd-table", "data-prx-part": "table" }, h("caption", {}, "The five least-error reports; grade vectors follow the displayed posterior-mean order"), h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Grades"), h("th", { scope: "col" }, "Expected wrong directions E"))), h("tbody", {}, ...all.reports.slice(0, 5).map((r, i) => h("tr", {}, h("th", { scope: "row" }, gradeVector(r.grade, i)), h("td", {}, expected(r.Ew, `hist-E-${i}`))))));
+        histogramBody.replaceChildren(h("p", {class:"prx-cd-hist-annotation"}, h("span", {class:"prx-cd-mark prx-cd-mark-steps", style:"border-top-color:var(--prx-post)"}), " Tertiles: smallest E = ", expected(ter.Ew, "hist-tertile-E"), "; the vertical rule marks this value."), h("p", {}, count(all.count, "hist-count"), " reports state ", count(N, "hist-N"), " directions. The entire distribution is shown; bin width is ", count(1), "."));
+        histogramTable.replaceChildren(ctx.scrollRegion(h("div", { class: "prx-cd-scroll" }, table), "Five least-error reports at the tertiles' disclosure"));
+      }
+
+      function distributionBins(reports) {
+          const bucket = new Map();
+          for (const report of reports) { const from = Math.floor(report.Ew); bucket.set(from, (bucket.get(from) ?? 0) + 1); }
+          const from = Math.min(...bucket.keys()), to = Math.max(...bucket.keys());
+          return Array.from({ length: to - from + 1 }, (_, i) => ({ from: from + i, to: from + i + 1, count: bucket.get(from + i) ?? 0 }));
+      }
+
+      function drawBins(chart, bins, mark, alt) {
+        const width = Math.round(chart.clientWidth || 0) || ctx.width();
         const end = bins.at(-1).to;
-        plot(histogramChart, {
-          alt: "The complete distribution of expected wrong directions over every three-grade report at the tertiles' disclosure; the tertiles mark the smallest expected error.",
+        plot(chart, {
+          alt,
           table: { caption: "Every width-one expected-error bin", columns: [{ label: "From E", value: "from", format: formatCount }, { label: "To E (exclusive)", value: "to", format: formatCount }, { label: "Reports", value: "count", format: formatCount }], rows: bins },
-          width, height: 190, aspect: false,
-          marginLeft: 58, marginRight: 16, marginTop: 26, marginBottom: 40,
+          width, height: isV2 ? (width < CONFIG.card.narrowPx ? 225 : 285) : 190, aspect: false,
+          style: { fontSize: "13px" },
+          marginLeft: 58, marginRight: 20, marginTop: 28, marginBottom: 42,
           x: { domain: [0, end], ...(width >= 420 ? { ticks: Math.ceil(end / 5) } : {}), label: "Expected wrong directions E", labelArrow: "none" },
           y: { label: "Reports", grid: true, labelArrow: "none" },
           marks: (c, P) => [P.rectY(bins, { x1: "from", x2: "to", y: "count", fill: c.plotMuted, inset: .5 }), P.ruleY([0], { stroke: c.plotAxis }), P.ruleX(mark, { x: "E", stroke: c.post, strokeWidth: 3 })],
           keyboard: { data: bins, x: d => (d.from + d.to) / 2, y: "count", sort: false, title: d => `E from ${formatCount(d.from)} to ${formatCount(d.to)} (exclusive): ${formatCount(d.count)} reports.` },
         });
-        pinTable(histogramChart, "hist-bin");
-        const table = h("table", { class: "prx-cd-table" }, h("caption", {}, "The five least-error reports; grade vectors follow the displayed posterior-mean order"), h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Grades"), h("th", { scope: "col" }, "Expected wrong directions E"))), h("tbody", {}, ...all.reports.slice(0, 5).map((r, i) => h("tr", {}, h("th", { scope: "row" }, gradeVector(r.grade, i)), h("td", {}, expected(r.Ew, `hist-E-${i}`))))));
-        histogramBody.replaceChildren(h("p", {class:"prx-cd-hist-annotation"}, h("span", {class:"prx-cd-mark prx-cd-mark-steps", style:"border-top-color:var(--prx-post)"}), " Tertiles: smallest E = ", expected(ter.Ew, "hist-tertile-E"), "; the vertical rule marks this value."), h("p", {}, count(all.count, "hist-count"), " reports state ", count(N, "hist-N"), " directions. The entire distribution is shown; bin width is ", count(1), "."), ctx.scrollRegion(h("div", { class: "prx-cd-scroll" }, table), "Five least-error reports at the tertiles' disclosure"));
+        if (chart === histogramChart) pinTable(chart, "hist-bin");
+      }
+
+      function drawSelectedDistribution(N) {
+        selectedDistribution.replaceChildren(title("Reports at the selected disclosure"));
+        const first = atN(N);
+        const cloud = cloudOf();
+        if (!first || !cloud) { selectedDistribution.append(busyNote()); return; }
+        if (first.count === 0) {
+          const match = matchedDisclosure(cloud.cloud, cloud.hull, N);
+          selectedDistribution.append(h("p", {}, "No single report states exactly ", count(N), " pairs."));
+          if (match.lower && match.upper && match.psi != null) {
+            selectedDistribution.append(h("p", {}, "The lower-hull mixture uses N = ", count(match.lower.N), " and N = ",
+              count(match.upper.N), ", with probability ", share(match.psi), " on the upper endpoint. Its expected error is ", expected(match.H), "."));
+          }
+          return;
+        }
+        const bins = call(`bins|${N}`, () => distributionBins(reportsAtN(E, { family, N, k: first.count }).reports));
+        if (!bins) { selectedDistribution.append(busyNote()); return; }
+        const chart = h("div", { class: "prx-cd-cloud-chart" });
+        selectedDistribution.append(chart, h("p", {}, count(first.count), " reports state exactly ", count(N),
+          " pairs. The vertical rule marks their minimum expected error, ", expected(first.reports[0].Ew), "."));
+        drawBins(chart, bins, [{ E: first.reports[0].Ew }], "Distribution of expected errors among all reports at the selected disclosure.");
       }
 
       function drawPathChanges() {
@@ -1144,6 +1887,21 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
       return {
         render(raw, info = {}) {
           const state = { ...raw, view };
+          if (info?.reason === "disclosure") {
+            // PR-06 / PR-09: only redraw width-dependent SVGs inside the newly opened disclosure; never touch stage or readout.
+            const grade = gradeOf(state.cuts);
+            if (info.disclosure === "data") {
+              if (view === "matched") {
+                drawCard(grade, state.cuts);
+              } else if (view === "pair" || view === "path") {
+                drawCard(grade, state.cuts);
+              }
+            } else if (info.disclosure === "schools" || info.disclosure === "your-report" || info.disclosure === "fixed") {
+              drawCard(grade, state.cuts);
+            }
+            ctx.root.removeAttribute("aria-busy");
+            return;
+          }
           ctx.root.setAttribute("aria-busy", "true");
           budget = CONFIG.heavyPerRender;
           waiting = false;
@@ -1174,7 +1932,7 @@ export function mountCdeView(el, spec = {}, { name, view, label = CONFIG.label }
             } else if (view === "pair") {
               ({ a, b } = drawPair(state, grade));
               const comparison = drawPairMore(state, state.tau, a, b);
-              drawPairOverview(state, a, b, comparison);
+              drawPairOverview(state, a, b, comparison, grade, ev);
             } else {
               const current = drawPath(state, widthOf(pathChart));
               drawPathOverview(state, current);

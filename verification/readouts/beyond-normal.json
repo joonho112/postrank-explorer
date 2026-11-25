@@ -300,18 +300,10 @@
         {
           "select": ".prx-bn-law .prx-seg[aria-pressed=\"true\"]",
           "kind": "text",
-          "about": "the panel's own Joint law row shows the law the cells hold",
+          "about": "the Joint law segmented control in toolbar shows the law the cells hold",
           "source": "literal",
           "ref": "11.4",
           "value": "Law 1"
-        },
-        {
-          "select": ".prx-bn-preset-note",
-          "kind": "text",
-          "about": "the line under the preset row: a preset is a whole setting of both panels",
-          "source": "literal",
-          "ref": "10.4",
-          "value": "These presets set both panels. Controls inside a panel change only that panel."
         }
       ]
     },
@@ -591,10 +583,10 @@
         },
         {
           "select": "svg[role=\"img\"]",
-          "index": 0,
+          "index": 1,
           "attr": "aria-label",
           "kind": "text",
-          "about": "text alternative of the two-bump figure (the app's only figure)",
+          "about": "text alternative of the two-bump figure (beside the 3x3 joint-law figure)",
           "source": "literal",
           "ref": "11.4",
           "value": "Posterior density of unit A, a mixture of two normal bumps (solid line), and of unit B (dashed line), with dotted vertical lines at A's and B's posterior means."
@@ -1044,10 +1036,10 @@
           "select": "[data-prx-part~=\"readout\"]",
           "kind": "text",
           "slots": true,
-          "about": "the read-out word for word",
+          "about": "the concise v2 read-out word for word",
           "source": "literal",
           "ref": "11.4",
-          "value": "The independence law gives πAB = ⟨live-joint-pi⟩ and πBA = ⟨live-joint-pi-ba⟩, and A equals B with probability ⟨live-joint-t⟩. With two bumps, w = ⟨live-mix-w⟩ gives A a posterior mean of ⟨live-mix-mean-a⟩ against B's ⟨live-mix-mean-b⟩, and πAB = ⟨live-mix-pi⟩."
+          "value": "The independence law gives πAB = ⟨live-joint-pi⟩, πBA = ⟨live-joint-pi-ba⟩ (tie t = ⟨live-joint-t⟩). Two bumps (w = ⟨live-mix-w⟩): A's mean is ⟨live-mix-mean-a⟩ vs. B's ⟨live-mix-mean-b⟩, with πAB = ⟨live-mix-pi⟩."
         },
         {
           "select": "[data-prx-readout=\"joint-law1-pi\"]",

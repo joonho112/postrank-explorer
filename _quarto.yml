@@ -39,7 +39,7 @@ website:
   favicon: media/favicon.svg
   page-navigation: false
   page-footer:
-    left: "postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)"
+    left: "postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)"
     right: "Reference package: postrank 1.2.0"
 
 format:
@@ -50,9 +50,8 @@ format:
       - styles/app.css
     toc: false
     lang: en
-    # Site pages are light: an OS in dark mode must not switch the token colors of cards and apps.
-    include-in-header:
-      text: '<script>document.documentElement.setAttribute("data-theme", "light");</script>'
+    # Site pages are light-only: js/site/site-preferences.html pins data-theme="light" and places mobile leads.
+    include-in-header: js/site/site-preferences.html
     include-after-body:
       - js/site/recipe-keyboard.html
       - js/site/navigation.html

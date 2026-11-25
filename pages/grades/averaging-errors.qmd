@@ -1,10 +1,10 @@
 ---
 title: "Averaging error shares across reports"
-subtitle: "2.19 · after the postrank theory book, chapters 8 and 16"
+subtitle: "2.19 · after the postrank theory book, chapters 8 and 22"
 description: "Pooled errors, conditional mean error shares and zero-imputed means when disclosure varies."
 ---
 
-When the number of stated directions varies across reports, the average error share depends on how the reports enter the calculation. Dividing the expected wrong count by the expected stated count gives more weight to reports that state more pairs. Averaging the report-level fractions instead gives each report its probability weight, conditional on stating at least one direction. A third calculation assigns zero to a report that states none. We apply all three to the same counts and probabilities for a lottery over reports and for a simulation with repeated datasets.
+When stated pair counts vary across reports or datasets, the average error share depends on whether we pool counts, average over disclosing outcomes only, or impute zero for silent reports.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,22 +16,18 @@ When the number of stated directions varies across reports, the average error sh
 
 ## Numerical illustrations {#what-to-try}
 
-- **Three outcomes.** Pooled pairs give 2/5, the mean among disclosing outcomes is 1/2, and zero-imputation gives
-  1/3. The chance of disclosure is 2/3 and mean disclosure is 5/9. Changes to wrong and stated counts affect these summaries differently because their denominators differ. The silent outcome has an undefined fraction.
-- **More weight on errors.** Giving the error-heavy outcome more probability changes the pooled ratio to 4/7,
-  the disclosing mean to 2/3 and the zero-imputed mean to 1/2. We normalize the weights to give probabilities for the outcomes. The number of units in each outcome stays fixed.
-- **A complete-report lottery.** The four-unit example mixes entire reports. Pooled expected counts give 1/8,
-  while the mean report fraction is 49/400. The lottery probability weights each complete report and its disclosure.
-  Expected weighted errors are averaged within a report before the reporting lottery is applied.
-- **All silent.** Both ratio-based summaries read “NA: no disclosure.” The zero-imputed mean is 0 because the convention assigns zero to every silent outcome. The probability of any disclosure is reported separately.
-- **Twenty datasets.** A simulated league gives pooled error .0892 and a disclosing mean .0891. The running curves and individual counts describe the averages over the selected number of datasets. The true values stay fixed while each
-  dataset produces fresh estimates and its own graded report.
+- **Three outcomes.** Pooled pairs give 2/5, disclosing outcomes give 1/2, and zero-imputation gives 1/3 (disclosure chance 2/3, mean disclosure 5/9).
+- **More weight on errors.** Increasing the error-heavy outcome's weight shifts the pooled ratio to 4/7, the disclosing mean to 2/3, and the zero-imputed mean to 1/2.
+- **A complete-report lottery.** Mixing complete reports yields 1/8 for pooled expected counts versus 49/400 for the mean report fraction.
+- **All silent.** Both ratio-based summaries read “NA: no disclosure,” while the zero-imputed mean is 0.
+- **Twenty datasets.** Simulated league replays yield pooled error .0892 and disclosing mean .0891 against fixed true values.
 
-::: {.callout-note appearance="simple"}
-A ratio estimated from a small sample need not be unbiased for a ratio of expectations. The hand-set outcomes
-provide an exact single-observation example; one trajectory of simulated datasets shows variability, rather than
-measuring that bias. Simple rational values use fractions in the finite examples; simulated shares use the site's decimal format.
-:::
+<details>
+<summary>Small-sample ratio note</summary>
+
+A ratio estimated from a small sample need not be unbiased for a ratio of expectations. The hand-set outcomes provide an exact single-observation counterexample, while one trajectory of simulated datasets illustrates variability rather than repeated-sample bias.
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In R"}
 ```r
@@ -43,3 +39,5 @@ c(pooled=sum(A)/sum(N), disclosing=mean((A/N)[N>0]), zero_imputed=mean(ifelse(N>
 Standalone: [averaging-errors](../../embed/averaging-errors.html), for example `?mode=replays&replays=5&cap=1`.
 
 Related applications: [Expected and realized errors among stated directions](disclosed-errors.qmd), [Error rates under two denominators](two-denominators.qmd).
+
+Theory book · [Realized false discovery proportions and three probability laws](https://joonho112.github.io/postrank-theory-book/chapters/08-selection-abstention.html#a-realized-fraction-and-three-probability-laws) · [Averaging conventions for disclosed-error fractions](https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-disclosed-error-estimands).

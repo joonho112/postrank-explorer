@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/another-law.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Evaluation under an alternative posterior law – postrank Explorer">
+<meta property="og:description" content="Fixed-report risk and regret under distinct selection and evaluation laws.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/another-law.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/another-law.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -579,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Evaluation under an alternative posterior law</h1>
-<p class="subtitle lead">2.17 · after the postrank theory book, ch.&nbsp;16 and 18</p>
+<p class="subtitle lead">2.17 · after the postrank theory book, ch.&nbsp;24</p>
 </div>
 
 <div>
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>An analyst can select a report under one posterior law and evaluate it under another. We hold the selected report fixed while changing one site’s evaluation mean or all of the evaluation standard deviations. For each change, we compute the risk of the same report under both laws. We then compare its evaluation risk with the lowest risk attainable under the evaluation law in the same report family. The difference from that minimum is evaluation regret.</p>
+<p>A report chosen under one posterior law can be evaluated under another. Holding that selected report fixed, evaluation regret measures how far its evaluation-law risk sits above the evaluation-law optimum.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,22 +635,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Same laws.</strong> The selected report has risk .0417 under either law, and evaluation regret is 0. The plotted intervals and means coincide; the largest pair-error gap is also 0. Changing the evaluation law shows how far the two assessments can diverge.</li>
-<li><strong>Move C upward.</strong> The frozen report’s evaluation risk rises to .1360, while the evaluation-best report has risk .0542. Their difference, .0817, is the regret. The chosen reports change 3 pair decisions. The table separates the two evaluations of each report.</li>
-<li><strong>Wider evaluation law.</strong> The frozen report now has risk .0779, yet regret remains 0. It is still best in the family under the evaluation law. A change in the risk of a report does not by itself imply that another report should replace it.</li>
-<li><strong>C +.40, no cap.</strong> Evaluation regret is .0108. Both optimizations now search the larger family. The family labels identify the same set of eligible reports for both calculations.</li>
-<li><strong>Small change, new report.</strong> There is 1 changed pair decision. <strong>How the bounds are calculated</strong> gives the pair-error radius of .0132. Regret is only .0008, beneath the uniform bound .0263. A small objective gap can coexist with different grade vectors.</li>
+<li><strong>Same laws.</strong> Risk is .0417 under either law, and evaluation regret is 0.</li>
+<li><strong>Move C upward.</strong> Fixed-report evaluation risk rises to .136 against evaluation-best .0542: regret .0817 and 3 changed pairs.</li>
+<li><strong>Wider evaluation law.</strong> Evaluation risk rises to .0779, yet regret stays 0 because the same report stays best.</li>
+<li><strong>C +.40, no cap.</strong> Shifting C by +.40 without a cap gives regret .0108 across all reports.</li>
+<li><strong>Small change, new report.</strong> With 1 changed pair, <strong>How the bounds are calculated</strong> gives radius .0132 and regret .000755 below .0263.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
+<details>
+<summary>
+Further notes on discrepancy bounds
+</summary>
 <p>Both laws use independent normal distributions specified for the example. The regret bound adds two quantities: twice a uniform bound on the difference in risks across laws and a bound on the selection-law optimization gap. Both bounds apply to the whole common family. We enumerate every report, so the selection-law optimization gap is zero. Increasing the number of draws under either law would leave any difference between the two laws in place.</p>
-</div>
-</div>
-</div>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -646,6 +667,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Standalone: <a href="../../embed/another-law.html">two evaluation laws</a>, for example <code>?shift=1&amp;unit=C</code>.</p>
 <p>Related applications: <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a>, <a href="../../pages/uncertainty/mc-error.html">Monte Carlo error in pairwise probabilities</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/24-misspecification-calibration.html#sec-model-error-bound">Risk discrepancy bounds on a common action family</a>.</p>
 
 
 </section>
@@ -1118,7 +1140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

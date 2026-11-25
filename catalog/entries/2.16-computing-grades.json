@@ -5,12 +5,12 @@
   "title": "How the best report is found",
   "idea": "This browser searches small families report by report, dynamic programming cuts one declared order exactly, and postrank's solver takes the joint problem and reports its status, bound and gap.",
   "status": "built",
-  "from": "new concept · v1 storyboard P-08; theory book ch. 14; postrank vignette m5 (enumeration, fixed-order DP, MIP with status, bound and gap); picture: family sizes on a log axis, the 0/1 patterns of three units, the dynamic-programming table filling cell by cell, and a HiGHS solve with its incumbent risk, bound, gap and status",
+  "from": "new concept · v1 storyboard P-08; theory book ch. 19; postrank vignette m5 (enumeration, fixed-order DP, MIP with status, bound and gap); picture: family sizes on a log axis, the 0/1 patterns of three units, the dynamic-programming table filling cell by cell, and a HiGHS solve with its incumbent risk, bound, gap and status",
   "data": [
     "data/released/six-sites.json",
     "engine"
   ],
-  "credit": "After the postrank vignette m5 and the theory book, ch. 14.",
+  "credit": "After the postrank vignette m5 and the postrank theory book, ch. 19 (“Feasible reports, bounds, and computational scope”).",
   "caption": "Family counts and search results computed in this browser. Six fictional sites use the postrank tutorial score-A posterior; the joint solver uses a frozen simulated league. Optimization answers only for its stated family and supplied probabilities.",
   "presets": [
     {
@@ -80,15 +80,15 @@
       "preset": "joint-solver",
       "shows": [
         "20 league units",
-        ".1750",
-        ".1500"
+        ".175",
+        ".150"
       ]
     },
     {
       "preset": "joint-solver-six",
       "shows": [
         "6 league units",
-        ".1455",
+        ".146",
         "32 contiguous reports"
       ]
     }

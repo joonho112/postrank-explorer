@@ -1,9 +1,9 @@
 // One pair: all linked cost, bridge and rule views; probabilities and choices from pairDecision.
 import { createWidget } from "../shared/base.js";
-import { numText, plot } from "../shared/chart.js";
+import { numText, placeDirectLabels, plot } from "../shared/chart.js";
 import { formatCount, formatProb, formatSetting } from "../shared/format.js";
-import { captionNode } from "../shared/labels.js";
 import { formulaNums, renderTex } from "../shared/math.js";
+import { captionNode, ro } from "../shared/readout.js";
 import { pairDecision } from "../pr-core.js";
 
 export const CONFIG = Object.freeze({
@@ -20,17 +20,17 @@ export const CONFIG = Object.freeze({
   half: 0.5,
   actions: Object.freeze(["iAboveJ", "jAboveI", "withhold"]),
   chart: Object.freeze({
-    height: 270, marginTop: 46, marginRight: 14, marginBottom: 40, marginLeft: 52, ticks: 5,
-    line: 2.25, dash: "7,4", envelopeOpacity: 0.85, rule: "3,3", dot: 4, ring: 7, ringWidth: 2, circle: 5,
-    // direct labels, each lifted labelDy px above its line: the falling line near its top-left end (labelBA), the
-    // rising line lower down (labelAB), so that the two never share a row at a narrow width; the withhold line at its
-    // right end
-    labelBA: 0.04, labelAB: 0.8, labelDx: 7, labelDy: -9, whLabelDx: -4, whLabelDy: -8, halo: 3,
-    // the "equally good" labels sit under the flat line, beside each crossing on the side away from the lines
-    // (sideDx, belowDy px); when the two would be closer than gapPx px they become one label in the middle, at half
-    // the height of the flat line; a crossing lower than lowPx px gets no label (the legend names the circles); the
-    // marker's formula sits markerDy px above the plot, anchored at its side within markerEdge of an end
-    sideDx: 6, belowDy: 15, lowPx: 30, gapPx: 175, middle: 0.5, markerTop: 1, markerDy: -32, markerEdge: 0.08,
+    height: 296, mobileHeight: 276, mobileBreak: 520,
+    marginTop: 68, marginRight: 18, marginBottom: 42, marginLeft: 56, ticks: 5, yLabelOffset: 42, xLabelOffset: 36,
+    line: 2.25, dash: "7,4", envelopeOpacity: 0.85, rule: "3,3", dot: 4.5, ring: 7.5, ringWidth: 2, circle: 5.5,
+    // direct labels placed inside the plot region via placeDirectLabels, clear of y = e, y = 1.0, and top-left crossings
+    labelBA: 0.17, labelAB: 0.72, mobileLabelABX: 0.98, mobileLabelABY: 0.40,
+    labelDx: 8, labelDy: -6, abDesktopDx: 10, abDesktopDy: 5, abMobileDx: -4, abMobileDy: 0,
+    whLabelDx: -6, whLabelDy: -8, minLabelGap: 18, halo: 3.5,
+    // "equally good" labels under the flat line, beside each crossing on the side away from the lines
+    sideDx: 6, belowDy: 15, lowPx: 30, gapPx: 175, middle: 0.5,
+    // dedicated top headroom separating the live marker formula, complementary π scale, and 1.0 y-tick
+    piDy: -17, piTitleDx: -20, markerTop: 1, markerDy: -45, markerEdge: 0.08,
   }),
   text: Object.freeze({
     piLabel: "Direction probability π of A above B",
@@ -38,6 +38,8 @@ export const CONFIG = Object.freeze({
     tauLabel: "Withholding cost τ",
     // the hint as parts: {one} is the cost of a wrong direction, a data-num node
     tauHint: Object.freeze(["A wrong stated direction costs ", "{one}", "; staying silent on the pair costs τ."]),
+    dataBoxTitle: "Data and action costs",
+    methodBoxTitle: "Method and decision rule",
     bridgeHead: "From the direction probability to the error probability",
     bridgeNote: "The last line holds because the two true values have probability zero of being equal here; the two lines above it hold for every posterior.",
     // figure
@@ -71,16 +73,16 @@ export const CONFIG = Object.freeze({
     rowWH: "Withhold",
     smallest: "yes",
     smallestEqual: "yes, equal",
-    // read-out
-    readSetting: Object.freeze(["{piAB}", " = ", "{pi}", ", τ = ", "{tau}", ". Direction errors: ", "{eAB}", " = ", "{e}", ", ", "{eBA}", " = ", "{eRev}", ". "]),
+    // concise Frame v2 read-out (<= 30 words, preserving all 5 hooks and /equally good/ tie phrases)
+    readSetting: Object.freeze(["At ", "{piAB}", " = ", "{pi}", " and τ = ", "{tau}", " (", "{eAB}", " = ", "{e}", ", ", "{eBA}", " = ", "{eRev}", "), "]),
     readBest: Object.freeze({
-      iAboveJ: Object.freeze(["Stating A above B is the unique best action: its expected cost ", "{e}", " is below τ."]),
-      jAboveI: Object.freeze(["Stating B above A is the unique best action: its expected cost ", "{eRev}", " is below τ."]),
-      withhold: Object.freeze(["Both errors are above τ, so withholding is the unique best action, with expected cost ", "{tau}", "."]),
-      iAboveJwithhold: Object.freeze(["The error of A above B equals τ, so stating A above B and withholding are equally good, each with expected cost ", "{tau}", "."]),
-      jAboveIwithhold: Object.freeze(["The error of B above A equals τ, so stating B above A and withholding are equally good, each with expected cost ", "{tau}", "."]),
-      all: Object.freeze(["Both errors equal τ, so all three actions are equally good, each with expected cost ", "{tau}", "."]),
-      other: Object.freeze(["The best actions are: ", "{list}", "."]),
+      iAboveJ: Object.freeze(["stating A above B is best (cost ", "{e}", " below τ)."]),
+      jAboveI: Object.freeze(["stating B above A is best (cost ", "{eRev}", " below τ)."]),
+      withhold: Object.freeze(["both errors exceed τ, so withholding is best (cost ", "{tau}", ")."]),
+      iAboveJwithhold: Object.freeze(["stating A above B and withholding are equally good (cost ", "{tau}", ")."]),
+      jAboveIwithhold: Object.freeze(["stating B above A and withholding are equally good (cost ", "{tau}", ")."]),
+      all: Object.freeze(["all three actions are equally good (cost ", "{tau}", ")."]),
+      other: Object.freeze(["best actions: ", "{list}", "."]),
     }),
     actionWords: Object.freeze({ iAboveJ: "state A above B", jAboveI: "state B above A", withhold: "withhold" }),
     // rule box
@@ -107,18 +109,64 @@ export const CONFIG = Object.freeze({
   }),
 });
 
-const CSS = `.prx-one-pair .prx-controls {
-  align-items: flex-start;
+const CSS = `.prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-controls {
+  align-items: flex-end;
+  flex: 1 1 27rem;
+}
+
+.prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-controls > .prx-slider {
+  flex: 1 1 12rem;
+  max-width: 16.5rem;
+}
+
+.prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-stage {
+  grid-area: auto;
+  min-width: 0;
 }
 
 @media (max-width: 30em) {
-  .prx-one-pair .prx-controls {
+  .prx-one-pair.prx-widget[data-prx-frame="v2"] {
+    padding: 0.45rem 0.55rem 0.4rem;
+  }
+  .prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-toolbar {
+    gap: 0.3rem 0.45rem;
+    margin-bottom: 0.35rem;
+  }
+  .prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-controls {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.35rem 0.7rem;
+    gap: 0.25rem 0.55rem;
     align-items: end;
+    flex: 1 1 100%;
+    width: 100%;
   }
-  .prx-one-pair .prx-controls > .prx-presets { grid-column: 1 / -1; }
+  .prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-toolbar > .prx-controls > .prx-slider {
+    max-width: none;
+  }
+  .prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-presets .prx-seg-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-presets .prx-seg-buttons {
+    gap: 0.25rem;
+  }
+  .prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-presets .prx-seg {
+    padding: 0.18rem 0.48rem;
+    font-size: 0.8125rem;
+    line-height: 1.25;
+  }
+  .prx-one-pair.prx-widget[data-prx-frame="v2"] > .prx-readout {
+    margin-bottom: 0.4rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.35;
+  }
+  .prx-one-pair.prx-widget[data-prx-frame="v2"] .prx-stage {
+    padding: 0.4rem 0.45rem;
+  }
 }
 
 .prx-one-pair .prx-one-pair-sym sub {
@@ -138,55 +186,18 @@ const CSS = `.prx-one-pair .prx-controls {
   color: var(--prx-fg-muted);
 }
 
-
-.prx-one-pair .prx-one-pair-bridge {
-  margin: 0.75rem 0 0;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--prx-border);
-  border-radius: var(--prx-radius);
-  min-width: 0;
-}
-
-.prx-one-pair .prx-one-pair-tex {
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.prx-one-pair .prx-one-pair-tex math[display="block"] {
-  margin: 0.25rem 0;
-}
-
-
-.prx-one-pair .prx-one-pair-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-  gap: 1rem 1.25rem;
-  align-items: start;
-  min-width: 0;
-}
-
-.prx-one-pair .prx-one-pair-figure,
-.prx-one-pair .prx-one-pair-costs,
-.prx-one-pair .prx-one-pair-chart {
+.prx-one-pair .prx-one-pair-chart,
+.prx-one-pair .prx-one-pair-costs {
   min-width: 0;
   max-width: 100%;
 }
 
-.prx-one-pair .prx-one-pair-figure {
-  padding: 0.25rem 0.25rem 0.5rem;
-  background: var(--prx-plot-bg);
-  color: var(--prx-plot-fg);
-  border-radius: var(--prx-radius);
-}
-
-
-.prx-one-pair .prx-one-pair-legend {
+.prx-one-pair .prx-stage .prx-one-pair-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 0.75rem;
-  margin: 0.25rem 0.25rem 0;
-  font-size: 0.85em;
+  gap: 0.25rem 0.85rem;
+  margin: 0.35rem 0.15rem 0;
+  font-size: 0.8125rem;
   color: var(--prx-plot-fg);
 }
 
@@ -203,18 +214,18 @@ const CSS = `.prx-one-pair .prx-controls {
   height: 0.9rem;
 }
 
-.prx-one-pair .prx-one-pair-swatch-shade {
+.prx-one-pair .prx-stage .prx-one-pair-swatch-shade {
   background: var(--prx-neutral-2);
   border: 1px solid var(--prx-cell-border);
 }
 
-.prx-one-pair .prx-one-pair-swatch-circle {
+.prx-one-pair .prx-stage .prx-one-pair-swatch-circle {
   border: 2px solid var(--prx-plot-fg);
   border-radius: 50%;
   background: var(--prx-plot-bg);
 }
 
-.prx-one-pair .prx-one-pair-swatch-ring {
+.prx-one-pair .prx-stage .prx-one-pair-swatch-ring {
   border: 2px solid var(--prx-plot-fg);
   border-radius: 50%;
   background: radial-gradient(circle, var(--prx-err) 0 32%, transparent 34%);
@@ -276,7 +287,6 @@ const CSS = `.prx-one-pair .prx-controls {
   color: var(--prx-wh-text);
 }
 
-
 .prx-one-pair .prx-one-pair-line {
   display: inline-block;
   width: 1.4rem;
@@ -294,9 +304,8 @@ const CSS = `.prx-one-pair .prx-controls {
   border-top-color: var(--prx-wh);
 }
 
-
 .prx-one-pair .prx-one-pair-rule {
-  margin: 0.75rem 0 0;
+  margin: 0 0 0.75rem;
   padding: 0.5rem 0.75rem;
   border-left: 3px solid var(--prx-accent);
   background: var(--prx-bg-raised);
@@ -307,12 +316,34 @@ const CSS = `.prx-one-pair .prx-controls {
   margin: 0 0 0.4rem;
 }
 
+.prx-one-pair .prx-one-pair-rule p:last-child {
+  margin-bottom: 0;
+}
+
 .prx-one-pair .prx-one-pair-rule-text {
   font-weight: 600;
 }
 
 .prx-one-pair .prx-one-pair-rule-text .prx-one-pair-note {
   font-weight: 400;
+}
+
+.prx-one-pair .prx-one-pair-bridge {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--prx-border);
+  border-radius: var(--prx-radius);
+  min-width: 0;
+}
+
+.prx-one-pair .prx-one-pair-tex {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.prx-one-pair .prx-one-pair-tex math[display="block"] {
+  margin: 0.25rem 0;
 }`;
 
 const T = CONFIG.text;
@@ -364,34 +395,54 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: CONFIG.className,
     css: CSS,
-    // the shared result-first frame (review 044, X-01): sliders and the preset row, the read-out, then the cost chart
-    // beside the cost table (the panel the sliders change), then the rule and the bridge; base.js only moves nodes
-    layout: "result-first",
+    frame: "v2",
     keys: {
       pi: { type: "number", ...CONFIG.pi, snap: true },
       tau: { type: "number", ...CONFIG.tau, snap: true },
     },
     build(ctx) {
       const { h } = ctx;
+      const writer = ro(ctx);
       const C = CONFIG.chart;
       const sym = (letter, pair) => h("span", { class: "prx-one-pair-sym" }, letter, h("sub", {}, pair));
-      const tagged = (node, name) => { if (name) node.setAttribute("data-prx-readout", name); return node; };
-      const num = (raw, display, name) => tagged(ctx.num(raw, display), name);
-      const prob = (raw, name) => num(raw, formatProb(raw, { digits: 2 }), name);
-      const setting = (raw, name) => num(raw, formatSetting(raw), name);
+      const num = (raw, display, hook) => writer.num(raw, display, hook ? { hook } : undefined);
+      const prob = (raw, hook) => num(raw, formatProb(raw, { digits: 2 }), hook);
+      const setting = (raw, hook) => writer.setting(raw, hook ? { hook } : undefined);
       const fill = (parts, slot) => parts.map((p) => { const m = /^\{(\w+)\}$/.exec(p); return m ? slot[m[1]]() : p; });
 
-      // --- controls
+      // --- primary controls in toolbar
       const piSlider = ctx.slider({ label: T.piLabel, ...CONFIG.pi, value: ctx.state.pi, name: "pi", onInput: (v) => ctx.set({ pi: v }) });
       piSlider.input.setAttribute("aria-label", T.piName);
       const tauSlider = ctx.slider({ label: T.tauLabel, ...CONFIG.tau, value: ctx.state.tau, name: "tau", hint: T.tauHint.join(""), onInput: (v) => ctx.set({ tau: v }) });
       const tauHint = tauSlider.root.querySelector(".prx-hint");
-      tauHint?.replaceChildren(...fill(T.tauHint, { one: () => ctx.num(CONFIG.wrongCost, formatCount(CONFIG.wrongCost)) }));
+      tauHint?.replaceChildren(...fill(T.tauHint, { one: () => writer.count(CONFIG.wrongCost) }));
       ctx.controls.append(piSlider.root, tauSlider.root);
       ctx.primaryControl(piSlider.root);
 
-      // --- bridge: the definition (static) and the numbers (live); review 044 repair (X-01): after the chart and the
-      // rule box, no longer between the sliders and the read-out
+      // --- primary stage: generous full-width expected-cost figure + compact inline symbol key
+      const chartSlot = h("div", { class: "prx-one-pair-chart" });
+      const legend = ctx.part("legend", h("div", { class: "prx-one-pair-legend" },
+        h("span", { class: "prx-one-pair-key" }, h("span", { class: "prx-one-pair-swatch prx-one-pair-swatch-shade", "aria-hidden": "true" }), T.legendShade),
+        h("span", { class: "prx-one-pair-key" }, h("span", { class: "prx-one-pair-swatch prx-one-pair-swatch-circle", "aria-hidden": "true" }), T.legendCircle),
+        h("span", { class: "prx-one-pair-key" }, h("span", { class: "prx-one-pair-swatch prx-one-pair-swatch-ring", "aria-hidden": "true" }), T.legendRing)));
+      const actionCosts = h("p", { class: "prx-one-pair-rule", "data-prx-action-costs": "" });
+      ctx.stage.append(chartSlot, legend, actionCosts);
+
+      // --- Data disclosure: complete action-cost table eagerly rendered
+      const dataBox = ctx.dataBox(T.dataBoxTitle);
+      const costTable = ctx.part("table", h("div", { class: "prx-one-pair-costs" }));
+      dataBox.body.append(costTable);
+
+      // --- Method disclosure: isolated-pair decision rule + posterior-to-error bridge formulas
+      const methodBox = ctx.methodBox(T.methodBoxTitle);
+      const ruleHere = h("p", { class: "prx-one-pair-rule-here" });
+      const ruleBox = ctx.part("notes", h("section", { class: "prx-one-pair-rule", "aria-label": T.ruleHead },
+        ctx.panelTitle(T.ruleHead, { className: "prx-one-pair-head" }),
+        h("p", { class: "prx-one-pair-rule-text" }, ...fill(T.rule, { one: () => writer.count(CONFIG.wrongCost) }), " ",
+          h("span", { class: "prx-one-pair-note", text: T.ruleGloss })),
+        ruleHere));
+      if (tauHint) ruleBox.append(tauHint);
+
       const definition = h("div", { class: "prx-one-pair-tex", "data-prx-tex": "definition" });
       const worked = h("div", { class: "prx-one-pair-tex", "data-prx-tex": "bridge" });
       const bridge = ctx.part("notes", h("section", { class: "prx-one-pair-bridge", "aria-label": T.bridgeHead },
@@ -400,38 +451,16 @@ export function mountWidget(el, spec = {}) {
       ctx.scrollRegion(definition, "Definition of the error probability");
       ctx.scrollRegion(worked, "Direction probability and error probability");
       renderTex(definition, CONFIG.tex.definition, { display: true });
+      methodBox.body.append(ruleBox, bridge);
 
-      // --- figure, legend and the cost table
-      const chartSlot = h("div", { class: "prx-one-pair-chart" });
-      const legend = ctx.part("legend", h("div", { class: "prx-one-pair-legend" },
-        h("span", { class: "prx-one-pair-key" }, h("span", { class: "prx-one-pair-swatch prx-one-pair-swatch-shade", "aria-hidden": "true" }), T.legendShade),
-        h("span", { class: "prx-one-pair-key" }, h("span", { class: "prx-one-pair-swatch prx-one-pair-swatch-circle", "aria-hidden": "true" }), T.legendCircle),
-        h("span", { class: "prx-one-pair-key" }, h("span", { class: "prx-one-pair-swatch prx-one-pair-swatch-ring", "aria-hidden": "true" }), T.legendRing)));
-      const figureBox = h("div", { class: "prx-one-pair-figure" }, chartSlot, legend);
-      // the graphic the sliders move (base.js primaryGraphic): the marker, its dots and rings
-      ctx.primaryGraphic(figureBox);
-      const costTable = ctx.part("table", h("div", { class: "prx-one-pair-costs" }));
-      const grid = h("div", { class: "prx-one-pair-grid" }, figureBox, costTable);
-
-      // --- rule box: review 044 repair (X-01), directly after the chart and the cost table (it was after the read-out,
-      // which now sits under the sliders), then the bridge
-      const ruleHere = h("p", { class: "prx-one-pair-rule-here" });
-      const ruleBox = ctx.part("notes", h("section", { class: "prx-one-pair-rule", "aria-label": T.ruleHead },
-        ctx.panelTitle(T.ruleHead, { className: "prx-one-pair-head" }),
-        h("p", { class: "prx-one-pair-rule-text" }, ...fill(T.rule, { one: () => num(CONFIG.wrongCost, formatCount(CONFIG.wrongCost)) }), " ",
-          h("span", { class: "prx-one-pair-note", text: T.ruleGloss })),
-        ruleHere));
-      // Keep the exact cost explanation with the worked rule, outside the short control-to-figure path.
-      if (tauHint) ruleBox.append(tauHint);
-      ctx.charts.append(grid, ruleBox, bridge);
-      // base.css puts the parentheses around a caption that is the only element in the caption line
-      ctx.caption.replaceChildren(T.caption, " (", captionNode(ctx, "teaching-posterior"), ")");
+      ctx.caption.replaceChildren(T.caption, " (", captionNode(ctx, "teaching-posterior"), ").");
 
       // --- drawing
       function drawChart(r) {
-        const width = Math.max(1, Math.round(chartSlot.clientWidth || ctx.width()));
+        const width = Math.max(1, Math.round(chartSlot.clientWidth || ctx.stage.clientWidth || ctx.width()));
+        const height = width < C.mobileBreak ? C.mobileHeight : C.height;
         const innerW = Math.max(1, width - C.marginLeft - C.marginRight);
-        const innerH = Math.max(1, C.height - C.marginTop - C.marginBottom);
+        const innerH = Math.max(1, height - C.marginTop - C.marginBottom);
         const lineAB = [{ e: 0, c: 0 }, { e: 1, c: CONFIG.wrongCost }];
         const lineBA = [{ e: 0, c: CONFIG.wrongCost }, { e: 1, c: 0 }];
         const lineWH = [{ e: 0, c: r.tau }, { e: 1, c: r.tau }];
@@ -439,7 +468,7 @@ export function mountWidget(el, spec = {}) {
         const envelope = [{ e: 0, c: 0 }, ...cross.map((x) => ({ e: x.e, c: x.y })), { e: 1, c: 0 }];
         const costAt = { iAboveJ: r.eAB, jAboveI: r.eBA, withhold: r.tau };
         const dots = CONFIG.actions.map((a) => ({ a, e: r.eAB, c: costAt[a], best: r.best.includes(a) }));
-        // "equally good" labels under the flat line (see CONFIG.chart); none when the crossings are too low
+        // "equally good" labels under the flat line; none when crossings sit too close to c = 0
         let eqLabels = [];
         const mid = (text) => [{ e: CONFIG.half, c: C.middle * r.tau, text, anchor: "middle", dx: 0, dy: 0 }];
         if (cross.length === 1) eqLabels = mid(T.equalAll);
@@ -451,13 +480,22 @@ export function mountWidget(el, spec = {}) {
             { e: cross[1].e, c: cross[1].y, text: T.equal, anchor: "end", dx: -C.sideDx, dy: C.belowDy },
           ];
         }
-        const lineLabels = [
-          { e: C.labelAB, c: C.labelAB, text: T.lineAB, anchor: "end", dx: -C.labelDx, dy: C.labelDy },
-          { e: C.labelBA, c: 1 - C.labelBA, text: T.lineBA, anchor: "start", dx: C.labelDx, dy: C.labelDy },
-          { e: 1, c: r.tau, text: T.lineWH, anchor: "end", dx: C.whLabelDx, dy: C.whLabelDy },
-        ];
-        const markerAnchor = r.eAB < C.markerEdge ? "start" : r.eAB > (width < 450 ? .76 : .87) ? "end" : "middle";
-        const piTicks = [0, .25, .5, .75, 1].map(e => ({ e, pi: 1 - e }));
+        const yAt = (c) => C.marginTop + (CONFIG.wrongCost - c) * innerH;
+        const abItem = width < C.mobileBreak
+          ? { id: "ab", e: C.mobileLabelABX, c: C.mobileLabelABY, text: T.lineAB, anchor: "end", dx: C.abMobileDx, y: yAt(C.mobileLabelABY) + C.abMobileDy }
+          : { id: "ab", e: C.labelAB, c: C.labelAB, text: T.lineAB, anchor: "start", dx: C.abDesktopDx, y: yAt(C.labelAB) + C.abDesktopDy };
+        const placed = placeDirectLabels([
+          { id: "ba", e: C.labelBA, c: CONFIG.wrongCost - C.labelBA, text: T.lineBA, anchor: "start", dx: C.labelDx, y: yAt(CONFIG.wrongCost - C.labelBA) + C.labelDy },
+          abItem,
+          { id: "wh", e: 1, c: r.tau, text: T.lineWH, anchor: "end", dx: C.whLabelDx, y: yAt(r.tau) + C.whLabelDy },
+        ], {
+          minGapPx: C.minLabelGap,
+          minY: C.marginTop + 18,
+          maxY: C.marginTop + innerH - 10,
+        });
+        const lineLabels = placed.map((d) => ({ ...d, dy: d.y - yAt(d.c) }));
+        const markerAnchor = r.eAB < C.markerEdge ? "start" : r.eAB > (width < 450 ? 0.74 : 0.86) ? "end" : "middle";
+        const piTicks = [0, 0.25, 0.5, 0.75, 1].map((e) => ({ e, pi: 1 - e }));
         const rows = [
           ...cross.map((x) => ({
             where: x.kind === "all" ? T.rowCrossAll : x.kind === "ab" ? T.rowCrossAB : T.rowCrossBA,
@@ -485,16 +523,16 @@ export function mountWidget(el, spec = {}) {
               ...rows.slice(0, -1).map((d) => ({ e: d.e, c: r.tau, text: `${d.where}: error ${formatProb(d.e, { digits: 2 })}; ${d.best} equally good` })),
             ], x: "e", y: "c", sort: false, label: "Actions at the current pair and equal-cost crossings", title: (d) => d.text,
           },
-          width, height: C.height,
+          width, height,
           marginTop: C.marginTop, marginRight: C.marginRight, marginBottom: C.marginBottom, marginLeft: C.marginLeft,
-          x: { domain: [0, 1], ticks: C.ticks, label: T.xLabel, labelAnchor: "center", labelArrow: "none" },
-          y: { domain: [0, CONFIG.wrongCost], ticks: C.ticks, label: T.yLabel, labelAnchor: "center", labelArrow: "none" },
+          x: { domain: [0, 1], ticks: C.ticks, label: T.xLabel, labelAnchor: "center", labelArrow: "none", labelOffset: C.xLabelOffset },
+          y: { domain: [0, CONFIG.wrongCost], ticks: C.ticks, label: T.yLabel, labelAnchor: "center", labelArrow: "none", labelOffset: C.yLabelOffset },
           color: { type: "identity" },
           marks: (k, P) => [
             P.ruleY([1], { x1: 0, x2: 1, stroke: k.plotAxis }),
-            P.ruleX(piTicks, { x: "e", y1: 1, y2: 1.025, stroke: k.plotAxis }),
+            P.ruleX(piTicks, { x: "e", y1: 1, y2: 1.03, stroke: k.plotAxis }),
             numText(piTicks, {
-              x: "e", y: 1, dy: -11, value: "pi",
+              x: "e", y: 1, dy: C.piDy, value: "pi",
               format: formatSetting,
               render(index, scales, values, dims, context, next) {
                 const group = next(index, scales, values, dims, context);
@@ -502,7 +540,7 @@ export function mountWidget(el, spec = {}) {
                 return group;
               },
             }),
-            P.text([0], { x: e => e, y: 1, dy: -11, dx: -14, text: () => "π", fill: k.plotFg }),
+            P.text([0], { x: (e) => e, y: 1, dy: C.piDy, dx: C.piTitleDx, text: () => "π", fill: k.plotFg }),
             P.areaY(envelope, { x: "e", y: "c", fill: k.neutral[1], fillOpacity: C.envelopeOpacity }),
             P.ruleY([0], { stroke: k.plotAxis }),
             P.lineY(lineWH, { x: "e", y: "c", stroke: k.wh, strokeWidth: C.line }),
@@ -525,13 +563,16 @@ export function mountWidget(el, spec = {}) {
       }
 
       function drawCostTable(r) {
-        const rowOf = (action, label, symbol, raw, cls, display, name) => {
+        const rowOf = (action, label, symbol, raw, cls, display, hook) => {
           const best = r.best.includes(action);
           return h("tr", { class: best ? "prx-one-pair-best" : null },
             h("th", { scope: "row" }, h("span", { class: `prx-one-pair-line prx-one-pair-line-${cls}`, "aria-hidden": "true" }), label),
-            h("td", { class: `prx-one-pair-cost-${cls === "wh" ? "wh" : "err"}` }, symbol, " = ", num(raw, display, name)),
+            h("td", { class: `prx-one-pair-cost-${cls === "wh" ? "wh" : "err"}` }, symbol, " = ", num(raw, display, hook)),
             h("td", { text: best ? (r.best.length > 1 ? T.smallestEqual : T.smallest) : "" }));
         };
+        actionCosts.replaceChildren("A above B ", ctx.num(r.costs.iAboveJ, formatProb(r.costs.iAboveJ)),
+          " · B above A ", ctx.num(r.costs.jAboveI, formatProb(r.costs.jAboveI)),
+          " · Withhold ", ctx.num(r.costs.withhold, formatSetting(r.costs.withhold)), ".");
         costTable.replaceChildren(h("table", {},
           h("caption", { text: T.costCaption }),
           h("thead", {}, h("tr", {}, h("th", { scope: "col", text: T.colAction }), h("th", { scope: "col", text: T.colCost }), h("th", { scope: "col", text: T.colSmallest }))),
@@ -544,7 +585,7 @@ export function mountWidget(el, spec = {}) {
       function drawRule(r) {
         const key = bestKey(r.best);
         ruleHere.replaceChildren(...fill(T.ruleHere[key], {
-          one: () => ctx.num(CONFIG.wrongCost, formatCount(CONFIG.wrongCost)),
+          one: () => writer.count(CONFIG.wrongCost),
           cut: () => setting(r.cut, "cut"),
           piAB: () => sym("π", "AB"), piBA: () => sym("π", "BA"),
           pi: () => setting(r.pi, "rule-pi"), piRev: () => prob(r.piBA, "rule-pi-ba"),
@@ -559,12 +600,11 @@ export function mountWidget(el, spec = {}) {
           e: () => prob(r.eAB, "e-ab"), eRev: () => prob(r.eBA, "e-ba"),
           list: () => r.best.map((a) => T.actionWords[a]).join(", "),
         };
-        // each number appears once in the read-out: the best sentence names the cost by a second node without a hook
         const second = {
           ...slots,
           e: () => prob(r.eAB, "best-cost"), eRev: () => prob(r.eBA, "best-cost"), tau: () => setting(r.tau, "best-cost"),
         };
-        ctx.readout.set([...fill(T.readSetting, slots), ...fill(T.readBest[key], second)]);
+        writer.set([...fill(T.readSetting, slots), ...fill(T.readBest[key], second)]);
       }
 
       function drawBridge(r) {
@@ -573,20 +613,16 @@ export function mountWidget(el, spec = {}) {
       }
 
       return {
-        render(state) {
-          ctx.root.setAttribute("aria-busy", "true");
-          try {
-            piSlider.set(state.pi);
-            tauSlider.set(state.tau);
-            const r = compute(state);
-            drawBridge(r);
-            drawCostTable(r);
-            drawRule(r);
-            drawReadout(r);
-            drawChart(r);
-          } finally {
-            ctx.root.removeAttribute("aria-busy");
-          }
+        render(state, info) {
+          if (info?.reason === "disclosure") return;
+          piSlider.set(state.pi);
+          tauSlider.set(state.tau);
+          const r = compute(state);
+          drawBridge(r);
+          drawCostTable(r);
+          drawRule(r);
+          drawReadout(r);
+          drawChart(r);
         },
       };
     },

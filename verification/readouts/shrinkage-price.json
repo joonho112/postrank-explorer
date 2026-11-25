@@ -20,10 +20,7 @@
           "select": "[data-prx-readout=\"spread-truth\"]",
           "about": "read-out: the true spread, the SD of the true values",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -37,10 +34,7 @@
           "select": "[data-prx-readout=\"mse-post\"]",
           "about": "read-out: the posterior means' average squared distance to the true values, this draw",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -54,10 +48,7 @@
           "select": "[data-prx-readout=\"expected-mse-post\"]",
           "about": "read-out: the same over many draws (closed form)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -71,10 +62,7 @@
           "select": "[data-prx-readout=\"mse-est\"]",
           "about": "read-out and panels: the estimates' average squared distance to the true values, this draw",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -88,10 +76,7 @@
           "select": "[data-prx-readout=\"expected-mse-est\"]",
           "about": "read-out and panels: the estimates' expected average squared distance (closed form; no prior)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -217,10 +202,7 @@
           "select": "[data-prx-readout=\"lowest-mse\"]",
           "about": "distance panel: its value (the draw's distance at .15)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -241,10 +223,7 @@
           "select": "[data-prx-readout=\"lowest-closed-mse\"]",
           "about": "distance panel: its value (the closed form at .15)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -425,10 +404,7 @@
           "select": "[data-prx-readout=\"expected-mse-post\"]",
           "about": "read-out: expected average squared distance at prior SD .02 (closed form)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -442,10 +418,7 @@
           "select": "[data-prx-readout=\"mse-est\"]",
           "about": "read-out and panels: the estimates' average squared distance to the true values, this draw",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -459,10 +432,7 @@
           "select": "[data-prx-readout=\"expected-mse-est\"]",
           "about": "read-out and panels: the estimates' expected average squared distance (closed form; no prior)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -534,10 +504,7 @@
           "select": "[data-prx-readout=\"mse-post\"]",
           "about": "read-out: average squared distance at prior SD .05, this draw",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -722,10 +689,7 @@
           "select": "[data-prx-readout=\"mse-est\"]",
           "about": "read-out and panels: the estimates' average squared distance to the true values, this draw",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -739,10 +703,7 @@
           "select": "[data-prx-readout=\"expected-mse-est\"]",
           "about": "read-out and panels: the estimates' expected average squared distance (closed form; no prior)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -954,10 +915,7 @@
           "select": "[data-prx-readout=\"expected-mse-post\"]",
           "about": "read-out: the closed form at prior SD .15 does not depend on the seed",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -985,10 +943,7 @@
           "select": "[data-prx-readout=\"lowest-closed-mse\"]",
           "about": "distance panel: the closed form's lowest value, at .15 for every seed",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1016,10 +971,7 @@
           "select": "[data-prx-readout=\"expected-mse-post\"]",
           "about": "read-out: expected average squared distance at prior SD .10 (closed form)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1040,10 +992,7 @@
           "select": "[data-prx-readout=\"expected-mse-post\"]",
           "about": "read-out: expected average squared distance at prior SD .20 (closed form)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1076,10 +1025,7 @@
           "select": "[data-prx-readout=\"mse-post\"]",
           "about": "read-out: average squared distance at prior SD .05, this draw",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 4
-            }
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {

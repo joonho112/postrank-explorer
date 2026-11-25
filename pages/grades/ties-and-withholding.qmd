@@ -4,7 +4,7 @@ subtitle: "2.15 · after postrank vignette m4 and the postrank theory book, ch. 
 description: "Effect of equality mass on weak-error and equality-neutral reporting losses."
 ---
 
-When two true values can be equal, the treatment of equality changes the loss of a directional statement. Weak-error loss charges for a strict direction when the values are equal. Equality-neutral loss assigns zero cost to that outcome. We compare the two directions and withholding as the probability of equality changes. The crossings identify the settings at which two actions have the same expected cost. Under either loss, assigning two units to the same grade withholds their comparison.
+When two true values can coincide, weak-error loss penalizes any strict direction at equality, whereas equality-neutral loss charges zero there. Assigning a shared grade withholds direction under either loss.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,23 +17,18 @@ When two true values can be equal, the treatment of equality changes the loss of
 
 ## Numerical illustrations {#what-to-try}
 
-- **Equality .40, weak loss.** Withholding costs .2500; stating A above B costs .5000 and stating the reverse costs
-  .9000. Equality counts against both strict directions. The gray action has the lowest cost even though A is more likely
-  to be above B than below it.
-- **Equality .40, neutral loss.** The same law now gives A above B cost .1000 and withholding cost .1500. The
-  difference comes from consequences at equality. Along the equality slider, weak loss changes its minimum-cost action
-  at .150; neutral loss changes at .600 and approximately .867. The open circles mark the boundaries, where
-  competing actions have equal cost.
-- **No equality.** Both loss columns agree, and the all-withheld baseline returns to .2500. Under this law the two
-  targets are always distinct, so charging only for distinct states changes nothing.
-- **Equality .90.** B above A has neutral cost 0, while withholding costs .0250. A strict reversal is impossible under this law, but the targets can still be equal.
-- **Certain equality.** Every neutral action costs 0. Here the targets are identical in every state, so the
-  same-grade guard admits **only withholding**. The raw disclosed-pair count and the distinct mass are different
-  quantities. A strict row has N = 1 but Q = 0: its Errors / Q reads “NA: no distinct mass”. “No disclosure” is reserved for N = 0.
+- **Equality .40, weak loss.** Withholding costs .250, below A above B (.500) and B above A (.900): equality counts against strict directions.
+- **Equality .40, neutral loss.** A above B costs .100 against withholding .150; **Method** lists crossings at .150 (weak) and .600, .867 (neutral).
+- **No equality.** Both losses agree and neutral all-withheld risk returns to .250.
+- **Equality .90.** B above A costs 0 while withholding costs .0250.
+- **Certain equality.** Neutral actions cost 0, the guard admits **only withholding**, and **Data** shows “NA: no distinct mass”.
 
-::: {.callout-note appearance="simple"}
+<details>
+<summary>Further notes on equality mass</summary>
+
 The joint posterior assigns probability to exact equality. Equal posterior means or equal rounded observations do not establish that the targets can coincide. Each risk is specific to its own loss. The risks of withholding every pair coincide when both problems use the same action family and exact equality has zero probability for every criterion with positive weight.
-:::
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 The opt-in tie-aware route uses `postrank_tie_pairwise()` and `postrank_tie_evaluate()` after the law's targets and
@@ -45,3 +40,5 @@ Standalone: [embed/ties-and-withholding.html](../../embed/ties-and-withholding.h
 
 Related applications: [The decision for an isolated pair](one-pair.qmd) · [Reporting risk and withholding cost](price-of-silence.qmd) ·
 [Mixtures of frontier reports](frontier-mixtures.qmd).
+
+Theory book · [An equality-neutral extension of directional loss](https://joonho112.github.io/postrank-theory-book/chapters/11-multicriteria-loss.html#sec-tie-aware-loss).

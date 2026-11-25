@@ -1,310 +1,347 @@
-// Full-fidelity R-03 compare renderer and reusable law/card machinery.
-import { createWidget } from "../shared/base.js";
-import { gradeColors, labelOn, numText, palette, plot } from "../shared/chart.js";
+// 3.5 posterior-tiers ("Tiers from posterior summaries") — Frame v2 upgrade.
+// Keep ../shared/domain/posterior-tiers.js untouched and re-exported for 3.9, 3.12, 3.13, and parity tests.
+export * from "../shared/domain/posterior-tiers.js";
+
+import { appLink, createWidget } from "../shared/base.js";
+import { gradeColors, labelOn, palette, placeDirectLabels, svgScene } from "../shared/chart.js";
 import {
-  formatCount, formatDecimal, formatExpectedCount, formatGrades, formatProb, formatRational, formatRisk, formatSetting,
-  formatSigned, formatSizes, rationalApprox,
+  formatCount,
+  formatDecimal,
+  formatExpectedCount,
+  formatRational,
+  formatReadoutEst,
+  formatReadoutRisk,
+  formatRisk,
+  formatSetting,
+  rationalApprox,
+  tickLabel,
 } from "../shared/format.js";
-import { captionNode, familyNameNode, familySizeNode, labelNode, tagNode } from "../shared/labels.js";
+import { captionNode, tagNode } from "../shared/labels.js";
 import {
-  disclosure, enumerateReports, errorArray, evaluateReport, exactOptimum, expectedRank, finiteLawPairwise, fixedOrderDP, lowerHull,
-  normalPosterior, orderHull, rankSummaries, reportCloud, scoreOrder, tierGrades, league30, drawLeague, tauPath,
-} from "../pr-core.js";
+  CONFIG,
+  CSS as DOMAIN_CSS,
+  MODELS,
+  compute,
+  createRuleCardRenderer,
+} from "../shared/domain/posterior-tiers.js";
+
 const LEAGUE_SEED = 20261030;
-const LEAGUE = { tables: { units: { id: league30().ids, estimate: drawLeague(LEAGUE_SEED).estimate, se: league30().se } }, facts: { seed: LEAGUE_SEED } };
-import THIRTY from "../../data/released/thirty-sites.json" with { type: "json" };
-
-export const CSS = "\n\n.prx-pt .prx-pt-heading {\n  margin: 0.6rem 0 0.35rem;\n  font-size: 0.95em;\n  font-weight: 600;\n  color: var(--prx-fg-heading);\n}\n\n.prx-pt .prx-pt-note {\n  margin: 0.35rem 0 0;\n  font-size: 0.9em;\n  color: var(--prx-fg-muted);\n}\n\n.prx-pt .prx-pt-label {\n  margin: 0.5rem 0 0.75rem;\n  font-size: 0.95em;\n}\n\n.prx-pt .prx-pt-label .prx-result-label {\n  font-weight: 600;\n  color: var(--prx-fg-heading);\n}\n\n.prx-pt .prx-pt-row-label .prx-result-label {\n  font-weight: 600;\n  color: inherit;\n}\n\n\n.prx-pt .prx-pt-data,\n.prx-pt .prx-pt-rule,\n.prx-pt .prx-pt-cap,\n.prx-pt .prx-pt-opt {\n  display: flex;\n  flex-wrap: wrap;\n  column-gap: 1rem;\n  row-gap: 0.15rem;\n}\n\n.prx-pt .prx-pt-data > legend,\n.prx-pt .prx-pt-rule > legend,\n.prx-pt .prx-pt-cap > legend,\n.prx-pt .prx-pt-opt > legend {\n  flex: 1 1 100%;\n}\n\n.prx-pt .prx-pt-cap {\n  column-gap: 0.75rem;\n}\n\n\n.prx-pt .prx-pt-compare,\n.prx-pt .prx-pt-law {\n  margin: 0.75rem 0 0;\n  min-width: 0;\n}\n\n.prx-pt .prx-pt-rows {\n  display: grid;\n  gap: 0.6rem;\n  margin: 0.5rem 0 0;\n  padding: 0;\n  list-style: none;\n}\n\n.prx-pt .prx-pt-row {\n  min-width: 0;\n  padding: 0.55rem 0.7rem 0.6rem;\n  border: 1px solid var(--prx-border);\n  border-radius: var(--prx-radius, 6px);\n}\n\n.prx-pt .prx-pt-row-chosen {\n  border: 2px solid var(--prx-accent);\n}\n\n.prx-pt .prx-pt-row-head {\n  margin: 0;\n  font-weight: 600;\n}\n\n.prx-pt .prx-pt-row-tag {\n  font-weight: 400;\n  color: var(--prx-plot-muted);\n}\n\n.prx-pt .prx-pt-row-order,\n.prx-pt .prx-pt-row-nums,\n.prx-pt .prx-pt-row-label,\n.prx-pt .prx-pt-row-gap {\n  margin: 0.2rem 0 0;\n  font-size: 0.92em;\n  overflow-wrap: anywhere;\n}\n\n.prx-pt .prx-pt-row-order {\n  color: var(--prx-plot-muted);\n}\n\n.prx-pt .prx-pt-blocks {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.25rem;\n  margin: 0.4rem 0 0.35rem;\n}\n\n.prx-pt .prx-pt-block {\n  display: inline-flex;\n  align-items: baseline;\n  gap: 0.35rem;\n  padding: 0.15rem 0.45rem;\n  border-radius: var(--prx-radius, 6px);\n  font-weight: 700;\n}\n\n.prx-pt .prx-pt-block-grade {\n  font-size: 0.75em;\n  font-weight: 600;\n  opacity: 0.9;\n}\n\n\n.prx-pt .prx-pt-table-scroll {\n  max-width: 100%;\n  overflow-x: auto;\n}\n\n.prx-pt .prx-pt-table {\n  margin: 0.4rem 0 0;\n  border-collapse: collapse;\n  font-size: 0.9em;\n}\n\n.prx-pt .prx-pt-table caption {\n  caption-side: top;\n  text-align: left;\n  color: var(--prx-fg-muted);\n  padding: 0 0 0.25rem;\n}\n\n.prx-pt .prx-pt-table th,\n.prx-pt .prx-pt-table td {\n  padding: 0.2rem 0.55rem;\n  border-bottom: 1px solid var(--prx-border);\n  text-align: right;\n  vertical-align: top;\n}\n\n.prx-pt .prx-pt-table thead th {\n  vertical-align: bottom;\n  overflow-wrap: normal;\n  word-break: normal;\n  hyphens: manual;\n}\n\n.prx-pt .prx-pt-table th[scope=\"row\"] {\n  text-align: left;\n  white-space: nowrap;\n}\n\n.prx-pt .prx-pt-table-law td:nth-last-child(-n+2),\n.prx-pt .prx-pt-table-law thead th:nth-last-child(-n+2) {\n  text-align: left;\n}\n\n.prx-pt .prx-pt-blocks-text {\n  font-weight: 400;\n  color: var(--prx-fg-muted);\n}\n\n.prx-pt .prx-pt-details {\n  margin: 0.6rem 0 0;\n}\n\n.prx-pt .prx-pt-details > summary {\n  cursor: pointer;\n  font-weight: 600;\n}\n\n.prx-pt .prx-pt-mini {\n  min-width: 0;\n  max-width: min(100%, 24rem);\n  margin: 0.3rem 0 0;\n}\n\n.prx-pt .prx-pt-table-law td,\n.prx-pt .prx-pt-table-law th {\n  white-space: nowrap;\n}\n\n.prx-pt .prx-pt-table thead th:first-child {\n  text-align: left;\n}\n\n.prx-pt .prx-pt-hero{padding:.5rem .75rem;border:1px solid var(--prx-border);border-radius:6px;margin:.3rem 0 .7rem}.prx-pt .prx-pt-hero .prx-pt-strips{grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr))}.prx-pt .prx-pt-hero p{margin:.25rem 0}.prx-pt .prx-pt-controls {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:.4rem 1rem;width:100%}\n.prx-pt [hidden]{display:none!important}.prx-pt .prx-pt-table-scroll{overflow-x:auto;min-width:0;max-width:100%}\n.prx-pt .prx-pt-state .top{border:2px solid var(--prx-fg);border-radius:3px;padding:0 .2em}\n.prx-pt .prx-pt-state [data-on] {font-weight:700;background:var(--prx-bg-raised)}\n.prx-pt .prx-pt-strips{display:grid;gap:.5rem}.prx-pt .prx-pt-strip{border-left:3px solid var(--prx-accent);padding:.3rem .6rem}\n.prx-pt .prx-pt-guarantees td{text-align:left;min-width:10rem;white-space:normal}\n";
-
-export const CONFIG = Object.freeze({
-  name: "posterior-tiers",
-  label: "Tiers from posterior means and expected ranks: fixed tiers, optimal cuts of an order, and the exact optimum",
-  title: "Order by a posterior summary, then cut: how close to the best report?",
-  tau: Object.freeze({ min: 0.02, max: 0.5, step: 0.01 }),
-  cap: Object.freeze({ min: 1, max: 5 }),
-  priorSd: 0.15,
-  league8: 8,
-  // the theory book's ch. 19 three-unit law (the law of Which ranking?, L-09)
-  tb19: Object.freeze({
-    ids: Object.freeze(["A", "B", "C"]),
-    values: Object.freeze([Object.freeze([20, 4, 3]), Object.freeze([0, 4, 3])]),
-    probs: Object.freeze([0.3, 0.7]),
-  }),
-  thirty: Object.freeze({ array: "gaussian", mean: "mean_poverty", sd: "sd_poverty", criterion: "poverty" }),
-  defaults: Object.freeze({
-    league: Object.freeze({ tau: 0.2, cap: 3 }),
-    league8: Object.freeze({ tau: 0.2, cap: 3 }),
-    tb19: Object.freeze({ tau: 0.25, cap: 3 }),
-    thirty: Object.freeze({ tau: 0.25, cap: 4 }),
-  }),
-  data: "league8",
-  rule: "pm-cuts",
-  opt: "cap",
-  comparisonN: 2,
-  // risks of the three-unit law are written as fractions when every risk shown has a denominator up to this
-  maxDenominator: 60,
-  // memo of exact optima (keyed by data, family and τ): a τ slider revisits the same few dozen values
-  memoSize: 120,
-  // equal-value tolerance for comparing two boundaries of the three-unit law
-  tieTol: 1e-12,
-  mini: Object.freeze({ width: 360, height: 250, marginTop: 16, marginRight: 24, marginBottom: 40, marginLeft: 46, pad: 0.4, yHead: 1.12, dot: 4, vertex: 4.5, ring: 8.5, dash: "7 4", labelDx: -12, labelDy: 8, labelDyBelow: 15 }),
-  text: Object.freeze({
-    dataLegend: "Data",
-    dataLeague: "League, 30 units",
-    dataLeague8: "Eight units, U01 to U08",
-    dataTb19: "Three-unit law (theory book, chapter 19)",
-    dataThirty: "Thirty sites, poverty (package example)",
-    ruleLegend: "Rule (the read-out follows this one)",
-    rulePmTiers: "Posterior-mean tiers",
-    rulePmCuts: "Optimal cuts of the posterior-mean order",
-    ruleErCuts: "Optimal cuts of the expected-rank order",
-    ruleOptimum: "Exact optimum (every report evaluated)",
-    capLegend: "Number of grades G: tiers use G; cuts use at most G. The exact optimum uses its separate family control.",
-    optLegend: "Family of the exact optimum",
-    optCap: "At most G grades",
-    optAll: "Every report",
-    slider: "Withholding cost τ",
-    sliderHint: "A wrong stated direction costs 1; staying silent on one pair costs τ.",
-    compareHeading: "Each rule at the same τ, on the same posterior",
-    compareNote: "Tiers are fixed in advance. Each set of cuts is optimal only within its declared order; other orders are not searched.",
-    scoreTiePolicy: "Exactly equal summary scores stay in one grade.",
-    gapNote: "The cuts lie inside the family of the exact optimum, so their risk gap is zero or positive.",
-    noOptimum: "The exact optimum is not searched here: ⟨n⟩ units have far too many reports for this browser. The eight-unit view shows it.",
-    orderPm: "posterior-mean order",
-    orderEr: "expected-rank order",
-    orderPmLong: "posterior means, largest first",
-    orderErLong: "expected ranks, smallest first",
-    orderWord: "Order",
-    cutsIn: "in",
-    contiguous: "contiguous reports",
-    withAtMost: "with at most",
-    atMost: "at most",
-    gradesWord: "grades",
-    gradeWord: "grade",
-    reports: "reports",
-    everyOne: "every one evaluated",
-    unitsWord: "units",
-    unitWord: "unit",
-    riskShort: "risk",
-    stated: "pairs stated",
-    of: "of",
-    eWords: "expected wrong directions",
-    riskWords: "expected loss per pair (risk)",
-    gapWords: "Risk gap to the exact optimum at this τ:",
-    sameReport: "the same report as the exact optimum.",
-    sameRisk: "the same risk as the exact optimum (another report).",
-    shown: "the rule in the read-out",
-    lawHeading: "The three-unit law",
-    lawStates: "With probability ⟨p1⟩ the true values of A, B and C are ⟨s1⟩; with probability ⟨p2⟩ they are ⟨s2⟩.",
-    lawSummaries: "Posterior means ⟨m⟩ give the order A, B, C. Expected ranks ⟨r⟩ (smaller is higher) give the order B, C, A.",
-    erDefinition: "A unit's expected rank is its average position under the posterior, ⟨one⟩ at the top.",
-    tableHeading: "All thirteen reports at this τ",
-    tableCaption: "Every report of the three units: pairs stated, expected wrong directions and risk",
-    colReport: "Report",
-    colN: "Pairs stated, N",
-    colE: "Expected wrong directions, E",
-    colRisk: "Risk at τ",
-    colOrder: "Keeps the order",
-    both: "both",
-    colBest: "Best of",
-    bestPm: "cuts of A, B, C",
-    bestEr: "cuts of B, C, A",
-    bestAll: "exact optimum",
-    andWord: " and ",
-    miniHeading: "Each report at (N, E)",
-    miniAlt: "The thirteen reports of the three-unit law as points: pairs stated N across, expected wrong directions E up. The dashed boundary keeps the order A, B, C; the solid boundary runs below every report.",
-    miniTable: "Boundary vertices: within the order A, B, C and within all thirteen reports",
-    miniNote: "Solid: the frontier, the lowest E at each N among all thirteen reports. Dashed: the same within the order A, B, C. No report of three units states exactly one pair. The ring marks the report of the rule in the read-out.",
-    lawLink: "At N = ⟨n⟩ the figure compares expected wrong counts at matched disclosure; the cards and table compare full risk at the current τ.",
-    miniErSame: "The cuts of B, C, A reach the solid boundary at every vertex here.",
-    miniErDiffers: "The cuts of B, C, A do not reach every vertex of the solid boundary here.",
-    xLabel: "pairs stated, N",
-    yLabel: "E",
-    boundaryPm: "within A, B, C",
-    boundaryAll: "all reports",
-    ordersSummary: "The two orders, unit by unit",
-    ordersCaption: "Units by place in each order",
-    ordersRegion: "The two orders, unit by unit (scrolls sideways)",
-    colPlace: "Place",
-    colPmUnit: "Posterior-mean order",
-    colMean: "Posterior mean",
-    colSd: "Posterior SD",
-    colErUnit: "Expected-rank order",
-    colEr2: "Expected rank",
-    gradeOne: "Grade 1 = highest priority: the largest true value as the posterior judges it.",
-    noteLeague: "The simulated league, frozen draw with seed ⟨seed⟩; prior SD ⟨sd⟩",
-    noteLeague8: "Units U01 to U08 of the simulated league, frozen draw with seed ⟨seed⟩; prior SD ⟨sd⟩",
-    noteTb19: "An illustrative two-state law from the postrank theory book, chapter 19; its probabilities are exact; expected wrong counts are fractions, and risks are fractions when their denominators are small.",
-    noteThirty: "Thirty fictional sites from the postrank package (synthetic), poverty criterion. The Gaussian posterior and its error probabilities are the package's and are taken as given.",
-    blockThen: " > ",
-  }),
-});
-
-// ---------------------------------------------------------------------------------------------- data
-
-const nanDiag = (m) => m.map((row) => row.map((v) => (v === null ? Number.NaN : v)));
-
-/** A data model: ids, error array, the two summaries and their orders. */
-export function posteriorModel(key, { ids, E, means, sds, er, hasOptimum, fraction }) {
-  const pm = scoreOrder(means, { direction: "descending" });
-  const eo = scoreOrder(er, { direction: "ascending" });
-  return { key, ids, n: ids.length, E, means, sds, er, pmOrder: pm.order, erOrder: eo.order, hasOptimum, fraction, ...CONFIG.defaults[key] };
-}
-
-function leagueModel(key, count) {
-  const u = LEAGUE.tables.units;
-  const ids = u.id.slice(0, count);
-  const post = normalPosterior(u.estimate.slice(0, count), u.se.slice(0, count), { priorSd: CONFIG.priorSd });
-  const E = errorArray(post.mean, post.sd, { ids, criteria: ["theta"] });
-  return posteriorModel(key, { ids, E, means: post.mean, sds: post.sd, er: expectedRank(E, {}), hasOptimum: count <= CONFIG.league8, fraction: false });
-}
-
-export function tb19Model() {
-  const T = CONFIG.tb19;
-  const ids = Array.from(T.ids);
-  const states = T.values.map((s) => s.map((v) => [v]));
-  const E = finiteLawPairwise(states, Array.from(T.probs), { ids });
-  const means = rankSummaries({ states: T.values.map((s) => Array.from(s)), probs: Array.from(T.probs) }).means;
-  return posteriorModel("tb19", { ids, E, means, sds: null, er: expectedRank(E, {}), hasOptimum: true, fraction: true });
-}
-
-function thirtyModel() {
-  const C = CONFIG.thirty;
-  const a = THIRTY.arrays[C.array];
-  const E = { ids: a.ids.slice(), criteria: [C.criterion], e: [nanDiag(a.e[0])] };
-  const u = THIRTY.tables.units;
-  return posteriorModel("thirty", { ids: u.id.slice(), E, means: u[C.mean].slice(), sds: u[C.sd].slice(), er: expectedRank(E, {}), hasOptimum: false, fraction: false });
-}
-
-export const MODELS = Object.freeze({
-  league: leagueModel("league", LEAGUE.tables.units.id.length),
-  league8: leagueModel("league8", CONFIG.league8),
-  tb19: tb19Model(),
-  thirty: thirtyModel(),
-});
-
 const RULES = Object.freeze(["pm-tiers", "pm-cuts", "er-cuts", "optimum"]);
-const LADDER_RULES = ["pm-tiers", "pm-cuts", "optimum", "er-cuts"];
-const FRAME_CSS = `
-.prx-pt .prx-pt-controls { grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
-.prx-pt .prx-pt-controls .prx-pt-cap { align-content: start; }
-.prx-pt .prx-pt-cap-short { flex-basis: 100%; font-size: .9em; font-weight: 600; }
-.prx-pt .prx-pt-ladder { padding: .4rem .65rem; min-width: 0; }
-.prx-pt .prx-pt-ladder .prx-radio { display: flex; align-items: center; flex-basis: 100%; gap: .4rem; margin: 0; min-width: 0; padding: .15rem .2rem; border-inline-start: 2px solid transparent; }
-.prx-pt .prx-pt-ladder .prx-radio:has(input:checked) { background: var(--prx-bg-raised); font-weight: 600; }
-.prx-pt .prx-pt-ladder .prx-radio > span { display: grid; align-items: center; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 6rem; gap: .35rem; flex: 1; min-width: 0; }
-.prx-pt .prx-pt-ladder .prx-radio[data-nested] { border-inline-start-color: var(--prx-accent); }
-.prx-pt .prx-pt-ladder .prx-radio[data-nested]:first-of-type { border-start-start-radius: 5px; }
-.prx-pt .prx-pt-ladder .prx-radio[data-nested]:nth-of-type(3) { border-end-start-radius: 5px; }
-.prx-pt .prx-pt-ladder .prx-radio:last-of-type { margin-top: .25rem; border-top: 1px solid var(--prx-border); }
-.prx-pt .prx-pt-risk-track { display: block; position: relative; height: 1.35rem; border-block-end: 1px solid var(--prx-border); }
-.prx-pt .prx-pt-risk-track::before { content: ''; position: absolute; left: var(--tau-x); border-inline-start: 1px dashed var(--prx-fg-muted); inset-block: 0; }
-.prx-pt .prx-pt-risk-dot { position: absolute; left: var(--risk-x); top: 50%; width: .62rem; height: .62rem; transform: translate(-50%, -50%); border-radius: 50%; background: var(--prx-accent); border: 1px solid var(--prx-fg); }
-.prx-pt .prx-pt-ladder .prx-radio:has(input:checked) .prx-pt-risk-dot { outline: 1px solid var(--prx-accent); outline-offset: 2px; }
-.prx-pt .prx-pt-risk-value { font-variant-numeric: tabular-nums; font-size: .9em; }
-.prx-pt .prx-pt-risk-axis { margin: .15rem 0; display: flex; justify-content: space-between; gap: .5rem; color: var(--prx-fg-muted); font-size: .86em; }
-.prx-pt .prx-pt-risk-axis > :first-child { white-space: nowrap; }
-.prx-pt .prx-pt-path-keys { display: flex; flex-wrap: wrap; gap: .15rem .65rem; font-size: .88em; }
-.prx-pt .prx-pt-law .prx-pt-state { width: 100%; }
-.prx-pt .prx-pt-state th[scope="row"] { white-space: normal; overflow-wrap: normal; }
-.prx-pt .prx-pt-state th, .prx-pt .prx-pt-state td { padding-inline: .3rem; }
-.prx-pt .prx-pt-table-law th[scope="row"] { white-space: normal; }
-.prx-pt .prx-pt-table-law td:nth-child(2) { white-space: nowrap; }
-.prx-pt .prx-pt-table-path th[scope="row"], .prx-pt .prx-pt-guarantees th[scope="row"] { white-space: normal; min-width: 8rem; }
-.prx-pt .prx-pt-guarantees td { min-width: 8rem; }
-@media (max-width: 540px) {
-  .prx-pt .prx-pt-controls { gap: .25rem; }
-  .prx-pt .prx-pt-controls--tiers { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); }
-  .prx-pt .prx-pt-controls--tiers > .prx-slider { grid-column: 1 / -1; }
-  .prx-pt .prx-pt-controls--tiers .prx-pt-cap { column-gap: .3rem; }
-  .prx-pt .prx-pt-controls--tiers .prx-pt-cap .prx-radio { gap: .1rem; }
-  .prx-pt .prx-pt-controls--tiers select { width: 100%; min-width: 0; }
-  .prx-pt .prx-pt-ladder { padding-inline: .35rem; }
-  .prx-pt .prx-pt-ladder .prx-radio > span { grid-template-columns: minmax(0, 1.4fr) minmax(1.5rem, 1fr) 5.1rem; font-size: .89em; gap: .25rem; }
+const LADDER_RULES = Object.freeze(["pm-tiers", "pm-cuts", "optimum", "er-cuts"]);
+
+const STAGE_CSS = `
+/* PR-01: reset any inherited container/grid placement inside Frame v2 stage */
+.prx-pt[data-prx-frame="v2"] .prx-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.65rem;
+  padding: 0.55rem 0.65rem;
+  min-width: 0;
+}
+@media (min-width: 54rem) {
+  .prx-pt[data-prx-frame="v2"] .prx-stage {
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+    align-items: start;
+  }
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage > * {
+  grid-area: auto;
+  min-width: 0;
+  margin: 0;
+}
+.prx-pt[data-prx-frame="v2"] .prx-toolbar > .prx-controls {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 0.45rem 0.75rem;
+  flex: 0 0 auto;
+}
+.prx-pt[data-prx-frame="v2"] .prx-controls .prx-slider {
+  flex: 0 1 10.75rem;
+  max-width: 11.5rem;
+}
+.prx-pt[data-prx-frame="v2"] .prx-controls .prx-select {
+  flex: 0 1 12.75rem;
+  min-width: 10.5rem;
+}
+.prx-pt[data-prx-frame="v2"] .prx-controls .prx-select select {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Stage cards (plot-paper surfaces) */
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder,
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-hero {
+  margin: 0;
+  padding: 0.5rem 0.65rem 0.55rem;
+  border: 1px solid var(--prx-border);
+  border-radius: var(--prx-radius, 6px);
+  background: var(--prx-plot-bg);
+  color: var(--prx-plot-fg);
+  min-width: 0;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-risk-axis,
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-hero-chart {
+  min-width: 0;
+  width: 100%;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-risk-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.7rem;
+  margin: 0 0 0.32rem;
+  font-size: 0.8125rem;
+  color: var(--prx-plot-fg);
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-leg-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-swatch {
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 2px;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-swatch-err {
+  background: var(--prx-err);
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-swatch-wh {
+  background: var(--prx-wh);
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-swatch-tau {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0;
+  border-top: 1.5px dashed var(--prx-plot-axis);
+}
+
+/* Unified 4-row interactive risk-bar rule selector */
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-pt-rule {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.28rem;
+  margin: 0 0 0.2rem;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.32rem 0.5rem 0.36rem;
+  min-height: 2.35rem;
+  min-width: 0;
+  border: 1px solid var(--prx-border);
+  border-inline-start: 3px solid var(--prx-border);
+  border-radius: 5px;
+  background: var(--prx-plot-bg);
+  color: var(--prx-plot-fg);
+  cursor: pointer;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-radio[data-nested] {
+  border-inline-start-color: var(--prx-post);
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-radio:has(input:checked) {
+  background: var(--prx-bg-raised);
+  border-color: var(--prx-post);
+  border-inline-start-color: var(--prx-post);
+  font-weight: 600;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-radio:has(input:disabled) {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-radio input[type="radio"] {
+  flex: none;
+  margin: 0.16rem 0 0;
+  accent-color: var(--prx-post);
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-radio > span {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.2rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-bar-slot {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  line-height: 0;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-bar-slot svg {
+  display: block;
+  width: 100%;
+  height: 12px;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-risk-value {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.92em;
+  color: var(--prx-plot-fg);
+  white-space: nowrap;
+}
+
+/* Selected rule report-card header */
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-hero-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem 0.65rem;
+  margin: 0 0 0.3rem;
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-hero-title {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--prx-plot-fg);
+}
+.prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-hero-meta {
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--prx-plot-muted);
+}
+
+/* Settings disclosure pill radios (>= 44px on coarse/mobile) */
+.prx-pt[data-prx-frame="v2"] .prx-pt-cap,
+.prx-pt[data-prx-frame="v2"] .prx-pt-opt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+  align-items: center;
+}
+.prx-pt[data-prx-frame="v2"] .prx-pt-cap > legend,
+.prx-pt[data-prx-frame="v2"] .prx-pt-opt > legend {
+  flex: 1 1 100%;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--prx-fg);
+  margin-bottom: 0.15rem;
+}
+.prx-pt[data-prx-frame="v2"] .prx-pt-cap .prx-radio,
+.prx-pt[data-prx-frame="v2"] .prx-pt-opt .prx-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.55rem;
+  border: 1px solid var(--prx-border-strong);
+  border-radius: 5px;
+  background: var(--prx-bg);
+}
+
+@media (pointer: coarse), (max-width: 48em) {
+  .prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-radio,
+  .prx-pt[data-prx-frame="v2"] .prx-pt-cap .prx-radio,
+  .prx-pt[data-prx-frame="v2"] .prx-pt-opt .prx-radio {
+    min-height: var(--prx-touch-target, 2.75rem);
+  }
+}
+
+@media (max-width: 30em) {
+  .prx-pt[data-prx-frame="v2"] .prx-title {
+    margin: 0 0 0.2rem;
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+  .prx-pt[data-prx-frame="v2"] .prx-toolbar {
+    gap: 0.3rem 0.45rem;
+    margin-bottom: 0.3rem;
+  }
+  .prx-pt[data-prx-frame="v2"] .prx-toolbar > .prx-controls {
+    flex-wrap: wrap;
+    flex: 1 1 100%;
+  }
+  .prx-pt[data-prx-frame="v2"] .prx-controls .prx-slider,
+  .prx-pt[data-prx-frame="v2"] .prx-controls .prx-select {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+  .prx-pt[data-prx-frame="v2"] > .prx-readout {
+    margin-bottom: 0.38rem;
+    padding: 0.26rem 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.38;
+  }
+  .prx-pt[data-prx-frame="v2"] .prx-presets .prx-seg-buttons {
+    gap: 0.25rem;
+  }
+  .prx-pt[data-prx-frame="v2"] .prx-presets .prx-seg {
+    padding-inline: 0.34rem;
+    font-size: 0.78rem;
+  }
+  .prx-pt[data-prx-frame="v2"] .prx-stage {
+    padding: 0.32rem 0.38rem;
+    gap: 0.38rem;
+  }
+  .prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder,
+  .prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-hero {
+    padding: 0.32rem 0.4rem 0.36rem;
+  }
+  .prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-pt-rule {
+    gap: 0.16rem;
+    margin-top: 0.25rem;
+  }
+  .prx-pt[data-prx-frame="v2"] .prx-stage .prx-pt-ladder .prx-radio {
+    padding-inline: 0.38rem;
+    font-size: 0.86rem;
+  }
+  .prx-pt[data-prx-frame="v2"] > .prx-disclosures {
+    margin-top: 0.38rem;
+    gap: 0.28rem;
+  }
 }
 `;
 
-/** The three-unit law's fixed views: every report, the members of each order family, the boundaries. */
-const TB19 = (() => {
-  const m = MODELS.tb19;
-  const key = (g) => Array.from(g).join("/");
-  const members = (order) => new Set(Array.from(enumerateReports(m.n, { kind: "order", order }), key));
-  const cloud = reportCloud(m.E, { family: { kind: "all" } });
-  return {
-    reports: Array.from(enumerateReports(m.n, { kind: "all" }), (g) => Array.from(g)),
-    inPm: members(m.pmOrder),
-    inEr: members(m.erOrder),
-    points: cloud.points,
-    hullAll: lowerHull(cloud),
-    hullPm: orderHull(m.E, { order: m.pmOrder }),
-    hullEr: orderHull(m.E, { order: m.erOrder }),
-    key,
-  };
-})();
-
-/** The rule results of one state. Exact optima are kept in a small memo (key: data, family, τ). */
-const memo = new Map();
-function optimumOf(mdl, family, tau) {
-  const k = `${mdl.key}|${JSON.stringify(family)}|${tau}`;
-  if (memo.has(k)) return memo.get(k);
-  const r = exactOptimum(mdl.E, { tau, family });
-  if (memo.size >= CONFIG.memoSize) memo.delete(memo.keys().next().value);
-  memo.set(k, r);
-  return r;
-}
-
-export function compute(mdl, state) {
-  const G = Math.min(state.cap, mdl.n);
-  const capped = G < mdl.n;
-  const tau = state.tau;
-  const tiers = Array.from(tierGrades(mdl.means, G, { direction: "descending" }));
-  const out = {
-    G,
-    "pm-tiers": { grade: tiers, ev: evaluateReport(tiers, mdl.E, { tau }) },
-    "pm-cuts": fixedOrderDP(mdl.E, { scores: mdl.means, direction: "descending", tau, ...(capped ? { G } : {}) }),
-    "er-cuts": fixedOrderDP(mdl.E, { scores: mdl.er, direction: "ascending", tau, ...(capped ? { G } : {}) }),
-    optimum: null,
-  };
-  for (const r of ["pm-cuts", "er-cuts"]) out[r].ev = evaluateReport(Array.from(out[r].grade), mdl.E, { tau });
-  if (mdl.hasOptimum) {
-    const family = state.opt === "all" || !capped ? { kind: "all" } : { kind: "atMost", G };
-    const o = optimumOf(mdl, family, tau);
-    out.optimum = o;
-    o.ev = evaluateReport(Array.from(o.grade), mdl.E, { tau });
+function linearTicks(lo, hi, targetCount = 5) {
+  const span = hi - lo;
+  if (!(span > 0) || !Number.isFinite(span)) return [lo];
+  const raw = span / Math.max(2, targetCount);
+  const mag = 10 ** Math.floor(Math.log10(raw));
+  const norm = raw / mag;
+  const step = (norm <= 1.5 ? 1 : norm <= 3 ? 2 : norm <= 7 ? 5 : 10) * mag;
+  const start = Math.ceil((lo - step * 1e-9) / step) * step;
+  const out = [];
+  for (let v = start; v <= hi + step * 1e-9 && out.length < 16; v += step) {
+    out.push(Math.abs(v) < step * 1e-9 ? 0 : Number(v.toPrecision(12)));
   }
-  return out;
+  return out.length >= 2 ? out : [lo, hi];
 }
 
-// ---------------------------------------------------------------------------------------------- widget
-
-export function mountWidget(el, spec = {}) { return mountPosteriorSummary(el, spec); }
-
-/** Full R-03 renderer shared by compare and law apps; no source view is reduced in the wrapper. */
-export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
-  const appName = lawView ? "order-misses" : "posterior-tiers";
-  const defaultData = lawView ? "tb19" : "league8";
+export function mountWidget(el, spec = {}) {
+  const T = CONFIG.text;
   return createWidget(el, spec, {
-    name: appName,
-    css: CSS + FRAME_CSS,
-    layout: "result-first",
+    name: "posterior-tiers",
+    frame: "v2",
+    css: DOMAIN_CSS + STAGE_CSS,
     label: CONFIG.label,
-    title: lawView ? "When do cuts of the chosen order miss the best report?" : CONFIG.title,
+    title: CONFIG.title,
     className: "prx-pt",
     keys: {
-      data: { type: "choice", values: lawView ? ["tb19"] : ["league", "league8", "thirty"], value: defaultData },
-      ...(lawView ? { order: { type: "choice", values: ["mean", "rank"], value: "mean" } } : {}),
+      data: { type: "choice", values: ["league", "league8", "thirty"], value: CONFIG.data },
       rule: { type: "choice", values: Array.from(RULES), value: CONFIG.rule },
-      cap: { type: "integer", min: CONFIG.cap.min, max: CONFIG.cap.max, value: CONFIG.defaults[defaultData].cap },
-      tau: { type: "number", min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: CONFIG.defaults[defaultData].tau },
+      cap: { type: "integer", min: CONFIG.cap.min, max: CONFIG.cap.max, value: CONFIG.defaults[CONFIG.data].cap },
+      tau: { type: "number", min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: CONFIG.defaults[CONFIG.data].tau },
       opt: { type: "choice", values: ["cap", "all"], value: CONFIG.opt },
     },
     build(ctx) {
       const { h } = ctx;
-      const T = CONFIG.text;
 
-
-
-      // --- helpers: read-out numbers with their hook; ⟨slot⟩ templates filled with nodes; unit names
       const ro = (name, raw, display) => {
         const n = ctx.num(raw, display);
         n.setAttribute("data-prx-readout", name);
@@ -322,292 +359,163 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
         return out;
       };
       const count = (x) => ctx.num(x, formatCount(x));
+      const risk3 = (x) => ctx.num(x, formatReadoutRisk(x));
+      const setting = (x) => ctx.num(x, formatSetting(x));
       const unit = (id) => h("span", { "data-prx-name": "", text: id });
-      const listUnits = (ids) => ids.flatMap((id, k) => (k === 0 ? [unit(id)] : [", ", unit(id)]));
       const fracOK = (xs) => xs.every((x) => rationalApprox(x, { maxDenominator: CONFIG.maxDenominator }));
       const fmtE = (mdl, x) => (mdl.fraction ? formatRational(x) : formatExpectedCount(x));
-      const blocksText = (grade, ids) => {
-        const G = Math.max(...grade);
-        const out = [];
-        for (let g = 1; g <= G; g += 1) out.push(`{${ids.filter((_, i) => grade[i] === g).join(", ")}}`);
-        return out.join(T.blockThen);
+
+      const ruleNames = {
+        "pm-tiers": T.rulePmTiers,
+        "pm-cuts": T.rulePmCuts,
+        "er-cuts": T.ruleErCuts,
+        optimum: T.ruleOptimum,
+      };
+      const ruleName = (r) => ruleNames[r];
+      const ladderNames = {
+        "pm-tiers": T.rulePmTiers,
+        "pm-cuts": "Mean-order cuts",
+        optimum: "Exact optimum",
+        "er-cuts": "Expected-rank cuts",
       };
 
-      // --- controls
+      // --- Primary controls in ctx.controls: Withholding cost τ + Data select
+      const tau = ctx.slider({
+        label: T.slider,
+        ...ctx.key("tau"),
+        onInput: (v) => ctx.set({ tau: v }),
+      });
+      ctx.primaryControl(tau.root);
+
       const dataSelect = ctx.select({
-        label: T.dataLegend, name: "data",
+        label: T.dataLegend,
+        name: "data",
         options: [
-          { value: "league", label: T.dataLeague }, { value: "league8", label: T.dataLeague8 },
+          { value: "league", label: T.dataLeague },
+          { value: "league8", label: T.dataLeague8 },
           { value: "thirty", label: T.dataThirty },
         ],
         value: ctx.state.data,
         onChange: (v) => {
           const m = MODELS[v];
           const s = ctx.state;
-          ctx.set({ data: v, tau: m.tau, cap: m.cap, rule: s.rule === "optimum" && !m.hasOptimum ? CONFIG.rule : s.rule });
+          ctx.set({
+            data: v,
+            tau: m.tau,
+            cap: m.cap,
+            rule: s.rule === "optimum" && !m.hasOptimum ? CONFIG.rule : s.rule,
+          });
         },
       });
-      const ruleNames = { "pm-tiers": T.rulePmTiers, "pm-cuts": T.rulePmCuts, "er-cuts": T.ruleErCuts, optimum: T.ruleOptimum };
-      const ruleName = (r) => ruleNames[r];
-      const rowsOrder = lawView ? RULES : LADDER_RULES;
-      const ladderRows = new Map();
-      const ladderNames = { "pm-tiers": T.rulePmTiers, "pm-cuts": "Mean-order cuts", "er-cuts": "Expected-rank cuts", optimum: "Exact optimum" };
-      const ruleRadio = ctx.radioGroup({
-        legend: lawView ? "Rule for the detailed report" : "Risk by rule · select a row", name: "rule", className: "prx-pt-rule",
-        options: rowsOrder.map((value) => {
-          if (lawView) return { value, label: ruleName(value) };
-          const dot = h("span", { class: "prx-pt-risk-dot" });
-          const track = h("span", { class: "prx-pt-risk-track", "aria-hidden": "true" }, dot);
-          const numbers = h("span", { class: "prx-pt-risk-value" });
-          ladderRows.set(value, { track, dot, numbers });
-          return { value, label: [h("span", { text: ladderNames[value] }), track, numbers] };
-        }),
-        value: ctx.state.rule, onChange: (v) => ctx.set({ rule: v, ...(lawView && ["pm-cuts","er-cuts"].includes(v) ? { order: v === "er-cuts" ? "rank" : "mean" } : {}) }),
-      });
-      if (!lawView) ruleRadio.inputs.forEach((input, i) => {
-        const row = input.parentElement;
-        row.dataset.prxRiskRule = rowsOrder[i];
-        if (i < 3) row.dataset.nested = "";
-      });
+      ctx.controls.append(tau.root, dataSelect.root);
+
+      // --- Secondary controls in Settings disclosure (preserving .prx-pt-cap legend 11.4 literal)
       const capValues = [];
       for (let g = CONFIG.cap.min; g <= CONFIG.cap.max; g += 1) capValues.push(g);
       const capRadio = ctx.radioGroup({
-        legend: T.capLegend, name: "cap", className: "prx-pt-cap",
+        legend: T.capLegend,
+        name: "cap",
+        className: "prx-pt-cap",
         options: capValues.map((g) => ({ value: g, label: count(g) })),
-        value: ctx.state.cap, onChange: (v) => ctx.set({ cap: v }),
+        value: ctx.state.cap,
+        onChange: (v) => ctx.set({ cap: v }),
       });
-      if (!lawView) {
-        const legend = capRadio.root.querySelector("legend");
-        legend.classList.add("prx-sr-only");
-        legend.after(h("span", { class: "prx-pt-cap-short", "aria-hidden": "true", text: "Grade limit G" }));
-      }
       const optRadio = ctx.radioGroup({
-        legend: T.optLegend, name: "opt", className: "prx-pt-opt",
-        options: [{ value: "cap", label: T.optCap }, { value: "all", label: T.optAll }],
-        value: ctx.state.opt, onChange: (v) => ctx.set({ opt: v }),
+        legend: T.optLegend,
+        name: "opt",
+        className: "prx-pt-opt",
+        options: [
+          { value: "cap", label: T.optCap },
+          { value: "all", label: T.optAll },
+        ],
+        value: ctx.state.opt,
+        onChange: (v) => ctx.set({ opt: v }),
       });
-      const tau = ctx.slider({
-        label: T.slider, min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: ctx.state.tau,
-        name: "tau", hint: ["A wrong stated direction costs ", count(1), "; staying silent on one pair costs τ."], onInput: (v) => ctx.set({ tau: v }),
-      });
-      const tauHint = tau.root.querySelector(".prx-hint");
-      const orderControl = lawView ? ctx.segmented({ label: "Order by", name: "order", value: ctx.state.order,
-        options: [{ value: "mean", label: "Posterior mean" }, { value: "rank", label: "Expected rank" }],
-        onChange: v => ctx.set({ order: v, rule: v === "rank" ? "er-cuts" : "pm-cuts" }) }) : null;
-      const controls = h("div", { class: `prx-pt-controls${lawView ? "" : " prx-pt-controls--tiers"}` },
-        ...(lawView ? [orderControl.root] : [dataSelect.root, capRadio.root]), tau.root);
-      ctx.controls.append(controls);
-      ctx.primaryControl(tau.root);
-      const settings = ctx.disclosure({ name: "settings", title: lawView ? "Settings" : "Exact optimum family" });
-      settings.body.append(...(lawView ? [ruleRadio.root, capRadio.root] : []), optRadio.root);
-      const hero = h("section", { class: "prx-pt-hero prx-light-panel", "aria-label": lawView ? "Inspected order cuts and joint benchmark" : "Current report preview" });
+      const settings = ctx.settingsBox("Settings");
+      settings.body.append(capRadio.root, optRadio.root);
 
-      // --- read-out, the chosen rule's label, the set-back line
-      const labelLine = h("p", { class: "prx-pt-label", "data-prx-part": "readout", "data-prx-result-scope": "" });
+      // --- Stage: (1) Unified 4-row interactive [data-prx-risk-rule] risk-decomposition selector + 13px axis SVG;
+      //            (2) .prx-pt-hero Selected Rule Grade Report Card SVG (PR-03 badge pills)
+      const riskLegendTau = h("span");
+      const riskLegend = h(
+        "div",
+        { class: "prx-pt-risk-legend", "data-prx-part": "legend" },
+        h("span", { class: "prx-pt-leg-item" }, h("span", { class: "prx-pt-swatch prx-pt-swatch-err", "aria-hidden": "true" }), "Wrong E/M"),
+        h("span", { class: "prx-pt-leg-item" }, h("span", { class: "prx-pt-swatch prx-pt-swatch-wh", "aria-hidden": "true" }), "Withheld cost"),
+        h("span", { class: "prx-pt-leg-item" }, h("span", { class: "prx-pt-swatch-tau", "aria-hidden": "true" }), riskLegendTau),
+      );
+      const riskAxisSlot = h("div", { class: "prx-pt-risk-axis" });
+      const ladderRows = new Map();
+      const ruleRadio = ctx.radioGroup({
+        legend: "Risk by rule · select a row",
+        name: "rule",
+        className: "prx-pt-rule",
+        options: LADDER_RULES.map((value) => {
+          const numbers = h("span", { class: "prx-pt-risk-value" });
+          const barSlot = h("span", { class: "prx-pt-bar-slot", "aria-hidden": "true" });
+          ladderRows.set(value, { numbers, barSlot });
+          return {
+            value,
+            label: [
+              h(
+                "span",
+                { class: "prx-pt-row-head" },
+                h("span", { class: "prx-pt-ladder-name", text: ladderNames[value] }),
+                numbers,
+              ),
+              barSlot,
+            ],
+          };
+        }),
+        value: ctx.state.rule,
+        onChange: (v) => ctx.set({ rule: v }),
+      });
+      ruleRadio.root.querySelector("legend")?.classList.add("prx-sr-only");
+      ruleRadio.inputs.forEach((input, i) => {
+        const row = input.parentElement;
+        row.dataset.prxRiskRule = LADDER_RULES[i];
+        if (i < 3) row.dataset.nested = "";
+      });
+
+      const ladder = h(
+        "section",
+        { class: "prx-pt-ladder prx-light-panel", "aria-label": "Risk at the current withholding cost" },
+        riskLegend,
+        ruleRadio.root,
+        riskAxisSlot,
+      );
+
+      const heroHead = h("div", { class: "prx-pt-hero-head" });
+      const heroChartSlot = h("div", { class: "prx-pt-hero-chart" });
+      const hero = h(
+        "section",
+        { class: "prx-pt-hero prx-light-panel", "aria-label": "Current report preview" },
+        heroHead,
+        heroChartSlot,
+      );
+      ctx.stage.append(ladder, hero);
+
+      // --- Disclosures: Data and rule comparison table + Method and search scope
       const selectedReadout = h("p", { class: "prx-pt-note", "data-prx-selected-report": "" });
-      const ladderAxis = h("p", { class: "prx-pt-risk-axis" });
-      const nesting = h("p", { class: "prx-pt-note", text: "Each bracketed family contains the one above it, so risk cannot rise." });
-      const ladder = h("section", { class: "prx-pt-ladder prx-light-panel", "aria-label": "Risk at the current withholding cost" },
-        lawView ? null : ruleRadio.root, ladderAxis, nesting);
-
-      // --- the rule rows (league, eight units, 30 sites)
+      const labelLine = h("p", { class: "prx-pt-label", "data-prx-result-scope": "" });
       const compareRows = h("ol", { class: "prx-pt-rows" });
-      const compareNotes = h("div", { class: "prx-pt-notes" });
       const ordersSlot = h("div", { class: "prx-pt-orders" });
-      const compareBox = h("section", { class: "prx-pt-compare", "data-prx-part": "chart" },
-        ctx.panelTitle(T.compareHeading, { className: "prx-pt-heading" }), compareRows, compareNotes, ordersSlot);
+      const compareBox = h(
+        "section",
+        { class: "prx-pt-compare" },
+        ctx.panelTitle(T.compareHeading, { className: "prx-pt-heading" }),
+        compareRows,
+        ordersSlot,
+      );
+      const dataBox = ctx.dataBox("Data and rule comparison table");
+      dataBox.body.append(selectedReadout, labelLine, compareBox);
 
-      // --- the three-unit law: its own rows, every report, the small figure (all source content is visible)
-      const lawRows = h("ol", { class: "prx-pt-rows" });
-      const lawText = h("div", { class: "prx-pt-law-text" });
-      const lawNotes = h("div", { class: "prx-pt-notes" });
-      const tableSlot = h("div", { class: "prx-pt-table-scroll" });
-      const miniSlot = h("div", { class: "prx-pt-mini" });
-      const miniNote = h("p", { class: "prx-pt-note" });
-      const matchedNote = h("p", { class: "prx-pt-note" });
-      const lawInner = h("section", { class: "prx-pt-law" }, ctx.panelTitle(T.lawHeading, { className: "prx-pt-heading" }));
-      const lawBox = h("div", { class: "prx-pt-law-wrap", "data-prx-part": "chart" }, lawInner);
-
-      const tb = MODELS.tb19, law = CONFIG.tb19;
-      const lawNum = x => ctx.num(x, formatProb(x, { digits: 1 }));
-      const stateNum = values => ctx.num(Array.from(values), `(${values.map(formatCount).join(", ")})`);
-      const lawExtras = h("div", { class: "prx-pt-law-extras" });
-      const pathSlot = h("div"), pathLegend = h("div", { class: "prx-legend", "data-prx-part": "legend" }), pathTableSlot = h("div", { class: "prx-pt-table-scroll" });
+      const methodNotes = h("div", { class: "prx-pt-notes" });
       const guarantee = h("section", { class: "prx-pt-guarantees" });
-      const pathStatus = h("p", { class: "prx-pt-note" });
-      const pathScope = h("p", { class: "prx-pt-note" });
-      const pathTitle = ctx.panelTitle("Both orders as the withholding price changes");
-      if (lawView) {
-        ctx.charts.append(pathTitle, pathSlot, pathLegend, pathStatus, hero, lawBox, tauHint);
-        ctx.primaryGraphic(pathSlot);
-        lawInner.append(lawExtras);
-        ctx.disclosure({ name: "reports", title: "Rule cards and scopes" }).body.append(
-          selectedReadout, labelLine, ctx.panelTitle(T.compareHeading, { className: "prx-pt-heading" }), lawRows, lawNotes, lawText);
-        ctx.disclosure({ name: "all-reports", title: T.tableHeading }).body.append(
-          h("p", { class: "prx-pt-note", text: "Tables keep every column. On narrow screens, swipe sideways, or focus a table region and use the arrow keys." }), ctx.scrollRegion(tableSlot, T.tableHeading));
-        ctx.disclosure({ name: "matched", title: T.miniHeading }).body.append(miniSlot, miniNote, matchedNote);
-        ctx.disclosure({ name: "intervals", title: "Exact risk-curve intervals" }).body.append(ctx.scrollRegion(pathTableSlot, "Complete exact risk-curve intervals"), pathScope);
-      } else {
-        ctx.charts.append(ladder, hero, tauHint);
-        ctx.primaryGraphic(ladder);
-        ctx.disclosure({ name: "reports", title: "Reports, orders and scopes" }).body.append(
-          selectedReadout, labelLine, h("p", { class: "prx-pt-note", text: T.capLegend }), compareBox);
-        ctx.disclosure({ name: "guarantees", title: "Which objective does each rule optimize?" }).body.append(guarantee);
-      }
-      // ------------------------------------------------------------------------------------- drawing
+      const methodBox = ctx.methodBox("Method and search scope");
+      methodBox.body.append(methodNotes, guarantee);
 
       const { scopeParts, drawRow } = createRuleCardRenderer(ctx);
-
-      function drawReadout(mdl, state, rule, res, G, opt, fracMode, results) {
-        const ev = res.ev;
-        const capWords = G < mdl.n ? [`, ${T.atMost} `, count(G), ` ${G === 1 ? T.gradeWord : T.gradesWord}`] : [];
-        const head = rule === "optimum" ? [", ", tagNode(ctx, res, { key: "readout-optimum" })]
-          : rule === "pm-tiers" ? [", ", count(G), ` ${T.rulePmTiers.toLowerCase()}`] : [...capWords, `, ${ruleName(rule).charAt(0).toLowerCase()}${ruleName(rule).slice(1)}`];
-        const gap = opt && rule !== "optimum" ? (() => {
-          const same = Array.from(res.grade ?? res).every((g, i) => g === opt.grade[i]);
-          if (same) return [` It is ${T.sameReport}`];
-          const d = ev.risk - opt.risk;
-          if (Math.abs(d) <= opt.tieTol) return [` It has ${T.sameRisk}`];
-          return [` The exact optimum has risk `, ro("opt.risk", opt.risk, fracMode ? formatRational(opt.risk) : formatRisk(opt.risk)), "."];
-        })() : [];
-        selectedReadout.replaceChildren(
-          "τ = ", ctx.num(state.tau, formatSetting(state.tau)), ...head, ": ",
-          ro("N", ev.N, formatCount(ev.N)), ` ${T.of} `, count(ev.M), ` ${T.stated}, ${T.eWords} `, ro("E", ev.Ew, fmtE(mdl, ev.Ew)),
-          `, ${T.riskWords} `, ro("risk", ev.risk, fracMode ? formatRational(ev.risk) : formatRisk(ev.risk)), ".", ...gap, ...(mdl.key === "league8" ? [Math.abs(results["pm-cuts"].risk - opt.risk) <= CONFIG.tieTol && Math.abs(results["er-cuts"].risk - opt.risk) <= CONFIG.tieTol ? " At these settings, both orders’ best cuts match the best report of the declared family: a property of these units. " : " These orders need not contain the best report; compare the card gaps at these settings. ", h("a", { href: ctx.win.location.pathname.includes("/embed/") ? "../pages/rules/order-misses.html" : "order-misses.html", target: "_parent" }, "See a law where the order misses.")] : []),
-        );
-        labelLine.replaceChildren(...scopeParts(mdl, rule, res, G, "chosen"));
-      }
-
-      function drawLadder(mdl, state, results, G) {
-        const risk = value => ctx.num(value, formatRisk(value));
-        const values = LADDER_RULES.flatMap(key => results[key] ? [results[key].ev.risk] : []);
-        const lo = Math.min(state.tau, ...values), hi = Math.max(state.tau, ...values);
-        const span = Math.max(.01, hi - lo);
-        const position = (value) => `${10 + 80 * (value - lo + (span - (hi - lo)) / 2) / span}%`;
-        for (const [key, { track, dot, numbers }] of ladderRows) {
-          track.style.setProperty("--tau-x", position(state.tau));
-          const result = results[key];
-          dot.hidden = !result;
-          if (result) {
-            dot.style.setProperty("--risk-x", position(result.ev.risk));
-            numbers.replaceChildren("N ", ro(`ladder-${key}-N`, result.ev.N, formatCount(result.ev.N)),
-              " · ", ro(`ladder-${key}-risk`, result.ev.risk, formatRisk(result.ev.risk)));
-          } else numbers.replaceChildren("Not searched: ", count(mdl.n), " units");
-        }
-        ladderAxis.replaceChildren(h("span", { text: "Lower risk ←" }),
-          h("span", {}, "Dashed: all-withheld τ ", risk(state.tau)));
-        const [tiers, cuts, exact] = LADDER_RULES.map(key => results[key]);
-        const tied = exact && Math.abs(cuts.ev.risk - exact.ev.risk) <= CONFIG.tieTol;
-        const same = tied && Array.from(cuts.grade).every((grade, i) => grade === exact.grade[i]);
-        const report = ({ ev }) => [risk(ev.risk), " (", count(ev.N), " pairs)"];
-        ctx.readout.set(["τ ", ctx.num(state.tau, formatSetting(state.tau)), ", at most ", count(G), G === 1 ? " grade: " : " grades: ",
-          "tiers ", ...report(tiers), " → mean-order cuts ", ...report(cuts),
-          ...(exact ? [tied ? " = exact " : " → exact ", risk(exact.ev.risk), ...(state.opt === "all" ? [" (all reports)"] : [])] : ["; exact optimum unsearched"]), ". Boundaries save ",
-          risk(Math.max(0, tiers.ev.risk - cuts.ev.risk)), ".", ...(tied ? [same ? " Same report after the joint search." : " The joint search matches the risk with a different report."] : []), " ",
-          h("a", { href: ctx.win.location.pathname.includes("/embed/") ? "../pages/rules/order-misses.html" : "order-misses.html", target: "_parent" }, "See a law where the order misses.")]);
-      }
-
-      function drawNotes(mdl, target) {
-        const notes = [h("p", { class: "prx-pt-note", text: T.compareNote })];
-        notes.push(h("p", { class: "prx-pt-note" }, ...(mdl.hasOptimum ? [T.gapNote] : fill(T.noOptimum, { n: count(mdl.n) }))));
-        notes.push(h("p", { class: "prx-pt-note", text: "Grade one is highest priority: the largest true value as the posterior judges it." }));
-        target.replaceChildren(...notes);
-      }
-
-      function drawOrders(mdl) {
-        if (mdl.key === "tb19") { ordersSlot.replaceChildren(); return; }
-        const rows = mdl.pmOrder.map((i, p) => {
-          const j = mdl.erOrder[p];
-          return h("tr", {},
-            h("th", { scope: "row" }, count(p + 1)),
-            h("td", {}, unit(mdl.ids[i])), h("td", {}, unit(mdl.ids[j])),
-            h("td", {}, ctx.num(mdl.means[i], formatDecimal(mdl.means[i], { digits: 3 }))),
-            h("td", {}, ctx.num(mdl.sds[i], formatDecimal(mdl.sds[i], { digits: 3 }))),
-            h("td", {}, ctx.num(mdl.er[j], formatDecimal(mdl.er[j], { digits: 2 }))));
-        });
-        const table = h("table", { class: "prx-pt-table prx-sticky-first" },
-          h("caption", { text: T.ordersCaption }),
-          h("thead", {}, h("tr", {}, ...[T.colPlace, T.colPmUnit, T.colErUnit, T.colMean, T.colSd, T.colEr2].map((t) => h("th", { scope: "col", text: t })))),
-          h("tbody", {}, ...rows));
-        const open = ordersSlot.querySelector("details")?.open ?? false;
-        const details = h("details", { class: "prx-pt-details" }, h("summary", { text: T.ordersSummary }),
-          ctx.scrollRegion(h("div", { class: "prx-pt-table-scroll" }, table), T.ordersRegion));
-        details.open = open;
-        ordersSlot.replaceChildren(details);
-      }
-
-      function drawLaw(state, results, fracMode) {
-        const m = tb;
-        lawText.replaceChildren(
-          h("p", {}, ...fill(T.lawStates, { p1: lawNum(law.probs[0]), s1: stateNum(law.values[0]), p2: lawNum(law.probs[1]), s2: stateNum(law.values[1]) })),
-          h("p", {}, ...fill(T.lawSummaries, {
-            m: ctx.num(Array.from(m.means), `(${m.means.map((x) => formatDecimal(x, { digits: 0 })).join(", ")})`),
-            r: ctx.num(Array.from(m.er), `(${m.er.map((x) => formatDecimal(x, { digits: 1 })).join(", ")})`),
-          }), " ", ...fill(T.erDefinition, { one: count(1) })));
-        matchedNote.replaceChildren(...fill(T.lawLink, { n: count(CONFIG.comparisonN) }));
-        // every report: N, E, risk at τ, membership of each order family, and which rule's best it is
-        const evs = TB19.reports.map((g) => ({ g, ev: evaluateReport(g, m.E, { tau: state.tau }) }));
-        const best = r => new Set(results[r] ? (results[r].grades ?? [results[r].grade]).map(g => TB19.key(g)) : []);
-        const bestOf = { pm: best("pm-cuts"), er: best("er-cuts"), all: best("optimum") };
-        evs.sort((a, b) => a.ev.N - b.ev.N || a.ev.Ew - b.ev.Ew);
-        const body = evs.map(({ g, ev }) => {
-          const k = TB19.key(g);
-          const tags = [bestOf.pm.has(k) ? T.bestPm : null, bestOf.er.has(k) ? T.bestEr : null, bestOf.all.has(k) ? T.bestAll : null].filter(Boolean);
-          return h("tr", { "data-prx-report": k },
-            h("th", { scope: "row" }, ctx.num(g, formatGrades(g)), h("span", { class: "prx-pt-blocks-text", text: ` ${blocksText(g, m.ids)}` })),
-            h("td", { "data-prx-law-value": "risk" }, ctx.num(ev.risk, fracMode ? formatRational(ev.risk) : formatRisk(ev.risk))),
-            h("td", { "data-prx-law-value": "N" }, ctx.num(ev.N, formatCount(ev.N))),
-            h("td", { "data-prx-law-value": "Ew" }, ctx.num(ev.Ew, formatRational(ev.Ew))),
-            h("td", { text: TB19.inPm.has(k) && TB19.inEr.has(k) ? T.both : TB19.inPm.has(k) ? m.pmOrder.map(i => m.ids[i]).join(", ") : TB19.inEr.has(k) ? m.erOrder.map(i => m.ids[i]).join(", ") : "" }),
-            h("td", { text: tags.join(T.andWord) }));
-        });
-        tableSlot.replaceChildren(h("table", { class: "prx-pt-table prx-pt-table-law prx-sticky-first" },
-          h("caption", { text: T.tableCaption }),
-          h("thead", {}, h("tr", {}, ...[T.colReport, T.colRisk, T.colN, T.colE, T.colOrder, T.colBest].map((t) => h("th", { scope: "col", text: t })))),
-          h("tbody", {}, ...body)));
-      }
-
-      function drawMini(chosenGrade, tieTol) {
-        const Mi = CONFIG.mini;
-        const width = Math.min(Mi.width, Math.max(1, Math.round(miniSlot.clientWidth || ctx.width())));
-        const { hullAll, hullPm, hullEr, points } = TB19;
-        const M = disclosure([1,2,3]).M;
-        const yTop = Math.max(...points.map((p) => p.Ew)) * Mi.yHead;
-        const chosen = points.filter((p) => TB19.key(p.grade) === TB19.key(chosenGrade));
-                const midPm = hullPm[1];
-        const midAll = hullAll[1];
-        plot(miniSlot, {
-          alt: T.miniAlt + " The expected-rank boundary is dotted and recovers the solid frontier.",
-          keyboard: { data: points, x: "N", y: "Ew", title: p => `${formatGrades(Array.from(p.grade))}: N ${formatCount(p.N)}, E ${formatRational(p.Ew)}.` },
-          table: {
-            caption: T.miniTable,
-            columns: [
-              { label: "Boundary", value: "b" },
-              { label: "Pairs stated, N", value: "N", format: (v) => formatCount(v), header: true },
-              { label: "Expected wrong directions, E", value: "Ew", format: (v) => formatRational(v) },
-              { label: "Report", value: (d) => Array.from(d.grade), format: (v) => formatGrades(v) },
-            ],
-            rows: [...hullPm.map((v) => ({ ...v, b: T.boundaryPm })), ...hullAll.map((v) => ({ ...v, b: T.boundaryAll }))],
-          },
-          width, height: Mi.height, aspect: false,
-          marginTop: Mi.marginTop, marginRight: Mi.marginRight, marginBottom: Mi.marginBottom, marginLeft: Mi.marginLeft,
-          x: { domain: [-Mi.pad, M + Mi.pad], ticks: Array.from({ length: M + 1 }, (_, i) => i), tickFormat: (d) => formatCount(d), label: T.xLabel, labelAnchor: "center", labelArrow: "none" },
-          y: { domain: [0, yTop], label: T.yLabel, labelArrow: "none", grid: true },
-          color: { type: "identity" },
-          marks: (c, P) => [
-            P.dot(points, { x: "N", y: "Ew", r: Mi.dot, stroke: c.plotMuted, fill: c.plotBg }),
-            P.line(hullPm, { x: "N", y: "Ew", stroke: c.plotFg, strokeWidth: 2, strokeDasharray: Mi.dash }),
-            P.line(hullAll, { x: "N", y: "Ew", stroke: c.plotFg, strokeWidth: 2 }),
-            P.line(hullEr, { x: "N", y: "Ew", stroke: c.plotMuted, strokeWidth: 2, strokeDasharray: "2 3" }),
-            P.dot([...hullPm, ...hullAll], { x: "N", y: "Ew", r: Mi.vertex, fill: c.plotFg, stroke: c.plotBg }),
-            P.dot(chosen, { x: "N", y: "Ew", r: Mi.ring, stroke: c.plotFg, strokeWidth: 2, fill: "none" }),
-            numText([midPm], { x: "N", y: "Ew", value: "Ew", format: (v) => formatRational(v), dx: Mi.labelDx, dy: -Mi.labelDy, textAnchor: "end", fill: c.plotFg }),
-            numText([midAll], { x: "N", y: "Ew", value: "Ew", format: (v) => formatRational(v), dx: Mi.labelDx, dy: Mi.labelDyBelow, textAnchor: "end", fill: c.plotFg }),
-          ],
-        });
-        const erSame = hullEr.length === hullAll.length && hullEr.every((v, i) => v.N === hullAll[i].N && Math.abs(v.Ew - hullAll[i].Ew) <= tieTol);
-        miniNote.replaceChildren(`${T.miniNote} Dotted: the expected-rank order B, C, A. ${erSame ? T.miniErSame : T.miniErDiffers}`);
-      }
 
       function drawGuarantees() {
         const rows = [
@@ -620,300 +528,730 @@ export function mountPosteriorSummary(el, spec = {}, { lawView = false } = {}) {
           ["Unrestricted composite-loss grades", "Exact within its family", "No general guarantee", "All reports satisfying the declared restrictions"],
           ["Unrestricted weighted-directional grades", "No general guarantee", "Exact within its family", "All reports satisfying the declared restrictions"],
         ];
-        const table = h("table", { class: "prx-pt-table prx-sticky-first", "data-prx-guarantees": "" }, h("caption", {}, "Selection guarantees under the supplied law, common cost and stated feasible family"),
-          h("thead", {}, h("tr", {}, ...["Rule", "Directional loss", "Composite loss", "Eligible comparison"].map(x => h("th", { scope: "col" }, x)))),
-          h("tbody", {}, ...rows.map(([rule, composite, directional, comparison]) => h("tr", {},
-            h("th", { scope: "row" }, rule), h("td", {}, directional), h("td", {}, composite), h("td", {}, comparison)))));
-        guarantee.replaceChildren(ctx.panelTitle("Which objective does each rule optimize?"),
-          h("p", { class: "prx-pt-note" }, "The cards above use one directional criterion. The table separates guarantees for a scalar composite target from guarantees for weighted criterion directions. It does not claim that a method is best under both."),
+        const table = h(
+          "table",
+          { class: "prx-pt-table prx-sticky-first", "data-prx-guarantees": "" },
+          h("caption", {}, "Selection guarantees under the supplied law, common cost and stated feasible family"),
+          h("thead", {}, h("tr", {}, ...["Rule", "Directional loss", "Composite loss", "Eligible comparison"].map((x) => h("th", { scope: "col" }, x)))),
+          h(
+            "tbody",
+            {},
+            ...rows.map(([r, composite, directional, comparison]) =>
+              h("tr", {}, h("th", { scope: "row" }, r), h("td", {}, directional), h("td", {}, composite), h("td", {}, comparison)),
+            ),
+          ),
+        );
+        guarantee.replaceChildren(
+          ctx.panelTitle("Which objective does each rule optimize?", { className: "prx-pt-heading" }),
+          h(
+            "p",
+            { class: "prx-pt-note" },
+            "The cards use one directional criterion. The table separates guarantees for a scalar composite target from guarantees for weighted criterion directions. It does not claim that a method is best under both.",
+          ),
           ctx.scrollRegion(h("div", { class: "prx-pt-table-scroll" }, table), "Rule guarantees under both reporting targets"),
-          h("p", { class: "prx-pt-note" }, "The comparisons apply to the supplied probabilities, the same loss and all reports in the stated family. A report outside that family can have lower risk. Changing the loss changes the comparison."));
+          h(
+            "p",
+            { class: "prx-pt-note" },
+            "The comparisons apply to the supplied probabilities, the same loss and all reports in the stated family. A report outside that family can have lower risk. Changing the loss changes the comparison.",
+          ),
+        );
+      }
+      drawGuarantees();
+
+      function drawMethodNotes(mdl) {
+        methodNotes.replaceChildren(
+          h("p", { class: "prx-pt-note" }, "A wrong stated direction costs ", count(1), "; staying silent on one pair costs τ."),
+          h("p", { class: "prx-pt-note", text: "Each bracketed family contains the one above it, so risk cannot rise from fixed tiers to mean-order cuts to the exact optimum." }),
+          h("p", { class: "prx-pt-note", text: T.compareNote }),
+          h("p", { class: "prx-pt-note" }, ...(mdl.hasOptimum ? [T.gapNote] : fill(T.noOptimum, { n: count(mdl.n) }))),
+          h("p", { class: "prx-pt-note", text: "Grade one is highest priority: the largest true value as the posterior judges it." }),
+          h("p", { class: "prx-pt-note" }, "See ", appLink(ctx, "order-misses"), " for a three-unit law where posterior-mean cuts miss the unrestricted optimum."),
+        );
       }
 
-      function drawLawExtras(state, results) {
-        const summary = rankSummaries({ states: law.values.map(s => Array.from(s)), probs: Array.from(law.probs) });
-        const chosenOrder = state.order === "rank" ? tb.erOrder : tb.pmOrder;
-        const selectedCut = results[state.order === "rank" ? "er-cuts" : "pm-cuts"];
-        const table = h("table", { class: "prx-pt-table prx-pt-state" }, h("caption", {}, "Two possible states of the true values"),
-          h("thead", {}, h("tr", {}, h("th", {}, "State or summary"), ...tb.ids.map(id => h("th", { scope: "col" }, id)), h("th", {}, "Chance"))),
-          h("tbody", {}, ...law.values.map((values,k) => h("tr", {}, h("th", { scope: "row" }, "State ", count(k+1)),
-            ...values.map(v => h("td", {}, v === Math.max(...values) ? h("span", { class: "top" }, count(v)) : count(v))), h("td", {}, ctx.num(law.probs[k], formatRational(law.probs[k]))))),
-            h("tr", { "data-on": state.order === "mean" ? "" : null }, h("th", { scope: "row" }, "Posterior mean"), ...tb.means.map((v,i) => h("td", {}, ro(`state-mean-${tb.ids[i]}`, v, formatDecimal(v, { digits: 0 })))), h("td")),
-            h("tr", { "data-on": state.order === "rank" ? "" : null }, h("th", { scope: "row" }, "Expected rank (", count(1), " = top)"), ...tb.er.map((v,i) => h("td", {}, ro(`state-rank-${tb.ids[i]}`, v, formatDecimal(v, { digits: 1 })))), h("td")),
-            h("tr", {}, h("th", { scope: "row" }, "Chance of truly being highest"), ...summary.pTop[0].map((v,i) => h("td", {}, ro(`state-top-${tb.ids[i]}`, v, formatRational(v)))), h("td"))));
-        const strip = (name,result,key) => h("div", { class: "prx-pt-strip" }, h("strong", {}, name), chipsForLaw(result.grade),
-          h("p", {}, "Risk ", ro(`${key}.risk`, result.ev.risk, formatRisk(result.ev.risk)), "; N = ", count(result.ev.N), ". ", tagNode(ctx, result, { key: `strip-${key}`, orderWords: state.order === "rank" ? "expected-rank order" : "posterior-mean order" })));
-        const pTop = summary.pTop[0][chosenOrder[0]];
-        const ratio = formatRational(pTop).split("/").map(Number);
-        const chance = ratio.length === 2 ? [count(ratio[0]), " times in ", count(ratio[1])] : [ctx.num(pTop, formatProb(pTop))];
-        lawExtras.replaceChildren(ctx.scrollRegion(h("div", { class: "prx-pt-table-scroll" }, table), "States and posterior summaries"),
-          h("p", { class: "prx-pt-note" }, "The top true value is boxed in each state; the highlighted summary chooses the inspected order. Sorting by ", state.order === "rank" ? "expected rank" : "posterior mean", " puts ", tb.ids[chosenOrder[0]], " first; that unit is truly on top ", ...chance, ". The best report puts ", tb.ids.filter((id,i) => results.optimum.grade[i] === 1).join(" and "), " in the highest grade (risk ", ctx.num(results.optimum.ev.risk, formatRisk(results.optimum.ev.risk)), " against ", ctx.num(selectedCut.ev.risk, formatRisk(selectedCut.ev.risk)), " for the inspected order)."),
+      function drawOrders(mdl) {
+        const rows = mdl.pmOrder.map((i, p) => {
+          const j = mdl.erOrder[p];
+          return h(
+            "tr",
+            {},
+            h("th", { scope: "row" }, count(p + 1)),
+            h("td", {}, unit(mdl.ids[i])),
+            h("td", {}, unit(mdl.ids[j])),
+            h("td", {}, ctx.num(mdl.means[i], formatDecimal(mdl.means[i], { digits: 3 }))),
+            h("td", {}, ctx.num(mdl.sds[i], formatDecimal(mdl.sds[i], { digits: 3 }))),
+            h("td", {}, ctx.num(mdl.er[j], formatDecimal(mdl.er[j], { digits: 2 }))),
           );
-        hero.replaceChildren(h("div", { class: "prx-pt-strips" }, strip(`Cuts of ${chosenOrder.map(i => tb.ids[i]).join(", ")}`, selectedCut, "cut"), strip("Any report in the declared family", results.optimum, "any")));
-        if (selectedCut.ev.N !== results.optimum.ev.N) hero.append(h("p", { class: "prx-pt-note" }, captionNode(ctx, "different-disclosure")));
-      }
-      function chipsForLaw(grade) { return createRuleCardRenderer(ctx).chips(tb, Array.from(grade), palette(ctx.root)); }
-
-      function findMissBands(mean, best) {
-        const endpoints = [...new Set([...mean, ...best].flatMap(s => [s.tauFrom, s.tauTo]))].sort((a, b) => a - b);
-        const pairs = tb.n * (tb.n - 1) / 2;
-        const riskAt = (intervals, tau) => {
-          const interval = intervals.find(s => s.tauFrom <= tau && s.tauTo >= tau);
-          return (interval.Ew + tau * (pairs - interval.N)) / pairs;
-        };
-        const bands = [];
-        for (let i = 1; i < endpoints.length; i++) {
-          const from = endpoints[i - 1], to = endpoints[i], mid = (from + to) / 2;
-          if (riskAt(mean, mid) <= riskAt(best, mid) + CONFIG.tieTol) continue;
-          const prev = bands.at(-1);
-          if (prev && prev.to === from) prev.to = to;
-          else bands.push({ from, to });
-        }
-        return bands;
-      }
-
-      const fullLawPath = lawView ? {
-        mean: tauPath(tb.E, { family: { kind: "order", order: tb.pmOrder, G: tb.n } }).intervals,
-        best: tauPath(tb.E, { family: { kind: "all" } }).intervals,
-      } : null;
-      const fullMissStart = fullLawPath ? findMissBands(fullLawPath.mean, fullLawPath.best)[0]?.from : null;
-      const tagMark = (name, value = "") => (index, scales, values, dimensions, context, next) => {
-        const group = next(index, scales, values, dimensions, context);
-        group.setAttribute(name, value);
-        return group;
-      };
-
-      function drawTauComparison(state, G, results) {
-        const family = state.opt === "all" || G === tb.n ? { kind: "all" } : { kind: "atMost", G };
-        const defs = [
-          { name: "Posterior-mean cuts", key: "mean", dash: "7 4", family: { kind: "order", order: tb.pmOrder, G } },
-          { name: "Expected-rank cuts", key: "rank", dash: "2 3", family: { kind: "order", order: tb.erOrder, G } },
-          { name: "Best of the declared family", key: "best", dash: null, family },
-        ];
-        const segments = defs.flatMap(d => tauPath(tb.E, { family: d.family }).intervals.map((segment,k) => ({ ...segment, name: d.name, key: d.key, index: k, segment: `${d.name}-${k}` })));
-        pathTableSlot.replaceChildren(h("table", { class: "prx-pt-table prx-pt-table-path prx-sticky-first" }, h("caption", {}, "Every exact interval, including zero-length endpoint intervals"),
-          h("thead", {}, h("tr", {}, ...["Family", "Risk from", "Risk to", "From τ", "To τ", "Report", "N", "E"].map(x => h("th", { scope: "col" }, x)))),
-          h("tbody", {}, ...segments.map(s => h("tr", { "data-prx-path": s.key, "data-prx-interval": s.index },
-            h("th", { scope: "row" }, s.name),
-            ...[["riskFrom",s.riskFrom,formatRisk],["riskTo",s.riskTo,formatRisk],["from",s.tauFrom,formatSetting],["to",s.tauTo,formatSetting],["grades",Array.from(s.grade),formatGrades],["N",s.N,formatCount],["E",s.Ew,formatRational]].map(([key,v,f]) => h("td", {}, ro(`path-${key}`, v, f(v)))))))));
-        const points = segments.flatMap(s => [s.tauFrom,s.tauTo].map(tau => ({ ...s, tau, risk: tau === s.tauFrom ? s.riskFrom : s.riskTo })));
-        const [mean, rank, best] = defs.map(d => segments.filter(s => s.key === d.key));
-        const bands = findMissBands(mean, best);
-        const tiePrices = [...new Set([...mean, ...rank, ...best].map(s => s.tauTo).filter(t => t > 0 && t < .5))];
-        const currentCut = results[state.order === "rank" ? "er-cuts" : "pm-cuts"].ev.risk;
-        const currentBest = results.optimum.ev.risk;
-        const different = Math.abs(currentCut - currentBest) > CONFIG.tieTol;
-        const current = [{ tau: state.tau, risk: currentBest }, ...(different ? [{ tau: state.tau, risk: currentCut }] : [])];
-        const yTop = Math.max(...points.map(p => p.risk));
-        plot(pathSlot, { height: 260, marginLeft: 60, marginBottom: 40,
-          x: { domain: [0,.5], label: "Withholding cost τ" }, y: { label: "Best risk at this τ", grid: true },
-          color: { domain: defs.map(d => d.name), range: ["var(--prx-plot-fg)","var(--prx-plot-muted)","var(--prx-plot-fg)"], legend: false },
-          marks: (c,P) => [
-            P.rect(bands, { x1: "from", x2: "to", y1: 0, y2: yTop, fill: c.est, fillOpacity: .12, render: tagMark("data-prx-miss-band") }),
-            P.ruleX(tiePrices, { stroke: c.plotMuted, strokeOpacity: .65, strokeDasharray: "1 4" }),
-            ...defs.slice().reverse().map(d => P.line(points.filter(p => p.key === d.key), { x: "tau", y: "risk", z: "segment", stroke: "name", strokeDasharray: d.dash, strokeWidth: 2 })),
-            P.ruleX([state.tau], { stroke: c.est, strokeWidth: 1.5, render: tagMark("data-prx-current-tau", state.tau) }),
-            P.dot(current, { x: "tau", y: "risk", r: 3, fill: c.est, stroke: c.plotBg }),
-            numText(tiePrices, { x: t => t, y: () => yTop, dy: 10, value: t => t, format: formatSetting, fill: c.plotFg, fontSize: 10,
-              render: tagMark("data-prx-tie-prices") }),
-            ...current.map((p, i) => numText([p], { x: "tau", y: "risk", value: "risk", format: formatRisk,
-              dx: state.tau > .37 ? -7 : 7, dy: i === 0 && different ? 9 : -8, textAnchor: state.tau > .37 ? "end" : "start",
-              fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke", fontWeight: "bold" })),
-          ],
-          alt: "The best risk along each declared order and over the declared family at the same withholding price. Exact segment endpoints come from the engine cost paths.",
-          keyboard: { data: points, x: "tau", y: "risk", title: p => `${p.name}, tau ${formatSetting(p.tau)}, risk ${formatRisk(p.risk)}, report ${formatGrades(Array.from(p.grade))}.` },
-          table: { caption: "Exact risk-curve endpoints", columns: [{ label: "Family", value: "name" }, { label: "τ", value: "tau", format: v => formatSetting(v) }, { label: "Risk", value: "risk", format: v => formatRisk(v) }], rows: points },
         });
-        pathLegend.replaceChildren();
-        for(const d of defs){
-          const svg=ctx.doc.createElementNS("http://www.w3.org/2000/svg","svg"),line=ctx.doc.createElementNS(svg.namespaceURI,"line");
-          svg.setAttribute("viewBox","0 0 35 10");svg.setAttribute("width","35");svg.setAttribute("height","10");svg.setAttribute("aria-hidden","true");
-          for(const [key,value]of Object.entries({x1:0,y1:5,x2:35,y2:5,stroke:d.key==="rank"?"var(--prx-plot-muted)":"var(--prx-plot-fg)","stroke-width":2,...(d.dash?{"stroke-dasharray":d.dash}:{})}))line.setAttribute(key,String(value));
-          svg.append(line);pathLegend.append(h("span",{class:"prx-key"},svg,d.name));
-        }
-        pathLegend.classList.add("prx-pt-path-keys");
-        pathStatus.replaceChildren(...(bands.length ? ["Shaded: mean order misses the best report. "] : []),
-          "Dotted vertical lines: tie prices. Solid vertical line: current τ.");
-        pathScope.replaceChildren("Each curve gives the best risk at its own price, not a comparison of risks across prices. In the default unrestricted example, the posterior-mean order misses above ",
-          ctx.num(fullMissStart, formatSetting(fullMissStart)), "; the expected-rank cuts recover the best report here. One law, not a general failing of posterior-mean orders.");
-        return bands;
+        const table = h(
+          "table",
+          { class: "prx-pt-table prx-sticky-first" },
+          h("caption", { text: T.ordersCaption }),
+          h("thead", {}, h("tr", {}, ...[T.colPlace, T.colPmUnit, T.colErUnit, T.colMean, T.colSd, T.colEr2].map((t) => h("th", { scope: "col", text: t })))),
+          h("tbody", {}, ...rows),
+        );
+        ordersSlot.replaceChildren(
+          ctx.panelTitle(T.ordersSummary, { className: "prx-pt-heading" }),
+          ctx.scrollRegion(h("div", { class: "prx-pt-table-scroll" }, table), T.ordersRegion),
+        );
       }
 
-      function drawLawReadout(state, results, bands) {
-        const { optimum } = results;
-        const order = state.order === "rank" ? tb.erOrder : tb.pmOrder;
-        const cut = results[state.order === "rank" ? "er-cuts" : "pm-cuts"];
-        const names = order.map(i => tb.ids[i]).join(", ");
-        const action = res => {
-          if (!res.ev.N) return "withholds everything";
-          const grades = Array.from(res.grade);
-          return `puts ${Array.from({ length: Math.max(...grades) }, (_, g) => tb.ids.filter((_, i) => grades[i] === g + 1).join(" and ")).join(" above ")}`;
+      function drawDataSelectedReadout(mdl, state, rule, res, G, opt, fracMode) {
+        const ev = res.ev;
+        const capWords = G < mdl.n ? [`, ${T.atMost} `, count(G), ` ${G === 1 ? T.gradeWord : T.gradesWord}`] : [];
+        const head =
+          rule === "optimum"
+            ? [", ", tagNode(ctx, res, { key: "readout-optimum" })]
+            : rule === "pm-tiers"
+              ? [", ", count(G), ` ${T.rulePmTiers.toLowerCase()}`]
+              : [...capWords, `, ${ruleName(rule).charAt(0).toLowerCase()}${ruleName(rule).slice(1)}`];
+        const gap =
+          opt && rule !== "optimum"
+            ? (() => {
+                const same = Array.from(res.grade ?? res).every((g, i) => g === opt.grade[i]);
+                if (same) return [` It is ${T.sameReport}`];
+                const d = ev.risk - opt.risk;
+                if (Math.abs(d) <= opt.tieTol) return [` It has ${T.sameRisk}`];
+                return [` The exact optimum has risk `, ro("opt.risk", opt.risk, fracMode ? formatRational(opt.risk) : formatRisk(opt.risk)), "."];
+              })()
+            : [];
+        selectedReadout.replaceChildren(
+          "τ = ",
+          setting(state.tau),
+          ...head,
+          ": ",
+          ro("N", ev.N, formatCount(ev.N)),
+          ` ${T.of} `,
+          count(ev.M),
+          ` ${T.stated}, ${T.eWords} `,
+          ro("E", ev.Ew, fmtE(mdl, ev.Ew)),
+          `, ${T.riskWords} `,
+          ro("risk", ev.risk, fracMode ? formatRational(ev.risk) : formatRisk(ev.risk)),
+          ".",
+          ...gap,
+        );
+        labelLine.replaceChildren(...scopeParts(mdl, rule, res, G, "chosen"));
+      }
+
+      function drawLiveReadout(mdl, state, rule, results, G) {
+        const tiers = results["pm-tiers"];
+        const cuts = results["pm-cuts"];
+        const exact = results.optimum;
+        const selected = results[rule];
+        const capClause = G < mdl.n ? [" (at most ", count(G), G === 1 ? " grade)" : " grades)"] : [];
+        const shortName = rule === "er-cuts" ? "expected-rank cuts" : "mean-order cuts";
+
+        if (mdl.hasOptimum && exact) {
+          if (rule === "optimum") {
+            const scopePhrase =
+              state.opt === "all" || G >= mdl.n
+                ? ["the exact optimum across all ", count(exact.family.size), " reports"]
+                : ["the exact optimum across ", count(exact.family.size), " reports"];
+            ctx.readout.set([
+              "At τ = ",
+              setting(state.tau),
+              ", ",
+              ...scopePhrase,
+              " states ",
+              count(exact.ev.N),
+              " pairs at risk ",
+              risk3(exact.ev.risk),
+              "; fixed tiers state ",
+              count(tiers.ev.N),
+              " pairs at ",
+              risk3(tiers.ev.risk),
+              ".",
+            ]);
+            return;
+          }
+          if (rule === "pm-tiers") {
+            ctx.readout.set([
+              "At τ = ",
+              setting(state.tau),
+              " (",
+              count(G),
+              G === 1 ? " grade), " : " grades), ",
+              "fixed tiers state ",
+              count(tiers.ev.N),
+              " pairs at risk ",
+              risk3(tiers.ev.risk),
+              "; mean-order cuts state ",
+              count(cuts.ev.N),
+              " at ",
+              risk3(cuts.ev.risk),
+              " (exact ",
+              risk3(exact.ev.risk),
+              ").",
+            ]);
+            return;
+          }
+          const tied = Math.abs(selected.ev.risk - exact.ev.risk) <= CONFIG.tieTol;
+          if (tied) {
+            ctx.readout.set([
+              "At τ = ",
+              setting(state.tau),
+              ...capClause,
+              ", ",
+              shortName,
+              " state ",
+              count(selected.ev.N),
+              " pairs at risk ",
+              risk3(selected.ev.risk),
+              ", matching the exact optimum (",
+              count(exact.family.size),
+              " reports); fixed tiers state ",
+              count(tiers.ev.N),
+              " at ",
+              risk3(tiers.ev.risk),
+              ".",
+            ]);
+          } else {
+            ctx.readout.set([
+              "At τ = ",
+              setting(state.tau),
+              ...capClause,
+              ", ",
+              shortName,
+              " state ",
+              count(selected.ev.N),
+              " pairs at risk ",
+              risk3(selected.ev.risk),
+              " vs ",
+              risk3(exact.ev.risk),
+              " for the exact optimum (",
+              count(exact.family.size),
+              " reports); fixed tiers get ",
+              risk3(tiers.ev.risk),
+              ".",
+            ]);
+          }
+          return;
+        }
+
+        if (rule === "pm-tiers") {
+          ctx.readout.set([
+            "At τ = ",
+            setting(state.tau),
+            " (",
+            count(G),
+            G === 1 ? " grade), " : " grades), ",
+            "fixed tiers state ",
+            count(tiers.ev.N),
+            " pairs at risk ",
+            risk3(tiers.ev.risk),
+            "; optimizing mean-order boundaries states ",
+            count(cuts.ev.N),
+            " pairs at ",
+            risk3(cuts.ev.risk),
+            ".",
+          ]);
+        } else {
+          ctx.readout.set([
+            "At τ = ",
+            setting(state.tau),
+            ...capClause,
+            ", ",
+            shortName,
+            " (",
+            count(selected.family.size),
+            " contiguous reports) state ",
+            count(selected.ev.N),
+            " pairs at risk ",
+            risk3(selected.ev.risk),
+            "; fixed tiers state ",
+            count(tiers.ev.N),
+            " at ",
+            risk3(tiers.ev.risk),
+            ".",
+          ]);
+        }
+      }
+
+      function drawRiskLadder(mdl, state, rule, results, pal) {
+        riskLegendTau.replaceChildren("τ = ", setting(state.tau));
+
+        for (const [key, { numbers }] of ladderRows) {
+          const result = results[key];
+          if (result) {
+            numbers.replaceChildren(
+              "N ",
+              ro(`ladder-${key}-N`, result.ev.N, formatCount(result.ev.N)),
+              " · ",
+              ro(`ladder-${key}-risk`, result.ev.risk, formatReadoutRisk(result.ev.risk)),
+            );
+          } else {
+            numbers.replaceChildren("Not searched: ", count(mdl.n), " units");
+          }
+        }
+
+        const firstBarSlot = ladderRows.get(LADDER_RULES[0])?.barSlot;
+        const axisRect = riskAxisSlot.getBoundingClientRect?.() ?? { left: 0, width: 0 };
+        const barRect = firstBarSlot?.getBoundingClientRect?.() ?? { left: 0, width: 0 };
+        const axisWidth = Math.round(riskAxisSlot.clientWidth || axisRect.width || 0);
+        const width = axisWidth > 0 ? Math.max(220, axisWidth) : 420;
+        const narrow = width < 340;
+        const trackLeft =
+          barRect.width > 0 && axisRect.width > 0
+            ? Math.max(0, Math.round(barRect.left - axisRect.left))
+            : 28;
+        const barW =
+          barRect.width > 0
+            ? Math.max(60, Math.round(barRect.width))
+            : Math.max(60, width - trackLeft - 10);
+
+        const activeRisks = LADDER_RULES.flatMap((k) => (results[k] ? [results[k].ev.risk] : []));
+        const xMax = Math.max(0.05, Math.max(state.tau, ...activeRisks) * 1.06);
+        const barX = (v) => (Math.max(0, v) / xMax) * barW;
+        const ticks = linearTicks(0, xMax, narrow ? 4 : 5);
+        const svgNs = "http://www.w3.org/2000/svg";
+        const mkSvg = (tag, attrs = {}) => {
+          const node = ctx.doc.createElementNS(svgNs, tag);
+          for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v));
+          return node;
         };
-        const risk = raw => {
-          const fraction = formatRational(raw), decimal = formatRisk(raw);
-          return fraction.includes("/") ? [ctx.num(raw, fraction), " = ", ctx.num(raw, decimal)] : [ctx.num(raw, decimal)];
-        };
-        const ties = optimum.grades ?? [optimum.grade];
-        const tieText = ties.length > 1 ? [" Tied at ", ctx.num(optimum.risk, formatRisk(optimum.risk)), ": ",
-          ...ties.flatMap((grade, i) => [i ? "; " : "", ctx.num(Array.from(grade), formatGrades(Array.from(grade))),
-            " (N ", count(disclosure(Array.from(grade)).N), ")"]), "."] : [];
-        const cap = results.G < tb.n ? [", at most ", count(results.G), results.G === 1 ? " grade" : " grades"] : [];
-        ctx.readout.set(["At τ ", ctx.num(state.tau, formatSetting(state.tau)), ...cap, ": the best cut of ", names, " ", action(cut), " (risk ", ...risk(cut.ev.risk),
-          "); the best report ", ...(cap.length && state.opt === "all" ? ["of any grade count "] : []), action(optimum), " (", ...risk(optimum.ev.risk), ").", ...tieText,
-          ...(results.G === tb.n && bands.length === 1 && bands[0].to === CONFIG.tau.max ? [" The mean order misses above ", ctx.num(bands[0].from, formatSetting(bands[0].from)), "."] : [])]);
+
+        for (const [key, { barSlot }] of ladderRows) {
+          const res = results[key];
+          const chosen = key === rule;
+          const barSvg = mkSvg("svg", {
+            viewBox: `0 0 ${barW} 12`,
+            width: barW,
+            height: 12,
+            "aria-hidden": "true",
+          });
+          if (!res) {
+            barSvg.append(
+              mkSvg("rect", {
+                x: 0.5,
+                y: 1.5,
+                width: Math.max(1, barW - 1),
+                height: 9,
+                rx: 2,
+                fill: "none",
+                stroke: pal.cellBorder,
+                "stroke-dasharray": "3 3",
+              }),
+            );
+          } else {
+            const ev = res.ev;
+            const errW = barX(ev.Ew / ev.M);
+            const totW = barX(ev.risk);
+            barSvg.append(
+              mkSvg("rect", {
+                x: 0,
+                y: 1,
+                width: barW,
+                height: 10,
+                rx: 2,
+                fill: pal.plotGrid,
+                "fill-opacity": 0.35,
+              }),
+              mkSvg("rect", {
+                x: 0,
+                y: 1,
+                width: Math.max(0, errW).toFixed(2),
+                height: 10,
+                fill: pal.err,
+              }),
+              mkSvg("rect", {
+                x: errW.toFixed(2),
+                y: 1,
+                width: Math.max(0, totW - errW).toFixed(2),
+                height: 10,
+                fill: pal.wh,
+              }),
+            );
+            if (chosen) {
+              barSvg.append(
+                mkSvg("rect", {
+                  x: 0.5,
+                  y: 1,
+                  width: Math.max(1, totW - 0.5).toFixed(2),
+                  height: 10,
+                  fill: "none",
+                  stroke: pal.plotFg,
+                  "stroke-width": 1.4,
+                }),
+              );
+            }
+          }
+          const tauPx = barX(state.tau);
+          barSvg.append(
+            mkSvg("line", {
+              x1: tauPx.toFixed(2),
+              x2: tauPx.toFixed(2),
+              y1: 0,
+              y2: 12,
+              stroke: pal.plotAxis,
+              "stroke-width": 1.5,
+              "stroke-dasharray": "3 2",
+            }),
+          );
+          barSlot.replaceChildren(barSvg);
+        }
+
+        const tableRows = LADDER_RULES.filter((k) => Boolean(results[k])).map((k) => {
+          const ev = results[k].ev;
+          return {
+            rule: ladderNames[k],
+            N: ev.N,
+            errShare: ev.Ew / ev.M,
+            whShare: (state.tau * (ev.M - ev.N)) / ev.M,
+            risk: ev.risk,
+          };
+        });
+
+        svgScene(
+          riskAxisSlot,
+          {
+            width,
+            height: 38,
+            fontSize: 13,
+            alt: "Horizontal risk scale decomposing each rule's risk into expected wrong directions per pair and withholding cost per pair, compared against the all-withheld line at tau.",
+            table: {
+              caption: "Risk decomposition by rule",
+              columns: [
+                { label: "Rule", value: "rule" },
+                { label: "Pairs stated, N", value: "N", format: (v) => formatCount(v) },
+                { label: "Wrong share, E/M", value: "errShare", format: (v) => formatReadoutRisk(v) },
+                { label: "Withheld cost, τ(M − N)/M", value: "whShare", format: (v) => formatReadoutRisk(v) },
+                { label: "Risk", value: "risk", format: (v) => formatReadoutRisk(v) },
+              ],
+              rows: tableRows,
+            },
+          },
+          (scene) => {
+            const { h: s, palette: scPal } = scene;
+            scene.add(
+              s("line", {
+                x1: trackLeft,
+                x2: trackLeft + barW,
+                y1: 2,
+                y2: 2,
+                stroke: scPal.plotAxis,
+                strokeWidth: 1,
+              }),
+            );
+            for (const tk of ticks) {
+              const tx = trackLeft + barX(tk);
+              const anchor = tk === 0 ? "start" : tx > width - 16 ? "end" : "middle";
+              scene.add(
+                s("line", { x1: tx, x2: tx, y1: 2, y2: 6, stroke: scPal.plotAxis, strokeWidth: 1 }),
+                scene.numText(
+                  { x: tx, y: 18, textAnchor: anchor, fontSize: 13, fill: scPal.plotFg },
+                  tk,
+                  tickLabel(tk, 0, ticks),
+                ),
+              );
+            }
+            scene.add(
+              s("text", {
+                x: trackLeft + barW / 2,
+                y: 34,
+                textAnchor: "middle",
+                fontSize: 13,
+                fill: scPal.plotFg,
+                text: "Expected loss per pair (risk)",
+              }),
+            );
+          },
+        );
+      }
+
+      function drawHeroCard(mdl, rule, res) {
+        const grade = Array.from(res.grade);
+        const ev = res.ev;
+        heroHead.replaceChildren(
+          h("strong", { class: "prx-pt-hero-title", text: ladderNames[rule] }),
+          h(
+            "span",
+            { class: "prx-pt-hero-meta" },
+            count(ev.N),
+            " pairs stated · risk ",
+            risk3(ev.risk),
+          ),
+        );
+
+        const measured = Math.round(heroChartSlot.clientWidth || heroChartSlot.getBoundingClientRect?.().width || 0);
+        const width = measured > 0 ? Math.max(240, measured) : 420;
+        const narrow = width < 380;
+        const n = mdl.n;
+        const dense = n > CONFIG.league8;
+        const rowH = dense ? (narrow ? 4.8 : 8.0) : narrow ? 15.0 : 24;
+        const marginTop = narrow ? 6 : 10;
+        const marginBottom = 40;
+        const stripeW = 24;
+        const marginLeft = dense ? 36 : 68;
+        const marginRight = 16;
+        const innerH = Math.round(n * rowH);
+        const height = marginTop + innerH + marginBottom;
+        const innerW = Math.max(40, width - marginLeft - marginRight);
+
+        const orderIdx = Array.from({ length: n }, (_, i) => i).sort(
+          (a, b) =>
+            grade[a] - grade[b] ||
+            (rule === "er-cuts" ? mdl.er[a] - mdl.er[b] : mdl.means[b] - mdl.means[a]),
+        );
+
+        const bands = [];
+        orderIdx.forEach((unitIdx, pos) => {
+          const g = grade[unitIdx];
+          const prev = bands.at(-1);
+          if (prev && prev.grade === g) {
+            prev.last = pos;
+            prev.size += 1;
+          } else {
+            bands.push({ grade: g, first: pos, last: pos, size: 1 });
+          }
+        });
+
+        const loRaw = Math.min(...mdl.means.map((m, i) => m - mdl.sds[i]));
+        const hiRaw = Math.max(...mdl.means.map((m, i) => m + mdl.sds[i]));
+        const pad = (hiRaw - loRaw) * 0.06 || 0.1;
+        const lo = loRaw - pad;
+        const hi = hiRaw + pad;
+        const xOf = (v) => marginLeft + ((v - lo) / (hi - lo)) * innerW;
+        const yOfPos = (pos) => marginTop + ((pos + 0.5) / n) * innerH;
+        const ticks = linearTicks(lo, hi, narrow ? 4 : 5);
+
+        // PR-03 & WA-02: 17px rounded grade badge pills placed via placeDirectLabels and mapped strictly by item.id
+        const placed = placeDirectLabels(
+          bands.map((b) => ({
+            id: String(b.grade),
+            y: (yOfPos(b.first) + yOfPos(b.last)) / 2,
+            height: 17,
+          })),
+          { minGapPx: 18, minY: marginTop + 9, maxY: marginTop + innerH - 9 },
+        );
+        const placedById = new Map(placed.map((p) => [p.id, p]));
+
+        const G_used = Math.max(...grade);
+        const tableRows = orderIdx.map((i) => ({
+          id: mdl.ids[i],
+          grade: grade[i],
+          mean: mdl.means[i],
+          sd: mdl.sds[i],
+          er: mdl.er[i],
+        }));
+
+        svgScene(
+          heroChartSlot,
+          {
+            width,
+            height,
+            fontSize: 13,
+            alt: `Grade report card for ${ruleName(rule)}: ${n} units grouped into ${G_used} ${G_used === 1 ? "grade" : "grades"} by posterior mean ± 1 SD.`,
+            table: {
+              caption: "Selected rule unit grades and posterior summaries",
+              columns: [
+                { label: "Unit", value: "id" },
+                { label: "Grade", value: "grade", format: (v) => formatCount(v) },
+                { label: "Posterior mean", value: "mean", format: (v) => formatReadoutEst(v) },
+                { label: "Posterior SD", value: "sd", format: (v) => formatReadoutEst(v) },
+                { label: "Expected rank", value: "er", format: (v) => formatReadoutEst(v) },
+              ],
+              rows: tableRows,
+            },
+          },
+          (scene) => {
+            const { h: s, palette: pal } = scene;
+            const colors = gradeColors(G_used, pal);
+            const yAxisBottom = marginTop + innerH;
+
+            // Alternating grade-band backdrop + cut boundary lines
+            for (const b of bands) {
+              const y1 = marginTop + (b.first / n) * innerH;
+              const y2 = marginTop + ((b.last + 1) / n) * innerH;
+              if (b.grade % 2 === 1) {
+                scene.add(
+                  s("rect", {
+                    x: marginLeft,
+                    y: y1,
+                    width: innerW,
+                    height: Math.max(1, y2 - y1),
+                    fill: pal.plotGrid,
+                    fillOpacity: 0.35,
+                  }),
+                );
+              }
+              if (b.first > 0) {
+                scene.add(
+                  s("line", {
+                    x1: marginLeft,
+                    x2: marginLeft + innerW,
+                    y1,
+                    y2: y1,
+                    stroke: pal.plotMuted,
+                    strokeWidth: 1,
+                    strokeDasharray: "4 3",
+                  }),
+                );
+              }
+              scene.add(
+                s("rect", {
+                  x: 4,
+                  y: y1 + 0.5,
+                  width: stripeW,
+                  height: Math.max(2, y2 - y1 - 1),
+                  rx: 2,
+                  fill: colors[b.grade - 1],
+                }),
+              );
+            }
+
+            // Vertical x-grid & ticks
+            for (const tk of ticks) {
+              const tx = xOf(tk);
+              scene.add(
+                s("line", { x1: tx, x2: tx, y1: marginTop, y2: yAxisBottom, stroke: pal.plotGrid, strokeWidth: 1 }),
+                s("line", { x1: tx, x2: tx, y1: yAxisBottom, y2: yAxisBottom + 4, stroke: pal.plotAxis, strokeWidth: 1 }),
+                scene.numText(
+                  { x: tx, y: yAxisBottom + 16, textAnchor: "middle", fontSize: 13, fill: pal.plotFg },
+                  tk,
+                  tickLabel(tk, 0, ticks),
+                ),
+              );
+            }
+            scene.add(
+              s("line", { x1: marginLeft, x2: marginLeft + innerW, y1: yAxisBottom, y2: yAxisBottom, stroke: pal.plotAxis, strokeWidth: 1 }),
+              s("text", {
+                x: marginLeft + innerW / 2,
+                y: yAxisBottom + 35,
+                textAnchor: "middle",
+                fontSize: 13,
+                fill: pal.plotFg,
+                text: "Posterior mean (± one SD)",
+              }),
+            );
+
+            // Unit intervals & dots (+ unit labels when n <= 8)
+            orderIdx.forEach((unitIdx, pos) => {
+              const g = grade[unitIdx];
+              const col = colors[g - 1];
+              const ym = yOfPos(pos);
+              const x1 = xOf(mdl.means[unitIdx] - mdl.sds[unitIdx]);
+              const x2 = xOf(mdl.means[unitIdx] + mdl.sds[unitIdx]);
+              const xm = xOf(mdl.means[unitIdx]);
+
+              scene.add(
+                s("line", {
+                  x1,
+                  x2,
+                  y1: ym,
+                  y2: ym,
+                  stroke: col,
+                  strokeWidth: dense ? 1.6 : 2.1,
+                  strokeOpacity: 0.8,
+                }),
+                s("circle", {
+                  cx: xm,
+                  cy: ym,
+                  r: dense ? 2.6 : 4,
+                  fill: col,
+                  stroke: pal.plotBg,
+                  strokeWidth: 0.9,
+                }),
+              );
+
+              if (!dense) {
+                scene.add(
+                  s("text", {
+                    x: marginLeft - 6,
+                    y: ym + 4.5,
+                    textAnchor: "end",
+                    fontSize: 13,
+                    fill: pal.plotFg,
+                    text: mdl.ids[unitIdx],
+                  }),
+                );
+              }
+            });
+
+            // PR-03 rounded badge pills on top of thin stripes
+            for (const b of bands) {
+              const py = placedById.get(String(b.grade))?.y ?? (yOfPos(b.first) + yOfPos(b.last)) / 2;
+              const fillCol = colors[b.grade - 1];
+              scene.add(
+                s("rect", {
+                  x: 4,
+                  y: py - 8.5,
+                  width: stripeW,
+                  height: 17,
+                  rx: 3,
+                  fill: fillCol,
+                  stroke: pal.plotBg,
+                  strokeWidth: 1,
+                }),
+                scene.numText(
+                  {
+                    x: 4 + stripeW / 2,
+                    y: py + 4.5,
+                    textAnchor: "middle",
+                    fontSize: 13,
+                    fontWeight: "700",
+                    fill: labelOn(fillCol, pal),
+                  },
+                  b.grade,
+                  formatCount(b.grade),
+                ),
+              );
+            }
+          },
+        );
+      }
+
+      function captionFor(mdl) {
+        const seed = () => ctx.num(LEAGUE_SEED, formatSetting(LEAGUE_SEED));
+        const sd = () => ctx.num(CONFIG.priorSd, formatSetting(CONFIG.priorSd));
+        if (mdl.key === "league" || mdl.key === "league8") {
+          return [...fill(mdl.key === "league" ? T.noteLeague : T.noteLeague8, { seed: seed(), sd: sd() }), " (", captionNode(ctx, "teaching-posterior"), ")."];
+        }
+        return [T.noteThirty];
       }
 
       return {
         render(state, info = {}) {
+          // PR-06 / PR-09: disclosure toggle never re-renders stage or re-fires aria-live readout
+          if (info?.reason === "disclosure") return;
+
           ctx.root.setAttribute("aria-busy", "true");
           try {
-            const mdl = MODELS[state.data] ?? MODELS[defaultData];
-            if (lawView && ["pm-cuts", "er-cuts"].includes(state.rule)) {
-              const ruleChanged = info.changed?.includes("rule") && !info.changed?.includes("order");
-              const wantedOrder = ruleChanged ? (state.rule === "er-cuts" ? "rank" : "mean") : state.order;
-              const wantedRule = wantedOrder === "rank" ? "er-cuts" : "pm-cuts";
-              if (state.order !== wantedOrder || state.rule !== wantedRule) { ctx.set({ order: wantedOrder, rule: wantedRule }); return; }
-            }
-            orderControl?.set(state.order);
+            const mdl = MODELS[state.data] ?? MODELS.league8;
             const rule = state.rule === "optimum" && !mdl.hasOptimum ? CONFIG.rule : state.rule;
             const results = compute(mdl, state);
             const G = results.G;
+
             dataSelect.set(mdl.key);
             ruleRadio.set(rule);
-            ruleRadio.inputs[rowsOrder.indexOf("optimum")].disabled = !mdl.hasOptimum;
+            ruleRadio.inputs[LADDER_RULES.indexOf("optimum")].disabled = !mdl.hasOptimum;
             capRadio.set(G);
-            capRadio.inputs.forEach((input, k) => { input.disabled = capValues[k] > mdl.n; });
+            capRadio.inputs.forEach((input, k) => {
+              input.disabled = capValues[k] > mdl.n;
+            });
             optRadio.set(state.opt);
             optRadio.setDisabled(!mdl.hasOptimum || G >= mdl.n);
             tau.set(state.tau);
 
             const shownRules = RULES.filter((r) => r !== "optimum" || mdl.hasOptimum);
-            const fracMode = mdl.fraction && fracOK([...shownRules.map((r) => results[r].ev.risk), ...TB19.reports.map((g) => evaluateReport(g, mdl.E, { tau: state.tau }).risk)]);
+            const fracMode = mdl.fraction && fracOK(shownRules.map((r) => results[r].ev.risk));
             const pal = palette(ctx.root);
             const opt = results.optimum;
+
+            drawLiveReadout(mdl, state, rule, results, G);
+            drawRiskLadder(mdl, state, rule, results, pal);
+            drawHeroCard(mdl, rule, results[rule]);
+
             const rows = shownRules.map((r) => drawRow(mdl, r, results[r], opt, G, r === rule, pal, fracMode));
-            const isLaw = mdl.key === "tb19";
-            if (isLaw) {
-              lawRows.replaceChildren(...rows);
-              drawNotes(mdl, lawNotes);
-              drawLaw(state, results, fracMode);
-              drawLawExtras(state, results);
-              const bands = drawTauComparison(state, G, results);
-              drawLawReadout(state, results, bands);
-              drawMini(Array.from(results[rule].grade), CONFIG.tieTol);
-            } else {
-              compareRows.replaceChildren(...rows);
-              drawNotes(mdl, compareNotes);
-              drawOrders(mdl);
-              drawGuarantees();
-              drawLadder(mdl, state, results, G);
-              hero.replaceChildren(h("strong", {}, ruleName(rule)), createRuleCardRenderer(ctx).chips(mdl, Array.from(results[rule].grade), pal),
-                h("p", { class: "prx-pt-note" }, "Current report: ", count(results[rule].ev.N), " pairs stated; risk ", ctx.num(results[rule].ev.risk, formatRisk(results[rule].ev.risk)), "; ", ...scopeParts(mdl, rule, results[rule], G, "preview")));
-            }
-            drawReadout(mdl, state, rule, results[rule], G, opt, fracMode, results);
+            compareRows.replaceChildren(...rows);
+            drawOrders(mdl);
+            drawDataSelectedReadout(mdl, state, rule, results[rule], G, opt, fracMode);
+            drawMethodNotes(mdl);
             ctx.caption.replaceChildren(...captionFor(mdl));
           } finally {
             ctx.root.removeAttribute("aria-busy");
           }
         },
       };
-
-      function captionFor(mdl) {
-        const seed = () => ctx.num(LEAGUE.facts.seed, formatSetting(LEAGUE.facts.seed));
-        const sd = () => ctx.num(CONFIG.priorSd, formatSetting(CONFIG.priorSd));
-        if (mdl.key === "league" || mdl.key === "league8") {
-          return [...fill(mdl.key === "league" ? T.noteLeague : T.noteLeague8, { seed: seed(), sd: sd() }), " (", captionNode(ctx, "teaching-posterior"), ")."];
-        }
-        return [mdl.key === "tb19" ? T.noteTb19 : T.noteThirty];
-      }
     },
   });
-}
-
-
-/** Parameterized retained v1 cards, including complete equal-risk scope. */
-export function createRuleCardRenderer(ctx) {
-  const { h } = ctx, T = CONFIG.text;
-  const count = x => ctx.num(x, formatCount(x));
-  const ro = (name, raw, display) => { const node = ctx.num(raw, display); node.setAttribute("data-prx-readout", name); return node; };
-  const listUnits = ids => ids.flatMap((id,k) => [k ? ", " : "", h("span", { "data-prx-name": "" }, id)]);
-  const fmtE = (m,x) => m.fraction ? formatRational(x) : formatExpectedCount(x);
-  const ruleName = r => ({ "pm-tiers": T.rulePmTiers, "pm-cuts": T.rulePmCuts, "er-cuts": T.ruleErCuts, optimum: T.ruleOptimum })[r];
-  const orderOf = (m,r) => r === "er-cuts" ? m.erOrder : m.pmOrder;
-      // the scope of a result: tiers carry the caption, cuts the order label, the optimum the exact label
-      function scopeParts(mdl, r, res, G, resultKey) {
-        if (r === "pm-tiers") return [captionNode(ctx, "fixed-tiers")];
-        if (r === "optimum") return [labelNode(ctx, res, { key: resultKey }), " (", familySizeNode(ctx, res), ` ${T.reports}, ${T.everyOne})`];
-        const words = r === "er-cuts" ? T.orderEr : T.orderPm;
-        const cap = G < mdl.n ? [` ${T.withAtMost} `, count(G), ` ${G === 1 ? T.gradeWord : T.gradesWord}`] : [];
-        return [labelNode(ctx, res, { key: resultKey }), ` ${T.cutsIn} `, familyNameNode(ctx, res), ` (${words}; `, familySizeNode(ctx, res), ` ${T.contiguous}`, ...cap, "). ",
-          h("span", { "data-prx-score-ties": "" }, T.scoreTiePolicy)];
-      }
-
-      function chips(mdl, grade, pal) {
-        const G = Math.max(...grade);
-        const colors = gradeColors(G, pal);
-        const out = [];
-        for (let g = 1; g <= G; g += 1) {
-          const members = mdl.ids.filter((_, i) => grade[i] === g);
-          const body = mdl.n <= CONFIG.league8
-            ? listUnits(members)
-            : [count(members.length), ` ${members.length === 1 ? T.unitWord : T.unitsWord}`];
-          out.push(h("span", { class: "prx-pt-block", style: { background: colors[g - 1], color: labelOn(colors[g - 1], pal) } },
-            h("span", { class: "prx-pt-block-grade" }, count(g)), h("span", { class: "prx-pt-block-units" }, ...body)));
-        }
-        return h("span", { class: "prx-pt-blocks", "aria-hidden": mdl.n <= CONFIG.league8 ? null : "true" }, ...out);
-      }
-
-      function orderLine(mdl, r) {
-        if (r === "optimum") return null;
-        const long = r === "er-cuts" ? T.orderErLong : T.orderPmLong;
-        const body = mdl.n <= CONFIG.league8 ? [": ", ...listUnits(orderOf(mdl, r).map((i) => mdl.ids[i]))] : [];
-        return h("p", { class: "prx-pt-row-order" }, `${T.orderWord} (${long})`, ...body);
-      }
-
-      function gapLine(mdl, r, res, opt, fracMode) {
-        if (!opt || r === "optimum") return null;
-        const same = Array.from(res.grade).every((g, i) => g === opt.grade[i]);
-        const gap = same ? 0 : res.ev.risk - opt.risk;
-        const tie = !same && Math.abs(gap) <= opt.tieTol;
-        const shown = same || tie ? 0 : gap;
-        const display = shown === 0 ? formatCount(0) : fracMode && rationalApprox(shown, { maxDenominator: CONFIG.maxDenominator }) ? `+${formatRational(shown)}` : formatSigned(shown, { digits: 4 });
-        const parts = [`${T.gapWords} `, ro(`${r}.gap`, shown, display)];
-        if (same) parts.push(`, ${T.sameReport}`);
-        else if (tie) parts.push(`, ${T.sameRisk}`);
-        else parts.push(".");
-        if (res.ev.N !== opt.ev.N) {
-          if (parts.at(-1) === ".") parts.pop();
-          parts.push("; ", captionNode(ctx, "different-disclosure"), ".");
-        }
-        return h("p", { class: "prx-pt-row-gap" }, ...parts);
-      }
-
-      function tieLine(mdl, res) {
-        if (!res.label) return null;
-        const total = Number(res.tieCount ?? 1), grades = res.grades ?? [res.grade];
-        if (total <= 1) return null;
-        return h("p", { class: "prx-pt-note", "data-prx-ties": "" }, count(total), " reports share the smallest risk; the read-outs show the first. Equal-risk tolerance ",
-          ctx.num(res.tieTol ?? CONFIG.tieTol, "1e−12"), " (", ctx.num(res.tieTol ?? CONFIG.tieTol, "10⁻¹²"), "). ",
-          ...grades.flatMap((g, i) => [i ? "; " : "", ctx.num(Array.from(g), formatGrades(Array.from(g))), ": N = ", count(disclosure(Array.from(g)).N)]),
-          grades.length < total ? ["; ", count(total - grades.length), " more equal-risk reports"] : []);
-      }
-      function drawRow(mdl, r, res, opt, G, chosen, pal, fracMode) {
-        const ev = res.ev;
-        const grade = Array.from(res.grade ?? res);
-        const riskText = fracMode ? formatRational(ev.risk) : formatRisk(ev.risk);
-        const nums = h("p", { class: "prx-pt-row-nums" },
-          `${T.riskShort} `, ro(`${r}.risk`, ev.risk, riskText), " · ",
-          ro(`${r}.N`, ev.N, formatCount(ev.N)), ` ${T.of} `, count(ev.M), ` ${T.stated} · E `, ro(`${r}.E`, ev.Ew, fmtE(mdl, ev.Ew)), " · ",
-          ro(`${r}.sizes`, disclosure(grade).sizes, formatSizes(disclosure(grade).sizes)),
-          mdl.n <= CONFIG.league8 ? [" · ", ro(`${r}.grades`, grade, formatGrades(grade))] : []);
-        const head = h("p", { class: "prx-pt-row-head" }, ruleName(r), chosen ? h("span", { class: "prx-pt-row-tag", text: ` · ${T.shown}` }) : null);
-        return h("li", { class: `prx-pt-row prx-light-panel${chosen ? " prx-pt-row-chosen" : ""}`, "data-prx-row": r, "data-prx-result-scope": "" },
-          head, orderLine(mdl, r), chips(mdl, grade, pal), nums,
-          h("p", { class: "prx-pt-row-label" }, ...scopeParts(mdl, r, res, G, r)), tieLine(mdl, res), gapLine(mdl, r, res, opt, fracMode));
-      }
-
-
-  return { scopeParts, drawRow, chips, gapLine };
 }

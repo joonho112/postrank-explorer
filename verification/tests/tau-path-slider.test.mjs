@@ -71,12 +71,14 @@ test("2.5: keyboard steps on a grid anchored at 0; the low-cost zoom has its own
   app.destroy();
 });
 
-test("2.5: at a tie of the smallest risk the read-out says so where it names the report", async () => {
+test("2.5: at a tie of the smallest risk the read-out says so where it names the report (3-sig-fig τ in readout, exact on slider)", async () => {
   const { el } = mountAt("?preset=bend");
   const { mountWidget } = await import(`${ROOT}js/apps/tau-path.js`);
   const app = mountWidget(el);
+  assert.equal(el.querySelector(".prx-widget").getAttribute("data-prx-frame"), "v2");
+  assert.equal(shownValue(el), ".14442218");
   const ro = el.querySelector(".prx-readout");
-  assert.match(ro.textContent, /^At τ = \.14442218, \{A, B\} > \{C, D\} > \{E, F\} \(one of 2 equal-risk best reports; showing the first\) states 12 of 15 pairs/);
+  assert.match(ro.textContent, /^At τ = \.144, \{A, B\} > \{C, D\} > \{E, F\} \(one of 2 equal-risk best reports; showing the first\) states 12 of 15 pairs/);
   assert.equal(ro.querySelector(".prx-result-ties .prx-num").getAttribute("data-num"), "2");
   app.applyPreset("overview");
   assert.equal(ro.querySelector(".prx-result-ties"), null, "no tie, no qualifier");
@@ -85,6 +87,6 @@ test("2.5: at a tie of the smallest risk the read-out says so where it names the
   assert.equal(box.open, false);
   assert.equal(box.querySelectorAll("tbody tr").length, 6);
   assert.equal(box.querySelectorAll(".prx-tp-changes li").length, 5);
-  assert.ok(el.querySelector(".prx-tp-endpoint") && !el.querySelector(".prx-tp-endpoint").closest("details"), "endpoint example stays visible");
+  assert.ok(el.querySelector('details[data-prx-disclosure="method"] .prx-tp-endpoint'), "endpoint example preserved in Method disclosure");
   app.destroy();
 });

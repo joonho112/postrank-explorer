@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,39 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
 
-  <script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
     }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
+  }, {once: true});
+})();
 </script>
+
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
-<link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/interval-overlap.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Marginal interval overlap and direction probabilities – postrank Explorer">
+<meta property="og:description" content="Pairwise direction probabilities associated with overlapping marginal credible intervals.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/interval-overlap.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/interval-overlap.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +626,7 @@ window.Quarto = {
 </header>
 
 
-<p>Marginal credible intervals can overlap even when the posterior strongly favors one direction. For independent normal posteriors with the same standard deviation, the difference A − B has standard deviation <span class="math inline"><math><msqrt><mn>2</mn></msqrt></math></span> times the common posterior SD. The two marginal SDs sum to 2 times the common SD. The upper figure shows the intervals and where they overlap. The lower figure shows the distribution of A − B, from which we calculate the direction probability.</p>
+<p>Two marginal credible intervals can overlap substantially while the posterior of A − B strongly favors one unit having the larger true value.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -637,21 +635,17 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Just touch, 90%.</strong> The intervals meet at 1.645, and the posterior means are 3.290 posterior SDs apart. The difference has SD 1.414. The gap in means is 2.326 of those SDs, giving A a probability of .990 of having the larger true value.</li>
-<li><strong>Just touch, 95%.</strong> Wider intervals touch only farther apart, at 3.920 posterior SDs, so touching 95% intervals correspond to direction probability .997.</li>
-<li><strong>Means 2 SDs apart.</strong> The intervals overlap by 1.290 posterior SDs, and the chance that A’s true value is larger is still .921.</li>
-<li><strong>Means 1 SD apart.</strong> An overlap of 2.290 posterior SDs corresponds to direction probability .760.</li>
+<li><strong>Just touch, 90%.</strong> Intervals meet at 1.64 (means 3.29 SDs apart); with A − B SD 1.41 (2.33 difference SDs), Pr(A &gt; B) = .990.</li>
+<li><strong>Just touch, 95%.</strong> Wider intervals touch at 3.92 SDs apart, giving Pr(A &gt; B) = .997.</li>
+<li><strong>Means 2 SDs apart.</strong> Overlap 1.29 SDs, yet Pr(A &gt; B) = .921.</li>
+<li><strong>Means 1 SD apart.</strong> Overlap 2.29 SDs, giving Pr(A &gt; B) = .760.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>When two 90% intervals just touch, A is very probably the higher, .990, for two independent normal posteriors with equal SDs (.997 for 95% intervals). With unequal SDs the distance at which the intervals touch and the SD of the difference change, and the probability with them. Kline, Rose and Walters (2024, section IV.C and Figure 3) draw a credible interval beside each first name and use pairwise posterior probabilities to assign the grades.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Unequal standard deviations and source note
+</summary>
+<p>When two 90% intervals just touch, A is very probably the higher (.990 for independent normal posteriors with equal SDs; .997 for 95% intervals). With unequal SDs the touching distance and the SD of the difference change, and the probability changes with them. Kline, Rose and Walters (2024, section IV.C and Figure 3) draw a credible interval beside each name and assign grades from pairwise posterior probabilities.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -671,8 +665,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Standalone: <a href="../../embed/interval-overlap.html">embed/interval-overlap.html</a>, for example <code>?gap=3.25</code> or <code>?preset=touch95&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/overlap-in-the-league.html">Interval overlap across 435 pairs</a> (1.12) sorts all 435 pairs of a league by overlap and direction; <a href="../../pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a> (1.8) computes this probability for any two means and SDs, and <a href="../../pages/uncertainty/pairwise-matrix.html">The matrix of pairwise posterior probabilities</a> (1.13) shows it for every pair of a league.</p>
+<p>Standalone: <a href="../../embed/interval-overlap.html">embed/interval-overlap.html</a> (<code>?gap=3.25</code> or <code>?preset=touch95&amp;theme=dark</code>). Related: <a href="../../pages/uncertainty/overlap-in-the-league.html">435 pairs</a> (1.12) · <a href="../../pages/uncertainty/two-units.html">Two units</a> (1.8) · <a href="../../pages/uncertainty/pairwise-matrix.html">Pairwise matrix</a> (1.13).</p>
 
 
 </section>
@@ -1145,7 +1138,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

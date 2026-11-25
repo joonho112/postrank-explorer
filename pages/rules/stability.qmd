@@ -1,6 +1,6 @@
 ---
 title: "Report stability under repeated measurement"
-subtitle: "3.12 · after the postrank theory book, ch. 17, repeated-data stability"
+subtitle: "3.12 · after the postrank theory book, ch. 23, repeated-data stability"
 description: "How new measurements of the same units change the directions a report states."
 ---
 
@@ -14,26 +14,23 @@ A new set of measurements can change which units a report ranks above others, ev
 <script>window.__prxApp = PRX["stability"].mountWidget(document.getElementById("app"));</script>
 ```
 
-For each pair of measurements, we count comparisons that become stated, become withheld or reverse direction.
-We report these changes alongside the number of pairs stated and each report's expected errors. A rule that
-withholds every pair is perfectly stable by this measure, but provides no directions. The simulation holds the
-true values and standard errors fixed and calculates a fresh posterior for each dataset under the same prior.
-
 ## Numerical illustrations {#what-to-try}
 
-- **Optimal cuts.** The first observation states 251 pairs. The second report and relation-change grid show that the criterion is the same, but the measurements and fitted posterior summaries change. The pair control selects a repeated-measurement experiment.
-- **Estimate tiers.** The first report states 300 pairs. The fixed tier sizes keep disclosure constant here, even when different units occupy those grades. The comparison table separates disclosure from the fraction of changed relations.
-- **Prior SD .05.** The same measurements are reused with a narrower assumed prior. We recalculate the posterior means, probabilities and optimal cuts under this narrower prior. The true values stay fixed.
-- **Withhold every pair.** Every relation stays withheld. The claimed error fraction reads NA: no disclosure. Its stability is no evidence that the report is informative.
-- **τ .05.** A lower price makes withholding cheaper. The histogram and disclosure column describe repeated-data stability, separately from reporting risk.
+- **Optimal cuts.** Observation A states 251 pairs; open **Data, paired measurements and repeat distribution** for both refitted reports, the pair-change matrix and the replay histogram.
+- **Estimate tiers.** Fixed three-tier sizes hold disclosure at 300 pairs in both datasets while units trade grades.
+- **Prior SD .05.** A narrower assumed prior (.05) shrinks posterior means and lowers relation turnover on the same fixed truth.
+- **Withhold every pair.** Pooled E/N reads NA: no disclosure—zero turnover only because no direction is stated.
+- **τ .05.** Lowering τ to .05 prices withholding more cheaply, reducing both disclosure and relation changes.
 
-::: {.callout-note appearance="simple"}
-We draw independent normal measurement errors for the same units, true values and SEs. Each report's error
-fraction uses the posterior from its own measurements. The pooled fraction adds the two expected wrong counts
-and divides by their total disclosure. The optimal-cut rule searches boundaries within the posterior-mean order
-for each dataset.
-:::
+<details>
+<summary>Repeated-measurement design and notes</summary>
+
+For each pair of measurements, we count comparisons that become stated, become withheld or reverse direction alongside the share of pairs stated and each report's expected errors. The simulation holds the thirty true values and known standard errors fixed, draws two independent normal measurement-error vectors per pair, and computes a fresh normal posterior for each dataset under the chosen prior. Pooled claimed E/N sums expected wrong counts across both observations and divides by their total stated pairs; optimal cuts search contiguous boundaries within each dataset's posterior-mean order.
+
+</details>
 
 Standalone: [stability](../../embed/stability.html), for example `?preset=cuts&pair=2`.
 
 Related applications: [Fixed quantile tiers](fixed-tiers.qmd), [Tiers and optimized cuts of posterior rankings](posterior-tiers.qmd), [Averaging error shares across reports](../grades/averaging-errors.qmd).
+
+Theory book · [Benchmarks for selection, classification, and stability](https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-selection-benchmarks).

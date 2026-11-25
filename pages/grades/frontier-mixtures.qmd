@@ -1,10 +1,10 @@
 ---
 title: "Mixtures of frontier reports"
-subtitle: "2.11 · after the postrank theory book, ch. 16 and 19"
+subtitle: "2.11 · after the postrank theory book, ch. 22 and 25"
 description: "Randomization over complete reports at a specified mean disclosure."
 ---
 
-A lottery between two complete grade reports can achieve an expected number of stated pairs between the counts of those reports. The diamond gives the mixture's expected wrong count at that level of disclosure. The square gives the smallest expected wrong count among single reports with the same number of stated pairs, when one exists. Every realized report remains coherent because the lottery selects a complete grade assignment. The examples compare how much the lottery can accomplish in unrestricted and restricted families.
+Randomizing between two frontier corner reports achieves any intermediate mean number of stated pairs along $H(m)$, often with far fewer expected wrong directions than any single report at that disclosure.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,22 +16,18 @@ A lottery between two complete grade reports can achieve an expected number of s
 
 ## Numerical illustrations {#what-to-try}
 
-- **Six sites, mean 10.** The mixture selects the report stating 12 pairs with probability .50 and the report stating 8 pairs otherwise.
-  The average error count is .01714. No single report states exactly this many pairs. The diamond is an average over the two reports.
-- **Six sites, mean 9.** The more-disclosing report now has chance .25. The mixture expects .01332 wrong directions;
-  the best single report at this disclosure expects .1597, a gap of .1464. The square and diamond share the same horizontal coordinate.
-- **Six sites, mean 12.** The selected point is a corner with .02477 expected wrong directions: no mixture is needed.
-  Moving the mean-disclosure slider changes the lottery, while moving the withholding cost changes the supporting
-  line and its best report.
-- **Four units, mean 4.** With two criteria, the quantities are expected **weighted** wrong directions. The mixture
-  has 19/40 against the best single report's 7/10, a gap of 9/40. Its two complete reports each have chance 1/2.
-- **At most 3 grades, mean 9.** The family has 603 reports and ends at 12 stated pairs. The unrestricted endpoint
-  conclusion is **not guaranteed for this family**. The fixed-order example in the box on the endpoint at $\tau = 1/2$ gives a different
-  reason that a restricted family can miss the unrestricted endpoint.
+- **Six sites, mean 10.** Mixing the 12-pair report (chance .50) and the 8-pair report yields .0171 expected wrong directions; no single report states this count.
+- **Six sites, mean 9.** Giving the upper report chance .25 yields .0133 expected wrong directions versus .160 for the best single report, a gap of .146.
+- **Six sites, mean 12.** At a frontier corner (.0248 expected wrong directions), no mixture is needed.
+- **Four units, mean 4.** Mixing the two endpoint reports with chance 1/2 gives 19/40 expected weighted wrong directions against 7/10 for the best single report (gap 9/40).
+- **At most 3 grades, mean 9.** The capped family of 603 reports ends at 12 stated pairs, so the half-cost endpoint is **not guaranteed for this family**.
 
-::: {.callout-note appearance="simple"}
-The half-cost endpoint requires the full report family and no latent ties on positive-weight criteria. The small fixed-order figure shows the boundary for that order. The six sites and the finite laws use posteriors specified for the examples.
-:::
+<details>
+<summary>Endpoint conditions and notes</summary>
+
+The half-cost endpoint requires the full report family and no latent ties on positive-weight criteria. In the endpoint disclosure, the fixed-order example shows a different restriction whose boundary misses the full ranking at $\tau = 1/2$. The six sites and the finite laws use posteriors specified for the examples.
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -47,3 +43,5 @@ Standalone: [embed/frontier-mixtures.html](../../embed/frontier-mixtures.html), 
 
 Related applications: [The error–disclosure frontier](frontier.qmd) · [Reporting risk and withholding cost](price-of-silence.qmd) ·
 [Alternative rankings from a posterior distribution](../uncertainty/which-ranking.qmd).
+
+Theory book · [Comparing reports at matched disclosure](https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier) · [Common grades under an exact joint target law](https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-exact-common-grade).

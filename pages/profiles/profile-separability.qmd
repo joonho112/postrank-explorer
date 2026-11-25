@@ -28,17 +28,17 @@ even when outcomes are independent.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Dependent domains, separate choices.** Coincident reversals give a feasible product of all nine cards.
+- **Separate choices.** Coincident reversals give a feasible product of all nine cards.
   Both domains prefer A ahead, with total risk 1/10, even though their targets are dependent.
-- **Different dependence, same minimum.** Disjoint reversals leave each domain's distribution and weighted
+- **Same minimum.** Disjoint reversals leave each domain's distribution and weighted
   losses unchanged. With the joint cap disabled, stating A ahead in both domains still gives the unique
   optimum at risk 1/10.
-- **Zero loss weight in S.** All three S columns have the same weighted loss, and C still favors A ahead.
+- **Zero S weight.** All three S columns have the same weighted loss, and C still favors A ahead.
   The three resulting cards tie at risk 1/10. Their unweighted losses in S differ.
-- **Independent domains with a joint guard.** The feasible family has three cards and fails the product condition.
+- **Independent, cap.** With independent domains under the joint guard, the feasible family has three cards and fails the product condition.
   The two domain minima sum to 1/10, but the card that combines them has joint-event probability 19/100,
   above the cap 3/20. The two feasible optima each state a direction in one domain, at risk 7/40.
-- **Joint guard with coincident failures.** Four feasible cards form a product of two columns per domain.
+- **Coincident, cap.** Under the joint guard with coincident failures, four feasible cards form a product of two columns per domain.
   The best card states A ahead in both domains. Its risk and joint-event probability are both 1/10.
 
 With independent reversals, zero S weight, and an active cap, a feasible card still reaches the lower bound
@@ -65,11 +65,11 @@ result$summary
 
 Source: [postrank multidomain decisions](https://joonho112.github.io/postrank/articles/mdomain-decisions.html).
 
+```{=html}
+</details>
+```
+
 Standalone: [open this app](../../embed/profile-separability.html), for example `?preset=independent-joint&theme=dark`.
 
 Related applications: [Common or profile?](profile-common-vs-domain.qmd) and
 [Error overlap](profile-dependence.qmd).
-
-```{=html}
-</details>
-```

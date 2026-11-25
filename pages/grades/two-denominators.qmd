@@ -4,7 +4,7 @@ subtitle: "2.14 · after Kline, Rose and Walters (2024), Section II and slides 2
 description: "Relation between expected errors per possible pair and expected errors per stated pair."
 ---
 
-The same report can have a low expected error rate over all possible pairs and a much higher rate among the directions it states. Both rates use the same expected wrong count E. KRW's discordance rate, DR, divides E by all M unordered pairs, and $E/N$ divides it by the N stated pairs. For positive N, $\mathrm{DR}=(N/M)\times E/N$, where N/M is the fraction of pairs the report states. We compare the two rates for a synthetic report and KRW's archived race card.
+Both error rates divide the same expected wrong count $E$ by different pair totals: KRW's discordance rate $\mathrm{DR} = E/M$ uses all $M$ pairs, while $E/N$ uses the $N$ stated pairs.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,15 +16,16 @@ The same report can have a low expected error rate over all possible pairs and a
 
 ## Numerical illustrations {#what-to-try}
 
-- **τ .25.** The synthetic best report states 14 of 15 pairs, a share .933. DR is .0238, while the expected share wrong among stated pairs is .0255. The two rates are close because almost all pairs are stated.
-- **KRW setting.** The race card states 1,324 of 4,656 pairs, a share .284. DR .0387 divides the expected wrong count by all pairs; E/N .136 divides it by the stated pairs. Its KRW risk is −.0227 and its postrank risk is .1818, evaluated on the released probabilities.
-- **All pairs stated.** The synthetic report states all 15 pairs. Both rates are .0480 because their denominators coincide. The race card remains fixed as the controls change; its title records the costs at which it was chosen.
+- **τ .25.** Stating 14 of 15 pairs (share .933) gives DR .0238 and E/N .0255; the two rates stay close when almost all pairs are stated.
+- **KRW setting.** KRW's race card states 1,324 of 4,656 pairs (share .284), shrinking E/N .136 to DR .0387 (KRW risk −.0227, postrank risk .1818).
+- **All pairs stated.** Stating all 15 pairs makes both denominators equal, so DR and E/N both equal .0480 while the archived card stays fixed.
 
-The rounded identity uses an approximation sign because multiplying rounded rates need not reproduce the rounded product exactly. Both rates are expectations over pairs. The chance of at least one error in the report depends on the joint distribution of those errors.
-
-::: {.callout-note appearance="simple"}
-KRW's archived card statistics and the evaluation on released pair probabilities agree at the displayed digits. The released probabilities differ slightly from KRW's archived probabilities. We use the archived grade assignments as given and evaluate them under postrank's loss. Its risk below the cost of withholding every pair implies that its expected error share is below that cost at this setting.
-:::
+```{=html}
+<details>
+<summary>Rounding and archived card probabilities</summary>
+<p>For positive <em>N</em>, DR = (<em>N</em>/<em>M</em>) &times; <em>E</em>/<em>N</em>; rounded displays use an approximation sign when multiplying rounded shares does not reproduce the rounded product. Both rates are expectations over pairs, whereas the chance of at least one error depends on the joint distribution. KRW's archived card statistics and the evaluation on released pair probabilities agree at the displayed digits; we evaluate the archived grade assignments under postrank's loss.</p>
+</details>
+```
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -34,7 +35,7 @@ ev[c("N","M","E_over_M","E_over_N")]
 ```
 :::
 
-Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; replication deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. Adapted in postrank 1.1.0 (`pr_case_krw`), changes noted: archived card statistics retained, risks recomputed on released probabilities. No endorsement is implied. The data describe KRW's correspondence experiment, not any firm's current conduct.
+Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1; CC-BY-NC (no version), noncommercial use only; adapted in postrank 1.1.0 (`pr_case_krw`), changes noted; no endorsement is implied; describes KRW's correspondence experiment, not current conduct.
 
 Standalone: [open the app](../../embed/two-denominators.html), for example `?tau=.25`.
 

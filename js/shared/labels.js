@@ -139,7 +139,10 @@ export function labelId(result) {
 }
 
 /** The registry string of a label, the family slot filled with family.name (or a name string); with
- *  { slot: "words" } it takes family.words. */
+ *  { slot: "words" } it takes family.words.
+ *  @param {string} id
+ *  @param {any} [family]
+ *  @param {{ slot?: string }} [options] */
 export function labelText(id, family, { slot } = {}) {
   const text = CONFIG.labels[id];
   if (text === undefined) throw new RangeError(`labels: unknown label "${id}"`);
@@ -186,7 +189,10 @@ export function sourceOf(result) {
   return out;
 }
 
-/** Keep an engine return value on the widget root for the checks; returns the key. */
+/** Keep an engine return value on the widget root for the checks; returns the key.
+ *  @param {any} target
+ *  @param {any} result
+ *  @param {string} [key] */
 export function exposeResult(target, result, key = CONFIG.defaultKey) {
   const root = rootOf(target);
   if (!root) throw new TypeError("labels: exposeResult needs a widget ctx or the widget root");
@@ -213,20 +219,35 @@ export function familyContent(target, name) {
   const s = String(name ?? "");
   const doc = docOf(target);
   const out = [];
+  const pushSub = (txt) => {
+    const sub = doc.createElement("sub");
+    sub.className = CONFIG.familyForm.subClass;
+    sub.textContent = txt;
+    out.push(sub);
+  };
+  const pushPlain = (seg) => {
+    // Also render trailing ",≤k" / ",=k" after Unicode subscript ᵨ as <sub> while keeping textContent identical
+    let p = 0;
+    for (const sm of seg.matchAll(/(\u1d68)(,[^\s()]+)/gu)) {
+      if (sm.index > p) out.push(seg.slice(p, sm.index));
+      out.push(sm[1]);
+      pushSub(sm[2]);
+      p = sm.index + sm[0].length;
+    }
+    if (p < seg.length) out.push(seg.slice(p));
+  };
   let at = 0;
   for (const m of s.matchAll(FAMILY_RE)) {
-    if (m.index > at) out.push(s.slice(at, m.index));
+    if (m.index > at) pushPlain(s.slice(at, m.index));
     const low = doc.createElement("span");
     low.className = CONFIG.familyForm.lowClass;
     low.setAttribute("aria-hidden", "true");
     low.textContent = CONFIG.familyForm.low;
-    const sub = doc.createElement("sub");
-    sub.className = CONFIG.familyForm.subClass;
-    sub.textContent = m[1];
-    out.push(low, sub);
+    out.push(low);
+    pushSub(m[1]);
     at = m.index + m[0].length;
   }
-  if (at < s.length) out.push(s.slice(at));
+  if (at < s.length) pushPlain(s.slice(at));
   return out;
 }
 
@@ -243,7 +264,7 @@ const firstContent = (el) => {
 export function markLabelStarts(root) {
   if (!root?.querySelectorAll) return 0;
   const marked = new Set();
-  for (const label of root.querySelectorAll(`[${A.label}]`)) {
+  for (const label of root.querySelectorAll(`[${A.label}], [${A.caption}]`)) {
     for (let n = label; n && n !== root;) {
       const p = n.parentElement;
       if (!p || !root.contains(p) || firstContent(p) !== n) break;
@@ -256,7 +277,10 @@ export function markLabelStarts(root) {
   return marked.size;
 }
 
-/** A label node for an engine result, or null when it has no label (see the header). */
+/** A label node for an engine result, or null when it has no label (see the header).
+ *  @param {any} target
+ *  @param {any} result
+ *  @param {{ key?: string, slot?: string }} [options] */
 export function labelNode(target, result, { key, slot } = {}) {
   const id = labelId(result);
   if (!id) return null;
@@ -293,6 +317,9 @@ export function labelNode(target, result, { key, slot } = {}) {
  * The node carries the same data attributes as labelNode, so a check can derive it from the engine result.
  * With { ties: true } (review 044, X-12) a result whose engine tieCount is above 1 adds
  *   " (one of 3 equal-risk best reports; showing the first)", the count with data-num (tieNode).
+ * @param {any} target
+ * @param {any} result
+ * @param {{ key?: string, orderWords?: string, ties?: boolean }} [options]
  */
 export function tagNode(target, result, { key, orderWords, ties = false } = {}) {
   const id = labelId(result);
@@ -400,4 +427,42 @@ export function captionNode(target, id, slots) {
 /** Caption nodes for every caption a result needs, slots filled from the result. */
 export function captionNodes(target, result) {
   return captionIds(result).map((id) => captionNode(target, id, CONFIG.templates[id] ? result : undefined));
+}
+
+/** Singular for 1 (or 1n), plural otherwise: plural(n, "pair") -> "pair" | "pairs" (no digits, safe beside numSpan). */
+export function plural(n, singular, pluralForm = `${singular}s`) {
+  return n === 1 || n === 1n ? singular : pluralForm;
+}
+
+/** Standardized withholding prose phrase from stated count N and total count M:
+ *  stated === 0 -> "withholds every <noun>"; stated === total -> "states every <noun>";
+ *  otherwise "withholds <M - N> of <M> <nouns>" (or "states <N> <nouns>" when total is omitted). */
+export function withheldPhrase(stated, total, noun = "pair") {
+  if (stated === 0 || stated === 0n) return `withholds every ${noun}`;
+  const hasTotal = (typeof total === "number" && Number.isFinite(total)) || typeof total === "bigint";
+  if (hasTotal && stated === total) return `states every ${noun}`;
+  if (hasTotal) {
+    const withheld = typeof total === "bigint" || typeof stated === "bigint" ? BigInt(total) - BigInt(stated) : total - stated;
+    return `withholds ${formatCount(withheld)} of ${formatCount(total)} ${plural(total, noun)}`;
+  }
+  return `states ${formatCount(stated)} ${plural(stated, noun)}`;
+}
+
+/** DOM-safe withholding phrase wrapping any counts in data-num spans. */
+export function withheldNodes(target, stated, total, noun = "pair") {
+  if (stated === 0 || stated === 0n) return [`withholds every ${noun}`];
+  const hasTotal = (typeof total === "number" && Number.isFinite(total)) || typeof total === "bigint";
+  if (hasTotal && stated === total) return [`states every ${noun}`];
+  const doc = docOf(target);
+  if (hasTotal) {
+    const withheld = typeof total === "bigint" || typeof stated === "bigint" ? BigInt(total) - BigInt(stated) : total - stated;
+    return [
+      "withholds ",
+      numSpan(withheld, formatCount(withheld), { document: doc }),
+      " of ",
+      numSpan(total, formatCount(total), { document: doc }),
+      ` ${plural(total, noun)}`,
+    ];
+  }
+  return ["states ", numSpan(stated, formatCount(stated), { document: doc }), ` ${plural(stated, noun)}`];
 }

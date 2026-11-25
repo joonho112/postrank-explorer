@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/two-scores.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A common grade report for two scores – postrank Explorer">
+<meta property="og:description" content="Weighted directional errors and criterion-specific profiles of a common report.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/two-scores.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/two-scores.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>A common grade report assigns one grade to each of the six sites. In this example, a wrong direction contributes to reporting risk with weight <span class="math inline"><math><mi>w</mi></math></span> on score A and <span class="math inline"><math><mrow><mn>1</mn><mo>−</mo><mi>w</mi></mrow></math></span> on score B. Withholding a pair costs τ once. The lines between posterior means show where the two scores order the sites differently. The two error profiles show how the selected common grades fare on each score.</p>
+<p>One grade report ranks all six sites together. Wrong directions carry weight <span class="math inline"><math><mi>w</mi></math></span> on score A and <span class="math inline"><math><mrow><mn>1</mn><mo>−</mo><mi>w</mi></mrow></math></span> on score B; withholding a pair costs <span class="math inline"><math><mi>τ</mi></math></span> once.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -637,28 +662,15 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Equal weights.</strong> The report states 9 pairs at risk .0933. Its expected wrong shares are .0177 on score A and .0267 on score B. The outlined pair errors show why low-cost isolated directions need not appear in a coherent report.</li>
-<li><strong>No cap.</strong> Searching all 4,683 reports still gives the same 9 stated pairs. The same pairs remain withheld because the grades must be coherent even without a cap.</li>
-<li><strong>A-heavy.</strong> Giving score A more weight restores the three blocks {A, B} &gt; {C, D} &gt; {E, F}, stating 12 pairs. The profile shows the consequence for each score separately.</li>
-<li><strong>Score A only.</strong> The report follows score A’s order between its blocks. On score B an expected .237 of its stated directions are wrong, although score B contributes no error cost.</li>
-<li><strong>w .70.</strong> The common report keeps {B, C, D} together; score B’s expected wrong share is .115. Its pairwise relations differ from those at equal weights.</li>
-<li><strong>Score B only.</strong> The best report is tied with another report. The expected wrong share on score A is .200 under the first and .215 under the other; both reports and full profiles appear.</li>
+<li><strong>Equal weights.</strong> States 9 pairs at risk .0933, with wrong shares .0177 on score A and .0267 on score B.</li>
+<li><strong>No cap.</strong> Searching all 4,683 reports keeps the same 9 stated pairs because grades must stay coherent.</li>
+<li><strong>A-heavy.</strong> Restores {A, B} &gt; {C, D} &gt; {E, F}, stating 12 pairs.</li>
+<li><strong>Score A only.</strong> Follows score A between blocks, leaving a .237 wrong share on score B.</li>
+<li><strong>w .70.</strong> Keeps {B, C, D} together, with a .115 wrong share on score B.</li>
+<li><strong>Score B only.</strong> The best report is tied with another report, with score A wrong shares .200 and .215.</li>
 </ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The example uses independent normal posteriors. Grade one has highest priority, and pairs in the same grade are left unranked. The error bound is for the expected average across the stated pairs. Individual directions can have higher error probabilities. Each set of weights defines the loss used to choose and evaluate the report.</p>
-</div>
-</div>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -667,7 +679,7 @@ Note
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(postrank)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>two <span class="ot">&lt;-</span> <span class="fu">postrank</span>(pr_tutorial<span class="sc">$</span>two, <span class="at">weights =</span> <span class="fu">c</span>(<span class="at">score_A=</span>.<span class="dv">5</span>, <span class="at">score_B=</span>.<span class="dv">5</span>), <span class="at">tau=</span>.<span class="dv">2</span>, <span class="at">G_max=</span><span class="dv">3</span>L, <span class="at">backend=</span><span class="st">"highs"</span>)</span>
@@ -675,6 +687,12 @@ Note
 </div>
 </div>
 </div>
+<details>
+<summary>
+Model notes
+</summary>
+<p>The example uses independent normal posteriors. Grade one has highest priority, and pairs in the same grade are left unranked. The error bound applies to the expected average across stated pairs; individual directions can have higher error probabilities. Each weight setting defines the loss used to choose and evaluate the report.</p>
+</details>
 <p>Standalone: <a href="../../embed/two-scores.html">two-scores</a>, for example <code>?w=.5&amp;tau=.2&amp;cap=all</code>.</p>
 <p>Related applications: <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a>.</p>
 
@@ -1149,7 +1167,7 @@ Note
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

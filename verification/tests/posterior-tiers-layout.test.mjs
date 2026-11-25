@@ -18,8 +18,8 @@ test("posterior tiers selects each displayed risk row natively and leaves the un
           y: row.getBoundingClientRect().top,
         })));
         assert.deepEqual(rows.map(({ key, pairs, risk }) => [key, pairs, risk]), [
-          ["pm-tiers", "21", ".1612"], ["pm-cuts", "17", ".1455"],
-          ["optimum", "17", ".1455"], ["er-cuts", "17", ".1455"],
+          ["pm-tiers", "21", ".161"], ["pm-cuts", "17", ".146"],
+          ["optimum", "17", ".146"], ["er-cuts", "17", ".146"],
         ]);
         assert.ok(rows.every((row, i) => !i || row.y > rows[i - 1].y));
         await page.focus('[data-prx-risk-rule="pm-cuts"] input');

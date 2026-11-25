@@ -3,15 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="prx-page-root" content="../docs/">
 <link rel="icon" href="data:,">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/tools/your-data.html">
 <!-- T.1 your-data. Build inputs: catalog.json; do not edit. -->
 <title>Reports from supplied posterior summaries · postrank Explorer</title>
 <script>
-  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  // ?theme=light|dark wins over prefers-color-scheme; ?hide=chrome|title,caption,presets,disclosures trims slide chrome (credit stays visible)
   (function () {
-    var t = new URLSearchParams(location.search).get("theme");
+    var q = new URLSearchParams(location.search), t = q.get("theme"), h = q.get("hide");
     if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    if (t === "system") document.documentElement.dataset.themePreference = "system";
+    if (h) {
+      var allow = { title: 1, caption: 1, presets: 1, disclosures: 1 }, out = [];
+      h.split(",").forEach(function (raw) {
+        var k = raw.trim().toLowerCase();
+        if (k === "chrome") ["title", "caption"].forEach(function (c) { if (out.indexOf(c) < 0) out.push(c); });
+        else if (allow[k] && out.indexOf(k) < 0) out.push(k);
+      });
+      if (out.length) document.documentElement.setAttribute("data-prx-hide", out.join(" "));
+    }
   })();
 </script>
 <link rel="stylesheet" href="../styles/tokens.css">
@@ -21,7 +32,7 @@
 <main>
 <h1 class="prx-embed-title">Reports from supplied posterior summaries</h1>
 <div id="app"><p>This app needs JavaScript.</p></div>
-<p class="prx-embed-credit">postrank Explorer · T.1 · Built for this site; your data stay in your browser. · author data CC BY 4.0 · <a href="../pages/tools/your-data.html">page</a></p>
+<p class="prx-embed-credit">postrank Explorer · T.1 · Built for this site; your data stay in your browser. · author data CC BY 4.0 · <a class="prx-embed-open" href="../docs/pages/tools/your-data.html">Open full page</a></p>
 </main>
 <!-- classic scripts only, so this page works from file:// -->
 <script src="../js/vendor/d3.min.js"></script>

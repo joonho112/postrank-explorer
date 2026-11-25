@@ -1,12 +1,10 @@
 ---
 title: "Reporting, allocation and classification"
-subtitle: "3.13 · constructed examples after the postrank theory book, ch. 17 and 19"
+subtitle: "3.13 · constructed examples after the postrank theory book, ch. 23 and 25"
 description: "Pairwise reporting, allocation and classification can lead to different decisions under the same posterior."
 ---
 
-The unit with the highest posterior mean can differ from the unit most likely to rank first. A grade report
-states directions between units. Allocating a place from that report requires a rule for choosing among
-units in the same grade. Classification at a threshold requires costs for false positives and false negatives.
+A grade report states pairwise directions; filling fixed places or classifying above a threshold optimizes a separate objective and needs its own rule.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -18,31 +16,19 @@ units in the same grade. Classification at a threshold requires costs for false 
 
 ## Numerical illustrations {#what-to-try}
 
-- **Three units, reporting objective.** The report has risk .1833. Filling a place from its highest grade selects
-  a unit with expected value 4.000 and top-set overlap .700. The figure gives each quantity its own scale.
-- **Three units, mean-value order.** Selecting A instead gives value 6.000 but top-set overlap .300; the strict
-  report's risk is .4667. The top-set order in the table prefers B. Choosing a first recipient does not require
-  publishing every comparison in a strict order.
-- **Two units, τ .25.** The reporting optimum withholds. The added allocation lottery still fills a place,
-  giving expected value 5.000 and overlap .500. It draws the required number of units from the boundary grade.
-- **False-negative cost 3.** The threshold rule declares 2 positive, with cost .700. The convention
-  “positive through the highest grade” declares only B positive and costs .900. Neither τ nor the place budget
-  sets the probability cutoff for this decision. Under **Threshold 4**, being exactly at the substantive threshold does not count as above it. The threshold rule declares 0 positive, at cost .300. The grade cutoff permits both none-positive and all-positive decisions: those actions remain
-  distinct even if a canonical grade representation would lose the distinction.
-- **Equal reporting risk, different classifications.** Reports 2/1/2 and 3/1/2, in A/B/C order, both have risk .2000. With the same
-  added grade cutoff, they declare 3 and 2 positive, at costs 1.700 and 1.300. Equal reporting risk does not
-  make the added actions equivalent.
-- **League, five places.** Mean-score selection gives value .558 and estimated overlap 2.733. The top-set order
-  gives estimated overlap 2.825. These membership probabilities use the displayed posterior draws; their ordering
-  and overlap evaluation use the same draws.
+- **Three units, reporting objective.** Risk is .183; Grade 1 picks B for value 4.00 and overlap .700, whereas **mean-value order** picks A for 6.00 and .300 (risk .467).
+- **Two units, τ .25.** Boundary lottery gives value 5.00 and overlap .500.
+- **False-negative cost 3.** Bayes picks 2 positive at cost .700 vs. .900 for Grade 1; at **Threshold 4**, Bayes picks 0 at cost .300.
+- **Equal reporting risk, different classifications.** Reports 2/1/2 and 3/1/2 tie at risk .200, yet grades ≤ 2 pick 3 vs. 2 positive at costs 1.70 vs. 1.30.
+- **League, five places.** Mean order gives value .558 and overlap 2.73; top-set order reaches 2.83.
 
-::: {.callout-note appearance="simple"}
-In these examples, value is the target value of a selected unit. We calculate outcomes exactly for the finite laws.
-For the league, we calculate the normal means and threshold probabilities analytically and estimate top-set
-membership and overlap from draws. The league's reporting optimum is over contiguous cuts of the posterior-mean
-order under a grade cap. The strict comparison reports do not belong to that family.
-:::
+<details>
+<summary>Exact laws and league approximations</summary>
 
-Standalone: [one-place](../../embed/one-place.html), for example `?mode=threshold&falseNegativeCost=3`.
+Value denotes selected target value. Finite-law quantities are exact; league means and threshold probabilities are analytic while top-set membership and overlap use Monte Carlo draws. The league's reporting optimum searches contiguous posterior-mean cuts under a grade cap.
 
-Related applications: [Restrictions imposed by a fixed order](order-misses.qmd), [The decision for an isolated pair](../grades/one-pair.qmd).
+</details>
+
+Standalone: [one-place](../../embed/one-place.html). Related: [Restrictions imposed by a fixed order](order-misses.qmd), [The decision for an isolated pair](../grades/one-pair.qmd).
+
+Theory book · [Benchmarks for selection, classification, and stability](https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-selection-benchmarks) · [Target uncertainty, directional reporting, and allocation with one place](https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-objective-precision-contrast).

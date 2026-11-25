@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,13 +107,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/coherence-finite.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Coherence in a finite three-unit example – postrank Explorer">
+<meta property="og:description" content="Evaluation of all 13 reports under a four-state posterior distribution.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/coherence-finite.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/coherence-finite.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -602,7 +627,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The posterior places all its probability on four possible orders of A, B, and C. At some withholding costs, the least costly action for each pair produces a set of decisions that no grade report can represent. We evaluate all 13 reports to measure how much risk coherence adds. Each bar separates the cost of expected wrong directions from the cost of withholding. The four states let us calculate both costs exactly, and the posterior probabilities stay fixed as τ changes.</p>
+<p>Four possible orders of A, B, and C carry fixed posterior probabilities. Evaluating all 13 coherent reports shows exact rational error and withholding costs as τ varies.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -612,21 +637,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>τ .20.</strong> The pairwise choices cost 1/6 per pair, but the optimal coherent reports cost 11/60. Each states an extra direction with error 1/4. The two reports beneath the bars identify the additional directions and their error probabilities. The dashed line gives the pairwise lower bound, below every complete report at this setting.</li>
-<li><strong>τ .10.</strong> Giving everyone the same grade, {A, B, C}, costs 1/10. The outer pair can now be stated or withheld at equal cost. Some set of the minimum-cost pairwise actions is coherent, and the best bar reaches the dashed line.</li>
-<li><strong>τ .25.</strong> There are 3 equally good reports, all at risk 1/5. Their orange and gray segments show that the same total risk can combine different amounts of disclosure and withholding. The text retains every equal-risk optimum.</li>
-<li><strong>τ .30.</strong> The full order {A} &gt; {B} &gt; {C} has risk 1/5. Raising the withholding cost changes the choice without changing the posterior law. Keyboard selection provides each report’s risk, disclosure and directions with error above the current withholding cost.</li>
+<li><strong>τ .20.</strong> Isolated pair choices cost 1/6 per pair, while the best coherent reports cost 11/60 and each state a direction with error 1/4.</li>
+<li><strong>τ .10.</strong> Placing every unit in one grade, {A, B, C}, costs 1/10 and matches the pairwise lower bound.</li>
+<li><strong>τ .25.</strong> Exactly 3 tied best reports reach risk 1/5 by combining different amounts of disclosure and withholding.</li>
+<li><strong>τ .30.</strong> Raising the withholding cost selects the full order {A} &gt; {B} &gt; {C} at risk 1/5 under the same fixed posterior law.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
+<details>
+<summary>
+Finite-law notes
+</summary>
 <p>The law is set by hand for teaching, from the theory book’s three-unit example. Each bar is one complete report: its first segment is expected wrong directions per pair, and its second pays for withheld pairs. Grades decide all pairs together, so a direction with error above the price can appear in a best report. That is compatible with the report’s overall optimality. The fractions come directly from the probabilities assigned to the four states.</p>
-</div>
-</div>
-</div>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -648,6 +669,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Standalone: <a href="../../embed/coherence-finite.html">coherence-finite</a>, for example <code>?tau=.18</code>.</p>
 <p>Related applications: <a href="../../pages/grades/coherence.html">Coherence constraints on pairwise decisions</a>, <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-pair-versus-grade">Withholding a pair and constructing a common grade</a>.</p>
 
 
 </section>
@@ -1120,7 +1142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

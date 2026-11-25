@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/cases/cde-one-disclosure.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="School reports at matched disclosure – postrank Explorer">
+<meta property="og:description" content="Expected-error distribution of the three-grade reports that state 48 pairs.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/cases/cde-one-disclosure.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/cde-one-disclosure.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -601,25 +626,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The tertiles state as many comparisons as any report with three grades for these twelve schools.</p>
+<p>Among all three-grade reports stating 48 pairs for these twelve schools, the tertiles expect the fewest wrong directions.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
 <script src="../../js/bundles/cde-one-disclosure.js"></script>
 <script>window.__prxApp = PRX["cde-one-disclosure"].mountWidget(document.getElementById("app"));</script>
-<p>The figure gives the expected error range for each number of stated pairs. At the maximum of 48 pairs, the histogram compares the tertiles with every other report stating that many. The lower convex boundary also considers choosing among complete reports at random.</p>
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>At the tertiles’ disclosure</strong> shows all 34,650 reports at N = 48. The tertiles have the fewest expected errors, with E = 1.829. The next report has E = 1.909.</li>
-<li><strong>Between feasible disclosures</strong> selects N = 46. No single report in this family states exactly 46 pairs, while the lower hull reaches H = .4551 by a mixture with weight .500 on the more-disclosing report.</li>
-<li><strong>A lower mixture</strong> selects N = 30. The hull value is .005174, using weight .167 on the more-disclosing endpoint.</li>
-<li><strong>Other cuts, full range</strong> places cuts at 1 and 2. The selected report states 21 pairs and expects 1.116 wrong directions; the enlarged axis shows the complete ranges at every disclosure.</li>
+<li><strong>At the tertiles’ disclosure.</strong> Across 34,650 reports at N = 48, tertiles win with E = 1.83 (next 1.91).</li>
+<li><strong>Between feasible disclosures.</strong> At N = 46, the lower hull reaches .455 with mixture weight .500.</li>
+<li><strong>A lower mixture.</strong> At N = 30, the hull reaches .00517 with mixture weight .167.</li>
+<li><strong>Other cuts, full range.</strong> Cuts 1 and 2 state 21 pairs with E = 1.12 across the full range.</li>
 </ul>
-<p>Only three groups of four can reach 48 stated pairs. A randomized rule that averages 48 stated pairs must choose only reports at that maximum. The tertiles already have the fewest expected errors among those reports, so randomization cannot improve on them at 48.</p>
-<p>The mixture weight is the probability of choosing the report that states more pairs. The histogram and the table available by keyboard give the full error distribution. A shorter table lists the five reports with the fewest expected errors.</p>
-<p>Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (<code>pr_case_cde</code>). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply (<a href="https://www.cde.ca.gov/re/di/cr/index.asp" class="uri">https://www.cde.ca.gov/re/di/cr/index.asp</a>); the data are not relicensed and are provided as is without warranty. No CDE endorsement is implied.</p>
-<p>The error distribution applies to comparisons of chronic absence within this subset. A shared grade leaves a comparison unstated. California’s Dashboard colors use separate rules, and the distribution provides no basis for estimating school quality, causal effects, statewide optimality, or calibration.</p>
+<details>
+<summary>
+Randomization and scope notes
+</summary>
+<p>Only three groups of four can reach 48 stated pairs. A randomized rule averaging 48 pairs must put weight exclusively on maximum-disclosure reports, so randomization cannot improve on the tertiles at 48. At intermediate disclosures, the mixture weight is the probability of choosing the report that states more pairs, while Data provides the complete error histogram and the five least-error grade vectors at N = 48. This twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools (prior-estimation uncertainty is not propagated). California’s Dashboard colors follow separate rules, and this distribution provides no measure of school quality, causal effects, or statewide calibration. Related: <a href="../../pages/criteria/why-withheld.html">Reasons for a withheld comparison</a> · <a href="../../pages/grades/frontier.html">The error–disclosure frontier</a>.</p>
+</details>
+<p>Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, adapted in postrank 1.1.0 (<code>pr_case_cde</code>); <a href="https://www.cde.ca.gov/re/di/cr/index.asp" class="uri">https://www.cde.ca.gov/re/di/cr/index.asp</a>; not relicensed, provided as is; No CDE endorsement is implied.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -639,9 +666,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p><a href="../../embed/cde-one-disclosure.html">Open the standalone app</a>.</p>
-<p>Related applications: <a href="../../pages/criteria/why-withheld.html">Reasons for a withheld comparison</a> · <a href="../../pages/grades/frontier.html">The error–disclosure frontier</a>.</p>
-<p>Related school analyses: <a href="../../pages/cases/cde-cuts.html">School tertiles and minimum-risk grades</a> · <a href="../../pages/cases/cde-pair.html">A high-probability school comparison withheld</a> · <a href="../../pages/cases/cde-tau-path.html">School-report changes along the withholding-cost path</a>.</p>
+<p>Standalone: <a href="../../embed/cde-one-disclosure.html">cde-one-disclosure</a>. Related: <a href="../../pages/cases/cde-cuts.html">School tertiles and cuts</a> · <a href="../../pages/cases/cde-pair.html">Withheld pair</a> · <a href="../../pages/cases/cde-tau-path.html">τ path</a>.</p>
 
 
 </section>
@@ -1114,7 +1139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

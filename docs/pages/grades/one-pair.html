@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,7 +72,27 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -105,6 +125,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/one-pair.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The decision for an isolated pair – postrank Explorer">
+<meta property="og:description" content="Posterior expected loss of the two strict directions and withholding for a single pair.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/one-pair.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/one-pair.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -593,7 +618,7 @@ window.Quarto = {
 </header>
 
 
-<p>A report can state A above B, state B above A, or withhold the comparison. Each stated direction costs its posterior probability of being wrong, while withholding costs a fixed amount τ. The lower horizontal scale gives <span class="math inline"><math><mrow><msub><mi>e</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>−</mo><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></mrow></math></span>, the error probability for stating A above B. A higher <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> moves the marker to the left on that scale. The lowest line at the marker gives the action with the smallest expected loss. At an intersection, two or more actions may tie.</p>
+<p>When exact equality has zero posterior probability, the two directions cost <span class="math inline"><math><mrow><mn>1</mn><mo>−</mo><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></mrow></math></span> and <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span>, where <span class="math inline"><math><mrow><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mo>=</mo><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>θ</mi><mi>A</mi></msub><mo>&gt;</mo><msub><mi>θ</mi><mi>B</mi></msub><mo lspace="0.22em" rspace="0.22em" stretchy="false">|</mo><mi>Y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span>. Withholding costs <span class="math inline"><math><mi>τ</mi></math></span>. The lowest line gives the best action.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -603,24 +628,17 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>π .85, τ .10.</strong> Stating A above B is wrong with probability .15, more than the .10 cost of withholding. The gray dot marks withholding as the action with the lowest expected loss. Its height varies with the withholding cost.</li>
-<li><strong>π .85, τ .20.</strong> The posterior is unchanged, but the withholding cost increases. The error remains .15, below .20, so the selected action is “state A above B”. Only the horizontal line moved; the posterior probability and both directional costs stayed fixed.</li>
-<li><strong>π .80, τ .20.</strong> The error equals .20: stating A above B and withholding have equal expected loss, labeled “equally good”. The open circle marks their crossing, and both dots receive a ring. A ring marks an action that minimizes expected loss under the specified posterior.</li>
-<li><strong>π .50, τ .50.</strong> Both directions cost .50 and withholding also costs .50. The summary reads “all three actions are equally good”. The crossing circles merge, while the table marks every action as minimum-cost.</li>
+<li><strong>π .85, τ .10.</strong> Error <span class="math inline"><math><msub><mi>e</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .15 exceeds τ = .10, so the lowest-cost action is to withhold.</li>
+<li><strong>π .85, τ .20.</strong> Raising τ to .20 lifts only the horizontal line; <span class="math inline"><math><msub><mi>e</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> stays .15, selecting “state A above B”.</li>
+<li><strong>π .80, τ .20.</strong> At <span class="math inline"><math><msub><mi>e</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .20 = τ, stating A above B and withholding are “equally good” at the open-circle crossing.</li>
+<li><strong>π .50, τ .50.</strong> All three costs equal .50, so “all three actions are equally good”.</li>
 </ul>
-<p>The shaded area follows the smallest cost along the bottom error axis. The top scale shows the direction probability π in reverse. The marker links the two values, and the table gives the three costs at that point.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>This example gives equal true values probability zero. For an isolated pair, disclose only when the posterior probability of the direction exceeds <span class="math inline"><math><mrow><mn>1</mn><mo>−</mo><mi>τ</mi></mrow></math></span>; at equality, disclosing and withholding tie. A shared grade withholds a direction rather than asserting equal true values. Combining many pair decisions into one coherent report adds a constraint that this isolated-pair rule does not impose.</p>
-</div>
-</div>
-</div>
-<p>Standalone: <a href="../../embed/one-pair.html">embed/one-pair.html</a>, for example <code>?pi=.9&amp;tau=.05</code> or <code>?preset=pi80&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a> · <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a> · <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a>.</p>
+<details>
+<summary>Isolated-pair rule and multi-pair reports</summary>
+<p>With zero posterior probability of equal true values, an isolated pair discloses a direction only when its posterior probability exceeds 1 − τ (tying with withholding at equality). A shared grade withholds a direction rather than asserting equal true values; combining many pair decisions into one coherent report adds a global transitivity constraint beyond this isolated-pair rule.</p>
+</details>
+<p>Standalone: <a href="../../embed/one-pair.html">embed/one-pair.html</a> (<code>?pi=.9&amp;tau=.05</code> or <code>?preset=pi80&amp;theme=dark</code>). Related: <a href="../../pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a> · <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a> · <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a> · <a href="../../pages/grades/ties-and-withholding.html">Positive probability of equality</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-pair-versus-grade">Withholding a pair and constructing a common grade</a>.</p>
 
 
 </section>
@@ -1093,7 +1111,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

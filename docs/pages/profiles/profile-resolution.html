@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/profiles/profile-resolution.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Budget and grades – postrank Explorer">
+<meta property="og:description" content="More budget can shift detail between domains.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/profiles/profile-resolution.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/profile-resolution.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -613,10 +638,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Tighter joint budget.</strong> At k=1 and cap 3/40, the unique optimum discloses A ahead only in S. Its risk is 1/5, joint-event probability 1/20, and occupied-grade counts (2,1).</li>
-<li><strong>Larger joint budget.</strong> Raising the cap to 1/8 admits the report that states a direction only in C. It has risk 11/80 and joint-event probability 1/10. With more weight on C, the best report now uses two grades in C and one in S, giving counts (1,2).</li>
-<li><strong>Both domains disclosed.</strong> At cap 3/20, the double-positive card becomes feasible at equality. Its risk is 7/80, joint-event probability 3/20, and occupied-grade counts (2,2). The cap is inclusive.</li>
-<li><strong>More posterior reversals.</strong> With k=2 and cap 3/20, the best report again states a direction only in S, at risk 17/80 and joint-event probability 1/10. Changing k changes the distribution. Compare budgets within a fixed k to isolate the effect of the budget.</li>
+<li><strong>Tighter budget.</strong> At k=1 and cap 3/40, the unique optimum discloses A ahead only in S. Its risk is 1/5, joint-event probability 1/20, and occupied-grade counts (2,1).</li>
+<li><strong>Larger budget.</strong> Raising the cap to 1/8 admits the report that states a direction only in C. It has risk 11/80 and joint-event probability 1/10. With more weight on C, the best report now uses two grades in C and one in S, giving counts (1,2).</li>
+<li><strong>Both disclosed.</strong> At cap 3/20, the double-positive card becomes feasible at equality. Its risk is 7/80, joint-event probability 3/20, and occupied-grade counts (2,2). The cap is inclusive.</li>
+<li><strong>More reversals.</strong> With k=2 and cap 3/20, the best report again states a direction only in S, at risk 17/80 and joint-event probability 1/10. Changing k changes the distribution. Compare budgets within a fixed k to isolate the effect of the budget.</li>
 </ul>
 <p>The chart counts the grades used in S and C. The grade table gives each site’s two grades. At every budget, the app lists all reports tied for the lowest risk and plots the counts for the first of those reports. At k=1 and zero budget, all directions are withheld at risk 1/4. At k=0, both directions can be stated even at zero budget, with risk zero.</p>
 <div class="callout callout-style-simple callout-note">
@@ -649,9 +674,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Source: <a href="https://joonho112.github.io/postrank/articles/mdomain-decisions.html">postrank multidomain decisions</a>.</p>
+</section></details>
 <p>Standalone: <a href="../../embed/profile-resolution.html">open this app</a>, for example <code>?preset=larger-budget&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="../../pages/profiles/profile-separability.html">Separate or joint?</a> and <a href="../../pages/profiles/profile-dependence.html">Error overlap</a>.</p>
-</section></details>
 
 
 
@@ -1124,7 +1149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

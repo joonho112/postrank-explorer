@@ -4,7 +4,7 @@ subtitle: "1.3 · a simulated league, after Walters' teaching slides"
 description: "Effects of unequal sampling precision on the extreme positions of a ranking."
 ---
 
-Imprecise estimates can place units near the top or bottom of a ranking even when their true values are less extreme. We rank thirty simulated units by estimate. Units with fewer observations have larger standard errors (SEs). Across samples, the true values stay fixed, letting us compare how often each size group appears at either end.
+High-SE estimates push small units to both ends of a ranking even when true values are unrelated to sample size.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,30 +16,10 @@ Imprecise estimates can place units near the top or bottom of a ranking even whe
 
 ## Numerical illustrations {#what-to-try}
 
-- **First draw.** Of the 10 extreme positions by estimate, small units hold 5, medium units 4 and large units 1 in this
-  draw; by true value they hold 3 small, 4 medium and 3 large units.
-- **True values.** In the first draw, of the top 10 by estimate, 9 are in the true top 10 (7.45 on average over the
-  twenty replays). U19, a small unit with true rank 11, is the first of the bottom five: Sampling error moved it down the ranking.
-  U18, a large unit with true rank 30, sits two rows above them: noisier small and medium units fell past it, and its
-  own estimate came out above its true value.
-- **Twenty replays.** The draw menu brings any replay into the table. On average over the 20 replays, small units hold
-  4.35 of the 10 extreme positions and large units 2.00, and the estimates order 83.90 of the 435 pairs the wrong way,
-  against 88.12 expected over many draws.
-- **Replay 11.** In this replay, small units hold 2 extreme positions, medium units 5 and large units 3. Large units hold as many extreme positions in this ranking as in the ranking by true values. Their average across the replays is lower.
-- **Extremes highlighted.** When true values are hidden, the shaded rows do not identify which units have genuinely extreme values. The dashed line marks the truth, 3 small and 3 large units.
-  Small units sit above it in most replays; large units sit on or below it.
+- **First draw.** Across 10 extreme positions, small units hold 5, medium units 4 and large units 1 (truly 3 small, 4 medium and 3 large units).
+- **True values.** In the top 10 by estimate, 9 are in the true top 10; small U19 (rank 11) enters the bottom five while large U18 (rank 30) sits above.
+- **Twenty replays.** Over 20 replays, small units hold 4.35 of the 10 extreme positions and large units 2.00 (7.45 in true top 10), reversing 83.9 of the 435 pairs (88.1 expected).
+- **Replay 11.** Replay 11: small units hold 2, medium units 5 and large units 3.
+- **Extremes highlighted.** Dashed line: the truth, 3 small and 3 large units.
 
-::: {.callout-note appearance="simple"}
-Real units have unknown true values, so this check is not possible. The firms of Kline, Rose and Walters
-(2024), KRW, came with SEs of very different sizes: the race estimates have SEs from .025 to .444 (Section V.B; talk
-slides 47–49). Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700, and deposit doi:10.3886/E198284V1;
-CC-BY-NC as stated by the deposit (no version), noncommercial use only; as adapted in postrank 1.1.0 (pr_case_krw),
-changes noted; no endorsement by the authors is implied. The data describe KRW's correspondence experiment, not any
-firm's current conduct. postrank's input is a posterior, not a list of estimates.
-:::
-
-Standalone: [embed/noisy-league.html](../../embed/noisy-league.html), for example `?seed=20261031&reveal=1` or
-`?preset=replay20&theme=dark`.
-
-Related applications: [Selection bias at the extremes of a ranking](winners-curse.qmd) ·
-[Normal–normal posterior shrinkage](shrinkage.qmd) · [Expected errors in a strict ranking](ranking-claims.qmd).
+Source: Simulated thirty-unit league after Walters (CCPR handout, p. 92; Mixtape slides, pp. 43–44). Standalone: [embed/noisy-league.html](../../embed/noisy-league.html). Related: [Winners' curse](winners-curse.qmd) · [Posterior shrinkage](shrinkage.qmd) · [Ranking claims](ranking-claims.qmd).

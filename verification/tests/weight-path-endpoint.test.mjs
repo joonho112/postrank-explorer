@@ -30,7 +30,7 @@ test('the weight path shows the boundary crossing in view and retains a raw audi
         assert.equal(await page.$eval(input, n => n.value === '0.42' && document.activeElement === n), true);
         const result = await page.$eval('.prx-readout', n => ({ text: n.textContent, visible: n.getBoundingClientRect().bottom <= innerHeight }));
         assert.equal(result.visible, true);
-        assert.match(result.text, /\{A, B, C, D\} > \{E\} > \{F\}: 9 of 15 pairs, optimal from \.41698 to \.63805/);
+        assert.match(result.text, /\{A, B, C, D\} > \{E\} > \{F\}: 9 of 15 pairs, optimal from \.417 to \.638/);
         assert.match(result.text, /\.0177 on score A and \.0267 on score B; weighted risk \.0938/);
         assert.match(await page.$eval('.wpath-overview', n => n.textContent), /5 interior boundaries.*2 reports tie/s);
         const data = 'details[data-prx-disclosure="data"]';

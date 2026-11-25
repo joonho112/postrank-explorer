@@ -149,7 +149,7 @@
           "about": "the read-out word for word: all the firms, both orders",
           "source": "literal",
           "ref": "11.4",
-          "value": "KRW's firms: a strict ranking of all ⟨n⟩ firms makes ⟨M⟩ claims, one for each pair. Ranked by posterior mean, the expected number of wrong claims is ⟨E⟩. Ranked by estimate, it is ⟨Eest⟩."
+          "value": "KRW's firms: ranking all ⟨n⟩ firms makes ⟨M⟩ pairwise claims, with ⟨E⟩ expected wrong by posterior mean (⟨Eest⟩ by estimate)."
         },
         {
           "select": "[data-prx-caption=\"fixed-report\"]",
@@ -270,7 +270,7 @@
         {
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "krw.race.top10.strictpm.E",
@@ -292,7 +292,7 @@
           "about": "the read-out word for word: the top n of the firms",
           "source": "literal",
           "ref": "11.4",
-          "value": "KRW's firms: a strict ranking of the top ⟨n⟩ of the ⟨N⟩ firms by posterior mean makes ⟨M⟩ claims, one for each pair. Ranked by posterior mean, the expected number of wrong claims is ⟨E⟩. Ranked by estimate, it is ⟨Eest⟩."
+          "value": "KRW's firms: ranking the top ⟨n⟩ of ⟨N⟩ firms makes ⟨M⟩ pairwise claims, with ⟨E⟩ expected wrong by posterior mean (⟨Eest⟩ by estimate)."
         },
         {
           "select": "[data-prx-readout=\"strip-cde-M\"]",
@@ -347,7 +347,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "expected wrong directions of the strict posterior-mean order",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "six.A.strict.E",
@@ -357,7 +357,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "the same from postrank 1.1.0 (postrank_evaluate of the strict order)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "golden",
           "ref": {
@@ -504,7 +504,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "posterior-mean order",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "league.default.prior15.strictpm.E",
@@ -514,7 +514,7 @@
           "select": "[data-prx-readout=\"expected-wrong-estimate\"]",
           "about": "the same units ranked by estimate",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "league.default.prior15.strictest.E",
@@ -663,7 +663,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "the one claim A above B: its probability of being wrong",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "six.A.e.AB",
@@ -694,7 +694,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "expected wrong directions of A, B, C, D in that order",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "six.A.top4.strict.E",
@@ -718,7 +718,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "the full six-site ranking",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "six.A.strict.E",
@@ -754,7 +754,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "expected wrong directions of A to D",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "six.A.top4.strict.E",
@@ -778,7 +778,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "posterior-mean order",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "league.default.prior15.strictpm.E",
@@ -809,7 +809,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "posterior-mean order of the twelve",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "league.default.prior15.top12.strictpm.E",
@@ -819,7 +819,7 @@
           "select": "[data-prx-readout=\"expected-wrong-estimate\"]",
           "about": "the twelve ranked by estimate",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "league.default.prior15.top12.strictest.E",
@@ -857,7 +857,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "posterior-mean order",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "krw.race.top2.strictpm.E",
@@ -867,7 +867,7 @@
           "select": "[data-prx-readout=\"expected-wrong-estimate\"]",
           "about": "estimate order",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "krw.race.top2.strictest.E",
@@ -905,7 +905,7 @@
           "select": "[data-prx-readout=\"expected-wrong\"]",
           "about": "posterior-mean order of the five",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "krw.race.top5.strictpm.E",
@@ -915,7 +915,7 @@
           "select": "[data-prx-readout=\"expected-wrong-estimate\"]",
           "about": "estimate order of the five",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "krw.race.top5.strictest.E",

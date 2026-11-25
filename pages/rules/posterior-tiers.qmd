@@ -1,14 +1,10 @@
 ---
 title: "Tiers and optimized cuts of posterior rankings"
-subtitle: "3.5 · after the postrank theory book, ch. 17, and postrank's fixed-order cuts"
+subtitle: "3.5 · after the postrank theory book, ch. 23, and postrank's fixed-order cuts"
 description: "Comparison of fixed posterior tiers, optimized boundaries and joint report optimization."
 ---
 
-A grade report built from an existing ranking inherits that ranking's order. Quantile tiers also fix the
-boundaries by group size. Optimal cuts allow those boundaries to vary while keeping the order fixed. For eight
-units, we can also enumerate the feasible reports and compare both methods with the unrestricted minimum under
-the same posterior and withholding cost. For the larger examples, we compare cuts of a fixed order. **Reports,
-orders and scopes** lists the reports searched and the resulting disclosure counts.
+Fixed quantile tiers set boundaries by group size; optimal cuts adjust those boundaries while keeping the posterior order fixed.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,20 +16,24 @@ orders and scopes** lists the reports searched and the resulting disclosure coun
 
 ## Numerical illustrations {#what-to-try}
 
-- **Eight units: optimal cuts.** Both orders' cuts state 17 pairs at risk .1455, matching the best of 6,051 reports with at most three grades. Fixed tiers state 21 pairs at risk .1612. This equality between cuts and the joint optimum is a property of these units.
-- **League: fixed tiers.** The tiers state 300 pairs at risk .1731. Optimizing their boundaries states 251 at risk .1581. Every rule uses the same posterior and price, but these reports disclose different amounts.
-- **Thirty sites: rank cuts.** The cuts state 303 pairs at risk .1603, after searching 4,090 contiguous reports. The orders table shows that the two orders need not coincide for their chosen cuts to agree.
-- **Eight units: all reports.** The benchmark expands to 545,835 reports. The reported family determines the scope of the gap for each rule and grade cap.
+- **Eight units: optimal cuts.** Mean-order and rank-order cuts state 17 pairs at risk .146, matching the best of 6,051 reports; tiers state 21 at .161.
+- **League: fixed tiers.** Tiers state 300 pairs at risk .173; mean-order cuts state 251 at .158.
+- **Thirty sites: rank cuts.** Rank cuts state 303 pairs at risk .160 across 4,090 contiguous reports.
+- **Eight units: all reports.** Searches all 545,835 reports.
 
-::: {.callout-note appearance="simple"}
+<details>
+<summary>Numerical illustrations and notes</summary>
+
 When the quantile boundaries are among the allowed cuts of an order, the minimum over those cuts cannot have
 higher risk than the quantile report. Searching other orders may yield a lower minimum within the grade cap.
-The comparison also depends on the objective. A cut that minimizes directional error can differ from one
+The comparison also depends on the objective: a cut that minimizes directional error can differ from one
 that minimizes error on a composite score. We do not estimate the gap to the joint optimum for the larger examples.
-:::
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
+library(postrank)
 w <- c(poverty = 1, frl = 0, snap = 0); s <- postrank_settings(weights = w, tau = .25, G_max = 4L)
 pm <- postrank_cuts(pr_example_gaussian$means[, "poverty"], pr_example_gaussian, s, direction = "descending", method = "posterior_mean")
 c(risk = pm$risk)
@@ -43,3 +43,5 @@ c(risk = pm$risk)
 Standalone: [posterior-tiers](../../embed/posterior-tiers.html), for example `?preset=league8-cuts`.
 
 Related applications: [Restrictions imposed by a fixed order](order-misses.qmd), [Restrictions on the report family](../grades/families.qmd).
+
+Theory book · [Comparator definitions and scope](https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-fair-comparator-framework).

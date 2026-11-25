@@ -11,10 +11,10 @@
       "preset": "touch90",
       "expect": [
         { "select": "[data-prx-readout=\"level\"]", "about": "interval level in the read-out", "source": "registry", "ref": "settings.level90", "value": 0.9 },
-        { "select": "[data-prx-readout=\"gap\"]", "about": "distance between the posterior means at the touching point, in posterior SDs", "source": "registry", "ref": "cf.touch.level90.gap", "value": 3.289707253902943 },
-        { "select": "[data-prx-readout=\"pi\"]", "about": "probability that A's true value is larger than B's (read-out)", "source": "registry", "ref": "cf.touch.level90.pi", "value": 0.989995373141941 },
+        { "select": "[data-prx-readout=\"gap\"]", "about": "distance between the posterior means at the touching point, in posterior SDs", "format": { "fn": "formatReadoutEst" }, "source": "registry", "ref": "cf.touch.level90.gap", "value": 3.289707253902943 },
+        { "select": "[data-prx-readout=\"pi\"]", "about": "probability that A's true value is larger than B's (read-out)", "format": { "fn": "formatReadoutProb" }, "source": "registry", "ref": "cf.touch.level90.pi", "value": 0.989995373141941 },
         { "select": "[data-prx-readout=\"card-pi\"]", "about": "the same probability in the pair card", "source": "registry", "ref": "cf.touch.level90.pi", "value": 0.989995373141941 },
-        { "select": "[data-prx-readout=\"diff-pi\"]", "about": "the same probability in the key of the difference figure", "source": "registry", "ref": "cf.touch.level90.pi", "value": 0.989995373141941 },
+        { "select": "[data-prx-readout=\"diff-pi\"]", "about": "the same probability in the key of the difference figure", "format": { "fn": "formatReadoutProb" }, "source": "registry", "ref": "cf.touch.level90.pi", "value": 0.989995373141941 },
         { "select": "[data-prx-readout=\"card-b-lower\"]", "about": "B's lower end: the normal quantile of the lower tail (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.05", "field": "quantile" }, "value": -1.64485362695147 },
         { "select": "[data-prx-readout=\"card-b-upper\"]", "about": "B's upper end: the normal quantile of the upper tail (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.95", "field": "quantile" }, "value": 1.64485362695147 },
         { "select": "[data-prx-readout=\"card-a-lower\"]", "about": "A's lower end equals B's upper end when the intervals touch (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.95", "field": "quantile" }, "value": 1.64485362695147 },
@@ -35,10 +35,10 @@
       "preset": "touch95",
       "expect": [
         { "select": "[data-prx-readout=\"level\"]", "about": "interval level in the read-out", "source": "registry", "ref": "settings.level95", "value": 0.95 },
-        { "select": "[data-prx-readout=\"gap\"]", "about": "distance between the posterior means at the touching point, in posterior SDs", "source": "registry", "ref": "cf.touch.level95.gap", "value": 3.919927969080107 },
-        { "select": "[data-prx-readout=\"pi\"]", "about": "probability that A's true value is larger than B's (read-out)", "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
+        { "select": "[data-prx-readout=\"gap\"]", "about": "distance between the posterior means at the touching point, in posterior SDs", "format": { "fn": "formatReadoutEst" }, "source": "registry", "ref": "cf.touch.level95.gap", "value": 3.919927969080107 },
+        { "select": "[data-prx-readout=\"pi\"]", "about": "probability that A's true value is larger than B's (read-out)", "format": { "fn": "formatReadoutProb" }, "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
         { "select": "[data-prx-readout=\"card-pi\"]", "about": "the same probability in the pair card", "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
-        { "select": "[data-prx-readout=\"diff-pi\"]", "about": "the same probability in the key of the difference figure", "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
+        { "select": "[data-prx-readout=\"diff-pi\"]", "about": "the same probability in the key of the difference figure", "format": { "fn": "formatReadoutProb" }, "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
         { "select": "[data-prx-readout=\"card-b-lower\"]", "about": "B's lower end: the normal quantile of the lower tail (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.025", "field": "quantile" }, "value": -1.95996398454005 },
         { "select": "[data-prx-readout=\"card-b-upper\"]", "about": "B's upper end: the normal quantile of the upper tail (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.975", "field": "quantile" }, "value": 1.95996398454005 },
         { "select": "[data-prx-readout=\"card-a-lower\"]", "about": "A's lower end equals B's upper end when the intervals touch (base-R oracle)", "format": { "fn": "formatDecimal", "options": { "digits": 3 } }, "source": "oracle", "ref": { "group": "oracle-special", "row": "p=0.975", "field": "quantile" }, "value": 1.95996398454005 },
@@ -115,8 +115,8 @@
       "update": [{ "level": 95 }],
       "expect": [
         { "select": "[data-prx-readout=\"level\"]", "source": "registry", "ref": "settings.level95", "value": 0.95 },
-        { "select": "[data-prx-readout=\"gap\"]", "about": "the 95% touching distance", "source": "registry", "ref": "cf.touch.level95.gap", "value": 3.919927969080107 },
-        { "select": "[data-prx-readout=\"pi\"]", "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
+        { "select": "[data-prx-readout=\"gap\"]", "about": "the 95% touching distance", "format": { "fn": "formatReadoutEst" }, "source": "registry", "ref": "cf.touch.level95.gap", "value": 3.919927969080107 },
+        { "select": "[data-prx-readout=\"pi\"]", "format": { "fn": "formatReadoutProb" }, "source": "registry", "ref": "cf.touch.level95.pi", "value": 0.9972127016596077 },
         { "select": "[data-prx-readout=\"card-a-lower\"]", "source": "registry", "ref": "cf.touch.level95.end", "value": 1.9599639845400536 },
         { "select": "[data-prx-status]", "about": "still touching", "kind": "text", "attr": "data-prx-status", "source": "literal", "ref": "11.4", "value": "touch" }
       ]

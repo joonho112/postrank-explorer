@@ -60,6 +60,7 @@ export const CONFIG = Object.freeze({
   defaultWidth: 640,
   minWidth: 200,
   fontSize: 12,
+  fontSizeV2: 13,
   logMantissas: Object.freeze([1, 5]),
   logPlainMin: 0.001,
   logPlainMax: 10000,
@@ -132,9 +133,126 @@ function plotGlobal(el) {
 
 // ------------------------------------------------------------------------------------------- colors
 
+const darkMqlCache = new WeakMap();
+const panelStyleCache = new WeakMap();
+const EXTRA_PANEL_TOKENS = [
+  "--prx-bg-sunken", "--prx-fg-heading", "--prx-link-hover",
+  "--prx-on-accent", "--prx-border", "--prx-font-mono",
+];
+const PANEL_TOKEN_NAMES = [...Object.keys(CONFIG.tokens), ...EXTRA_PANEL_TOKENS];
+
 function computed(el) {
   const win = el?.ownerDocument?.defaultView;
   return win?.getComputedStyle ? win.getComputedStyle(el) : null;
+}
+
+function getDarkMatches(win) {
+  if (!win || typeof win.matchMedia !== "function") return false;
+  let entry = darkMqlCache.get(win);
+  if (!entry || entry.fn !== win.matchMedia) {
+    let mql = null;
+    try { mql = win.matchMedia("(prefers-color-scheme: dark)") ?? null; } catch { mql = null; }
+    entry = { fn: win.matchMedia, mql };
+    darkMqlCache.set(win, entry);
+  }
+  return Boolean(entry.mql?.matches);
+}
+
+function hasInlinePrxTokens(el, root, docEl) {
+  return Boolean(
+    el?.style?.cssText?.includes("--prx-") ||
+    root?.style?.cssText?.includes("--prx-") ||
+    docEl?.style?.cssText?.includes("--prx-")
+  );
+}
+
+function buildRootThemeKey(doc, root) {
+  const docEl = doc?.documentElement;
+  const win = doc?.defaultView;
+  return [
+    docEl?.getAttribute("data-theme") ?? "",
+    docEl?.getAttribute("data-skin") ?? "",
+    root?.getAttribute("data-theme") ?? "",
+    root?.getAttribute("data-skin") ?? "",
+    root?.getAttribute("class") ?? "",
+    getDarkMatches(win) ? "1" : "0",
+    doc?.styleSheets?.length ?? 0,
+  ].join("|");
+}
+
+function createLivePanelCs(el, themeHost, docEl, probe) {
+  const probeCs = computed(probe);
+  let elCs;
+  let hostCs;
+  let docCs;
+  return {
+    getPropertyValue(name) {
+      let v = probeCs ? String(probeCs.getPropertyValue(name) ?? "").trim() : "";
+      if (v) return v;
+      if (el && el !== probe) {
+        v = String(el.style?.getPropertyValue?.(name) ?? "").trim();
+        if (v) return v;
+        if (elCs === undefined) elCs = computed(el);
+        v = elCs ? String(elCs.getPropertyValue(name) ?? "").trim() : "";
+        if (v) return v;
+      }
+      if (themeHost && themeHost !== el && themeHost !== docEl) {
+        v = String(themeHost.style?.getPropertyValue?.(name) ?? "").trim();
+        if (v) return v;
+        if (hostCs === undefined) hostCs = computed(themeHost);
+        v = hostCs ? String(hostCs.getPropertyValue(name) ?? "").trim() : "";
+        if (v) return v;
+      }
+      if (docEl && docEl !== el) {
+        v = String(docEl.style?.getPropertyValue?.(name) ?? "").trim();
+        if (v) return v;
+        if (docCs === undefined) docCs = computed(docEl);
+        v = docCs ? String(docCs.getPropertyValue(name) ?? "").trim() : "";
+      }
+      return v;
+    },
+  };
+}
+
+function resolvePanelContext(el, root, state) {
+  const { doc, container, probe } = state;
+  const docEl = doc?.documentElement;
+  const themeHost = el.closest?.("[data-theme], [data-skin]") ?? root ?? null;
+  if (hasInlinePrxTokens(el, themeHost, docEl)) {
+    if (probe.parentNode !== container) container.prepend(probe);
+    const cs = createLivePanelCs(el, themeHost, docEl, probe);
+    return { cs, pal: palette(el, cs), varCache: new Map(), cached: false };
+  }
+  let byTheme = panelStyleCache.get(doc);
+  if (!byTheme) {
+    byTheme = new Map();
+    panelStyleCache.set(doc, byTheme);
+  }
+  const key = buildRootThemeKey(doc, themeHost);
+  let entry = byTheme.get(key);
+  if (!entry) {
+    if (probe.parentNode !== container) container.prepend(probe);
+    const connected = Boolean(probe.isConnected ?? docEl?.contains?.(probe));
+    const liveCs = createLivePanelCs(el, themeHost, docEl, probe);
+    const tokenMap = new Map();
+    for (const name of PANEL_TOKEN_NAMES) {
+      tokenMap.set(name, liveCs.getPropertyValue(name));
+    }
+    const cs = {
+      getPropertyValue(name) {
+        if (tokenMap.has(name)) return tokenMap.get(name);
+        if (probe.parentNode !== container) container.prepend(probe);
+        const current = createLivePanelCs(el, themeHost, docEl, probe);
+        const val = current.getPropertyValue(name);
+        tokenMap.set(name, val);
+        return val;
+      },
+    };
+    const pal = palette(el, cs);
+    entry = { cs, pal, varCache: new Map() };
+    if (connected) byTheme.set(key, entry);
+  }
+  return { cs: entry.cs, pal: entry.pal, varCache: entry.varCache, cached: true };
 }
 
 /** The value of one CSS custom property as seen from el ("" when unset). */
@@ -215,15 +333,34 @@ export function palette(el, cs = computed(el)) {
   };
 }
 
-/** "#rgb", "#rrggbb" or "rgb(r, g, b)" -> [r, g, b] (0–255), or null. */
-export function parseColor(c) {
+function parseAlphaValue(raw) {
+  if (raw === undefined || raw === null || raw === "") return 1;
+  const s = String(raw).trim();
+  const n = s.endsWith("%") ? Number.parseFloat(s) / 100 : Number(s);
+  return Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 1;
+}
+
+function parseColorAlpha(c) {
   const s = String(c ?? "").trim();
-  let m = /^#([0-9a-f]{6})$/i.exec(s);
-  if (m) return [0, 2, 4].map((i) => Number.parseInt(m[1].slice(i, i + 2), CONFIG.hexRadix));
-  m = /^#([0-9a-f]{3})$/i.exec(s);
-  if (m) return [0, 1, 2].map((i) => Number.parseInt(m[1][i] + m[1][i], CONFIG.hexRadix));
-  m = /^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i.exec(s);
-  return m ? [m[1], m[2], m[3]].map(Number) : null;
+  let m = /^#([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(s);
+  if (m) {
+    const rgb = [0, 2, 4].map((i) => Number.parseInt(m[1].slice(i, i + 2), CONFIG.hexRadix));
+    const a = m[2] ? Number.parseInt(m[2], CONFIG.hexRadix) / CONFIG.channelMax : 1;
+    return { rgb, a };
+  }
+  m = /^#([0-9a-f]{3})([0-9a-f])?$/i.exec(s);
+  if (m) {
+    const rgb = [0, 1, 2].map((i) => Number.parseInt(m[1][i] + m[1][i], CONFIG.hexRadix));
+    const a = m[2] ? Number.parseInt(m[2] + m[2], CONFIG.hexRadix) / CONFIG.channelMax : 1;
+    return { rgb, a };
+  }
+  m = /^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:[\s,/]+([\d.]+%?))?\s*\)$/i.exec(s);
+  return m ? { rgb: [m[1], m[2], m[3]].map(Number), a: parseAlphaValue(m[4]) } : null;
+}
+
+/** "#rgb", "#rrggbb" or "rgb(r, g, b)" / "rgba(r, g, b, a)" -> [r, g, b] (0–255), or null. */
+export function parseColor(c) {
+  return parseColorAlpha(c)?.rgb ?? null;
 }
 
 const hex = (rgb) => `#${rgb.map((v) => Math.round(v).toString(CONFIG.hexRadix).padStart(2, "0")).join("")}`;
@@ -306,11 +443,22 @@ export function contrast(a, b) {
   return (Math.max(x, y) + f) / (Math.min(x, y) + f);
 }
 
-/** The better direct-label ink (--prx-label-dark or --prx-label-light) on a fill. */
+/** The better direct-label ink (--prx-label-dark or --prx-label-light) on a fill (compositing translucent fills over plotBg). */
 export function labelOn(fill, pal) {
-  if (!parseColor(fill)) return pal.labelDark;
-  return contrast(fill, pal.labelLight) > contrast(fill, pal.labelDark) ? pal.labelLight : pal.labelDark;
+  const dark = pal?.labelDark ?? CONFIG.tokens["--prx-label-dark"];
+  const light = pal?.labelLight ?? CONFIG.tokens["--prx-label-light"];
+  const parsed = parseColorAlpha(fill);
+  if (!parsed) return dark;
+  let effective = fill;
+  if (parsed.a < 1) {
+    const bg = parseColor(pal?.plotBg ?? CONFIG.tokens["--prx-plot-bg"]) ?? [CONFIG.channelMax, CONFIG.channelMax, CONFIG.channelMax];
+    const blended = parsed.rgb.map((ch, k) => ch * parsed.a + bg[k] * (1 - parsed.a));
+    effective = `rgb(${blended.map((v) => v.toFixed(3)).join(", ")})`;
+  }
+  return contrast(effective, light) > contrast(effective, dark) ? light : dark;
 }
+
+export const labelInk = labelOn;
 
 // Only the nodes that hold a var() in a color attribute or their style are visited, and each distinct attribute
 // value is resolved once per call (a 9,000-node figure repeats a handful of fills): one call is one render, so the
@@ -389,8 +537,20 @@ export function numText(data, { value, format, ...options } = {}) {
   });
 }
 
-const tableNumber = value => value === null || value === undefined || (typeof value === "number" && !Number.isFinite(value))
-  ? "NA" : typeof value === "bigint" ? String(value) : tickLabel(value);
+const ZERO_ONLY_RE = /^[−-]?(?:0+(?:\.0+)?|\.0+)$/;
+
+function formatTableScalar(value) {
+  if (value === null || value === undefined || (typeof value === "number" && !Number.isFinite(value))) return "NA";
+  if (typeof value === "bigint") return String(value);
+  if (typeof value === "number") {
+    const t = tickLabel(value);
+    if (Math.abs(value) > 1e-13 && ZERO_ONLY_RE.test(t)) return formatSci(value, { sig: 3 });
+    return t;
+  }
+  return String(value);
+}
+
+const tableNumber = formatTableScalar;
 const tableNumeric = value => value === null || value === undefined || typeof value === "number" || typeof value === "bigint"
   || (Array.isArray(value) && value.every(v => v === null || typeof v === "number" || typeof v === "bigint"));
 function recordTableSpec(rows, caption) {
@@ -435,7 +595,10 @@ export function hiddenTable(doc, spec = {}, defaultCaption) {
       if (cell.tagName === "TH") cell.scope = "row";
       const raw = typeof c.value === "function" ? c.value(row, ri) : row?.[c.value];
       const numeric = typeof raw === "number" || typeof raw === "bigint" || (Array.isArray(raw) && raw.every((x) => typeof x === "number"));
-      const display = typeof c.format === "function" ? c.format(raw, row) : numeric && typeof raw === "number" ? tickLabel(raw) : raw === null || raw === undefined ? "" : String(raw);
+      const display = typeof c.format === "function" ? c.format(raw, row)
+        : typeof raw === "number" ? formatTableScalar(raw)
+        : Array.isArray(raw) && raw.every((x) => typeof x === "number") ? formatTuple(raw, formatTableScalar)
+        : raw === null || raw === undefined ? "" : String(raw);
       if (numeric || c.num) setNum(cell, raw, display);
       else cell.textContent = display;
       if (c.name && typeof raw === "string") cell.setAttribute("data-prx-name", "");
@@ -482,12 +645,45 @@ function plotSize(svg) {
 
 const pct = (v, total) => `${(v / total) * CONFIG.percent}%`;
 
+/**
+ * Clamp a focusable plot mark's pixel coordinates into the visible [0, width] × [0, height] plot box (B10).
+ * Accepts clampFocusPoint(x, y, size) or clampFocusPoint({ x, y }, size).
+ */
+export function clampFocusPoint(xOrPoint, yOrSize, maybeSize) {
+  const isObj = xOrPoint !== null && typeof xOrPoint === "object";
+  const rawX = isObj ? xOrPoint.x : xOrPoint;
+  const rawY = isObj ? xOrPoint.y : yOrSize;
+  const size = (isObj ? yOrSize : maybeSize) ?? {};
+  const width = Number(size.width) > 0 ? Number(size.width) : CONFIG.defaultWidth;
+  const height = Number(size.height) > 0 ? Number(size.height) : width;
+  const px = Number.isFinite(rawX) ? rawX : width / 2;
+  const py = Number.isFinite(rawY) ? rawY : height / 2;
+  const x = Math.min(width, Math.max(0, px));
+  const y = Math.min(height, Math.max(0, py));
+  const clamped = x !== px || y !== py;
+  return {
+    x,
+    y,
+    rawX: px,
+    rawY: py,
+    leftPct: (x / width) * CONFIG.percent,
+    topPct: (y / height) * CONFIG.percent,
+    clamped,
+  };
+}
+
 function placeLabel(node, x, y, size, { anchor = "middle", valign = "middle" } = {}) {
   node.style.left = pct(x, size.width);
   node.style.top = pct(y, size.height);
   const tx = anchor === "start" ? "0" : anchor === "end" ? "-100%" : "-50%";
   const ty = valign === "top" ? "0" : valign === "bottom" ? "-100%" : "-50%";
   node.style.transform = `translate(${tx}, ${ty})`;
+}
+
+function placeKbdPoint(node, p, size) {
+  placeLabel(node, p.x, p.y, size);
+  if (p.clamped) node.setAttribute("data-clamped", "true");
+  else node.removeAttribute("data-clamped");
 }
 
 // Clip-aware bounds: a full matrix may be wider than its inner scroll viewport.
@@ -510,6 +706,7 @@ function pointTipBounds(tip, size) {
 function placePointTip(tip, p, size) {
   const bounds = pointTipBounds(tip, size);
   const x = Math.max(bounds.left, Math.min(bounds.right, p.x));
+  const y = Math.max(0, Math.min(size.height, p.y));
   const anchor = x - bounds.left > bounds.right - x ? "end" : "start";
   const style = tip.ownerDocument.defaultView?.getComputedStyle(tip);
   const gutter = (parseFloat(style?.marginLeft) || 0) + (parseFloat(style?.marginRight) || 0);
@@ -517,7 +714,7 @@ function placePointTip(tip, p, size) {
   tip.style.maxWidth = `min(18rem, ${Math.max(1, available)}px)`;
   tip.style.boxSizing = "border-box";
   tip.style.overflowWrap = "anywhere";
-  placeLabel(tip, x, p.y, size, { anchor, valign: p.y > size.height / 2 ? "bottom" : "top" });
+  placeLabel(tip, x, y, size, { anchor, valign: y > size.height / 2 ? "bottom" : "top" });
   if (bounds.physicalLeft !== null) {
     const rect = tip.getBoundingClientRect();
     const delta = rect.left < bounds.physicalLeft ? bounds.physicalLeft - rect.left
@@ -575,9 +772,12 @@ function drawKeyboard(state, result, kb, size) {
   const keyOf = kb.key ? accessor(kb.key) : (_, i) => i;
   const points = Array.from(kb.data, (d, i) => ({ d, i, key: String(keyOf(d, i)), x: position(sx, gx(d, i)), y: position(sy, gy(d, i)) }))
     .filter((p) => p.x !== undefined || p.y !== undefined)
-    .map((p) => ({ ...p, x: p.x ?? size.width / 2, y: p.y ?? size.height / 2 }));
+    .map((p) => {
+      const c = clampFocusPoint(p.x ?? size.width / 2, p.y ?? size.height / 2, size);
+      return { ...p, x: c.x, y: c.y, rawX: c.rawX, rawY: c.rawY, clamped: c.clamped };
+    });
   // a grid keeps the data's row order; other point sets are read left to right
-  if (kb.sort !== false && !(Number(kb.columns) > 1)) points.sort((a, b) => a.x - b.x || a.y - b.y);
+  if (kb.sort !== false && !(Number(kb.columns) > 1)) points.sort((a, b) => a.rawX - b.rawX || a.rawY - b.rawY);
   if (!points.length) return;
   let active = Math.max(0, points.findIndex((p) => p.key === state.activeKey));
   // Dense canvas matrices retain every data point with one movable DOM focus target.
@@ -590,7 +790,7 @@ function drawKeyboard(state, result, kb, size) {
       const p = points[active], text = String(title(p.d, p.i) ?? "");
       state.activeKey = p.key;
       b.setAttribute("aria-label", text.replace(/\s*\n\s*/g, ", "));
-      placeLabel(b, p.x, p.y, size);
+      placeKbdPoint(b, p, size);
       tip.textContent = text; tip.hidden = false;
       if (typeof kb.onFocus === "function") {
         try { kb.onFocus(p.d, p.i); } catch (err) { console.warn("chart.plot: keyboard.onFocus failed", err); }
@@ -599,7 +799,7 @@ function drawKeyboard(state, result, kb, size) {
     };
     const p = points[active];
     b.setAttribute("aria-label", String(title(p.d, p.i) ?? "").replace(/\s*\n\s*/g, ", "));
-    placeLabel(b, p.x, p.y, size); layer.append(b);
+    placeKbdPoint(b, p, size); layer.append(b);
     b.addEventListener("focus", show);
     b.addEventListener("keydown", e => {
       if (e.key === "Escape") { tip.hidden = true; return; }
@@ -616,7 +816,7 @@ function drawKeyboard(state, result, kb, size) {
           active = j;
           const q = points[j];
           b.setAttribute("aria-label", String(title(q.d, q.i) ?? "").replace(/\s*\n\s*/g, ", "));
-          placeLabel(b, q.x, q.y, size);
+          placeKbdPoint(b, q, size);
           show();
           if (typeof kb.onSelect === "function") { try { kb.onSelect(q.d, q.i); } catch (err) { console.warn("chart.plot: keyboard.onSelect failed", err); } }
         },
@@ -632,7 +832,7 @@ function drawKeyboard(state, result, kb, size) {
     b.setAttribute("aria-label", String(title(p.d, p.i) ?? "").replace(/\s*\n\s*/g, ", "));
     b.setAttribute("data-prx-focus-key", `kbd:${state.id}:${p.key}`);
     b.tabIndex = j === active ? 0 : -1;
-    placeLabel(b, p.x, p.y, size);
+    placeKbdPoint(b, p, size);
     layer.append(b);
     return b;
   });
@@ -797,32 +997,44 @@ export function plot(el, options = {}) {
   const state = chartState(el);
   const { doc, container, overlay, layer, tip } = state;
   const root = el.closest?.(".prx-widget");
+  const isV2 = (root ?? el.closest?.("[data-prx-frame]"))?.getAttribute("data-prx-frame") === "v2";
+  const baseFontSize = isV2 ? CONFIG.fontSizeV2 : CONFIG.fontSize;
   const fontScale = Number(root?.getAttribute("data-prx-font-scale")) || 1;
-  // one computed style for the whole render (palette, scale options and drawn nodes), read inside the plot panel
-  if (state.probe.parentNode !== container) container.prepend(state.probe);
-  const cs = computed(state.probe);
-  const pal = palette(el, cs);
+  // cached panel tokens per (doc, rootThemeKey), falling back to live computed style only on inline --prx-* overrides
+  const { cs, pal, varCache, cached } = resolvePanelContext(el, root, state);
 
   const rest = {};
   for (const [k, v] of Object.entries(options)) if (!WRAPPER_KEYS.has(k)) rest[k] = v;
   const opts = {};
   for (const [k, v] of Object.entries(rest)) opts[k] = CONFIG.scaleKeys.includes(k) || k === "style" ? resolveDeep(el, v, cs) : v;
   // a given width skips the measurement (reading clientWidth forces a layout)
-  const measured = Number(opts.width) ? 0 : Math.round(el.clientWidth || el.getBoundingClientRect?.().width || 0);
-  const width = Number(opts.width) || (measured > 0 ? Math.max(CONFIG.minWidth, measured) : CONFIG.defaultWidth);
+  const rawWidth = Number(opts.width);
+  const measured = rawWidth > 0 ? 0 : Math.round(el.clientWidth || el.getBoundingClientRect?.().width || 0);
+  const minPlotWidth = (Number(opts.marginLeft) || 0) + (Number(opts.marginRight) || 0) + 40;
+  const width = Math.max(minPlotWidth, rawWidth > 0 ? rawWidth : (measured > 0 ? Math.max(CONFIG.minWidth, measured) : CONFIG.defaultWidth));
   // the app's height, then options.aspect (width / height)
   const aspect = Number(aspectOption) || 0;
   const height = Number(opts.height) || (aspect > 0 ? Math.round(width / aspect) : undefined);
 
-  // numeric tick labels in the house style, recorded for data-num
+  // numeric tick labels in the house style, recorded per axis for data-num
   const labels = new Map();
+  const labelsByAxis = new Map();
   for (const k of CONFIG.positionAxes) {
     const s = opts[k];
     if (s?.type === "log" || s?.axis === null) continue;
     const user = s?.tickFormat;
     if (typeof user === "string") continue;
     const fmt = typeof user === "function" ? user : defaultTick;
-    opts[k] = { ...(s ?? {}), tickFormat: (d, i, t) => record(labels, d, fmt(d, i, t)) };
+    const axisMap = new Map();
+    labelsByAxis.set(k, axisMap);
+    opts[k] = {
+      ...(s ?? {}),
+      tickFormat: (d, i, t) => {
+        const out = fmt(d, i, t);
+        record(axisMap, d, out);
+        return record(labels, d, out);
+      },
+    };
   }
 
   activePlot = P;
@@ -841,7 +1053,7 @@ export function plot(el, options = {}) {
     background: "transparent",
     color: pal.plotFg,
     fontFamily: pal.fontSans || "system-ui, sans-serif",
-    fontSize: `${CONFIG.fontSize * fontScale}px`,
+    fontSize: `${baseFontSize * fontScale}px`,
     overflow: "visible",
     ...(isRecord(opts.style) ? opts.style : {}),
   };
@@ -876,12 +1088,17 @@ export function plot(el, options = {}) {
   // the svg is one image: Plot's labeled groups and text inside it stay out of the accessibility tree (A-08); the
   // figure keeps its alt text and the hidden data table
   for (const c of svg.children) c.setAttribute("aria-hidden", "true");
-  resolveNodeColors(el, figure, cs);
+  if (cached && varCache.size > 512) varCache.clear();
+  resolveNodeColors(el, figure, cs, cached ? varCache : new Map());
 
-  // data-num on numeric tick labels
-  for (const t of figure.querySelectorAll('g[aria-label$="tick label"] text')) {
-    const raw = labels.get(t.textContent);
-    if (raw !== undefined) t.setAttribute("data-num", dataNum(raw));
+  // data-num on numeric tick labels (resolved per axis first to prevent cross-axis text collisions)
+  for (const g of figure.querySelectorAll('g[aria-label$="tick label"]')) {
+    const axisKey = /^([a-z]+)-axis\b/i.exec(g.getAttribute("aria-label") ?? "")?.[1]?.toLowerCase();
+    const axisMap = axisKey ? labelsByAxis.get(axisKey) : null;
+    for (const t of g.querySelectorAll("text")) {
+      const raw = axisMap?.get(t.textContent) ?? labels.get(t.textContent);
+      if (raw !== undefined) t.setAttribute("data-num", dataNum(raw));
+    }
   }
 
   // plot area: the svg with the canvas, formula and keyboard layers over it (focus is kept across the redraw)
@@ -903,12 +1120,392 @@ export function plot(el, options = {}) {
   state.result = result;
   state.size = size;
   state.palette = pal;
+  state.cs = cs;
   for (const c of state.canvases) paintCanvas(state, c);
 
   const handle = {
-    el, figure, svg, area, legends, palette: pal,
+    el, host: el, figure, svg, area, legends, palette: pal,
     get table() { return state.table; },
     scale: (name) => result.scale(name),
+    exportSVG: () => exportSVG(handle),
+    toPNG: (o) => toPNG(handle, o),
+    destroy() {
+      container.remove();
+      delete el.__prxChart;
+    },
+  };
+  state.handle = handle;
+  return handle;
+}
+
+// ------------------------------------------------------------------------------------------- direct labels and SVG scenes
+
+/**
+ * Deterministic 1D vertical relaxation solver for direct series/endpoint/frontier labels.
+ * Takes [{ id, y, height?, ... }], preserves input array order, clamps into [minY, maxY],
+ * and separates vertically adjacent label centers by at least minGap (default 14 px).
+ */
+export function placeDirectLabels(items, options = {}) {
+  const list = Array.from(items ?? []);
+  if (!list.length) return [];
+  const normOpts = Array.isArray(options) ? { bounds: options } : (options ?? {});
+  const {
+    minGap: minGapOpt,
+    minGapPx,
+    minY: minYOpt,
+    maxY: maxYOpt,
+    bounds,
+  } = normOpts;
+  const minGap = Number.isFinite(minGapOpt) ? Math.max(0, minGapOpt)
+    : Number.isFinite(minGapPx) ? Math.max(0, minGapPx) : 14;
+  const rawMinY = Number.isFinite(minYOpt) ? minYOpt
+    : Array.isArray(bounds) && Number.isFinite(bounds[0]) ? bounds[0]
+    : Number.isFinite(bounds?.minY ?? bounds?.top) ? (bounds.minY ?? bounds.top) : 0;
+  const rawMaxY = Number.isFinite(maxYOpt) ? maxYOpt
+    : Array.isArray(bounds) && Number.isFinite(bounds[1]) ? bounds[1]
+    : Number.isFinite(bounds?.maxY ?? bounds?.bottom) ? (bounds.maxY ?? bounds.bottom) : Infinity;
+  const lo = Math.min(rawMinY, rawMaxY);
+  const hi = Math.max(rawMinY, rawMaxY);
+
+  const out = list.map((item) => ({
+    ...item,
+    targetY: item?.targetY ?? item?.y,
+    y: item?.y,
+    dy: 0,
+  }));
+
+  const active = list
+    .map((item, index) => ({
+      index,
+      targetY: Number(item?.y),
+      height: Number.isFinite(item?.height) && item.height > 0 ? Number(item.height) : minGap,
+    }))
+    .filter((entry) => Number.isFinite(entry.targetY));
+
+  if (!active.length) return out;
+
+  active.sort((a, b) => a.targetY - b.targetY || a.index - b.index);
+  const n = active.length;
+  if (n === 1) {
+    const yi = Math.min(hi, Math.max(lo, active[0].targetY));
+    out[active[0].index].y = yi;
+    out[active[0].index].dy = yi - active[0].targetY;
+    return out;
+  }
+
+  const gaps = new Array(n - 1);
+  let totalSpan = 0;
+  for (let i = 0; i < n - 1; i += 1) {
+    const g = Math.max(minGap, (active[i].height + active[i + 1].height) / 2);
+    gaps[i] = g;
+    totalSpan += g;
+  }
+  const avail = hi - lo;
+  if (Number.isFinite(avail) && totalSpan > avail && totalSpan > 0) {
+    const scale = avail / totalSpan;
+    for (let i = 0; i < n - 1; i += 1) gaps[i] *= scale;
+  }
+
+  const prefix = new Array(n);
+  prefix[0] = 0;
+  for (let i = 1; i < n; i += 1) prefix[i] = prefix[i - 1] + gaps[i - 1];
+
+  const blocks = [];
+  for (let i = 0; i < n; i += 1) {
+    blocks.push({ start: i, end: i, count: 1, sum: active[i].targetY - prefix[i] });
+    while (blocks.length >= 2) {
+      const b = blocks[blocks.length - 1];
+      const a = blocks[blocks.length - 2];
+      if (a.sum / a.count <= b.sum / b.count) break;
+      a.end = b.end;
+      a.count += b.count;
+      a.sum += b.sum;
+      blocks.pop();
+    }
+  }
+
+  const y = new Array(n);
+  for (const b of blocks) {
+    const mean = b.sum / b.count;
+    for (let i = b.start; i <= b.end; i += 1) y[i] = mean + prefix[i];
+  }
+
+  // Forward sweep from minY, then backward sweep from maxY
+  y[0] = Math.max(lo, y[0]);
+  for (let i = 1; i < n; i += 1) {
+    y[i] = Math.max(y[i], y[i - 1] + gaps[i - 1]);
+  }
+  if (Number.isFinite(hi)) {
+    y[n - 1] = Math.min(hi, y[n - 1]);
+    for (let i = n - 2; i >= 0; i -= 1) {
+      y[i] = Math.min(y[i], y[i + 1] - gaps[i]);
+    }
+  }
+  for (let i = 0; i < n; i += 1) {
+    const yi = Math.min(hi, Math.max(lo, y[i]));
+    const entry = active[i];
+    out[entry.index].y = yi;
+    out[entry.index].dy = yi - entry.targetY;
+  }
+  return out;
+}
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+const SVG_CAMEL_KEEP = new Set([
+  "viewBox", "preserveAspectRatio", "gradientUnits", "gradientTransform",
+  "patternUnits", "patternContentUnits", "patternTransform", "clipPathUnits",
+  "maskUnits", "maskContentUnits", "markerUnits", "markerWidth", "markerHeight",
+  "refX", "refY", "orient", "targetX", "targetY", "kernelMatrix", "stdDeviation",
+  "baseFrequency", "numOctaves", "stitchTiles", "tableValues", "spreadMethod",
+  "xChannelSelector", "yChannelSelector", "pointsAtX", "pointsAtY", "pointsAtZ",
+  "limitingConeAngle", "attributeName", "attributeType", "repeatCount",
+  "repeatDur", "calcMode", "keyTimes", "keySplines",
+]);
+let activeSvgDoc = null;
+
+function svgAttrName(key) {
+  if (key === "className") return "class";
+  if (key === "tabIndex") return "tabindex";
+  if (key.includes("-") || SVG_CAMEL_KEEP.has(key) || key === key.toLowerCase()) return key;
+  return key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
+}
+
+function isPlainAttrs(x) {
+  return x !== null && typeof x === "object" && !Array.isArray(x) && typeof x.nodeType !== "number";
+}
+
+/**
+ * Create an SVG element in SVG_NS. Accepts either svgEl(tag, attrs?, ...children)
+ * or svgEl(docOrOwnerNode, tag, attrs?, ...children) for headless/JSDOM contexts.
+ */
+export function svgEl(docOrTag, tagOrAttrs, ...rest) {
+  let doc = null;
+  let tag;
+  let attrs;
+  let children;
+  if (typeof docOrTag === "string") {
+    tag = docOrTag;
+    if (isPlainAttrs(tagOrAttrs) || tagOrAttrs === null || tagOrAttrs === undefined) {
+      attrs = tagOrAttrs;
+      children = rest;
+    } else {
+      attrs = null;
+      children = [tagOrAttrs, ...rest];
+    }
+  } else if (docOrTag && typeof docOrTag === "object") {
+    doc = typeof docOrTag.createElementNS === "function" ? docOrTag : docOrTag.ownerDocument;
+    tag = tagOrAttrs;
+    const [maybeAttrs, ...more] = rest;
+    if (isPlainAttrs(maybeAttrs) || maybeAttrs === null || maybeAttrs === undefined) {
+      attrs = maybeAttrs;
+      children = more;
+    } else {
+      attrs = null;
+      children = rest;
+    }
+  } else {
+    throw new TypeError("svgEl: expected (tag, attrs?, ...children) or (doc, tag, attrs?, ...children)");
+  }
+
+  const flatChildren = children.flat(Infinity);
+  if (!doc) {
+    const explicitDoc = attrs?.document ?? attrs?.doc;
+    doc = (explicitDoc?.createElementNS ? explicitDoc : explicitDoc?.ownerDocument)
+      ?? flatChildren.find((c) => c && typeof c === "object" && c.ownerDocument)?.ownerDocument
+      ?? activeSvgDoc
+      ?? globalThis.document;
+  }
+  if (!doc || typeof doc.createElementNS !== "function") {
+    throw new Error("svgEl: no Document available (pass doc as first argument or call inside svgScene)");
+  }
+
+  const node = doc.createElementNS(SVG_NS, String(tag));
+  let hasTextAttr = false;
+  if (attrs) {
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v === null || v === undefined || v === false || k === "doc" || k === "document" || k === "num") continue;
+      if (k === "text") {
+        node.textContent = String(v);
+        hasTextAttr = true;
+      } else if (k === "dataset" && isPlainAttrs(v)) {
+        for (const [dk, dv] of Object.entries(v)) {
+          if (dv !== null && dv !== undefined && dv !== false) {
+            const dName = `data-${dk.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}`;
+            node.setAttribute(dName, String(dv));
+          }
+        }
+      } else if (k === "style" && isPlainAttrs(v)) {
+        const css = Object.entries(v)
+          .filter(([, sv]) => sv !== null && sv !== undefined && sv !== false)
+          .map(([sk, sv]) => `${sk.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}: ${sv}`)
+          .join("; ");
+        if (css) node.setAttribute("style", css);
+      } else if (k.startsWith("on") && k.length > 2 && typeof v === "function") {
+        node.addEventListener(k.slice(2).toLowerCase(), v);
+      } else if (v === true) {
+        node.setAttribute(svgAttrName(k), "");
+      } else {
+        node.setAttribute(svgAttrName(k), String(v));
+      }
+    }
+    if (attrs.num !== undefined) {
+      if (hasTextAttr) node.setAttribute("data-num", dataNum(attrs.num));
+      else setNum(node, attrs.num, typeof attrs.num === "number" ? tickLabel(attrs.num) : String(attrs.num));
+    }
+  }
+  for (const child of flatChildren) {
+    if (child === null || child === undefined || child === false) continue;
+    node.append(typeof child === "object" && typeof child.nodeType === "number" ? child : doc.createTextNode(String(child)));
+  }
+  return node;
+}
+
+/**
+ * Measure container width and build a responsive 1:1 viewBox SVG figure scene (compatible with mdomain/visual.js
+ * primitives and chart-grammar.md §2.1). Resolves --prx-* tokens on plot paper, attaches optional hiddenTable,
+ * and preserves keyboard focus across re-renders.
+ */
+export function svgScene(el, options = {}, draw) {
+  if (!el || el.nodeType !== 1) throw new TypeError("svgScene: el must be an element");
+  const opts = typeof options === "function" ? {} : (options ?? {});
+  const drawFn = typeof options === "function" ? options
+    : typeof draw === "function" ? draw
+    : typeof opts.draw === "function" ? opts.draw
+    : typeof opts.render === "function" ? opts.render : null;
+
+  const state = chartState(el);
+  state.pointer = null;
+  state.pointerPinned = null;
+  const { doc, container, probe } = state;
+  const root = el.closest?.(".prx-widget");
+  const isV2 = (root ?? el.closest?.("[data-prx-frame]"))?.getAttribute("data-prx-frame") === "v2";
+  const fontScale = Number(root?.getAttribute("data-prx-font-scale")) || 1;
+  const baseFont = Number(opts.fontSize) || (isV2 ? CONFIG.fontSizeV2 : CONFIG.fontSize);
+  const fontSize = baseFont * fontScale;
+  const { cs, pal, varCache, cached } = resolvePanelContext(el, root, state);
+
+  const measured = Number(opts.width) ? 0 : Math.round(el.clientWidth || el.getBoundingClientRect?.().width || 0);
+  const minWidth = Number(opts.minWidth) > 0 ? Number(opts.minWidth) : CONFIG.minWidth;
+  const width = Math.round(Number(opts.width) || (measured > 0 ? Math.max(minWidth, measured) : CONFIG.defaultWidth));
+  const aspect = Number(opts.aspect) || 0;
+  const height = Math.round(Number(opts.height) || (aspect > 0 ? width / aspect : Math.max(120, Math.round(width * 0.5))));
+  const margin = { top: 16, right: 16, bottom: 28, left: 40, ...(opts.margin ?? {}) };
+  const innerWidth = Math.max(1, width - margin.left - margin.right);
+  const innerHeight = Math.max(1, height - margin.top - margin.bottom);
+
+  const boundEl = (tag, attrs, ...children) => svgEl(doc, tag, attrs, ...children);
+  const labelText = opts.alt ?? opts.ariaLabel ?? (typeof opts.table?.caption === "string" ? opts.table.caption : "");
+  const svg = boundEl("svg", {
+    viewBox: `0 0 ${width} ${height}`,
+    width,
+    height,
+    class: opts.svgClass ?? undefined,
+    role: opts.ariaHidden ? undefined : (opts.role ?? "img"),
+    "aria-label": opts.ariaHidden ? undefined : (labelText || undefined),
+    "aria-hidden": opts.ariaHidden ? "true" : undefined,
+    style: {
+      display: "block",
+      width: "100%",
+      maxWidth: "100%",
+      height: "auto",
+      overflow: "visible",
+      color: pal.plotFg,
+      fontFamily: pal.fontSans || "system-ui, sans-serif",
+      fontSize: `${fontSize}px`,
+      ...(isPlainAttrs(opts.style) ? opts.style : {}),
+    },
+  });
+
+  const scene = {
+    el: boundEl,
+    svgEl: boundEl,
+    h: boundEl,
+    svg,
+    doc,
+    width,
+    height,
+    margin,
+    innerWidth,
+    innerHeight,
+    fontSize,
+    palette: pal,
+    add(...nodes) {
+      for (const n of nodes.flat(Infinity)) {
+        if (n !== null && n !== undefined && n !== false) svg.append(n);
+      }
+      return scene;
+    },
+    numText(attrs, raw, display) {
+      const text = display !== undefined ? String(display) : (typeof raw === "number" ? tickLabel(raw) : String(raw));
+      return boundEl("text", { ...(attrs ?? {}), text, "data-num": dataNum(raw) });
+    },
+    hatchDef(id = `prx-hatch-${state.id}`) {
+      const defs = svg.querySelector("defs") ?? boundEl("defs");
+      if (!defs.parentNode) svg.prepend(defs);
+      if (!defs.querySelector(`[id="${CSS_ESCAPE(id)}"]`)) {
+        defs.append(boundEl("pattern", {
+          id, width: 6, height: 6, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)",
+        },
+        boundEl("rect", { width: 6, height: 6, fill: pal.relWithheld }),
+        boundEl("line", { x1: 0, y1: 0, x2: 0, y2: 6, stroke: pal.hatch, strokeWidth: 1.5 })));
+      }
+      return `url(#${id})`;
+    },
+  };
+
+  const prevDoc = activeSvgDoc;
+  activeSvgDoc = doc;
+  try {
+    if (opts.children) scene.add(opts.children);
+    if (drawFn) {
+      const returned = drawFn(scene);
+      if (returned && returned !== scene && returned !== svg) scene.add(returned);
+    }
+  } finally {
+    activeSvgDoc = prevDoc;
+  }
+
+  if (opts.ariaChildrenHidden !== false && svg.getAttribute("role") === "img" && !svg.querySelector("[tabindex]")) {
+    for (const c of svg.children) {
+      if (c.tagName.toLowerCase() !== "title" && c.tagName.toLowerCase() !== "desc") {
+        c.setAttribute("aria-hidden", "true");
+      }
+    }
+  }
+
+  if (cached && varCache.size > 512) varCache.clear();
+  resolveNodeColors(el, svg, cs, cached ? varCache : new Map());
+
+  if (opts.mount === false) {
+    return { ...scene, host: el, figure: null, area: null, table: null };
+  }
+
+  const figure = doc.createElement("figure");
+  figure.className = `prx-figure${opts.className ? ` ${opts.className}` : ""}`;
+  const area = doc.createElement("div");
+  area.className = "prx-chart-area";
+  area.append(svg);
+  figure.append(area);
+
+  keepFocus(container, () => {
+    const tableNode = opts.table ? hiddenTable(doc, opts.table) : null;
+    if (tableNode && Array.isArray(opts.table) && labelText) tableNode.querySelector("table")?.setAttribute("aria-label", labelText);
+    container.replaceChildren(probe, figure, ...(tableNode ? [tableNode] : []));
+    state.table = tableNode;
+  });
+
+  state.figure = figure;
+  state.svg = svg;
+  state.size = { width, height };
+  state.palette = pal;
+  state.cs = cs;
+
+  const handle = {
+    ...scene,
+    host: el,
+    figure,
+    area,
+    get table() { return state.table; },
     exportSVG: () => exportSVG(handle),
     toPNG: (o) => toPNG(handle, o),
     destroy() {
@@ -943,7 +1540,8 @@ function paintCanvas(state, c) {
  * Returns { canvas, remove() }.
  */
 export function canvasLayer(chart, draw) {
-  const state = chart.el.__prxChart;
+  const host = chart.host ?? chart.el;
+  const state = host.__prxChart;
   const canvas = state.doc.createElement("canvas");
   canvas.className = "prx-chart-canvas";
   canvas.setAttribute("aria-hidden", "true");
@@ -963,12 +1561,13 @@ export function canvasLayer(chart, draw) {
 /** The main svg as standalone SVG text: concrete colors, currentColor replaced, a background rect first
  * (background: false leaves it out). */
 export function exportSVG(chart, { background = true } = {}) {
-  const state = chart.el.__prxChart;
+  const host = chart.host ?? chart.el;
+  const state = host.__prxChart;
   const pal = state.palette;
   const clone = chart.svg.cloneNode(true);
   const SVGNS = "http://www.w3.org/2000/svg";
   clone.setAttribute("xmlns", SVGNS);
-  resolveNodeColors(chart.el, clone);
+  resolveNodeColors(host, clone, state.cs);
   for (const n of [clone, ...clone.querySelectorAll("*")]) {
     for (const a of CONFIG.colorAttributes) if (n.getAttribute(a) === "currentColor") n.setAttribute(a, pal.plotFg);
   }
@@ -983,7 +1582,8 @@ export function exportSVG(chart, { background = true } = {}) {
 
 /** PNG data URL of the figure (canvas layers, then the svg), at `scale` × the svg size. Browser only. */
 export function toPNG(chart, { scale = CONFIG.pngScale } = {}) {
-  const state = chart.el.__prxChart;
+  const host = chart.host ?? chart.el;
+  const state = host.__prxChart;
   const win = state.doc.defaultView;
   const { width, height } = state.size;
   const canvas = state.doc.createElement("canvas");

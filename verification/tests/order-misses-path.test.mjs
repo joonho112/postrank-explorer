@@ -16,6 +16,10 @@ test("the exact cost path moves its guide with the native slider and shows misse
           tau: Number(g.dataset.prxCurrentTau), x: Number(g.querySelector("line").getAttribute("x1")),
         }));
         const missRects = () => page.$$eval('[data-prx-miss-band] rect', nodes => nodes.length);
+        const reports = await page.$$eval(".prx-stage .prx-pt-strips .prx-pt-strip", strips => strips.map(node => node.innerText));
+        assert.equal(reports.length, 2);
+        assert.match(reports[0], /Cuts of A, B, C[\s\S]*N = 0/);
+        assert.match(reports[1], /Any report in the declared family[\s\S]*N = 2/);
         assert.equal(await missRects(), 1);
         assert.deepEqual(await page.$$eval('[data-prx-tie-prices] text', nodes => nodes.map(n => n.textContent).sort()), [".15", ".30", ".35"]);
         const before = await guide();
@@ -31,7 +35,7 @@ test("the exact cost path moves its guide with the native slider and shows misse
           n.value = ".30";
           n.dispatchEvent(new Event("input", { bubbles: true }));
         });
-        await page.waitForFunction(() => document.querySelector(".prx-readout").textContent.includes("Tied at .2000"));
+        await page.waitForFunction(() => document.querySelector(".prx-readout").textContent.includes("Tied at .200"));
         assert.match(await page.$eval(".prx-readout", n => n.textContent), /2\/1\/2 \(N 2\).*3\/1\/2 \(N 3\)/);
         assert.equal(await page.$$eval('details[data-prx-disclosure="all-reports"] tbody tr', nodes => nodes.length), 13);
         await page.goto(`${url}?cap=1&opt=cap`);

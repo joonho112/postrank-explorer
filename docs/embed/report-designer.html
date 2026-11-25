@@ -3,15 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="prx-page-root" content="../">
 <link rel="icon" href="data:,">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/tools/report-designer.html">
 <!-- T.2 report-designer. Build inputs: catalog.json; do not edit. -->
 <title>Case-report specification and export · postrank Explorer</title>
 <script>
-  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  // ?theme=light|dark wins over prefers-color-scheme; ?hide=chrome|title,caption,presets,disclosures trims slide chrome (credit stays visible)
   (function () {
-    var t = new URLSearchParams(location.search).get("theme");
+    var q = new URLSearchParams(location.search), t = q.get("theme"), h = q.get("hide");
     if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    if (t === "system") document.documentElement.dataset.themePreference = "system";
+    if (h) {
+      var allow = { title: 1, caption: 1, presets: 1, disclosures: 1 }, out = [];
+      h.split(",").forEach(function (raw) {
+        var k = raw.trim().toLowerCase();
+        if (k === "chrome") ["title", "caption"].forEach(function (c) { if (out.indexOf(c) < 0) out.push(c); });
+        else if (allow[k] && out.indexOf(k) < 0) out.push(k);
+      });
+      if (out.length) document.documentElement.setAttribute("data-prx-hide", out.join(" "));
+    }
   })();
 </script>
 <link rel="stylesheet" href="../styles/tokens.css">
@@ -21,7 +32,8 @@
 <main>
 <h1 class="prx-embed-title">Case-report specification and export</h1>
 <div id="app"><p>This app needs JavaScript.</p></div>
-<p class="prx-embed-credit">postrank Explorer · T.2 · Data: California Department of Education · source conditions apply. · Kline, Rose and Walters (2024) · doi:10.1257/aer.20230700 · doi:10.3886/E198284V1 · CC-BY-NC · Noncommercial · No endorsement · Changes: continuous midpoint-cell comparison probabilities and matching central 90% marginal intervals replace KRW’s posterior grids (postrank adaptation). · California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · https://www.cde.ca.gov/re/di/cr/index.asp · No CDE endorsement is implied · changes noted · Chetty, Friedman, Hendren, Jones and Porter (2022) · doi:10.7910/DVN/NKCQM1 · CC BY 4.0 · Opportunity Insights and U.S. Census Bureau · <a href="../pages/tools/report-designer.html">page</a></p>
+<p class="prx-embed-credit">postrank Explorer · T.2 · Data: California Department of Education · source conditions apply. · Kline, Rose and Walters (2024) · doi:10.1257/aer.20230700 · doi:10.3886/E198284V1 · CC-BY-NC · Noncommercial · No endorsement · Changes: continuous midpoint-cell comparison probabilities and matching central 90% marginal intervals replace KRW’s posterior grids (postrank adaptation). · California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26 · https://www.cde.ca.gov/re/di/cr/index.asp · No CDE endorsement is implied · changes noted · Chetty, Friedman, Hendren, Jones and Porter (2022) · doi:10.7910/DVN/NKCQM1 · CC BY 4.0 · Opportunity Insights and U.S. Census Bureau · <a class="prx-embed-open" href="../pages/tools/report-designer.html">Open full page</a></p>
+<details class="prx-embed-theory"><summary>Theory references</summary><ul><li><a href="https://joonho112.github.io/postrank-theory-book/chapters/26-krw-illustration.html#sec-krw-common-report-scope">Chapter 26 · Specification of a common report</a></li><li><a href="https://joonho112.github.io/postrank-theory-book/chapters/32-governance-communication.html#sec-governance-transparency-appeal">Chapter 32 · Documentation and correction</a></li></ul></details>
 </main>
 <!-- classic scripts only, so this page works from file:// -->
 <script src="../js/vendor/d3.min.js"></script>

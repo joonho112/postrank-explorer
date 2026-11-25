@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/frontier.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The error–disclosure frontier – postrank Explorer">
+<meta property="og:description" content="The lower convex boundary of expected wrong counts at different levels of disclosure.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/frontier.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/frontier.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -606,7 +631,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">The error–disclosure frontier</h1>
-<p class="subtitle lead">2.10 · after the postrank theory book, ch.&nbsp;16, and Kline, Rose and Walters (2024), slides 58–60</p>
+<p class="subtitle lead">2.10 · after the postrank theory book, ch.&nbsp;22, and Kline, Rose and Walters (2024), slides 58–60</p>
 </div>
 
 <div>
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>Each point represents one report. The horizontal axis gives the number of directions it states, and the vertical axis gives the expected number it gets wrong. A line of slope <span class="math inline"><math><mi>τ</mi></math></span> supporting the cloud from below identifies the report with the lowest posterior risk at that withholding cost. As τ changes, the points touched by these lines trace the lower convex boundary. Each vertex is attainable by a single report. Points between vertices may require randomizing between whole reports. The circles identify the best single report at each attainable number of stated pairs.</p>
+<p>Plotting every grade report by stated pairs <span class="math inline"><math><mi>N</mi></math></span> and expected wrong directions <span class="math inline"><math><mi>E</mi></math></span> reveals a lower convex frontier <span class="math inline"><math><mrow><mi>H</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>m</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span>. Raising a supporting line of slope <span class="math inline"><math><mi>τ</mi></math></span> from below identifies the minimum-risk report at each withholding cost.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -637,19 +662,18 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>τ .20, all reports.</strong> The touched vertex states 14 pairs and expects .3576 wrong directions, with risk .0372. The vertex table records this report and its adjacent slopes. The circles below the gray columns mark the smallest error at each attainable disclosure; only some of those circles are corners of the dashed boundary.</li>
-<li><strong>τ .15, all reports.</strong> A lower withholding cost selects a smaller disclosure: 13 pairs, .1692 expected wrong directions and risk .0313. A smaller τ reduces the savings from replacing a withheld comparison with a stated direction. The posterior is the same.</li>
-<li><strong>τ .40, all reports.</strong> The line reaches the last vertex: 15 stated pairs, .7194 expected wrong directions and risk .0480. This is the strict order. The <strong>Every report (full height)</strong> view gives the full vertical range; the close view resolves reports near the frontier.</li>
-<li><strong>τ .20, at most 3 grades.</strong> Only 603 reports are available. The boundary ends at 12 stated pairs and .02477 expected wrong directions; the selected report has risk .0417. The missing corners belong to reports outside this family, so they cannot be selected even when withholding becomes costly.</li>
+<li><strong>τ .20, all reports.</strong> The touched vertex states 14 pairs with .358 expected wrong directions and risk .0372.</li>
+<li><strong>τ .15, all reports.</strong> A lower withholding cost selects 13 stated pairs, .169 expected wrong directions, and risk .0313.</li>
+<li><strong>τ .40, all reports.</strong> Costlier withholding reaches the strict order: 15 stated pairs, .719 expected wrong directions, and risk .0480.</li>
+<li><strong>τ .20, at most 3 grades.</strong> Among 603 capped reports, the boundary ends at 12 stated pairs with .0248 expected wrong directions and risk .0417.</li>
 </ul>
-<p>Each edge slope gives the additional expected wrong directions per additional stated pair. It is also the withholding cost at which both endpoint reports have equal risk. The same change points appear in <em>The withholding cost</em>.</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>The dashed segments describe mixtures of complete reports, so a point between corners need not be a deterministic report. These are fictional tutorial sites under one supplied posterior and one criterion. KRW’s related empirical figure is Figure 6 in Section V.E, “Reporting Possibilities”; the cloud here is computed from the tutorial law.</p>
+<p>Dashed segments represent random mixtures of complete reports rather than a single deterministic card. Sites are fictional tutorial data under one supplied posterior (compare Kline, Rose and Walters 2024, Section V.E, Figure 6).</p>
 </div>
 </div>
 </div>
@@ -668,12 +692,13 @@ window.Quarto = {
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(postrank)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">postrank_frontier</span>(pr_tutorial<span class="sc">$</span>one, <span class="at">weights=</span><span class="fu">c</span>(<span class="at">score_A=</span><span class="dv">1</span>), <span class="at">tau=</span><span class="fu">c</span>(.<span class="dv">15</span>,.<span class="dv">20</span>,.<span class="dv">40</span>), <span class="at">G_max=</span><span class="dv">6</span>L, <span class="at">backend=</span><span class="st">"highs"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>p<span class="sc">$</span>table[, <span class="fu">c</span>(<span class="st">"tau"</span>, <span class="st">"N"</span>, <span class="st">"primary_risk"</span>, <span class="st">"status"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>HiGHS solves one optimization at each requested τ and returns its solver status. The browser enumerates the six-site family once to draw the whole convex boundary, including mixtures between vertices.</p>
+<p>HiGHS solves each requested τ; the browser enumerates the six-site family to trace <span class="math inline"><math><mrow><mi>H</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>m</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span>.</p>
 </div>
 </div>
 </div>
 <p>Standalone: <a href="../../embed/frontier.html">embed/frontier.html</a>, for example <code>?tau=.15&amp;family=all&amp;view=near</code>.</p>
 <p>Related applications: <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a> · <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a> · <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier">Comparing reports at matched disclosure</a>.</p>
 
 
 </section>
@@ -1146,7 +1171,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

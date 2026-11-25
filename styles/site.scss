@@ -13,6 +13,9 @@ $navbar-hl: #17645E;
 /*-- scss:rules --*/
 // Site shell. Colors are tokens from styles/tokens.css with the light value as fallback.
 
+// Clearance for fixed Quarto Headroom navbar when Tab/Shift+Tab scrolls focused controls into view.
+html { scroll-padding-top: var(--prx-nav-offset, 4.5rem); }
+
 // A compact title block, so an app page shows its app without scrolling at 1280 x 800.
 #title-block-header.quarto-title-block { margin-bottom: 0.6rem; }
 .quarto-title .title { font-size: 2rem; margin-bottom: 0.1rem; }
@@ -27,18 +30,24 @@ main.content > p:first-of-type { margin-top: 0.4rem; }
 // Cards of a section index (pages/<slug>/_apps.md, written by scripts/build.mjs).
 .prx-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
-  gap: 1rem;
-  align-items: start;
-  margin: 1rem 0 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 0.9rem;
+  align-items: stretch;
+  margin: 0.85rem 0 1.4rem;
 }
 .prx-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   background: var(--prx-bg-raised, #f3f1e8);
   border: 1px solid var(--prx-border, #dfdfd3);
   border-radius: 8px;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.prx-card:hover {
+  border-color: var(--prx-accent, #17645E);
+  box-shadow: 0 2px 8px #343b3614;
 }
 .prx-card-planned { background: transparent; border-style: dashed; }
 .prx-card-thumb img {
@@ -46,24 +55,111 @@ main.content > p:first-of-type { margin-top: 0.4rem; }
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  object-position: top left;
+  object-position: top center;
   border-bottom: 1px solid var(--prx-border, #dfdfd3);
 }
-.prx-card-body { padding: 0.65rem 0.85rem 0.75rem; font-size: 0.95rem; }
-.prx-card-body h3 { margin: 0.1rem 0 0.35rem; font-size: 1.1rem; }
-.prx-card-body p { margin: 0 0 0.35rem; }
-.prx-card-id { font-size: 0.8rem; color: var(--prx-fg-muted, #5c6560); }
+.prx-card-body { display: flex; flex-direction: column; flex: 1 1 auto; padding: 0.55rem 0.75rem 0.65rem; font-size: 0.9rem; line-height: 1.38; }
+.prx-card-body h3 { position: static !important; margin: 0.08rem 0 0.3rem; font-size: 1.02rem; line-height: 1.25; }
+.prx-card-body h3 > a:first-child { text-decoration: none; }
+.prx-card-body h3 > a:first-child:hover { text-decoration: underline; }
+.prx-card-body h3 > a:first-child:not(.anchorjs-link)::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.prx-card-body h3 > a.anchorjs-link { display: none !important; pointer-events: none !important; }
+.prx-card-body p { margin: 0 0 0.3rem; }
+.prx-card-id { font-size: 0.78rem; color: var(--prx-fg-muted, #5c6560); }
 .prx-card-planned .prx-status { font-style: italic; }
 .prx-card-built .prx-status { font-weight: 700; color: var(--prx-accent, #17645E); }
-.prx-card-links { font-size: 0.85rem; }
+.prx-card-links { margin-top: auto; padding-top: 0.2rem; font-size: 0.82rem; }
+.prx-card-links a { position: relative; z-index: 2; display: inline-flex; align-items: center; min-height: 44px; padding-inline: .5rem; border: 1px solid var(--prx-border-strong); border-radius: .35rem; font-weight: 600; }
 
 // The catalog tables: the full page width, a smaller type.
 .prx-catalog table { font-size: 0.85rem; }
 .prx-catalog td, .prx-catalog th { padding: 0.35rem 0.5rem; }
 
-// The home page's storyline: five short sections.
-.prx-story { padding-left: 1.2rem; }
-.prx-story li { margin-bottom: 0.45rem; }
+// Home page: six fixed-category visual tiles (#organisation .prx-story > ul > li).
+.prx-story { padding-left: 0; margin: 0.75rem 0 1.2rem; }
+.prx-story > ul.prx-home-tiles {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+.prx-story > ul.prx-home-tiles > li.prx-home-tile {
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--prx-bg-raised, #f3f1e8);
+  border: 1px solid var(--prx-border, #dfdfd3);
+  border-radius: 10px;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.prx-story > ul.prx-home-tiles > li.prx-home-tile:hover {
+  border-color: var(--prx-accent, #17645E);
+  box-shadow: 0 3px 10px #343b3616;
+}
+.prx-home-tile .prx-tile-thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top center;
+  border-bottom: 1px solid var(--prx-border, #dfdfd3);
+}
+.prx-home-tile > .prx-tile-meta {
+  display: block;
+  padding: 0.55rem 0.8rem 0.1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--prx-fg-muted, #5c6560);
+  letter-spacing: 0.02em;
+}
+.prx-home-tile > strong.prx-tile-head {
+  display: block;
+  padding: 0 0.8rem 0.2rem;
+  font-size: 1.08rem;
+  line-height: 1.25;
+}
+.prx-home-tile > strong.prx-tile-head > a {
+  color: var(--prx-fg, #343b36);
+  text-decoration: none;
+}
+.prx-home-tile > strong.prx-tile-head > a:hover {
+  color: var(--prx-accent, #17645E);
+  text-decoration: underline;
+}
+.prx-home-tile > strong.prx-tile-head > a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.prx-home-tile > .prx-tile-copy {
+  display: block;
+  padding: 0 0.8rem 0.65rem;
+  font-size: 0.88rem;
+  line-height: 1.38;
+  color: var(--prx-fg, #343b36);
+}
+.prx-home-tile > ul.prx-tile-sub {
+  list-style: none;
+  padding: 0 0.8rem 0.65rem;
+  margin: auto 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+}
+.prx-home-tile ul.prx-tile-sub > li { margin: 0; }
+.prx-home-tile > .prx-tile-thumb, .prx-home-tile > .prx-tile-copy a, .prx-home-tile ul.prx-tile-sub a { position: relative; z-index: 2; }
+@media (max-width: 991.98px) {
+  .prx-story > ul.prx-home-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 575.98px) {
+  .prx-story > ul.prx-home-tiles { grid-template-columns: minmax(0, 1fr); }
+}
 
 // At phone width a wide table scrolls inside its own box, never the page.
 @media (max-width: 575.98px) {
@@ -151,21 +247,78 @@ main.content p a ~ code { white-space: nowrap; overflow-wrap: normal; word-break
 // Content discovery: all public cards remain in the HTML when scripting is unavailable.
 .prx-catalog-filters {
   display: grid; grid-template-columns: minmax(14rem, 2fr) repeat(3, minmax(9rem, 1fr)) auto;
-  gap: .7rem; align-items: end; margin: 1.3rem 0 .8rem;
-  label { display: grid; gap: .3rem; min-width: 0; font-size: .92rem; }
-  input, select, button { width: 100%; min-height: 2.75rem; border: 1px solid #89938a; border-radius: 5px; background: #fffef9; color: #343b36; padding: .45rem .6rem; font: inherit; }
+  gap: .65rem; align-items: end; margin: .8rem 0 .65rem;
+  label { display: grid; gap: .25rem; min-width: 0; font-size: .88rem; }
+  input, select, button { width: 100%; min-height: 2.75rem; border: 1px solid #89938a; border-radius: 5px; background: #fffef9; color: #343b36; padding: .4rem .55rem; font: inherit; }
   button { width: auto; white-space: nowrap; }
   button:disabled { opacity: .65; }
 }
+@media (min-width: 768px) {
+  .prx-catalog-filters {
+    position: sticky;
+    top: 3.875rem;
+    z-index: 20;
+    padding: .55rem .65rem;
+    background: #fdfbf6f2;
+    backdrop-filter: blur(4px);
+    border: 1px solid #d5dcd3;
+    border-radius: 8px;
+  }
+}
+.prx-catalog .prx-cards {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.2rem), 1fr));
+  gap: .8rem;
+}
 .prx-catalog-filters[hidden], .prx-catalog .prx-card[hidden], .prx-catalog-empty[hidden] { display: none; }
-.prx-catalog-count { margin: .5rem 0; color: #4b574e; }
-.prx-catalog-topics { display: flex; flex-wrap: wrap; gap: .25rem; font-size: .77rem; }
-.prx-catalog-topics span { padding: .12rem .35rem; border: 1px solid #c5d0c7; border-radius: 4px; background: #e9eee6; color: #354b3c; }
-.prx-catalog-data { font-size: .82rem; color: #4b574e; }
-.prx-catalog .prx-card-body { min-width: 0; }
-.prx-catalog .prx-card-id { margin-top: .5rem; }
+.prx-catalog-count { margin: .4rem 0; color: #4b574e; font-size: .9rem; }
+.prx-catalog-topics { display: flex; flex-wrap: wrap; gap: .2rem; font-size: .72rem; line-height: 1.2; }
+.prx-catalog-topics span { padding: .08rem .32rem; border: 1px solid #c5d0c7; border-radius: 4px; background: #e9eee6; color: #354b3c; }
+.prx-catalog-data { font-size: .79rem; color: #4b574e; }
+.prx-catalog .prx-card-body { min-width: 0; padding: .5rem .65rem .6rem; font-size: .875rem; }
+.prx-catalog .prx-card-id { margin-top: .35rem; }
 @media (max-width: 1100px) { .prx-catalog-filters { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 575.98px) { .prx-catalog-filters { grid-template-columns: minmax(0,1fr); } }
+
+// Sticky section and symbol jump index on Terminology (pages/words.qmd).
+.prx-words-jump {
+  display: grid;
+  gap: .32rem;
+  margin: .75rem 0 1.15rem;
+  padding: .45rem .65rem;
+  background: #f3f1e8f2;
+  border: 1px solid #d5dcd3;
+  border-radius: 8px;
+  font-size: .84rem;
+  line-height: 1.3;
+}
+.prx-words-jump__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .22rem .42rem;
+}
+@media (min-width: 768px) {
+  .prx-words-jump {
+    position: sticky;
+    top: 3.875rem;
+    z-index: 18;
+    backdrop-filter: blur(4px);
+  }
+  main.content:has(.prx-words-jump) :is(section[id], h2[id], .prx-glossary dt, [id^="sym-"]) {
+    scroll-margin-top: 8.5rem;
+  }
+}
+.prx-words-jump__label { font-weight: 700; color: #4b574e; }
+.prx-words-jump__sep { color: #89938a; }
+.prx-words-jump a {
+  display: inline-flex;
+  align-items: center;
+  padding: .12rem .34rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.prx-words-jump a:hover { background: #e1ece4; text-decoration: underline; }
 
 // Native glossary definitions keep the term, explanation and app links together on small screens.
 .prx-glossary dl { display: grid; grid-template-columns: minmax(9rem, .28fr) minmax(0, 1fr); gap: .8rem 1.5rem; }
@@ -202,4 +355,12 @@ main.content p a ~ code { white-space: nowrap; overflow-wrap: normal; word-break
 @media (max-width: 575px) {
   .prx-app-sequence { grid-template-columns: minmax(0, 1fr); }
   .prx-app-sequence a[rel="next"] { grid-column: 1; }
+}
+
+@media(max-width: 600px) {
+  main.content:has(> #app) #title-block-header { margin-block: .3rem .4rem; }
+  main.content:has(> #app) .quarto-title .title { font-size: 1.5rem; line-height: 1.17; }
+  main.content:has(> #app) .quarto-title p.subtitle,
+  main.content:has(> #app) #title-block-header .description { font-size: .92rem; line-height: 1.3; margin-block: .17rem; }
+  main.content:has(> #app) .quarto-title-meta:empty { display: none; }
 }

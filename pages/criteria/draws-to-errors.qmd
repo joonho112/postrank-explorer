@@ -4,11 +4,7 @@ subtitle: "4.11 · after postrank’s posterior-input vignettes"
 description: "Pairing values from different posterior draws can change the estimated direction errors."
 ---
 
-A posterior draw gives the values of all units and criteria in one joint state. We estimate the probability of
-a wrong direction by counting the states in which it is wrong and dividing by the number of draws. The package's
-32-state example shows what happens if we shift the values for one unit by a row. The unit has the same
-marginal values, but the shift changes which values it is compared with. Shifting all units together
-reorders complete states and preserves the full-sample error rates.
+Each draw records all units and criteria in one joint state. Shifting one unit's rows keeps its marginal values while changing its pairwise comparisons.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,24 +16,15 @@ reorders complete states and preserves the full-sample error rates.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Original states.** Among the 32 retained states, placing 001 above site-B is wrong 8 times on need_A and
-  32 times on need_B. The empirical error shares are .250 and 1. Each complete state specifies the order of all three units on both criteria.
-- **Shift one unit.** Moving site-B’s whole two-criterion vector forward cyclically changes the need_A count to
-  7 times and its share to .219. The need_B count remains 32 times. The raw marginal values have only been
-  reordered; the joint pairing has changed.
-- **Move states together.** Applying the same shift to every unit restores the original full-sample counts:
-  8 times and 32 times. Each state still contains the same values, so every full-sample error share stays the same.
-- **Short prefix.** Only 8 retained states now enter the estimates. Even a shift of complete states can change which draws appear in the first 8 rows.
-- **Unshifted pair.** The pair 001 and site C contains neither shifted unit. Its counts remain 0 times and
-  25 times, with need_B share .781. Changing a third unit’s pairing cannot change this pair’s comparisons.
-- **Full cycle.** A full cyclic shift returns every source vector to its original row, with counts 8 times and
-  32 times again. The source table retains all original unit and criterion coordinates.
+- **Original states** and **Full cycle.** Across 32 states, `001` above `site-B` is wrong 8 times (.250) on `need_A` and 32 times (1.00) on `need_B`.
+- **Shift one unit** and **Move states together.** Shifting `site-B` gives 7 times (.219) on `need_A`; shifting all units restores 8 times and 32 times.
+- **Short prefix** and **Unshifted pair.** At 8 retained states a shared shift alters the prefix; pair `001 / site C` keeps 0 times and 25 times (.781).
 
-::: {.callout-note appearance="simple"}
-The original states are independent draws from the same synthetic normal law. An error share of zero means that
-no retained draw shows the event. Its posterior probability can still be positive. The shifted comparisons reuse
-the original sample to show how pairing across units affects the estimated probabilities.
-:::
+<details>
+<summary>Sampling and dependence notes</summary>
+
+The original states are independent draws from the same synthetic normal law. An empirical share of zero means that no retained draw realized the event; its underlying posterior probability can still be positive. Cyclic shifts reuse the same 32 vectors to isolate how cross-unit pairing affects pairwise error estimates.
+</details>
 
 ::: {.callout-note collapse="true" title="In postrank"}
 ```r

@@ -4,7 +4,7 @@ subtitle: "1.1 · after Kline, Rose and Walters (2024): their firms and their re
 description: "Comparison of pairwise statements in a strict ranking and KRW's report cards for 97 firms."
 ---
 
-Kline, Rose and Walters (2024), hereafter KRW, sent fictitious applications to 97 large U.S. employers. They estimated the contact advantage for distinctively white over Black names and male over female names. Ranking the estimates gives a direction for every pair of firms. KRW's cards compare only firms in different grades. Even when both reports compare a pair, they can order it differently.
+Kline, Rose and Walters (2024) estimated race and gender contact gaps for 97 large U.S. employers. A strict ranking orders all 4,656 firm pairs. KRW’s cards order firms in different grades, including some pairs whose direction is uncertain.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,28 +16,14 @@ Kline, Rose and Walters (2024), hereafter KRW, sent fictitious applications to 9
 
 ## Numerical illustrations {#what-to-try}
 
-- **Race card.** The table states a direction for each of the 4,656 pairs of firms. KRW's race card states 1,324 of
-  them (.284): 1,219 run as the table does and 105 the other way; it is silent on the other 3,332.
-- **Second place.** Nationwide is second by estimate (.402 ± .216) but shares grade 2 with 80 other firms. Of its pairs
-  with the other 96 firms, the card states 16: 15 as the table does and 1 the other way, Genuine Parts (sixth by
-  estimate) above it.
-- **Last place.** State Farm has the lowest race estimate, −.544, and the largest SE, .444, yet stands at rank 14 by
-  posterior mean (.155), pulled up by KRW's race prior ([normal–normal posterior shrinkage](shrinkage.qmd)). The card states 16 comparisons involving State Farm, 2 as the table does and 14 the other way.
-- **By posterior mean.** Genuine Parts (Napa Auto) now leads (.250), though sixth by estimate (.330 ± .071). It shares
-  grade 1 with AutoNation, the largest estimate (.433). Now every one of the card's 1,324 directions runs as the table
-  does.
-- **Gender card.** The table now ranks the gender estimates. The card's four grades, sizes 1, 3, 89, 4, state 731 pairs
-  (.157): 730 run as the table does and 1 the other way. Builders FirstSource is alone in grade 1, so all 96 of its
-  pairs are stated.
+- **Race card.** Asserting all 4,656 pairs gives wrong share .300; KRW's card states 1,324 (.284, wrong share .136; 1,219 agree, 105 reverse) and withholds 3,332.
+- **Second place.** Nationwide (.402 ± .216) shares grade 2 with 80 other firms: 16 of 96 pairs stated (15 agree, 1 reverse).
+- **Last place.** State Farm (−.544 ± .444) shrinks to rank 14 by posterior mean (.155): 16 stated (2 agree, 14 reverse; [shrinkage](shrinkage.qmd)).
+- **By posterior mean.** Genuine Parts leads (.250; estimate .330 ± .0714), and all 1,324 stated pairs agree.
+- **Gender card.** Four grades (sizes 1, 3, 89, 4) state 731 pairs (.157, wrong share .115; 730 agree, 1 reverses); Builders FirstSource states all 96.
 
 ::: {.callout-note appearance="simple"}
-Sources: KRW's Introduction and Section VI, "Racial Discrimination Report Cards" (Figure 7, the race card), Section
-VIII (Figure 14, the gender card), and talk slides 4–5 and 61–63 (card layout after slides 61–63). On the race card,
-grade 1 is KRW's ★ (one star), which KRW call the worst grade. A shared grade means "not compared", not "equal". Data:
-Kline, Rose and Walters (2024), doi:10.1257/aer.20230700, and deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the
-deposit (no version), noncommercial use only; as adapted in postrank 1.1.0 (pr_case_krw), changes noted; no
-endorsement by the authors is implied. The data describe KRW's correspondence experiment, not any firm's current
-conduct.
+Sources: Kline, Rose and Walters (2024), Figures 7 and 14 and slides 4–5, 61–63, doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only, adapted in `pr_case_krw`. Grade 1 is ★; shared grades mean not compared. Provided as is, no endorsement implied; **the data describe KRW's experiment, not current conduct.**
 :::
 
 ::: {.callout-tip collapse="true" title="In postrank"}
@@ -48,9 +34,4 @@ head(pr_case_krw$units[order(-pr_case_krw$units$race_estimate), c("firm_name", "
 ```
 :::
 
-Standalone: [embed/case-zero.html](../../embed/case-zero.html), for example `?card=gender&sort=mean` or
-`?firm=35&rows=all&theme=dark`.
-
-Related applications: [Expected errors in a strict ranking](ranking-claims.qmd) ·
-[Grade reports as pairwise decisions](../grades/report-builder.qmd) · [Posterior summaries in a grade report](../grades/report-card.qmd) ·
-[KRW's archived reward path](../cases/krw-lambda.qmd).
+Standalone: [embed/case-zero.html](../../embed/case-zero.html) · Related: [Ranking claims](ranking-claims.qmd), [Report card](../grades/report-card.qmd).

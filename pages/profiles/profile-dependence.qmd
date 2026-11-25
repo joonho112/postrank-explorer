@@ -26,15 +26,15 @@ The joint cap can then change which report has the lowest expected loss among th
 
 ## Numerical illustrations {#what-to-try}
 
-- **Coincident failures.** The two directions each have error probability 1/10, and they fail together.
+- **Coincident.** The two directions each have error probability 1/10, and they fail together.
   Stating both gives probability 1/10 of at least one error, below the cap 3/20. That card alone minimizes
   expected loss at 1/10.
 - **Disjoint failures.** The marginal probabilities remain 1/10, but the probability of at least one error
   rises to 1/5 if the report states both. The cap rules out that card. Two cards tie at risk 7/40, each stating
   one positive direction and withholding the other.
-- **Independent domains.** At overlap c=1/100, the probability of at least one error when stating both is 19/100.
+- **Independent.** At overlap c=1/100, the probability of at least one error when stating both is 19/100.
   This exceeds the joint cap even under independence, so the same two cards tie for the lowest risk.
-- **At the joint cap.** At c=1/20, the probability of at least one error when stating both is exactly 3/20.
+- **At joint cap.** At c=1/20, the probability of at least one error when stating both is exactly 3/20.
   A probability equal to the cap is allowed, so that card is feasible and uniquely optimal.
 
 ::: {.callout-note appearance="simple"}
@@ -56,11 +56,11 @@ result$summary
 
 Source: [postrank multidomain decisions](https://joonho112.github.io/postrank/articles/mdomain-decisions.html).
 
+```{=html}
+</details>
+```
+
 Standalone: [open this app](../../embed/profile-dependence.html), for example `?preset=coincident&theme=dark`.
 
 Related applications: [Separate optimization under additive loss](profile-separability.qmd), [A common grade report for two scores](../criteria/two-scores.qmd) and
 [Criterion-specific expected-error budgets](../criteria/error-budgets.qmd).
-
-```{=html}
-</details>
-```

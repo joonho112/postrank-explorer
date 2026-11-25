@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
 
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
+
+  <script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
+<link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/criterion-mixture.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A random-criterion representation of weighted risk – postrank Explorer">
+<meta property="og:description" content="Drawing one criterion for a fixed report reproduces its weighted risk on average.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/criterion-mixture.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/criterion-mixture.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -601,7 +653,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Consider a fixed grade report and draw one criterion, with chances given by the error weights. Evaluate the whole report on that criterion. The average risk over these draws equals the weighted risk computed directly. The draw applies to all units and all pairs, preserving their joint distribution within the chosen criterion. The report is already fixed when the criterion is drawn.</p>
+<p>Fix a grade report first, then draw one criterion with probabilities equal to the loss weights. Evaluating the whole report on that criterion reproduces direct weighted risk.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,23 +662,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Weighted report.</strong> Both calculations give risk .0933. The criterion contributions are .0453 and .0480. Select a criterion column to inspect its whole vector. Report 1/1/1/1/2/3 stays fixed.</li>
-<li><strong>Certain opposition.</strong> The two directions each cost .5000, while withholding costs .3000. Both criteria distinguish the units with certainty. The same criterion choice applies to both units and every reported pair.</li>
-<li><strong>Three actions tie.</strong> All 3 actions cost .5000. Other reports share the weighted minimum even though their risks differ by criterion. Each report is evaluated before a criterion is drawn.</li>
-<li><strong>Two against one.</strong> The cheaper direction costs .3333, the reverse .6667, and withholding .4000. A certain two-against-one split can favor disclosure. The adjacent one-third boundary preset retains both actions sharing the minimum instead of treating equality as a strict preference.</li>
-<li><strong>Zero error weight.</strong> The cheaper weighted direction costs 0, although the ignored criterion’s own risk is 1.0000. Its selection chance is 0, so this branch contributes nothing. The column still shows how the report fares on that criterion.</li>
-<li><strong>No-cap coherence.</strong> Among all 4,683 reports, 1/2/2/3/4/5 states 14 pairs with risk .1275. It states A above C with weighted error .3803 and B above D with .3813, both above τ .35. There is no grade cap in this example.</li>
+<li><strong>Weighted report.</strong> Report 1/1/1/1/2/3 has risk .0933 from contributions .0453 and .0480.</li>
+<li><strong>Certain opposition.</strong> Withholding costs .300 while <strong>Data</strong> shows strict directions cost .500.</li>
+<li><strong>Three actions tie.</strong> All 3 reports tie at weighted risk .500.</li>
+<li><strong>Two against one.</strong> Risk is .333; <strong>Data</strong> shows standalone costs .333, .667, and .400.</li>
+<li><strong>Zero error weight.</strong> <strong>Data</strong> shows directional minimum 0 and chance 0 on risk 1.0000.</li>
+<li><strong>No-cap coherence.</strong> Among 4,683 reports, 1/2/2/3/4/5 states 14 pairs at risk .127 (<strong>Data</strong>: errors .380, .381 above <span class="math inline"><math><mi>τ</mi></math></span> .35).</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The criterion draw is independent of the targets conditional on the supplied information. Its probabilities are the weights in the loss. In postrank, a strict direction counts as wrong when the target values are equal. The link to KRW’s strict-count objective requires matching the law, targets, orientation, units and report family, as well as the affine and equality conditions of that result.</p>
-</div>
-</div>
-</div>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -646,8 +688,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<details>
+<summary>
+Mixture independence and KRW correspondence
+</summary>
+<p>The criterion draw is independent of the targets conditional on the supplied information, with probabilities given by the loss weights. In postrank, a strict direction counts as wrong when target values are equal. Correspondence to KRW’s strict-count objective requires matching the law, targets, orientation, units, and report family, plus the affine and equality conditions of that result.</p>
+</details>
 <p>Standalone: <a href="../../embed/criterion-mixture.html">open this app</a>, for example <code>?preset=coherence&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="conflict-pairs.html">Opposing criterion directions</a> · <a href="two-scores.html">A common grade report for two scores</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/11-multicriteria-loss.html#sec-criterion-mixture">A criterion mixture and its scalar correspondence</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/12-conflict-estimands.html#sec-conflict-withholding">Conflict, withholding, and the limits of pairwise decisions</a>.</p>
 
 
 </section>
@@ -1120,7 +1169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

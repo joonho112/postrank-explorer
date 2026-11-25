@@ -5,12 +5,12 @@
   "title": "Better on average, not in every draw",
   "idea": "The best report has the smallest expected loss within its family under the law that chose it; in a single draw, a common rule can do better.",
   "status": "built",
-  "from": "new concept · theory book ch. 16 (conditional Bayes dominance) and ch. 18; postrank vignette m2; picture: the per-draw realized loss of the best report against a common rule's, with the 45° line, the share of draws the rule wins and the mean difference; a toggle takes the rule outside the family",
+  "from": "new concept · theory book ch. 22 (conditional Bayes dominance and oracle information); postrank vignette m2; picture: the per-draw realized loss of the best report against a common rule's, with the 45° line, the share of draws the rule wins and the mean difference; a toggle takes the rule outside the family",
   "data": [
     "data/released/six-sites.json",
     "engine"
   ],
-  "credit": "After the postrank theory book, ch. 16.",
+  "credit": "After the postrank theory book, ch. 22 (“Conditional Bayes dominance and its limits”).",
   "caption": "Conditional posterior experiment: both reports are selected once from the declared law and then fixed across paired whole-state draws. Dominance concerns expected total reporting loss within the named family.",
   "presets": [
     {
@@ -47,10 +47,13 @@
   "try": [
     {
       "preset": "inside",
+      "open": [
+        "data"
+      ],
       "shows": [
         "63",
         ".0940",
-        ".1046",
+        ".105",
         "57"
       ]
     },
@@ -63,9 +66,12 @@
     },
     {
       "preset": "finite",
+      "open": [
+        "data"
+      ],
       "shows": [
-        ".2500",
-        ".3000",
+        ".250",
+        ".300",
         ".700",
         "65"
       ]
@@ -79,9 +85,12 @@
     },
     {
       "preset": "silent",
+      "open": [
+        "data"
+      ],
       "shows": [
         "NA: no disclosure",
-        ".2000"
+        ".200"
       ]
     },
     {

@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,7 +72,27 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -105,6 +125,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../styles/app.css">
 <link rel="stylesheet" href="../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/words.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Terminology and notation – postrank Explorer">
+<meta property="og:description" content="Definitions of posterior quantities, common grades, multidomain profiles, disclosure, error measures and report families.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/words.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/price-of-silence.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -594,6 +619,31 @@ window.Quarto = {
 
 
 <p>An Alabama county and a California school are both units, but their reports compare different outcomes. The definitions below specify what is compared, how the posterior enters the comparison, and which reports can be chosen.</p>
+<nav class="prx-words-jump" aria-label="Jump to section or symbol">
+  <div class="prx-words-jump__group">
+    <span class="prx-words-jump__label">Sections:</span>
+    <a href="#targets-and-posterior-uncertainty">Targets</a>
+    <a href="#grade-reports-disclosure-and-error">Grades &amp; error</a>
+    <a href="#report-families-and-comparisons">Families &amp; criteria</a>
+    <a href="#multidomain-profiles-and-joint-protection">Domain profiles</a>
+  </div>
+  <div class="prx-words-jump__group">
+    <span class="prx-words-jump__label">Symbols:</span>
+    <a href="#sym-theta">θ<sub>i</sub></a>
+    <a href="#sym-pi">π<sub>ij</sub></a>
+    <a href="#sym-e">e<sub>ij</sub></a>
+    <a href="#sym-g">g</a>
+    <a href="#sym-n">N</a>
+    <a href="#sym-eovern">E/N</a>
+    <a href="#sym-dr">DR</a>
+    <a href="#sym-tau">τ</a>
+    <a href="#sym-lambda">λ</a>
+    <a href="#sym-frontier">Frontier</a>
+    <a href="#sym-w">w<sub>k</sub></a>
+    <a href="#sym-q">q<sub>k</sub></a>
+    <a href="#sym-profile">G</a>
+  </div>
+</nav>
 <section id="targets-and-posterior-uncertainty" class="level2">
 <h2 class="anchored" data-anchor-id="targets-and-posterior-uncertainty">Targets and posterior uncertainty</h2>
 <div class="prx-glossary">
@@ -603,7 +653,7 @@ window.Quarto = {
 A unit is a firm, school, site, or other entity included in the comparison. A criterion is an outcome or other target used to evaluate the report. For example, income and incarceration are two criteria measured for the same counties.
 <strong>Examples:</strong> <a href="../pages/criteria/several-criteria.html">Multiple criteria</a> · <a href="../pages/tools/your-data.html">Supplied summaries</a>
 </dd>
-<dt><span class="math inline"><math><msub><mi>θ</mi><mi>i</mi></msub></math></span></dt>
+<dt><span id="sym-theta"></span><span class="math inline"><math><msub><mi>θ</mi><mi>i</mi></msub></math></span></dt>
 <dd>
 The target for unit <span class="math inline"><math><mi>i</mi></math></span>, coded so that higher values receive higher reporting priority. The application states what higher priority means for that target.
 <strong>Examples:</strong> <a href="../pages/uncertainty/two-units.html">Two-unit comparison</a> · <a href="../pages/cases/alabama-map.html">Alabama counties</a>
@@ -613,12 +663,12 @@ The target for unit <span class="math inline"><math><mi>i</mi></math></span>, co
 The distribution of target values given the data and model. Posterior risk averages the loss over this distribution. Calibration concerns how those probabilities agree with outcomes under a specified evaluation law or in new data.
 <strong>Examples:</strong> <a href="../pages/uncertainty/shrinkage.html">Posterior shrinkage</a> · <a href="../pages/uncertainty/posterior-pipeline.html">Posterior inputs</a>
 </dd>
-<dt><span class="math inline"><math><msub><mi>π</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math></span></dt>
+<dt><span id="sym-pi"></span><span class="math inline"><math><msub><mi>π</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></math></span></dt>
 <dd>
 The posterior probability of a direction such as <span class="math inline"><math><mrow><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>θ</mi><mi>i</mi></msub><mo>&gt;</mo><msub><mi>θ</mi><mi>j</mi></msub><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span>. This calculation uses the joint distribution of the two targets because the event depends on their difference.
 <strong>Examples:</strong> <a href="../pages/uncertainty/two-units.html">Direction probabilities</a> · <a href="../pages/uncertainty/interval-overlap.html">Interval overlap</a>
 </dd>
-<dt><span class="math inline"><math><msubsup><mi>e</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow class="tml-sml-pad"><mo fence="true" form="prefix" stretchy="false">(</mo><mi>k</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></msubsup></math></span></dt>
+<dt><span id="sym-e"></span><span class="math inline"><math><msubsup><mi>e</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow class="tml-sml-pad"><mo fence="true" form="prefix" stretchy="false">(</mo><mi>k</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></msubsup></math></span></dt>
 <dd>
 The probability that stating <span class="math inline"><math><mi>i</mi></math></span> above <span class="math inline"><math><mi>j</mi></math></span> is wrong on criterion <span class="math inline"><math><mi>k</mi></math></span>. Under the zero-margin weak-error convention, equality makes either strict direction wrong. If equality has positive probability, the two directional errors sum to more than one. Each example specifies the event and any comparison margin.
 <strong>Examples:</strong> <a href="../pages/grades/one-pair.html">Pairwise decisions</a> · <a href="../pages/grades/ties-and-withholding.html">Posterior equality</a>
@@ -640,7 +690,7 @@ The posterior average position of a unit under a specified rank and tie conventi
 <h2 class="anchored" data-anchor-id="grade-reports-disclosure-and-error">Grade reports, disclosure and error</h2>
 <div class="prx-glossary">
 <dl>
-<dt>Common-grade report <span class="math inline"><math><mi>g</mi></math></span> (P1)</dt>
+<dt><span id="sym-g"></span>Common-grade report <span class="math inline"><math><mi>g</mi></math></span> (P1)</dt>
 <dd>
 An ordered grouping of the units, with grade 1 at the high-priority end. The report states a direction between grades. Within a grade it leaves the comparison unstated. Using the report to allocate places or resources requires a separate rule.
 <strong>Examples:</strong> <a href="../pages/grades/report-builder.html">Report construction</a> · <a href="../pages/rules/one-place.html">Allocation objectives</a>
@@ -650,7 +700,7 @@ An ordered grouping of the units, with grade 1 at the high-priority end. The rep
 The number of included units and their <span class="math inline"><math><mrow><mi>M</mi><mo>=</mo><mi>n</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>/</mi><mn>2</mn></mrow></math></span> unordered pairs. Each cross-grade pair contributes one stated direction.
 <strong>Example:</strong> <a href="../pages/grades/how-many-reports.html">Report-family counts</a>
 </dd>
-<dt><span class="math inline"><math><mi>N</mi></math></span>, <span class="math inline"><math><mrow><mi>s</mi><mo>=</mo><mi>N</mi><mi>/</mi><mi>M</mi></mrow></math></span></dt>
+<dt><span id="sym-n"></span><span class="math inline"><math><mi>N</mi></math></span>, <span class="math inline"><math><mrow><mi>s</mi><mo>=</mo><mi>N</mi><mi>/</mi><mi>M</mi></mrow></math></span></dt>
 <dd>
 The number of stated pairs and the disclosure share. The remaining <span class="math inline"><math><mrow><mi>M</mi><mo>−</mo><mi>N</mi></mrow></math></span> pairs are withheld.
 <strong>Example:</strong> <a href="../pages/rules/tier-sizes.html">Disclosure from tier sizes</a>
@@ -660,22 +710,22 @@ The number of stated pairs and the disclosure share. The remaining <span class="
 The posterior expected number of wrong stated directions on criterion <span class="math inline"><math><mi>k</mi></math></span>, obtained by summing directional error probabilities over the stated pairs. Joint correctness is a separate probability.
 <strong>Example:</strong> <a href="../pages/grades/disclosed-errors.html">Expected and realized errors</a>
 </dd>
-<dt><span class="math inline"><math><mrow><msub><mi>E</mi><mi>k</mi></msub><mi>/</mi><mi>N</mi></mrow></math></span></dt>
+<dt><span id="sym-eovern"></span><span class="math inline"><math><mrow><msub><mi>E</mi><mi>k</mi></msub><mi>/</mi><mi>N</mi></mrow></math></span></dt>
 <dd>
 The expected wrong share among stated pairs of a fixed report. It is <strong>NA: no disclosure</strong> when <span class="math inline"><math><mrow><mi>N</mi><mo>=</mo><mn>0</mn></mrow></math></span>.
 <strong>Example:</strong> <a href="../pages/grades/two-denominators.html">Error-rate denominators</a>
 </dd>
-<dt><span class="math inline"><math><mrow><mi>D</mi><msub><mi>R</mi><mi>k</mi></msub><mo>=</mo><msub><mi>E</mi><mi>k</mi></msub><mi>/</mi><mi>M</mi></mrow></math></span></dt>
+<dt><span id="sym-dr"></span><span class="math inline"><math><mrow><mi>D</mi><msub><mi>R</mi><mi>k</mi></msub><mo>=</mo><msub><mi>E</mi><mi>k</mi></msub><mi>/</mi><mi>M</mi></mrow></math></span></dt>
 <dd>
 The expected wrong count per possible pair. Withholding can reduce this rate by reducing the set of stated directions. The criterion subscript is usually omitted in single-criterion examples.
 <strong>Example:</strong> <a href="../pages/grades/two-denominators.html">Error-rate denominators</a>
 </dd>
-<dt><span class="math inline"><math><mi>τ</mi></math></span></dt>
+<dt><span id="sym-tau"></span><span class="math inline"><math><mi>τ</mi></math></span></dt>
 <dd>
 The cost per withheld pair when a wrong stated direction costs one. Weighted risk is <span class="math inline"><math><mrow><msub><mi>R</mi><mi>τ</mi></msub><mo>=</mo><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>E</mi><mi>w</mi></msub><mo>+</mo><mi>τ</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>M</mi><mo>−</mo><mi>N</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>/</mi><mi>M</mi></mrow></math></span>.
 <strong>Example:</strong> <a href="../pages/grades/price-of-silence.html">Reporting risk</a>
 </dd>
-<dt><span class="math inline"><math><mi>λ</mi></math></span>, <span class="math inline"><math><mi>ϕ</mi></math></span></dt>
+<dt><span id="sym-lambda"></span><span class="math inline"><math><mi>λ</mi></math></span>, <span class="math inline"><math><mi>ϕ</mi></math></span></dt>
 <dd>
 KRW’s reward for a correct direction and the informed share in their stipulated audience model. The conversion is <span class="math inline"><math><mrow><mi>τ</mi><mo>=</mo><mi>λ</mi><mi>/</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>λ</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span> and <span class="math inline"><math><mrow><mi>ϕ</mi><mo>=</mo><mn>1</mn><mo>−</mo><mn>2</mn><mi>τ</mi></mrow></math></span>. The positive-cost audience range is <span class="math inline"><math><mrow><mn>0</mn><mo>&lt;</mo><mi>λ</mi><mo>≤</mo><mn>1</mn></mrow></math></span>, <span class="math inline"><math><mrow><mn>0</mn><mo>&lt;</mo><mi>τ</mi><mo>≤</mo><mn>1</mn><mi>/</mi><mn>2</mn></mrow></math></span> and <span class="math inline"><math><mrow><mn>0</mn><mo>≤</mo><mi>ϕ</mi><mo>&lt;</mo><mn>1</mn></mrow></math></span>. Equivalence of optimal reports requires the stated common-posterior, tie-free and common-family conditions.
 <strong>Examples:</strong> <a href="../pages/cases/lambda-tau.html">Loss-scale conversion</a> · <a href="../pages/cases/krw-axes.html">Equivalent reporting losses</a>
@@ -693,7 +743,7 @@ KRW’s reward for a correct direction and the informed share in their stipulate
 The set of reports considered in the search. A grade cap limits the number of grades. A fixed order limits grade boundaries to cuts along that order, so the best report among those cuts may differ from the best report over all orders. Some fixed orders also keep equal scores together.
 <strong>Examples:</strong> <a href="../pages/grades/families.html">Report families</a> · <a href="../pages/grades/computing-grades.html">Computation methods</a>
 </dd>
-<dt>Frontier</dt>
+<dt><span id="sym-frontier"></span>Frontier</dt>
 <dd>
 The lower convex boundary of expected wrong counts plotted against disclosure for a specified report family. A point on an edge may require randomizing between complete reports. Two reports can minimize risk at the same <span class="math inline"><math><mi>τ</mi></math></span> while stating different numbers of pairs.
 <strong>Examples:</strong> <a href="../pages/grades/frontier.html">Error–disclosure frontier</a> · <a href="../pages/rules/same-tau-or-same-n.html">Comparison constraints</a>
@@ -703,12 +753,12 @@ The lower convex boundary of expected wrong counts plotted against disclosure fo
 The probability of choosing the report that states more pairs in a mixture of two frontier reports. Expected disclosure averages the two pair counts using the mixing probabilities. An individual draw produces one of the two complete reports.
 <strong>Example:</strong> <a href="../pages/grades/frontier-mixtures.html">Mixtures of reports</a>
 </dd>
-<dt><span class="math inline"><math><msub><mi>w</mi><mi>k</mi></msub></math></span>, <span class="math inline"><math><mrow><msub><mi>E</mi><mi>w</mi></msub><mo>=</mo><msub><mo movablelimits="false">∑</mo><mi>k</mi></msub><msub><mi>w</mi><mi>k</mi></msub><msub><mi>E</mi><mi>k</mi></msub></mrow></math></span></dt>
+<dt><span id="sym-w"></span><span class="math inline"><math><msub><mi>w</mi><mi>k</mi></msub></math></span>, <span class="math inline"><math><mrow><msub><mi>E</mi><mi>w</mi></msub><mo>=</mo><msub><mo movablelimits="false">∑</mo><mi>k</mi></msub><msub><mi>w</mi><mi>k</mi></msub><msub><mi>E</mi><mi>k</mi></msub></mrow></math></span></dt>
 <dd>
 Nonnegative criterion error weights summing to one, and the weighted expected wrong count. These weights apply to directional losses. Coefficients of a scalar composite target have a separate role.
 <strong>Examples:</strong> <a href="../pages/criteria/two-scores.html">Common grades</a> · <a href="../pages/criteria/composite-or-criterion.html">Composite targets</a>
 </dd>
-<dt><span class="math inline"><math><msub><mi>q</mi><mi>k</mi></msub></math></span></dt>
+<dt><span id="sym-q"></span><span class="math inline"><math><msub><mi>q</mi><mi>k</mi></msub></math></span></dt>
 <dd>
 An expected-error budget, expressed in count form as <span class="math inline"><math><mrow><msub><mi>E</mi><mi>k</mi></msub><mo>≤</mo><msub><mi>q</mi><mi>k</mi></msub><mi>N</mi></mrow></math></span>. With no stated directions both sides are zero, although the error share is undefined. Some applications use budgets only to evaluate the displayed report; others use them to restrict selection.
 <strong>Examples:</strong> <a href="../pages/criteria/error-budgets.html">Budget-constrained families</a> · <a href="../pages/tools/report-designer.html">Case-report checks</a>
@@ -742,7 +792,7 @@ Numerical uncertainty due to a finite set of posterior draws. Independent draws 
 <p><a href="../pages/criteria/index.html#domain-profiles">Domain profiles</a> give each unit a grade for each domain. The following definitions explain how those grades are compared and how joint errors enter the choice of a report.</p>
 <div class="prx-glossary">
 <dl>
-<dt>Domain <span class="math inline"><math><mi>d</mi></math></span>; profile matrix <span class="math inline"><math><mi>G</mi></math></span></dt>
+<dt><span id="sym-profile"></span>Domain <span class="math inline"><math><mi>d</mi></math></span>; profile matrix <span class="math inline"><math><mi>G</mi></math></span></dt>
 <dd>
 A substantive reporting coordinate and its grade column. The matrix has units on rows and domains on columns. A common-grade report uses the same column across criteria; a multidomain profile (P2) permits separate columns. Grade 1 denotes the highest reported priority within its own domain.
 <strong>Example:</strong> <a href="../pages/profiles/profile-common-vs-domain.html">Common grades and domain profiles</a>
@@ -1262,7 +1312,7 @@ The forty-site example shows grade tuples, the settings used to choose them, and
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

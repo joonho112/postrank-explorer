@@ -92,10 +92,7 @@
           "select": "[data-prx-readout=\"bandLower\"]",
           "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .20",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -109,10 +106,7 @@
           "select": "[data-prx-readout=\"bandUpper\"]",
           "about": "upper end of the band, tau .20",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -142,7 +136,7 @@
           "about": "the result label from the engine return value, the family by its symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2083"
+          "value": "exact optimum within 𝒜₃"
         },
         {
           "select": "[data-prx-readout=\"pi12\"]",
@@ -317,6 +311,9 @@
         {
           "select": "[data-prx-readout=\"ro-optRisk\"]",
           "about": "the read-out: their risk",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "krwex1.omega2_1.tau20.optrisk",
           "value": 0.17279988820620643
@@ -324,6 +321,9 @@
         {
           "select": "[data-prx-readout=\"ro-relaxed\"]",
           "about": "the read-out: the pairwise cost it is compared with",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "krwex1.omega2_1.tau20.relaxed",
           "value": 0.1595498678417142
@@ -385,10 +385,7 @@
           "select": "[data-prx-readout=\"bandLower\"]",
           "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .20",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -402,10 +399,7 @@
           "select": "[data-prx-readout=\"bandUpper\"]",
           "about": "upper end of the band, tau .20",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -435,7 +429,7 @@
           "about": "the result label from the engine return value, the family by its symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2083"
+          "value": "exact optimum within 𝒜₃"
         },
         {
           "select": "[data-prx-readout=\"pi12\"]",
@@ -542,6 +536,9 @@
         {
           "select": "[data-prx-readout=\"ro-optRisk\"]",
           "about": "the read-out: the best risk, equal to the pairwise cost (review 044 repair, G2-F3)",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "g04.krw.omega80.tau20.optrisk",
           "value": 0.15890718603372656
@@ -549,6 +546,9 @@
         {
           "select": "[data-prx-readout=\"ro-relaxed\"]",
           "about": "the read-out: the pairwise cost",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "g04.krw.omega80.tau20.relaxed",
           "value": 0.15890718603372656
@@ -619,7 +619,7 @@
           "about": "the result label from the engine return value, the family by its symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2083"
+          "value": "exact optimum within 𝒜₃"
         },
         {
           "select": "[data-prx-readout=\"pi12\"]",
@@ -727,10 +727,7 @@
           "select": "[data-prx-readout=\"bandLower\"]",
           "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .20",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -744,10 +741,7 @@
           "select": "[data-prx-readout=\"bandUpper\"]",
           "about": "upper end of the band, tau .20",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -813,10 +807,7 @@
           "select": "[data-prx-readout=\"bandLower\"]",
           "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .10",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -830,10 +821,7 @@
           "select": "[data-prx-readout=\"bandUpper\"]",
           "about": "upper end of the band, tau .10",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -854,10 +842,7 @@
           "select": "[data-prx-readout=\"bandLower\"]",
           "about": "lower end of the band of omega_2 where the pairwise choices cannot be printed, tau .15",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -871,10 +856,7 @@
           "select": "[data-prx-readout=\"bandUpper\"]",
           "about": "upper end of the band, tau .15",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -922,7 +904,7 @@
           "about": "the result label from the engine return value, the family by its symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2083"
+          "value": "exact optimum within 𝒜₃"
         },
         {
           "select": "[data-prx-readout=\"optimum0\"]",

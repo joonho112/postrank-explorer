@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/cases/cde-cuts.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="School tertiles and minimum-risk grades – postrank Explorer">
+<meta property="og:description" content="Fixed cuts and unrestricted three-grade reporting for a twelve-school chronic-absence example.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/cases/cde-cuts.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/cde-cuts.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -601,25 +626,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Two cuts in the order of posterior mean chronic absence divide the twelve schools into grades.</p>
+<p>Two cuts in posterior-mean chronic absence divide twelve schools into up to three grades.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
 <script src="../../js/bundles/cde-cuts.js"></script>
 <script>window.__prxApp = PRX["cde-cuts"].mountWidget(document.getElementById("app"));</script>
-<p>Moving a cut can change both how many comparisons the report states and which schools it compares. The browser evaluates those cuts and searches all reports with at most three grades. It uses the same posterior and withholding cost τ for both. Grade 1 identifies the schools reported to have lower chronic absence.</p>
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Tertiles</strong> puts four schools in each of three grades. The report states 48 pairs, with 1.829 expected errors and risk .082255. The minimum-risk report states 45 pairs and has risk .063774.</li>
-<li><strong>Archived grades</strong> puts the cuts after positions 3 and 9. The resulting grades match the archived report, which states 45 pairs at risk .063774. Every pair has the same relation in both reports.</li>
-<li><strong>One boundary</strong> puts both controls at position 6. One distinct boundary gives two grades, 36 stated pairs and risk .091293.</li>
-<li><strong>Higher withholding cost</strong> raises τ to .45. The optimum now states 47 pairs and has risk .143197. The changed-pair table identifies the resulting relation changes.</li>
+<li><strong>Tertiles.</strong> States 48 pairs with E = 1.83 and risk .0823 (optimum: 45 pairs, risk .0638).</li>
+<li><strong>Archived grades.</strong> Cuts 3 and 9 match the archived report (45 pairs, risk .0638).</li>
+<li><strong>One boundary.</strong> Position 6 gives two grades, 36 pairs, and risk .0913.</li>
+<li><strong>Higher withholding cost.</strong> At τ = .45, the optimum states 47 pairs at risk .143.</li>
 </ul>
-<p>The cuts follow the posterior mean order. The full search also considers assignments that depart from that order. The displayed average-error bound applies to the report that minimizes risk at the displayed τ. It places no separate threshold on individual comparisons in the tertiles. Both reports use the same loss, so their risks can be compared even when they state different numbers of pairs.</p>
-<p>The dots and intervals summarize each school’s posterior. Schools in the same grade appear in posterior mean order, but the report leaves their relative chronic absence rates unstated.</p>
-<p>Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (<code>pr_case_cde</code>). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply (<a href="https://www.cde.ca.gov/re/di/cr/index.asp" class="uri">https://www.cde.ca.gov/re/di/cr/index.asp</a>); the data are not relicensed and are provided as is without warranty. No CDE endorsement is implied.</p>
-<p>The example compares ways to report chronic absence among these twelve schools. California’s Dashboard colors follow separate status-and-change rules. The loss comparison provides no measure of school quality or causal effects, and assessing statewide performance or calibration would require other evidence.</p>
+<details>
+<summary>
+Scope and Dashboard notes
+</summary>
+<p>Moving a cut changes both how many comparisons the report states and which schools it compares. The cuts follow the posterior-mean order, while the full search considers every assignment with at most three grades under the same posterior and withholding cost τ. Grade 1 identifies lower chronic absence; schools in the same grade have no stated direction. This twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools (prior-estimation uncertainty is not propagated). California’s Dashboard colors follow separate status-and-change rules, and the loss comparison provides no measure of school quality, causal effects, or statewide calibration. Related: <a href="../../pages/criteria/why-withheld.html">Reasons for a withheld comparison</a> · <a href="../../pages/grades/frontier.html">The error–disclosure frontier</a>.</p>
+</details>
+<p>Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, adapted in postrank 1.1.0 (<code>pr_case_cde</code>); <a href="https://www.cde.ca.gov/re/di/cr/index.asp" class="uri">https://www.cde.ca.gov/re/di/cr/index.asp</a>; not relicensed, provided as is; No CDE endorsement is implied.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -639,9 +666,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p><a href="../../embed/cde-cuts.html">Open the standalone app</a>.</p>
-<p>Related applications: <a href="../../pages/criteria/why-withheld.html">Reasons for a withheld comparison</a> · <a href="../../pages/grades/frontier.html">The error–disclosure frontier</a>.</p>
-<p>Related school analyses: <a href="../../pages/cases/cde-one-disclosure.html">School reports at matched disclosure</a> · <a href="../../pages/cases/cde-pair.html">A high-probability school comparison withheld</a> · <a href="../../pages/cases/cde-tau-path.html">School-report changes along the withholding-cost path</a>.</p>
+<p>Standalone: <a href="../../embed/cde-cuts.html">cde-cuts</a>. Related: <a href="../../pages/cases/cde-one-disclosure.html">Matched disclosure</a> · <a href="../../pages/cases/cde-pair.html">Withheld pair</a> · <a href="../../pages/cases/cde-tau-path.html">τ path</a>.</p>
 
 
 </section>
@@ -1114,7 +1139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

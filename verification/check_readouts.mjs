@@ -354,11 +354,23 @@ export async function loadSources() {
   };
   const sharedFormats = await import(href(CONFIG.formats));
   const engine = await import(href(CONFIG.engine));
+  const SHARED_READOUT_FORMATTERS = [
+    "formatExactText",
+    "formatReadoutProb",
+    "formatReadoutRisk",
+    "formatReadoutExpected",
+    "formatReadoutEst",
+    "formatDistinguishing",
+  ];
+  const extraFormatters = {};
+  for (const fn of SHARED_READOUT_FORMATTERS) {
+    if (typeof sharedFormats[fn] === "function") extraFormatters[fn] = sharedFormats[fn];
+  }
   return {
     registry, specs, golden, parityTol, integrity, mdomain: mdomainSourceRegistry(),
     labels: (await import(href(CONFIG.labels))).CONFIG,
     named: sharedFormats.NAMED_FORMATS,
-    engine: { ...engine, ...(typeof sharedFormats.formatExactText === "function" ? { formatExactText: sharedFormats.formatExactText } : {}) },
+    engine: { ...engine, ...extraFormatters },
     rows: contractRows(readIf(`${R}/contract-rows.json`, { rows: [] })),
     v1captions: readIf(`${R}/captions.json`, { captions: [] }),
     schema: readJson(CONFIG.schema),

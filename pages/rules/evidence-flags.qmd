@@ -1,14 +1,10 @@
 ---
 title: "Grades based on standardized evidence"
-subtitle: "3.3 · a constructed comparator after the postrank theory book, ch. 2 and 17"
+subtitle: "3.3 · a constructed comparator after the postrank theory book, ch. 2 and 23"
 description: "How estimates and standard errors determine evidence flags and the directions they imply."
 ---
 
-An evidence flag depends on how far an estimate is from a reference in standard error units. Here the rule uses
-$z_i = (\hat{\theta}_i-r)/SE_i$ with the reference r set to zero. Values above the upper cutoff receive the highest
-flag, and values below the lower cutoff receive the lowest. The remaining values receive the middle flag. If
-the flags are treated as grades, a smaller but more precise estimate can rank above a larger one. The two normal
-posterior specifications give different assessments of the direction these flags report.
+Evidence flags group units by standardized distance $z_i = (\hat{\theta}_i - r)/SE_i$ from a reference $r = 0$, so a smaller, more precise estimate can rank above a larger one.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,22 +17,21 @@ posterior specifications give different assessments of the direction these flags
 
 ## Numerical illustrations {#what-to-try}
 
-- **Two units, flat prior.** A has z = 4.00 and B has z = 1.50. The flags state A above B, although B's estimate
-  is larger. When each true value has a normal posterior centered on its estimate with SD equal to its SE, this direction
-  has error probability .686 and risk .6862. The reversal comes from the difference in standard errors.
-- **Same flags, teaching prior.** The error falls to .288; the posterior means are .180 for A and .108 for B.
-  The estimates and SEs still give the same flags. The new posterior assigns a lower probability to an error in their direction.
-- **B’s SE .15.** B reaches z = 2.00. Both units now receive the same flag, so the report states 0 pairs and has
-  risk .2000. Because the flags match, this report leaves the pair unranked.
-- **Cutoff 2.576.** The stricter cutoff separates the flags again. The stated direction has error .736. The estimate and its SE determine the flag. The withholding cost τ enters when we evaluate the report.
+- **Two units, flat prior.** A has z = 4.00 and B has z = 1.50, ranking A above B despite B's larger estimate; under the flat prior, error and risk are .686.
+- **Same flags, teaching prior.** Flags stay fixed, while teaching posterior means .180 for A and .108 for B lower the error and risk to .288.
+- **B’s SE .15.** B reaches z = 2.00 and shares A's flag, so 0 pairs are stated with risk .200.
+- **Cutoff 2.576.** The stricter cutoff separates the flags again, with error .736.
 
-::: {.callout-note appearance="simple" title="Reading the cutoff"}
+<details>
+<summary>Reading the cutoff and source notes</summary>
+
 The cutoffs 1.645, 1.96 and 2.576 are the two-sided 10%, 5% and 1% normal critical values. A flag compares one
-unit with the reference. The probability that a stated direction between two units is right comes from the posterior.
+unit with the reference, whereas the probability that a stated direction between two units is right comes from the posterior.
 
-This constructed comparator follows the postrank theory book, ch. 17 (the Tennessee
+This constructed comparator follows the postrank theory book, ch. 23 (the Tennessee
 procedure in ch. 2 uses a related index with other cutoffs).
-:::
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -49,3 +44,5 @@ postrank::postrank_evaluate(c(A=1L,B=2L),x,weights=c(score=1),tau=.2)[c("N","E_o
 Standalone: [evidence-flags](../../embed/evidence-flags.html), for example `?seB=.15&crit=2.576`.
 
 Related applications: [Standardized-evidence flags in a league](flags-in-the-league.qmd), [The decision for an isolated pair](../grades/one-pair.qmd).
+
+Theory book · [Teacher growth categories: evidence, precision, and the choice of assessment](https://joonho112.github.io/postrank-theory-book/chapters/02-education-access.html#sec-educational-performance) · [Benchmarks for selection, classification, and stability](https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-selection-benchmarks).

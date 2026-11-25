@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/weight-path.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Optimal reports along the criterion-weight path – postrank Explorer">
+<meta property="og:description" content="Exact weight intervals and criterion-specific errors of minimum-risk reports.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/weight-path.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/weight-path.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>For a fixed report with two criteria, weighted risk moves along a straight line between the two criterion risks. The lower envelope of these lines gives the smallest risk at each weight. Its intersections locate exact changes in the best report. Within each resulting interval, the report, disclosure count, and criterion-specific error shares stay fixed while weighted risk varies. The boundary table lists the optima where lines tie.</p>
+<p>Each fixed report traces a straight risk line between the two criteria. Their lower envelope locates the exact weight intervals where one report stays optimal while criterion error shares move in steps.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,28 +600,22 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Equal weights.</strong> The selected report states 9 pairs. Its expected wrong shares are .0177 on score A and .0267 on score B. The interval table and lower envelope identify the weights for which this report is optimal.</li>
-<li><strong>Lower A weight.</strong> The best report states 12 pairs and favors score B’s ordering of the conflicting sites. Both criterion shares stay fixed across the interval while their weighted average changes.</li>
-<li><strong>Higher A weight.</strong> The report again states 12 pairs, with {A, B} &gt; {C, D} &gt; {E, F}. Its expected wrong share on score B is .237. The two twelve-pair reports disagree about which sites rank above the others.</li>
-<li><strong>Score B only.</strong> At the endpoint, 2 reports share the smallest risk. The expected wrong shares on score A are .200 and .215. The boundary data keep their identities and differing profiles. The first interval has zero width in the display.</li>
-<li><strong>No cap.</strong> The unrestricted calculation searches all 4,683 reports. The current equal-weight report still states 9 pairs, but the complete path can differ away from the selected weight.</li>
-<li><strong>Higher withholding cost.</strong> The uncapped current report states 14 pairs. The interval table retains every short interval; both criterion-share paths use these same boundaries.</li>
+<li><strong>Equal weights.</strong> States 9 pairs with wrong shares .0177 on score A and .0267 on score B.</li>
+<li><strong>Lower A weight.</strong> States 12 pairs favoring score B on the conflicting sites.</li>
+<li><strong>Higher A weight.</strong> States 12 pairs ({A, B} &gt; {C, D} &gt; {E, F}) with a .237 wrong share on score B.</li>
+<li><strong>Score B only.</strong> At the endpoint, 2 reports tie, with score A wrong shares .200 and .215.</li>
+<li><strong>No cap.</strong> Searches all 4,683 reports while keeping 9 stated pairs at equal weights.</li>
+<li><strong>Higher withholding cost.</strong> States 14 pairs across short exact weight intervals.</li>
 </ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The path uses independent normal posteriors for the six fictional sites. When an interval next to zero is at the scale of numerical rounding and both reports tie at zero within the tolerance, the chart shows them as an endpoint tie. The detailed table retains the computed interval and boundary results. Each point on the lower envelope is the minimum for its own weight, which is the horizontal coordinate.</p>
-</div>
-</div>
+<details>
+<summary>
+Numerical notes
+</summary>
+<p>The path uses independent normal posteriors for the six fictional sites. When an interval next to zero is at the scale of numerical rounding and both reports tie at zero within the tolerance, the chart shows them as an endpoint tie while the detailed table retains the raw interval and boundary results. Each point on the lower envelope minimizes the loss at its own weight.</p>
+</details>
 <p>Standalone: <a href="../../embed/weight-path.html">weight-path</a>, for example <code>?w=.5&amp;tau=.2&amp;cap=3</code>.</p>
 <p>Related applications: <a href="../../pages/criteria/two-scores.html">A common grade report for two scores</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/11-multicriteria-loss.html#sec-weighted-directional-risk">Weighted directional risk from a supplied selection law</a>.</p>
 
 
 </section>
@@ -1069,7 +1088,7 @@ Note
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

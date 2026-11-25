@@ -1,11 +1,10 @@
 ---
 title: "Opposing criterion directions"
-subtitle: "4.2 · after the postrank theory book, ch. 12 and 19"
+subtitle: "4.2 · after the postrank theory book, ch. 12 and 25"
 description: "How criterion disagreement and posterior uncertainty affect the cost of ranking a pair."
 ---
 
-Two criteria can favor opposite directions for the same pair. To identify those pairs, the matrix compares the
-error probabilities for both directions on each criterion.
+Criteria favor opposite directions for a pair when each assigns smaller error to a different strict order. Compare standalone directional costs, withholding cost, and criterion-specific errors.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -15,34 +14,21 @@ error probabilities for both directions on each criterion.
 <script>window.__prxApp = PRX["conflict-pairs"].mountWidget(document.getElementById("app"));</script>
 ```
 
-The bars give the weighted costs of stating either direction or withholding the comparison. These costs can be
-similar when the criteria agree within each state but the order changes across states. They can also be similar
-when the criteria disagree about a pair whose values are known. The finite examples distinguish these two
-possibilities. A common grade report must also reconcile the chosen direction with its other comparisons.
-
 ## Numerical illustrations {#what-to-try}
 
-- **Six sites, B–C.** The equal-weight costs are .4841 for B above C and .5159 for C above B. The map has 3
-  opposing pairs. Withholding is cheaper for this pair on its own, but these actions do not yet form a common grade.
-- **Thirty sites.** There are 397 opposing pairs. For the selected pair, the smaller expected directional cost is
-  .3652. Each criterion has equal error weight; the table keeps its separate errors visible.
-- **Certain opposition.** The two directions each cost .5000; withholding costs .2000. Here the smaller directional
-  cost is also the statewise conflict quantity. The additional boundary preset shows every action sharing the
-  minimum when withholding has the same cost.
-- **Uncertain agreement.** The smaller posterior directional cost is still .5000, but statewise γ is 0 in each
-  state. The criteria agree within every state; uncertainty about which state holds creates the directional cost.
-- **Zero error weight.** The opposing pair stays on the map, while its cheaper direction costs 0 and the
-  reverse costs 1.0000. The criterion with zero weight still favors the reverse direction, but its error adds nothing to the weighted cost.
-- **Latent equality.** In **Data and exact values**, the first criterion’s two directional errors are .6000 and .9000,
-  both above one half, yet it prefers the smaller one. The other criterion prefers the opposite direction. Both weighted directions cost .7500; comparing
-  errors with their reverse detects this disagreement even with equality mass.
+- **Six sites, B–C.** Standalone costs are .484 (B above C) and .516 (C above B), among 3 opposing pairs.
+- **Thirty sites.** Across 397 opposing pairs, the selected pair’s smaller expected directional cost is .365.
+- **Certain opposition.** Strict directions cost .500 while withholding costs .200, matching within-state conflict.
+- **Uncertain agreement.** Posterior cost stays .500, yet **Data** shows statewise $\gamma$ is 0 in every state.
+- **Zero error weight.** The pair still opposes while **Data** shows smaller directional cost 0 vs. reverse 1.00.
+- **Latent equality.** **Data** shows first-criterion errors .6000 and .9000; weighted directions cost .750.
 
-::: {.callout-note appearance="simple"}
-A strict direction counts as wrong when the two values are equal. Comparing the two error probabilities
-therefore identifies the preferred direction even if both probabilities exceed one half. The map includes
-criteria with zero weight. In each state, γ is the smaller cost of the two strict directions. Across states,
-uncertainty about the true values can raise the expected cost, and the two sources need not separate uniquely.
-:::
+<details>
+<summary>Strict comparisons, zero weights and statewise conflict</summary>
+
+Strict ranking statements count latent equality as wrong, so comparing each error probability with its reverse identifies a criterion’s preferred direction even when both exceed one half. Opposing-pair counts include zero-weight criteria. Across uncertain states, expected directional cost combines within-state conflict with cross-state uncertainty, and isolated-pair choices need not form a coherent report.
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -54,3 +40,5 @@ pr_tutorial$two$e["B", "C", ]
 Standalone: [open this app](../../embed/conflict-pairs.html), for example `?preset=uncertain&theme=dark`.
 
 Related applications: [Posterior profiles on multiple criteria](several-criteria.html) · [The decision for an isolated pair](../grades/one-pair.html).
+
+Theory book · [Conflict, withholding, and the limits of pairwise decisions](https://joonho112.github.io/postrank-theory-book/chapters/12-conflict-estimands.html#sec-conflict-withholding) · [Common grades under an exact joint target law](https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-exact-common-grade).

@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Five exact-rational applications on multidomain grade profiles, domain separability, error overlap, and joint error budgets.">
 
 <title>Domain profiles – postrank Explorer</title>
 <style>
@@ -43,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,15 +72,40 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/profiles/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Domain profiles – postrank Explorer">
+<meta property="og:description" content="Five exact-rational applications on multidomain grade profiles, domain separability, error overlap, and joint error budgets.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/profiles/index.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/profile-common-vs-domain.png">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -533,21 +559,27 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Domain profiles</h1>
+<p class="subtitle lead">Part P · Separate grade columns across domains · 5 applications</p>
+</div>
+
+<div>
+  <div class="description">
+    Five exact-rational applications on multidomain grade profiles, domain separability, error overlap, and joint error budgets.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -565,56 +597,59 @@ ul.task-list li input[type="checkbox"] {
 <p>Domain profiles give sites a separate grade for each outcome. A site can rank higher on composition need and lower on community need. The two grades describe those separate priorities.</p>
 <p><a href="../../pages/profiles/profile-common-vs-domain.html">P.1 compares common and separate grades</a>. P.2 considers <a href="../../pages/profiles/profile-separability.html">when grades can be chosen separately</a>, P.3 examines <a href="../../pages/profiles/profile-dependence.html">errors that overlap across domains</a>, and P.4 varies <a href="../../pages/profiles/profile-resolution.html">the budget for errors across both domains</a>.</p>
 <p>The first four examples evaluate every candidate under a fully specified fictional distribution. The <a href="../../pages/profiles/fictional-site-profiles.html">forty-site example</a> shows grades and risk summaries from an earlier fictional analysis.</p>
+<section id="applications" class="level2">
+<h2 class="anchored" data-anchor-id="applications">Applications</h2>
 <!-- Build inputs: the catalog; do not edit. -->
 <div class="prx-cards">
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/profiles/profile-common-vs-domain.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/profile-common-vs-domain.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/profiles/profile-common-vs-domain.html" tabindex="-1"><img src="../../media/thumbs/profile-common-vs-domain.png" alt="P.1 Common or profile? chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">P.1</p>
-<h3 class="anchored"><a href="../../pages/profiles/profile-common-vs-domain.html">Common or profile?</a></h3>
+<h3 class="no-anchor"><a href="../../pages/profiles/profile-common-vs-domain.html">Common or profile?</a></h3>
 <p>Compare one shared grade column with two domain columns under the same posterior and loss.</p>
-<p class="prx-card-links"><a href="../../embed/profile-common-vs-domain.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/profile-common-vs-domain.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/profiles/profile-separability.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/profile-separability.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/profiles/profile-separability.html" tabindex="-1"><img src="../../media/thumbs/profile-separability.png" alt="P.2 Separate or joint? chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">P.2</p>
-<h3 class="anchored"><a href="../../pages/profiles/profile-separability.html">Separate or joint?</a></h3>
+<h3 class="no-anchor"><a href="../../pages/profiles/profile-separability.html">Separate or joint?</a></h3>
 <p>Separate domain choices can minimize additive loss. A joint error limit can make their combination infeasible.</p>
-<p class="prx-card-links"><a href="../../embed/profile-separability.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/profile-separability.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/profiles/profile-dependence.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/profile-dependence.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/profiles/profile-dependence.html" tabindex="-1"><img src="../../media/thumbs/profile-dependence.png" alt="P.3 Error overlap chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">P.3</p>
-<h3 class="anchored"><a href="../../pages/profiles/profile-dependence.html">Error overlap</a></h3>
+<h3 class="no-anchor"><a href="../../pages/profiles/profile-dependence.html">Error overlap</a></h3>
 <p>The same domain posteriors can lead to different best profiles when their errors overlap differently.</p>
-<p class="prx-card-links"><a href="../../embed/profile-dependence.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/profile-dependence.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/profiles/profile-resolution.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/profile-resolution.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/profiles/profile-resolution.html" tabindex="-1"><img src="../../media/thumbs/profile-resolution.png" alt="P.4 Budget and grades chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">P.4</p>
-<h3 class="anchored"><a href="../../pages/profiles/profile-resolution.html">Budget and grades</a></h3>
+<h3 class="no-anchor"><a href="../../pages/profiles/profile-resolution.html">Budget and grades</a></h3>
 <p>A looser error limit can increase reporting detail in one domain and reduce it in another.</p>
-<p class="prx-card-links"><a href="../../embed/profile-resolution.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/profile-resolution.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/profiles/fictional-site-profiles.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/fictional-site-profiles.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/profiles/fictional-site-profiles.html" tabindex="-1"><img src="../../media/thumbs/fictional-site-profiles.png" alt="P.5 Site profiles chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">P.5</p>
-<h3 class="anchored"><a href="../../pages/profiles/fictional-site-profiles.html">Site profiles</a></h3>
+<h3 class="no-anchor"><a href="../../pages/profiles/fictional-site-profiles.html">Site profiles</a></h3>
 <p>Read two grades for each of forty fictional sites and compare the directions stated within each domain.</p>
-<p class="prx-card-links"><a href="../../embed/fictional-site-profiles.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/fictional-site-profiles.html">Open standalone</a></p>
 </div>
 </article>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="prx-recipe-keyboard">
@@ -1080,7 +1115,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

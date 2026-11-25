@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Thirteen interactive applications comparing quantile tiers, evidence flags, and posterior cuts at matched disclosure and under repeated sampling.">
 
-<title>3 · Common rules – postrank Explorer</title>
+<title>Reporting rules – postrank Explorer</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -43,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,15 +72,40 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reporting rules – postrank Explorer">
+<meta property="og:description" content="Thirteen interactive applications comparing quantile tiers, evidence flags, and posterior cuts at matched disclosure and under repeated sampling.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/index.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/rule-comparison.png">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -533,21 +559,27 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">3 · Common rules</h1>
+<h1 class="title">Reporting rules</h1>
+<p class="subtitle lead">Part 3 · Common rules · 13 applications</p>
+</div>
+
+<div>
+  <div class="description">
+    Thirteen interactive applications comparing quantile tiers, evidence flags, and posterior cuts at matched disclosure and under repeated sampling.
+  </div>
 </div>
 
 
-
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -560,130 +592,133 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>Tiers, evidence flags and cuts of a ranking all place some units above others and leave some pairs unranked. We compare their pairwise directions using the same posterior and loss. <a href="../../pages/rules/fixed-tiers.html">Fixed quantile tiers</a> show how group sizes determine disclosure. <a href="../../pages/rules/rule-comparison.html">Matched-disclosure comparisons</a> then ask how many errors a rule expects relative to reports that state as many pairs. Other examples examine <a href="../../pages/rules/stability.html">stability under repeated measurement</a> and the additional choices needed for <a href="../../pages/rules/one-place.html">allocation and classification</a>.</p>
+<section id="applications" class="level2">
+<h2 class="anchored" data-anchor-id="applications">Applications</h2>
 <!-- Build inputs: the catalog; do not edit. -->
 <div class="prx-cards">
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/fixed-tiers.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/fixed-tiers.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/fixed-tiers.html" tabindex="-1"><img src="../../media/thumbs/fixed-tiers.png" alt="3.1 Fixed quantile tiers chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.1</p>
-<h3 class="anchored"><a href="../../pages/rules/fixed-tiers.html">Fixed quantile tiers</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/fixed-tiers.html">Fixed quantile tiers</a></h3>
 <p>Group the estimates by quantiles, then use the posterior to count the expected mistakes in the resulting report.</p>
-<p class="prx-card-links"><a href="../../embed/fixed-tiers.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/fixed-tiers.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/tier-sizes.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/tier-sizes.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/tier-sizes.html" tabindex="-1"><img src="../../media/thumbs/tier-sizes.png" alt="3.2 Disclosure determined by tier sizes chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.2</p>
-<h3 class="anchored"><a href="../../pages/rules/tier-sizes.html">Disclosure determined by tier sizes</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/tier-sizes.html">Disclosure determined by tier sizes</a></h3>
 <p>The number of stated pairs depends on the sizes of the tiers. Compare counts across all ordered size choices.</p>
-<p class="prx-card-links"><a href="../../embed/tier-sizes.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/tier-sizes.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/evidence-flags.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/evidence-flags.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/evidence-flags.html" tabindex="-1"><img src="../../media/thumbs/evidence-flags.png" alt="3.3 Grades based on standardized evidence chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.3</p>
-<h3 class="anchored"><a href="../../pages/rules/evidence-flags.html">Grades based on standardized evidence</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/evidence-flags.html">Grades based on standardized evidence</a></h3>
 <p>Turn estimates and standard errors into evidence flags, then examine the pairwise directions the flags imply.</p>
-<p class="prx-card-links"><a href="../../embed/evidence-flags.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/evidence-flags.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/flags-in-the-league.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/flags-in-the-league.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/flags-in-the-league.html" tabindex="-1"><img src="../../media/thumbs/flags-in-the-league.png" alt="3.4 Standardized-evidence flags in a league chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.4</p>
-<h3 class="anchored"><a href="../../pages/rules/flags-in-the-league.html">Standardized-evidence flags in a league</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/flags-in-the-league.html">Standardized-evidence flags in a league</a></h3>
 <p>Evaluate the directions and posterior risk of a flag report for a simulated league of thirty units.</p>
-<p class="prx-card-links"><a href="../../embed/flags-in-the-league.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/flags-in-the-league.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/posterior-tiers.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/posterior-tiers.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/posterior-tiers.html" tabindex="-1"><img src="../../media/thumbs/posterior-tiers.png" alt="3.5 Tiers and optimized cuts of posterior rankings chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.5</p>
-<h3 class="anchored"><a href="../../pages/rules/posterior-tiers.html">Tiers and optimized cuts of posterior rankings</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/posterior-tiers.html">Tiers and optimized cuts of posterior rankings</a></h3>
 <p>Compare fixed tiers, boundaries chosen along a posterior order, and a search over reports that can change that order.</p>
-<p class="prx-card-links"><a href="../../embed/posterior-tiers.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/posterior-tiers.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/order-misses.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/order-misses.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/order-misses.html" tabindex="-1"><img src="../../media/thumbs/order-misses.png" alt="3.6 Restrictions imposed by a fixed order chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.6</p>
-<h3 class="anchored"><a href="../../pages/rules/order-misses.html">Restrictions imposed by a fixed order</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/order-misses.html">Restrictions imposed by a fixed order</a></h3>
 <p>At some withholding costs in this example, cuts of the posterior-mean order miss the best unrestricted report.</p>
-<p class="prx-card-links"><a href="../../embed/order-misses.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/order-misses.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/rule-comparison.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/rule-comparison.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/rule-comparison.html" tabindex="-1"><img src="../../media/thumbs/rule-comparison.png" alt="3.7 Comparison at matched disclosure chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.7</p>
-<h3 class="anchored"><a href="../../pages/rules/rule-comparison.html">Comparison at matched disclosure</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/rule-comparison.html">Comparison at matched disclosure</a></h3>
 <p>For each rule, compare its expected wrong count with the frontier at the same number of stated pairs.</p>
-<p class="prx-card-links"><a href="../../embed/rule-comparison.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/rule-comparison.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/same-tau-or-same-n.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/same-tau-or-same-n.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/same-tau-or-same-n.html" tabindex="-1"><img src="../../media/thumbs/same-tau-or-same-n.png" alt="3.8 Common withholding cost and matched disclosure chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.8</p>
-<h3 class="anchored"><a href="../../pages/rules/same-tau-or-same-n.html">Common withholding cost and matched disclosure</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/same-tau-or-same-n.html">Common withholding cost and matched disclosure</a></h3>
 <p>A common withholding cost compares risk. A common number of stated pairs compares expected errors at the same disclosure.</p>
-<p class="prx-card-links"><a href="../../embed/same-tau-or-same-n.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/same-tau-or-same-n.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/deciles-quartiles.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/deciles-quartiles.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/deciles-quartiles.html" tabindex="-1"><img src="../../media/thumbs/deciles-quartiles.png" alt="3.9 Deciles and quartiles of posterior means chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.9</p>
-<h3 class="anchored"><a href="../../pages/rules/deciles-quartiles.html">Deciles and quartiles of posterior means</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/deciles-quartiles.html">Deciles and quartiles of posterior means</a></h3>
 <p>Compare deciles and quartiles of posterior means on KRW’s measures of discordance and informativeness.</p>
 <p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
-<p class="prx-card-links"><a href="../../embed/deciles-quartiles.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/deciles-quartiles.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/naive-thresholding.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/naive-thresholding.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/naive-thresholding.html" tabindex="-1"><img src="../../media/thumbs/naive-thresholding.png" alt="3.10 Coherence of pairwise threshold decisions chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.10</p>
-<h3 class="anchored"><a href="../../pages/rules/naive-thresholding.html">Coherence of pairwise threshold decisions</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/naive-thresholding.html">Coherence of pairwise threshold decisions</a></h3>
 <p>Pairwise thresholds can produce incompatible triples. KRW’s archived cards show which directions a coherent report states.</p>
 <p class="prx-card-credit">Data: Kline, Rose and Walters (2024) · CC-BY-NC</p>
-<p class="prx-card-links"><a href="../../embed/naive-thresholding.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/naive-thresholding.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/better-on-average.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/better-on-average.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/better-on-average.html" tabindex="-1"><img src="../../media/thumbs/better-on-average.png" alt="3.11 Expected and state-specific reporting loss chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.11</p>
-<h3 class="anchored"><a href="../../pages/rules/better-on-average.html">Expected and state-specific reporting loss</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/better-on-average.html">Expected and state-specific reporting loss</a></h3>
 <p>A report with smaller posterior expected loss can still have larger loss in an individual posterior draw.</p>
-<p class="prx-card-links"><a href="../../embed/better-on-average.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/better-on-average.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/stability.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/stability.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/stability.html" tabindex="-1"><img src="../../media/thumbs/stability.png" alt="3.12 Report stability under repeated measurement chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.12</p>
-<h3 class="anchored"><a href="../../pages/rules/stability.html">Report stability under repeated measurement</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/stability.html">Report stability under repeated measurement</a></h3>
 <p>Repeat measurement at fixed true values to see which directions are newly stated, withheld, or reversed.</p>
-<p class="prx-card-links"><a href="../../embed/stability.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/stability.html">Open standalone</a></p>
 </div>
 </article>
 <article class="prx-card prx-card-built">
-<a class="prx-card-thumb" href="../../pages/rules/one-place.html" tabindex="-1" aria-hidden="true"><img src="../../media/thumbs/one-place.png" alt="" loading="lazy"></a>
+<a class="prx-card-thumb" href="../../pages/rules/one-place.html" tabindex="-1"><img src="../../media/thumbs/one-place.png" alt="3.13 Reporting, allocation and classification chart preview" loading="lazy"></a>
 <div class="prx-card-body">
 <p class="prx-card-id">3.13</p>
-<h3 class="anchored"><a href="../../pages/rules/one-place.html">Reporting, allocation and classification</a></h3>
+<h3 class="no-anchor"><a href="../../pages/rules/one-place.html">Reporting, allocation and classification</a></h3>
 <p>Reporting a direction, allocating a place, and classifying a unit at a threshold use different decision rules.</p>
-<p class="prx-card-links"><a href="../../embed/one-place.html">standalone</a></p>
+<p class="prx-card-links"><a href="../../embed/one-place.html">Open standalone</a></p>
 </div>
 </article>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="prx-recipe-keyboard">
@@ -1149,7 +1184,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

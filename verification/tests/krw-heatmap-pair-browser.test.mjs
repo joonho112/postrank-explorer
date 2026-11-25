@@ -106,6 +106,11 @@ test('KRW heat map reads the same exact cell by mouse, touch, keyboard, and nati
                 for (let step = 0; step < 25; step += 1) await page.keyboard.press('ArrowRight');
                 assert.deepEqual(await marks(page, 'race', .50), [49, 545]);
                 assert.deepEqual(await pairLine(page).then(({ row, column }) => [row, column]), [expected.row, expected.column]);
+                const settings = await page.$('details[data-prx-disclosure="settings"]:not([open]) > summary');
+                if (settings) {
+                    await settings.focus();
+                    await page.keyboard.press('Enter');
+                }
                 const stage = '[data-prx-focus-key="radio:stage:1"]';
                 await page.focus(stage);
                 await page.keyboard.press('Space');

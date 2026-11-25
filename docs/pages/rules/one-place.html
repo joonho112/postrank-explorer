@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/one-place.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reporting, allocation and classification – postrank Explorer">
+<meta property="og:description" content="Pairwise reporting, allocation and classification can lead to different decisions under the same posterior.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/one-place.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/one-place.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -544,7 +569,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Reporting, allocation and classification</h1>
-<p class="subtitle lead">3.13 · constructed examples after the postrank theory book, ch.&nbsp;17 and 19</p>
+<p class="subtitle lead">3.13 · constructed examples after the postrank theory book, ch.&nbsp;23 and 25</p>
 </div>
 
 <div>
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The unit with the highest posterior mean can differ from the unit most likely to rank first. A grade report states directions between units. Allocating a place from that report requires a rule for choosing among units in the same grade. Classification at a threshold requires costs for false positives and false negatives.</p>
+<p>A grade report states pairwise directions; filling fixed places or classifying above a threshold optimizes a separate objective and needs its own rule.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,25 +600,20 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Three units, reporting objective.</strong> The report has risk .1833. Filling a place from its highest grade selects a unit with expected value 4.000 and top-set overlap .700. The figure gives each quantity its own scale.</li>
-<li><strong>Three units, mean-value order.</strong> Selecting A instead gives value 6.000 but top-set overlap .300; the strict report’s risk is .4667. The top-set order in the table prefers B. Choosing a first recipient does not require publishing every comparison in a strict order.</li>
-<li><strong>Two units, τ .25.</strong> The reporting optimum withholds. The added allocation lottery still fills a place, giving expected value 5.000 and overlap .500. It draws the required number of units from the boundary grade.</li>
-<li><strong>False-negative cost 3.</strong> The threshold rule declares 2 positive, with cost .700. The convention “positive through the highest grade” declares only B positive and costs .900. Neither τ nor the place budget sets the probability cutoff for this decision. Under <strong>Threshold 4</strong>, being exactly at the substantive threshold does not count as above it. The threshold rule declares 0 positive, at cost .300. The grade cutoff permits both none-positive and all-positive decisions: those actions remain distinct even if a canonical grade representation would lose the distinction.</li>
-<li><strong>Equal reporting risk, different classifications.</strong> Reports 2/1/2 and 3/1/2, in A/B/C order, both have risk .2000. With the same added grade cutoff, they declare 3 and 2 positive, at costs 1.700 and 1.300. Equal reporting risk does not make the added actions equivalent.</li>
-<li><strong>League, five places.</strong> Mean-score selection gives value .558 and estimated overlap 2.733. The top-set order gives estimated overlap 2.825. These membership probabilities use the displayed posterior draws; their ordering and overlap evaluation use the same draws.</li>
+<li><strong>Three units, reporting objective.</strong> Risk is .183; Grade 1 picks B for value 4.00 and overlap .700, whereas <strong>mean-value order</strong> picks A for 6.00 and .300 (risk .467).</li>
+<li><strong>Two units, τ .25.</strong> Boundary lottery gives value 5.00 and overlap .500.</li>
+<li><strong>False-negative cost 3.</strong> Bayes picks 2 positive at cost .700 vs.&nbsp;.900 for Grade 1; at <strong>Threshold 4</strong>, Bayes picks 0 at cost .300.</li>
+<li><strong>Equal reporting risk, different classifications.</strong> Reports 2/1/2 and 3/1/2 tie at risk .200, yet grades ≤ 2 pick 3 vs.&nbsp;2 positive at costs 1.70 vs.&nbsp;1.30.</li>
+<li><strong>League, five places.</strong> Mean order gives value .558 and overlap 2.73; top-set order reaches 2.83.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>In these examples, value is the target value of a selected unit. We calculate outcomes exactly for the finite laws. For the league, we calculate the normal means and threshold probabilities analytically and estimate top-set membership and overlap from draws. The league’s reporting optimum is over contiguous cuts of the posterior-mean order under a grade cap. The strict comparison reports do not belong to that family.</p>
-</div>
-</div>
-</div>
-<p>Standalone: <a href="../../embed/one-place.html">one-place</a>, for example <code>?mode=threshold&amp;falseNegativeCost=3</code>.</p>
-<p>Related applications: <a href="../../pages/rules/order-misses.html">Restrictions imposed by a fixed order</a>, <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a>.</p>
+<details>
+<summary>
+Exact laws and league approximations
+</summary>
+<p>Value denotes selected target value. Finite-law quantities are exact; league means and threshold probabilities are analytic while top-set membership and overlap use Monte Carlo draws. The league’s reporting optimum searches contiguous posterior-mean cuts under a grade cap.</p>
+</details>
+<p>Standalone: <a href="../../embed/one-place.html">one-place</a>. Related: <a href="../../pages/rules/order-misses.html">Restrictions imposed by a fixed order</a>, <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-selection-benchmarks">Benchmarks for selection, classification, and stability</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-objective-precision-contrast">Target uncertainty, directional reporting, and allocation with one place</a>.</p>
 
 
 </section>
@@ -1066,7 +1086,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

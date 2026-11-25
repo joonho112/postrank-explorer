@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/noisy-league.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ranking noisy estimates – postrank Explorer">
+<meta property="og:description" content="Effects of unequal sampling precision on the extreme positions of a ranking.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/noisy-league.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/noisy-league.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Imprecise estimates can place units near the top or bottom of a ranking even when their true values are less extreme. We rank thirty simulated units by estimate. Units with fewer observations have larger standard errors (SEs). Across samples, the true values stay fixed, letting us compare how often each size group appears at either end.</p>
+<p>High-SE estimates push small units to both ends of a ranking even when true values are unrelated to sample size.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,24 +600,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>First draw.</strong> Of the 10 extreme positions by estimate, small units hold 5, medium units 4 and large units 1 in this draw; by true value they hold 3 small, 4 medium and 3 large units.</li>
-<li><strong>True values.</strong> In the first draw, of the top 10 by estimate, 9 are in the true top 10 (7.45 on average over the twenty replays). U19, a small unit with true rank 11, is the first of the bottom five: Sampling error moved it down the ranking. U18, a large unit with true rank 30, sits two rows above them: noisier small and medium units fell past it, and its own estimate came out above its true value.</li>
-<li><strong>Twenty replays.</strong> The draw menu brings any replay into the table. On average over the 20 replays, small units hold 4.35 of the 10 extreme positions and large units 2.00, and the estimates order 83.90 of the 435 pairs the wrong way, against 88.12 expected over many draws.</li>
-<li><strong>Replay 11.</strong> In this replay, small units hold 2 extreme positions, medium units 5 and large units 3. Large units hold as many extreme positions in this ranking as in the ranking by true values. Their average across the replays is lower.</li>
-<li><strong>Extremes highlighted.</strong> When true values are hidden, the shaded rows do not identify which units have genuinely extreme values. The dashed line marks the truth, 3 small and 3 large units. Small units sit above it in most replays; large units sit on or below it.</li>
+<li><strong>First draw.</strong> Across 10 extreme positions, small units hold 5, medium units 4 and large units 1 (truly 3 small, 4 medium and 3 large units).</li>
+<li><strong>True values.</strong> In the top 10 by estimate, 9 are in the true top 10; small U19 (rank 11) enters the bottom five while large U18 (rank 30) sits above.</li>
+<li><strong>Twenty replays.</strong> Over 20 replays, small units hold 4.35 of the 10 extreme positions and large units 2.00 (7.45 in true top 10), reversing 83.9 of the 435 pairs (88.1 expected).</li>
+<li><strong>Replay 11.</strong> Replay 11: small units hold 2, medium units 5 and large units 3.</li>
+<li><strong>Extremes highlighted.</strong> Dashed line: the truth, 3 small and 3 large units.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Real units have unknown true values, so this check is not possible. The firms of Kline, Rose and Walters (2024), KRW, came with SEs of very different sizes: the race estimates have SEs from .025 to .444 (Section V.B; talk slides 47–49). Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700, and deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only; as adapted in postrank 1.1.0 (pr_case_krw), changes noted; no endorsement by the authors is implied. The data describe KRW’s correspondence experiment, not any firm’s current conduct. postrank’s input is a posterior, not a list of estimates.</p>
-</div>
-</div>
-</div>
-<p>Standalone: <a href="../../embed/noisy-league.html">embed/noisy-league.html</a>, for example <code>?seed=20261031&amp;reveal=1</code> or <code>?preset=replay20&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/winners-curse.html">Selection bias at the extremes of a ranking</a> · <a href="../../pages/uncertainty/shrinkage.html">Normal–normal posterior shrinkage</a> · <a href="../../pages/uncertainty/ranking-claims.html">Expected errors in a strict ranking</a>.</p>
+<p>Source: Simulated thirty-unit league after Walters (CCPR handout, p.&nbsp;92; Mixtape slides, pp.&nbsp;43–44). Standalone: <a href="../../embed/noisy-league.html">embed/noisy-league.html</a>. Related: <a href="../../pages/uncertainty/winners-curse.html">Winners’ curse</a> · <a href="../../pages/uncertainty/shrinkage.html">Posterior shrinkage</a> · <a href="../../pages/uncertainty/ranking-claims.html">Ranking claims</a>.</p>
 
 
 </section>
@@ -1065,7 +1079,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

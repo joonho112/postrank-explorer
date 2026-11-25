@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/chosen-and-judged.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Selection and evaluation using posterior draws – postrank Explorer">
+<meta property="og:description" content="Discrepancy between risk estimated on selection draws and risk under the exact posterior law.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/chosen-and-judged.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/chosen-and-judged.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -579,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Selection and evaluation using posterior draws</h1>
-<p class="subtitle lead">2.18 · after the postrank vignette m6 and theory book, chapter 15</p>
+<p class="subtitle lead">2.18 · after the postrank vignette m6 and theory book, chapter 21</p>
 </div>
 
 <div>
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>In each repetition, we draw from a specified posterior and estimate the pairwise probabilities from those draws. We select a report using the estimates. We then hold that report fixed and score it twice, once with the selection draws and once with the exact probabilities. The estimated risk can be above or below the exact risk. A separate calculation compares the selected report with the exact-law optimum in the same family. This comparison measures the cost of the selection itself.</p>
+<p>Each repetition selects a report on posterior draws and scores that fixed report twice: on those selection draws and under the exact law.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,23 +635,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Own draws.</strong> The graph reads “33 look worse” for the displayed selections. Those reruns have higher risk on their own draws than under the exact law. Choosing other tied reports can change the count. The selected run’s gap of −.00061 means its own draws give the lower risk.</li>
-<li><strong>Looks worse.</strong> Another selected report from the same experiment has a positive discrepancy. Its gap is +.00072 even though it minimizes risk for its own estimated probabilities.</li>
-<li><strong>More draws.</strong> With 4,000 draws per run, the followed gap is −.00025. The cloud and coefficient radius describe the remaining numerical variation. Realized errors need not shrink on every step.</li>
-<li><strong>Tighter family.</strong> Search the 603 reports with at most three grades. The followed gap is +.00102. Both evaluations still refer to that run’s same selected report. The gray intervals show that a bound can be much larger than the observed gap.</li>
-<li><strong>Both scores.</strong> The two scores receive equal weights. The followed gap is −.00322. The discrepancy radius now averages each score’s largest pair-error discrepancy with those same weights.</li>
+<li><strong>Own draws.</strong> “33 look worse” (33–37 across ties); Run 1’s gap is −.000613.</li>
+<li><strong>Looks worse.</strong> Run 6 minimizes own-draw risk yet has gap +.000720.</li>
+<li><strong>More draws.</strong> At 4,000 draws, Run 1’s gap narrows to −.000246.</li>
+<li><strong>Tighter family.</strong> Across 603 reports (at most three grades), Run 1’s gap is +.00102.</li>
+<li><strong>Both scores.</strong> Equal-weight scores A and B give gap −.00322.</li>
 </ul>
-<p>The gray intervals bound the absolute difference between the two risk evaluations for each selected report. Regret compares that report’s exact-law risk with the exact-law minimum. The regret bound allows for numerical optimization. Two grade assignments can differ even when their risks are close.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The example uses independent draws from normal posteriors specified for six fictional sites. The exact risks come from those same distributions. The separate package example selects a report on one fold and evaluates it on the other. Both folds contain draws from the same posterior, so that exercise cannot assess how the model would perform on new observations.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Bounds, regret and fold evaluation
+</summary>
+Gray intervals bound the absolute difference between the two risk evaluations for each selected report, while regret compares that report’s exact-law risk with the exact-law minimum. The example uses independent draws from normal posteriors for six fictional sites; the separate package fold example selects on one half of posterior draws and evaluates on the other, so it does not test performance on new observations.
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -648,6 +668,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Standalone: <a href="../../embed/chosen-and-judged.html">open the app</a>, for example <code>?S=100&amp;seed=1&amp;run=6</code>.</p>
 <p>Related applications: <a href="../../pages/uncertainty/mc-error.html">Monte Carlo error in pairwise probabilities</a> · <a href="../../pages/grades/another-law.html">Evaluation under an alternative posterior law</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/21-numerical-uncertainty.html#sec-coefficient-error">Effects of coefficient error on risk and feasibility</a>.</p>
 
 
 </section>
@@ -1120,7 +1141,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

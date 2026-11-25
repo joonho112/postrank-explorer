@@ -4,11 +4,7 @@ subtitle: "3.10 · after Kline, Rose and Walters (2024), §V.E"
 description: "Pairwise threshold decisions can conflict with each other, even when no strict cycle occurs."
 ---
 
-A pairwise threshold reports a direction when its error probability is strictly below $\tau$. Applied separately
-to each pair, this rule can produce directions that no grade report can reproduce. For example, if the report
-withholds A–B and B–C, A and C must share a grade too. A stated direction for A–C would contradict those two
-decisions. The triple display counts these contradictions and directed cycles. The card overlay shows which
-directions the archived grade report states under the same released probabilities.
+Thresholding each pair separately states a direction whenever its error probability falls strictly below $\tau$. Compare those isolated pair choices with coherent grade reports across triples of firms.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,24 +16,21 @@ directions the archived grade report states under the same released probabilitie
 
 ## Numerical illustrations {#what-to-try}
 
-- **Race λ .25.** Naive thresholding states 1,575 directions. Among 147,440 triples, 32,773 have two pairs
-  withheld and the third stated. For the selected triple, the withheld
-  pairs would force every firm into the same grade, contradicting the stated direction.
-- **Race λ .10.** The two-withheld count is 24,278. The triple selector and map arrows locate other conflicts in the matrix.
-- **Race λ .50.** The count falls to 15,107. The rule reports more directions, yet fewer triples have two withheld pairs and one stated pair.
-- **Race λ .75.** The count falls again to 3,108. Even without a strict directed cycle, the withheld pairs can conflict with a direction the rule states.
-- **Race λ .25, card blocks.** The card withholds 575 confident pairs and states 324 directions whose errors
-  exceed τ. The selected triple retains its identity within these blocks. KRW's card has no cap on the number of grades,
-  so these differences arise from coherence.
-- **Gender λ 1.00.** All 4,656 pairs are stated, but 1 directed cycle precludes a coherent grade report. The absence of cycles
-  at the race baseline does not extend to every target and threshold.
+- **Race λ .25.** Naive thresholding states 1,575 directions and leaves 32,773 of 147,440 triples with two withheld pairs and one stated.
+- **Race λ .10.** The two-withheld conflict count is 24,278.
+- **Race λ .50.** Reporting more directions reduces two-withheld conflicts to 15,107.
+- **Race λ .75.** Conflicts fall further to 3,108 without any strict directed cycle.
+- **Race λ .25, card blocks.** The card withholds 575 confident pairs and states 324 directions above τ to restore coherence without a grade cap.
+- **Gender λ 1.00.** All 4,656 pairs are stated, leaving 1 directed cycle that precludes a coherent grade report.
+
+<details>
+<summary>Transitivity and archived cards</summary>
+
+A shared grade leaves the direction between two firms unranked, and sharing a grade is transitive: withholding A–B and B–C puts all three firms in one grade, contradicting a stated direction on A–C. Threshold decisions and archived KRW cards are evaluated here under the released signed-target probabilities.
+
+</details>
 
 ::: {.callout-note appearance="simple"}
-A shared grade leaves the direction between two firms unranked. We count threshold decisions using the released
-probabilities for the signed target. KRW selected the archived cards with their own code and archived
-probabilities. Here we evaluate those cards under the released probabilities and use the overlay to compare
-their directions with the separate pairwise decisions.
-
 Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC,
 noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted; no endorsement is implied.
 Provided as is, without warranty. **The data describe KRW's correspondence experiment, not any firm's current conduct.**
@@ -46,3 +39,5 @@ Provided as is, without warranty. **The data describe KRW's correspondence exper
 Standalone: [naive-thresholding](../../embed/naive-thresholding.html), for example `?lambda=.25&blocks=true&triple=0`.
 
 Related applications: [Coherence constraints on pairwise decisions](../grades/coherence.qmd), [Deciles and quartiles of posterior means](deciles-quartiles.qmd).
+
+Theory book · [Withholding a pair and constructing a common grade](https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-pair-versus-grade).

@@ -1,59 +1,31 @@
 // posterior-pipeline (app 1.7): of data, model, posterior and decision, postrank does only the last step: it reads a
-// posterior and makes grades. Starting point: postrank Explorer v1 L-05 (posterior-pipeline.js and its CSS), without the
-// prediction gate; everything v1 showed after Check or Skip is shown at once.
+// supplied posterior and selects a grade report.
 //
 //   Data Y  →  Model  →  Posterior Pr(θ ∣ Y)  →  Decision (grades)
 //
-// Layout (review 044 repair: U2-F2, X-01, X-07, X-14, X-18): base.js's result-first frame, top to bottom:
-//   presets  the preset row ("Worked settings (set every slider)", the catalog's presetLabel) and a line under it that
-//            says that a preset sets the chain's sliders as well as the open box, while the box buttons only open a box
-//   read-out the one live sentence (base.js), directly under the preset row: the estimates become posterior means and
-//            π, then the likelier direction's chance of being wrong against τ and the decision; ties are said with the
-//            equal-risk tolerance
-//   chain    one linked chain whose box headers are its four stages (the primary graphic, ctx.primaryGraphic): four
-//            stages joined by three glyph-only arrows, in one row when the app is at least CONFIG.chainRowMinWidth px
-//            wide (the 990-px page column included) and stacked from top to bottom (arrows pointing down) when it is
-//            narrower or not yet measured. Each stage is headed by its box button (number, a small decorative glyph,
-//            name, line, and who makes it: "the analyst" and "the analyst's software", the words of the arrow that
-//            leaves boxes 1 and 2, and the tags "read by postrank" and "made by postrank"); pressing a header opens the
-//            box (key box) and the closed box of the four texts. Under each header, two units, A and B, with numbers:
-//            estimates and SEs (stage 1) and a normal prior with mean 0 (stage 2) give each unit a normal posterior
-//            (stage 3: engine normalPosterior; its curves with normalPdf; π = Pr(θ_A > θ_B ∣ Y) with pairDirection,
-//            written right under the curves), and postrank's decision at τ (stage 4: the three reports of two units and
-//            their costs with errorArray and pairDecision, the best one with exactOptimum, its grade chips and its short
-//            tag, with the tie qualifier when several reports tie). The heavier third arrow and a dashed frame around
-//            stage 3, the third arrow and stage 4 mark the part postrank touches; the arrows' who-words stay for screen
-//            readers. A visually hidden paragraph describes the chain's boxes in words; the chain's own caption (the
-//            teaching posterior and a gloss) sits under it.
-//   boxes    a closed box "What each box holds and who makes it": the panel of the open box, its title, what it holds
-//            and who makes it (the panel's own aria-live part), an example, "See also" (box 3) and its source
-//   routes   a closed box "What postrank can do with each form of posterior": the forms a supplied posterior can take
-//            and what postrank can do with each (static: postrank 1.1.0's problem constructor,
-//            postrank_coefficient_capabilities() and postrank_tie_capabilities(), checked by running them), and that
-//            validation checks the form of the input, not the model. Column heads in plain words, each linking the app
-//            that shows its problem once that app is built, with the package's terms and the reading functions on
-//            smaller lines. When the routes section is narrower than the table (CONFIG.routesListBelow, a container
-//            query), each route is a short list of what it supports instead. Box 3's "See also" link opens this box.
-//   caption  the catalog caption (base.js), last.
-// Links: base.js says where links point (linkRoot: Quarto's quarto:offset root on a site page; "../" and a new tab in a
-// standalone embed, embed/<name>.html; none elsewhere, as in an offline srcdoc frame, where the page names are plain
-// text) and which apps are built (builtPage). A page whose app is not built yet is named in plain text too: an app title
-// in quotes, a phrase as it is; a part of this app (the routes table) is an anchor in the page.
-//
-// Keys: box (integer 1–4, the open box); estA, seA, estB, seB (the two estimates and their SEs); priorSd (the prior
-// SD); tau (the withholding cost). Everything else follows js/shared/base.js.
+// Frame v2 layout:
+//   toolbar      primary sliders (Prior SD, Withholding cost τ), wrapping preset chips, and Settings (unit A & B
+//                estimates and SEs, plus preset/header note)
+//   readout      concise 1-sentence 3-sig-fig summary naming the focused stage, posterior shrinkage, π, and decision
+//   stage        the linked 4-stage chain (.prx-pp-flow, [data-prx-primary]), each stage headed by its clickable box
+//                button (.prx-pp-box[data-prx-box="1".."4"]), followed by a crisp 1:1 width >= 13px SVG mini-chart and
+//                one concise key-number / grade-chip line, with a dashed boundary around stages 3–4 (postrank's scope)
+//   disclosures  Data and exact values (2-unit posterior table, 3-report cost table, and formulas/notes),
+//                What each box holds and who makes it (all four box explanations, open box first with aria-live), and
+//                What postrank can do with each form of posterior (input routes capability table / narrow list)
+//   caption      catalog source caption
 import { builtPage, createWidget, linkRoot, uid } from "../shared/base.js";
-import { gradeColors, labelOn, palette, plot } from "../shared/chart.js";
-import { formatCount, formatDecimal, formatProb, formatSetting } from "../shared/format.js";
+import { gradeColors, labelOn, numText, palette, plot } from "../shared/chart.js";
+import { formatDecimal, formatReadoutEst, formatReadoutProb, formatSetting, formatShare } from "../shared/format.js";
 import { captionNode, tagNode } from "../shared/labels.js";
 import { renderTex } from "../shared/math.js";
+import { ro } from "../shared/readout.js";
 import { errorArray, exactOptimum, normalPdf, normalPosterior, pairDecision, pairDirection } from "../pr-core.js";
 
 export const CONFIG = Object.freeze({
   name: "posterior-pipeline",
   className: "prx-pp",
   box: Object.freeze({ type: "integer", min: 1, max: 4, value: 1 }),
-  // the chain's settings: the app loads on the first preset, these defaults with box 1 open
   estA: Object.freeze({ type: "number", min: -0.6, max: 0.6, step: 0.01, value: 0.25 }),
   seA: Object.freeze({ type: "number", min: 0.02, max: 0.4, step: 0.01, value: 0.1 }),
   estB: Object.freeze({ type: "number", min: -0.6, max: 0.6, step: 0.01, value: 0.05 }),
@@ -62,22 +34,12 @@ export const CONFIG = Object.freeze({
   tau: Object.freeze({ type: "number", min: 0.02, max: 0.5, step: 0.01, value: 0.2 }),
   priorMean: 0,
   ids: Object.freeze(["A", "B"]),
-  // from this app width (px) the four stages of the chain, each headed by its box button, sit side by side in one row
-  // (review 044, X-07: the site page's app is 990 px wide, the standalone page's 1,156 px); below it they stack, each
-  // stage with its figure beside its numbers from splitMinWidth on
   chainRowMinWidth: 880,
   splitMinWidth: 520,
-  // the viewport query the row also needs, in CSS (every rule of the row sits inside it) and in the row decision: a
-  // hidden or background page may not run ResizeObserver callbacks after a resize, so CSS alone keeps a phone-width
-  // page in one column, and JS asks the same query so the two never disagree (review 044 repair, Phase 3: B-F3)
   rowMedia: "(min-width: 57.5em)",
-  // the width of an arrow's column between two stages in a row (the arrows are glyphs only), and the stages' shares of
-  // the rest: the decision stage, with its costs, chips and rule, gets the most, the model stage the least
-  arrowColumn: "2.5rem",
-  stageShares: Object.freeze([0.88, 0.95, 0.95, 1.45]),
+  arrowColumn: "1.35rem",
+  stageShares: Object.freeze([1, 1, 1, 1.05]),
   svgNs: "http://www.w3.org/2000/svg",
-  // the pages the panels and the routes table link to: an app of the catalog (linked once it is built) or a part of
-  // this app. text is the app's title (in quotes while it is not a link) or, with phrase, a phrase of the sentence
   pages: Object.freeze({
     league: Object.freeze({ app: "noisy-league", text: "Ranking noisy estimates" }),
     shrinkage: Object.freeze({ app: "shrinkage", text: "What a posterior adds" }),
@@ -92,39 +54,23 @@ export const CONFIG = Object.freeze({
     crossfit: Object.freeze({ app: "chosen-and-judged", text: "grades judged on draws that did not choose them", phrase: true }),
     ties: Object.freeze({ app: "ties-and-withholding", text: "True values that can be equal", phrase: true }),
   }),
-  // below this width (rem, a container query on the routes section) the routes table becomes a list: a narrower
-  // table squeezes its four answer columns until words break
   routesListBelow: 48,
-  // decorative glyphs, one per box, in a 64 × 28 box: shapes with a class (prx-pp-g-<cls>, styled in CSS below)
-  glyphViewBox: "0 0 64 28",
-  arrowViewBox: "0 0 40 16",
+  arrowViewBox: "0 0 32 16",
   arrowShapes: Object.freeze([
-    Object.freeze({ tag: "path", cls: "shaft", d: "M2 8H30" }),
-    Object.freeze({ tag: "path", cls: "head", d: "M29 3L38 8L29 13Z" }),
+    Object.freeze({ tag: "path", cls: "shaft", d: "M2 8H22" }),
+    Object.freeze({ tag: "path", cls: "head", d: "M21 3L30 8L21 13Z" }),
   ]),
-  // the arrow after box k (k = 1, 2, 3): its label; postrank marks the arrow postrank computes
   arrows: Object.freeze([
     Object.freeze({ label: "the analyst", postrank: false }),
     Object.freeze({ label: "the analyst's software", postrank: false }),
     Object.freeze({ label: "postrank", postrank: true }),
   ]),
-  // Rich text: strings, { tex } (a formula), { page } (a link to CONFIG.pages), { box } ("box 3", a name), { code }
-  // and { em }.
+  ownerShort: Object.freeze(["Data stage (analyst)", "Model stage (analyst)", "Posterior stage (supplied)", "Decision stage (postrank)"]),
   boxes: Object.freeze([
     Object.freeze({
       id: "data",
       name: "Data",
-      line: Object.freeze({ tex: "Y" }),
       tag: null,
-      stage: "the estimates and their SEs",
-      glyph: Object.freeze([
-        Object.freeze({ tag: "path", cls: "est", d: "M9 7H27" }),
-        Object.freeze({ tag: "path", cls: "est", d: "M28 14H52" }),
-        Object.freeze({ tag: "path", cls: "est", d: "M24 21H36" }),
-        Object.freeze({ tag: "circle", cls: "est-dot", cx: 18, cy: 7, r: 2.6 }),
-        Object.freeze({ tag: "circle", cls: "est-dot", cx: 40, cy: 14, r: 2.6 }),
-        Object.freeze({ tag: "circle", cls: "est-dot", cx: 30, cy: 21, r: 2.6 }),
-      ]),
       what: Object.freeze([
         Object.freeze({ tex: "Y" }),
         " is everything the analyst has when grading: the estimates, their standard errors and any other recorded data. Besides these, it can hold each unit's sample size and background facts about the units (covariates), such as a school's share of students in poverty, that a model can use.",
@@ -139,13 +85,7 @@ export const CONFIG = Object.freeze({
     Object.freeze({
       id: "model",
       name: "Model",
-      line: "a prior for the true values",
       tag: null,
-      stage: "a prior for the true values",
-      glyph: Object.freeze([
-        Object.freeze({ tag: "path", cls: "base", d: "M2 25H62" }),
-        Object.freeze({ tag: "path", cls: "prior", d: "M2 24C14 24 22 5 32 5S50 24 62 24" }),
-      ]),
       what: Object.freeze([
         "A model says how each estimate arises from its true value, and a prior says where true values usually lie. Empirical Bayes estimates the prior from all the units; hierarchical Bayes treats the prior's center and spread as unknown and gives them a prior of their own. The next arrow computes the posterior from model and prior, by a formula or by MCMC, a way to draw random samples from the posterior when no formula gives it.",
       ]),
@@ -161,15 +101,7 @@ export const CONFIG = Object.freeze({
     Object.freeze({
       id: "posterior",
       name: "Posterior",
-      line: Object.freeze({ tex: "\\Pr(\\theta \\mid Y)" }),
       tag: "read by postrank",
-      stage: "a normal posterior for each unit",
-      glyph: Object.freeze([
-        Object.freeze({ tag: "path", cls: "base", d: "M2 25H62" }),
-        Object.freeze({ tag: "path", cls: "post", d: "M6 24C10 24 11 7 14 7S18 24 22 24" }),
-        Object.freeze({ tag: "path", cls: "post", d: "M24 24C28 24 29 10 32 10S36 24 40 24" }),
-        Object.freeze({ tag: "path", cls: "post", d: "M42 24C46 24 47 4 50 4S54 24 58 24" }),
-      ]),
       what: Object.freeze([
         "The posterior says how probable each possible combination of true values for all the units is, given ", Object.freeze({ tex: "Y" }),
         "; every probability computed from it is written ", Object.freeze({ tex: "\\Pr({\\cdot} \\mid Y)" }),
@@ -193,22 +125,7 @@ export const CONFIG = Object.freeze({
     Object.freeze({
       id: "decision",
       name: "Decision",
-      line: "grades",
       tag: "made by postrank",
-      stage: "the grades at τ",
-      glyph: Object.freeze([
-        Object.freeze({ tag: "rect", cls: "grade", x: 3, y: 7, width: 16, height: 14, rx: 2 }),
-        Object.freeze({ tag: "rect", cls: "grade", x: 24, y: 7, width: 16, height: 14, rx: 2 }),
-        Object.freeze({ tag: "rect", cls: "grade", x: 45, y: 7, width: 16, height: 14, rx: 2 }),
-        Object.freeze({ tag: "path", cls: "gt", d: "M20.3 11L22.7 14L20.3 17" }),
-        Object.freeze({ tag: "path", cls: "gt", d: "M41.3 11L43.7 14L41.3 17" }),
-        Object.freeze({ tag: "circle", cls: "unit", cx: 8, cy: 14, r: 2.2 }),
-        Object.freeze({ tag: "circle", cls: "unit", cx: 14, cy: 14, r: 2.2 }),
-        Object.freeze({ tag: "circle", cls: "unit", cx: 29, cy: 14, r: 2.2 }),
-        Object.freeze({ tag: "circle", cls: "unit", cx: 35, cy: 14, r: 2.2 }),
-        Object.freeze({ tag: "circle", cls: "unit", cx: 50, cy: 14, r: 2.2 }),
-        Object.freeze({ tag: "circle", cls: "unit", cx: 56, cy: 14, r: 2.2 }),
-      ]),
       what: Object.freeze([
         "A grade report places each unit in exactly one grade and orders the grades: for two units in different grades the report says which is higher, and for two units in the same grade it does not say. postrank chooses the grades from the posterior in ",
         Object.freeze({ box: 3 }), " and from settings the analyst picks, such as what staying silent on a pair costs and how many grades are allowed.",
@@ -224,26 +141,22 @@ export const CONFIG = Object.freeze({
       ]),
     }),
   ]),
-  // the chain's figures: one value axis for the estimates, the prior and the posteriors
   chain: Object.freeze({
     domain: Object.freeze([-1, 1]),
     ticks: Object.freeze([-1, -0.5, 0, 0.5, 1]),
+    costDomain: Object.freeze([0, 1]),
+    costTicks: Object.freeze([0, 0.5, 1]),
     grid: 161,
     fine: 81,
     fineSds: 4,
     headroom: 1.32,
-    margin: Object.freeze({ top: 12, bottom: 22, left: 20, right: 14 }),
-    // figure heights when the stages sit in a row (narrow figures) and when they are stacked
-    height: Object.freeze({ data: 92, prior: 88, posterior: 108 }),
-    heightStacked: Object.freeze({ data: 104, prior: 100, posterior: 124 }),
-    // y positions of the two units' bars in the data figure
+    margin: Object.freeze({ top: 10, bottom: 22, left: 22, right: 14 }),
+    costMargin: Object.freeze({ top: 8, bottom: 22, left: 62, right: 16 }),
+    height: Object.freeze({ data: 94, prior: 94, posterior: 94, decision: 96 }),
+    heightStacked: Object.freeze({ data: 78, prior: 74, posterior: 84, decision: 88 }),
     rowY: Object.freeze({ A: 1, B: 0 }),
     rowDomain: Object.freeze([-0.75, 1.75]),
   }),
-  // the forms of a supplied posterior and what postrank can do with each (postrank 1.1.0, checked by running the
-  // problem constructor, postrank_coefficient_capabilities() and postrank_tie_capabilities() on each route). A column
-  // head is rich text in plain words (its { page } parts link the apps that show the problem), detail the package's
-  // terms on a smaller line, and short its name in the narrow list.
   routes: Object.freeze({
     columns: Object.freeze([
       Object.freeze({
@@ -272,7 +185,6 @@ export const CONFIG = Object.freeze({
       Object.freeze({ form: "A normal mixture over a shared state", fn: "postrank_mixture_coefficients()", weighted: true, modes: false, draws: false, ties: false }),
       Object.freeze({ form: "Pair probabilities computed elsewhere", fn: "postrank_probabilities()", weighted: true, modes: false, draws: false, ties: false }),
     ]),
-    // the notes under the table (rich text)
     notes: Object.freeze([
       Object.freeze(["Every route checks the form of its input, such as unit names, sizes and declarations, not that the draws are joint or have converged. Whether the posterior is the intended joint law, and whether the model behind it is right, stays with the analysis that made it."]),
       Object.freeze(["Pair probabilities are all the first column needs, but in general they do not fix the probability of an order on a weighted sum of the criteria, the chance that every stated direction is right, or the spread of the realized loss. Criterion-wise draws do not say how the criteria move together."]),
@@ -291,8 +203,6 @@ export const CONFIG = Object.freeze({
     source: "Source: ",
     presetNote: "A preset sets the chain's sliders as well as the open box; the box buttons below open a box and leave the sliders as they are.",
     panel: "Explanation of the open box",
-    chainTitle: "Two units through the four boxes",
-    chainLabel: "Two units, A and B, through the four boxes, with numbers",
     stageLabel: "Two units in box",
     estA: "Estimate of A",
     seA: "SE of A",
@@ -300,14 +210,14 @@ export const CONFIG = Object.freeze({
     seB: "SE of B",
     priorSd: "Prior SD",
     tau: "Withholding cost τ",
-    dataNote: Object.freeze(["each estimate ± ", Object.freeze({ num: "one" }), " SE"]),
-    // a { num } part is a fixed number of the model, written as a data-num span
-    priorNote: Object.freeze(["One prior for both units: normal, mean ", Object.freeze({ num: "priorMean" }), "."]),
+    dataNote: Object.freeze(["Estimates ± ", Object.freeze({ num: "one" }), " SE"]),
+    priorNote: Object.freeze(["Shared normal prior, mean ", Object.freeze({ num: "priorMean" })]),
     keepNote: "Each posterior mean keeps the share prior SD² ÷ (prior SD² + SE²) of its estimate.",
     dataAlt: "The two estimates as dots, each with a bar of plus and minus one SE, on one axis of values.",
     priorAlt: "The prior for the true values: a normal curve centered at 0, drawn dashed.",
     posteriorAlt: "The two posteriors: a normal curve for A's true value (solid) and one for B's (dashed), on the same axis.",
-    piWords: "the probability that A is truly higher",
+    decisionAlt: "Expected costs of the three candidate reports for A and B against the withholding threshold tau.",
+    unitsTitle: "Unit posteriors and exact values",
     reportsTitle: "The three reports of two units",
     costNote: "A stated direction costs its chance of being wrong; one grade, which states no direction, costs τ.",
     reportCol: "Report",
@@ -317,11 +227,9 @@ export const CONFIG = Object.freeze({
     chosen: "The best report",
     gradeOne: "Grade 1 = stated highest on the true value, as the posterior judges it.",
     scrollCue: "The table scrolls sideways.",
+    dataTitle: "Data and exact values",
     routesTitle: "What postrank can do with each form of posterior",
-    // the closed box that holds the panel of the open box (review 044, U2-F2)
     boxesTitle: "What each box holds and who makes it",
-    // the group of the three boxes that are not open, after the open box's text in that closed box (review 044 repair,
-    // Phase 3: A1-1)
     othersLabel: "The other boxes",
     routesCaption: "Forms of a supplied posterior, the package function that reads each, and the problems postrank builds from it",
     formCol: "Form of the posterior",
@@ -372,28 +280,16 @@ function curve(mean, sd) {
 }
 const peakOf = (sd) => normalPdf(0) / sd;
 
-// The app's own CSS (base.js adds it once per document); every selector starts with .prx-pp, the app's root class.
-// Colors are tokens of styles/tokens.css. One color, one meaning: the accent marks the open box (its stage and its
-// header); the arrow postrank computes is set apart by weight and ink, not by the accent; the glyphs and figures use the
-// estimate and posterior colors in their Part 1 meanings on the plot panel color, which stays light in dark mode.
 const CSS = `
-.prx-pp .prx-controls:empty { display: none; }
-.prx-pp .prx-pp-preset-note { flex: 1 1 100%; margin: -0.2rem 0 0; font-size: 0.92em; color: var(--prx-fg-muted); }
+.prx-pp .prx-pp-preset-note { flex: 1 1 100%; margin: 0.1rem 0 0; font-size: 0.85em; color: var(--prx-fg-muted); }
+@media (max-width: 30em) {
+  .prx-pp .prx-toolbar > .prx-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.35rem 0.65rem; width: 100%; }
+}
 
-/* --- the chain: four stages headed by the four box buttons, joined by three arrows; one row from
-   CONFIG.chainRowMinWidth px of app width (the 990-px page column included), stacked below that --- */
-/* The row rules also need a viewport of at least 920 px (57.5em). A hidden or background page (a test harness's
-   other tabs) may not run ResizeObserver callbacks, so data-prx-pp-chain can lag a resize; the media query is
-   applied whenever the page is laid out, so a phone-width page never takes the four-column row
-   (review 044 repair, Phase 3 integration). */
-.prx-pp .prx-pp-chain { min-width: 0; margin: 0; }
-.prx-pp .prx-pp-chain > .prx-panel-title { margin: 0 0 0.4rem; }
+/* --- the chain: four stages headed by the four box buttons, joined by three arrows --- */
+.prx-pp .prx-stage { padding: 0.55rem 0.6rem; }
 .prx-pp .prx-pp-flow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; align-items: stretch; }
-/* in a row the stages share the width by how much each holds (CONFIG.stageShares: the decision stage the most) and
-   two grid rows, so the four headers have one height and the four bodies start on one line (subgrid) */
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow { grid-template-columns: ${CONFIG.stageShares.map((f) => `minmax(0, ${f}fr)`).join(` ${CONFIG.arrowColumn} `)}; grid-template-rows: auto 1fr; } }
-/* every item has its cell, so the frame can share cells with stage 3, the third arrow and stage 4: in a column stage k
-   is row 2k − 1 and the arrow after it row 2k; in a row they are columns */
 .prx-pp .prx-pp-flow > * { grid-column: 1; }
 .prx-pp .prx-pp-flow > [data-prx-stage="1"] { grid-row: 1; }
 .prx-pp .prx-pp-flow > [data-prx-arrow="1"] { grid-row: 2; }
@@ -404,7 +300,7 @@ const CSS = `
 .prx-pp .prx-pp-flow > [data-prx-stage="4"] { grid-row: 7; }
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > * { grid-row: 1; } }
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > .prx-pp-stage { grid-row: 1 / 3; display: grid; grid-template-rows: subgrid; } }
-@media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-box { align-content: start; } }
+@media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-box { align-content: center; } }
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > [data-prx-stage="1"] { grid-column: 1; } }
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > [data-prx-arrow="1"] { grid-column: 2; } }
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > [data-prx-stage="2"] { grid-column: 3; } }
@@ -412,85 +308,62 @@ const CSS = `
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > [data-prx-stage="3"] { grid-column: 5; } }
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > [data-prx-arrow="3"] { grid-column: 6; } }
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > [data-prx-stage="4"] { grid-column: 7; } }
-/* the part postrank touches: a dashed frame just outside stage 3, the third arrow and stage 4 */
-.prx-pp .prx-pp-flow > .prx-pp-band { grid-column: 1; grid-row: 5 / 8; margin: -0.3rem; border: 2px dashed var(--prx-fg-heading); border-radius: calc(var(--prx-radius) + 3px); pointer-events: none; }
+/* the part postrank touches: a dashed frame around stage 3, the third arrow and stage 4 */
+.prx-pp .prx-pp-flow > .prx-pp-band { grid-column: 1; grid-row: 5 / 8; margin: -0.25rem; border: 2px dashed var(--prx-fg-heading); border-radius: calc(var(--prx-radius, 6px) + 3px); pointer-events: none; }
 @media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > .prx-pp-band { grid-column: 5 / 8; grid-row: 1 / 3; } }
 
-/* a stage: its box button as the header, then the two units' figure, sliders and numbers */
-.prx-pp .prx-pp-stage { display: flex; flex-direction: column; min-width: 0; background: var(--prx-bg); border: 1px solid var(--prx-border-strong); border-radius: var(--prx-radius); }
-/* the open box: the accent border and a ring just outside it (the size stays), a sunken header, a filled number */
-.prx-pp .prx-pp-stage[data-open] { border-color: var(--prx-accent); box-shadow: 0 0 0 1px var(--prx-accent); }
-.prx-pp .prx-pp-box { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.1rem; align-items: center; width: 100%; min-height: 2.75rem; margin: 0; padding: 0.35rem 0.5rem; font: inherit; line-height: 1.3; text-align: left; color: var(--prx-fg); background: transparent; border: 0; border-bottom: 1px solid var(--prx-border); border-radius: calc(var(--prx-radius) - 1px) calc(var(--prx-radius) - 1px) 0 0; cursor: pointer; transition: background-color 0.15s ease; }
+/* stage card & compact 1-line box header */
+.prx-pp .prx-pp-stage { display: flex; flex-direction: column; min-width: 0; background: var(--prx-bg); border: 1px solid var(--prx-border-strong); border-radius: var(--prx-radius, 6px); }
+.prx-pp .prx-pp-stage[data-open] { border-color: #17645E; box-shadow: 0 0 0 1px #17645E; }
+.prx-pp .prx-pp-box { display: flex; flex-wrap: wrap; gap: 0.15rem 0.45rem; align-items: center; justify-content: space-between; width: 100%; min-height: 2.3rem; margin: 0; padding: 0.3rem 0.45rem; font: inherit; line-height: 1.25; text-align: left; color: var(--prx-fg); background: transparent; border: 0; border-bottom: 1px solid var(--prx-border); border-radius: calc(var(--prx-radius, 6px) - 1px) calc(var(--prx-radius, 6px) - 1px) 0 0; cursor: pointer; transition: background-color 0.15s ease; }
+@media (pointer: coarse), (max-width: 48em) { .prx-pp .prx-pp-box { min-height: var(--prx-touch-target, 2.75rem); } }
 .prx-pp .prx-pp-box:hover, .prx-pp .prx-pp-box[aria-pressed="true"] { background: var(--prx-bg-sunken); }
-.prx-pp .prx-pp-num { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--prx-fg-heading); border: 1px solid var(--prx-border-strong); border-radius: 50%; }
-.prx-pp .prx-pp-box[aria-pressed="true"] .prx-pp-num { color: var(--prx-on-accent); background: var(--prx-accent); border-color: var(--prx-accent); }
-/* the header's first line: number, name and the decorative glyph, which gives way (down to 1.4rem) where a stage is narrow */
-.prx-pp .prx-pp-head { display: flex; align-items: center; gap: 0.45rem; min-width: 0; }
-.prx-pp .prx-pp-glyph { display: block; flex: 0 1 3.1rem; min-width: 1.4rem; margin-left: auto; padding: 0.1rem 0.15rem; background: var(--prx-plot-bg); border: 1px solid var(--prx-border); border-radius: 4px; }
-.prx-pp .prx-pp-glyph-svg { display: block; width: 100%; height: auto; }
+.prx-pp .prx-pp-num { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 1.4rem; height: 1.4rem; font-size: 0.85em; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--prx-fg-heading); border: 1px solid var(--prx-border-strong); border-radius: 50%; }
+.prx-pp .prx-pp-box[aria-pressed="true"] .prx-pp-num { color: #ffffff; background: #17645E; border-color: #17645E; }
+.prx-pp .prx-pp-head { display: inline-flex; align-items: center; gap: 0.35rem; min-width: 0; }
 .prx-pp .prx-pp-name { flex: none; font-weight: 700; white-space: nowrap; color: var(--prx-fg-heading); }
-.prx-pp .prx-pp-line { min-width: 0; font-size: 0.86em; color: var(--prx-fg-muted); }
-.prx-pp .prx-pp-line math { color: var(--prx-fg); }
-.prx-pp .prx-pp-by, .prx-pp .prx-pp-tag { min-width: 0; font-size: 0.82em; }
+.prx-pp .prx-pp-by, .prx-pp .prx-pp-tag { min-width: 0; font-size: 0.8em; }
 .prx-pp .prx-pp-by { color: var(--prx-fg-muted); }
 .prx-pp .prx-pp-tag { font-weight: 700; color: var(--prx-fg-heading); }
-/* glyphs (decorative): drawn on the plot panel color, so the data colors keep their contrast */
-.prx-pp .prx-pp-g-est { fill: none; stroke: var(--prx-est); stroke-width: 2; stroke-linecap: round; }
-.prx-pp .prx-pp-g-est-dot { fill: var(--prx-est); }
-.prx-pp .prx-pp-g-prior { fill: none; stroke: var(--prx-plot-muted); stroke-width: 2; stroke-dasharray: 4 2; }
-.prx-pp .prx-pp-g-post { fill: none; stroke: var(--prx-post); stroke-width: 2; }
-.prx-pp .prx-pp-g-base { fill: none; stroke: var(--prx-plot-axis); stroke-width: 1; }
-.prx-pp .prx-pp-g-grade { fill: var(--prx-plot-grid); stroke: var(--prx-plot-axis); stroke-width: 1; }
-.prx-pp .prx-pp-g-unit { fill: var(--prx-plot-fg); }
-.prx-pp .prx-pp-g-gt { fill: none; stroke: var(--prx-plot-fg); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-/* arrows, glyph only: down between stacked stages (under the number circles), right between the headers of a row */
-.prx-pp .prx-pp-arrow { display: flex; align-items: center; min-height: 1.6rem; padding: 0 0 0 0.6rem; color: var(--prx-fg-muted); }
-.prx-pp .prx-pp-arrow-svg { display: block; flex: none; width: 1.6rem; height: 0.65rem; overflow: visible; transform: rotate(90deg); }
-@media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > .prx-pp-arrow { justify-content: center; align-self: start; min-height: 0; margin-top: 1.25rem; padding: 0; } }
-@media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-arrow-svg { width: 1.85rem; height: 0.75rem; transform: none; } }
+
+/* arrows between stages */
+.prx-pp .prx-pp-arrow { display: flex; align-items: center; min-height: 0.95rem; padding: 0 0 0 0.55rem; color: var(--prx-fg-muted); }
+.prx-pp .prx-pp-arrow-svg { display: block; flex: none; width: 1rem; height: 0.52rem; overflow: visible; transform: rotate(90deg); }
+@media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-flow > .prx-pp-arrow { justify-content: center; align-self: start; min-height: 0; margin-top: 0.85rem; padding: 0; } }
+@media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-arrow-svg { width: 1.2rem; height: 0.6rem; transform: none; } }
 .prx-pp .prx-pp-arrow-svg .prx-pp-g-shaft { fill: none; stroke: currentColor; stroke-width: 2; }
 .prx-pp .prx-pp-arrow-svg .prx-pp-g-head { fill: currentColor; stroke: none; }
-/* the arrow postrank computes is drawn heavier, in heading ink */
 .prx-pp .prx-pp-arrow-postrank { color: var(--prx-fg-heading); }
-.prx-pp .prx-pp-arrow-postrank .prx-pp-g-shaft { stroke-width: 4; }
+.prx-pp .prx-pp-arrow-postrank .prx-pp-g-shaft { stroke-width: 3.6; }
 
-/* the stage body: one column in a row of stages and on a phone; figure beside numbers in a wider single column */
-.prx-pp .prx-pp-stage-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.3rem; align-content: start; min-width: 0; padding: 0.35rem 0.5rem 0.5rem; }
-.prx-pp[data-prx-pp-split] .prx-pp-stage-body { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 0.35rem 1rem; align-items: start; }
-.prx-pp .prx-pp-stage-line { margin: 0; font-size: 0.82em; color: var(--prx-fg-muted); }
-.prx-pp[data-prx-pp-split] .prx-pp-stage-line { grid-column: 1 / -1; }
+/* concise stage body: mini-chart + 1 key-number / chip line */
+.prx-pp .prx-pp-stage-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.25rem; align-content: start; min-width: 0; padding: 0.3rem 0.38rem 0.4rem; }
+.prx-pp[data-prx-pp-split] .prx-pp-stage-body { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 0.35rem 0.9rem; align-items: center; }
 .prx-pp .prx-pp-fig { min-width: 0; }
-.prx-pp .prx-pp-figcap { margin: 0.15rem 0 0; font-size: 0.8em; color: var(--prx-fg-muted); }
-.prx-pp .prx-pp-side { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
-.prx-pp .prx-pp-side .prx-slider { max-width: none; flex: none; }
-/* stage 1's four sliders: two by two where a stage has the width (stacked stages, a phone included), one column in a row */
-.prx-pp .prx-pp-side-data { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.35rem 0.9rem; align-content: start; }
-@media ${CONFIG.rowMedia} { .prx-pp[data-prx-pp-chain="row"] .prx-pp-side-data { grid-template-columns: minmax(0, 1fr); } }
-.prx-pp .prx-pp-lines { margin: 0; padding: 0; list-style: none; font-size: 0.88em; font-variant-numeric: tabular-nums; }
-.prx-pp .prx-pp-lines li { margin: 0.1rem 0 0; }
-.prx-pp .prx-pp-note { margin: 0.1rem 0 0; font-size: 0.8em; line-height: 1.32; color: var(--prx-fg-muted); }
-.prx-pp .prx-pp-pi { margin: 0.2rem 0 0; font-size: 0.95em; }
-.prx-pp .prx-pp-pi math { margin: 0; }
-.prx-pp .prx-pp-costs { width: 100%; border-collapse: collapse; font-size: 0.88em; font-variant-numeric: tabular-nums; }
-.prx-pp .prx-pp-costs caption { caption-side: top; margin: 0 0 0.15rem; padding: 0; font-weight: 700; text-align: left; color: var(--prx-fg-muted); }
-.prx-pp .prx-pp-costs th, .prx-pp .prx-pp-costs td { padding: 0.15rem 0.3rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--prx-border); }
-.prx-pp .prx-pp-costs thead th { font-weight: 600; color: var(--prx-fg-muted); }
+.prx-pp .prx-pp-metric { margin: 0; font-size: 0.84em; line-height: 1.3; font-variant-numeric: tabular-nums; color: var(--prx-fg); }
+.prx-pp .prx-pp-metric math { margin: 0; }
+.prx-pp .prx-pp-best { display: flex; flex-wrap: wrap; gap: 0.2rem 0.45rem; align-items: center; min-width: 0; }
+.prx-pp .prx-pp-best > .prx-pp-note { flex: 1 1 6rem; min-width: 0; margin: 0; font-size: 0.8125rem; line-height: 1.3; color: var(--prx-fg-muted); }
+.prx-pp .prx-pp-report { display: inline-flex; flex-wrap: wrap; flex: none; align-items: center; gap: 0.25rem; margin: 0; padding: 0.15rem 0.25rem; border-radius: 4px; }
+.prx-pp .prx-pp-chip { display: inline-flex; flex-direction: column; align-items: center; min-width: 2.35rem; padding: 0.08rem 0.38rem; border-radius: 5px; }
+.prx-pp .prx-pp-chip-units { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.05em; line-height: 1.15; }
+.prx-pp .prx-pp-chip-grade { font-size: 0.7rem; line-height: 1.15; }
+.prx-pp .prx-stage .prx-pp-gt { font-weight: 700; color: var(--prx-fg-muted); }
+.prx-pp .prx-pp-blocks { font-weight: 700; color: var(--prx-fg-heading); }
+
+/* Data disclosure tables & notes */
+.prx-pp .prx-pp-data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 0.75rem 1.25rem; align-items: start; }
+.prx-pp .prx-pp-units, .prx-pp .prx-pp-costs { width: 100%; border-collapse: collapse; font-size: 0.88em; font-variant-numeric: tabular-nums; }
+.prx-pp .prx-pp-units caption, .prx-pp .prx-pp-costs caption { caption-side: top; margin: 0 0 0.2rem; padding: 0; font-weight: 700; text-align: left; color: var(--prx-fg-muted); }
+.prx-pp .prx-pp-units th, .prx-pp .prx-pp-units td, .prx-pp .prx-pp-costs th, .prx-pp .prx-pp-costs td { padding: 0.2rem 0.35rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--prx-border); }
+.prx-pp .prx-pp-units thead th, .prx-pp .prx-pp-costs thead th { font-weight: 600; color: var(--prx-fg-muted); }
 .prx-pp .prx-pp-costs tr[data-best] th, .prx-pp .prx-pp-costs tr[data-best] td { font-weight: 700; }
 .prx-pp .prx-pp-badge { display: inline-block; margin-left: 0.3rem; padding: 0 0.3rem; font-size: 0.85em; font-weight: 700; color: var(--prx-on-accent); background: var(--prx-accent); border-radius: 3px; }
-.prx-pp .prx-pp-report-title { margin: 0; font-weight: 700; font-size: 0.88em; color: var(--prx-fg-muted); }
-.prx-pp .prx-pp-best { display: flex; flex-wrap: wrap; gap: 0.25rem 0.5rem; align-items: center; min-width: 0; }
-.prx-pp .prx-pp-best > .prx-pp-note { flex: 1 1 5rem; min-width: 0; margin: 0; }
-.prx-pp .prx-pp-report { display: flex; flex-wrap: wrap; flex: none; align-items: center; align-self: flex-start; gap: 0.3rem; margin: 0; padding: 0.3rem 0.4rem; border-radius: 4px; }
-.prx-pp .prx-pp-chip { display: inline-flex; flex-direction: column; align-items: center; min-width: 2.6rem; padding: 0.1rem 0.45rem; border-radius: 5px; }
-.prx-pp .prx-pp-chip-units { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.06em; }
-.prx-pp .prx-pp-chip-grade { font-size: 0.72rem; }
-.prx-pp .prx-pp-gt { font-weight: 700; color: var(--prx-plot-muted); }
-.prx-pp .prx-pp-blocks { font-weight: 700; }
-.prx-pp .prx-pp-chain-caption { margin: 0.45rem 0 0; font-size: 0.78rem; line-height: 1.35; color: var(--prx-fg-muted); }
+.prx-pp .prx-pp-note { margin: 0.25rem 0 0; font-size: 0.84em; line-height: 1.35; color: var(--prx-fg-muted); }
+.prx-pp .prx-pp-chain-caption { margin: 0.45rem 0 0; font-size: 0.82em; line-height: 1.35; color: var(--prx-fg-muted); }
 
-/* --- the closed box of the four texts: the open box first (the panel, its accent border marks it, as the accent marks
-   the open stage), then the other three in box order with a neutral border --- */
-.prx-pp .prx-pp-panel, .prx-pp .prx-pp-other { margin: 0; padding: 0.6rem 0.75rem; background: var(--prx-bg); border: 1px solid var(--prx-border); border-left: 4px solid var(--prx-accent); border-radius: var(--prx-radius); }
+/* closed box of the four stage explanations */
+.prx-pp .prx-pp-panel, .prx-pp .prx-pp-other { margin: 0; padding: 0.6rem 0.75rem; background: var(--prx-bg); border: 1px solid var(--prx-border); border-left: 4px solid var(--prx-accent); border-radius: var(--prx-radius, 6px); }
 .prx-pp .prx-pp-other { border-left-color: var(--prx-border-strong); }
 .prx-pp .prx-pp-others { display: grid; gap: 0.5rem; margin: 0.5rem 0 0; }
 .prx-pp .prx-pp-panel p, .prx-pp .prx-pp-other p { margin: 0.4rem 0 0; }
@@ -501,8 +374,7 @@ const CSS = `
 .prx-pp a:hover, .prx-pp a:focus-visible { color: var(--prx-link-hover); }
 .prx-pp code { font-family: var(--prx-font-mono); font-size: 0.95em; color: inherit; background: var(--prx-bg-sunken); padding: 0 0.2em; border-radius: 3px; }
 
-/* --- the closed box of the forms of a posterior: a table, or a list of the routes when the section is narrower
-   than the table --- */
+/* closed box of the forms of a posterior (table or narrow list) */
 .prx-pp .prx-pp-routes { margin: 0; container-type: inline-size; }
 .prx-pp .prx-pp-routes-box { overflow-x: auto; margin: 0.3rem 0 0; }
 .prx-pp .prx-pp-routes table { min-width: ${CONFIG.routesListBelow}rem; width: 100%; border-collapse: collapse; font-size: 0.85em; }
@@ -533,22 +405,20 @@ export function mountWidget(el, spec = {}) {
     name: CONFIG.name,
     className: CONFIG.className,
     css: CSS,
-    // the shared result-first frame (review 044, X-01): the preset row and its line, the read-out directly under them,
-    // then the chain (the graphic every control changes), the two closed boxes and the caption; base.js only moves
-    // nodes, so keys, presets, hooks and the live region are kept
-    layout: "result-first",
+    frame: "v2",
     keys: KEYS,
     build(ctx) {
       const { h, doc } = ctx;
+      const w = ro(ctx);
       const links = linkRoot(doc);
       const routesId = uid("prx-pp-routes");
       const panelId = uid("prx-pp-panel");
-      // the two closed boxes (review 044, U2-F2 and X-14), complete and in the DOM while closed; made first, so a box
-      // header can open the first one and box 3's "See also" link the second
+
+      // Disclosures: Data (exact values & report costs), Boxes (all four stage explanations), Routes (input capability matrix)
+      const dataBox = ctx.dataBox(T.dataTitle);
       const boxesBox = ctx.disclosure({ name: "boxes", title: T.boxesTitle });
       const routesBox = ctx.disclosure({ name: "routes", title: T.routesTitle });
 
-      // --- rich text: strings, formulas, links, code and emphasis
       const math = (tex) => {
         const span = h("span", { class: "prx-pp-math" });
         renderTex(span, tex);
@@ -556,10 +426,8 @@ export function mountWidget(el, spec = {}) {
       };
       const pageLink = (key) => {
         const p = CONFIG.pages[key];
-        // a part of this app (the routes table): an anchor that first opens the closed box that holds it
         if (p.part) return h("a", { href: `#${routesId}`, class: "prx-pp-page", onClick: () => { routesBox.open = true; } }, p.text);
         const path = builtPage(p.app);
-        // not a link here: an app's title in quotes, a phrase as it is
         if (!links || !path) return h("span", { class: "prx-pp-page" }, p.phrase ? p.text : `“${p.text}”`);
         return h("a", {
           href: `${links.root}${path}`, class: "prx-pp-page",
@@ -576,7 +444,7 @@ export function mountWidget(el, spec = {}) {
         if (p.em !== undefined) return h("em", { text: p.em });
         if (p.num !== undefined) {
           const v = p.num === "priorMean" ? CONFIG.priorMean : 1;
-          return ctx.num(v, formatSetting(v));
+          return w.setting(v);
         }
         return "";
       });
@@ -598,21 +466,32 @@ export function mountWidget(el, spec = {}) {
       };
       const boxName = (k) => h("span", { "data-prx-name": "" }, `${T.box} ${k}`);
       const numCircle = (k) => h("span", { class: "prx-pp-num", "aria-hidden": "true" }, h("span", { "data-prx-name": "" }, String(k)));
-      // an arrow between two stages: its glyph only on screen (review 044, U2-F2: the who-words moved into the stage
-      // headers); "leads to" and its who-words stay for screen readers
       const arrowNode = (a, i) => h("span", {
         class: `prx-pp-arrow${a.postrank ? " prx-pp-arrow-postrank" : ""}`, "data-prx-arrow": String(i + 1),
       }, svg(CONFIG.arrowViewBox, CONFIG.arrowShapes, "prx-pp-arrow-svg"),
       h("span", { class: "prx-sr-only", text: T.leadsTo }), h("span", { class: "prx-pp-arrow-label prx-sr-only", text: a.label }));
 
-      // --- the chain's description in words (visually hidden)
+      // --- Toolbar controls: Prior SD + Withholding cost τ primary; unit A/B estimates & SEs in Settings
+      const makeSlider = (key, label) => ctx.slider({ label, ...ctx.key(key), format: (v) => formatSetting(v), onInput: (v) => ctx.set({ [key]: v }) });
+      const sl = {
+        priorSd: makeSlider("priorSd", T.priorSd),
+        tau: makeSlider("tau", T.tau),
+        estA: makeSlider("estA", T.estA),
+        seA: makeSlider("seA", T.seA),
+        estB: makeSlider("estB", T.estB),
+        seB: makeSlider("seB", T.seB),
+      };
+      ctx.primaryControl(sl.priorSd.root);
+      ctx.controls.append(sl.priorSd.root, sl.tau.root);
+      const presetNote = h("p", { class: "prx-pp-preset-note", text: T.presetNote });
+      const settingsBox = ctx.settingsBox();
+      settingsBox.body.append(sl.estA.root, sl.seA.root, sl.estB.root, sl.seB.root, presetNote);
+
+      // --- Screen-reader description directly inside [data-prx-part="chart"]
       const describeId = uid("prx-pp-desc");
       const description = h("p", { id: describeId, class: "prx-sr-only", text: T.describe });
 
-      // --- the first closed box holds the texts of all four boxes (review 044 repair, Phase 3: A1-1): the open box first,
-      // in the panel (aria-current; its live part, with the title, what it holds and who makes it, is rewritten only
-      // when the open box changes; then its example, "See also" for box 3 and its source), then the other three boxes
-      // in box order, each with its heading. Every text is in the box once.
+      // --- Boxes disclosure: open box first (with aria-live region), then the other three in box order
       const live = h("div", { class: "prx-pp-live", "aria-live": "polite", "aria-atomic": "true", "data-prx-part": "readout" });
       const rest = h("div", { class: "prx-pp-rest" });
       const panel = ctx.part("notes", h("div", { class: "prx-pp-panel", id: panelId, role: "region", "aria-label": T.panel, "aria-current": "true" },
@@ -620,22 +499,20 @@ export function mountWidget(el, spec = {}) {
       const others = h("div", { class: "prx-pp-others", role: "group", "aria-label": T.othersLabel });
       boxesBox.body.append(panel, others);
 
-      // --- the chain: four stages, each headed by its box button, joined by three arrows
-      const slider = (key, label, format = (v) => formatSetting(v)) => ctx.slider({ label, ...ctx.key(key), format, onInput: (v) => ctx.set({ [key]: v }) });
-      const sl = {
-        estA: slider("estA", T.estA), seA: slider("seA", T.seA), estB: slider("estB", T.estB), seB: slider("seB", T.seB),
-        priorSd: slider("priorSd", T.priorSd), tau: slider("tau", T.tau),
+      // --- Four linked stages on ctx.stage
+      const figs = {
+        data: h("div", { class: "prx-pp-fig" }),
+        prior: h("div", { class: "prx-pp-fig" }),
+        posterior: h("div", { class: "prx-pp-fig" }),
+        decision: h("div", { class: "prx-pp-fig" }),
       };
-      const figs = { data: h("div", { class: "prx-pp-fig" }), prior: h("div", { class: "prx-pp-fig" }), posterior: h("div", { class: "prx-pp-fig" }) };
-      const postLines = h("ul", { class: "prx-pp-lines" });
-      const piLine = h("p", { class: "prx-pp-pi" });
-      const costBody = h("tbody");
+      const transition = h("p", { class: "prx-pp-note", "data-prx-evidence": "pipeline-transition" });
+      const dataMetric = h("p", { class: "prx-pp-metric" });
+      const priorMetric = h("p", { class: "prx-pp-metric" });
+      const postMetric = h("p", { class: "prx-pp-metric" });
       const reportLine = h("div", { class: "prx-pp-report prx-light-panel", role: "group", "aria-label": T.chosen });
       const tagLine = h("p", { class: "prx-pp-note" });
-      // a stage header pressed by the reader (review 044 repair, Phase 3: B-F4, A1-2): the closed box of the four texts
-      // opens first, and only once it is drawn does the open box change, so the panel's live part changes while it is
-      // in the accessibility tree and is announced; after a pointer click (never from the keyboard or a preset) the
-      // open box's text is scrolled into view, by the least amount, when it is below the viewport. A later press wins.
+
       let pressSeq = 0;
       let alive = true;
       ctx.onCleanup(() => { alive = false; });
@@ -660,57 +537,73 @@ export function mountWidget(el, spec = {}) {
         if (boxesBox.open) show();
         else { boxesBox.open = true; afterPaint(show); }
       }
-      // a stage's header is its box button: number, glyph, name, line and who makes it (the who-words of the arrow
-      // that leaves boxes 1 and 2; the tags of boxes 3 and 4). Pressing it opens the box (key box) and the closed box
-      // of the four texts at that box.
+
       const header = (b, k) => h("button", {
         type: "button", class: `prx-pp-box prx-pp-box-${b.id}`, "aria-pressed": "false",
         "aria-label": `${T.box} ${k}: ${b.name}${b.tag ? `, ${b.tag}` : ""}`, "aria-controls": panelId,
         "data-prx-focus-key": `box:${k}`, "data-prx-box": String(k),
-        // a click from the keyboard (Enter, Space) has detail 0, a pointer's click does not (as in chart.js)
         onClick: (e) => press(k, e.detail > 0),
       },
-      h("span", { class: "prx-pp-head" }, numCircle(k), h("span", { class: "prx-pp-name", text: b.name }),
-        h("span", { class: "prx-pp-glyph" }, svg(CONFIG.glyphViewBox, b.glyph, "prx-pp-glyph-svg"))),
-      typeof b.line === "string" ? h("span", { class: "prx-pp-line", text: b.line }) : h("span", { class: "prx-pp-line" }, math(b.line.tex)),
+      h("span", { class: "prx-pp-head" }, numCircle(k), h("span", { class: "prx-pp-name", text: b.name })),
       b.tag ? h("span", { class: "prx-pp-tag", text: b.tag }) : h("span", { class: "prx-pp-by", text: CONFIG.arrows[k - 1].label }));
-      // a stage: the header, then what the two units show in this box (when it says more than the header's line)
-      const stage = (k, ...body) => {
+
+      const makeStage = (k, ...body) => {
         const b = CONFIG.boxes[k - 1];
         const node = header(b, k);
         const sec = h("section", { class: "prx-pp-stage", "data-prx-stage": String(k), "aria-label": `${T.stageLabel} ${k}: ${b.name}` },
-          node, h("div", { class: "prx-pp-stage-body" }, b.stage !== b.line ? h("p", { class: "prx-pp-stage-line", text: b.stage }) : null, ...body));
+          node, h("div", { class: "prx-pp-stage-body" }, ...body));
         return { b, k, node, sec };
       };
+
       const stages = [
-        stage(1, h("div", {}, figs.data, h("p", { class: "prx-pp-figcap" }, ...rich(T.dataNote))),
-          h("div", { class: "prx-pp-side prx-pp-side-data" }, sl.estA.root, sl.seA.root, sl.estB.root, sl.seB.root)),
-        stage(2, h("div", {}, figs.prior, h("p", { class: "prx-pp-figcap" }, ...rich(T.priorNote))),
-          h("div", { class: "prx-pp-side" }, sl.priorSd.root)),
-        // π right under the two curves it compares (review 044, X-01: the decisive number next to the changed mark)
-        stage(3, h("div", {}, figs.posterior, piLine),
-          h("div", { class: "prx-pp-side" }, postLines, h("p", { class: "prx-pp-note", text: T.keepNote }))),
-        stage(4, h("div", { class: "prx-pp-side" }, sl.tau.root,
-          h("table", { class: "prx-pp-costs" }, h("caption", { text: T.reportsTitle }),
-            h("thead", {}, h("tr", {}, h("th", { scope: "col", text: T.reportCol }), h("th", { scope: "col", text: T.costCol }))), costBody),
-          h("p", { class: "prx-pp-note", text: T.costNote })),
-        // the best report: its grade chips with its tag beside them (on one line where the stage has the width)
-        h("div", { class: "prx-pp-side" }, h("p", { class: "prx-pp-report-title", text: T.chosen }), h("div", { class: "prx-pp-best" }, reportLine, tagLine),
-          h("p", { class: "prx-pp-note", text: T.gradeOne }), h("p", { class: "prx-pp-note" }, ...rich(T.rule)))),
+        makeStage(1, figs.data, dataMetric),
+        makeStage(2, figs.prior, priorMetric),
+        makeStage(3, figs.posterior, postMetric),
+        makeStage(4, figs.decision, h("div", { class: "prx-pp-best" }, reportLine, tagLine)),
       ];
       const arrows = CONFIG.arrows.map((a, i) => arrowNode(a, i));
-      // a dashed frame around stage 3, the third arrow and stage 4: the part of the chain postrank touches
       const band = h("span", { class: "prx-pp-band", "aria-hidden": "true" });
-      // the graphic every control changes (base.js primaryGraphic), directly under the read-out
       const flow = ctx.primaryGraphic(h("div", { class: "prx-pp-flow", role: "group", "aria-label": T.diagram, "aria-describedby": describeId },
         band, ...stages.flatMap((s, i) => (i < arrows.length ? [s.sec, arrows[i]] : [s.sec]))));
-      const chainCaption = h("p", { class: "prx-pp-chain-caption" }, captionNode(ctx, "teaching-posterior"), ". ", T.gloss);
-      const chain = h("section", { class: "prx-pp-chain", "aria-label": T.chainLabel }, ctx.panelTitle(T.chainTitle), flow, chainCaption);
-      ctx.charts.classList.add("prx-pp-charts");
-      ctx.charts.append(description, chain);
+      ctx.stage.classList.add("prx-pp-charts");
+      ctx.stage.append(description, flow);
 
-      // --- the forms of a posterior (static), in the second closed box; its summary names the table on screen and
-      // its caption names it for screen readers
+      // --- Data disclosure: exact 2-unit posterior table, 3-report cost table, formulas and scope caption
+      const unitBody = h("tbody");
+      const costBody = h("tbody");
+      const chainCaption = h("p", { class: "prx-pp-chain-caption" }, captionNode(ctx, "teaching-posterior"), ". ", T.gloss);
+      dataBox.body.append(
+        h("div", { class: "prx-pp-data-grid" },
+          h("div", {},
+            h("table", { class: "prx-pp-units" },
+              h("caption", { text: T.unitsTitle }),
+              h("thead", {}, h("tr", {},
+                h("th", { scope: "col", text: "Unit" }),
+                h("th", { scope: "col", text: "Estimate" }),
+                h("th", { scope: "col", text: "SE" }),
+                h("th", { scope: "col", text: "Kept share" }),
+                h("th", { scope: "col", text: "Post. mean" }),
+                h("th", { scope: "col", text: "Post. SD" }),
+              )),
+              unitBody,
+            ),
+            h("p", { class: "prx-pp-note", text: T.keepNote }),
+          ),
+          h("div", {},
+            h("table", { class: "prx-pp-costs" },
+              h("caption", { text: T.reportsTitle }),
+              h("thead", {}, h("tr", {}, h("th", { scope: "col", text: T.reportCol }), h("th", { scope: "col", text: T.costCol }))),
+              costBody,
+            ),
+            h("p", { class: "prx-pp-note", text: T.costNote }),
+            h("p", { class: "prx-pp-note", text: T.gradeOne }),
+            h("p", { class: "prx-pp-note" }, ...rich(T.rule)),
+          ),
+        ),
+        chainCaption,
+      );
+
+      // --- Routes disclosure (static capability matrix & narrow list)
       const R = CONFIG.routes;
       const routesTable = h("table", {},
         h("caption", { class: "prx-sr-only", text: T.routesCaption }),
@@ -720,9 +613,7 @@ export function mountWidget(el, spec = {}) {
           h("th", { scope: "row" }, r.form, ...rich({ fn: r.fn })),
           ...R.columns.map((c) => h("td", { "data-yes": r[c.key] ? "" : undefined, "data-no": r[c.key] ? undefined : "" }, r[c.key] ? T.yes : T.no))))));
       const routesScroll = ctx.scrollRegion(h("div", { class: "prx-pp-routes-box" }, routesTable), T.routesCaption);
-      // a cue under the table while it is wider than its box
       const scrollCue = h("p", { class: "prx-pp-scroll-cue", text: T.scrollCue, hidden: true });
-      // the same table as a list, shown instead of it when the section is narrower than the table (CSS)
       const routesList = h("ul", { class: "prx-pp-routes-list", "aria-label": T.routesCaption },
         ...R.rows.map((r) => {
           const yes = R.columns.filter((c) => r[c.key]).map((c) => c.short);
@@ -739,22 +630,16 @@ export function mountWidget(el, spec = {}) {
           "; package vignettes ", h("em", { text: "Posterior inputs and pairwise probabilities" }), " and ",
           h("em", { text: "Strict inputs, declarations and external producers" }), "; theory book, Chapter 9, “Information and supplied selection beliefs”."))));
 
-      // a line under the preset row (placed at the first render, once base.js has added the row)
-      const presetNote = h("p", { class: "prx-pp-preset-note", text: T.presetNote });
-
-      // --- layout: the stages in one row when there is room, stacked otherwise (each stage with its figure beside its
-      // numbers from CONFIG.splitMinWidth on)
+      // --- Responsive row vs column layout (B-F3)
       const rowMql = typeof ctx.win.matchMedia === "function" ? ctx.win.matchMedia(CONFIG.rowMedia) : null;
       const layout = (width) => {
-        // a row needs the app width and the viewport query of the row's CSS rules, so JS never marks a row that CSS
-        // keeps in one column (review 044 repair, Phase 3: B-F3)
         const row = width >= CONFIG.chainRowMinWidth && (rowMql?.matches ?? true);
         ctx.root.setAttribute("data-prx-pp-chain", row ? "row" : "column");
         ctx.root.toggleAttribute("data-prx-pp-split", !row && width >= CONFIG.splitMinWidth);
         scrollCue.hidden = !(routesScroll.scrollWidth > routesScroll.clientWidth + 1);
       };
 
-      // a box's text: its heading, what it holds and who makes it, then its example, "See also" (box 3) and its source
+      // --- Box explanation panel writer
       const heads = (x, k) => [
         h("p", { class: "prx-pp-title", role: "heading", "aria-level": "4" }, boxName(k), `: ${x.name}`),
         h("p", { class: "prx-pp-what" }, ...rich(x.what)),
@@ -777,11 +662,17 @@ export function mountWidget(el, spec = {}) {
         }));
       }
 
-      const set = (v) => formatSetting(v);
-      const three = (v) => formatDecimal(v, { digits: 3 });
       const common = { marginTop: C.margin.top, marginBottom: C.margin.bottom, marginLeft: C.margin.left, marginRight: C.margin.right };
       const xAxis = { domain: C.domain.slice(), ticks: C.ticks.slice(), label: null };
       const heights = () => (ctx.root.getAttribute("data-prx-pp-chain") === "row" ? C.height : C.heightStacked);
+      const figWidth = (node) => {
+        const measured = Math.round(node.clientWidth || node.getBoundingClientRect?.().width || 0);
+        return measured > 0 ? Math.max(150, measured) : 0;
+      };
+      const widthOpt = (node) => {
+        const fw = figWidth(node);
+        return fw > 0 ? { width: fw } : {};
+      };
 
       function drawData(state) {
         const rows = [
@@ -789,14 +680,13 @@ export function mountWidget(el, spec = {}) {
           { id: "B", est: state.estB, se: state.seB, y: C.rowY.B },
         ];
         plot(figs.data, {
-          alt: T.dataAlt, ...common, height: heights().data, x: xAxis, y: { axis: null, domain: C.rowDomain.slice() },
+          alt: T.dataAlt, ...common, ...widthOpt(figs.data), height: heights().data, x: xAxis, y: { axis: null, domain: C.rowDomain.slice() },
           marks: (c, P) => [
             P.ruleX([0], { stroke: c.plotGrid }),
             P.link(rows, { x1: (d) => d.est - d.se, x2: (d) => d.est + d.se, y1: "y", y2: "y", stroke: c.est, strokeWidth: 2.5, strokeLinecap: "round", clip: true }),
             P.dot(rows, { x: "est", y: "y", r: 4.5, fill: c.est, clip: true }),
             P.text(rows, { x: C.domain[0], y: "y", text: "id", dx: -7, textAnchor: "end", fill: c.plotFg, fontWeight: 700, fontSize: 13 }),
           ],
-          keyboard: { data: rows, x: "est", y: "y", label: T.dataAlt, title: (d) => `Estimate of ${d.id}: ${set(d.est)}, SE ${set(d.se)}` },
         });
       }
 
@@ -804,12 +694,12 @@ export function mountWidget(el, spec = {}) {
         const pts = curve(CONFIG.priorMean, state.priorSd);
         const top = peakOf(state.priorSd);
         plot(figs.prior, {
-          alt: T.priorAlt, ...common, height: heights().prior, x: xAxis, y: { axis: null, domain: [0, top * C.headroom] },
+          alt: T.priorAlt, ...common, ...widthOpt(figs.prior), height: heights().prior, x: xAxis, y: { axis: null, domain: [0, top * C.headroom] },
           marks: (c, P) => [
+            P.areaY(pts, { x: "x", y: "y", fill: c.plotMuted, fillOpacity: 0.1, clip: true }),
             P.line(pts, { x: "x", y: "y", stroke: c.plotMuted, strokeWidth: 2, strokeDasharray: "4 2", clip: true }),
             P.ruleY([0], { stroke: c.plotAxis }),
           ],
-          keyboard: { data: [{ x: CONFIG.priorMean, y: top }], x: "x", y: "y", label: T.priorAlt, title: () => `Prior: normal, mean 0, SD ${set(state.priorSd)}` },
         });
       }
 
@@ -820,23 +710,23 @@ export function mountWidget(el, spec = {}) {
         const B = curve(m[1], s[1]);
         const top = Math.max(peakOf(s[0]), peakOf(s[1]));
         const right = m[0] >= m[1] ? 1 : -1;
-        const names = [{ x: m[0], y: peakOf(s[0]), t: "A", side: right }, { x: m[1], y: peakOf(s[1]), t: "B", side: -right }];
+        const clampX = (x) => Math.min(0.84, Math.max(-0.84, x));
+        const names = [
+          { x: clampX(m[0]), y: peakOf(s[0]), t: "A", side: right },
+          { x: clampX(m[1]), y: peakOf(s[1]), t: "B", side: -right },
+        ];
         plot(figs.posterior, {
-          alt: T.posteriorAlt, ...common, height: heights().posterior, x: xAxis, y: { axis: null, domain: [0, top * C.headroom] },
+          alt: T.posteriorAlt, ...common, ...widthOpt(figs.posterior), height: heights().posterior, x: xAxis, y: { axis: null, domain: [0, top * C.headroom] },
           marks: (c, P) => [
             P.areaY(A, { x: "x", y: "y", fill: c.post, fillOpacity: 0.16, clip: true }),
-            P.line(A, { x: "x", y: "y", stroke: c.post, strokeWidth: 2, clip: true }),
+            P.line(A, { x: "x", y: "y", stroke: c.post, strokeWidth: 2.2, clip: true }),
             P.line(B, { x: "x", y: "y", stroke: c.post, strokeWidth: 2, strokeDasharray: "6 4", clip: true }),
             ...[1, -1].map((side) => P.text(names.filter((d) => d.side === side), {
-              x: "x", y: "y", text: "t", dx: 6 * side, dy: -6, textAnchor: side > 0 ? "start" : "end",
+              x: "x", y: "y", text: "t", dx: 7 * side, dy: -5, textAnchor: side > 0 ? "start" : "end",
               fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke", fontWeight: 700, fontSize: 13,
             })),
             P.ruleY([0], { stroke: c.plotAxis }),
           ],
-          keyboard: {
-            data: [{ k: "A", x: m[0], y: peakOf(s[0]), sd: s[0] }, { k: "B", x: m[1], y: peakOf(s[1]), sd: s[1] }],
-            x: "x", y: "y", label: T.posteriorAlt, title: (d) => `Posterior of ${d.k}: mean ${three(d.x)}, SD ${three(d.sd)}`,
-          },
         });
       }
 
@@ -847,21 +737,81 @@ export function mountWidget(el, spec = {}) {
       };
       const blocksText = (grade) => blocksOf(grade).map((b) => `{${b.join(", ")}}`).join(" > ");
 
-      function drawDecision(state, r) {
-        const { decision, best } = r;
-        const num = (raw, f) => ctx.num(raw, f(raw));
-        const rows = [
-          { action: "iAboveJ", grade: [1, 2], cost: [num(decision.costs.iAboveJ, formatProb)], hook: "costAB" },
-          { action: "jAboveI", grade: [2, 1], cost: [num(decision.costs.jAboveI, formatProb)], hook: "costBA" },
-          { action: "withhold", grade: [1, 1], cost: ["τ = ", num(decision.costs.withhold, set)], hook: "costWithhold" },
+      function drawDecisionChart(state, r) {
+        const { decision } = r;
+        const domainLabels = ["{A} > {B}", "{B} > {A}", "{A, B}"];
+        const fw = figWidth(figs.decision);
+        const wPx = fw > 0 ? fw : 640;
+        const plotW = Math.max(80, wPx - C.costMargin.left - C.costMargin.right);
+        const perPx = 1 / plotW;
+        const tauX = state.tau;
+        const rawRows = [
+          { label: domainLabels[0], cost: decision.costs.iAboveJ, best: decision.best.includes("iAboveJ"), isTau: false },
+          { label: domainLabels[1], cost: decision.costs.jAboveI, best: decision.best.includes("jAboveI"), isTau: false },
+          { label: domainLabels[2], cost: decision.costs.withhold, best: decision.best.includes("withhold"), isTau: true },
         ];
-        costBody.replaceChildren(...rows.map((row) => {
-          const lowest = decision.best.includes(row.action);
-          const cell = h("td", {}, ...row.cost, lowest ? h("span", { class: "prx-pp-badge", text: T.lowest }) : null);
-          cell.querySelector(".prx-num")?.setAttribute("data-prx-readout", row.hook);
-          return h("tr", { "data-best": lowest ? "" : undefined }, h("th", { scope: "row", class: "prx-pp-blocks" }, blocksText(row.grade)), cell);
-        }));
-        // the best report as grade chips (grade 1 first), each with its grade number
+        const insideCutoff = 0.56;
+        const rows = rawRows.map((d) => {
+          const fmt = d.isTau ? formatSetting : formatReadoutProb;
+          const textW = Math.max(26, fmt(d.cost).length * 7.8) * perPx;
+          const pad = 5 * perPx;
+          const tauClear = 6 * perPx;
+          let inside = d.cost > insideCutoff;
+          if (inside && !d.isTau && d.cost - pad - textW < tauX + 3 * perPx && d.cost + pad + textW <= 1 + 8 * perPx) {
+            inside = false;
+          }
+          let labelX = d.cost;
+          if (!inside && !d.isTau && d.cost < tauX + 2 * perPx && d.cost + pad + textW > tauX - 3 * perPx) {
+            labelX = tauX + tauClear - pad;
+          }
+          return { ...d, inside, labelX };
+        });
+        plot(figs.decision, {
+          alt: T.decisionAlt,
+          marginTop: C.costMargin.top, marginBottom: C.costMargin.bottom, marginLeft: C.costMargin.left, marginRight: C.costMargin.right,
+          ...(fw > 0 ? { width: fw } : {}),
+          height: heights().decision,
+          x: { domain: C.costDomain.slice(), ticks: C.costTicks.slice(), label: null },
+          y: { domain: domainLabels, padding: 0.28, label: null, tickSize: 0 },
+          marks: (c, P) => {
+            const fillOf = (d) => (d.best ? c.post : c.neutral2 ?? "#d9d9d9");
+            const outProb = rows.filter((d) => !d.isTau && !d.inside);
+            const inProb = rows.filter((d) => !d.isTau && d.inside);
+            const outTau = rows.filter((d) => d.isTau && !d.inside);
+            const inTau = rows.filter((d) => d.isTau && d.inside);
+            return [
+              P.barX(rows, { x: "cost", y: "label", fill: fillOf, rx: 2, stroke: (d) => (d.best ? c.post : c.cellBorder), strokeWidth: 0.8 }),
+              P.ruleX([state.tau], { stroke: c.est, strokeWidth: 1.6, strokeDasharray: "4 3" }),
+              P.ruleX([0], { stroke: c.plotAxis }),
+              outProb.length ? numText(outProb, { x: "labelX", y: "label", value: "cost", format: formatReadoutProb, dx: 5, textAnchor: "start", fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke", fontWeight: (d) => (d.best ? 700 : 500), fontSize: 13 }) : null,
+              inProb.length ? numText(inProb, { x: "labelX", y: "label", value: "cost", format: formatReadoutProb, dx: -5, textAnchor: "end", fill: (d) => labelOn(fillOf(d), c), fontWeight: 700, fontSize: 13 }) : null,
+              outTau.length ? numText(outTau, { x: "labelX", y: "label", value: "cost", format: formatSetting, dx: 5, textAnchor: "start", fill: c.plotFg, stroke: c.plotBg, strokeWidth: 3, paintOrder: "stroke", fontWeight: (d) => (d.best ? 700 : 500), fontSize: 13 }) : null,
+              inTau.length ? numText(inTau, { x: "labelX", y: "label", value: "cost", format: formatSetting, dx: -5, textAnchor: "end", fill: (d) => labelOn(fillOf(d), c), fontWeight: 700, fontSize: 13 }) : null,
+            ];
+          },
+        });
+      }
+
+      function drawSummariesAndTables(state, r) {
+        const { post, decision, best } = r;
+        // Stage 1 concise metric line
+        dataMetric.replaceChildren(
+          "A ", w.setting(state.estA), " ± ", w.setting(state.seA),
+          " · B ", w.setting(state.estB), " ± ", w.setting(state.seB),
+        );
+        // Stage 2 concise metric line (carries keepA & keepB hooks)
+        priorMetric.replaceChildren(
+          "SD ", w.setting(state.priorSd),
+          " · keeps A ", w.share(post.shrink[0], { hook: "keepA" }),
+          ", B ", w.share(post.shrink[1], { hook: "keepB" }),
+        );
+        // Stage 3 concise metric line (carries meanA, meanB & pi hooks)
+        postMetric.replaceChildren(
+          "A ", w.est(post.mean[0], { hook: "meanA" }),
+          ", B ", w.est(post.mean[1], { hook: "meanB" }),
+          " · ", math("\\pi"), " = ", w.prob(r.pi, { hook: "pi" }),
+        );
+        // Stage 4 grade chips + best report tag line (carries report hook + tie qualifier)
         const grade = Array.from(best.grade);
         const groups = blocksOf(grade);
         const pal = palette(ctx.root);
@@ -874,89 +824,94 @@ export function mountWidget(el, spec = {}) {
             h("span", { class: "prx-pp-chip-grade" }, `Grade ${g + 1}`)));
         });
         reportLine.replaceChildren(...chips, h("span", { class: "prx-sr-only", text: blocksText(grade) }));
-        // the short tag; with several equal-risk best reports it says so and that the chips show the first (review
-        // 044, X-12: labels.js tagNode ties)
         const tag = tagNode(ctx, best, { ties: true });
         tagLine.replaceChildren(h("span", { class: "prx-pp-blocks", "data-prx-readout": "report" }, blocksText(grade)), ", ", tag);
+
+        // Data disclosure: exact 2-unit table (carries sdA & sdB hooks at 3 sig figs, plus 6-decimal exact columns)
+        const ests = [state.estA, state.estB];
+        const ses = [state.seA, state.seB];
+        unitBody.replaceChildren(...CONFIG.ids.map((id, i) => h("tr", {},
+          h("th", { scope: "row", "data-prx-name": "" }, id),
+          h("td", {}, w.setting(ests[i])),
+          h("td", {}, w.setting(ses[i])),
+          h("td", {}, w.num(post.shrink[i], formatDecimal(post.shrink[i], { digits: 6 }))),
+          h("td", {}, w.num(post.mean[i], formatDecimal(post.mean[i], { digits: 6 }))),
+          h("td", {}, w.est(post.sd[i], { hook: `sd${id}` })),
+        )));
+
+        // Data disclosure: 3-report cost table (carries costAB, costBA, costWithhold hooks)
+        const costRows = [
+          { action: "iAboveJ", grade: [1, 2], cost: [w.prob(decision.costs.iAboveJ, { hook: "costAB" })] },
+          { action: "jAboveI", grade: [2, 1], cost: [w.prob(decision.costs.jAboveI, { hook: "costBA" })] },
+          { action: "withhold", grade: [1, 1], cost: ["τ = ", w.setting(decision.costs.withhold, { hook: "costWithhold" })] },
+        ];
+        costBody.replaceChildren(...costRows.map((row) => {
+          const lowest = decision.best.includes(row.action);
+          const cell = h("td", {}, ...row.cost, lowest ? h("span", { class: "prx-pp-badge", text: T.lowest }) : null);
+          return h("tr", { "data-best": lowest ? "" : undefined }, h("th", { scope: "row", class: "prx-pp-blocks" }, blocksText(row.grade)), cell);
+        }));
       }
 
-      function drawPosteriorLines(state, r) {
-        const { post } = r;
-        const line = (i, id) => {
-          const mean = ctx.num(post.mean[i], three(post.mean[i]));
-          const sd = ctx.num(post.sd[i], three(post.sd[i]));
-          const keep = ctx.num(post.shrink[i], three(post.shrink[i]));
-          mean.setAttribute("data-prx-readout", `mean${id}`);
-          sd.setAttribute("data-prx-readout", `sd${id}`);
-          keep.setAttribute("data-prx-readout", `keep${id}`);
-          return h("li", {}, h("strong", { text: `${id}: ` }), "mean ", mean, ", SD ", sd, ", keeps ", keep, " of its estimate");
-        };
-        postLines.replaceChildren(line(0, "A"), line(1, "B"));
-        const pi = ctx.num(r.pi, formatProb(r.pi));
-        pi.setAttribute("data-prx-readout", "pi");
-        piLine.replaceChildren(math("\\pi = \\Pr(\\theta_A > \\theta_B \\mid Y)"), " = ", pi, `, ${T.piWords}.`);
-      }
-
-      // Keep both estimates, posterior means, the probability of the direction
-      // shown, and its decision cost in the one live result.
       function sentence(state, r) {
         const { decision, best } = r;
-        const n = ctx.num.bind(ctx);
+        const x = boxAt(state.box);
+        const k = CONFIG.boxes.indexOf(x) + 1;
         const grade = Array.from(best.grade);
         const ties = best.tieCount ?? best.grades?.length ?? 1;
-        const means = ["Estimates → posterior means: A ", n(state.estA, set(state.estA)), " → ",
-          n(r.post.mean[0], three(r.post.mean[0])), "; B ", n(state.estB, set(state.estB)), " → ",
-          n(r.post.mean[1], three(r.post.mean[1])), ". "];
         const aFirst = r.pi >= 0.5;
         const err = aFirst ? r.eAB : r.eBA;
         const probability = aFirst ? r.pi : 1 - r.pi;
-        const evidence = r.pi === .5
-          ? ["Both directions have posterior probability ", n(probability, formatProb(probability)), ". "]
-          : [aFirst ? "A" : "B", " is higher with posterior probability ", n(probability, formatProb(probability)), ". "];
+        const dirLabel = r.pi === 0.5 ? "Pr(A > B) = " : aFirst ? "Pr(A > B) = " : "Pr(B > A) = ";
         const stating = aFirst ? "iAboveJ" : "jAboveI";
         const states = grade[0] !== grade[1];
         const tie = decision.best.includes(stating) && decision.best.includes("withhold");
         const cmp = tie ? (err === state.tau ? " = " : " ≈ ") : decision.best.includes(stating) ? " < " : " > ";
-        const result = [states ? "Report " : "Withhold ", blocksText(grade), ": ", states ? "error " : "smallest directional error ",
-          n(err, formatProb(err)), cmp, "τ ", n(state.tau, set(state.tau)), "."];
-        if (ties > 1) result.push(" ", n(ties, formatCount(ties)), " reports share the smallest risk (equal-risk tolerance ",
-          n(1e-12, "1e−12"), "); showing the first.");
-        return [...means, ...evidence, ...result];
+        const out = [
+          `${CONFIG.ownerShort[k - 1]}: A `,
+          w.setting(state.estA), " → ", w.est(r.post.mean[0]),
+          ", B ", w.setting(state.estB), " → ", w.est(r.post.mean[1]),
+          "; ", dirLabel, w.prob(probability),
+          states ? `, so report ${blocksText(grade)} (error ` : `, so withhold ${blocksText(grade)} (error `,
+          w.prob(err), cmp, "τ ", w.setting(state.tau), ").",
+        ];
+        if (ties > 1) {
+          out.push(" ", w.count(ties), " reports share the smallest risk (equal-risk tolerance ",
+            w.num(1e-12, "1e−12"), "); showing the first.");
+        }
+        return out;
       }
 
       let lastBox = null;
-      const memo = { data: null, prior: null, posterior: null };
+      const memo = { data: null, prior: null, posterior: null, decision: null };
       let last = null;
       const stamp = (...v) => v.join("|");
 
       function drawFigures(state, r, force = false) {
-        const d = stamp(state.estA, state.seA, state.estB, state.seB);
+        const chainMode = ctx.root.getAttribute("data-prx-pp-chain") ?? "column";
+        const d = stamp(chainMode, figWidth(figs.data), state.estA, state.seA, state.estB, state.seB);
         if (force || memo.data !== d) { drawData(state); memo.data = d; }
-        const p = stamp(state.priorSd);
+        const p = stamp(chainMode, figWidth(figs.prior), state.priorSd);
         if (force || memo.prior !== p) { drawPrior(state); memo.prior = p; }
-        const q = stamp(state.estA, state.seA, state.estB, state.seB, state.priorSd);
+        const q = stamp(chainMode, figWidth(figs.posterior), state.estA, state.seA, state.estB, state.seB, state.priorSd);
         if (force || memo.posterior !== q) { drawPosterior(r); memo.posterior = q; }
+        const dc = stamp(chainMode, figWidth(figs.decision), state.estA, state.seA, state.estB, state.seB, state.priorSd, state.tau);
+        if (force || memo.decision !== dc) { drawDecisionChart(state, r); memo.decision = dc; }
       }
 
-      // the viewport can cross the row's query while the app keeps its width: lay out again and redraw the figures
       if (rowMql) ctx.listen(rowMql, "change", () => { layout(ctx.width()); if (last) drawFigures(last.state, last.r, true); });
 
-      // the layout attributes follow the width at once, so the page never scrolls sideways while base.js's debounced
-      // resize redraws the figures (review 044 repair, Phase 3 integration: check_browser resizes 1280 → 375 under load)
       if (typeof ctx.win.ResizeObserver === "function") {
-        const ro = new ctx.win.ResizeObserver((entries) => {
-          const w = Math.round(entries[entries.length - 1]?.contentRect?.width ?? 0);
-          if (w > 0) layout(w);
+        const roObs = new ctx.win.ResizeObserver((entries) => {
+          const width = Math.round(entries[entries.length - 1]?.contentRect?.width ?? 0);
+          if (width > 0) layout(width);
         });
-        ro.observe(ctx.frame);
-        ctx.onCleanup(() => ro.disconnect());
+        roObs.observe(ctx.frame);
+        ctx.onCleanup(() => roObs.disconnect());
       }
 
       return {
         render(state, info = {}) {
-          if (ctx.presets && presetNote.previousElementSibling !== ctx.presets) ctx.presets.after(presetNote);
           layout(ctx.width());
-          // a closed box was opened: nothing in the state changed (the routes table's scroll cue is measured above)
           if (info.reason === "disclosure" && last) return;
           const open = boxAt(state.box);
           for (const s of stages) {
@@ -968,12 +923,21 @@ export function mountWidget(el, spec = {}) {
           const r = computeChain(state);
           last = { state, r };
           drawFigures(state, r, info.reason === "theme" || info.reason === "resize" || info.initial);
-          drawPosteriorLines(state, r);
-          drawDecision(state, r);
-          ctx.readout.set(sentence(state, r));
+          drawSummariesAndTables(state, r);
+          const parts = [
+            () => ["Data supplies estimates A ", w.setting(state.estA), " and B ", w.setting(state.estB),
+              " with standard errors ", w.setting(state.seA), " and ", w.setting(state.seB), " to the model."],
+            () => ["The model combines those estimates with prior SD ", w.setting(state.priorSd),
+              " to produce posterior means ", w.est(r.post.mean[0]), " and ", w.est(r.post.mean[1]), "."],
+            () => ["postrank starts with the supplied posterior. It gives probability ", w.prob(r.pi),
+              " that A exceeds B for the decision step."],
+            () => ["The decision compares directional errors ", w.prob(r.eAB), " and ", w.prob(r.eBA),
+              " with the cost of withholding ", w.setting(state.tau), " to choose the grades above."],
+          ];
+          transition.replaceChildren(...parts[state.box - 1]());
+          stages[state.box - 1].sec.append(transition);
+          w.set(sentence(state, r));
         },
-        // a new width only switches the layout attributes and redraws the three small figures (their width and, with
-        // the layout, their height changed); the headers, panel and numbers stay as they are
         resize(width) {
           layout(width);
           if (last) drawFigures(last.state, last.r, true);

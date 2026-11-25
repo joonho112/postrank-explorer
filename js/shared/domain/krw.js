@@ -1,12 +1,12 @@
 // Full S-02 common header, risk/denominator boxes and report-card view.
 // Source: v1 case-krw-race.js; the supplied non-Gaussian marginals are never refitted.
-import KRW from '../../data/released/case-krw.json' with { type: 'json' };
+import KRW from '../../../data/released/case-krw.json' with { type: 'json' };
 import { drawReportCard, drawBetweenGrades, gradeLegend, REPORT_CARD_CSS } from './report-card.js';
-import { betweenGradeErrors, disclosure, pairCount, relationChange, unitRelationCounts } from '../pr-core.js';
-import { plot, numText, gradeColors } from '../shared/chart.js';
-import { formatCount, formatDecimal, formatExpectedCount, formatGrades, formatPercent, formatRisk, formatSetting, formatShare, formatSizes } from '../shared/format.js';
-import { captionNode, exposeResult } from '../shared/labels.js';
-import { readKrwModel, cardAt, gridRows, gridIndex, keyOrder, blockOrder, appendKrwNotice } from '../shared/krw-model.js';
+import { betweenGradeErrors, disclosure, pairCount, relationChange, unitRelationCounts } from '../../pr-core.js';
+import { plot, numText, gradeColors } from '../chart.js';
+import { formatCount, formatDecimal, formatExpectedCount, formatGrades, formatPercent, formatRisk, formatSetting, formatShare, formatSizes } from '../format.js';
+import { captionNode, exposeResult } from '../labels.js';
+import { readKrwModel, cardAt, gridRows, gridIndex, keyOrder, blockOrder, appendKrwNotice } from '../krw-model.js';
 export { readKrwModel, gridRows, gridIndex, keyOrder, blockOrder, appendKrwNotice };
 export const SORTS = Object.freeze([{ value: 'mean', label: 'posterior mean' }, { value: 'estimate', label: 'estimate' }, { value: 'krw', label: 'KRW’s figure order (the λ = 1 card)' }]);
 export const ARCHIVE_KEYS = Object.freeze({ criterion: { type: 'choice', values: ['race', 'gender'], value: 'race' }, lambda: { type: 'number', min: .01, max: 1, step: .01, value: .25 }, sort: { type: 'choice', values: ['mean', 'estimate', 'krw'], value: 'mean' } });

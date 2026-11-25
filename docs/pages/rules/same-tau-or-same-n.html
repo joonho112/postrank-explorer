@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/same-tau-or-same-n.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Common withholding cost and matched disclosure – postrank Explorer">
+<meta property="og:description" content="Risk comparisons at a common cost and error comparisons at a common disclosure level.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/same-tau-or-same-n.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/same-tau-or-same-n.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -579,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Common withholding cost and matched disclosure</h1>
-<p class="subtitle lead">3.8 · after the postrank theory book, ch.&nbsp;16–17</p>
+<p class="subtitle lead">3.8 · after the postrank theory book, ch.&nbsp;22–23</p>
 </div>
 
 <div>
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>There are two ways to compare reports that disclose different numbers of pairs. At a common withholding cost, risk includes both expected wrong directions and the cost of the pairs left unranked. At a common number of stated pairs, we compare expected wrong counts directly. We apply both comparisons to the same rules under one posterior. In the thirty-unit example, the comparison family consists of contiguous cuts of one order.</p>
+<p>Rules that disclose different numbers of pairs can be compared two ways: by total risk at a common withholding price τ, or by expected wrong directions at matched disclosure N under one posterior.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,23 +635,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Same τ, .20.</strong> Posterior-mean tiers state 21 pairs with risk .1612, while the best report states 17 with risk .1455. The solid and dashed lines have the same slope. The lower line has lower risk at this τ.</li>
-<li><strong>Same N, eight units.</strong> The tiers’ gap is .1634 at N 21. The diamond is a frontier mixture, while the square marks the best single report at that N. The rank strip and table compare risk and gap side by side.</li>
-<li><strong>Thirty units, one order.</strong> The capped family has 436 reports. Posterior-mean tiers state 300 pairs with E 48.31. The boundary gives the lowest expected wrong count available among cuts of this order.</li>
-<li><strong>Thirty units, same τ.</strong> Without the cap, the family contains 536,870,912 contiguous cuts of the posterior-mean order. There is no enumerated cloud here. Both comparison modes use the same units.</li>
-<li><strong>Flags outside the order.</strong> The flag report is outside this family: it still has an evaluated risk, but no matched-disclosure benchmark in this order family. The hollow mark records this restriction.</li>
-<li><strong>All-withheld.</strong> N is 0 and the risk at τ .20 is .2000. Its fraction of stated pairs that are wrong is undefined.</li>
+<li><strong>Same τ, .20.</strong> Posterior-mean tiers state 21 pairs with risk .161, while the best report states 17 pairs with risk .146.</li>
+<li><strong>Same N, eight units.</strong> At matched disclosure N 21, posterior-mean tiers leave excess-error gap .163 above H(21).</li>
+<li><strong>Thirty units, one order.</strong> Among 436 three-grade cuts, posterior-mean tiers state 300 pairs with E 48.3 on the order boundary.</li>
+<li><strong>Thirty units, same τ.</strong> Without the grade cap, the order family spans 536,870,912 contiguous cuts of the posterior-mean order.</li>
+<li><strong>Flags outside the order.</strong> Evidence flags lie outside this family: risk is still evaluated, without an order-family benchmark.</li>
+<li><strong>All-withheld.</strong> Disclosing 0 pairs gives risk .200 at τ .20, with undefined wrong share among stated pairs.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
+<details>
+<summary>
+Scope and posterior notes
+</summary>
 <p>We evaluate the rules under the same normal posterior. The flags use the mean of all thirty estimates as their reference. For thirty units, the boundary comes from the hull of contiguous cuts in the given order. The withholding cost determines the loss, and the report family determines which benchmarks are available. An allocation or classification decision would require its own objective.</p>
-</div>
-</div>
-</div>
+</details>
 <div class="callout callout-style-default callout-note callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -640,13 +661,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The package’s synthetic <code>pr_example_gaussian</code> poverty example uses its own thirty sites. At τ .25 with at most four grades, this prints quantile cuts with N 337 and risk .1758, versus optimal cuts with N 303 and risk .1603. The risks correspond to different N; H(m) is not a package output.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">poverty=</span><span class="dv">1</span>, <span class="at">frl=</span><span class="dv">0</span>, <span class="at">snap=</span><span class="dv">0</span>); s <span class="ot">&lt;-</span> <span class="fu">postrank_settings</span>(<span class="at">weights=</span>w, <span class="at">tau=</span>.<span class="dv">25</span>, <span class="at">G_max=</span><span class="dv">4</span>L); sc <span class="ot">&lt;-</span> pr_example_gaussian<span class="sc">$</span>means[, <span class="st">"poverty"</span>]</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">c</span>(<span class="st">"quantile"</span>, <span class="st">"optimal"</span>), <span class="cf">function</span>(r) <span class="fu">unlist</span>(<span class="fu">postrank_cuts</span>(sc, pr_example_gaussian, s, <span class="at">direction=</span><span class="st">"descending"</span>, <span class="at">rule=</span>r)<span class="sc">$</span>evaluation[<span class="fu">c</span>(<span class="st">"N"</span>, <span class="st">"primary_risk"</span>)]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(postrank)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">poverty=</span><span class="dv">1</span>, <span class="at">frl=</span><span class="dv">0</span>, <span class="at">snap=</span><span class="dv">0</span>); s <span class="ot">&lt;-</span> <span class="fu">postrank_settings</span>(<span class="at">weights=</span>w, <span class="at">tau=</span>.<span class="dv">25</span>, <span class="at">G_max=</span><span class="dv">4</span>L); sc <span class="ot">&lt;-</span> pr_example_gaussian<span class="sc">$</span>means[, <span class="st">"poverty"</span>]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">c</span>(<span class="st">"quantile"</span>, <span class="st">"optimal"</span>), <span class="cf">function</span>(r) <span class="fu">unlist</span>(<span class="fu">postrank_cuts</span>(sc, pr_example_gaussian, s, <span class="at">direction=</span><span class="st">"descending"</span>, <span class="at">rule=</span>r)<span class="sc">$</span>evaluation[<span class="fu">c</span>(<span class="st">"N"</span>, <span class="st">"primary_risk"</span>)]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 <p>Standalone: <a href="../../embed/same-tau-or-same-n.html">open this app</a>, for example <code>?preset=thirty&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="rule-comparison.html">Comparison at matched disclosure</a> · <a href="../grades/frontier.html">The error–disclosure frontier</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier">Comparing reports at matched disclosure</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-fair-comparator-framework">Comparator definitions and scope</a>.</p>
 
 
 </section>
@@ -1119,7 +1142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

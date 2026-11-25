@@ -101,3 +101,25 @@ test("1.17: Redraw wraps to min, and a settings change cancels stale boundary wo
     assert.equal(m.root.hasAttribute("aria-busy"), false);
   } finally { m.close(); }
 });
+
+test("1.17: frame v2 layout preserves 3-sig-fig readout, [100, 100] run tables and PR-06 disclosure guard", async () => {
+  const m = await mountCase({ module: "js/apps/mc-error.js", query: "?preset=s4000" });
+  try {
+    assert.equal(m.root.getAttribute("data-prx-frame"), "v2");
+    assert.equal(m.root.hasAttribute("aria-busy"), false);
+    assert.equal(m.root.querySelectorAll(".prx-mce-stale").length, 0);
+    const readoutText = m.root.querySelector(".prx-readout").textContent.trim();
+    const words = readoutText.split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
+    assert.ok(words <= 35, `readout words ${words} <= 35`);
+    assert.ok(readoutText.includes(".00636"), `3-sig-fig MCSE in readout: ${readoutText}`);
+    const totals = [...m.root.querySelectorAll(".prx-mce-runs table")].map((t) =>
+      [...t.tBodies[0].rows].reduce((sum, row) => sum + Number(row.cells[2].querySelector("[data-num]")?.dataset.num ?? row.cells[2].dataset.num), 0),
+    );
+    assert.deepEqual(totals, [100, 100]);
+    const dataDetails = m.root.querySelector('details[data-prx-disclosure="data"]');
+    assert.ok(dataDetails && !dataDetails.open);
+    dataDetails.open = true;
+    dataDetails.dispatchEvent(new m.win.Event("toggle"));
+    assert.equal(m.root.querySelector(".prx-readout").textContent.trim(), readoutText);
+  } finally { m.close(); }
+});

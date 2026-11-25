@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,64 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
 
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
+
+  <script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
+<link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/estimated-budgets.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Error budgets under estimated pairwise probabilities – postrank Explorer">
+<meta property="og:description" content="How a bound on Monte Carlo error changes which reports can satisfy an error budget.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/estimated-budgets.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/estimated-budgets.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -544,7 +596,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Error budgets under estimated pairwise probabilities</h1>
-<p class="subtitle lead">4.14 · after the postrank theory book, ch.&nbsp;15</p>
+<p class="subtitle lead">4.14 · after the postrank theory book, ch.&nbsp;21</p>
 </div>
 
 <div>
@@ -566,7 +618,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>An error budget caps the expected share of wrong stated directions. A report may pass that budget when we use estimated probabilities and fail it under the exact probabilities. A uniform error bound lets us use a tighter estimated budget to find reports that definitely pass, and a looser one to retain every report that passes. We check the bound and both claims about the report sets separately. A separate fixed-size simulation shows how often a bound of this kind can hold over repeated draws from the same law.</p>
+<p>A report meeting an error budget under estimated pair probabilities can fail under the exact posterior. A uniform error margin ε brackets exact feasibility between inner and outer sets.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,25 +627,22 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Estimated pass.</strong> For A above B, the estimated wrong share is .200 and the exact supplied-law share is .300. The budget is .25. The estimate passes and the exact probability fails. The number line shows the tighter threshold .15 and looser threshold .35.</li>
-<li><strong>Negative inner.</strong> The signed inner threshold is −.05, even though the estimated wrong share is 0. Replacing this threshold with zero would wrongly admit A above B. The all-withheld report still passes the count-form tests, with no defined wrong share.</li>
-<li><strong>Exactly two.</strong> Requiring two grades removes all-withheld. The inner family has 0 reports; the exact family also happens to be empty here. Their separate counters matter: an empty inner family alone would not establish exact infeasibility.</li>
-<li><strong>Radius too small.</strong> The proposed radius is reduced to .05 with the exact law unchanged. The coefficient checks read “no,” and an inner member fails the exact budget. The report that passes the tighter estimate but fails the exact budget is shown in the table.</li>
-<li><strong>Raw comparisons.</strong> With advisory tolerance removed, its coefficient check reads “no.” At the default radius, the tiny raw excess explains why the strict check fails while the tolerant comparison passes. The actual inclusions are separate tests, not consequences of accepting a soft tolerance.</li>
-<li><strong>Fixed-S IID.</strong> The simulation uses 1,000 complete states drawn from the independent normal posteriors for six sites. Score B has error weight 0 but remains protected by its .03 budget. Requiring exactly two grades gives an empty inner family while the exact family remains nonempty.</li>
+<li><strong>Estimated pass.</strong> For A above B, estimated share .200 passes budget .25 while exact share .300 fails, bracketed by .15 and .35.</li>
+<li><strong>Negative inner.</strong> At estimated share 0, signed inner threshold −.05 stays negative so A above B is excluded.</li>
+<li><strong>Exactly two.</strong> Requiring two grades excludes full withholding and leaves 0 reports in the inner set.</li>
+<li><strong>Radius too small.</strong> Margin .05 breaks the error bound (“no”) and admits an inner report that fails the exact budget.</li>
+<li><strong>Raw comparisons.</strong> Removing float tolerance makes the strict bound check read “no” on tiny floating-point excess.</li>
+<li><strong>Fixed-S IID.</strong> With 1,000 draws across six sites, score B has weight 0 yet stays protected by its .03 budget.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The two-unit example specifies the exact and estimated probabilities directly. In the simulation, the chance that all estimated coefficients fall within the bound is at least one minus α across repeated samples of the same size from the same law. This probability describes the numerical estimates under that law. Compliance under the model is still determined by the exact expected wrong share. The thresholds can be negative.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Model notes
+</summary>
+<p>The two-unit example specifies exact and estimated pairwise probabilities directly. In the fixed-sample simulation, all estimated pair coefficients fall within the uniform error margin with probability at least <span class="math inline"><math><mrow><mn>1</mn><mo>−</mo><mi>α</mi></mrow></math></span> across repeated draws of the same size from the supplied law. Compliance under the model is determined by the exact expected wrong share, and signed thresholds can be negative or exceed one.</p>
+</details>
 <p>Standalone: <a href="../../embed/estimated-budgets.html">Error budgets under estimated pairwise probabilities</a>.</p>
 <p>Related applications: <a href="../../pages/criteria/error-budgets.html">Criterion-specific expected-error budgets</a> · <a href="../../pages/uncertainty/mc-error.html">Monte Carlo error in pairwise probabilities</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/21-numerical-uncertainty.html#sec-coefficient-error">Effects of coefficient error on risk and feasibility</a>.</p>
 
 
 </section>
@@ -1066,7 +1115,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

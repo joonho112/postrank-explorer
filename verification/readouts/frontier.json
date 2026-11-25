@@ -25,7 +25,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -60,7 +60,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the exact optimum (base-R exactOptimum)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -90,7 +90,7 @@
           "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2086"
+          "value": "exact optimum within 𝒜₆"
         },
         {
           "select": "[data-prx-readout=\"vN-0\"]",
@@ -475,7 +475,10 @@
           "about": "the risk the page quotes (registry)",
           "source": "registry",
           "ref": "six.A.all.tau20.risk",
-          "value": 0.03717175608408931
+          "value": 0.03717175608408931,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
         },
         {
           "select": "[data-prx-caption=\"mixture-not-report\"]",
@@ -488,9 +491,9 @@
         },
         {
           "select": "[data-prx-readout=\"bestFrom\"]",
-          "about": "review 044 repair: the read-out's \u03c4 range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
+          "about": "review 044 repair: the read-out's τ range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -502,9 +505,9 @@
         },
         {
           "select": "[data-prx-readout=\"bestTo\"]",
-          "about": "review 044 repair: and ends at the slope of the edge after it, or at \u03c4 = 1/2 for the last vertex (base-R tau path)",
+          "about": "review 044 repair: and ends at the slope of the edge after it, or at τ = 1/2 for the last vertex (base-R tau path)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -539,7 +542,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -574,7 +577,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the exact optimum (base-R exactOptimum)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -604,7 +607,7 @@
           "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2086"
+          "value": "exact optimum within 𝒜₆"
         },
         {
           "select": "[data-prx-readout=\"N\"]",
@@ -618,7 +621,10 @@
           "about": "registry",
           "source": "registry",
           "ref": "six.A.all.tau40.E",
-          "value": 0.7194131461772217
+          "value": 0.7194131461772217,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"grades\"]",
@@ -639,13 +645,16 @@
           "about": "registry",
           "source": "registry",
           "ref": "six.A.all.tau40.risk",
-          "value": 0.04796087641181478
+          "value": 0.04796087641181478,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
         },
         {
           "select": "[data-prx-readout=\"bestFrom\"]",
-          "about": "review 044 repair: the read-out's \u03c4 range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
+          "about": "review 044 repair: the read-out's τ range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -657,7 +666,7 @@
         },
         {
           "select": "[data-prx-readout=\"bestTo\"]",
-          "about": "review 044 repair: and ends at the slope of the edge after it, or at \u03c4 = 1/2 for the last vertex (base-R tau path)",
+          "about": "review 044 repair: and ends at the slope of the edge after it, or at τ = 1/2 for the last vertex (base-R tau path)",
           "format": {
             "fn": "formatSetting"
           },
@@ -694,7 +703,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "its expected wrong directions",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -729,7 +738,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "its risk",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -759,7 +768,7 @@
           "about": "the result label with the capped family",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c_\u22643"
+          "value": "exact optimum within 𝒜_≤3"
         },
         {
           "select": "[data-prx-readout=\"N\"]",
@@ -773,14 +782,20 @@
           "about": "registry",
           "source": "registry",
           "ref": "g06.six.cap3.tau20.vertex.E",
-          "value": 0.02477459918230669
+          "value": 0.02477459918230669,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"risk\"]",
           "about": "registry",
           "source": "registry",
           "ref": "six.A.cap3.tau20.risk",
-          "value": 0.04165163994548712
+          "value": 0.04165163994548712,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
         },
         {
           "select": "[data-prx-readout=\"familySize\"]",
@@ -966,9 +981,9 @@
         },
         {
           "select": "[data-prx-readout=\"bestFrom\"]",
-          "about": "review 044 repair: the read-out's \u03c4 range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
+          "about": "review 044 repair: the read-out's τ range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -980,7 +995,7 @@
         },
         {
           "select": "[data-prx-readout=\"bestTo\"]",
-          "about": "review 044 repair: and ends at the slope of the edge after it, or at \u03c4 = 1/2 for the last vertex (base-R tau path)",
+          "about": "review 044 repair: and ends at the slope of the edge after it, or at τ = 1/2 for the last vertex (base-R tau path)",
           "format": {
             "fn": "formatSetting"
           },
@@ -1016,7 +1031,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1051,7 +1066,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the exact optimum (base-R exactOptimum)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1081,7 +1096,7 @@
           "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2086"
+          "value": "exact optimum within 𝒜₆"
         }
       ]
     },
@@ -1107,7 +1122,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1142,7 +1157,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the exact optimum (base-R exactOptimum)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1172,7 +1187,7 @@
           "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2086"
+          "value": "exact optimum within 𝒜₆"
         }
       ]
     },
@@ -1198,7 +1213,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1233,7 +1248,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the exact optimum (base-R exactOptimum)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1263,7 +1278,7 @@
           "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2086"
+          "value": "exact optimum within 𝒜₆"
         }
       ]
     },
@@ -1290,7 +1305,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "touched vertex E",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1306,7 +1321,7 @@
           "about": "the result label",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c_\u22643"
+          "value": "exact optimum within 𝒜_≤3"
         }
       ]
     },
@@ -1333,7 +1348,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1368,7 +1383,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the exact optimum (base-R exactOptimum)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1398,7 +1413,7 @@
           "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2086"
+          "value": "exact optimum within 𝒜₆"
         }
       ]
     },
@@ -1425,7 +1440,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "its E",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1486,7 +1501,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1521,7 +1536,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the exact optimum (base-R exactOptimum)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1551,7 +1566,7 @@
           "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2086"
+          "value": "exact optimum within 𝒜₆"
         }
       ]
     },
@@ -1576,7 +1591,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "expected wrong directions at the touched vertex (base-R supportingVertex)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1611,7 +1626,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the exact optimum (base-R exactOptimum)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1641,13 +1656,13 @@
           "about": "the result label from the engine return value, with the family symbol (from G-04 on)",
           "source": "literal",
           "ref": "6.2",
-          "value": "exact optimum within \ud835\udc9c\u2086"
+          "value": "exact optimum within 𝒜₆"
         },
         {
           "select": "[data-prx-readout=\"bestFrom\"]",
-          "about": "review 044 repair: the read-out's \u03c4 range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
+          "about": "review 044 repair: the read-out's τ range of the touched vertex starts at the slope of the edge before it (base-R tau path)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1659,9 +1674,9 @@
         },
         {
           "select": "[data-prx-readout=\"bestTo\"]",
-          "about": "review 044 repair: and ends at the slope of the edge after it, or at \u03c4 = 1/2 for the last vertex (base-R tau path)",
+          "about": "review 044 repair: and ends at the slope of the edge after it, or at τ = 1/2 for the last vertex (base-R tau path)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -1697,7 +1712,7 @@
           "select": "[data-prx-readout=\"edgeAE\"]",
           "about": "vertex 4 of H(m): E",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1725,7 +1740,7 @@
           "select": "[data-prx-readout=\"edgeBE\"]",
           "about": "vertex 5 of H(m): E",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1739,7 +1754,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the exact optimum (base-R exactOptimum)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {

@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/price-of-silence.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reporting risk and withholding cost – postrank Explorer">
+<meta property="og:description" content="Expected wrong directions and withholding costs in the posterior risk of a grade report.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/price-of-silence.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/price-of-silence.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>A wrong direction costs one and a withheld comparison costs τ. The posterior risk of a grade report averages these costs across all pairs. If E is the expected number of wrong directions, M the number of unordered pairs, and N the number of directions the report states, this risk is <span class="math inline"><math><mrow><msub><mi>R</mi><mi>τ</mi></msub><mo>=</mo><mi>E</mi><mi>/</mi><mi>M</mi><mo>+</mo><mi>τ</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>M</mi><mo>−</mo><mi>N</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>/</mi><mi>M</mi></mrow></math></span>. The first term charges for expected mistakes and the second for withheld comparisons. We use the same τ to evaluate the report entered by the reader and the best report in the selected family.</p>
+<p>A wrong stated direction costs <span class="math inline"><math><mn>1</mn></math></span> and withholding a pair costs <span class="math inline"><math><mi>τ</mi></math></span>. Posterior risk <span class="math inline"><math><mrow><msub><mi>R</mi><mi>τ</mi></msub><mo>=</mo><mi>E</mi><mi>/</mi><mi>M</mi><mo>+</mo><mi>τ</mi><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>M</mi><mo>−</mo><mi>N</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>/</mi><mi>M</mi></mrow></math></span> averages expected mistakes and withheld comparisons across all <span class="math inline"><math><mi>M</mi></math></span> pairs.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -638,22 +663,17 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>τ .20, at most 3 grades.</strong> The best of 603 reports states 12 of 15 pairs, with risk .0417. The matrix says “2 (A and B; E and F)” for below-τ pairs still withheld. Stating those directions would save risk if the pairs could be handled separately. A complete report under the cap would also have to change other comparisons, at greater cost.</li>
-<li><strong>τ .20, no cap.</strong> The best of 4,683 reports states 14 of 15 pairs, with risk .0372. Only C–D stays withheld. The change-point strip identifies subsequent changes in disclosure.</li>
-<li><strong>τ .40, no cap.</strong> The strict order states 15 of 15 pairs; risk .0480 consists entirely of expected wrong directions. The all-withheld bar always ends at τ, because it pays that cost on every pair.</li>
-<li><strong>τ .30, no cap.</strong> The best report stays the same while its risk becomes .0438. A larger τ changes the charge for every withheld pair. Risk comparisons use the same current τ.</li>
+<li><strong>τ .20, at most 3 grades.</strong> The best of 603 reports states 12 of 15 pairs (risk .0417); 2 (A and B; E and F) below-τ pairs stay withheld because the grade cap links pairwise decisions.</li>
+<li><strong>τ .20, no cap.</strong> The best of 4,683 reports states 14 of 15 pairs (risk .0372), withholding only C–D.</li>
+<li><strong>τ .40, no cap.</strong> The strict order states 15 of 15 pairs (risk .0480, entirely expected mistakes).</li>
+<li><strong>τ .30, no cap.</strong> The optimal report is unchanged while its risk becomes .0438; open <strong>Score your report</strong> to evaluate any fixed grade vector beside it.</li>
 </ul>
-<p>Choose a Quick report or enter grade labels in site order. The bar just below the entry evaluates that fixed report at the current τ. An entered report outside the selected family is identified explicitly; it may beat the capped optimum without belonging to its comparison family.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>We use the normal posteriors for score A at six fictional sites from the postrank tutorial. For these posteriors and the costs on the slider, the uncapped optimum states exactly the pairs whose error is below τ. The risk is an expected cost per pair. The chance that at least one direction is wrong is a separate joint probability. The risk formula follows the postrank theory book, chapters 10–11.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Model assumptions and source notes
+</summary>
+<p>We use the normal posteriors for score A at six fictional sites from the postrank tutorial. For these posteriors and the costs on the slider, the uncapped optimum states the pairs whose error is below <span class="math inline"><math><mi>τ</mi></math></span>. Posterior risk is an expected cost per pair; the chance that at least one direction is wrong is a separate joint probability (postrank theory book, chapters 10–11).</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -675,6 +695,7 @@ window.Quarto = {
 </div>
 <p>Standalone: <a href="../../embed/price-of-silence.html">open the app</a>, for example <code>?tau=.2&amp;cap=3&amp;stage=2</code>.</p>
 <p>Related applications: <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a> · <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-scalar-reduction">Scalar normalization and withholding cost</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/11-multicriteria-loss.html#sec-weighted-directional-risk">Weighted directional risk from a supplied selection law</a>.</p>
 
 
 </section>
@@ -1147,7 +1168,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

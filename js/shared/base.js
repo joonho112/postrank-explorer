@@ -104,7 +104,7 @@ export const CONFIG = Object.freeze({
   stepTolerance: 1e-9,
   presetTolerance: 1e-9,
   maxStringLength: 200,
-  panelTitle: Object.freeze({ className: "prx-panel-title", level: 4, tag: "p", minLevel: 1, maxLevel: 6 }),
+  panelTitle: Object.freeze({ className: "prx-panel-title", level: 2, tag: "p", minLevel: 1, maxLevel: 6 }),
   scrollRegion: Object.freeze({ className: "prx-scroll-region", slackPx: 1 }),
   // links to other apps: a site page names its offset to the site root; a standalone page sits in embed/
   links: Object.freeze({ offsetMeta: 'meta[name="quarto:offset"]', embedPath: /\/embed\/[^/]+$/, embedRoot: "../" }),
@@ -112,13 +112,13 @@ export const CONFIG = Object.freeze({
     reducedMotion: "(prefers-reduced-motion: reduce)",
     dark: "(prefers-color-scheme: dark)",
   }),
-  text: Object.freeze({ presets: "Presets", disclosure: "Details" }),
-  layouts: Object.freeze(["classic", "result-first"]),
+  text: Object.freeze({ presets: "Presets", disclosure: "Details", settings: "Settings", data: "Data and exact values", method: "Method and details", renderError: "Unable to update this view." }),
+  layouts: Object.freeze(["classic", "result-first", "v2"]),
   disclosure: Object.freeze({ className: "prx-disclosure", summaryClass: "prx-disclosure-summary", bodyClass: "prx-disclosure-body", groupClass: "prx-disclosures", placements: Object.freeze(["end", "controls", "none"]) }),
 });
 
 const RESERVED = new Set(BRIDGE.reservedKeys);
-const FOCUSABLE = "a[href], button, input, select, textarea, [tabindex]";
+const FOCUSABLE = "a[href], button, input, select, textarea, summary, [tabindex]";
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 /** Inputs on which Enter runs the app's main action (buttons keep the browser's own Enter and Space). */
@@ -162,7 +162,8 @@ export function linkRoot(doc) {
     return { root: c === "" ? "./" : c.endsWith("/") ? c : `${c}/`, newTab: false };
   }
   const path = doc?.defaultView?.location?.pathname ?? "";
-  return L.embedPath.test(path) ? { root: L.embedRoot, newTab: true } : null;
+  const pageRoot = doc?.querySelector?.('meta[name="prx-page-root"]')?.getAttribute("content");
+  return L.embedPath.test(path) ? { root: pageRoot || L.embedRoot, newTab: true } : null;
 }
 
 /** Another app named in an app's text: its site title (else its catalog title or `title`) as a link once built
@@ -190,31 +191,50 @@ export function createScope(el) {
   const win = doc.defaultView;
   const undo = [];
   let closed = false;
+  const removeUndo = (fn) => {
+    const idx = undo.indexOf(fn);
+    if (idx >= 0) undo.splice(idx, 1);
+  };
   const scope = {
     el, doc, win,
     get closed() { return closed; },
     /** addEventListener that cleanup() removes; returns the remover. */
     listen(target, type, fn, options) {
-      if (!target || typeof target.addEventListener !== "function") return () => {};
+      if (closed || !target || typeof target.addEventListener !== "function") return () => {};
       target.addEventListener(type, fn, options);
       let on = true;
       const off = () => {
         if (!on) return;
         on = false;
+        removeUndo(off);
         target.removeEventListener(type, fn, options);
       };
       undo.push(off);
       return off;
     },
-    /** setTimeout that cleanup() clears; returns the clearer. */
+    /** setTimeout that cleanup() clears; removes itself from undo once fired. */
     timeout(fn, ms) {
-      const id = win.setTimeout(() => { if (!closed) fn(); }, ms);
-      const off = () => win.clearTimeout(id);
+      if (closed) return () => {};
+      let active = true;
+      let id = 0;
+      const off = () => {
+        if (!active) return;
+        active = false;
+        removeUndo(off);
+        win.clearTimeout(id);
+      };
       undo.push(off);
+      id = win.setTimeout(() => {
+        if (!active) return;
+        active = false;
+        removeUndo(off);
+        if (!closed) fn();
+      }, ms);
       return off;
     },
     /** Register any teardown function. */
     onCleanup(fn) {
+      if (closed) return fn;
       undo.push(fn);
       return fn;
     },
@@ -228,6 +248,70 @@ export function createScope(el) {
   };
   scope.h = elementFactory(doc, scope);
   return scope;
+}
+
+/**
+ * Reusable child scope for transient listeners/timers created inside render().
+ * cleanup() drains all registered listeners/timers before the next render (and on parent destroy)
+ * while remaining open for subsequent renders until parentScope closes.
+ */
+function createRenderScope(parentScope) {
+  const { el, doc, win } = parentScope;
+  const undo = [];
+  const removeUndo = (fn) => {
+    const idx = undo.indexOf(fn);
+    if (idx >= 0) undo.splice(idx, 1);
+  };
+  const child = {
+    el, doc, win,
+    get closed() { return parentScope.closed; },
+    get activity() { return parentScope.activity; },
+    listen(target, type, fn, options) {
+      if (parentScope.closed || !target || typeof target.addEventListener !== "function") return () => {};
+      target.addEventListener(type, fn, options);
+      let on = true;
+      const off = () => {
+        if (!on) return;
+        on = false;
+        removeUndo(off);
+        target.removeEventListener(type, fn, options);
+      };
+      undo.push(off);
+      return off;
+    },
+    timeout(fn, ms) {
+      if (parentScope.closed) return () => {};
+      let active = true;
+      let id = 0;
+      const off = () => {
+        if (!active) return;
+        active = false;
+        removeUndo(off);
+        win.clearTimeout(id);
+      };
+      undo.push(off);
+      id = win.setTimeout(() => {
+        if (!active) return;
+        active = false;
+        removeUndo(off);
+        if (!parentScope.closed) fn();
+      }, ms);
+      return off;
+    },
+    onCleanup(fn) {
+      if (parentScope.closed) return fn;
+      undo.push(fn);
+      return fn;
+    },
+    cleanup() {
+      while (undo.length) {
+        try { undo.pop()(); } catch (err) { console.warn("base: renderScope cleanup step failed", err); }
+      }
+    },
+  };
+  child.h = elementFactory(doc, child);
+  parentScope.onCleanup(() => child.cleanup());
+  return child;
 }
 
 /**
@@ -290,12 +374,37 @@ export function stepDecimals(x) {
 /** Round to a number of decimals without binary drift (0.1 + 0.2 -> 0.3). */
 export const roundTo = (v, d) => Number(v.toFixed(d));
 
+/**
+ * Snap a numeric value to a key's step grid without binary drift.
+ * @param {number} v
+ * @param {{ min?: number, max?: number, step?: number, stepOrigin?: number }} [options]
+ */
+export function snapToKeyGrid(v, { min = -Infinity, max = Infinity, step = 1, stepOrigin } = {}) {
+  const lo = Number.isFinite(min) ? min : -Infinity;
+  const hi = Number.isFinite(max) ? max : Infinity;
+  const bounded = clamp(v, lo, hi);
+  if (!(Number.isFinite(step) && step > 0)) return bounded;
+  const origin = Number.isFinite(stepOrigin) ? stepOrigin : (Number.isFinite(lo) ? lo : 0);
+  const dd = Math.max(
+    stepDecimals(step),
+    Number.isFinite(lo) ? stepDecimals(lo) : 0,
+    stepDecimals(origin),
+  );
+  return roundTo(clamp(origin + Math.round((bounded - origin) / step) * step, lo, hi), dd);
+}
+
 /** The focusable elements of `root` in Tab order (disabled and hidden elements skipped; a radio group is one stop). */
 export function tabOrder(root) {
   const win = root.ownerDocument.defaultView;
+  const directSummary = (details) => {
+    for (const c of details.children) if (tagIs(c, "summary")) return c;
+    return null;
+  };
   const visible = (n) => {
     for (let x = n; x && x !== root.parentNode; x = x.parentElement) {
       if (x.hidden) return false;
+      const p = x.parentElement;
+      if (p && tagIs(p, "details") && !p.open && directSummary(p) !== x) return false;
       const cs = win?.getComputedStyle?.(x);
       if (cs && (cs.display === "none" || cs.visibility === "hidden")) return false;
     }
@@ -307,6 +416,7 @@ export function tabOrder(root) {
     if (ti !== null && Number(ti) < 0) return false;
     if (tagIs(n, "input") && n.type === "hidden") return false;
     if (tagIs(n, "a") && !n.hasAttribute("href") && ti === null) return false;
+    if (tagIs(n, "summary") && (!tagIs(n.parentElement, "details") || directSummary(n.parentElement) !== n) && ti === null) return false;
     return visible(n);
   });
   const seenGroups = new Set();
@@ -323,20 +433,24 @@ export function tabOrder(root) {
 }
 
 /**
- * Run fn() and give focus back to the "same" element afterward when fn replaced it (a redraw). The element is found
- * again by data-prx-focus-key, then by id. Nothing happens when focus was not inside root.
+ * Run fn() and give focus back to the "same" element afterward only when focus was lost (e.g. a redraw replaced it).
+ * If fn() deliberately focused a different element inside root, preserve that focus.
  */
 export function keepFocus(root, fn) {
   const doc = root.ownerDocument;
   const active = doc.activeElement;
-  const inside = active && active !== doc.body && root.contains(active);
+  const inside = Boolean(active && active !== doc.body && active !== doc.documentElement && root.contains(active));
   const key = inside ? active.getAttribute("data-prx-focus-key") : null;
   const id = inside ? active.id : null;
   const result = fn();
-  if (inside && !root.contains(active)) {
-    const esc = (s) => String(s).replace(/["\\]/g, "\\$&");
-    const again = (key && root.querySelector(`[data-prx-focus-key="${esc(key)}"]`)) || (id && root.querySelector(`[id="${esc(id)}"]`));
-    if (again) again.focus({ preventScroll: true });
+  if (inside) {
+    const now = doc.activeElement;
+    const lost = !now || now === doc.body || now === doc.documentElement || !root.contains(now);
+    if (lost) {
+      const esc = (s) => String(s).replace(/["\\]/g, "\\$&");
+      const again = (key && root.querySelector(`[data-prx-focus-key="${esc(key)}"]`)) || (id && root.querySelector(`[id="${esc(id)}"]`));
+      if (again && typeof again.focus === "function") again.focus({ preventScroll: true });
+    }
   }
   return result;
 }
@@ -345,23 +459,22 @@ export function keepFocus(root, fn) {
 
 /**
  * Labeled range slider with an <output>. The slider keeps the exact current value (a preset off the step grid stays
- * exact); keyboard moves land on the grid. Returns { root, input, output, get(), set(v), setDisabled(b) }.
- * onInput(v) fires on every change (pointer input at most once per animation frame), onChange(v) when a change is
- * committed. Every move tells the scope (scope.activity), so the read-out's announcement waits until input settles.
- * `hint` is text or nodes (an array is fine), so a number in it can be a numSpan with data-num.
+ * exact); pointer moves snap to the declared step grid unless continuous: true (CP-1.4, S1-08); keyboard moves land on
+ * the grid. Returns { root, input, output, get(), set(v), setDisabled(b) }.
  */
-export function slider(scope, { label, min, max, step = 1, stepOrigin, value, valueType, snap = false, format = (v) => formatSetting(v), onInput, onChange, name, hint, key } = {}) {
+export function slider(scope, { label, min, max, step, stepOrigin, value, valueType, snap = false, continuous = false, format = (v) => formatSetting(v), onInput, onChange, name, hint, key } = {}) {
   if (!(Number.isFinite(min) && Number.isFinite(max) && max > min)) throw new RangeError(`slider "${label}": min < max required`);
   const { h } = scope;
   const id = uid("prx-sl");
-  const st = Number.isFinite(step) && step > 0 ? step : 1;
+  const hasExplicitStep = Number.isFinite(step) && step > 0;
+  const st = hasExplicitStep ? step : 1;
   // A linked float can have a converted endpoint outside its regular decimal keyboard grid.
   const origin = Number.isFinite(stepOrigin) ? stepOrigin : min;
   const dd = Math.max(stepDecimals(st), stepDecimals(min), stepDecimals(origin));
   const at = (k) => roundTo(clamp(origin + k * st, min, max), dd);
-  const normalize = v => {
-    const bounded=clamp(v,min,max);
-    return snap ? at(Math.round((bounded-origin)/st)) : valueType === "integer" ? Math.round(bounded) : bounded;
+  const normalize = (v) => {
+    const bounded = clamp(v, min, max);
+    return snap ? snapToKeyGrid(bounded, { min, max, step: st, stepOrigin: origin }) : valueType === "integer" ? Math.round(bounded) : bounded;
   };
   const stepFrom = (v, dir, count) => {
     const pos = (v - origin) / st;
@@ -400,7 +513,10 @@ export function slider(scope, { label, min, max, step = 1, stepOrigin, value, va
   scope.onCleanup(() => { if (frameId) caf(frameId); frameId = 0; hasPending = false; });
   const move = (v, { deferred = false } = {}) => {
     const next = normalize(v);
-    if (next === current) return false;
+    if (next === current) {
+      if (Number(input.value) !== current) input.value = String(current);
+      return false;
+    }
     current = next;
     show();
     scope.activity?.();
@@ -411,7 +527,17 @@ export function slider(scope, { label, min, max, step = 1, stepOrigin, value, va
     } else onInput?.(current);
     return true;
   };
-  scope.listen(input, "input", () => move(Number(input.value), { deferred: true }));
+  scope.listen(input, "input", () => {
+    const raw = Number(input.value);
+    const endTol = Math.max(1e-12, 4 * Number.EPSILON * Math.max(1, Math.abs(min), Math.abs(max)));
+    const atEnd = raw <= min + endTol ? min : raw >= max - endTol ? max : null;
+    const snapped = atEnd !== null
+      ? atEnd
+      : !continuous && hasExplicitStep
+        ? snapToKeyGrid(raw, { min, max, step: st, stepOrigin: origin })
+        : raw;
+    move(snapped, { deferred: true });
+  });
   scope.listen(input, "change", () => { flush(); onChange?.(current); });
   scope.listen(input, "keydown", (e) => {
     let target;
@@ -541,7 +667,7 @@ export function toggle(scope, { label, checked = false, onChange, name, key, hin
 }
 
 /** Labeled number (or text) field. get() returns the clamped number, or undefined when unreadable. */
-export function numberInput(scope, { label, min = -Infinity, max = Infinity, step = "any", value, onInput, type = "number", name, key, ariaLabel, describedBy } = {}) {
+export function numberInput(scope, { label, min = -Infinity, max = Infinity, step = "any", value, onInput, onChange, type = "number", name, key, ariaLabel, describedBy } = {}) {
   const { h } = scope;
   const id = uid("prx-nf");
   // ariaLabel names the input when the visible label is short (a cell of a grid); describedBy points at a hint
@@ -558,18 +684,81 @@ export function numberInput(scope, { label, min = -Infinity, max = Infinity, ste
     const v = Number(s);
     return s === "" || !Number.isFinite(v) ? undefined : clamp(v, min, max);
   };
-  scope.listen(input, "input", () => {
-    const v = read();
-    input.setAttribute("aria-invalid", String(v === undefined && input.value.trim() !== ""));
-    if (v !== undefined) onInput?.(v);
-  });
+  let lastEmitted = type !== "text" && value !== undefined && value !== null && Number.isFinite(Number(value))
+    ? clamp(Number(value), min, max)
+    : undefined;
+  let lastChanged = lastEmitted;
+  let dirty = false;
+  if (type === "text") {
+    scope.listen(input, "input", () => {
+      const v = read();
+      input.setAttribute("aria-invalid", "false");
+      if (v !== undefined) onInput?.(v);
+    });
+    scope.listen(input, "change", () => {
+      const v = read();
+      if (v !== undefined) onChange?.(v);
+    });
+  } else {
+    // Deferred clamping: mark aria-invalid while typing out-of-range/incomplete text without silently clamping;
+    // clamp and synchronize input.value on commit (change, blur, or Enter before primary action).
+    scope.listen(input, "input", () => {
+      const s = input.value.trim();
+      const v = Number(s);
+      dirty = true;
+      if (s === "" || !Number.isFinite(v) || v < min || v > max) {
+        input.setAttribute("aria-invalid", "true");
+        return;
+      }
+      input.setAttribute("aria-invalid", "false");
+      lastEmitted = v;
+      onInput?.(v);
+    });
+    const commit = () => {
+      const s = input.value.trim();
+      if (s === "") return;
+      const raw = Number(s);
+      if (!Number.isFinite(raw)) return;
+      const c = clamp(raw, min, max);
+      input.value = String(c);
+      input.setAttribute("aria-invalid", "false");
+      if (!Object.is(c, lastEmitted)) {
+        lastEmitted = c;
+        onInput?.(c);
+      }
+      if (dirty || !Object.is(c, lastChanged)) {
+        dirty = false;
+        lastChanged = c;
+        onChange?.(c);
+      }
+    };
+      if (onInput || onChange) {
+        scope.listen(input, "change", commit);
+        scope.listen(input, "blur", commit);
+        scope.listen(input, "keydown", (e) => {
+          if (e.key === "Enter" && !e.isComposing) commit();
+        });
+      }
+  }
   const root = h("div", { class: "prx-control prx-number" }, h("label", { for: id }, label), input);
-  return { root, input, get: read, set(v) { input.value = v === undefined || v === null ? "" : String(v); input.setAttribute("aria-invalid", "false"); }, setDisabled(b) { input.disabled = Boolean(b); } };
+  return {
+    root, input, get: read,
+    set(v) {
+      input.value = v === undefined || v === null ? "" : String(v);
+      input.setAttribute("aria-invalid", "false");
+      dirty = false;
+      if (type !== "text") {
+        lastEmitted = v !== undefined && v !== null && Number.isFinite(Number(v)) ? clamp(Number(v), min, max) : undefined;
+        lastChanged = lastEmitted;
+      }
+    },
+    setDisabled(b) { input.disabled = Boolean(b); },
+  };
 }
 
 // ---------------------------------------------------------------------------------------------- panels
 
-/** A panel title read as a heading: <p class="prx-panel-title" role="heading" aria-level="4">content</p>. */
+/** A panel title read as a heading: <p class="prx-panel-title" role="heading" aria-level="2">content</p>. */
 export function panelTitle(target, content, { level = CONFIG.panelTitle.level, className, tag = CONFIG.panelTitle.tag, id } = {}) {
   const doc = target?.doc ?? (target?.nodeType === 9 ? target : target?.ownerDocument) ?? globalThis.document;
   if (!doc) throw new TypeError("panelTitle: pass a ctx, an element or a document");
@@ -741,8 +930,7 @@ function sanitize(def, v, prev) {
     if (!Number.isFinite(n)) return undefined;
     let c = clamp(n, lo, hi);
     if (def.snap && Number.isFinite(def.step) && def.step > 0) {
-      const base = Number.isFinite(def.min) ? def.min : 0;
-      c = roundTo(clamp(base + Math.round((c - base) / def.step) * def.step, lo, hi), stepDecimals(def.step));
+      c = snapToKeyGrid(c, { min: lo, max: hi, step: def.step, stepOrigin: def.stepOrigin });
     }
     return c;
   };
@@ -794,6 +982,51 @@ const sameStateValue = (a, b) => (Array.isArray(a) && Array.isArray(b)
   ? a.length === b.length && a.every((x, i) => Object.is(x, b[i]))
   : Object.is(a, b));
 
+/** Serialize only declared, representable public controls. Pasted tool inputs and draft text live outside state. */
+function modeQuery(keys, state, reference, presetId, theme) {
+  const params = new URLSearchParams();
+  if (presetId) params.set("preset", presetId);
+  for (const [key, def] of Object.entries(keys)) {
+    const value = state[key];
+    if (sameStateValue(value, reference[key])) continue;
+    const candidates = value === null ? ["none", "off", "", "auto"] : [String(value)];
+    const encoded = candidates.find(text => sameStateValue(sanitize(def, text, reference[key]), value));
+    if (encoded !== undefined) params.set(key, encoded);
+  }
+  if (theme === "light" || theme === "dark" || theme === "system") params.set("theme", theme);
+  return params.toString();
+}
+
+/** Keep the native link URL current for pointer, keyboard, copy-link and new-tab navigation. */
+function modeLinkBinding(scope, appName) {
+  const { doc, win } = scope;
+  const pagePath = builtPage(appName);
+  let links = [];
+  let query = "";
+  const apply = () => {
+    for (const { node, url } of links) {
+      url.search = query;
+      node.href = url.href;
+    }
+  };
+  const discover = () => {
+    if (!pagePath || !doc.body || !["http:", "https:", "file:"].includes(win.location.protocol)) return;
+    const base = linkRoot(doc);
+    if (!base) return;
+    const isEmbed = doc.body.classList.contains("prx-embed");
+    const destination = new URL(base.root + (isEmbed ? pagePath : "embed/" + appName + ".html"), win.location.href);
+    const selector = isEmbed ? ".prx-embed-credit a[href]" : "main a[href]";
+    links = Array.from(doc.querySelectorAll(selector)).filter(node => {
+      const url = new URL(node.href);
+      return url.protocol === destination.protocol && url.host === destination.host && url.pathname === destination.pathname;
+    }).map(node => ({ node, url: new URL(node.href) }));
+    apply();
+  };
+  if (doc.readyState === "loading") scope.listen(doc, "DOMContentLoaded", discover, { once: true });
+  else discover();
+  return value => { query = value; apply(); };
+}
+
 /** Parse a preset query ("tau=.20&cap=3" or "?tau=.20") into raw strings by key. */
 export function parsePresetQuery(query) {
   const out = {};
@@ -801,36 +1034,41 @@ export function parsePresetQuery(query) {
   return out;
 }
 
-// ---------------------------------------------------------------------------------------------- createWidget
+// ---------------------------------------------------------------------------------------------- createWidget helpers
 
-/** Mount an app (see the header). */
-export function createWidget(el, spec = {}, def = {}) {
-  if (!el || el.nodeType !== 1) throw new TypeError("mountWidget: el must be an element");
-  if (typeof def.build !== "function") throw new TypeError("createWidget: def.build(ctx) is required");
-  spec = isRecord(spec) ? spec : {};
-  const keys = def.keys ?? {};
-  const info = def.name ? appInfo(def.name) : null;
-  const presetList = Array.isArray(def.presets) ? def.presets : info?.presets ?? [];
-  const scope = createScope(el);
-  const { doc, win, h } = scope;
+const HIDE_ALLOWED = new Set(["title", "caption", "presets", "disclosures"]);
+const parseHideList = (val) => (Array.isArray(val) ? val : typeof val === "string" ? val.split(",") : [])
+  .flatMap((s) => {
+    const k = String(s).trim().toLowerCase();
+    return k === "chrome" ? ["title", "caption"] : [k];
+  })
+  .filter((k) => HIDE_ALLOWED.has(k)); // Never allow hiding credit (S2-03, S3-04).
 
-  // --- state: defaults, then a preset (spec, then URL), then explicit keys (spec, then URL)
+function initWidgetState({ keys, presetList, spec, def, win }) {
   const types = queryTypes(keys);
   const useQuery = def.query !== false && spec.query !== false;
-  const q = useQuery ? readQuery({ allowed: Object.keys(keys), types, window: win }) : { spec: {}, preset: null, theme: null, open: null, ignored: [] };
+  const q = useQuery
+    ? readQuery({ allowed: Object.keys(keys), types, window: win })
+    : { spec: {}, preset: null, theme: null, open: null, ignored: [] };
+  const rawSearch = useQuery ? (typeof win?.__PRX_QUERY === "string" ? win.__PRX_QUERY : (win?.location?.search ?? "")) : "";
+  const urlParams = new URLSearchParams(String(rawSearch).replace(/^\?/, ""));
+  const hideSet = new Set([
+    ...parseHideList(def.hide),
+    ...parseHideList(spec.hide),
+    ...parseHideList(urlParams.getAll("hide").flatMap((s) => s.split(","))),
+  ]);
   const state = {};
   for (const [k, d] of Object.entries(keys)) state[k] = sanitize(d, d.value, undefined) ?? d.value;
   const defaults = Object.freeze({ ...state });
   const applyKeys = (src, changed) => {
     for (const k of Object.keys(src)) {
-      if (RESERVED.has(k) || !Object.prototype.hasOwnProperty.call(keys, k)) continue;
+      if (RESERVED.has(k) || k === "hide" || !Object.prototype.hasOwnProperty.call(keys, k)) continue;
       const v = sanitize(keys[k], src[k], state[k]);
       if (v === undefined || sameStateValue(v, state[k])) continue;
       state[k] = v;
       changed?.add(k);
     }
   };
-  /** The whole setting of a preset id (or a spec object): defaults + its keys. */
   const presetSetting = (p) => {
     const entry = typeof p === "string" ? presetList.find((x) => x.id === p) : null;
     const raw = entry ? parsePresetQuery(entry.query) : isRecord(p) ? p : null;
@@ -847,10 +1085,29 @@ export function createWidget(el, spec = {}, def = {}) {
   if (startPreset) applyKeys(presetSetting(startPreset) ?? {});
   applyKeys(spec);
   applyKeys(q.spec);
-  const pick = (v) => (typeof v === "string" && BRIDGE.themes.includes(v) ? v : null);
-  let theme = q.theme ?? pick(spec.theme);
+  const pickTheme = (v) => (typeof v === "string" && BRIDGE.themes.includes(v) ? v : null);
+  const theme = urlParams.get("theme") === "system" ? null : q.theme ?? pickTheme(spec.theme);
+  const preferredPresetId = typeof startPreset === "string" && presetList.some((p) => p.id === startPreset) ? startPreset : null;
+  return { types, q, state, defaults, applyKeys, presetSetting, pickTheme, initialTheme: theme, initialOpen: q.open ?? spec.open, hideTitle: hideSet.has("title"), initialPreferredPresetId: preferredPresetId };
+}
 
-  // --- frame
+function createPresetBar(scope, { presetList, firstPreset, label, onSelect }) {
+  const orderedPresets = firstPreset && presetList.some((p) => p.id === firstPreset)
+    ? [presetList.find((p) => p.id === firstPreset), ...presetList.filter((p) => p.id !== firstPreset)]
+    : presetList;
+  if (!orderedPresets.length) return { presetRow: null, orderedPresets };
+  const presetRow = segmented(scope, {
+    label, name: "preset", className: "prx-presets",
+    options: orderedPresets.map((p) => ({ value: p.id, label: p.label, title: p.title })),
+    value: null,
+    onChange: onSelect,
+  });
+  presetRow.root.setAttribute("data-prx-part", "presets");
+  return { presetRow, orderedPresets };
+}
+
+function createFrameSlots(scope, { el, def, info, layout, presetRow, hideTitle }) {
+  const { doc, win, h } = scope;
   const original = [...el.childNodes];
   const name = displayName(def.name);
   const root = h("div", {
@@ -862,19 +1119,36 @@ export function createWidget(el, spec = {}, def = {}) {
   });
   const frame = h("div", { class: CONFIG.frameClass }, root);
   const controls = h("div", { class: "prx-controls", "data-prx-part": "controls" });
-  const charts = h("div", { class: "prx-charts", "data-prx-part": "chart" });
+  const charts = h("div", { class: layout === "v2" ? "prx-stage prx-charts" : "prx-charts", "data-prx-part": "chart" });
+  if (layout === "v2") charts.setAttribute("data-prx-primary", "");
+  const toolbar = layout === "v2" ? h("div", { class: "prx-toolbar", "data-prx-part": "toolbar" }, controls, presetRow?.root ?? null) : null;
+  const scopeLine = layout === "v2" ? h("p", { class: "prx-scope", "data-prx-part": "scope", hidden: true }) : null;
   const readout = createReadout(scope);
   scope.activity = () => readout.hold();
   const caption = h("p", { class: "prx-caption", "data-prx-part": "caption" });
   if (info?.caption) caption.textContent = info.caption;
   const title = def.title ? h("h3", { class: "prx-title", "data-prx-part": "title", text: def.title }) : null;
-  const layout = CONFIG.layouts.includes(def.layout) ? def.layout : "classic";
-  if (layout === "result-first") {
+
+  if (layout === "v2") {
+    root.setAttribute("data-prx-frame", "v2");
+    root.setAttribute("data-prx-layout", "v2");
+    append(root, [title, toolbar, readout.node, charts, scopeLine, caption]);
+  } else if (layout === "result-first") {
     root.setAttribute("data-prx-layout", layout);
     append(root, [title, controls, readout.node, charts, caption]);
-  } else append(root, [title, controls, charts, readout.node, caption]);
+  } else {
+    append(root, [title, controls, charts, readout.node, caption]);
+  }
+
+  if (hideTitle) {
+    if (title) title.hidden = true;
+    const embedTitles = [...(doc.querySelectorAll?.(".prx-embed-title") ?? [])].filter((n) => !n.hidden);
+    for (const n of embedTitles) n.hidden = true;
+    if (embedTitles.length) scope.onCleanup(() => { for (const n of embedTitles) n.hidden = false; });
+  }
+
   el.replaceChildren(frame);
-  // the group of "end" disclosures, made by the first one, kept between the charts and the caption
+
   let disclosureGroup = null;
   const groupOfDisclosures = () => {
     if (disclosureGroup) return disclosureGroup;
@@ -882,8 +1156,19 @@ export function createWidget(el, spec = {}, def = {}) {
     if (caption.parentNode) caption.before(disclosureGroup); else root.append(disclosureGroup);
     return disclosureGroup;
   };
+
+  const syncScopeLine = () => {
+    if (!scopeLine) return;
+    scopeLine.hidden = scopeLine.children.length === 0 && scopeLine.textContent.trim() === "";
+  };
+  const setScope = (parts) => {
+    if (!scopeLine) return;
+    scopeLine.replaceChildren();
+    append(scopeLine, contentList(parts));
+    syncScopeLine();
+  };
+
   // Own regions created by ctx and by the actual shared chart/card renderers.
-  // Detached regions stop observing; reused regions restart when attached again.
   const overflowStops = new Map();
   let overflowDisposed = false, overflowObserver = null;
   const syncOverflowRegions = () => {
@@ -895,7 +1180,7 @@ export function createWidget(el, spec = {}, def = {}) {
     }
   };
   if (win.MutationObserver) {
-    overflowObserver = new win.MutationObserver(records => { if (records.length) syncOverflowRegions(); });
+    overflowObserver = new win.MutationObserver((records) => { if (records.length) syncOverflowRegions(); });
     overflowObserver.observe(root, { childList: true, subtree: true });
   }
   scope.onCleanup(() => {
@@ -904,17 +1189,104 @@ export function createWidget(el, spec = {}, def = {}) {
     for (const stop of overflowStops.values()) stop();
     overflowStops.clear();
   });
-  // the app's own CSS (def.css), once per document
+
   if (def.css && def.name && doc.head && !doc.head.querySelector(`style[data-prx-app="${def.name}"]`)) {
     const style = doc.createElement("style");
     style.setAttribute("data-prx-app", def.name);
     style.textContent = def.css;
     doc.head.append(style);
   }
-  const setTheme = () => (theme ? root.setAttribute("data-theme", theme) : root.removeAttribute("data-theme"));
-  setTheme();
 
-  // --- motion and theme watchers
+  return {
+    original, root, frame, title, toolbar, controls, charts, scopeLine, readout, caption,
+    get disclosureGroup() { return disclosureGroup; },
+    groupOfDisclosures, setScope, syncScopeLine, overflowStops, syncOverflowRegions,
+  };
+}
+
+/**
+ * @param {any} scope
+ * @param {HTMLElement} root
+ * @param {{ onSettle?: () => void }} [options]
+ */
+function createStageScheduler(scope, root, { onSettle } = {}) {
+  let runId = 0;
+  let cancelCurrent = null;
+  const cancelStages = () => {
+    runId += 1;
+    if (cancelCurrent) {
+      const fn = cancelCurrent;
+      cancelCurrent = null;
+      fn();
+    }
+  };
+  const scheduleStages = (stages, { yieldMs = 0 } = {}) => {
+    if (scope.closed) return { cancel: () => {} };
+    const list = Array.isArray(stages) ? stages.filter((fn) => typeof fn === "function") : [];
+    cancelStages();
+    const myId = runId;
+    if (list.length === 0) {
+      root.setAttribute("aria-busy", "false");
+      return { cancel: () => {} };
+    }
+    if (list.length === 1) {
+      list[0]();
+      if (myId === runId && !scope.closed) {
+        root.setAttribute("aria-busy", "false");
+        onSettle?.();
+      }
+      return { cancel: () => {} };
+    }
+    let cancelled = false;
+    let offTimer = null;
+    const cancel = () => {
+      if (cancelled) return;
+      cancelled = true;
+      offTimer?.();
+      offTimer = null;
+      if (cancelCurrent === cancel) cancelCurrent = null;
+    };
+    cancelCurrent = cancel;
+    root.setAttribute("aria-busy", "true");
+    try {
+      list[0]();
+    } catch (err) {
+      cancel();
+      if (myId === runId && !scope.closed) root.setAttribute("aria-busy", "false");
+      throw err;
+    }
+    if (cancelled || myId !== runId || scope.closed) return { cancel };
+    let index = 1;
+    const stepNext = () => {
+      offTimer = null;
+      if (cancelled || myId !== runId || scope.closed) return;
+      const fn = list[index];
+      index += 1;
+      try {
+        fn();
+      } catch (err) {
+        cancel();
+        if (myId === runId && !scope.closed) root.setAttribute("aria-busy", "false");
+        console.error(err);
+        root.dataset.prxError = String(err?.message ?? err);
+        return;
+      }
+      if (cancelled || myId !== runId || scope.closed) return;
+      if (index < list.length) {
+        offTimer = scope.timeout(stepNext, yieldMs);
+      } else {
+        cancelCurrent = null;
+        root.setAttribute("aria-busy", "false");
+        onSettle?.();
+      }
+    };
+    offTimer = scope.timeout(stepNext, yieldMs);
+    return { cancel };
+  };
+  return { scheduleStages, cancelStages };
+}
+
+function bindResizeAndTheme(scope, { el, root, frame, win, onWidthChange, onMotionChange, onDarkChange }) {
   const motionMql = typeof win.matchMedia === "function" ? win.matchMedia(CONFIG.queries.reducedMotion) : null;
   const darkMql = typeof win.matchMedia === "function" ? win.matchMedia(CONFIG.queries.dark) : null;
   const setMotion = () => root.setAttribute("data-motion", motionMql?.matches ? "reduce" : "full");
@@ -924,25 +1296,110 @@ export function createWidget(el, spec = {}, def = {}) {
     if (typeof mql.addEventListener === "function") scope.listen(mql, "change", fn);
     else if (typeof mql.addListener === "function") { mql.addListener(fn); scope.onCleanup(() => mql.removeListener(fn)); }
   };
+  let lastWidth = Math.round(frame.getBoundingClientRect?.().width || 0);
+  let cancelResize = null;
+  const onWidth = (w) => {
+    if (!(w > 0) || Math.abs(w - lastWidth) < CONFIG.resizeMinDelta) return;
+    lastWidth = w;
+    cancelResize?.();
+    cancelResize = scope.timeout(() => {
+      cancelResize = null;
+      onWidthChange(lastWidth);
+    }, CONFIG.resizeDebounceMs);
+  };
+  if (typeof win.ResizeObserver === "function") {
+    const ro = new win.ResizeObserver((entries) => {
+      for (const entry of entries) onWidth(Math.round(entry.contentRect?.width ?? frame.clientWidth ?? 0));
+    });
+    ro.observe(frame);
+    scope.onCleanup(() => ro.disconnect());
+  } else {
+    scope.listen(win, "resize", () => onWidth(Math.round(frame.clientWidth || el.clientWidth || 0)));
+  }
+  watch(motionMql, () => { setMotion(); onMotionChange(); });
+  watch(darkMql, onDarkChange);
+  return {
+    motionMql,
+    getWidth: () => lastWidth || Math.round(frame.getBoundingClientRect?.().width || el.clientWidth || 0) || CONFIG.defaultWidth,
+  };
+}
 
-  // --- preset row (built after the app's controls, so it sits at the end of the controls area)
-  let presetRow = null;
+// ---------------------------------------------------------------------------------------------- createWidget
+
+/** Mount an app (see the header). */
+export function createWidget(el, spec = {}, def = {}) {
+  if (!el || el.nodeType !== 1) throw new TypeError("mountWidget: el must be an element");
+  if (typeof def.build !== "function") throw new TypeError("createWidget: def.build(ctx) is required");
+  spec = isRecord(spec) ? spec : {};
+  const keys = def.keys ?? {};
+  const info = def.name ? appInfo(def.name) : null;
+  const presetList = Array.isArray(def.presets) ? def.presets : info?.presets ?? [];
+  const requestedLayout = def.frame ?? def.layout;
+  const layout = CONFIG.layouts.includes(requestedLayout) ? requestedLayout : "classic";
+  const scope = createScope(el);
+  const renderScope = createRenderScope(scope);
+  const { doc, win, h } = scope;
+
+  const {
+    types, state, defaults, applyKeys, presetSetting, pickTheme,
+    initialTheme, initialOpen, hideTitle, initialPreferredPresetId,
+  } = initWidgetState({ keys, presetList, spec, def, win });
+  let theme = initialTheme;
+  let preferredPresetId = initialPreferredPresetId;
+  let handle = null;
+
+  // Build presetRow BEFORE def.build(ctx) in all layouts so ctx.presets is already non-null.
+  const { presetRow, orderedPresets } = createPresetBar(scope, {
+    presetList,
+    firstPreset: def.firstPreset,
+    label: def.presetLabel ?? info?.presetLabel ?? CONFIG.text.presets,
+    onSelect: (id) => handle?.applyPreset(id),
+  });
   const afterPresetNodes = [];
-  // Equivalent preset queries can have different explanatory labels. Keep an explicitly
-  // requested label while it matches; scientific state and URL keys remain unchanged.
-  let preferredPresetId = typeof startPreset === "string" && presetList.some((p) => p.id === startPreset) ? startPreset : null;
+
+  const slots = createFrameSlots(scope, { el, def, info, layout, presetRow, hideTitle });
+  const { original, root, frame, title, toolbar, controls, charts, scopeLine, readout, caption, groupOfDisclosures, setScope, syncScopeLine, overflowStops, syncOverflowRegions } = slots;
+  const setTheme = () => (theme ? root.setAttribute("data-theme", theme) : root.removeAttribute("data-theme"));
+  setTheme();
+
+  const syncModeLinks = modeLinkBinding(scope, def.name);
   const syncPresets = () => {
     if (!presetRow) return;
     const matches = (p) => {
       const s = presetSetting(p.id);
       return s && Object.keys(keys).every((k) => sameValue(state[k], s[k]));
     };
-    const preferred = presetList.find((p) => p.id === preferredPresetId && matches(p));
-    const on = preferred ?? presetList.find(matches);
+    const preferred = orderedPresets.find((p) => p.id === preferredPresetId && matches(p));
+    const on = preferred ?? orderedPresets.find(matches);
     presetRow.set(on?.id ?? null);
+    if (on && root.clientWidth && root.clientWidth <= 600) {
+      const active = presetRow.buttons.find(button => button.dataset.value === on.id);
+      const strip = active?.parentElement;
+      if (strip && strip.scrollWidth > strip.clientWidth) {
+        const buttonBox = active.getBoundingClientRect(), stripBox = strip.getBoundingClientRect();
+        if (buttonBox.left < stripBox.left) strip.scrollLeft += buttonBox.left - stripBox.left;
+        else if (buttonBox.right > stripBox.right) strip.scrollLeft += buttonBox.right - stripBox.right;
+      }
+    }
+    // A custom handoff lands on the app's implicit startup preset when its URL has no preset.
+    // Full site pages are pinned to light mode; do not forward embed-only theme overrides onto full pages
+    // or force standalone links to light when opened from a default full page.
+    const reference = (on ? presetSetting(on.id) : presetSetting(spec.preset)) ?? defaults;
+    const isEmbedHost = Boolean(doc.body?.classList?.contains("prx-embed"));
+    const modeTheme = isEmbedHost ? null : theme;
+    syncModeLinks(modeQuery(keys, state, reference, on?.id, modeTheme));
   };
 
+  const { scheduleStages, cancelStages } = createStageScheduler(scope, root, {
+    onSettle: () => {
+      syncOverflowRegions();
+      markLabelStarts(root);
+    },
+  });
+
   // --- main action (Enter on a slider, radio, checkbox or text field of the app)
+  let inst = null;
+  let destroyed = false;
   let appPrimary = null;
   scope.listen(root, "keydown", (e) => {
     if (e.key !== "Enter" || e.defaultPrevented || e.isComposing) return;
@@ -954,22 +1411,43 @@ export function createWidget(el, spec = {}, def = {}) {
     action(e);
   });
 
-  // --- ctx
-  let inst = null;
-  let lastWidth = 0;
-  let destroyed = false;
+  const watchers = bindResizeAndTheme(scope, {
+    el, root, frame, win,
+    onWidthChange: (w) => {
+      if (typeof inst?.resize === "function") keepFocus(root, () => inst.resize(w));
+      else render(new Set(), "resize");
+    },
+    onMotionChange: () => render(new Set(), "motion"),
+    onDarkChange: () => render(new Set(), "theme"),
+  });
+
+  let settingsDisclosure = null;
+  let dataDisclosure = null;
+  let methodDisclosure = null;
+  const suppressNextToggle = new WeakSet();
+  let rendering = false;
+  let handleReady = false;
+  let pendingRenderReason = null;
+  let renderDepth = 0;
+  const queued = [];
+
   const ctx = {
-    el, root, frame, doc, win, h, info,
+    el, root, frame, doc, win, h, info, renderScope,
     listen: scope.listen, timeout: scope.timeout, onCleanup: scope.onCleanup,
     get state() { return { ...state }; },
     get defaults() { return defaults; },
-    controls, charts, caption, readout, title,
+    controls, charts, stage: charts, toolbar, scopeLine, setScope, caption, readout, title,
     get presets() { return presetRow?.root ?? null; },
-    get reducedMotion() { return Boolean(motionMql?.matches); },
+    get reducedMotion() { return Boolean(watchers.motionMql?.matches); },
     key(name) {
       const d = keys[name];
       if (!d) throw new RangeError(`ctx.key: unknown key "${name}"`);
-      return { min: d.min, max: d.max, step: d.step, value: state[name], name, valueType: d.type ?? "number", snap: Boolean(d.snap) };
+      return {
+        min: d.min, max: d.max, step: d.step,
+        ...(d.stepOrigin !== undefined ? { stepOrigin: d.stepOrigin } : {}),
+        value: state[name], name, valueType: d.type ?? "number",
+        snap: Boolean(d.snap), continuous: Boolean(d.continuous),
+      };
     },
     num: (raw, display, opts) => numSpan(raw, display, { document: doc, ...opts }),
     dataNum,
@@ -989,15 +1467,21 @@ export function createWidget(el, spec = {}, def = {}) {
     part(name, node) { node.setAttribute("data-prx-part", name); return node; },
     keepFocus: (fn) => keepFocus(root, fn),
     onPrimary(fn) { appPrimary = typeof fn === "function" ? fn : null; },
-    width: () => lastWidth || Math.round(frame.getBoundingClientRect?.().width || el.clientWidth || 0) || CONFIG.defaultWidth,
+    width: () => watchers.getWidth(),
     layout,
-    get disclosures() { return disclosureGroup; },
+    get disclosures() { return slots.disclosureGroup; },
     primaryGraphic(node) { if (node?.nodeType === 1) node.setAttribute("data-prx-primary", ""); return node; },
     primaryControl(node) { if (node?.nodeType === 1) node.setAttribute("data-prx-primary-control", ""); return node; },
     afterPresets(...nodes) {
       const list = nodes.flat().filter((n) => n?.nodeType === 1);
-      if (presetRow && presetRow.root.parentNode === controls) presetRow.root.after(...list);
-      else { controls.append(...list); afterPresetNodes.push(...list); }
+      if (presetRow && (presetRow.root.parentNode === controls || (toolbar && presetRow.root.parentNode === toolbar))) {
+        presetRow.root.after(...list);
+      } else if (toolbar) {
+        controls.after(...list);
+      } else {
+        controls.append(...list);
+        afterPresetNodes.push(...list);
+      }
       return list[0] ?? null;
     },
     disclosure({ name, title: label, open = false, placement = "end", className } = {}) {
@@ -1011,105 +1495,167 @@ export function createWidget(el, spec = {}, def = {}) {
       if (open) box.open = true;
       if (where === "controls") {
         box.setAttribute("data-prx-placement", "controls");
-        const row = presetRow?.root;
-        if (row && row.parentNode === controls) row.before(box); else controls.append(box);
+        if (toolbar) toolbar.append(box);
+        else {
+          const row = presetRow?.root;
+          if (row && row.parentNode === controls) row.before(box); else controls.append(box);
+        }
       } else if (where === "after") near.after(box);
       else if (where === "before") near.before(box);
       else if (where === "end") groupOfDisclosures().append(box);
-      // drawn while closed, a figure inside has no width: render once more when the box opens
-      scope.listen(box, "toggle", () => { if (box.open && !destroyed) render(new Set(), "disclosure", false, { disclosure: name ?? null }); });
+      scope.listen(box, "toggle", () => {
+        if (suppressNextToggle.delete(box)) return;
+        if (box.open && !destroyed) render(new Set(), "disclosure", false, { disclosure: name ?? null });
+      });
       return { root: box, summary, body, get open() { return box.open; }, set open(v) { box.open = Boolean(v); } };
     },
-    // a set() made while the app renders (the first render included) is applied once that render is done, as one
-    // more update: so an app can correct a key it finds out of range while drawing
+    settingsBox(label = CONFIG.text.settings, opts = {}) {
+      if (!settingsDisclosure) settingsDisclosure = ctx.disclosure({ name: "settings", title: label, placement: "controls", ...opts });
+      return settingsDisclosure;
+    },
+    dataBox(label = CONFIG.text.data, opts = {}) {
+      if (!dataDisclosure) {
+        dataDisclosure = ctx.disclosure({ name: "data", title: label, placement: "end", ...opts });
+        if (methodDisclosure?.root.parentNode === slots.disclosureGroup) methodDisclosure.root.before(dataDisclosure.root);
+      }
+      return dataDisclosure;
+    },
+    methodBox(label = CONFIG.text.method, opts = {}) {
+      if (!methodDisclosure) methodDisclosure = ctx.disclosure({ name: "method", title: label, placement: "end", ...opts });
+      return methodDisclosure;
+    },
+    scheduleStages,
     set(partial) { if (rendering || !handleReady) queued.push(partial); else handle.update(partial); },
-    requestRender(reason = "request") { render(new Set(), reason); },
+    requestRender(reason = "request") {
+      if (rendering) {
+        pendingRenderReason = reason;
+        return;
+      }
+      render(new Set(), reason);
+    },
   };
 
-  let rendering = false;
-  let handleReady = false;
-  const queued = [];
+  function syncHeadingLevels() {
+    if (!root.isConnected) return;
+    const isVisible = (el) => {
+      if (el.closest?.('[aria-hidden="true"], [hidden]')) return false;
+      for (let p = el.parentElement; p && p !== root; p = p.parentElement) {
+        if (p.tagName === "DETAILS" && !p.open && p.querySelector(":scope > summary") !== el && !p.querySelector(":scope > summary")?.contains(el)) return false;
+      }
+      return typeof el.checkVisibility === "function" ? el.checkVisibility() : true;
+    };
+    const authoredLevel = (el) => {
+      if (el.__prxAuthoredLevel) return el.__prxAuthoredLevel;
+      const lv = /^H[1-6]$/.test(el.tagName) ? Number(el.tagName[1]) : Number(el.getAttribute("aria-level") || CONFIG.panelTitle.level);
+      el.__prxAuthoredLevel = clamp(Number.isFinite(lv) ? lv : CONFIG.panelTitle.level, 1, 6);
+      el.__prxAuthoredRole = el.getAttribute("role");
+      return el.__prxAuthoredLevel;
+    };
+    let prev = 1;
+    if (doc?.querySelectorAll) {
+      const before = [...doc.querySelectorAll("h1,h2,h3,h4,h5,h6,[role=heading]")].filter(
+        (h) => !root.contains(h) && isVisible(h) && Boolean(h.compareDocumentPosition(root) & 4),
+      );
+      if (before.length) prev = authoredLevel(before[before.length - 1]);
+    }
+    for (const h of root.querySelectorAll("h1,h2,h3,h4,h5,h6,[role=heading]")) {
+      if (!isVisible(h)) continue;
+      const auth = authoredLevel(h);
+      const next = Math.min(auth, prev + 1);
+      if (/^H[1-6]$/.test(h.tagName)) {
+        if (next !== auth) {
+          h.setAttribute("role", "heading");
+          h.setAttribute("aria-level", String(next));
+        } else {
+          if (h.__prxAuthoredRole) h.setAttribute("role", h.__prxAuthoredRole);
+          else h.removeAttribute("role");
+          h.removeAttribute("aria-level");
+        }
+      } else {
+        h.setAttribute("aria-level", String(next));
+      }
+      prev = next;
+    }
+  }
+
   function flushQueued() {
     while (handleReady && !rendering && queued.length) handle.update(queued.shift());
   }
+
   function render(changed, reason, initial = false, extra = null) {
-    if (destroyed || !inst || typeof inst.render !== "function") return;
+    if (destroyed || !inst || (typeof inst.render !== "function" && typeof inst.renderDisclosure !== "function")) return;
     const t0 = win.performance?.now?.() ?? 0;
     rendering = true;
+    const renderInfo = { initial, changed: [...changed], reason, ...(extra ?? {}) };
     try {
-      keepFocus(root, () => inst.render({ ...state }, { initial, changed: [...changed], reason, ...(extra ?? {}) }));
+      let handled = false;
+      if (reason === "disclosure" && typeof inst.renderDisclosure === "function") {
+        handled = keepFocus(root, () => inst.renderDisclosure(extra?.disclosure ?? null, { ...state }, renderInfo)) === true;
+      }
+      if (!handled && typeof inst.render === "function") {
+        renderScope.cleanup();
+        keepFocus(root, () => inst.render({ ...state }, renderInfo));
+      }
+      delete root.dataset.prxError;
+    } catch (err) {
+      console.error(err);
+      root.dataset.prxError = String(err?.message ?? err);
+      if (!readout.text().trim()) readout.set(CONFIG.text.renderError);
     } finally {
       rendering = false;
+      syncScopeLine();
       syncOverflowRegions();
+      syncHeadingLevels();
     }
     syncPresets();
     markLabelStarts(root);
-    // the last render time, read by the browser check (verification/check_browser.mjs)
     root.dataset.renderMs = ((win.performance?.now?.() ?? 0) - t0).toFixed(1);
     flushQueued();
+    if (!rendering && pendingRenderReason !== null && renderDepth < 8) {
+      const nextReason = pendingRenderReason;
+      pendingRenderReason = null;
+      renderDepth += 1;
+      try {
+        render(new Set(), nextReason);
+      } finally {
+        renderDepth -= 1;
+      }
+    }
   }
 
   // --- build and first render
   inst = def.build(ctx) ?? {};
-  if (presetList.length) {
-    presetRow = segmented(scope, {
-      label: def.presetLabel ?? info?.presetLabel ?? CONFIG.text.presets, name: "preset", className: "prx-presets",
-      options: presetList.map((p) => ({ value: p.id, label: p.label, title: p.title })),
-      value: null,
-      onChange: (id) => handle.applyPreset(id),
-    });
-    presetRow.root.setAttribute("data-prx-part", "presets");
+  syncScopeLine();
+  if (presetRow && layout !== "v2" && !presetRow.root.parentNode) {
     controls.append(presetRow.root);
-    // controls an app asked to follow the preset row (ctx.afterPresets) move behind it
     if (afterPresetNodes.length) presetRow.root.after(...afterPresetNodes);
-    // result-first: at <= 600 px the row stays one line that scrolls sideways; its edges fade while more is past them
     if (layout === "result-first") {
-      if (presetList.length >= 7) {
+      if (orderedPresets.length >= 7) {
         presetRow.root.setAttribute("data-prx-preset-rows", "2");
-        presetRow.root.style.setProperty("--prx-preset-cols", String(Math.ceil(presetList.length / 2)));
+        presetRow.root.style.setProperty("--prx-preset-cols", String(Math.ceil(orderedPresets.length / 2)));
       }
       const buttons = presetRow.root.querySelector(".prx-seg-buttons");
       if (buttons) scope.onCleanup(watchOverflow(buttons, { keyboardStop: false }));
     }
   }
   render(new Set(Object.keys(keys)), "mount", true);
-  // ?open=data,method (or spec.open, or a { open } message) opens the named disclosures; never part of the state
+
   const openBoxes = (names) => {
     const list = Array.isArray(names) ? names : typeof names === "string" ? names.split(",") : [];
     for (const n of list) {
-      const box = [...root.querySelectorAll("details[data-prx-disclosure]")].find((d) => d.getAttribute("data-prx-disclosure") === String(n).trim());
-      if (box && !box.open) box.open = true;
+      const discName = String(n).trim();
+      const box = [...root.querySelectorAll("details[data-prx-disclosure]")].find((d) => d.getAttribute("data-prx-disclosure") === discName);
+      if (box && !box.open) {
+        suppressNextToggle.add(box);
+        box.open = true;
+        render(new Set(), "disclosure", false, { disclosure: discName });
+      }
     }
   };
-  openBoxes(q.open ?? spec.open);
-
-  // --- resize (debounced)
-  let cancelResize = null;
-  lastWidth = Math.round(frame.getBoundingClientRect?.().width || 0);
-  const onWidth = (w) => {
-    if (!(w > 0) || Math.abs(w - lastWidth) < CONFIG.resizeMinDelta) return;
-    lastWidth = w;
-    cancelResize?.();
-    cancelResize = scope.timeout(() => {
-      cancelResize = null;
-      if (typeof inst.resize === "function") keepFocus(root, () => inst.resize(lastWidth));
-      else render(new Set(), "resize");
-    }, CONFIG.resizeDebounceMs);
-  };
-  if (typeof win.ResizeObserver === "function") {
-    const ro = new win.ResizeObserver((entries) => {
-      for (const entry of entries) onWidth(Math.round(entry.contentRect?.width ?? frame.clientWidth ?? 0));
-    });
-    ro.observe(frame);
-    scope.onCleanup(() => ro.disconnect());
-  } else {
-    scope.listen(win, "resize", () => onWidth(Math.round(frame.clientWidth || el.clientWidth || 0)));
-  }
-  watch(motionMql, () => { setMotion(); render(new Set(), "motion"); });
-  watch(darkMql, () => render(new Set(), "theme"));
+  openBoxes(initialOpen);
 
   // --- handle
-  const handle = {
+  handle = {
     root,
     get state() { return { ...state }; },
     /** Apply a preset of the catalog entry by id (or a spec object as a whole setting). */
@@ -1134,10 +1680,10 @@ export function createWidget(el, spec = {}, def = {}) {
       const changed = new Set();
       let rerender = false;
       if (Object.prototype.hasOwnProperty.call(partial, "theme")) {
-        // a theme sent by the parent page re-themes the page: an embed is a one-app page
-        theme = pick(partial.theme);
+        theme = pickTheme(partial.theme);
         setTheme();
         if (theme) doc.documentElement.setAttribute("data-theme", theme);
+        else doc.documentElement.removeAttribute("data-theme");
         rerender = true;
       }
       applyKeys(partial, changed);
@@ -1148,8 +1694,11 @@ export function createWidget(el, spec = {}, def = {}) {
     destroy() {
       if (destroyed) return;
       destroyed = true;
+      cancelStages();
       try { inst?.destroy?.(); } catch (err) { console.warn("app destroy failed", err); }
+      renderScope.cleanup();
       scope.cleanup();
+      root.removeAttribute("aria-busy");
       frame.remove();
       el.replaceChildren(...original);
     },

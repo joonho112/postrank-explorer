@@ -4,9 +4,8 @@ subtitle: "T.1 · browser-local inputs and declared report families"
 description: "Local calculation from normal summaries, declared priors or pairwise probability matrices."
 ---
 
-The tool builds a grade report from posterior means and standard deviations, estimates with standard errors
-and a prior, or pairwise probability matrices. The result names the set of reports searched. The calculation
-runs in your browser, where your input records stay.
+Paste posterior means and SDs, estimates with SEs and a stated prior, or pairwise probability matrices to build a
+grade report locally in your browser without uploading records.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -18,17 +17,15 @@ runs in your browser, where your input records stay.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Eight posterior summaries** uses the first 8 units from the league example, which differ in precision.
-  The report states 17 pairs and has weighted risk .1455.
-- **Eight estimates, flat prior** uses a normal posterior for each unit, centered on its estimate with SD
-  equal to its SE. The grades agree with the first example even though the posterior probabilities and risk differ. Here the risk is .1368.
-- **Eight estimates, Normal prior** centers the prior at zero with SD .15. The posterior matches the first example, and the risk is .1455. The prior is a separate assumption from the estimates and their SEs.
-- **Two probability matrices** uses the supplied probabilities for two criteria at six sites. The common
-  report states 9 pairs at weighted risk .0933. The matrices provide pair probabilities without site means or intervals.
-- **Thirty posterior summaries** exceeds the enumeration limit. The tool searches cuts of the weighted
-  expected-rank order, which depends on the criterion weights. The best report in that order states 251 pairs at risk .1581.
-- **All reports tied** has 541 reports with the same minimum risk. The list displays the first 100 and gives
-  the total. With every comparison withheld, the expected error share is shown as NA.
+- **Eight posterior summaries** — 8 units with unequal precision; states 17 pairs at weighted risk .146.
+- **Eight estimates, flat prior** — posterior SD equals SE; same grades at risk .137.
+- **Eight estimates, Normal prior** — shrinks toward zero (SD .15); matches the first example at risk .146.
+- **Two probability matrices** — two criteria without marginal intervals; states 9 pairs at weighted risk .0933.
+- **Thirty posterior summaries** — searches expected-rank cuts beyond enumeration; states 251 pairs at risk .158.
+- **All reports tied** — 541 equal-risk reports (100 retained); with no pair stated, E/N is NA.
+
+<details>
+<summary>Input assumptions, validation and local exports</summary>
 
 The normal-input calculation assumes that the units are independent given the model. Use joint draws or a joint
 law in R when the units are correlated. For matrices, specify the event and where the probabilities came from.
@@ -39,6 +36,8 @@ separate evidence. Leave unassessed units out of the input because a bottom grad
 Apply keeps the previous report until the new input passes the checks. A download includes the input and settings
 used in the displayed report. The URL carries settings only, so paste the records and source descriptions again
 after a reload. If you open the optional joint solver, its status and gap describe the search using the supplied probabilities.
+
+</details>
 
 [Open the standalone tool](../../embed/your-data.html?preset=league8-posterior).
 

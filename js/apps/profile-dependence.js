@@ -35,7 +35,12 @@ const CSS=`${VISUAL_CSS}
 .mdp .mdp-card span{white-space:nowrap}.mdp .mdp-union{font-weight:700}.mdp .mdp-state-table{min-width:27rem}.mdp .mdp-selected{font-weight:600}
 .mdp .mdp-story-event{cursor:pointer;outline:none}.mdp .mdp-story-event:focus .mdp-story-hit{stroke:var(--prx-plot-focus);stroke-width:3}
 .mdp .mdp-outcome-label{margin:0;text-align:center;font-size:max(14px,.85rem);font-weight:600;color:var(--prx-plot-fg)}
-.mdp .mdp-story-inspector{padding:.05rem .85rem .4rem;min-height:1.7rem;font-size:max(14px,.85rem);line-height:1.4;color:var(--prx-plot-fg)}
+.mdp .mdp-story-inspector{padding:.05rem .85rem .3rem;min-height:1.5rem;font-size:max(14px,.85rem);line-height:1.35;color:var(--prx-plot-fg)}
+.mdp .mdp-story-inspector:empty{display:none}
+.mdp .mdv-stage .mdv-figure figcaption{padding:.3rem .85rem .15rem;font-size:max(14px,.88rem);color:var(--prx-plot-fg)}
+.mdp .mdv-optima{padding:.35rem .75rem .5rem}
+.mdp .mdv-report-button{padding:.3rem .6rem}
+.mdp .mdv-report-line{line-height:1.38}
 `;
 function number(ctx,value,hook){const node=ctx.num(value,formatCount(value));if(hook)node.dataset.prxReadout=hook;return node;}
 function exact(ctx,value,hook){const node=exactNum(ctx,value);if(hook)node.dataset.prxReadout=hook;return node;}
@@ -59,28 +64,29 @@ function drawOverlapStory(ctx,visual,result,{hatchId,onInspect,inspectionKey,onR
  svg.setAttribute('role','group');svg.setAttribute('data-mdp-story-candidate','p:1,2|1,2');
  const left=22,span=width-44,scale=coordinate('1/5'),x=raw=>left+coordinate(raw)/scale*span,w=raw=>coordinate(raw)/scale*span;
  svg.setAttribute('data-mdp-scale-max','1/5');svg.setAttribute('data-mdp-scale-left',String(left));svg.setAttribute('data-mdp-scale-width',String(span));
- const pattern=svgNode(ctx,'pattern',{id:hatchId,width:7,height:7,patternUnits:'userSpaceOnUse'},svgNode(ctx,'path',{d:'M-2 2 L2 -2 M0 7 L7 0 M5 9 L9 5',stroke:colors.hatch,'stroke-width':2}));
+ const pattern=svgNode(ctx,'pattern',{id:hatchId,width:7,height:7,patternUnits:'userSpaceOnUse'},svgNode(ctx,'path',{d:'M-2 2 L2 -2 M0 7 L7 0 M5 9 L9 5',stroke:colors.plotFg,'stroke-width':2.1}));
  svg.append(svgNode(ctx,'defs',{},pattern));
  // The interval arrangement is made from the actual S-only and both-error state masses.
- svg.append(svgNode(ctx,'rect',{x:x(offset),y:27,width:w(overlap),height:73,fill:`url(#${hatchId})`,opacity:.18}));
+ svg.append(svgNode(ctx,'rect',{x:x(offset),y:32,width:w(overlap),height:64,fill:`url(#${hatchId})`,opacity:.18}));
  const inspector=ctx.h('div',{class:'mdp-story-inspector','data-mdp-inspector':'','aria-label':'Inspected error event'});
  const descriptions={S:['S error: ',values.S],C:['C error: ',values.C],overlap:['Both errors: ',overlap],union:['Either error, counted once: ',values.union]};
  function inspect(key){onInspect(key);const[label,raw]=descriptions[key];inspector.replaceChildren(label,exactNum(ctx,raw,{style:'percent',digits:0}),'.');}
+ const textHalo={'paint-order':'stroke',stroke:colors.plotBg,'stroke-width':4,'stroke-linejoin':'round'};
  function bar(mark,key,label,raw,start,y,height,fill,options={}){
   const group=svgNode(ctx,'g',{class:'mdp-story-event',role:'button',tabindex:0,'aria-label':`${label}; exact probability ${raw}.`,'data-prx-focus-key':`overlap-story:${key}`});
   const hitWidth=Math.max(44,w(raw)),hitX=Math.max(left,Math.min(start,width-left-hitWidth));
   group.append(svgNode(ctx,'rect',{class:'mdp-story-hit','data-prx-focus-ring':'',x:hitX,y:y-10,width:hitWidth,height:44,rx:4,fill:'transparent',stroke:'transparent'}));
-  group.append(svgNode(ctx,'rect',{x:start,y,width:w(raw),height,rx:3,fill,stroke:colors.plotFg,'stroke-width':1.4,'data-mdp-mark':mark,'data-exact':raw,'data-mdv-role':mark,'data-mdv-exact':raw}));
-  if(options.hatch)group.append(svgNode(ctx,'rect',{x:start,y,width:w(raw),height,rx:3,fill:`url(#${hatchId})`,'pointer-events':'none'}));
+  group.append(svgNode(ctx,'rect',{x:start,y,width:w(raw),height,rx:3,fill,stroke:colors.plotFg,'stroke-width':options.hatch?1.8:1.4,'data-mdp-mark':mark,'data-exact':raw,'data-mdv-role':mark,'data-mdv-exact':raw}));
+  if(options.hatch)group.append(svgNode(ctx,'rect',{x:start,y,width:w(raw),height,rx:3,fill:`url(#${hatchId})`,stroke:colors.plotFg,'stroke-width':1.4,opacity:.92,'pointer-events':'none'}));
   if(raw==='0')group.append(svgNode(ctx,'line',{x1:start,x2:start,y1:y,y2:y+height,stroke:colors.plotFg,'stroke-width':2}));
   group.append(svgNode(ctx,'title',{},`${label}: ${raw}`));
   group.addEventListener('click',()=>inspect(key));group.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();inspect(key);}});
-  svg.append(group,svgText(ctx,left,y-8,label,{'font-size':15,'font-weight':600}),svgExact(ctx,width-left,y-8,raw,{style:'percent',digits:0},{'font-size':16,'text-anchor':'end','font-weight':600}));
+  svg.append(group,svgText(ctx,left,y-8,label,{'font-size':15,'font-weight':600,...textHalo}),svgExact(ctx,width-left,y-8,raw,{style:'percent',digits:0},{'font-size':16,'text-anchor':'end','font-weight':600,...textHalo}));
  }
  bar('marginal-S','S','S error',values.S,left,32,20,colors.crit[0]);
  bar('marginal-C','C','C error',values.C,x(offset),76,20,colors.crit[1]);
  // Repeat the shared piece on both fixed-length marginal strips, using hatch as well as color.
- for(const y of [32,76])svg.append(svgNode(ctx,'rect',{x:x(offset),y,width:w(overlap),height:20,fill:`url(#${hatchId})`,'pointer-events':'none'}));
+ for(const y of [32,76])svg.append(svgNode(ctx,'rect',{x:x(offset),y,width:w(overlap),height:20,fill:`url(#${hatchId})`,opacity:.55,'pointer-events':'none'}));
  bar('overlap','overlap','Both errors',overlap,x(offset),120,14,colors.plotBg,{hatch:true});
  bar('union','union','Either error',values.union,left,164,24,dual.feasible?colors.accent:colors.err);
  const capX=x(result.request.decision.alpha);
@@ -91,9 +97,16 @@ function drawOverlapStory(ctx,visual,result,{hatchId,onInspect,inspectionKey,onR
  const heading=ctx.h('p',{class:'mdp-outcome-label'},'Optimal reports · equal grades withhold a direction'),optima=ctx.h('div',{class:'mdv-optima'});
  for(const id of result.fit.optimizerIds){const grades=result.evaluations.get(id).grades,button=reportButton(ctx,grades,{id,label:id===result.fit.selectedId?'Canonical optimum':'Also optimal',selected:ctx.state.candidate===id,onSelect:()=>onReport(id)});button.dataset.mdpOptimizer=id;optima.append(button);}
  const card=result.focus;
- figure.append(ctx.h('p',{class:'mdp-outcome-label'},dual.feasible?'Either-error mass is at or below the cap.':'Either-error mass exceeds the cap.'),inspector,heading,optima,
+ figure.append(inspector,heading,optima,
   ctx.h('p',{class:'mdp-story-inspector','data-mdp-card-inspector':''},'Inspecting S ',name(ctx,actionName(card.grades,0)),' · C ',name(ctx,actionName(card.grades,1)),' · joint error ',exactNum(ctx,card.jointProbabilityExact,{style:'percent',digits:0}),'.'));
- inspect(inspectionKey);
+ const neighbor=result.fit.candidateTable.find(row=>row.feasible!==card.feasible);
+ if(neighbor){
+  const alternate=result.evaluations.get(neighbor.candidateId);
+  figure.append(ctx.h('p',{class:'mdp-story-inspector'},'Across the cap: S ',name(ctx,actionName(alternate.grades,0)),
+   ' · C ',name(ctx,actionName(alternate.grades,1)),' · joint error ',exactNum(ctx,alternate.jointProbabilityExact,{style:'percent',digits:0}),
+   alternate.feasible?' (feasible).':' (excluded).'));
+ }
+ if(inspectionKey)inspect(inspectionKey);
 }
 
 export function mountWidget(el,spec={}){
@@ -109,7 +122,7 @@ export function mountWidget(el,spec={}){
   const visual=createVisualFrame(ctx,{mainControl:coupling.root});
   // Candidate inspection is a separate exact-data task, not another story control.
   visual.dataBody.insertBefore(ctx.h('div',{class:'prx-controls'},focus.root),policy);
-  const hatchId=`mdp-overlap-${++graphicSequence}`;let inspectionKey='union';
+  const hatchId=`mdp-overlap-${++graphicSequence}`;let inspectionKey=null;
   let gridButtons=[];
   function focusGrid(id){gridButtons.find(b=>b.dataset.card===id)?.focus();}
   return {render(state){
@@ -140,7 +153,7 @@ export function mountWidget(el,spec={}){
    selected.append(ctx.h('p',{class:'mdp-note'},'The app lists all the feasible cards tied at the lowest risk and displays one first. These results apply to the fictional distribution in the table.'));
    setSliderFace(ctx,coupling,input.masses.at(-1));
    drawOverlapStory(ctx,visual,r,{hatchId,inspectionKey,onInspect:key=>{inspectionKey=key;},onReport:id=>ctx.set({candidate:id})});
-   ctx.readout.set([dual.feasible?'Both directions admitted. ':'Best reports keep one direction. ',number(ctx,fit.optimizerIds.length),fit.optimizerIds.length===1?' optimal report.':' optimal reports.']);
+   ctx.readout.set(['Either error ',exactNum(ctx,dual.jointProbabilityExact,{style:'percent',digits:0}),' vs. ',exactNum(ctx,request.decision.alpha,{style:'percent',digits:0}),' cap: ',dual.feasible?'both directions admitted (':'best reports keep one direction (',number(ctx,fit.optimizerIds.length),fit.optimizerIds.length===1?' optimal report).':' optimal reports).']);
    const massNodes=[];
    for(const [key,label,sError,cError] of [['neither','Neither',false,false],['S-only','S only',true,false],['C-only','C only',false,true],['both','Both',true,true]]){
     const i=dual.states.findIndex(row=>row.exceedances[0]===sError&&row.exceedances[1]===cError);

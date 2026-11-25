@@ -4,10 +4,7 @@ subtitle: "4.9 · after the postrank theory book, chapter 13"
 description: "Comparison of weighted-risk and deterministic minimax report selection."
 ---
 
-A report with the lowest weighted average risk can perform poorly on one criterion. The minimax rule chooses
-the report with the smallest worst criterion risk. With two criteria, each line connects the risks for that
-report. The weighted rule selects the lowest line at the chosen weight. The deterministic minimax rule
-compares the higher endpoint of each line. Both use the same posterior, withholding cost, and report family.
+A low weighted-average risk can hide poor performance on one criterion. Compare the weighted-risk optimum with the minimax report that minimizes the larger expected criterion risk.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -19,19 +16,19 @@ compares the higher endpoint of each line. Both use the same posterior, withhold
 
 ## Numerical illustrations {#what-to-try}
 
-- **w .90.** The weighted best averages .0605 but reaches .2296 when only score B counts. At **w .70**, its weighted risk is .0882 and its worse endpoint is .1378. The price panel compares each selected guarded report with the weighted best under that same loss.
-- **w .30.** Both rules choose {A, B, C, D} > {E, F}; its larger expected criterion risk is .0944. The peak panel gives the largest minimum weighted risk and the weight at which it occurs.
-- **Score B only.** Two weighted reports share the smallest risk. Their worst endpoint risks are .1996 and .2113; both identities, dashed alternative and complete criterion profiles remain visible.
-- **Book low** and **Book high.** In the restated two-unit law, the weighted rule changes from withholding at risk .2500 to stating A above B at risk .1500. The table gives both risks and the larger risk for every report.
-- **Book minimax.** The guarded rule continues to withhold, with maximum .2500. Under **Zero error weight**, the same .2500 guard remains because a zero error weight does not remove a guarded criterion.
-- **Certain opposition.** Exactly two grades exclude withholding. The highest point of the lower envelope is .5000, while deterministic minimax is 1.0000. This makes the gap between those two quantities visible.
+- **w .90** and **w .70.** Weighted best averages .0605 (worse endpoint .230) at .90, and .0882 (worse endpoint .138) at .70.
+- **w .30** and **Score B only.** At .30 both rules select `{A, B, C, D} > {E, F}` (.0944); at 0 two tied weighted reports reach .200 and .211.
+- **Book low**, **Book high**, **Book minimax**, and **Zero error weight.** Weighted risk shifts from .250 to .150, while guarding both keeps .250 even at zero weight.
+- **Certain opposition.** Two required grades give envelope peak .500 while deterministic minimax is 1.00.
 
-::: {.callout-note}
+<details>
+<summary>Methodological note</summary>
+
 For the minimax calculation, we first take the expected loss on each criterion and then take their maximum.
 Averaging the worst loss in each posterior state would define a different decision rule. The chart clips
-lines that extend beyond the displayed range. The table and keyboard view give the full values. In a
-restricted family, the maximum of the weighted minimum can be lower than the deterministic minimax risk.
-:::
+lines that extend beyond the displayed range, while the accessible table and keyboard view retain every endpoint.
+In a restricted report family, the maximum of the weighted minimum can lie strictly below the deterministic minimax risk.
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 The package's synthetic minimax example also withholds every pair; it uses its own units.
@@ -45,3 +42,5 @@ mm <- load_or_compute("toy_minimax"); get_grades(mm); get_risk(mm)
 Standalone: [worst-criterion](../../embed/worst-criterion.html), for example `?preset=high`.
 
 Related applications: [A common grade report for two scores](two-scores.qmd).
+
+Theory book · [A criterion mixture and its scalar correspondence](https://joonho112.github.io/postrank-theory-book/chapters/11-multicriteria-loss.html#sec-criterion-mixture) · [Preference sensitivity and expected-criterion minimax](https://joonho112.github.io/postrank-theory-book/chapters/13-protections-preferences.html#sec-expected-criterion-minimax).

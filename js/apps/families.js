@@ -1,77 +1,98 @@
-// Full G-08 families widget, with course prediction apparatus removed.
+// 2.12 families ("Families of reports") — Frame v2 upgrade.
 import { createWidget, uid } from "../shared/base.js";
-import { gradeColors, labelOn, palette } from "../shared/chart.js";
-import { formatCount, formatGrades, formatProb, formatRational, formatRisk, formatSci, formatSetting } from "../shared/format.js";
+import { gradeColors, labelOn, palette, parseColor } from "../shared/chart.js";
+import {
+  blocksText,
+  formatCount,
+  formatDecimal,
+  formatGrades,
+  formatProb,
+  formatRational,
+  formatReadoutProb,
+  formatReadoutRisk,
+  formatRisk,
+  formatSci,
+  formatSetting,
+} from "../shared/format.js";
 import { captionNode, familyNameNode, familySizeNode, labelNode, tieNode } from "../shared/labels.js";
 import { evaluateReport, exactOptimum, finiteLawPairwise, fixedOrderDP, rationalApprox, statedAbove, weightedError } from "../pr-core.js";
 import SIX from "../../data/released/six-sites.json" with { type: "json" };
 
 export const FAMILIES_CSS = `
 /*
- * postrank Explorer · families (catalog G-08; js/widgets/families.js)
- *
- * Layout (review 044 repair, X-01, G3-F4): base.js's result-first frame. The controls (example, family, number of
- * grades, a closed "Declared order" box with the order editor, then τ, the primary control), the preset row, the live
- * read-out, then the rows directly: one compact row per family (its name and its short label, the best report as
- * grade blocks beside a risk bar on a scale shared by every row, the numbers and the tie note), the chosen family's
- * row outlined in place. Under the rows one shared line (the equal-risk tolerance once, the dynamic program's check
- * against enumeration), the legend and the note, then a closed box with each family's complete search line (the
- * family in the read-out first), then the law panel of the four-unit and dominating-set examples. The bars and blocks
- * sit on the plot panel (--prx-plot-bg) so that data colors keep their meaning in every theme. Tokens only; nothing
- * here is wider than its container at 375 px.
+ * postrank Explorer · 2.12 families (Frame v2)
+ * Primary controls: τ slider + compact G segmented buttons + wrapping presets + Settings disclosure.
+ * Stage: 4 aligned family rows (clickable row header, high-contrast grade pills, aligned .prx-fam-bar risk tracks) + compact legend.
+ * Disclosures: Data and family search details (exact family table, ties, search lines, law/input tables) + Method and scope.
  */
 
-.prx-fam .prx-fam-heading {
-  margin: 0 0 0.35rem;
-  font-size: 0.95em;
-  font-weight: 600;
-  color: var(--prx-fg-heading);
+.prx-fam[data-prx-frame="v2"] .prx-slider {
+  flex: 1 1 11.5rem;
+  max-width: 14rem;
 }
 
-.prx-fam .prx-fam-note {
-  margin: 0.35rem 0 0;
-  font-size: 0.9em;
-  color: var(--prx-fg-muted);
+.prx-fam .prx-fam-g .prx-seg-buttons {
+  gap: 0.22rem;
 }
 
-.prx-fam .prx-fam-label {
-  margin: 0.5rem 0 0.75rem;
-  font-size: 0.95em;
+.prx-fam .prx-fam-g .prx-seg {
+  min-width: 1.95rem;
+  padding-inline: 0.38rem;
+  justify-content: center;
+  text-align: center;
 }
 
-.prx-fam .prx-fam-label .prx-result-label {
-  font-weight: 600;
-  color: var(--prx-fg-heading);
+@media (pointer: coarse), (max-width: 48em) {
+  .prx-fam .prx-fam-g .prx-seg {
+    min-width: var(--prx-touch-target, 2.75rem);
+  }
 }
 
-/* rows and the legend sit on the plot panel, so their text uses the panel's ink in every theme */
-.prx-fam .prx-fam-row-label .prx-result-label,
-.prx-fam .prx-fam-legend .prx-result-label {
-  font-weight: 600;
-  color: inherit;
+@media (max-width: 30em) {
+  .prx-fam .prx-title {
+    margin: 0 0 0.25rem;
+    font-size: 0.98rem;
+  }
+  .prx-fam[data-prx-frame="v2"] .prx-toolbar {
+    gap: 0.35rem 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+  .prx-fam[data-prx-frame="v2"] > .prx-readout {
+    margin-bottom: 0.45rem;
+    padding: 0.28rem 0.55rem;
+  }
+  .prx-fam[data-prx-frame="v2"] .prx-presets .prx-seg {
+    padding-inline: 0.44rem;
+    font-size: 0.8125rem;
+  }
+  .prx-fam .prx-stage {
+    padding: 0.38rem 0.45rem;
+  }
+  .prx-fam .prx-stage .prx-fam-rows {
+    gap: 0.26rem;
+  }
+  .prx-fam .prx-stage .prx-fam-row {
+    padding: 0.28rem 0.45rem 0.3rem;
+    gap: 0.14rem;
+  }
+  .prx-fam .prx-stage .prx-fam-block {
+    padding: 0.06rem 0.32rem;
+    gap: 0.2rem;
+    font-size: 0.86em;
+  }
+  .prx-fam .prx-stage .prx-fam-legend {
+    margin-top: 0.28rem;
+    padding-top: 0.25rem;
+  }
+  .prx-fam[data-prx-frame="v2"] > .prx-disclosures {
+    margin-top: 0.45rem;
+    gap: 0.35rem;
+  }
 }
 
-.prx-fam .prx-fam-row .prx-fam-note,
-.prx-fam .prx-fam-row .prx-result-caption { color: var(--prx-plot-fg); }
-
-/* --- controls: radio groups in a row where they fit; the number of grades as a compact row of choices --- */
 .prx-fam .prx-fam-example,
-.prx-fam .prx-fam-family,
-.prx-fam .prx-fam-g {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 1rem;
-  row-gap: 0.15rem;
-}
-
-.prx-fam .prx-fam-example > legend,
-.prx-fam .prx-fam-family > legend,
-.prx-fam .prx-fam-g > legend {
+.prx-fam .prx-fam-family {
   flex: 1 1 100%;
-}
-
-.prx-fam .prx-fam-g {
-  column-gap: 0.75rem;
 }
 
 .prx-fam .prx-fam-order {
@@ -79,18 +100,20 @@ export const FAMILIES_CSS = `
   flex-wrap: wrap;
   align-items: center;
   gap: 0.35rem 0.6rem;
+  flex: 1 1 100%;
   min-width: 0;
 }
 
 .prx-fam .prx-fam-order-label {
   flex: 1 1 100%;
   font-weight: 600;
+  color: var(--prx-fg-muted);
 }
 
 .prx-fam .prx-fam-order-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 0.9rem;
+  gap: 0.35rem 0.75rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -104,7 +127,7 @@ export const FAMILIES_CSS = `
 
 .prx-fam .prx-fam-order-unit {
   display: inline-block;
-  min-width: 1.6rem;
+  min-width: 1.7rem;
   padding: 0.2rem 0.35rem;
   font-weight: 700;
   text-align: center;
@@ -119,91 +142,180 @@ export const FAMILIES_CSS = `
   padding: 0 0.4rem;
 }
 
-/* --- the family rows --- */
-.prx-fam .prx-fam-compare {
-  margin: 0.75rem 0 0;
+.prx-fam .prx-readout .prx-fam-ro-blocks {
+  font-weight: 600;
+  color: var(--prx-fg-heading);
+}
+
+/* --- stage & aligned family rows --- */
+.prx-fam .prx-stage {
+  container-type: inline-size;
+  padding: 0.55rem 0.65rem;
+}
+
+.prx-fam .prx-stage .prx-fam-compare {
+  margin: 0;
   min-width: 0;
 }
 
-.prx-fam .prx-fam-rows {
+.prx-fam .prx-stage .prx-fam-rows {
   display: grid;
-  gap: 0.6rem;
-  margin: 0.5rem 0 0;
+  gap: 0.38rem;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.prx-fam .prx-fam-row {
+.prx-fam .prx-stage .prx-fam-row {
+  grid-area: auto;
   min-width: 0;
-  padding: 0.55rem 0.7rem 0.6rem;
+  padding: 0.38rem 0.6rem 0.4rem;
   border: 1px solid var(--prx-border);
   border-radius: var(--prx-radius, 6px);
   background: var(--prx-plot-bg);
   color: var(--prx-plot-fg);
+  display: grid;
+  gap: 0.22rem;
 }
 
-.prx-fam .prx-fam-row-chosen {
-  border-color: var(--prx-accent);
-  box-shadow: inset 0 0 0 1px var(--prx-accent);
+.prx-fam .prx-stage .prx-fam-row-chosen {
+  border-color: var(--prx-post);
+  box-shadow: inset 0 0 0 1.5px var(--prx-post);
 }
 
-.prx-fam .prx-fam-row-head {
+.prx-fam .prx-stage .prx-fam-row-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.2rem 0.75rem;
+  min-width: 0;
+}
+
+.prx-fam .prx-stage .prx-fam-row-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 1.85rem;
+  margin: 0;
+  padding: 0.12rem 0.5rem;
+  font: inherit;
+  font-size: 0.92em;
   font-weight: 600;
+  line-height: 1.25;
+  color: var(--prx-plot-fg);
+  background: var(--prx-plot-bg);
+  border: 1px solid var(--prx-cell-border);
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
 }
 
-.prx-fam .prx-fam-row-tag {
-  font-weight: 400;
+.prx-fam .prx-stage .prx-fam-row-pick:hover {
+  border-color: var(--prx-post);
+}
+
+.prx-fam .prx-stage .prx-fam-row-pick[aria-pressed="true"] {
+  color: var(--prx-label-light);
+  background: var(--prx-post);
+  border-color: var(--prx-post);
+}
+
+@media (pointer: coarse), (max-width: 48em) {
+  .prx-fam .prx-stage .prx-fam-row-pick {
+    min-height: var(--prx-touch-target, 2.75rem);
+    padding-inline: 0.6rem;
+  }
+}
+
+.prx-fam .prx-stage .prx-fam-row-tagline {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.28;
   color: var(--prx-plot-muted);
 }
 
-.prx-fam .prx-fam-blocks {
+.prx-fam .prx-stage .prx-fam-row-tagline .prx-result-label {
+  font-weight: 400;
+  color: inherit;
+}
+
+/* Shared two-column track grid on wide stages; single-column full-width track on narrow stages.
+   Both columns use minmax(0, ...) so .prx-fam-bar shares exact x and width across all 4 rows. */
+.prx-fam .prx-stage .prx-fam-row-mid {
+  grid-area: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 15.5rem) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  margin: 0.05rem 0;
+  min-width: 0;
+}
+
+@media (min-width: 48rem) {
+  .prx-fam .prx-stage .prx-fam-row-mid {
+    grid-template-columns: minmax(0, 17.75rem) minmax(0, 1fr);
+  }
+}
+
+@container (max-width: 36rem) {
+  .prx-fam .prx-stage .prx-fam-row-mid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.prx-fam .prx-stage .prx-fam-blocks {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  margin: 0.4rem 0 0.35rem;
+  margin: 0;
+  min-width: 0;
 }
 
-.prx-fam .prx-fam-block {
+.prx-fam .prx-stage .prx-fam-block {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.3rem;
-  padding: 0.15rem 0.45rem;
-  border-radius: var(--prx-radius, 6px);
+  gap: 0.26rem;
+  padding: 0.1rem 0.42rem;
+  border: 1px solid var(--prx-cell-border);
+  border-left-width: 4px;
+  border-radius: 5px;
+  font-size: 0.92em;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.prx-fam .prx-stage .prx-fam-block-grade {
+  font-size: 0.8em;
   font-weight: 700;
 }
 
-.prx-fam .prx-fam-block-grade {
-  font-size: 0.75em;
-  font-weight: 600;
-  opacity: 0.9;
-}
-
-/* the risk bar: one scale for every row; the dashed mark is τ, the solid mark the best of all reports */
-.prx-fam .prx-fam-bar {
+.prx-fam .prx-stage .prx-fam-bar {
   position: relative;
   height: 1.1rem;
-  margin: 0.2rem 0 0.25rem;
+  margin: 0;
+  min-width: 0;
   background: var(--prx-plot-grid);
   border-radius: 2px;
   overflow: hidden;
 }
 
-.prx-fam .prx-fam-seg {
+.prx-fam .prx-stage .prx-fam-seg {
   position: absolute;
   top: 0;
   bottom: 0;
 }
 
-.prx-fam .prx-fam-seg-err {
+.prx-fam .prx-stage .prx-fam-seg-err {
   left: 0;
   background: var(--prx-err);
 }
 
-.prx-fam .prx-fam-seg-wh {
+.prx-fam .prx-stage .prx-fam-seg-wh {
   background: var(--prx-wh);
 }
 
-.prx-fam .prx-fam-mark {
+.prx-fam .prx-stage .prx-fam-mark {
   position: absolute;
   top: -1px;
   bottom: -1px;
@@ -211,180 +323,185 @@ export const FAMILIES_CSS = `
   margin-left: -1px;
 }
 
-.prx-fam .prx-fam-mark-tau {
+.prx-fam .prx-stage .prx-fam-mark-tau {
   border-left: 2px dashed var(--prx-plot-axis);
 }
 
-.prx-fam .prx-fam-mark-all {
+.prx-fam .prx-stage .prx-fam-mark-all {
   border-left: 2px solid var(--prx-plot-fg);
 }
 
-.prx-fam .prx-fam-row-nums,
-.prx-fam .prx-fam-row-label {
-  margin: 0.2rem 0 0;
-  font-size: 0.92em;
+.prx-fam .prx-stage .prx-fam-row-nums {
+  margin: 0;
+  font-size: 0.86em;
+  color: var(--prx-plot-muted);
 }
 
-/* --- legend --- */
-.prx-fam .prx-fam-legend {
+/* --- compact stage legend --- */
+.prx-fam .prx-stage .prx-fam-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 0.9rem;
-  margin: 0.5rem 0 0;
-  padding: 0.4rem 0.6rem;
-  font-size: 0.88em;
+  gap: 0.2rem 0.85rem;
+  margin: 0.42rem 0 0;
+  padding: 0.35rem 0.1rem 0;
+  font-size: 0.82em;
+  border-top: 1px solid var(--prx-plot-grid);
   background: var(--prx-plot-bg);
   color: var(--prx-plot-fg);
-  border-radius: var(--prx-radius, 6px);
 }
 
-.prx-fam .prx-fam-key {
+.prx-fam .prx-stage .prx-fam-key {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.35rem;
+  align-items: center;
+  gap: 0.32rem;
   min-width: 0;
 }
 
-.prx-fam .prx-fam-key-text {
-  flex: 1 1 100%;
-}
-
-.prx-fam .prx-fam-swatch {
+.prx-fam .prx-stage .prx-fam-swatch {
   display: inline-block;
   flex: none;
-  width: 0.9rem;
-  height: 0.9rem;
+  width: 0.85rem;
+  height: 0.85rem;
   border-radius: 2px;
 }
 
-.prx-fam .prx-fam-swatch-err { background: var(--prx-err); }
-.prx-fam .prx-fam-swatch-wh { background: var(--prx-wh); }
+.prx-fam .prx-stage .prx-fam-swatch-err { background: var(--prx-err); }
+.prx-fam .prx-stage .prx-fam-swatch-wh { background: var(--prx-wh); }
 
-.prx-fam .prx-fam-swatch-tau,
-.prx-fam .prx-fam-swatch-all {
+.prx-fam .prx-stage .prx-fam-swatch-tau,
+.prx-fam .prx-stage .prx-fam-swatch-all {
   width: 0;
-  height: 1rem;
-  margin: 0 0.35rem;
+  height: 0.95rem;
+  margin: 0 0.25rem;
   border-radius: 0;
 }
 
-.prx-fam .prx-fam-swatch-tau { border-left: 2px dashed var(--prx-plot-axis); }
-.prx-fam .prx-fam-swatch-all { border-left: 2px solid var(--prx-plot-fg); }
+.prx-fam .prx-stage .prx-fam-swatch-tau { border-left: 2px dashed var(--prx-plot-axis); }
+.prx-fam .prx-stage .prx-fam-swatch-all { border-left: 2px solid var(--prx-plot-fg); }
 
-/* --- the four-unit law --- */
+/* --- Data & Method disclosures --- */
+.prx-fam .prx-fam-heading {
+  margin: 0.65rem 0 0.3rem;
+  font-size: 0.93em;
+  font-weight: 600;
+  color: var(--prx-fg-heading);
+}
+
+.prx-fam .prx-fam-heading:first-child {
+  margin-top: 0;
+}
+
+.prx-fam .prx-fam-note {
+  margin: 0.3rem 0 0;
+  font-size: 0.9em;
+  color: var(--prx-fg-muted);
+}
+
+.prx-fam .prx-fam-label {
+  margin: 0.15rem 0 0.5rem;
+  font-size: 0.92em;
+}
+
+.prx-fam .prx-fam-label .prx-result-label,
+.prx-fam .prx-fam-row-label .prx-result-label {
+  font-weight: 600;
+  color: var(--prx-fg-heading);
+}
+
+.prx-fam .prx-fam-search {
+  margin: 0.6rem 0 0;
+}
+
+.prx-fam .prx-fam-search-item {
+  margin: 0 0 0.45rem;
+}
+
+.prx-fam .prx-fam-search-item > p {
+  margin: 0;
+}
+
+.prx-fam .prx-fam-search-name {
+  font-weight: 600;
+  color: var(--prx-fg);
+}
+
+.prx-fam .prx-fam-row-label {
+  font-size: 0.9em;
+  color: var(--prx-fg-muted);
+}
+
+.prx-fam .prx-fam-ties-box {
+  margin: 0.45rem 0 0;
+}
+
+.prx-fam .prx-fam-ties-box > p {
+  margin: 0.2rem 0 0;
+}
+
 .prx-fam .prx-fam-law {
-  margin: 0.9rem 0 0;
+  margin: 0.7rem 0 0;
   min-width: 0;
 }
 
+.prx-fam .prx-fam-table-wrap,
 .prx-fam .prx-fam-law-scroll {
   max-width: 100%;
   overflow-x: auto;
 }
 
+.prx-fam .prx-fam-exact-table,
 .prx-fam .prx-fam-law-table {
-  margin: 0.4rem 0 0;
+  width: 100%;
+  margin: 0.25rem 0 0;
   border-collapse: collapse;
-  font-size: 0.92em;
+  font-size: 0.9em;
+  font-variant-numeric: tabular-nums;
 }
 
+.prx-fam .prx-fam-exact-table caption,
 .prx-fam .prx-fam-law-table caption {
   caption-side: top;
   text-align: left;
+  font-weight: 600;
   color: var(--prx-fg-muted);
   padding: 0 0 0.25rem;
 }
 
+.prx-fam .prx-fam-exact-table th,
+.prx-fam .prx-fam-exact-table td,
 .prx-fam .prx-fam-law-table th,
 .prx-fam .prx-fam-law-table td {
-  padding: 0.2rem 0.6rem;
+  padding: 0.22rem 0.55rem;
   border-bottom: 1px solid var(--prx-border);
   text-align: right;
 }
 
-.prx-fam .prx-fam-law-table th[scope="row"] {
-  white-space: nowrap;
-}
-
-.prx-fam .prx-fam-law-table thead th {
-  overflow-wrap: normal;
-  word-break: normal;
-  hyphens: manual;
-  vertical-align: bottom;
-}
-
+.prx-fam .prx-fam-exact-table th[scope="row"],
+.prx-fam .prx-fam-exact-table thead th:first-child,
 .prx-fam .prx-fam-law-table th[scope="row"],
 .prx-fam .prx-fam-law-table thead th:first-child {
   text-align: left;
+  white-space: nowrap;
 }
 
-/* --- review 044 repair (X-01, G3-F4): compact rows; the order editor in a closed box of the controls --- */
-.prx-fam .prx-fam-rows { gap: 0.3rem; }
-.prx-fam .prx-fam-row {
-  display: grid;
-  grid-template-columns: minmax(min-content, max-content) minmax(0, 1fr);
-  grid-template-areas: "head tag" "mid mid" "low low";
-  align-items: baseline;
-  column-gap: 1rem;
-  padding: 0.3rem 0.6rem 0.3rem;
+.prx-fam .prx-fam-exact-table td[data-align="left"] {
+  text-align: left;
 }
-.prx-fam .prx-fam-row > .prx-fam-row-head { grid-area: head; }
-.prx-fam .prx-fam-row > .prx-fam-row-tagline { grid-area: tag; justify-self: end; text-align: right; }
-.prx-fam .prx-fam-row > .prx-fam-row-mid { grid-area: mid; }
-.prx-fam .prx-fam-row > .prx-fam-row-low { grid-area: low; }
-.prx-fam .prx-fam-row-tagline {
-  margin: 0;
-  font-size: 0.85em;
-  color: var(--prx-plot-muted);
-}
-.prx-fam .prx-fam-row-tagline .prx-result-label { font-weight: 400; color: inherit; }
-.prx-fam .prx-fam-row-mid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  align-items: center;
-  gap: 0.25rem 0.75rem;
-  margin: 0.2rem 0 0.1rem;
-}
-.prx-fam .prx-fam-row-mid > .prx-fam-blocks,
-.prx-fam .prx-fam-row-mid > .prx-fam-bar { min-width: 0; margin: 0; }
-/* the numbers and the tie count run on as one line of text; the tied reports (ties only) follow as lines */
-.prx-fam .prx-fam-row-low > .prx-fam-row-nums,
-.prx-fam .prx-fam-row-low > .prx-fam-note { display: inline; margin: 0; }
-.prx-fam .prx-fam-row-low > .prx-fam-note > p { margin: 0; }
-.prx-fam .prx-fam-row-low > .prx-fam-note > p:first-child { display: inline; margin-left: 0.6em; }
-.prx-fam .prx-fam-charts { container-type: inline-size; }
-/* a phone's column: the heading a little smaller (one line), the rows a little tighter */
-/* a narrow column: the short label under the name */
-@container (max-width: 34rem) {
-  .prx-fam .prx-fam-row { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "tag" "mid" "low"; }
-  .prx-fam .prx-fam-row > .prx-fam-row-tagline { justify-self: start; text-align: left; }
-  .prx-fam .prx-fam-row-mid { grid-template-columns: minmax(0, 1fr); }
-}
-@container (max-width: 24rem) {
-  .prx-fam .prx-fam-compare > .prx-fam-heading { font-size: 0.8em; }
-  .prx-fam .prx-fam-rows { gap: 0.3rem; }
-  .prx-fam .prx-fam-row { padding: 0.3rem 0.5rem 0.35rem; }
-  .prx-fam .prx-fam-row-head { font-size: 0.88em; }
-  .prx-fam .prx-fam-row-head > .prx-fam-row-tag { font-size: 0.9em; }
-  .prx-fam .prx-fam-row-mid { margin: 0.2rem 0 0.1rem; gap: 0.2rem 0.75rem; }
-  .prx-fam .prx-fam-block { padding: 0.08rem 0.4rem; font-size: 0.92em; }
-  .prx-fam .prx-fam-row-low { font-size: 0.95em; }
-}
-.prx-fam .prx-fam-shared { margin: 0.45rem 0 0; font-size: 0.9em; color: var(--prx-fg-muted); }
-.prx-fam .prx-fam-compare > .prx-fam-note { margin: 0.4rem 0 0; }
-.prx-fam .prx-fam-search { margin: 0.5rem 0 0; }
-.prx-fam .prx-fam-search-item { margin: 0 0 0.5rem; }
-.prx-fam .prx-fam-search-item > p { margin: 0; }
-.prx-fam .prx-fam-search-name { font-weight: 600; }
-.prx-fam .prx-fam-search .prx-fam-label { margin: 0; }
-.prx-fam .prx-controls > .prx-disclosure .prx-fam-order { flex: 1 1 100%; }
 
-/* base.css turns transitions off under reduced motion */
-.prx-fam .prx-fam-seg,
-.prx-fam .prx-fam-mark {
+.prx-fam .prx-fam-method > p {
+  margin: 0.35rem 0 0;
+  font-size: 0.9em;
+  color: var(--prx-fg-muted);
+}
+
+.prx-fam .prx-fam-method > p:first-child {
+  margin-top: 0;
+}
+
+.prx-fam .prx-stage .prx-fam-seg,
+.prx-fam .prx-stage .prx-fam-mark {
   transition: width 120ms ease-out, left 120ms ease-out;
 }
-
 `;
 
 export const CONFIG = Object.freeze({
@@ -479,7 +596,6 @@ export const CONFIG = Object.freeze({
     blockAnd: " and ",
     blockThen: ", then ",
     above: "above",
-    // review 044 repair (X-01, G3-F4): the order editor's box, the shared line under the rows and the box of search lines
     orderSettings: "Declared order",
     sharedTol: "Each family is searched exactly; equal-risk tolerance ⟨tol⟩ (risks closer than this count as equal).",
     sharedParity: " The contiguous cuts come from the dynamic program; enumerating all ⟨k⟩ of them gives the same report and risk.",
@@ -489,7 +605,7 @@ export const CONFIG = Object.freeze({
   }),
 });
 
-// ---------------------------------------------------------------------------------------------- data
+// ---------------------------------------------------------------------------------------------- data & helpers
 
 /** The released error array of score A (JSON null on the diagonal becomes NaN). */
 function sixErrors() {
@@ -523,7 +639,7 @@ const EXAMPLES = Object.freeze({
 });
 
 /** The family key from a value or an alias. */
-function parseFamily(v) {
+export function parseFamily(v) {
   if (typeof v !== "string") return undefined;
   const s = v.trim().toLowerCase();
   for (const [key, list] of Object.entries(CONFIG.familyAliases)) if (list.includes(s)) return key;
@@ -533,7 +649,7 @@ function parseFamily(v) {
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 /** An order: letters (or 0-based indices) top first, distinct; checked against the example at render time. */
-function parseOrder(v) {
+export function parseOrder(v) {
   if (v === null) return null;
   const list = Array.isArray(v) ? v : typeof v === "string" ? v.split(/[\s,;]+/).filter(Boolean) : null;
   if (!list || list.length === 0) return undefined;
@@ -543,7 +659,7 @@ function parseOrder(v) {
 }
 
 /** Unit indices of the declared order for this example: the state's order when it is a permutation, else 0, 1, …. */
-function orderIndices(order, ex) {
+export function orderIndices(order, ex) {
   const n = ex.ids.length;
   if (Array.isArray(order) && order.length === n) {
     const idx = order.map((id) => ex.ids.indexOf(id));
@@ -553,7 +669,7 @@ function orderIndices(order, ex) {
 }
 
 /** The engine family of a family key at G (at most n grades is every report, 𝒜ₙ). */
-function familyOf(key, G, n, order) {
+export function familyOf(key, G, n, order) {
   if (key === "all") return { kind: "all" };
   if (key === "atmost") return G >= n ? { kind: "all" } : { kind: "atMost", G };
   if (key === "exact") return { kind: "exactly", G };
@@ -561,19 +677,27 @@ function familyOf(key, G, n, order) {
 }
 
 /** The units of each grade, grade 1 first. */
-function blocksOf(grade, ids) {
+export function blocksOf(grade, ids) {
   const G = Math.max(...grade);
   const out = [];
   for (let h = 1; h <= G; h += 1) out.push(ids.filter((_, i) => grade[i] === h));
   return out;
 }
 
-const blocksText = (grade, ids) => blocksOf(grade, ids).map((b) => `{${b.join(", ")}}`).join(" > ");
+export { blocksText };
 
-function blocksWords(grade, ids) {
+export function blocksWords(grade, ids) {
   const T = CONFIG.text;
   const list = (b) => (b.length < 2 ? b.join("") : `${b.slice(0, -1).join(", ")}${T.blockAnd}${b.at(-1)}`);
   return blocksOf(grade, ids).map(list).join(T.blockThen);
+}
+
+/** Blend a foreground hex color at `alpha` over `bgHex` for >= 10:1 AA/AAA grade-pill text contrast in both themes. */
+function tintHex(fgColor, bgColor, alpha = 0.12) {
+  const fg = parseColor(fgColor);
+  const bg = parseColor(bgColor) ?? [255, 255, 255];
+  if (!fg) return bgColor || "#ffffff";
+  return `#${fg.map((c, i) => Math.round(c * alpha + bg[i] * (1 - alpha)).toString(16).padStart(2, "0")).join("")}`;
 }
 
 // ---------------------------------------------------------------------------------------------- widget
@@ -582,10 +706,9 @@ export function mountWidget(el, spec = {}) {
   return createWidget(el, spec, {
     name: CONFIG.name,
     label: CONFIG.label,
-    title: CONFIG.title,
+    title: "Best report in each family",
     className: "prx-fam",
-    // review 044 repair (X-01): the read-out directly under the controls and the preset row, the rows right after it
-    layout: "result-first",
+    frame: "v2",
     css: FAMILIES_CSS,
     keys: {
       example: { type: "choice", values: ["six", "tb14", "dominance"], value: "six" },
@@ -598,7 +721,6 @@ export function mountWidget(el, spec = {}) {
       const { h } = ctx;
       const T = CONFIG.text;
 
-      // helpers: a read-out number with its hook; text with ⟨slot⟩ marks filled by nodes
       const ro = (name, raw, display) => {
         const n = ctx.num(raw, display);
         n.setAttribute("data-prx-readout", name);
@@ -616,81 +738,143 @@ export function mountWidget(el, spec = {}) {
         if (at < template.length) out.push(template.slice(at));
         return out;
       };
-      const fmtRisk = (ex, x) => {
-        if (ex.fraction && rationalApprox(x, { maxDenominator: ex.maxDenominator ?? CONFIG.tb14.maxDenominator })) return formatRational(x, { maxDenominator: ex.maxDenominator ?? CONFIG.tb14.maxDenominator });
+      const fmtRoRisk = (ex, x) => {
+        if (ex.fraction && rationalApprox(x, { maxDenominator: ex.maxDenominator ?? CONFIG.tb14.maxDenominator })) {
+          return formatRational(x, { maxDenominator: ex.maxDenominator ?? CONFIG.tb14.maxDenominator });
+        }
+        return formatReadoutRisk(x);
+      };
+      const fmtExactRisk = (ex, x) => {
+        if (ex.fraction && rationalApprox(x, { maxDenominator: ex.maxDenominator ?? CONFIG.tb14.maxDenominator })) {
+          return formatRational(x, { maxDenominator: ex.maxDenominator ?? CONFIG.tb14.maxDenominator });
+        }
         return formatRisk(x);
       };
-      const fmtErr = (ex, x) => (ex.fraction ? formatRational(x) : formatProb(x));
+      const fmtRoErr = (ex, x) => (ex.fraction ? formatRational(x) : formatReadoutProb(x));
       const gNum = (G) => ctx.num(G, formatCount(G));
-      const blocksNodes = (grade, ids) => [
-        h("span", { "aria-hidden": "true", text: blocksText(grade, ids) }),
-        h("span", { class: "prx-sr-only", text: blocksWords(grade, ids) }),
-      ];
 
-      // --- controls
-      const exampleRadio = ctx.radioGroup({
-        legend: T.exampleLegend, name: "example", className: "prx-fam-example",
-        options: [{ value: "six", label: T.exampleSix }, { value: "tb14", label: T.exampleTb14 }, { value: "dominance", label: "Dominating set and a grade cap" }],
+      // --- Primary controls in ctx.controls: Withholding cost τ + compact Grades G segmented buttons
+      const hintId = uid("prx-fam-hint");
+      const tau = ctx.slider({
+        label: T.slider,
+        ...ctx.key("tau"),
+        onInput: (v) => ctx.set({ tau: v }),
+      });
+      tau.input.setAttribute("aria-describedby", hintId);
+      ctx.primaryControl(tau.root);
+
+      const gValues = [];
+      for (let g = CONFIG.G.min; g <= CONFIG.G.max; g += 1) gValues.push(g);
+      const gSeg = ctx.segmented({
+        label: "Grades G",
+        name: "G",
+        className: "prx-fam-g",
+        options: gValues.map((g) => ({ value: g, label: String(g) })),
+        value: ctx.state.G,
+        onChange: (v) => ctx.set({ G: v }),
+      });
+      ctx.controls.append(tau.root, gSeg.root);
+
+      // --- Secondary controls in Settings disclosure (zero bare <24px radio inputs)
+      const exampleSeg = ctx.segmented({
+        label: T.exampleLegend,
+        name: "example",
+        className: "prx-fam-example",
+        options: [
+          { value: "six", label: T.exampleSix },
+          { value: "tb14", label: T.exampleTb14 },
+          { value: "dominance", label: "Dominating set and a grade cap" },
+        ],
         value: ctx.state.example,
         onChange: (v) => {
           const ex = EXAMPLES[v];
           ctx.set({ example: v, tau: ex.tau, G: ex.G, order: ex.ids.slice() });
         },
       });
-      const familyRadio = ctx.radioGroup({
-        legend: T.familyLegend, name: "family", className: "prx-fam-family",
+      const familySeg = ctx.segmented({
+        label: T.familyLegend,
+        name: "family",
+        className: "prx-fam-family",
         options: [
           { value: "all", label: "All reports (unrestricted)" },
           { value: "atmost", label: T.familyAtmost },
           { value: "exact", label: T.familyExact },
           { value: "order", label: T.familyOrder },
         ],
-        value: ctx.state.family, onChange: (v) => ctx.set({ family: v }),
-      });
-      const gValues = [];
-      for (let g = CONFIG.G.min; g <= CONFIG.G.max; g += 1) gValues.push(g);
-      const gRadio = ctx.radioGroup({
-        legend: T.gLegend, name: "G", className: "prx-fam-g",
-        options: gValues.map((g) => ({ value: g, label: String(g) })),
-        value: ctx.state.G, onChange: (v) => ctx.set({ G: v }),
-      });
-      const tau = ctx.slider({
-        label: T.slider, min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: ctx.state.tau,
-        name: "tau", hint: ["A wrong stated direction costs ", ctx.num(1, formatCount(1)), "; staying silent on one pair costs τ."], onInput: (v) => ctx.set({ tau: v }),
+        value: ctx.state.family,
+        onChange: (v) => ctx.set({ family: v }),
       });
       const orderId = uid("prx-fam-order");
       const orderList = h("ol", { class: "prx-fam-order-list", "aria-labelledby": orderId });
-      const orderReset = ctx.button({ label: T.orderReset, key: "order-reset", onClick: () => ctx.set({ order: EXAMPLES[ctx.state.example].ids.slice() }) });
-      const orderBox = h("div", { class: "prx-control prx-fam-order", role: "group", "aria-labelledby": orderId },
-        h("span", { id: orderId, class: "prx-fam-order-label", text: T.orderLabel }), orderList, orderReset.root);
-      // review 044 repair (X-01, G3-F4): the order editor, used only by the contiguous-cuts row (whose head names the
-      // order), in a closed box of the controls row; τ, the control the rows answer to, last before the preset row
-      ctx.controls.append(exampleRadio.root, familyRadio.root, gRadio.root);
-      ctx.disclosure({ name: "order", title: T.orderSettings, placement: "controls" }).body.append(orderBox);
-      ctx.controls.append(ctx.primaryControl(tau.root));
+      const orderReset = ctx.button({
+        label: T.orderReset,
+        key: "order-reset",
+        onClick: () => ctx.set({ order: EXAMPLES[ctx.state.example].ids.slice() }),
+      });
+      const orderBox = h(
+        "div",
+        { class: "prx-control prx-fam-order", role: "group", "aria-labelledby": orderId },
+        h("span", { id: orderId, class: "prx-fam-order-label", text: T.orderLabel }),
+        orderList,
+        orderReset.root,
+      );
+      const settings = ctx.settingsBox("Settings");
+      settings.body.append(exampleSeg.root, familySeg.root, orderBox);
 
-      // --- the chosen family's complete label line (with the order family's tie rule), kept in the box of search lines
-      const labelLine = h("p", { class: "prx-fam-label", "data-prx-part": "readout", "data-prx-result-scope": "" });
-
-      // --- the comparison: the rows directly under the read-out (the primary graphic), then one shared line, the legend,
-      // the note and the closed box of each family's complete search line
-      const rows = ctx.primaryGraphic(h("ol", { class: "prx-fam-rows" }));
+      // --- Stage: 4 aligned family rows + compact 1-line legend
+      const rows = h("ol", { class: "prx-fam-rows" });
       const legend = h("div", { class: "prx-fam-legend", "data-prx-part": "legend" });
-      const shared = h("p", { class: "prx-fam-shared", "data-prx-part": "notes" });
-      const search = ctx.disclosure({ name: "search", title: T.searchTitle, placement: "none", className: "prx-fam-search" });
-      const searchChosen = h("div", { class: "prx-fam-search-item" }, h("p", { class: "prx-fam-search-name", text: T.searchChosen }), labelLine);
+      const compareBox = h(
+        "section",
+        { class: "prx-fam-compare", "aria-label": T.compareHeading },
+        rows,
+        legend,
+      );
+      ctx.stage.append(compareBox);
+
+      ctx.listen(rows, "click", (e) => {
+        const pickBtn = e.target?.closest?.("[data-prx-pick-family]");
+        if (!pickBtn) return;
+        const nextFam = parseFamily(pickBtn.getAttribute("data-prx-pick-family"));
+        if (nextFam && nextFam !== ctx.state.family) ctx.set({ family: nextFam });
+      });
+
+      // --- Data disclosure: exact family table, tie lists, complete search lines, and law/input tables
+      const dataBox = ctx.dataBox("Data and family search details");
+      const exactTableWrap = ctx.scrollRegion(h("div", { class: "prx-fam-table-wrap", "data-prx-part": "table" }), "Exact optimum in each report family");
+      const exactTable = h("table", { class: "prx-fam-exact-table prx-sticky-first" });
+      exactTableWrap.append(exactTable);
+      const tiesBox = h("div", { class: "prx-fam-ties-box", "data-prx-part": "notes" });
+
+      const labelLine = h("p", { class: "prx-fam-label", "data-prx-result-scope": "" });
+      const searchChosen = h(
+        "div",
+        { class: "prx-fam-search-item" },
+        h("p", { class: "prx-fam-search-name", text: T.searchChosen }),
+        labelLine,
+      );
       const searchRows = h("div", { class: "prx-fam-search-rows", "data-prx-part": "notes" });
-      search.body.append(searchChosen, searchRows);
-      const compareBox = h("section", { class: "prx-fam-compare", "aria-label": T.compareHeading, "data-prx-part": "chart" },
-        h("h4", { class: "prx-fam-heading", text: T.compareHeading }),
-        rows, shared, legend, h("p", { class: "prx-fam-note", text: T.compareNote }), search.root);
+      const searchSection = h(
+        "section",
+        { class: "prx-fam-search", "aria-label": T.searchTitle },
+        h("h4", { class: "prx-fam-heading", text: T.searchTitle }),
+        searchChosen,
+        searchRows,
+      );
 
-      // --- the four-unit law (theory book ch. 14)
-      const lawBox = h("section", { class: "prx-fam-law", "aria-label": T.lawHeading, "data-prx-part": "notes", hidden: true });
-      ctx.charts.classList.add("prx-fam-charts");
-      ctx.charts.append(compareBox, lawBox);
+      const lawBox = h("section", { class: "prx-fam-law", "aria-label": T.lawHeading, "data-prx-part": "notes" });
+      dataBox.body.append(exactTableWrap, tiesBox, searchSection, lawBox);
 
-      // ------------------------------------------------------------------------------------- drawing
+      // --- Method disclosure: equal-risk tolerance, DP enumeration check, slider cost gloss, and scope notes
+      const methodBox = ctx.methodBox("Method and scope");
+      const shared = h("p", { class: "prx-fam-shared" });
+      const compareNote = h("p", { class: "prx-fam-note", text: T.compareNote });
+      const sliderHint = h("p", { id: hintId, class: "prx-fam-note" }, "A wrong stated direction costs ", ctx.num(1, formatCount(1)), "; staying silent on one pair costs τ.");
+      const scopeNote = h("p", { class: "prx-fam-note" });
+      const methodBody = h("div", { class: "prx-fam-method", "data-prx-part": "notes" }, shared, compareNote, sliderHint, scopeNote);
+      methodBox.body.append(methodBody);
+
+      // ------------------------------------------------------------------------------------- drawing helpers
 
       function familyWords(key, G, n, ex, order, { lower = false } = {}) {
         const cap = (t) => (lower ? t.charAt(0).toLowerCase() + t.slice(1) : t);
@@ -705,22 +889,36 @@ export function mountWidget(el, spec = {}) {
         return [`${cap(T.cutsOf)} ${order.map((i) => ex.ids[i]).join(", ")} (${T.anyGrades})`];
       }
 
-      // the order family is named in words (its symbol arrives on R-03); the node keeps the family name as its
-      // data-prx-family attribute, which the checks compare with the engine's return value
+      function familyShortWords(key, G, n, ex, order) {
+        const grades = G === 1 ? T.gradeWord : T.gradesWord;
+        if (key === "all") return ["all reports"];
+        if (key === "atmost") return G >= n ? ["at most ", gNum(G), " grades (all)"] : ["at most ", gNum(G), ` ${grades}`];
+        if (key === "exact") return ["exactly ", gNum(G), ` ${grades}`];
+        return ["cuts of ", order.map((i) => ex.ids[i]).join(", ")];
+      }
+
+      function rowPickWords(key, G) {
+        if (key === "all") return ["All reports"];
+        if (key === "atmost") return ["At most ", gNum(G)];
+        if (key === "exact") return ["Exactly ", gNum(G)];
+        return ["Fixed order"];
+      }
+
       function orderFamilyNode(result, ex, order) {
         const node = familyNameNode(ctx, result);
         if (node) node.append(`: ${T.cutsOf.toLowerCase()} ${order.map((i) => ex.ids[i]).join(", ")}`);
         return node;
       }
 
-      // a label with the family name and size; on a row the order family adds the enumeration check, on the chosen
-      // line it adds the tie rules (exact labels add the equal-risk tolerance there)
       function toleranceParts(r) {
         return [` ${T.tolerance} `, ctx.num(r.tieTol, formatSci(r.tieTol, { trim: true })), ` ${T.toleranceGloss}`];
       }
-      // whether enumerating the order family gives the dynamic program's report and risk
-      const sameAsEnumeration = (r, enumR) => Boolean(enumR && !enumR.empty && Math.abs(enumR.risk - r.risk) <= enumR.tieTol
-        && Array.from(enumR.grade).every((g, i) => g === r.grade[i]));
+
+      const sameAsEnumeration = (r, enumR) => Boolean(
+        enumR && !enumR.empty && Math.abs(enumR.risk - r.risk) <= enumR.tieTol
+          && Array.from(enumR.grade).every((g, i) => g === r.grade[i]),
+      );
+
       function labelParts(key, r, ex, order, { resultKey, enumR = null, chosen = false }) {
         if (r.empty) return [];
         if (key === "order") {
@@ -733,18 +931,23 @@ export function mountWidget(el, spec = {}) {
         return [...head, ...toleranceParts(r)];
       }
 
-      // a row's short label (review 044 repair, G3-F4): the result label and the family's size, as on the row's search
-      // line, without the tolerance (said once under the rows) and the enumeration check (in the shared line)
       function shortLabel(key, r, ex, order) {
         if (r.empty) return [];
-        if (key === "order") return [labelNode(ctx, r, { key }), " in ", orderFamilyNode(r, ex, order), " (", familySizeNode(ctx, r), ` ${T.cutReports})`];
-        return [labelNode(ctx, r, { key }), " (", familySizeNode(ctx, r), ` ${T.reports})`];
+        if (key === "order") return [labelNode(ctx, r, { key }), " in ", orderFamilyNode(r, ex, order), " (", familySizeNode(ctx, r), ")"];
+        return [labelNode(ctx, r, { key }), " (", familySizeNode(ctx, r), ")"];
       }
 
       function chip(members, grade, color, pal) {
-        return h("span", { class: "prx-fam-block", style: { background: color, color: labelOn(color, pal) } },
+        const bg = tintHex(color, pal.plotBg, 0.12);
+        return h(
+          "span",
+          {
+            class: "prx-fam-block",
+            style: { background: bg, color: labelOn(bg, pal), "border-color": color, "border-left-color": color },
+          },
           h("span", { class: "prx-fam-block-grade" }, ctx.num(grade, formatCount(grade))),
-          h("span", { class: "prx-fam-block-units", text: members.join(" ") }));
+          h("span", { class: "prx-fam-block-units", text: members.join(" ") }),
+        );
       }
 
       function blocksRow(grade, ids, pal) {
@@ -753,121 +956,290 @@ export function mountWidget(el, spec = {}) {
         return h("span", { class: "prx-fam-blocks", "aria-hidden": "true" }, ...blocks.map((b, k) => chip(b, k + 1, colors[k], pal)));
       }
 
-      function drawRow(key, r, ev, ex, order, all, top, state, enumR, pal, chosen) {
+      function drawRow(key, r, ev, ex, order, all, top, state, pal, chosen) {
         const n = ex.ids.length;
         const G = Math.min(state.G, n);
         const pct = (x) => `${(Math.max(0, x) / top) * CONFIG.percent}%`;
-        const head = h("div", { class: "prx-fam-row-head" },
-          h("span", { class: "prx-fam-row-name" }, ...familyWords(key, G, n, ex, order)),
-          chosen ? h("span", { class: "prx-fam-row-tag", text: ` · ${T.shown}` }) : null);
-        if (r.empty) return h("li", { class: "prx-fam-row", "data-prx-row": key }, head);
+        const pickBtn = h(
+          "button",
+          {
+            type: "button",
+            class: "prx-fam-row-pick",
+            "aria-pressed": String(chosen),
+            "data-prx-pick-family": key,
+            "data-prx-focus-key": `family-row:${key}`,
+          },
+          ...rowPickWords(key, G),
+        );
+        const tagLine = h("p", { class: "prx-fam-row-tagline" }, ...shortLabel(key, r, ex, order));
+        if (r.empty) return h("li", { class: "prx-fam-row", "data-prx-row": key }, h("div", { class: "prx-fam-row-top" }, pickBtn));
+
         const grade = Array.from(r.grade);
-        const bar = h("div", { class: "prx-fam-bar", "aria-hidden": "true" },
+        const bar = h(
+          "div",
+          { class: "prx-fam-bar", "aria-hidden": "true" },
           h("span", { class: "prx-fam-seg prx-fam-seg-err", style: { width: pct(ev.errorTerm) } }),
           h("span", { class: "prx-fam-seg prx-fam-seg-wh", style: { left: pct(ev.errorTerm), width: pct(ev.withholdingTerm) } }),
           h("span", { class: "prx-fam-mark prx-fam-mark-tau", style: { left: pct(state.tau) } }),
-          h("span", { class: "prx-fam-mark prx-fam-mark-all", style: { left: pct(all.risk) } }));
+          h("span", { class: "prx-fam-mark prx-fam-mark-all", style: { left: pct(all.risk) } }),
+        );
         const barWords = h("span", { class: "prx-sr-only" }, ...fill(T.barsWords, {
-          e: ctx.num(ev.errorTerm, fmtRisk(ex, ev.errorTerm)), w: ctx.num(ev.withholdingTerm, fmtRisk(ex, ev.withholdingTerm)),
-          r: ctx.num(r.risk, fmtRisk(ex, r.risk)), t: ctx.num(state.tau, formatSetting(state.tau)), a: ctx.num(all.risk, fmtRisk(ex, all.risk)),
+          e: ctx.num(ev.errorTerm, fmtExactRisk(ex, ev.errorTerm)),
+          w: ctx.num(ev.withholdingTerm, fmtExactRisk(ex, ev.withholdingTerm)),
+          r: ctx.num(r.risk, fmtExactRisk(ex, r.risk)),
+          t: ctx.num(state.tau, formatSetting(state.tau)),
+          a: ctx.num(all.risk, fmtExactRisk(ex, all.risk)),
         }));
-        const nums = h("p", { class: "prx-fam-row-nums" },
-          `${T.riskShort} `, ro(`${key}.risk`, r.risk, fmtRisk(ex, r.risk)), " · ",
-          ro(`${key}.grades`, grade, formatGrades(grade)), " · ",
-          ro(`${key}.N`, ev.N, formatCount(ev.N)), ` ${T.of} `, ctx.num(ev.M, formatCount(ev.M)), ` ${T.stated}`);
-        const tied = (r.grades ?? [r.grade]).map((g) => ({ grade: Array.from(g), ev: evaluateReport(Array.from(g), ex.E, { tau: state.tau, w: ex.w }) }));
-        const tie = h("div", { class: "prx-fam-note" },
-          h("p", {}, ro(`${key}.tieCount`, r.tieCount, formatCount(r.tieCount)), r.tieCount === 1 ? " minimizing report." : " reports share the minimum risk; every tied report is listed below."),
-          ...(r.tieCount > 1 ? tied.map((t, i) => h("p", {},
-            ro(`${key}.tie.${i}.grades`, t.grade, formatGrades(t.grade)), " · N = ", ro(`${key}.tie.${i}.N`, t.ev.N, formatCount(t.ev.N)),
-            " · E = ", ctx.num(t.ev.Ew, fmtRisk(ex, t.ev.Ew)))) : []),
-          ...(new Set(tied.map(t => t.ev.N)).size > 1 ? [captionNode(ctx, "different-disclosure")] : []));
-        // review 044 repair (G3-F4): one compact row: the name (with its short label beside it where the row is wide),
-        // the blocks beside the bar, the numbers with the tie note; the complete search line goes to the box of search
-        // lines (searchLine). The short label comes last in the DOM, so the row's text keeps its former order up to the
-        // label; the grid of FAMILIES_CSS draws it beside the name (under it in a phone's column).
-        const tagLine = h("p", { class: "prx-fam-row-tagline" }, ...shortLabel(key, r, ex, order));
-        return h("li", { class: `prx-fam-row${chosen ? " prx-fam-row-chosen" : ""}`, "data-prx-row": key, "data-prx-result-scope": "" },
-          head, h("div", { class: "prx-fam-row-mid" }, blocksRow(grade, ex.ids, pal), bar), barWords,
-          h("div", { class: "prx-fam-row-low" }, nums, tie), tagLine);
+        const nums = h(
+          "span",
+          { class: "prx-fam-row-nums" },
+          `${T.riskShort} `,
+          ro(`${key}.risk`, r.risk, fmtRoRisk(ex, r.risk)),
+          " · ",
+          ro(`${key}.N`, ev.N, formatCount(ev.N)),
+          ` ${T.of} `,
+          ctx.num(ev.M, formatCount(ev.M)),
+          " stated",
+          r.tieCount > 1 ? [" · ", ctx.num(r.tieCount, formatCount(r.tieCount)), " tied"] : null,
+        );
+        const topRow = h("div", { class: "prx-fam-row-top" }, pickBtn, nums);
+        return h(
+          "li",
+          { class: `prx-fam-row${chosen ? " prx-fam-row-chosen" : ""}`, "data-prx-row": key, "data-prx-result-scope": "" },
+          topRow,
+          h("div", { class: "prx-fam-row-mid" }, blocksRow(grade, ex.ids, pal), bar),
+          barWords,
+          tagLine,
+        );
       }
 
-      /** A family's complete search line in the box (its row's former label line, unchanged), after the family's name. */
+      function drawExactData(results, evals, ex, order, state) {
+        const n = ex.ids.length;
+        const G = Math.min(state.G, n);
+        const fmtCellRisk = (x) => (
+          ex.fraction && rationalApprox(x, { maxDenominator: ex.maxDenominator ?? CONFIG.tb14.maxDenominator })
+            ? formatRational(x, { maxDenominator: ex.maxDenominator ?? CONFIG.tb14.maxDenominator })
+            : formatDecimal(x, { digits: 6 })
+        );
+        const headers = ["Family", "Size", "Best report", "Risk", "Error E/M", "Withheld τ(M−N)/M", "Stated N", "Ties"];
+        const bodyRows = [];
+        const tieItems = [];
+
+        for (const key of ["all", "atmost", "exact", "order"]) {
+          const r = results[key];
+          if (r.empty) continue;
+          const ev = evals[key];
+          const grade = Array.from(r.grade);
+          bodyRows.push(
+            h(
+              "tr",
+              {},
+              h("th", { scope: "row" }, ...familyWords(key, G, n, ex, order)),
+              h("td", {}, ctx.num(r.family.size, formatCount(r.family.size))),
+              h("td", { "data-align": "left" }, ro(`${key}.grades`, grade, formatGrades(grade)), ` = ${blocksText(grade, ex.ids)}`),
+              h("td", {}, ctx.num(r.risk, fmtCellRisk(r.risk))),
+              h("td", {}, ctx.num(ev.errorTerm, fmtCellRisk(ev.errorTerm))),
+              h("td", {}, ctx.num(ev.withholdingTerm, fmtCellRisk(ev.withholdingTerm))),
+              h("td", {}, ctx.num(ev.N, formatCount(ev.N)), " / ", ctx.num(ev.M, formatCount(ev.M))),
+              h("td", {}, ro(`${key}.tieCount`, r.tieCount, formatCount(r.tieCount))),
+            ),
+          );
+
+          if (r.tieCount > 1) {
+            const tied = (r.grades ?? [r.grade]).map((g) => ({
+              grade: Array.from(g),
+              ev: evaluateReport(Array.from(g), ex.E, { tau: state.tau, w: ex.w }),
+            }));
+            tieItems.push(
+              h(
+                "div",
+                { class: "prx-fam-note" },
+                h("p", {}, h("strong", {}, ...familyWords(key, G, n, ex, order)), ": ", ctx.num(r.tieCount, formatCount(r.tieCount)), " reports share the minimum risk:"),
+                ...tied.map((t, i) => h(
+                  "p",
+                  {},
+                  ro(`${key}.tie.${i}.grades`, t.grade, formatGrades(t.grade)),
+                  " · N = ",
+                  ro(`${key}.tie.${i}.N`, t.ev.N, formatCount(t.ev.N)),
+                  " · E = ",
+                  ctx.num(t.ev.Ew, fmtExactRisk(ex, t.ev.Ew)),
+                )),
+                ...(new Set(tied.map((t) => t.ev.N)).size > 1 ? [h("p", {}, captionNode(ctx, "different-disclosure"))] : []),
+              ),
+            );
+          }
+        }
+
+        exactTable.replaceChildren(
+          h("caption", { text: "Exact optimum in each report family" }),
+          h("thead", {}, h("tr", {}, ...headers.map((t) => h("th", { scope: "col", text: t })))),
+          h("tbody", {}, ...bodyRows),
+        );
+        tiesBox.replaceChildren(...tieItems);
+      }
+
       function searchLine(key, r, ex, order, state, enumR) {
         const n = ex.ids.length;
         const G = Math.min(state.G, n);
-        return h("div", { class: "prx-fam-search-item" },
+        return h(
+          "div",
+          { class: "prx-fam-search-item" },
           h("p", { class: "prx-fam-search-name" }, ...familyWords(key, G, n, ex, order)),
-          h("p", { class: "prx-fam-row-label" }, ...labelParts(key, r, ex, order, { resultKey: key, enumR })));
+          h("p", { class: "prx-fam-row-label" }, ...labelParts(key, r, ex, order, { resultKey: key, enumR })),
+        );
       }
 
-      /** The shared line under the rows: the equal-risk tolerance once, then the dynamic program's enumeration check. */
       function drawShared(results, enumOrder) {
         const o = results.order;
         const parity = o.empty ? [] : sameAsEnumeration(o, enumOrder)
-          ? fill(T.sharedParity, { k: ctx.num(o.family.size, formatCount(o.family.size)) }) : [T.sharedParityOff];
+          ? fill(T.sharedParity, { k: ctx.num(o.family.size, formatCount(o.family.size)) })
+          : [T.sharedParityOff];
         shared.replaceChildren(...fill(T.sharedTol, { tol: ctx.num(results.all.tieTol, formatSci(results.all.tieTol, { trim: true })) }), ...parity);
       }
 
       function drawLegend(ex, all, state) {
-        // a swatch and its text; the text sits in one span so the flex gap stays between the swatch and the words
-        const key = (cls, text) => h("span", { class: "prx-fam-key" }, h("span", { class: `prx-fam-swatch ${cls}`, "aria-hidden": "true" }), h("span", {}, ...[].concat(text)));
+        const item = (cls, ...text) => h(
+          "span",
+          { class: "prx-fam-key" },
+          h("span", { class: `prx-fam-swatch ${cls}`, "aria-hidden": "true" }),
+          h("span", {}, ...text),
+        );
         legend.replaceChildren(
-          key("prx-fam-swatch-err", ex.key === "tb14" ? T.errLegendWeighted : T.errLegend),
-          key("prx-fam-swatch-wh", T.whLegend),
-          key("prx-fam-swatch-tau", [`${T.tauLegend} (`, ctx.num(state.tau, formatSetting(state.tau)), ")"]),
-          h("span", { class: "prx-fam-key", "data-prx-result-scope": "" },
+          item("prx-fam-swatch-err", ex.key === "tb14" ? "weighted E/M" : "E/M error"),
+          item("prx-fam-swatch-wh", "τ(M − N)/M withheld"),
+          item("prx-fam-swatch-tau", "τ (", ctx.num(state.tau, formatSetting(state.tau)), ")"),
+          h(
+            "span",
+            { class: "prx-fam-key", "data-prx-result-scope": "" },
             h("span", { class: "prx-fam-swatch prx-fam-swatch-all", "aria-hidden": "true" }),
-            h("span", {}, `${T.allLegend} `, ro("all.referenceRisk", all.risk, fmtRisk(ex, all.risk)), ", ", labelNode(ctx, all, { key: "all" }),
-              " (", familySizeNode(ctx, all), ` ${T.reports})`)),
-          h("span", { class: "prx-fam-key prx-fam-key-text", text: ex.key === "six" ? T.gradeOneSix : T.gradeOneTb14 }),
+            h("span", {}, "best (", ro("all.referenceRisk", all.risk, fmtRoRisk(ex, all.risk)), ")"),
+          ),
+          h("span", { class: "prx-fam-key", text: "Grade 1 = top priority." }),
         );
       }
 
       function drawLaw(ex, state) {
         if (ex.key === "dominance") {
-          const tau = state.tau;
+          const tauVal = state.tau;
           const cross = 1 - ex.E.e[0][0][2];
-          const threshold = 1 - tau;
+          const threshold = 1 - tauVal;
           lawBox.replaceChildren(
             h("h4", { class: "prx-fam-heading", text: "A dominating set and a restricted family" }),
-            h("p", { class: "prx-fam-note" }, "The law puts probability ", ctx.num(.6, formatRational(.6)),
-              " on A > B > X > Y, and ", ctx.num(.4, formatRational(.4)), " on X > Y > A > B. Every direction from {A, B} to {X, Y} has probability ", ctx.num(cross, formatRational(cross)), "."),
-            h("p", { class: "prx-fam-note" }, "Current τ = ", ro("dominance.tau", tau, formatRational(tau)),
-              "; the cross-set threshold is ", ro("dominance.threshold", threshold, formatRational(threshold)), ". ",
-              cross > threshold ? "The cross-set probabilities strictly exceed that threshold: every unrestricted optimum separates {A, B} above the outsiders."
-                : "The strict cross-set premise is not met at this price; the separation conclusion is not asserted."),
-            h("p", { class: "prx-fam-note" }, "A cap can block the rearrangement used in the separation argument. Compare each capped row with the unrestricted reference mark; the fixed-order row remains limited to its declared order."));
+            h(
+              "p",
+              { class: "prx-fam-note" },
+              "The law puts probability ",
+              ctx.num(.6, formatRational(.6)),
+              " on A > B > X > Y, and ",
+              ctx.num(.4, formatRational(.4)),
+              " on X > Y > A > B. Every direction from {A, B} to {X, Y} has probability ",
+              ctx.num(cross, formatRational(cross)),
+              ".",
+            ),
+            h(
+              "p",
+              { class: "prx-fam-note" },
+              "Current τ = ",
+              ro("dominance.tau", tauVal, formatRational(tauVal)),
+              "; the cross-set threshold is ",
+              ro("dominance.threshold", threshold, formatRational(threshold)),
+              ". ",
+              cross > threshold
+                ? "The cross-set probabilities strictly exceed that threshold: every unrestricted optimum separates {A, B} above the outsiders."
+                : "The strict cross-set premise is not met at this price; the separation conclusion is not asserted.",
+            ),
+            h("p", { class: "prx-fam-note", text: "A cap can block the rearrangement used in the separation argument. Compare each capped row with the unrestricted reference mark; the fixed-order row remains limited to its declared order." }),
+          );
           lawBox.hidden = false;
           return;
         }
-        if (ex.key !== "tb14") { lawBox.hidden = true; lawBox.replaceChildren(); return; }
+
+        if (ex.key === "six") {
+          const n = ex.ids.length;
+          const pairRows = [];
+          for (let i = 0; i < n; i += 1) {
+            for (let j = i + 1; j < n; j += 1) {
+              const eij = ex.E.e[0][i][j];
+              const eji = ex.E.e[0][j][i];
+              pairRows.push(
+                h(
+                  "tr",
+                  {},
+                  h("th", { scope: "row", text: `${ex.ids[i]} vs. ${ex.ids[j]}` }),
+                  h("td", {}, ctx.num(eij, formatProb(eij, { digits: 4 }))),
+                  h("td", {}, ctx.num(eji, formatProb(eji, { digits: 4 }))),
+                ),
+              );
+            }
+          }
+          const table = h(
+            "table",
+            { class: "prx-fam-law-table" },
+            h("caption", { text: "Six-site score A pairwise error probabilities" }),
+            h(
+              "thead",
+              {},
+              h(
+                "tr",
+                {},
+                h("th", { scope: "col", text: "Pair" }),
+                h("th", { scope: "col", text: "Error of earlier above later" }),
+                h("th", { scope: "col", text: "Error of later above earlier" }),
+              ),
+            ),
+            h("tbody", {}, ...pairRows),
+          );
+          const scroll = ctx.scrollRegion(h("div", { class: "prx-fam-law-scroll" }), "Six-site score A pairwise error probabilities");
+          scroll.append(table);
+          lawBox.replaceChildren(
+            h("h4", { class: "prx-fam-heading", text: "Six-site score A pairwise errors" }),
+            h("p", { class: "prx-fam-note", text: T.gradeOneSix }),
+            scroll,
+          );
+          lawBox.hidden = false;
+          return;
+        }
+
         const Tb = CONFIG.tb14;
         const frac = (x) => ctx.num(x, formatRational(x));
         const cell = (name, i, j, x) => ro(`law.${name}.${ex.ids[i]}${ex.ids[j]}`, x, formatRational(x));
         const states = Tb.orders.map((pair, s) => h("p", { class: "prx-fam-note" }, ...fill(T.lawState, {
-          s: ctx.num(s + 1, formatCount(s + 1)), p: ro(`law.prob.${s + 1}`, Tb.probs[s], formatRational(Tb.probs[s])),
-          o1: pair[0].split("").join(", "), o2: pair[1].split("").join(", "),
+          s: ctx.num(s + 1, formatCount(s + 1)),
+          p: ro(`law.prob.${s + 1}`, Tb.probs[s], formatRational(Tb.probs[s])),
+          o1: pair[0].split("").join(", "),
+          o2: pair[1].split("").join(", "),
         })));
         const n = ex.ids.length;
         const body = [];
         for (let i = 0; i < n; i += 1) {
           for (let j = i + 1; j < n; j += 1) {
-            body.push(h("tr", {},
-              h("th", { scope: "row", text: `${ex.ids[i]} ${T.above} ${ex.ids[j]}` }),
-              h("td", {}, cell("e1", i, j, ex.E.e[0][i][j])), h("td", {}, cell("e2", i, j, ex.E.e[1][i][j])), h("td", {}, cell("ebar", i, j, ex.ebar[i][j]))));
+            body.push(
+              h(
+                "tr",
+                {},
+                h("th", { scope: "row", text: `${ex.ids[i]} ${T.above} ${ex.ids[j]}` }),
+                h("td", {}, cell("e1", i, j, ex.E.e[0][i][j])),
+                h("td", {}, cell("e2", i, j, ex.E.e[1][i][j])),
+                h("td", {}, cell("ebar", i, j, ex.ebar[i][j])),
+              ),
+            );
           }
         }
-        const table = h("table", { class: "prx-fam-law-table" },
+        const table = h(
+          "table",
+          { class: "prx-fam-law-table" },
           h("caption", { text: T.lawTable }),
           h("thead", {}, h("tr", {}, ...[T.lawStatement, T.lawE1, T.lawE2, T.lawEbar].map((t) => h("th", { scope: "col", text: t })))),
-          h("tbody", {}, ...body));
-        // the weighted pair error in words, with the weights as numbers
+          h("tbody", {}, ...body),
+        );
+        const scroll = ctx.scrollRegion(h("div", { class: "prx-fam-law-scroll" }), T.lawTable);
+        scroll.append(table);
         lawBox.replaceChildren(
           h("h4", { class: "prx-fam-heading", text: T.lawHeading }),
           ...states,
           h("p", { class: "prx-fam-note prx-fam-law-explain" }, ...fill(T.lawExplain, { w1: frac(Tb.w[0]), w2: frac(Tb.w[1]) })),
-          h("div", { class: "prx-fam-law-scroll" }, table));
+          scroll,
+        );
         lawBox.hidden = false;
       }
 
@@ -875,19 +1247,18 @@ export function mountWidget(el, spec = {}) {
         const items = order.map((i, pos) => {
           const id = ex.ids[i];
           const up = ctx.button({
-            label: "←", key: `order-earlier-${id}`,
+            label: "←",
+            key: `order-earlier-${id}`,
             onClick: () => {
               const next = order.map((k) => ex.ids[k]);
               const displaced = next[pos - 1];
               [next[pos - 1], next[pos]] = [next[pos], next[pos - 1]];
               ctx.set({ order: next });
-              // a unit moved to the top has no button any more: focus goes to the unit it passed
               if (pos === 1) ctx.root.querySelector(`[data-prx-focus-key="order-earlier-${displaced}"]`)?.focus({ preventScroll: true });
             },
           });
           up.root.setAttribute("aria-label", T.orderEarlier.replace("⟨u⟩", id));
           up.setDisabled(pos === 0);
-          // the button sits before its unit: "← B" moves B one place earlier
           return h("li", { class: "prx-fam-order-item" }, pos === 0 ? null : up.root, h("span", { class: "prx-fam-order-unit", text: id }));
         });
         orderList.replaceChildren(...items);
@@ -897,50 +1268,57 @@ export function mountWidget(el, spec = {}) {
         const n = ex.ids.length;
         const G = Math.min(state.G, n);
         if (r.empty) {
-          ctx.readout.set(["τ = ", ctx.num(state.tau, formatSetting(state.tau)), ", ", ...familyWords(key, G, n, ex, order, { lower: true }), ": no report in this family."]);
+          ctx.readout.set(["At τ = ", ctx.num(state.tau, formatSetting(state.tau)), ", ", ...familyShortWords(key, G, n, ex, order), ": no report in this family."]);
           labelLine.replaceChildren();
           return;
         }
         const over = statedAbove(Array.from(r.grade), ex.E, { tau: state.tau, w: ex.w });
         const pairWords = (p) => `${ex.ids[p.i]} ${T.above} ${ex.ids[p.j]}`;
-        const errNum = (p) => ro(`over.${ex.ids[p.i]}${ex.ids[p.j]}`, p.error, fmtErr(ex, p.error));
+        const errNum = (p) => ro(`over.${ex.ids[p.i]}${ex.ids[p.j]}`, p.error, fmtRoErr(ex, p.error));
         const multipleCriteria = ex.E.e.length > 1;
         const errName = multipleCriteria ? T.statedWeighted : T.errorWord;
         let overNodes;
-        if (ev.N === 0) overNodes = ["This report states no pair directions."];
-        else if (over.pairs.length === 0) overNodes = [T.statedNone];
-        else if (over.pairs.length === 1) {
+        if (ev.N === 0) {
+          overNodes = ["It states no pair directions."];
+        } else if (over.pairs.length === 0) {
+          overNodes = [`Every stated direction has ${errName} ≤ τ.`];
+        } else if (over.pairs.length === 1) {
           const p = over.pairs[0];
-          overNodes = fill(T.statedOverOne, { pair: pairWords(p), e: errNum(p) });
-          if (multipleCriteria) overNodes = overNodes.map((x) => (typeof x === "string" ? x.replace("its error", `its ${errName}`) : x));
+          overNodes = ["It states ", `${pairWords(p)} (${errName} `, errNum(p), " > τ)."];
         } else {
           const items = over.pairs.map((p) => [`${pairWords(p)} (${errName} `, errNum(p), ")"]);
           const list = items.flatMap((it, k) => (k === 0 ? it : [k === items.length - 1 ? T.blockAnd : ", ", ...it]));
-          overNodes = fill(T.statedOverMany, { list });
+          overNodes = ["It states ", ...list, ", each above τ."];
         }
-        // review 044 repair (X-12): at an optimizer tie the sentence names the shown report as one of the tied ones
-        // (labels.js tieNode: " (one of 2 equal-risk best reports; showing the first)"); the rows list every tied report
         ctx.readout.set([
-          "τ = ", ctx.num(state.tau, formatSetting(state.tau)), ", ", ...familyWords(key, G, n, ex, order, { lower: true }),
-          ": the best report is ", ...blocksNodes(Array.from(r.grade), ex.ids), tieNode(ctx, r), `, ${T.riskWords} `, ro("risk", r.risk, fmtRisk(ex, r.risk)),
-          ". ", ...overNodes,
+          "At τ = ",
+          ctx.num(state.tau, formatSetting(state.tau)),
+          ", ",
+          ...familyShortWords(key, G, n, ex, order),
+          ": ",
+          h("strong", { class: "prx-fam-ro-blocks" }, blocksText(Array.from(r.grade), ex.ids)),
+          tieNode(ctx, r),
+          " has risk ",
+          ro("risk", r.risk, fmtRoRisk(ex, r.risk)),
+          ". ",
+          ...overNodes,
         ]);
         labelLine.replaceChildren(...labelParts(key, r, ex, order, { resultKey: "chosen", chosen: true }));
-
       }
 
       return {
-        render(state) {
+        render(state, info) {
+          if (info?.reason === "disclosure") return;
           ctx.root.setAttribute("aria-busy", "true");
           try {
             const ex = EXAMPLES[state.example] ?? EXAMPLES.six;
             const n = ex.ids.length;
             const G = Math.min(state.G, n);
             const order = orderIndices(state.order, ex);
-            exampleRadio.set(ex.key);
-            familyRadio.set(state.family);
-            gRadio.set(G);
-            gRadio.inputs.forEach((input, k) => { input.disabled = gValues[k] > n; });
+            exampleSeg.set(ex.key);
+            familySeg.set(state.family);
+            gSeg.set(G);
+            gSeg.buttons.forEach((btn, k) => { btn.disabled = gValues[k] > n; });
             tau.set(state.tau);
             drawOrder(ex, order);
 
@@ -956,18 +1334,27 @@ export function mountWidget(el, spec = {}) {
             const evals = {};
             for (const [k, r] of Object.entries(results)) evals[k] = r.empty ? null : evaluateReport(Array.from(r.grade), ex.E, opts);
             const top = Math.max(state.tau, ...Object.values(evals).filter(Boolean).map((v) => v.risk)) * CONFIG.barHeadroom;
-            const pal = palette(ctx.root);
+            const pal = palette(ctx.stage);
 
             const key = state.family;
             drawHeadline(state, key, results[key], evals[key], ex, order);
-            rows.replaceChildren(...["all", "atmost", "exact", "order"].map((k) => drawRow(k, results[k], evals[k], ex, order, all, top, state,
-              k === "order" ? enumOrder : null, pal, k === key)));
-            drawShared(results, enumOrder);
-            searchRows.replaceChildren(...["all", "atmost", "exact", "order"].filter((k) => !results[k].empty)
-              .map((k) => searchLine(k, results[k], ex, order, state, k === "order" ? enumOrder : null)));
+            rows.replaceChildren(
+              ...["all", "atmost", "exact", "order"].map((k) => drawRow(k, results[k], evals[k], ex, order, all, top, state, pal, k === key)),
+            );
             drawLegend(ex, all, state);
+            drawExactData(results, evals, ex, order, state);
+            searchRows.replaceChildren(
+              ...["all", "atmost", "exact", "order"]
+                .filter((k) => !results[k].empty)
+                .map((k) => searchLine(k, results[k], ex, order, state, k === "order" ? enumOrder : null)),
+            );
             drawLaw(ex, state);
-            ctx.caption.textContent = ex.key === "six" ? T.noteSix : ex.key === "dominance" ? "An illustrative two-state law from the postrank theory book, chapter 10. The best report is computed separately within each declared family; the separation theorem concerns unrestricted reports." : T.noteTb14;
+            drawShared(results, enumOrder);
+            scopeNote.textContent = ex.key === "six"
+              ? T.noteSix
+              : ex.key === "dominance"
+                ? "An illustrative two-state law from the postrank theory book, chapter 10. The best report is computed separately within each declared family; the separation theorem concerns unrestricted reports."
+                : T.noteTb14;
           } finally {
             ctx.root.removeAttribute("aria-busy");
           }

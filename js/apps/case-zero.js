@@ -1,60 +1,40 @@
-// case-zero (app 1.1): "A league table and a report card". Kline, Rose and Walters' 97 firms (the released case
-// data/released/case-krw.json, license cc-by-nc-krw) shown two ways. The app uses the shared result-first frame
-// (base.js layout "result-first"; review 044: U1-F1, X-01, X-09, U1-F4), top to bottom:
-//   controls       the card, the order of the league table and a find box, then the preset row (its own line)
-//   read-out       directly under the controls (the frame puts it there): v1's three sentences on the card's pairs,
-//                  then how many of its directions run as the table does and how many the other way
-//   pair bar       the mark the card and the order change (ctx.primaryGraphic), drawn by the shared partBar: all M
-//                  pairs of firms in three parts, the card's directions that run as the table does (N − against), those
-//                  that run the other way (against, each pair named when there are at most three) and the pairs it is
-//                  silent on (M − N), each count written under the track; the title names the card
-//   selected firm  a strip: the firm, the same three parts of its n − 1 pairs (a compact partBar; the firms on the other
-//                  side of its reversed pairs are named when there are few), the pairs line, then its rank and grade
-//                  lines; in the table the firms of its reversed pairs carry ↕ after their grade. On phones (<= 600 px)
-//                  the find box moves from the controls row into the strip's head, next to the firm it finds
-//   the card and the league table, side by side when the charts are wide (the card first, so it also comes first
-//                  when they stack):
-//     the card     one of the two cards KRW published (key card: race, sizes 2/81/14, or gender, sizes 1/3/89/4),
-//                  drawn after KRW's slides 61-63: each firm's posterior mean and central 90% posterior interval (navy)
-//                  over light grade bands that carry their grade numbers (tokens.css: posterior navy and the grade
-//                  ramp are separated by mark type); a hidden table and arrow-key reading through chart.js. One note
-//                  above the figure (grades and sizes, what grade 1 means, the marks, KRW's 95% and the order within a
-//                  grade); under the figure the race card's prior note (why its intervals lie right of zero) and a
-//                  closed "Card source" box (ctx.disclosure) with KRW's caption, the plain gloss and the band legend
-//     league table a real table in its own scroll box: rank, firm, the firm's grade on the chosen card (right after
-//                  the firm, so the grade compared stays in view: X-09), the estimate with a bar of ± 1 SE, the
-//                  posterior mean, the rank under the other order and the industry code; it first shows the top and
-//                  the bottom CONFIG.showRows rows (a gap row counts the rest, and the reversed partners among them)
-//                  and a Show all button brings back every row (selecting a hidden firm shows them all too); the
-//                  criterion follows the card (race estimates with the race card, gender estimates with the gender
-//                  card) and the heading names it; ordered by estimate or by posterior mean (key sort); the header row
-//                  stays in view, the rank and firm columns stay in view when the table scrolls sideways (the shared
-//                  prx-sticky-two class), and a hint says so while the box scrolls
-//   scale note, caption, and on a standalone page the data notice
-// One firm is selected at a time (key firm: the first row of the table's order unless a firm is named; then a click,
-// the arrow keys in either view, or the find box): its row is marked in the table (aria-current, and its firm cell is
-// described by the strip's rank and grade lines) and its interval in the card (whose keyboard reading starts at it).
-// Ranks, card order, grade sizes and pair counts come from the engine (strictOrder, reportCardRows, disclosure,
-// unitRelationCounts, statedAgainst, pairCount); every value shown is a released value, formatted with format.js.
-// The KRW caption is the labels.js string, followed by a plain gloss; a standalone embed (a page without Quarto's
-// quarto:offset meta element) keeps the data notice (the page's string), the change note and the site's disclaimer,
-// and a site page carries one callout and one credit of its own.
-// Performance: the card view is computed once per card, the resolved palette is cached until the theme changes, a
-// change of order only (sort) does not redraw the card, and a change of the selected firm only moves the marks.
+// case-zero (app 1.1): "A league table and a report card" (Frame v2).
+// Kline, Rose and Walters' 97 firms (data/released/case-krw.json, license cc-by-nc-krw) shown two ways:
+//   toolbar   primary Target switch (Race / Gender), wrapping preset chips, and Settings (table order, firm picker, search)
+//   readout   concise 3-sig-fig comparison of all 4,656 firm pairs in a strict league table vs. KRW's posterior report card
+//   stage     pairwise claim breakdown bar chart (league table vs. report card) paired with a row-spaced 97-firm report-card
+//             grade-band figure (17px rounded grade badge pills) and 1-line selected-firm inspection strip
+//   data      exact pair counts, selected-firm pair breakdown, and complete 97-firm league & report-card comparison table
+//   method    grade-1 definition, interval/prior notes, KRW card source caption, band swatches, and scale notes
 //
-// Keys: card ("race" | "gender"), sort ("estimate" | "mean"), firm (a firm id of the data, or "first": the first row
-// of the current order; a firm name is read too), rows ("ends": the top and bottom rows | "all"). Choosing the card or
-// the order keeps the selected firm (the app names it in the firm key); a preset or a link is a whole setting.
-//
-// Exported for the later KRW card apps: CONFIG, readCase, niceAxis, cardView, bandRows.
+// Preserved exports: CONFIG, readCase, niceAxis, cardView, bandRows, mountWidget.
 
+import { mobileControls } from "../shared/mobile-controls.js";
 import { createWidget, uid } from "../shared/base.js";
-import { gradeColors, labelOn, numText, palette, plot } from "../shared/chart.js";
+import { gradeColors, labelOn, numText, palette, placeDirectLabels, plot } from "../shared/chart.js";
 import { partBar } from "../shared/partbar.js";
-import { formatCount, formatDecimal, formatPercent, formatProb, formatSizes, setNum, tickLabel } from "../shared/format.js";
+import {
+  formatCount,
+  formatDecimal,
+  formatPercent,
+  formatReadoutEst,
+  formatShare,
+  formatSizes,
+  setNum,
+  tickLabel,
+} from "../shared/format.js";
 import { captionNode } from "../shared/labels.js";
 import {
-  canonicalGrade, disclosure, normalCdf, pairCount, reportCardRows, statedAgainst, strictOrder, unitRelationCounts,
+  canonicalGrade,
+  disclosure,
+  evaluateReport,
+  normalCdf,
+  pairCount,
+  reportCardRows,
+  statedAbove,
+  statedAgainst,
+  strictOrder,
+  unitRelationCounts,
 } from "../pr-core.js";
 import KRW from "../../data/released/case-krw.json" with { type: "json" };
 
@@ -62,31 +42,28 @@ export const CONFIG = Object.freeze({
   name: "case-zero",
   label: "KRW's firms in a league table beside a report card KRW published",
   className: "prx-cz",
-  // the firm key's value for "the first row of the current order"
   firstFirm: "first",
   defaults: Object.freeze({ card: "race", sort: "estimate", firm: "first", rows: "ends" }),
   cards: Object.freeze({
     race: Object.freeze({
-      label: "Race card", title: "KRW's race card", table: "Race league table", grade: "race_card",
+      label: "Race card", shortLabel: "Race", title: "KRW's race card", table: "Race league table", grade: "race_card",
       estimate: "race_estimate", se: "race_se", mean: "mean_race", lower: "lower_race", upper: "upper_race",
       grade1: "Grade 1 = stated highest on white-name contact advantage, as the posterior judges it.",
       axis: "Log contact gap, white-named minus Black-named",
+      short: "Log contact gap",
       scale: "Both panels show the log contact gap: the log of the contact rate of white-named applications minus that of Black-named ones. Above zero, white-named applications were contacted more often.",
-      // why every race interval lies right of zero beside negative estimates (KRW §III and §V.B; register CR-102)
       prior: "KRW's race prior puts all its weight on positive gaps, so every race posterior lies above zero, even for a firm with a negative estimate.",
-      // the KRW figure of this card, whose caption gives the interval level KRW drew (KRW §VI, Figure 7)
       figure: "KRW's Figure 7 caption says ",
       figureName: "Figure 7",
-      // how KRW's figure marks grade 1 (the page's source callout; review 044, U1-F4)
       star: "Grade 1 is KRW's ★ (one star), which KRW call the worst grade.",
     }),
     gender: Object.freeze({
-      label: "Gender card", title: "KRW's gender card", table: "Gender league table", grade: "gender_card",
+      label: "Gender card", shortLabel: "Gender", title: "KRW's gender card", table: "Gender league table", grade: "gender_card",
       estimate: "gender_estimate", se: "gender_se", mean: "mean_gender", lower: "lower_gender", upper: "upper_gender",
       grade1: "Grade 1 = stated highest on male-name contact advantage, as the posterior judges it.",
       axis: "Log contact gap, male-named minus female-named",
+      short: "Log contact gap",
       scale: "Both panels show the log contact gap: the log of the contact rate of male-named applications minus that of female-named ones. Above zero, male-named applications were contacted more often; below zero, female-named ones.",
-      // KRW §VIII, Figure 14
       figure: "KRW's Figure 14 caption says ",
       figureName: "Figure 14",
     }),
@@ -97,43 +74,35 @@ export const CONFIG = Object.freeze({
     Object.freeze({ value: "mean", label: "Posterior mean" }),
   ]),
   rowModes: Object.freeze(["ends", "all"]),
-  // the bars span the estimate ± seWidth SE (SR-08)
   seWidth: 1,
-  // KRW's Figure 7 and Figure 14 captions: "95 percent credible intervals" (a cited source fact; the released data
-  // file does not carry it)
   krwLevel: 0.95,
+  cardTau: 0.2,
+  doubtfulTau: 0.5,
   digits: Object.freeze({ value: 3 }),
-  // axis domains: ends on multiples of 1, 2, 2.5 or 5 × 10^k, about `ticks` steps, 0 always inside
   nice: Object.freeze({ ticks: 4, mantissas: Object.freeze([1, 2, 2.5, 5, 10]), decimals: 12 }),
   percent: 100,
   pageRows: 10,
-  // rows shown at each end of the league table until Show all
   showRows: 10,
-  // the three parts of a set of pairs in the pair bars, in bar order: the card's directions that run as the table
-  // does, those that run the other way, and the pairs it is silent on
   pairParts: Object.freeze(["agree", "against", "silent"]),
-  // reversed pairs are named, in the card's bar and in the selected firm's strip, when there are at most this many
   revNames: 3,
-  // phones: at or below this width "Find a firm" moves into the selected firm's strip (the frame's 600 px breakpoint)
-  narrowQuery: "(max-width: 37.5em)",
-  // the card: rowPx per firm; light grade bands, their fill opacity alternating between the two tints so that
-  // neighboring grades separate (the legend swatches mix the same shares); labelGap px between an interval and the
-  // selected firm's name; grade numbers at least labelPx px apart
   chart: Object.freeze({
-    rowPx: 5, marginTop: 8, marginBottom: 38, marginLeft: 24, marginRight: 14,
-    line: 1.25, dot: 1.8, tints: Object.freeze([0.26, 0.1]), dash: "3,2", gradeDx: 7, half: 0.5, labelGap: 6, labelPx: 12,
+    rowPx: 12, narrowRowPx: 14, marginTop: 48, marginBottom: 38, marginLeft: 36, marginRight: 14,
+    stripePx: 24, line: 1.5, dot: 2.3, tints: Object.freeze([0.22, 0.08]), dash: "4,3", half: 0.5, labelPx: 12,
   }),
   text: Object.freeze({
     missing: "The KRW data did not load, so this app cannot show the firms.",
+    targetLabel: "Target",
     cardLegend: "Card",
     sortLegend: "Order the league table by",
+    firmSelectLabel: "Selected firm",
     findLabel: "Find a firm",
     findHint: "Type part of a name; press Enter for the next match.",
     tableHeading: "League table",
+    dataTitle: "Data and 97-firm comparison",
+    methodTitle: "Method and details",
     scrollHint: "The table scrolls sideways: more columns sit to the right of the firm names.",
     barNote: Object.freeze(["Bars: estimate ± ", "{se}", " SE (such a bar covers the true value in about ", "{within}", " of repeated estimates)."]),
     orderNote: Object.freeze({ estimate: "Ordered by estimate, largest first.", mean: "Ordered by posterior mean, largest first." }),
-    // the columns in their order (review 044, X-09: the card grade right after the firm)
     caption: Object.freeze(["{table}", " of the ", "{n}", " firms. Each row gives the rank in this order, the firm, its grade on the card, its estimate and SE (the bar repeats them), its posterior mean, its rank in the other order and its industry code. ↕ after a grade marks a firm whose pair with the selected firm the card states the other way."]),
     colRank: "Rank",
     colRankBy: Object.freeze({ estimate: "by estimate", mean: "by posterior mean" }),
@@ -147,26 +116,16 @@ export const CONFIG = Object.freeze({
     showAll: "Show all firms",
     showEnds: "Show the top ten and the bottom ten only",
     gap: Object.freeze(["{count}", " firms in the middle are not shown."]),
-    // after "marked ↕" in the strip when some of the marked firms are among the rows the short table does not show
     revHidden: Object.freeze([" (", "{count}", " in the rows not shown)"]),
-    // the note above the card (review 044, U1-F4): the marks, the level KRW's figure shows and the order within a grade;
-    // the sentence on the shaded bands moves with the band legend into the "Card source" box
     cardNote: Object.freeze(["Dots: posterior means. Lines: ", "{level}", " posterior intervals (KRW's ", "{figure}", " shows ", "{krwLevel}", " intervals); within a grade, firms by posterior mean."]),
     bandsNote: "Shaded bands: the grades, grade 1 at the top.",
-    cardSource: "Card source",
-    // the pair bars: the title of the card's bar (it names the card), the words after each count, and the strip's bar
-    // for one firm
     pairsTitle: Object.freeze(["All ", "{total}", " pairs of firms · ", "{card}"]),
     pairWords: Object.freeze({ agree: " stated as the table does", against: " stated the other way", silent: " silent (same grade)" }),
-    // after "stated the other way" when the card states at most CONFIG.revNames such pairs: each pair as the card
-    // states it ("the card puts State Farm above VFC (North Face / Vans)")
     revPairsLead: ": the card puts ",
     revPairAbove: " above ",
     revPairSep: "; ",
     firmPairsTitle: Object.freeze(["Its ", "{total}", " pairs"]),
     firmWords: Object.freeze({ agree: " as the table does", against: " the other way", silent: " silent" }),
-    // the firms on the other side of the selected firm's reversed pairs: named after the count when few, marked in the
-    // table in any case (the mark's alternative text for screen readers is revMarkSr)
     revNamed: ": ",
     revMarked: ", marked ↕",
     revMany: ", marked ↕ in the table",
@@ -196,33 +155,22 @@ export const CONFIG = Object.freeze({
     pairsSilentOne: " firm that shares its grade.",
     pairsSilentMany: " firms that share its grade.",
     pairsNone: ", and is silent on none of them.",
-    // how the directions a card states run against the table's order (shown order: the strictOrder ranks): the parts
-    // of "{agree} as the table does and {against} the other way", or one of the two "all" forms
     agreeA: " as the table does and ",
     againstA: " the other way",
     allAgree: "all as the table does",
     allAgainst: "all the other way",
     noMatch: "No firm name contains this text.",
     match: Object.freeze(["{count}", " firms match; showing match ", "{k}", ". Press Enter for the next."]),
-    // the read-out: v1's three sentences verbatim, then one sentence on how the directions the card states run against
-    // the table's order as shown
-    readA: "The league table states a direction for every one of the ",
-    readB: " pairs of firms. ",
-    readC: " states ",
-    readD: " of them, a share of ",
-    readE: ": the pairs whose two firms are in different grades. It is silent on the ",
-    readF: " pairs that share a grade (",
+    insideLead: "Withheld within-grade pairs: ",
     readInside: " inside grade ",
     readAnd: " and ",
-    readEnd: ").",
+    readEnd: ".",
     readOrderA: " Of the ",
     readOrderB: " directions the card states, ",
     readOrderC: " run as the table does and ",
     readOrderD: " the other way.",
     readOrderAll: Object.freeze([" All ", " directions the card states run as the table does."]),
     readOrderNone: Object.freeze([" All ", " directions the card states run the other way."]),
-    // the KRW data notice (register CR-054), one string on the page and in the standalone embed: its last sentence is
-    // the conduct line; the embed adds the change note and the site's own disclaimer after it
     notice: "Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700, and deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only; as adapted in postrank 1.1.0 (pr_case_krw), changes noted; no endorsement by the authors is implied.",
     noticeConduct: "The data describe KRW's correspondence experiment, not any firm's current conduct.",
     noticeChanges: "Changes: a smoothed version of KRW's posteriors (continuous cells with central intervals in place of KRW's posterior grids), from postrank 1.1.0 (pr_case_krw); KRW's published cards as released.",
@@ -231,7 +179,6 @@ export const CONFIG = Object.freeze({
 });
 
 const T = CONFIG.text;
-/** A text as a CSS string (for generated content). */
 const cssString = (s) => `"${String(s).replace(/["\\]/g, "\\$&")}"`;
 const roundNice = (x) => Number(x.toFixed(CONFIG.nice.decimals));
 const pct = (v, total) => `${(v / total) * CONFIG.percent}%`;
@@ -251,6 +198,7 @@ export function readCase(d = KRW) {
     industry: u.industry.slice(),
     units: u,
     reports: d.tables.reports,
+    error: d.arrays?.error ?? null,
     level: d.facts?.interval_level,
   };
 }
@@ -284,7 +232,7 @@ export function niceAxis(lo, hi) {
   return { lo: start, hi: end, ticks };
 }
 
-/** Everything one card needs: values, ranks, card order, counts. Ranks and counts come from the engine. */
+/** Everything one card needs: values, ranks, card order, counts, and posterior pair-error summaries. */
 export function cardView(D, key) {
   const c = CONFIG.cards[key];
   const u = D.units;
@@ -301,14 +249,7 @@ export function cardView(D, key) {
   const order = Array.from(reportCardRows(grade, { ids: D.ids, mean }, "mean"));
   const pos = new Array(D.n);
   order.forEach((i, k) => { pos[i] = k; });
-  // per firm: the directions the card states about it and the firms that share its grade (engine unitRelationCounts,
-  // the row counts of the relation matrix)
   const rel = unitRelationCounts(grade);
-  // the directions the card states against the table's shown order (engine statedAgainst on the strictOrder ranks, 1 at
-  // the top, so "ascending"): the card's count and its pairs ({ above, below } as the card states them), per firm the
-  // number of pairs of that list it belongs to (per), and per firm the firms on the other side of those pairs (firms;
-  // marked ↕ in the table while the firm is selected). The ranks are strict, so every other stated pair runs as the
-  // table does: agree = stated − against.
   const againstOrder = (rank) => {
     const r = statedAgainst(grade, Array.from(rank), { direction: "ascending" });
     const per = new Array(D.n).fill(0);
@@ -319,20 +260,30 @@ export function cardView(D, key) {
     }
     return { count: r.count, pairs: r.pairs, per, firms };
   };
+  const target = `${key}_signed`;
+  const errIdx = D.error?.criteria?.indexOf?.(target) ?? -1;
+  const errArr = errIdx >= 0 ? { ids: D.error.ids, criteria: [target], e: [D.error.e[errIdx]] } : null;
+  const evalOf = (rep) => {
+    if (!errArr) return null;
+    const ev = evaluateReport(rep, errArr, { tau: CONFIG.cardTau });
+    const doubtful = statedAbove(rep, errArr, { tau: CONFIG.doubtfulTau });
+    return { E: ev.E[0], EoverN: ev.EoverN[0], doubtful: doubtful.count };
+  };
   const w = CONFIG.seWidth;
   return {
-    key, card: c, est, se, mean, lower, upper, grade, disc, rankEst, rankMean, order, pos, stated: rel.stated, withheld: rel.withheld,
-    partners: rel.partners,
+    key, card: c, est, se, mean, lower, upper, grade, disc, rankEst, rankMean, order, pos,
+    stated: rel.stated, withheld: rel.withheld, partners: rel.partners,
     against: { estimate: againstOrder(rankEst), mean: againstOrder(rankMean) },
     inside: Array.from(disc.sizes, (s) => pairCount(s)),
     rows: { estimate: byRank(rankEst), mean: byRank(rankMean) },
     estAxis: niceAxis(Math.min(...est.map((x, i) => x - w * se[i])), Math.max(...est.map((x, i) => x + w * se[i]))),
     cardAxis: niceAxis(Math.min(...lower), Math.max(...upper)),
+    cardEval: evalOf(grade),
+    tableEval: { estimate: evalOf(Array.from(rankEst)), mean: evalOf(Array.from(rankMean)) },
   };
 }
 
-/** The grade bands of a card in row positions: { grade, first, last, mid, at } with `at` the grade number's row,
- * pushed down to stay `gap` rows below the number above it (thin bands, such as the gender card's grades 1 and 2). */
+/** The grade bands of a card in row positions: { grade, first, last, mid, at }. */
 export function bandRows(sizes, gap) {
   let first = 0;
   const out = Array.from(sizes, (size, k) => {
@@ -344,16 +295,19 @@ export function bandRows(sizes, gap) {
   return out;
 }
 
-/** The fill opacity of a grade band: the two tints alternate from grade 1. */
 const tintOf = (g) => CONFIG.chart.tints[(g - 1) % CONFIG.chart.tints.length];
 
 // ---------------------------------------------------------------------------------------------- CSS
 
 const CSS = `
-.prx-cz .prx-cz-find { flex: 1 1 14rem; }
+.prx-cz .prx-cz-settings { display: flex; flex-wrap: wrap; gap: 0.65rem 1.25rem; align-items: flex-start; width: 100%; }
+.prx-cz .prx-cz-firm-pick { flex: 1 1 13rem; max-width: 20rem; }
+.prx-cz .prx-cz-firm-pick select { width: 100%; }
+.prx-cz .prx-cz-find { flex: 1 1 13rem; max-width: 20rem; }
 .prx-cz .prx-cz-find input { width: 100%; }
+.prx-cz .prx-cz-find-status { flex: 1 1 100%; margin: 0; }
 
-.prx-cz .prx-cz-heading { margin: 0 0 0.25rem; font-size: 1em; font-weight: 600; line-height: 1.3; color: var(--prx-fg-heading); }
+.prx-cz .prx-cz-heading { margin: 0; font-size: 0.95em; font-weight: 600; line-height: 1.3; color: var(--prx-fg-heading); }
 .prx-cz .prx-cz-note { margin: 0 0 0.35rem; font-size: 0.9em; color: var(--prx-fg-muted); }
 .prx-cz .prx-cz-scroll-hint { margin: 0 0 0.35rem; }
 .prx-cz .prx-cz-grade1 { font-weight: 600; color: var(--prx-fg); }
@@ -361,56 +315,58 @@ const CSS = `
 .prx-cz .prx-cz-notice strong { font-weight: 600; color: var(--prx-fg); }
 .prx-cz .prx-cz-missing { margin: 0; padding: 0.75rem; border: 1px dashed var(--prx-border-strong); border-radius: var(--prx-radius, 6px); }
 
-/* the two part bars (js/shared/partbar.js and styles/app.css .prx-partbar*, lifted from this app's pair bar): only
-   where they sit is the app's own */
-.prx-cz .prx-cz-charts > .prx-partbar { margin: 0 0 0.6rem; }
-.prx-cz .prx-cz-details .prx-partbar { margin: 0.3rem 0 0.15rem; }
+/* Stage: pairwise comparison chart + compact key + 97-firm report card + 1-line selected-firm strip */
+.prx-cz .prx-stage .prx-cz-pair-chart,
+.prx-cz .prx-stage .prx-cz-card-chart { min-width: 0; max-width: 100%; }
+.prx-cz .prx-stage .prx-cz-pair-key {
+  display: flex; flex-wrap: wrap; gap: 0.25rem 0.9rem; align-items: center;
+  margin: 0.15rem 0 0.55rem; padding: 0 0 0.45rem; list-style: none;
+  font-size: 0.84rem; line-height: 1.35; color: var(--prx-plot-fg);
+  background: transparent; border: 0; border-bottom: 1px solid var(--prx-border); border-radius: 0;
+}
+.prx-cz .prx-stage .prx-cz-pair-key > li { display: inline-flex; gap: 0.35rem; align-items: center; margin: 0; }
+.prx-cz .prx-stage .prx-cz-pair-key .prx-partbar-sw { flex: none; margin-right: 0; }
+.prx-cz .prx-stage .prx-cz-pair-key > li.prx-cz-pair-doubtful { display: inline; overflow-wrap: break-word; color: var(--prx-plot-muted); }
+.prx-cz .prx-stage .prx-cz-card-head {
+  display: flex; flex-wrap: wrap; gap: 0.2rem 0.65rem; align-items: baseline; justify-content: space-between;
+  margin: 0 0 0.2rem; color: var(--prx-plot-fg);
+}
+.prx-cz .prx-stage .prx-cz-card-guide { margin: 0 0 0.3rem; color: var(--prx-plot-muted); font-size: 0.85rem; }
+.prx-cz .prx-cz-card-chart .prx-kbd-point { scroll-margin-block: 6rem 2rem; }
+.prx-cz .prx-stage .prx-cz-card-head .prx-cz-heading { color: var(--prx-plot-fg); }
+.prx-cz .prx-stage .prx-cz-card-sizes { margin: 0; font-size: 0.85rem; color: var(--prx-plot-muted); }
+.prx-cz .prx-stage .prx-cz-inspect {
+  margin: 0.4rem 0 0; padding: 0.35rem 0 0; border-top: 1px solid var(--prx-border);
+  font-size: 0.86rem; line-height: 1.4; font-variant-numeric: tabular-nums;
+  color: var(--prx-plot-muted); overflow-wrap: break-word;
+}
+.prx-cz .prx-stage .prx-cz-inspect strong { color: var(--prx-plot-fg); font-weight: 600; }
 
-/* the selected firm: a strip under the pair bar; the heading and the firm's name on one line (on phones "Find a firm"
-   joins them, on a line of its own), then its own part bar and the details lines */
+/* Disclosures: Data & Method */
+.prx-cz .prx-cz-data-stack,
+.prx-cz .prx-cz-method-stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.65rem; }
+.prx-cz .prx-cz-data-stack > *,
+.prx-cz .prx-cz-method-stack > * { min-width: 0; margin: 0; }
 .prx-cz .prx-cz-details {
-  margin: 0 0 0.75rem; padding: 0.45rem 0.75rem 0.5rem; background: var(--prx-bg); border: 1px solid var(--prx-border);
+  padding: 0.45rem 0.75rem 0.5rem; background: var(--prx-bg); border: 1px solid var(--prx-border);
   border-radius: var(--prx-radius, 6px); font-variant-numeric: tabular-nums;
 }
 .prx-cz .prx-cz-details-head { display: flex; flex-wrap: wrap; gap: 0.1rem 0.6rem; align-items: baseline; }
-.prx-cz .prx-cz-details-head .prx-cz-heading { margin: 0; }
-.prx-cz .prx-cz-details-head > .prx-cz-find { flex: 1 1 100%; margin: 0.35rem 0 0.1rem; }
-.prx-cz .prx-cz-details-name, .prx-cz .prx-cz-details-line, .prx-cz .prx-cz-find-status { margin: 0.15rem 0 0; }
+.prx-cz .prx-cz-details-name, .prx-cz .prx-cz-details-line { margin: 0.2rem 0 0; }
 .prx-cz .prx-cz-details-head .prx-cz-details-name { margin: 0; }
-
-/* the two panels: side by side in a wide container, stacked below 54rem (the site page's column at 1280 px gives the
-   charts about 957 px at a 17 px root font, 56.3rem; the 16 px standalone page about 1,125 px). The card comes first,
-   in the DOM and on screen, so it also comes first when the panels stack. Side by side, the table's box keeps its
-   natural height up to 46rem: the short table (the top ten, the gap row and the bottom ten: 40.5rem to 45.2rem tall at
-   the widths where the panels sit side by side) shows whole beside the card, whose column is shorter now that its
-   source notes sit in a closed box, and all 97 rows scroll inside the box. The container is named: the league panel is
-   a container of its own, and the table box inside it must still answer to the charts' width. */
-.prx-cz .prx-cz-charts { container: prx-cz-charts / inline-size; }
-.prx-cz .prx-cz-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-.prx-cz .prx-cz-panel { min-width: 0; }
-@container prx-cz-charts (min-width: 54rem) {
-  .prx-cz .prx-cz-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr); }
-  .prx-cz .prx-cz-league .prx-cz-table-box { max-height: 46rem; }
-}
+.prx-cz .prx-cz-details .prx-partbar { margin: 0.3rem 0 0.15rem; }
 .prx-cz .prx-cz-league-head { display: flex; flex-wrap: wrap; gap: 0.2rem 0.75rem; align-items: baseline; margin: 0 0 0.3rem; }
 .prx-cz .prx-cz-league-head > * { margin: 0; }
-.prx-cz .prx-cz-scale { margin: 0.75rem 0 0; }
-.prx-cz .prx-cz-prior { margin: 0.35rem 0 0; }
-/* the note above the card: v1's grade legend and, joined to it as one box on plot paper (both are legends), the
-   marks, KRW's 95% and the order within a grade; the closed "Card source" box sits under the figure */
-.prx-cz .prx-cz-card .prx-cz-grade1 { margin: 0; padding: 0.2rem 0.45rem 0.05rem; border-radius: 4px 4px 0 0; }
-.prx-cz .prx-cz-card-note { padding: 0.05rem 0.45rem 0.2rem; border-radius: 0 0 4px 4px; }
-.prx-cz .prx-cz-card .prx-disclosure { margin: 0.5rem 0 0; }
-.prx-cz .prx-cz-card .prx-disclosure-body > :last-child { margin-bottom: 0; }
 
-/* the league table in its own scroll box */
+/* 97-firm comparison table inside Data disclosure */
 .prx-cz .prx-cz-table-box {
-  position: relative; max-width: 100%; max-height: 26rem; overflow: auto; background: var(--prx-bg);
+  position: relative; max-width: 100%; max-height: 28rem; overflow: auto; background: var(--prx-bg);
   border: 1px solid var(--prx-border-strong); border-radius: var(--prx-radius, 6px);
 }
 .prx-cz .prx-cz-table {
   width: 100%; min-width: 38rem; max-width: none; margin: 0; border-collapse: separate; border-spacing: 0;
   font-size: 0.875em; font-variant-numeric: tabular-nums; overflow-wrap: normal;
+  --prx-sticky-first-width: 3.75rem;
 }
 .prx-cz .prx-cz-table th, .prx-cz .prx-cz-table td {
   padding: 0.2rem 0.45rem; text-align: left; vertical-align: middle; white-space: nowrap; background: var(--prx-bg);
@@ -420,14 +376,8 @@ const CSS = `
   position: sticky; top: 0; z-index: 2; vertical-align: bottom; white-space: normal; font-weight: 600;
   color: var(--prx-fg-heading); background: var(--prx-bg-raised); border-bottom: 1px solid var(--prx-border-strong);
 }
-/* rank and firm stay in view when the table scrolls sideways: the shared prx-sticky-two class (styles/app.css, a
-   cascade layer that acts only while the box overflows) keeps the first two columns, the firm column at the rank
-   column's width (--prx-sticky-first-width) and casting a shadow once the box is scrolled; the cells keep the table's
-   own surface (the app's rules win over the layer), so the selection and hover tints reach them. The header's two
-   corner cells stay above the header cells that scroll under them (the app's header cells are z-index 2). */
-.prx-cz .prx-cz-table { --prx-sticky-first-width: 3.75rem; }
 .prx-cz .prx-cz-table .prx-cz-col-rank { width: 3.75rem; min-width: 3.75rem; max-width: 3.75rem; white-space: normal; }
-.prx-cz .prx-cz-table .prx-cz-col-firm { min-width: 8.5rem; max-width: 11rem; white-space: normal; border-right: 1px solid var(--prx-border); }
+.prx-cz .prx-cz-table .prx-cz-col-firm { min-width: 8.5rem; max-width: 12rem; white-space: normal; border-right: 1px solid var(--prx-border); }
 .prx-cz .prx-cz-table thead .prx-cz-col-rank, .prx-cz .prx-cz-table thead .prx-cz-col-firm { z-index: 3; }
 .prx-cz .prx-cz-table tbody th { font-weight: 400; color: var(--prx-fg); cursor: pointer; }
 .prx-cz .prx-cz-table tbody tr { cursor: pointer; }
@@ -435,9 +385,6 @@ const CSS = `
 .prx-cz .prx-cz-table tbody tr:hover > * { background: var(--prx-bg-raised); }
 .prx-cz .prx-cz-table tbody tr.prx-cz-selected > * { background: var(--prx-bg-sunken); font-weight: 600; }
 .prx-cz .prx-cz-table tbody tr.prx-cz-selected > .prx-cz-col-rank { box-shadow: inset 4px 0 0 var(--prx-accent); }
-/* the firms of the selected firm's reversed pairs: a bar on the rank cell in the color of "the other way" in the pair
-   bars, and ↕ after the grade badge. The mark is generated content, so each cell's text stays what it states (its grade);
-   its alternative text names the mark for screen readers (the plain form first, for browsers without the "/" syntax) */
 .prx-cz .prx-cz-table tbody tr.prx-cz-rev > .prx-cz-col-rank { box-shadow: inset 4px 0 0 var(--prx-rel-below); }
 .prx-cz .prx-cz-table tbody tr.prx-cz-rev > .prx-cz-col-grade::after {
   content: ${cssString(T.revMark)}; content: ${cssString(T.revMark)} / ${cssString(T.revMarkSr)};
@@ -445,20 +392,13 @@ const CSS = `
 }
 .prx-cz .prx-cz-table tbody th:focus-visible { outline: var(--prx-focus-width, 2px) solid var(--prx-focus); outline-offset: calc(-1 * var(--prx-focus-width, 2px)); }
 .prx-cz .prx-cz-table .prx-cz-col-other, .prx-cz .prx-cz-table .prx-cz-col-industry { color: var(--prx-fg-muted); }
-/* the gap row stands for the hidden middle rows until Show all; its text stays in view when the table scrolls */
 .prx-cz .prx-cz-table tbody tr.prx-cz-gap { cursor: default; }
 .prx-cz .prx-cz-table tbody tr.prx-cz-gap > td { padding: 0.35rem 0.45rem; font-style: italic; color: var(--prx-fg-muted); background: var(--prx-bg-sunken); }
 .prx-cz .prx-cz-table tbody tr.prx-cz-gap > td > span { position: sticky; left: 0.45rem; }
 .prx-cz .prx-cz-table tbody tr.prx-cz-gap:hover > * { background: var(--prx-bg-sunken); }
 .prx-cz .prx-cz-table td.prx-cz-col-mean { color: var(--prx-post-text); }
-/* estimate ± 1 SE: a bar on the plot panel color, then the numbers in the estimate's text color */
 .prx-cz .prx-cz-table .prx-cz-col-est { min-width: 13rem; }
 .prx-cz .prx-cz-table thead .prx-cz-col-other { min-width: 6.5rem; }
-/* a roomy table keeps each firm's name on one line */
-.prx-cz .prx-cz-league { container-type: inline-size; }
-@container (min-width: 40rem) {
-  .prx-cz .prx-cz-table .prx-cz-col-firm { min-width: 11.5rem; max-width: none; white-space: nowrap; }
-}
 .prx-cz .prx-cz-strip, .prx-cz .prx-cz-axis { position: relative; display: inline-block; width: 6.5rem; vertical-align: middle; }
 .prx-cz .prx-cz-strip { height: 0.95rem; background: var(--prx-plot-bg); border: 1px solid var(--prx-plot-grid); border-radius: 2px; }
 .prx-cz .prx-cz-axis { display: block; height: 1.1rem; margin-top: 0.1rem; }
@@ -473,40 +413,29 @@ const CSS = `
   border: 1px solid var(--prx-border-strong); border-radius: 3px;
 }
 
-/* the card: its band legend sits on the plot paper in every theme, like the bands it explains */
 .prx-cz .prx-cz-bands {
-  display: flex; flex-wrap: wrap; gap: 0.2rem 0.9rem; align-items: center; margin: 0 0 0.35rem; padding: 0.2rem 0.45rem;
+  display: flex; flex-wrap: wrap; gap: 0.2rem 0.9rem; align-items: center; padding: 0.25rem 0.5rem;
   font-size: 0.9em; border-radius: 4px;
 }
 .prx-cz .prx-cz-band { display: inline-flex; gap: 0.3rem; align-items: center; }
-/* a grade band's tint: its grade color at the band's fill opacity (set by the app as --prx-cz-mix) on the plot
-   panel color */
 .prx-cz .prx-cz-swatch {
   display: inline-block; flex: none; width: 0.95rem; height: 0.95rem;
   background: color-mix(in srgb, var(--prx-cz-swatch, #153653) var(--prx-cz-mix, 20%), var(--prx-plot-bg));
   border: 1px solid var(--prx-cell-border);
 }
-.prx-cz .prx-cz-card-chart { max-width: 100%; }
-.prx-cz .prx-cz-sel { position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden; pointer-events: none; }
-.prx-cz .prx-cz-sel-box { position: absolute; border: 1.5px solid var(--prx-plot-focus); border-radius: 2px; }
-.prx-cz .prx-cz-sel-bar { position: absolute; height: 3px; margin-top: -1.5px; background: var(--prx-post); }
-.prx-cz .prx-cz-sel-dot {
-  position: absolute; width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--prx-post); border-radius: 50%;
-  box-shadow: 0 0 0 2px var(--prx-plot-bg);
-}
-.prx-cz .prx-cz-sel-label {
-  position: absolute; max-width: 60%; padding: 0 0.3rem; overflow: hidden; font-size: 0.8em; font-weight: 600; line-height: 1.4;
-  color: var(--prx-plot-fg); text-overflow: ellipsis; white-space: nowrap; background: var(--prx-plot-bg);
-  border: 1px solid var(--prx-plot-axis); border-radius: 3px; transform: translate(0.4rem, -50%);
-}
-.prx-cz .prx-cz-sel-label.prx-cz-sel-left { transform: translate(calc(-100% - 0.4rem), -50%); }
-.prx-cz .prx-cz-sel-label.prx-cz-sel-inside { transform: translate(calc(-100% - 2px), -50%); }
 
-/* narrow screens: the controls stack, choices keep one row each; narrower sticky columns leave room for the
-   estimate when the table scrolls sideways */
+.prx-cz .prx-cz-pair-jump { display: none; }
+@media (max-width: 36em) {
+  .prx-cz .prx-cz-pair-jump { display: inline-block; min-height: 44px; padding: 0; color: inherit;
+    border: 0; background: transparent; font: inherit; font-size: .84rem; text-decoration: underline; cursor: pointer; }
+  .prx-cz .prx-stage .prx-cz-pair-chart { scroll-margin-block-start: 5rem; }
+}
 @media (max-width: 30em) {
-  .prx-cz .prx-cz-cards, .prx-cz .prx-cz-sorts, .prx-cz .prx-cz-find { flex: 0 0 auto; }
-  .prx-cz .prx-cz-find { width: 100%; }
+  .prx-cz.prx-widget[data-prx-frame="v2"] { padding: 0.5rem 0.6rem; }
+  .prx-cz.prx-widget[data-prx-frame="v2"] > .prx-title { margin-bottom: 0.2rem; }
+  .prx-cz.prx-widget[data-prx-frame="v2"] .prx-toolbar { gap: 0.3rem 0.5rem; margin-bottom: 0.35rem; }
+  .prx-cz.prx-widget[data-prx-frame="v2"] > .prx-readout { margin-bottom: 0.45rem; padding: 0.35rem 0.55rem; font-size: .9375rem; line-height: 1.35; }
+  .prx-cz .prx-stage { padding: 0.5rem 0.55rem; }
   .prx-cz .prx-cz-table-box { max-height: 22rem; }
   .prx-cz .prx-cz-table { --prx-sticky-first-width: 3.5rem; }
   .prx-cz .prx-cz-table .prx-cz-col-rank { width: 3.5rem; min-width: 3.5rem; max-width: 3.5rem; padding-right: 0.3rem; padding-left: 0.3rem; }
@@ -522,9 +451,7 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     className: CONFIG.className,
     css: CSS,
-    // the shared result-first frame (review 044, X-01): title, controls and preset row, the read-out, the charts (the
-    // pair bar first), then the caption; base.js only moves nodes, so keys, presets, hooks and the live region are kept
-    layout: "result-first",
+    frame: "v2",
     keys: {
       card: { type: "choice", values: [...CONFIG.cardOrder], value: CONFIG.defaults.card },
       sort: { type: "choice", values: CONFIG.sorts.map((s) => s.value), value: CONFIG.defaults.sort },
@@ -535,7 +462,7 @@ export function mountWidget(el, spec = {}) {
       const { h } = ctx;
       const D = DATA;
       if (!D) {
-        ctx.charts.append(h("p", { class: "prx-cz-missing", text: T.missing }));
+        ctx.stage.append(h("p", { class: "prx-cz-missing", text: T.missing }));
         return { render() {} };
       }
       const views = {};
@@ -543,60 +470,76 @@ export function mountWidget(el, spec = {}) {
       const within = normalCdf(CONFIG.seWidth) - normalCdf(-CONFIG.seWidth);
       const level = D.level;
 
-      // number helpers: a data-num span, one with a read-out hook, a firm name (a name, not a number)
       const num = (raw, display) => ctx.num(raw, display);
-      const ro = (name, raw, display) => { const s = ctx.num(raw, display); s.setAttribute("data-prx-readout", name); return s; };
+      const ro = (name, raw, display) => {
+        const s = ctx.num(raw, display);
+        if (name) s.setAttribute("data-prx-readout", name);
+        return s;
+      };
       const val = (x) => formatDecimal(x, { digits: CONFIG.digits.value });
       const count = (x) => num(x, formatCount(x));
       const nameNode = (i, tag = "span") => h(tag, { "data-prx-name": "", text: D.names[i] });
       const fill = (parts, slots) => parts.map((p) => { const m = /^\{(\w+)\}$/.exec(p); return m ? slots[m[1]]() : p; });
 
-      // the firm shown as selected (an index), the card and order last drawn, the theme last drawn with
       let selected = null;
       let lastCard = null;
       let lastSort = null;
       let lastTheme = null;
-      // the league table shows only its two ends until Show all (key rows; selecting a hidden firm sets it to all)
       let expanded = false;
-      // the resolved palette, kept until the theme changes (reading the tokens is the costly part of a redraw)
       let palCache = null;
       const pal = () => (palCache ??= palette(ctx.root));
-      // how the next render shows the selection (scroll its row into view, focus its cell, keep the find line):
-      // set by the reader's action just before it changes the state, used once
       let pending = null;
-      // true while a render runs: a redraw of the card gives focus back to its keyboard point, and that focus is not
-      // the reader choosing a firm
       let rendering = false;
       let matches = [];
       let matchAt = 0;
 
-      const themeKey = () => [ctx.root.getAttribute("data-theme"), ctx.doc.documentElement.getAttribute("data-theme"),
-        ctx.win.matchMedia?.("(prefers-color-scheme: dark)")?.matches].join("|");
-      /** The firm a state selects: the named firm, or the first row of the state's order. */
+      const themeKey = () => [
+        ctx.root.getAttribute("data-theme"),
+        ctx.doc.documentElement.getAttribute("data-theme"),
+        ctx.win.matchMedia?.("(prefers-color-scheme: dark)")?.matches,
+      ].join("|");
       const firmOf = (state) => (state.firm === CONFIG.firstFirm || !D.idIndex.has(state.firm)
         ? view(state.card).rows[state.sort][0] : D.idIndex.get(state.firm));
-      /** The firm key of firm i in a state: "first" when it heads the state's order, else its id (so a setting has
-       * one key, and the preset row finds it). */
       const firmKey = (i, state) => (i === view(state.card).rows[state.sort][0] ? CONFIG.firstFirm : D.ids[i]);
-      /** A new card or order that keeps the firm on screen selected. */
       const keepFirm = (patch) => {
         const next = { ...ctx.state, ...patch };
         return selected === null ? patch : { ...patch, firm: firmKey(selected, next) };
       };
 
-      // --- controls: the card and the order of the league table (two radio groups, one Tab stop each, arrow keys
-      // between the options), a find box
-      const cardSeg = ctx.radioGroup({
-        legend: T.cardLegend, name: "card", className: "prx-cz-cards",
-        options: CONFIG.cardOrder.map((k) => ({ value: k, label: CONFIG.cards[k].label })),
+      // --- Primary control in toolbar: Target (Race / Gender)
+      const cardSeg = ctx.segmented({
+        label: T.targetLabel,
+        name: "card",
+        className: "prx-cz-cards",
+        options: CONFIG.cardOrder.map((k) => ({
+          value: k,
+          label: CONFIG.cards[k].shortLabel,
+          title: CONFIG.cards[k].label,
+        })),
         value: ctx.state.card,
         onChange: (v) => { if (v !== ctx.state.card) ctx.set(keepFirm({ card: v })); },
       });
+      ctx.controls.append(ctx.primaryControl(cardSeg.root));
+
+      // --- Secondary controls in Settings: league ordering, firm dropdown picker, and firm search
+      const settings = ctx.settingsBox();
       const sortSeg = ctx.radioGroup({
-        legend: T.sortLegend, name: "sort", className: "prx-cz-sorts",
+        legend: T.sortLegend,
+        name: "sort",
+        className: "prx-cz-sorts",
         options: CONFIG.sorts.map((s) => ({ value: s.value, label: s.label })),
         value: ctx.state.sort,
         onChange: (v) => { if (v !== ctx.state.sort) ctx.set(keepFirm({ sort: v })); },
+      });
+      const firmPick = ctx.select({
+        label: T.firmSelectLabel,
+        name: "firm-pick",
+        className: "prx-cz-firm-pick",
+        options: D.ids.map((id, i) => ({ value: id, label: D.names[i] })),
+        value: D.ids[firmOf(ctx.state)],
+        onChange: (id) => {
+          if (D.idIndex.has(id)) choose(D.idIndex.get(id), { scroll: true });
+        },
       });
       const listId = uid("prx-cz-firms");
       const hintId = uid("prx-cz-find-hint");
@@ -609,6 +552,7 @@ export function mountWidget(el, spec = {}) {
         h("datalist", { id: listId }, ...D.names.map((name) => h("option", { value: name }))),
         h("p", { id: hintId, class: "prx-hint", text: T.findHint }),
       );
+      const findStatus = h("p", { class: "prx-hint prx-cz-find-status", hidden: true });
       ctx.listen(find.input, "keydown", (e) => {
         if (e.key !== "Enter" || e.isComposing) return;
         e.preventDefault();
@@ -618,45 +562,48 @@ export function mountWidget(el, spec = {}) {
           drawFindStatus();
         }
       });
-      ctx.controls.append(cardSeg.root, sortSeg.root, find.root);
+      settings.body.append(h("div", { class: "prx-cz-settings" }, sortSeg.root, firmPick.root, find.root, findStatus));
 
-      // --- the pair bar of the card (the shared partBar, review 044 U1-F1): all pairs of firms in three parts, each
-      // count written under the track; the first panel under the read-out, and the graphic the card and the order change
+      // --- Primary Stage: pairwise claim comparison + row-spaced report card + 1-line selected-firm strip
+      const pairChartSlot = h("div", { class: "prx-cz-pair-chart", tabindex: "-1", role: "group", "aria-label": "Pairwise claims" });
+      const pairJump = h("button", { type: "button", class: "prx-cz-pair-jump", text: "Compare pair totals" });
+      ctx.listen(pairJump, "click", () => pairChartSlot.focus());
+      const pairKeyList = h("ul", { class: "prx-cz-pair-key prx-partbar", "data-prx-part": "legend" });
+      const cardHeading = ctx.panelTitle("", { className: "prx-cz-heading" });
+      const cardSizesLine = h("p", { class: "prx-cz-card-sizes" });
+      const cardSlot = h("div", { class: "prx-cz-card-chart" });
+      const cardPanel = h(
+        "section",
+        { class: "prx-cz-panel prx-cz-card", "aria-label": T.cardLegend },
+        h("div", { class: "prx-cz-card-head" }, cardHeading, cardSizesLine, pairJump),
+        h("p", { class: "prx-cz-card-guide", text: "Each row shows one firm’s posterior mean (dot) and interval (line). Tap a row or use the arrow keys to inspect a firm." }),
+        cardSlot,
+      );
+      const stageInspect = h("p", { class: "prx-cz-inspect" });
+      stageInspect.setAttribute("data-prx-evidence", "firm-rank-and-grade");
+      ctx.stage.append(stageInspect, pairChartSlot, pairKeyList, cardPanel);
+      mobileControls(ctx, { primary: [cardSeg.root], before: [[cardPanel, stageInspect]] });
+
+      // --- Data Disclosure: exact pair breakdown, selected-firm details, and complete 97-firm league table
+      const dataBox = ctx.dataBox(["Data and ", count(D.n), "-firm comparison"]);
       const PARTS = CONFIG.pairParts.map((key) => ({ key, role: key }));
       const pairs = partBar(ctx, { hook: "pairs", parts: PARTS });
-      ctx.primaryGraphic(pairs.root);
+      const pairBreakdownLine = h("p", { class: "prx-cz-note" });
 
-      // --- selected firm: a strip under the pair bar, with its own (compact) part bar; then v1's details lines, the
-      // pairs line first (it says in words what the small bar shows), then the rank and grade lines
       const detailsName = h("p", { class: "prx-cz-details-name" });
       const firmPairs = partBar(ctx, { hook: "firm-bar", parts: PARTS, compact: true });
       const detailsRank = h("p", { class: "prx-cz-details-line" });
       const detailsGrade = h("p", { class: "prx-cz-details-line" });
       const pairsLine = h("p", { class: "prx-cz-details-line prx-cz-pairs" });
-      const findStatus = h("p", { class: "prx-hint prx-cz-find-status", hidden: true });
       detailsRank.id = uid("prx-cz-rank");
       detailsGrade.id = uid("prx-cz-grade");
       const detailsHead = h("div", { class: "prx-cz-details-head" }, ctx.panelTitle(T.detailsHeading, { className: "prx-cz-heading" }), detailsName);
-      const details = h("section", { class: "prx-cz-details", "aria-label": T.detailsHeading, "data-prx-part": "readout" },
-        detailsHead, findStatus, firmPairs.root, pairsLine, detailsRank, detailsGrade);
+      const details = h(
+        "section",
+        { class: "prx-cz-details", "aria-label": T.detailsHeading },
+        detailsHead, firmPairs.root, pairsLine, detailsRank, detailsGrade,
+      );
 
-      // phones (<= 600 px): "Find a firm" drives only the selected firm, so it moves into the strip's head, next to the
-      // firm it finds (CONVENTIONS, result-first frame); wider screens keep it in the controls row. The node itself
-      // moves, so the typed text, the match line, the datalist and the firm key are unchanged, and Tab order follows the
-      // layout (controls, presets, then the strip's find box on phones).
-      const narrow = ctx.win.matchMedia?.(CONFIG.narrowQuery) ?? null;
-      function placeFind() {
-        const inStrip = Boolean(narrow?.matches);
-        if (inStrip === (find.root.parentNode === detailsHead)) return;
-        const focused = ctx.doc.activeElement === find.input;
-        if (inStrip) detailsHead.append(find.root); else sortSeg.root.after(find.root);
-        if (focused) find.input.focus({ preventScroll: true });
-      }
-      if (narrow) ctx.listen(narrow, "change", placeFind);
-      placeFind();
-
-      // --- league table: the card grade right after the firm, so the grade compared stays in view while the box
-      // scrolls sideways (review 044, X-09); rank and firm stick through the shared prx-sticky-two rule
       const tableBox = ctx.scrollRegion(h("div", { class: "prx-cz-table-box" }), T.tableHeading);
       const caption = h("caption", { class: "prx-sr-only" });
       const head = {
@@ -673,8 +620,13 @@ export function mountWidget(el, spec = {}) {
       head.est.append(estLabel, axisRow);
       const tbody = h("tbody", {});
       const tableId = uid("prx-cz-table");
-      const table = h("table", { class: "prx-cz-table prx-sticky-two", id: tableId }, caption,
-        h("thead", {}, h("tr", {}, head.rank, head.firm, head.grade, head.est, head.mean, head.other, head.industry)), tbody);
+      const table = h(
+        "table",
+        { class: "prx-cz-table prx-sticky-two", id: tableId },
+        caption,
+        h("thead", {}, h("tr", {}, head.rank, head.firm, head.grade, head.est, head.mean, head.other, head.industry)),
+        tbody,
+      );
       tableBox.append(table);
       const rowEls = D.names.map((_, i) => {
         const zero = h("span", { class: "prx-cz-zero" });
@@ -692,19 +644,25 @@ export function mountWidget(el, spec = {}) {
         };
         cells.grade.append(cells.badge);
         const strip = h("span", { class: "prx-cz-strip", "aria-hidden": "true" }, zero, bar, dot);
-        const tr = h("tr", { "data-prx-row": D.ids[i] },
-          cells.rank, cells.firm, cells.grade,
+        const tr = h(
+          "tr",
+          { "data-prx-row": D.ids[i] },
+          cells.rank,
+          cells.firm,
+          cells.grade,
           h("td", { class: "prx-cz-col-est" }, strip, h("span", { class: "prx-cz-est-text" }, cells.est, " ± ", cells.se)),
-          cells.mean, cells.other,
-          h("td", { class: "prx-cz-col-industry", "data-prx-name": "", text: String(D.industry[i]) }));
+          cells.mean,
+          cells.other,
+          h("td", { class: "prx-cz-col-industry", "data-prx-name": "", text: String(D.industry[i]) }),
+        );
         tbody.append(tr);
         return { tr, cells, zero, bar, dot };
       });
-      // the gap row stands for the hidden middle rows while the table shows only its two ends
       const gapCount = h("span", {});
       const gapRow = h("tr", { class: "prx-cz-gap" }, h("td", { colspan: "7" }, gapCount));
       const showBtn = ctx.button({
-        label: T.showAll, key: "show-all",
+        label: T.showAll,
+        key: "show-all",
         onClick: () => { pending = { scroll: true }; ctx.set({ rows: expanded ? "ends" : "all" }); },
       });
       showBtn.root.classList.add("prx-cz-show");
@@ -713,41 +671,51 @@ export function mountWidget(el, spec = {}) {
       const orderNote = h("p", { class: "prx-cz-note" });
       const tableHeading = ctx.panelTitle(T.tableHeading, { className: "prx-cz-heading prx-cz-table-heading" });
       const scrollHint = h("p", { class: "prx-hint prx-cz-scroll-hint", text: T.scrollHint, hidden: true });
-      // the heading, the order note and the Show all button share one row where there is room (the review's sketch:
-      // "Race league table [Show all]"); then the bar note, the scroll hint and the box
-      const tablePanel = h("section", { class: "prx-cz-panel prx-cz-league", "aria-label": T.tableHeading },
-        h("div", { class: "prx-cz-league-head" }, tableHeading, orderNote, showBtn.root), barNote, scrollHint, tableBox);
+      const tablePanel = h(
+        "section",
+        { class: "prx-cz-panel prx-cz-league", "aria-label": T.tableHeading },
+        h("div", { class: "prx-cz-league-head" }, tableHeading, orderNote, showBtn.root),
+        barNote,
+        scrollHint,
+        tableBox,
+      );
+      dataBox.body.append(h("div", { class: "prx-cz-data-stack" }, pairs.root, pairBreakdownLine, details, tablePanel));
 
-      // --- the card: its heading, one note above the figure (v1's grade legend, joined in one box with how KRW's figure
-      // marks grade 1 where the source says so, the marks, KRW's 95% and the order within a grade), the figure, the race
-      // card's prior note (why its intervals lie right of zero beside negative estimates), then a closed "Card source"
-      // box with v1's KRW caption, the plain gloss and the band legend (review 044, U1-F4: moved, not removed)
-      const cardHeading = ctx.panelTitle("", { className: "prx-cz-heading" });
+      // --- Method Disclosure: grade-1 definition, interval & prior notes, KRW card caption, band swatches, scale note
+      const methodBox = ctx.methodBox(T.methodTitle);
       const gradeLegend = h("p", { class: "prx-cz-note prx-cz-grade1", "data-prx-part": "legend" });
       const starNote = h("span", { class: "prx-cz-star" });
       const marksNote = h("span", { class: "prx-cz-marks" });
       const cardNote = h("p", { class: "prx-cz-note prx-cz-card-note", "data-prx-part": "legend" }, starNote, marksNote);
-      const cardSlot = h("div", { class: "prx-cz-card-chart" });
       const priorNote = h("p", { class: "prx-cz-note prx-cz-prior", "data-prx-part": "notes", hidden: true });
-      const cardPanel = h("section", { class: "prx-cz-panel prx-cz-card", "aria-label": T.cardLegend },
-        cardHeading, gradeLegend, cardNote, cardSlot, priorNote);
-      const source = ctx.disclosure({ name: "card-source", title: T.cardSource, placement: { after: priorNote } });
       const cardCaption = h("p", { class: "prx-cz-note prx-cz-krw", "data-prx-part": "caption" }, captionNode(ctx, "krw-card"));
       const krwGloss = h("p", { class: "prx-cz-note prx-cz-gloss", "data-prx-part": "caption", text: T.krwGloss });
       const bands = h("p", { class: "prx-cz-bands prx-light-panel", "data-prx-part": "legend" });
-      source.body.append(cardCaption, krwGloss, h("p", { class: "prx-cz-note", "data-prx-part": "legend", text: T.bandsNote }), bands);
-
       const scaleNote = h("p", { class: "prx-cz-note prx-cz-scale", "data-prx-part": "notes" });
-      ctx.charts.classList.add("prx-cz-charts");
-      // the result-first order: the pair bar (what the card and the order change), the selected firm's strip, then the
-      // card and the league table (the card first), then the scale note
-      ctx.charts.append(pairs.root, details, h("div", { class: "prx-cz-grid" }, cardPanel, tablePanel), scaleNote);
+      methodBox.body.append(
+        h(
+          "div",
+          { class: "prx-cz-method-stack" },
+          gradeLegend,
+          cardNote,
+          priorNote,
+          cardCaption,
+          krwGloss,
+          h("p", { class: "prx-cz-note", "data-prx-part": "legend", text: T.bandsNote }),
+          bands,
+          scaleNote,
+        ),
+      );
 
-      // --- the notice: a standalone embed keeps the data notice (the same string as the page's), the change note and
-      // the site's disclaimer; a site page has its own callout and credit (one of each per page)
+      // --- Standalone embed license notice (site pages carry their own callout-note)
       if (!ctx.doc.querySelector?.('meta[name="quarto:offset"]')) {
-        const notice = h("p", { class: "prx-cz-notice" }, `${T.notice} `, h("strong", { text: T.noticeConduct }),
-          ` ${T.noticeChanges} ${T.noticeAsIs}`);
+        const notice = h(
+          "p",
+          { class: "prx-cz-notice" },
+          `${T.notice} `,
+          h("strong", { text: T.noticeConduct }),
+          ` ${T.noticeChanges} ${T.noticeAsIs}`,
+        );
         ctx.root.append(notice);
       }
 
@@ -761,7 +729,6 @@ export function mountWidget(el, spec = {}) {
         tablePanel.setAttribute("aria-label", v.card.table);
         tableBox.setAttribute("aria-label", v.card.table);
         estLabel.replaceChildren(...fill(T.colEstimate, { se: () => count(CONFIG.seWidth) }));
-        // the narrow bar column labels only its two ends and zero
         const ends = ticks.filter((t, k) => t === 0 || k === 0 || k === ticks.length - 1);
         axisRow.replaceChildren(...ends.map((t, k) => {
           const s = h("span", { class: "prx-cz-tick" });
@@ -800,17 +767,13 @@ export function mountWidget(el, spec = {}) {
           setNum(rowEls[i].cells.other, otherRank[i], formatCount(otherRank[i]));
           return rowEls[i].tr;
         }));
-        // the gap row sits after the top rows
         rowEls[v.rows[sort][CONFIG.showRows]].tr.before(gapRow);
         orderNote.textContent = T.orderNote[sort];
         caption.replaceChildren(...fill(T.caption, { table: () => v.card.table, n: () => count(D.n) }), ` ${T.orderNote[sort]}`);
       }
 
-      /** The rows a short table hides: the middle of the order (the selected firm's row is never hidden). */
       const middle = (order, k) => k >= CONFIG.showRows && k < order.length - CONFIG.showRows;
 
-      /** Hide the middle rows of the league table unless it is expanded (the selected firm's row stays); the gap row
-       * counts the hidden rows (v1's words), and hiddenMarked keeps how many of them carry ↕ (the strip says so). */
       let hiddenMarked = 0;
       function showRows(order) {
         let hidden = 0;
@@ -826,9 +789,6 @@ export function mountWidget(el, spec = {}) {
         showBtn.root.setAttribute("aria-expanded", String(expanded));
       }
 
-      /** Mark the firms on the other side of the selected firm's reversed pairs (a class: ↕ after the grade and a bar on
-       * the rank cell, both drawn by CSS) and unmark the rest; `firms` comes from the card view's statedAgainst list for
-       * the order shown. */
       let marked = new Set();
       function markReversed(firms) {
         const next = new Set(firms);
@@ -837,7 +797,6 @@ export function mountWidget(el, spec = {}) {
         marked = next;
       }
 
-      /** Keep a row in view inside the table box, below the sticky header (the page itself does not scroll). */
       function scrollRow(i) {
         const tr = rowEls[i].tr;
         const box = tableBox.getBoundingClientRect();
@@ -848,7 +807,6 @@ export function mountWidget(el, spec = {}) {
         else if (r.bottom > box.bottom) tableBox.scrollTop += r.bottom - box.bottom;
       }
 
-      // one Tab stop in the table body (the selected firm); arrows, Page keys, Home and End move the selection
       ctx.listen(tbody, "keydown", (e) => {
         const cell = e.target.closest?.("th[data-prx-firm]");
         if (!cell) return;
@@ -865,26 +823,20 @@ export function mountWidget(el, spec = {}) {
         if (tr) choose(D.idIndex.get(tr.getAttribute("data-prx-row")), { scroll: false, focus: true });
       });
 
-      // ------------------------------------------------------------------------------------- the card
+      // ------------------------------------------------------------------------------------- stage charts
 
-      let chart = null;
-      const sel = {
-        box: h("span", { class: "prx-cz-sel-box" }),
-        bar: h("span", { class: "prx-cz-sel-bar" }),
-        dot: h("span", { class: "prx-cz-sel-dot" }),
-        label: h("span", { class: "prx-cz-sel-label", "data-prx-name": "" }),
-      };
-      const selLayer = h("div", { class: "prx-cz-sel", "aria-hidden": "true" }, sel.box, sel.bar, sel.dot, sel.label);
+      let cardChart = null;
 
-      function drawLegend(v) {
+      function drawMethodAndHeader(v) {
         const c = v.card;
         cardHeading.textContent = c.title;
         cardPanel.setAttribute("aria-label", c.title);
-        // the note above the figure: v1's grade legend (its words and hooks), then how KRW's figure marks grade 1 (only
-        // where the source says so), the marks, the level KRW's figure shows (a number, not the caption's krw-level
-        // hook) and the order within a grade
-        gradeLegend.replaceChildren(ro("G", v.disc.G, formatCount(v.disc.G)), T.gradesWord,
-          ro("sizes", v.disc.sizes, formatSizes(v.disc.sizes)), ". ", h("span", { class: "prx-cz-grade1-text", text: c.grade1 }));
+        cardSizesLine.replaceChildren(
+          ro("G", v.disc.G, formatCount(v.disc.G)),
+          T.gradesWord,
+          ro("sizes", v.disc.sizes, formatSizes(v.disc.sizes)),
+        );
+        gradeLegend.replaceChildren(h("span", { class: "prx-cz-grade1-text", text: c.grade1 }));
         starNote.textContent = c.star ? `${c.star} ` : "";
         marksNote.replaceChildren(...fill(T.cardNote, {
           level: () => ro("level", level, formatPercent(level)),
@@ -892,18 +844,19 @@ export function mountWidget(el, spec = {}) {
           krwLevel: () => num(CONFIG.krwLevel, formatPercent(CONFIG.krwLevel)),
         }));
         const colors = gradeColors(v.disc.G, pal());
-        // in the "Card source" box, under the sentence on the shaded bands: a swatch and the size of each grade
         bands.replaceChildren(
-          ...Array.from(v.disc.sizes, (size, k) => h("span", { class: "prx-cz-band" },
+          ...Array.from(v.disc.sizes, (size, k) => h(
+            "span",
+            { class: "prx-cz-band" },
             h("span", { class: "prx-cz-swatch", style: { "--prx-cz-swatch": colors[k], "--prx-cz-mix": `${tintOf(k + 1) * CONFIG.percent}%` } }),
-            h("span", {}, "Grade ", count(k + 1), ": ", count(size), size === 1 ? T.firm : T.firms))));
+            h("span", {}, "Grade ", count(k + 1), ": ", count(size), size === 1 ? T.firm : T.firms),
+          )),
+        );
         priorNote.hidden = !c.prior;
         priorNote.textContent = c.prior ?? "";
         scaleNote.replaceChildren(`${c.scale} ${T.scaleNote}`);
       }
 
-      /** The caption: where the posterior means and intervals come from, and the level KRW's figure of this card
-       * draws. */
       function drawCaption(v) {
         ctx.caption.replaceChildren(...fill(T.intervalNote, {
           level: () => num(level, formatPercent(level)),
@@ -912,16 +865,157 @@ export function mountWidget(el, spec = {}) {
         }));
       }
 
+      function drawPairChart(v, sort) {
+        const d = v.disc;
+        const against = v.against[sort].count;
+        const agree = d.N - against;
+        const withheld = d.M - d.N;
+        const width = Math.max(240, Math.round(pairChartSlot.clientWidth || ctx.width() || 640));
+        const narrow = width < 500;
+        const height = narrow ? 136 : 146;
+        const marginTop = 10;
+        const marginBottom = 34;
+        const marginLeft = 10;
+        const marginRight = 14;
+        const innerW = Math.max(1, width - marginLeft - marginRight);
+        const minAgainstUnits = against > 0 ? Math.max(against, (4 * d.M) / innerW) : 0;
+        const xAgree = Math.max(0, Math.min(d.N, d.N - minAgainstUnits));
+        const xStated = d.N;
+
+        const hatchLines = [];
+        const step = Math.max(90, Math.round(d.M / Math.max(12, Math.round(innerW / 12))));
+        for (let x0 = xStated; x0 < d.M; x0 += step) {
+          const x1 = Math.min(d.M, x0 + step * 0.85);
+          hatchLines.push({ x1: x0, y1: 1.76, x2: x1, y2: 1.32 });
+        }
+
+        const tableTitle = sort === "mean" ? "League table (by posterior mean)" : "League table (by estimate)";
+        const pillHalfW = (24 / innerW) * d.M;
+        const withheldMid = (xStated + d.M) / 2;
+
+        plot(pairChartSlot, {
+          width,
+          height,
+          aspect: false,
+          marginTop,
+          marginBottom,
+          marginLeft,
+          marginRight,
+          alt: `Pairwise claims across ${formatCount(d.M)} firm pairs: the league table states all ${formatCount(d.M)} pairs, whereas ${v.card.title} states ${formatCount(d.N)} pairs (${formatCount(agree)} agree, ${formatCount(against)} reverse) and withholds ${formatCount(withheld)}.`,
+          x: {
+            domain: [0, d.M],
+            ticks: narrow ? [0, 1500, 3000, d.M] : [0, 1000, 2000, 3000, d.M],
+            label: "Pairs of firms",
+            labelAnchor: "center",
+            labelArrow: "none",
+          },
+          y: { domain: [2.2, -0.4], axis: null },
+          marks: (c, P) => [
+            P.text([{ x: 0, y: -0.15, label: tableTitle }], {
+              x: "x", y: "y", text: "label", textAnchor: "start", fontWeight: "bold", fill: c.plotFg,
+            }),
+            P.rect([{ x1: 0, x2: d.M, y1: 0.12, y2: 0.56 }], {
+              x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: c.relAbove, stroke: c.cellBorder, strokeWidth: 1,
+            }),
+            numText([{ x: d.M / 2, y: 0.34, val: d.M }], {
+              x: "x", y: "y", value: "val", format: (x) => formatCount(x),
+              fill: labelOn(c.relAbove, c), fontWeight: "bold", textAnchor: "middle",
+            }),
+            P.text([{ x: 0, y: 1.05, label: v.card.title }], {
+              x: "x", y: "y", text: "label", textAnchor: "start", fontWeight: "bold", fill: c.plotFg,
+            }),
+            ...(xAgree > 0 ? [P.rect([{ x1: 0, x2: xAgree, y1: 1.32, y2: 1.76 }], {
+              x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: c.relAbove, stroke: c.cellBorder, strokeWidth: 1,
+            })] : []),
+            ...(against > 0 ? [P.rect([{ x1: xAgree, x2: xStated, y1: 1.32, y2: 1.76 }], {
+              x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: c.relBelow, stroke: c.cellBorder, strokeWidth: 1,
+            })] : []),
+            ...(withheld > 0 ? [
+              P.rect([{ x1: xStated, x2: d.M, y1: 1.32, y2: 1.76 }], {
+                x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: c.relWithheld, stroke: c.cellBorder, strokeWidth: 1,
+              }),
+              P.link(hatchLines, {
+                x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: c.hatch, strokeWidth: 1,
+              }),
+            ] : []),
+            ...(agree / d.M >= 0.12 ? [numText([{ x: xAgree / 2, y: 1.54, val: agree }], {
+              x: "x", y: "y", value: "val", format: (x) => formatCount(x),
+              fill: labelOn(c.relAbove, c), fontWeight: "bold", textAnchor: "middle",
+            })] : []),
+            ...(withheld / d.M >= 0.25 ? [
+              P.rect([{
+                x1: Math.max(xStated, withheldMid - pillHalfW),
+                x2: Math.min(d.M, withheldMid + pillHalfW),
+                y1: 1.35,
+                y2: 1.73,
+              }], {
+                x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: c.plotBg, fillOpacity: 0.9, rx: 2,
+              }),
+              numText([{ x: withheldMid, y: 1.54, val: withheld }], {
+                x: "x", y: "y", value: "val", format: (x) => formatCount(x),
+                fill: c.plotFg, fontWeight: "bold", textAnchor: "middle",
+              }),
+            ] : []),
+          ],
+        });
+
+        const tblDoubt = v.tableEval?.[sort]?.doubtful ?? null;
+        const cardDoubt = v.cardEval?.doubtful ?? null;
+        pairKeyList.replaceChildren(
+          h("li", {}, h("span", { class: "prx-partbar-sw", "data-role": "agree", "aria-hidden": "true" }), count(agree), " agree"),
+          h("li", {}, h("span", { class: "prx-partbar-sw", "data-role": "against", "aria-hidden": "true" }), count(against), " reverse"),
+          h("li", {}, h("span", { class: "prx-partbar-sw", "data-role": "silent", "aria-hidden": "true" }), count(withheld), " withheld"),
+          ...(tblDoubt !== null && cardDoubt !== null ? [
+            h(
+              "li",
+              { class: "prx-cz-pair-doubtful" },
+              "Doubtful (>",
+              num(CONFIG.doubtfulTau, formatPercent(CONFIG.doubtfulTau)),
+              " wrong): ",
+              count(tblDoubt),
+              " table vs ",
+              count(cardDoubt),
+              " card",
+            ),
+          ] : []),
+        );
+      }
+
       const tipText = (v, d) => `${D.names[d.i]}\nGrade ${formatCount(d.grade)} of ${formatCount(v.disc.G)}\nPosterior mean ${val(d.mean)}\n${formatPercent(level)} posterior interval ${val(d.lower)} to ${val(d.upper)}`;
 
-      function drawCard(v) {
+      function drawCard(v, selIdx) {
         const Cc = CONFIG.chart;
         const n = D.n;
-        const rows = v.order.map((i, k) => ({ i, id: D.ids[i], pos: k, grade: v.grade[i], mean: v.mean[i], lower: v.lower[i], upper: v.upper[i] }));
-        // grade numbers sit at their band's middle, pushed down when a thin band above leaves less than one line
-        const bandList = bandRows(v.disc.sizes, Cc.labelPx / Cc.rowPx);
+        const rows = v.order.map((i, k) => ({
+          i, id: D.ids[i], pos: k, grade: v.grade[i], mean: v.mean[i], lower: v.lower[i], upper: v.upper[i],
+        }));
+        const bandsData = bandRows(v.disc.sizes, 0);
         const { lo, hi, ticks } = v.cardAxis;
-        chart = plot(cardSlot, {
+        const width = Math.max(240, Math.round(cardSlot.clientWidth || ctx.width() || 640));
+        const narrow = width < 500;
+        // A firm is an inspectable row. Keep the intervals distinct as the roster grows.
+        const height = Cc.marginTop + n * (narrow ? Cc.narrowRowPx : Cc.rowPx) + Cc.marginBottom;
+        const innerW = Math.max(1, width - Cc.marginLeft - Cc.marginRight);
+        const innerH = Math.max(1, height - Cc.marginTop - Cc.marginBottom);
+        const perPx = (hi - lo) / innerW;
+        const leftOf = (px) => lo - px * perPx;
+        const stripeX1 = leftOf(Cc.marginLeft - 1);
+        const stripeX2 = leftOf(Cc.marginLeft - 1 - Cc.stripePx);
+        const stripeMid = (stripeX1 + stripeX2) / 2;
+        const yPxOf = (pos) => Cc.marginTop + ((pos + Cc.half) / n) * innerH;
+        const posOf = (yPx) => ((yPx - Cc.marginTop) / innerH) * n - Cc.half;
+        const halfPillUnits = (8.5 / innerH) * n;
+        const placedBadges = placeDirectLabels(
+          bandsData.map((b) => ({ id: String(b.grade), y: yPxOf(b.mid), band: b })),
+          { minGapPx: 18, bounds: [Cc.marginTop + 9, height - Cc.marginBottom - 9] },
+        );
+        const labeledBands = placedBadges.map((p) => ({ ...p.band, labelPos: posOf(p.y) }));
+        const selRows = selIdx !== null ? rows.filter((r) => r.i === selIdx) : [];
+
+        cardChart = plot(cardSlot, {
+          width,
+          height,
+          aspect: false,
           alt: `${v.card.title}: the firms in grade order, grade 1 at the top, each with its posterior mean (a dot) and ${formatPercent(level)} posterior interval (a line); shaded bands mark the grades.`,
           table: {
             caption: `${v.card.title}. ${T.cardTable}`,
@@ -934,41 +1028,91 @@ export function mountWidget(el, spec = {}) {
             ],
             rows,
           },
-          height: Cc.marginTop + Cc.marginBottom + n * Cc.rowPx,
-          marginTop: Cc.marginTop, marginBottom: Cc.marginBottom, marginLeft: Cc.marginLeft, marginRight: Cc.marginRight,
-          x: { domain: [lo, hi], ticks, label: v.card.axis, labelAnchor: "center", labelArrow: "none" },
+          marginTop: Cc.marginTop,
+          marginBottom: Cc.marginBottom,
+          marginLeft: Cc.marginLeft,
+          marginRight: Cc.marginRight,
+          x: { domain: [lo, hi], axis: "bottom", ticks, label: width < 380 ? (v.card.short ?? "Log contact gap") : v.card.axis, labelAnchor: "center", labelArrow: "none" },
           y: { domain: [n - Cc.half, -Cc.half], axis: null },
           color: { type: "identity" },
           marks: (c, P) => {
             const colors = gradeColors(v.disc.G, c);
             return [
-              P.rect(bandList, { x1: () => lo, x2: () => hi, y1: (d) => d.first - Cc.half, y2: (d) => d.last + Cc.half, fill: (d) => colors[d.grade - 1], fillOpacity: (d) => tintOf(d.grade) }),
-              P.ruleY(bandList.slice(1), { y: (d) => d.first - Cc.half, stroke: c.plotAxis, strokeDasharray: Cc.dash }),
+              P.axisX(ticks, { anchor: "top", tickFormat: tickLabel, label: narrow ? v.card.short : v.card.axis,
+                labelAnchor: "center", labelArrow: "none", labelOffset: 35 }),
+              P.rect(bandsData, {
+                x1: () => lo,
+                x2: () => hi,
+                y1: (d) => d.first - Cc.half,
+                y2: (d) => d.last + Cc.half,
+                fill: (d) => colors[d.grade - 1],
+                fillOpacity: (d) => tintOf(d.grade),
+              }),
+              P.ruleY(bandsData.slice(1), {
+                y: (d) => d.first - Cc.half,
+                x1: () => stripeX1,
+                x2: () => hi,
+                stroke: c.plotAxis,
+                strokeDasharray: Cc.dash,
+              }),
               P.ruleX([0], { stroke: c.plotAxis }),
+              P.rect(bandsData, {
+                x1: () => stripeX1,
+                x2: () => stripeX2,
+                y1: (d) => d.first - Cc.half,
+                y2: (d) => d.last + Cc.half,
+                fill: (d) => colors[d.grade - 1],
+                inset: 0.5,
+              }),
+              P.rect(labeledBands, {
+                x1: () => stripeX1,
+                x2: () => stripeX2,
+                y1: (d) => d.labelPos - halfPillUnits,
+                y2: (d) => d.labelPos + halfPillUnits,
+                fill: (d) => colors[d.grade - 1],
+                stroke: c.plotBg,
+                strokeWidth: 1,
+                rx: 3,
+              }),
+              numText(labeledBands, {
+                x: () => stripeMid,
+                y: "labelPos",
+                value: "grade",
+                format: (x) => formatCount(x),
+                fill: (d) => labelOn(colors[d.grade - 1], c),
+                fontWeight: "bold",
+                textAnchor: "middle",
+              }),
               P.ruleY(rows, { y: "pos", x1: "lower", x2: "upper", stroke: c.post, strokeWidth: Cc.line }),
               P.dot(rows, { x: "mean", y: "pos", r: Cc.dot, fill: c.post }),
-              numText(bandList, { x: () => lo, y: "at", value: "grade", format: (x) => formatCount(x), dx: -Cc.gradeDx, textAnchor: "end", fill: c.plotFg, fontWeight: "bold" }),
+              P.ruleY(selRows, { y: "pos", x1: "lower", x2: "upper", stroke: c.plotFg, strokeWidth: 2.6 }),
+              P.dot(selRows, { x: "mean", y: "pos", r: 5.2, fill: c.post, stroke: c.plotBg, strokeWidth: 1.6 }),
+              P.dot(selRows, { x: "mean", y: "pos", r: 6.4, fill: "none", stroke: c.plotFg, strokeWidth: 1.8 }),
               P.tip(rows, P.pointerY({ x: "mean", y: "pos", title: (d) => tipText(v, d) })),
             ];
           },
           keyboard: {
-            data: rows, x: "mean", y: "pos", key: (d) => d.id, sort: false, label: T.cardKeys,
+            data: rows,
+            x: "mean",
+            y: "pos",
+            key: (d) => d.id,
+            sort: false,
+            label: T.cardKeys,
             title: (d) => tipText(v, d),
           },
         });
-        chart.area.append(selLayer);
-        chart.svg.addEventListener("click", (e) => {
+        cardChart.svg.addEventListener("click", (e) => {
           const k = rowAt(e);
           if (k !== null) choose(view(ctx.state.card).order[k], { scroll: true });
         });
+        syncCardStop();
       }
 
-      /** The card row under a pointer event, or null (the y scale is linear in row position). */
       function rowAt(e) {
-        if (!chart) return null;
-        const sy = chart.scale("y");
-        const rect = chart.svg.getBoundingClientRect();
-        const H = Number(chart.svg.getAttribute("height")) || rect.height;
+        if (!cardChart) return null;
+        const sy = cardChart.scale("y");
+        const rect = cardChart.svg.getBoundingClientRect();
+        const H = Number(cardChart.svg.getAttribute("height")) || rect.height;
         if (!(rect.height > 0) || !sy?.domain || !sy?.range) return null;
         const yv = ((e.clientY - rect.top) * H) / rect.height;
         const [d0, d1] = sy.domain;
@@ -977,8 +1121,6 @@ export function mountWidget(el, spec = {}) {
         return k >= 0 && k < D.n ? k : null;
       }
 
-      /** The card's keyboard reading starts at the selected firm: its point is the one Tab stop of the card (chart.js
-       * moves the stop with the arrow keys from there), so tabbing into the card keeps the firm and the preset. */
       function syncCardStop() {
         if (selected === null) return;
         const id = D.ids[selected];
@@ -988,50 +1130,65 @@ export function mountWidget(el, spec = {}) {
         }
       }
 
-      function placeSelection() {
-        syncCardStop();
-        if (!chart || selected === null) { selLayer.hidden = true; return; }
-        const v = view(ctx.state.card);
-        const sx = chart.scale("x");
-        const sy = chart.scale("y");
-        const W = Number(chart.svg.getAttribute("width")) || 1;
-        const H = Number(chart.svg.getAttribute("height")) || 1;
-        const y = sy.apply(v.pos[selected]);
-        const [x0, x1] = sx.range;
-        const a = sx.apply(v.lower[selected]);
-        const b = sx.apply(v.upper[selected]);
-        const m = sx.apply(v.mean[selected]);
-        const half = CONFIG.chart.rowPx;
-        Object.assign(sel.box.style, { left: pct(x0, W), width: pct(x1 - x0, W), top: pct(y - half, H), height: pct(2 * half, H) });
-        Object.assign(sel.bar.style, { left: pct(a, W), width: pct(b - a, W), top: pct(y, H) });
-        Object.assign(sel.dot.style, { left: pct(m, W), top: pct(y, H) });
-        sel.label.textContent = D.names[selected];
-        selLayer.hidden = false;
-        // the name goes right of the interval when it fits there, else left of it, else inside the plot at its right
-        // edge (on top of the lines, on its own background); widths are measured in screen pixels
-        const px = (chart.svg.getBoundingClientRect().width || W) / W;
-        const need = sel.label.offsetWidth + CONFIG.chart.labelGap;
-        const side = (W - b) * px >= need ? "right" : (a - x0) * px >= need ? "left" : "inside";
-        sel.label.classList.toggle("prx-cz-sel-left", side !== "right");
-        sel.label.classList.toggle("prx-cz-sel-inside", side === "inside");
-        Object.assign(sel.label.style, { left: pct(side === "right" ? b : side === "left" ? a : x1, W), top: pct(y, H) });
-      }
-
-      // keyboard reading of the card selects the firm read (focus stays on the card)
       ctx.listen(cardSlot, "focusin", (e) => {
         const key = e.target?.getAttribute?.("data-prx-focus-key") ?? "";
         const id = key.startsWith("kbd:") ? key.slice(key.lastIndexOf(":") + 1) : null;
-        if (id !== null && D.idIndex.has(id)) choose(D.idIndex.get(id), { scroll: true });
+        if (id !== null && D.idIndex.has(id)) {
+          // The complete card can be taller than the viewport when moving with Home, End or arrows.
+          e.target.scrollIntoView?.({ block: "nearest", inline: "nearest" });
+          choose(D.idIndex.get(id), { scroll: true });
+        }
       });
 
       // ------------------------------------------------------------------------------------- selection
+
+      function drawStageInspect(v, sort, i) {
+        const others = v.withheld[i];
+        const against = v.against[sort].per[i];
+        const agree = v.stated[i] - against;
+        const othersClause = others === 0
+          ? ["alone"]
+          : [count(others), others === 1 ? " other firm" : " other firms"];
+        stageInspect.replaceChildren(
+          "Selected: ",
+          nameNode(i, "strong"),
+          " — rank ",
+          count(v.rankEst[i]),
+          " by estimate (",
+          num(v.est[i], formatReadoutEst(v.est[i])),
+          " ± ",
+          num(v.se[i], formatReadoutEst(v.se[i])),
+          "), rank ",
+          count(v.rankMean[i]),
+          " by posterior mean (",
+          num(v.mean[i], formatReadoutEst(v.mean[i])),
+          "); grade ",
+          count(v.grade[i]),
+          " (",
+          ...othersClause,
+          "): ",
+          count(v.stated[i]),
+          " of ",
+          count(v.partners),
+          " pairs stated (",
+          count(agree),
+          " agree, ",
+          count(against),
+          " reverse)",
+          ...(others > 0 ? [", ", count(others), " withheld."] : ["."]),
+        );
+      }
 
       function drawDetails() {
         if (selected === null) return;
         const v = view(ctx.state.card);
         const i = selected;
         const others = v.withheld[i];
-        detailsName.replaceChildren(h("strong", {}, nameNode(i)), ` · ${T.industry}`, h("span", { "data-prx-name": "", text: String(D.industry[i]) }));
+        detailsName.replaceChildren(
+          h("strong", {}, nameNode(i)),
+          ` · ${T.industry}`,
+          h("span", { "data-prx-name": "", text: String(D.industry[i]) }),
+        );
         detailsRank.replaceChildren(...fill(T.rank, {
           table: () => v.card.table,
           rankEst: () => ro("firm-rank-estimate", v.rankEst[i], formatCount(v.rankEst[i])),
@@ -1050,34 +1207,41 @@ export function mountWidget(el, spec = {}) {
           upper: () => ro("firm-upper", v.upper[i], val(v.upper[i])),
         }).flat());
         const silent = v.withheld[i];
-        // the card's directions about this firm against the table's order as shown (by estimate or posterior mean)
         const sort = ctx.state.sort;
         const against = v.against[sort].per[i];
         const agree = v.stated[i] - against;
         const split = v.stated[i] === 0 ? [] : [", ", ...(against === 0 ? [T.allAgree] : agree === 0 ? [T.allAgainst]
           : [ro("firm-agree", agree, formatCount(agree)), T.agreeA, ro("firm-against", against, formatCount(against)), T.againstA])];
-        pairsLine.replaceChildren(T.pairsA, ro("firm-pairs", v.partners, formatCount(v.partners)), T.pairsB, v.card.title, T.pairsC,
-          ro("firm-stated", v.stated[i], formatCount(v.stated[i])), T.pairsD, ...split,
-          ...(silent === 0 ? [T.pairsNone] : [T.pairsSilent, ro("firm-silent", silent, formatCount(silent)), silent === 1 ? T.pairsSilentOne : T.pairsSilentMany]));
-        // the strip's bar: the same three parts of the firm's pairs; after "the other way", the firms on the other side
-        // of those pairs in the table's order when there are few (else where to find them), and how many of them the
-        // short table does not show (showRows ran just before)
+        pairsLine.replaceChildren(
+          T.pairsA,
+          ro("firm-pairs", v.partners, formatCount(v.partners)),
+          T.pairsB,
+          v.card.title,
+          T.pairsC,
+          ro("firm-stated", v.stated[i], formatCount(v.stated[i])),
+          T.pairsD,
+          ...split,
+          ...(silent === 0 ? [T.pairsNone] : [T.pairsSilent, ro("firm-silent", silent, formatCount(silent)), silent === 1 ? T.pairsSilentOne : T.pairsSilentMany]),
+        );
         const rank = sort === "mean" ? v.rankMean : v.rankEst;
         const reversed = v.against[sort].firms[i].slice().sort((a, b) => rank[a] - rank[b]);
-        const named = [...(reversed.length <= CONFIG.revNames
-          ? [T.revNamed, ...reversed.flatMap((j, k) => (k ? [", ", nameNode(j)] : [nameNode(j)])), T.revMarked] : [T.revMany]),
-        ...(hiddenMarked ? fill(T.revHidden, { count: () => count(hiddenMarked) }) : [])];
+        const named = [
+          ...(reversed.length <= CONFIG.revNames
+            ? [T.revNamed, ...reversed.flatMap((j, k) => (k ? [", ", nameNode(j)] : [nameNode(j)])), T.revMarked]
+            : [T.revMany]),
+          ...(hiddenMarked ? fill(T.revHidden, { count: () => count(hiddenMarked) }) : []),
+        ];
         firmPairs.set({
-          title: (total) => fill(T.firmPairsTitle, { total }), total: v.partners, counts: { agree, against, silent },
-          words: T.firmWords, after: (p) => (p === "against" && reversed.length ? named : []),
+          title: (total) => fill(T.firmPairsTitle, { total }),
+          total: v.partners,
+          counts: { agree, against, silent },
+          words: T.firmWords,
+          after: (p) => (p === "against" && reversed.length ? named : []),
         });
       }
 
-      /** Show firm i as selected in both views and the details panel; intent: scroll its row into view, focus its
-       * cell, and found (the find box chose it, so its match line stays). */
       function select(i, { scroll = false, focus = false, found = false } = {}) {
         if (i === undefined || i === null || !rowEls[i]) return;
-        // a firm chosen another way retires the find box's match line
         if (!found && i !== selected) findStatus.hidden = true;
         if (selected !== null) {
           rowEls[selected].tr.classList.remove("prx-cz-selected");
@@ -1086,6 +1250,7 @@ export function mountWidget(el, spec = {}) {
           rowEls[selected].cells.firm.tabIndex = -1;
         }
         selected = i;
+        firmPick.set(D.ids[i]);
         const r = rowEls[i];
         const v = view(ctx.state.card);
         markReversed(v.against[ctx.state.sort].firms[i]);
@@ -1097,12 +1262,10 @@ export function mountWidget(el, spec = {}) {
         if (focus) r.cells.firm.focus({ preventScroll: true });
         if (scroll) scrollRow(i);
         drawDetails();
-        placeSelection();
+        drawStageInspect(v, ctx.state.sort, i);
+        drawCard(v, i);
       }
 
-      /** The reader picks firm i: name it in the firm key (and show every row when its row is hidden in the middle of
-       * a short table), then let the render show it as the intent says. Picking the firm already shown changes no
-       * setting. */
       function choose(i, intent = {}) {
         if (rendering || i === undefined || i === null || !rowEls[i]) return;
         if (i === selected) {
@@ -1132,7 +1295,6 @@ export function mountWidget(el, spec = {}) {
         const s = String(q ?? "").trim().toLowerCase();
         const order = view(ctx.state.card).rows[ctx.state.sort];
         matches = s ? order.filter((i) => D.names[i].toLowerCase().includes(s)) : [];
-        // a name typed in full (or picked from the list) goes to that firm first
         const exact = matches.findIndex((i) => D.names[i].toLowerCase() === s);
         matchAt = exact >= 0 ? exact : 0;
         if (matches.length) choose(matches[matchAt], { scroll: true, found: true });
@@ -1140,56 +1302,74 @@ export function mountWidget(el, spec = {}) {
       }
       ctx.listen(find.input, "input", () => { if (!find.input.value.trim()) { matches = []; drawFindStatus(); } });
 
-      // ------------------------------------------------------------------------------------- read-out and pair bar
+      // ------------------------------------------------------------------------------------- read-out & data pair bar
 
-      /** The card's pair bar: of all M pairs, the directions it states that run as the table's order shown does
-       * (N − against), those that run the other way (against) and the pairs it is silent on (M − N); the same engine
-       * counts as the read-out's. */
       function drawPairs(v, sort) {
         const d = v.disc;
         const { count: against, pairs: reversed } = v.against[sort];
-        // at most CONFIG.revNames reversed pairs: each named after its count, as the card states it
+        const agree = d.N - against;
         const named = against > 0 && against <= CONFIG.revNames
           ? [T.revPairsLead, ...reversed.flatMap((p, k) => [k ? T.revPairSep : null, nameNode(p.above), T.revPairAbove, nameNode(p.below)].filter(Boolean))]
           : [];
         pairs.set({
-          title: (total) => fill(T.pairsTitle, { total, card: () => v.card.title }), total: d.M,
-          counts: { agree: d.N - against, against, silent: d.M - d.N }, words: T.pairWords,
+          title: (total) => fill(T.pairsTitle, { total, card: () => v.card.title }),
+          total: d.M,
+          counts: { agree, against, silent: d.M - d.N },
+          words: T.pairWords,
           after: (p) => (p === "against" ? named : []),
         });
+
+        const insideParts = [];
+        v.inside.forEach((pCount, k) => {
+          if (k > 0) insideParts.push(k === v.inside.length - 1 ? T.readAnd : ", ");
+          insideParts.push(ro(`inside-${k + 1}`, pCount, formatCount(pCount)), T.readInside, count(k + 1));
+        });
+        const statedHook = () => ro("stated-directions", d.N, formatCount(d.N));
+        const orderParts = d.N === 0 ? []
+          : against === 0 ? [T.readOrderAll[0], statedHook(), T.readOrderAll[1]]
+            : agree === 0 ? [T.readOrderNone[0], statedHook(), T.readOrderNone[1]]
+              : [T.readOrderA, statedHook(), T.readOrderB, ro("agree", agree, formatCount(agree)), T.readOrderC,
+                count(against), T.readOrderD];
+        pairBreakdownLine.replaceChildren(T.insideLead, ...insideParts, T.readEnd, ...orderParts);
       }
 
-      /** v1's three sentences (all pairs; the pairs the card states and their share; the pairs it is silent on, grade
-       * by grade), then how many of the card's directions run as the table's order as shown and how many the other
-       * way. */
       function drawReadout(v, sort) {
         const d = v.disc;
-        const list = [];
-        v.inside.forEach((pairs, k) => {
-          if (k > 0) list.push(k === v.inside.length - 1 ? T.readAnd : ", ");
-          list.push(ro(`inside-${k + 1}`, pairs, formatCount(pairs)), T.readInside, count(k + 1));
-        });
         const against = v.against[sort].count;
-        const agree = d.N - against;
-        const stated = () => ro("stated-directions", d.N, formatCount(d.N));
-        const order = d.N === 0 ? []
-          : against === 0 ? [T.readOrderAll[0], stated(), T.readOrderAll[1]]
-            : agree === 0 ? [T.readOrderNone[0], stated(), T.readOrderNone[1]]
-              : [T.readOrderA, stated(), T.readOrderB, ro("agree", agree, formatCount(agree)), T.readOrderC,
-                ro("against", against, formatCount(against)), T.readOrderD];
+        const orderWord = sort === "mean" ? "posterior mean" : "estimate";
+        const tblErr = v.tableEval?.[sort]?.EoverN ?? null;
+        const cardErr = v.cardEval?.EoverN ?? null;
+        const revClause = against === 0
+          ? ["; all agree with the table"]
+          : ["; ", ro("against", against, formatCount(against)), against === 1 ? " reverses the table" : " reverse the table"];
         ctx.readout.set([
-          T.readA, ro("M", d.M, formatCount(d.M)), T.readB, v.card.title, T.readC, ro("N", d.N, formatCount(d.N)),
-          T.readD, ro("s", d.s, formatProb(d.s)), T.readE, ro("withheld", d.M - d.N, formatCount(d.M - d.N)), T.readF,
-          ...list, T.readEnd, ...order,
+          `Ranking by ${orderWord} asserts all `,
+          ro("M", d.M, formatCount(d.M)),
+          " pairs",
+          ...(tblErr !== null ? [" (wrong share ", num(tblErr, formatShare(tblErr)), ")"] : []),
+          `. ${v.card.title} states `,
+          ro("N", d.N, formatCount(d.N)),
+          " pairs (",
+          ro("s", d.s, formatShare(d.s)),
+          ...(cardErr !== null ? [", wrong share ", num(cardErr, formatShare(cardErr))] : []),
+          ...revClause,
+          ") and withholds ",
+          ro("withheld", d.M - d.N, formatCount(d.M - d.N)),
+          ".",
         ]);
       }
 
       return {
         render(state, info) {
+          if (info?.reason === "disclosure") {
+            if (info.disclosure === "data") {
+              scrollHint.hidden = !(tableBox.scrollWidth > tableBox.clientWidth + 1);
+            }
+            return;
+          }
           ctx.root.setAttribute("aria-busy", "true");
           rendering = true;
           try {
-            // a new theme (the OS setting, or the theme key) clears the palette cache and redraws the colors
             const theme = themeKey();
             const themed = theme !== lastTheme;
             if (themed) { palCache = null; lastTheme = theme; }
@@ -1198,23 +1378,18 @@ export function mountWidget(el, spec = {}) {
             const v = view(state.card);
             const cardChanged = state.card !== lastCard;
             const moved = cardChanged || state.sort !== lastSort;
-            // a new order or card keeps the selected firm and brings its row into view
             const intent = pending ?? { scroll: moved };
             pending = null;
             expanded = state.rows === "all";
-            if (cardChanged || themed) { fillTable(v); drawLegend(v); }
+            if (cardChanged || themed) { fillTable(v); drawMethodAndHeader(v); }
             if (cardChanged) drawCaption(v);
             if (moved) orderRows(v, state.sort);
-            // the card does not depend on the order, the firm or the rows shown, and opening the "Card source" box
-            // (reason "disclosure") changes nothing in it: such a render keeps it
-            const redraw = !chart || cardChanged || themed || !["update", "disclosure"].includes(info?.reason);
             lastCard = state.card;
             lastSort = state.sort;
-            if (redraw) drawCard(v);
             drawReadout(v, state.sort);
             drawPairs(v, state.sort);
+            drawPairChart(v, state.sort);
             select(firmOf(state), intent);
-            // a phone hides the sideways scrollbar: say that the box scrolls when its columns do not fit
             scrollHint.hidden = !(tableBox.scrollWidth > tableBox.clientWidth + 1);
           } finally {
             rendering = false;

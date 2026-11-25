@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import CDE from '../../data/released/case-cde.json' with { type: 'json' };
-import { CDE_VIEWS, cutSet, mountCdeView, parseCuts, parsePair, readModel } from '../../js/apps/cde-common.js';
+import { CDE_VIEWS, cutSet, mountCdeView, parseCuts, parsePair, readModel } from '../../js/shared/domain/cde.js';
 
 test('CDE model retains case-study letters, unit alignment and every released path report', () => {
   const model = readModel();

@@ -37,6 +37,11 @@ test('the KRW report cloud reads one actual point identically by keyboard, point
                     assert.equal(await page.$eval(tip, node => node.textContent), expected);
                 }
                 assert.equal(await page.$eval(chart, node => node.dataset.prxReports), '4683');
+                const settings = await page.$('details[data-prx-disclosure="settings"]:not([open]) > summary');
+                if (settings) {
+                    await settings.focus();
+                    await page.keyboard.press('Enter');
+                }
                 const toggle = 'input[data-prx-focus-key="toggle:grid"]';
                 await page.focus(toggle);
                 await page.keyboard.press('Space');

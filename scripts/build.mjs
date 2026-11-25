@@ -28,7 +28,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
-import { navigationProblems, activeNavigationHtml } from "./navigation.mjs";
+import { navigationProblems, activeNavigationHtml, deployedStandalone } from "./navigation.mjs";
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ARGS = process.argv.slice(2);
@@ -37,8 +37,8 @@ const ONLY = ARGS.includes("--only") ? ARGS[ARGS.indexOf("--only") + 1] : null;
 const PRE_RENDER = ARGS.includes("--pre-render");
 export const STATUSES = ["planned", "building", "built"];
 const SITE = "postrank Explorer";
-// Explicit non-app modules; arbitrary files still require a catalog entry.
-export const APP_HELPERS = Object.freeze(["krw-common.js", "cde-common.js"]);
+// All shared helpers live in js/shared/domain/; every file in js/apps/ requires a catalog entry.
+export const APP_HELPERS = Object.freeze([]);
 
 const read = (rel) => readFileSync(join(ROOT, rel), "utf8");
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -57,7 +57,7 @@ export function loadCatalog() {
   const apps = files.map((f) => ({ ...JSON.parse(read(`catalog/entries/${f}`)), [FILE]: f }));
   const rank = new Map((site.parts ?? []).map((p, i) => [p.key, i]));
   apps.sort((a, b) => (rank.get(a.part) ?? 99) - (rank.get(b.part) ?? 99) || idOrder(a.id) - idOrder(b.id));
-  return { about: site.about, parts: site.parts ?? [], apps, discovery: JSON.parse(read("catalog/discovery.json")), siteCopy: websiteCopy.apps, websiteNavigation: JSON.parse(read("catalog/navigation.json")) };
+  return { about: site.about, parts: site.parts ?? [], apps, discovery: JSON.parse(read("catalog/discovery.json")), siteCopy: websiteCopy.apps, theoryReferences: JSON.parse(read("catalog/theory-references.json")), websiteNavigation: JSON.parse(read("catalog/navigation.json")) };
 }
 
 /** The entry file an app came from (not part of the merged catalog.json). */
@@ -209,10 +209,20 @@ function scripts(a, prefix) {
 }
 
 const THEME_SCRIPT = `<script>
-  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  // ?theme=light|dark wins over prefers-color-scheme; ?hide=chrome|title,caption,presets,disclosures trims slide chrome (credit stays visible)
   (function () {
-    var t = new URLSearchParams(location.search).get("theme");
+    var q = new URLSearchParams(location.search), t = q.get("theme"), h = q.get("hide");
     if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    if (t === "system") document.documentElement.dataset.themePreference = "system";
+    if (h) {
+      var allow = { title: 1, caption: 1, presets: 1, disclosures: 1 }, out = [];
+      h.split(",").forEach(function (raw) {
+        var k = raw.trim().toLowerCase();
+        if (k === "chrome") ["title", "caption"].forEach(function (c) { if (out.indexOf(c) < 0) out.push(c); });
+        else if (allow[k] && out.indexOf(k) < 0) out.push(k);
+      });
+      if (out.length) document.documentElement.setAttribute("data-prx-hide", out.join(" "));
+    }
   })();
 </script>`;
 
@@ -224,7 +234,15 @@ function publishedSiteUrl() {
 function embedHtml(cat, a) {
   const title = cat.siteCopy[a.name].title;
   const credit = [`${SITE} · ${a.id}`, esc(a.credit), ...notices(a).map(esc), ...authorNotices(a).map(esc),
-    `<a href="../${pagePath(cat, a)}.html">page</a>`].join(" · ");
+    `<a class="prx-embed-open" href="../docs/${pagePath(cat, a)}.html">Open full page</a>`].join(" · ");
+  const refs = cat.theoryReferences;
+  const theoryLinks = (refs.apps[a.id] ?? []).map(id => {
+    const section = refs.sections[id];
+    const href = new URL(section.file + "#" + id, refs.book).href;
+    return `<li><a href="${esc(href)}">Chapter ${esc(section.chapter)} · ${esc(section.title)}</a></li>`;
+  });
+  const theory = theoryLinks.length ? `
+<details class="prx-embed-theory"><summary>Theory references</summary><ul>${theoryLinks.join("")}</ul></details>` : "";
   const styles = ["../styles/tokens.css", "../styles/app.css", ...(a.math ? ["../styles/temml.css"] : [])];
   const canonical = publishedSiteUrl();
   return `<!doctype html>
@@ -232,6 +250,7 @@ function embedHtml(cat, a) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="prx-page-root" content="../docs/">
 <link rel="icon" href="data:,">
 ${canonical ? `<link rel="canonical" href="${esc(canonical + pagePath(cat, a) + ".html")}">` : ""}
 <!-- ${a.id} ${a.name}. Build inputs: catalog.json; do not edit. -->
@@ -243,7 +262,7 @@ ${styles.map((h) => `<link rel="stylesheet" href="${h}">`).join("\n")}
 <main>
 <h1 class="prx-embed-title">${esc(title)}</h1>
 <div id="app"><p>This app needs JavaScript.</p></div>
-<p class="prx-embed-credit">${credit}</p>
+<p class="prx-embed-credit">${credit}</p>${theory}
 </main>
 <!-- classic scripts only, so this page works from file:// -->
 ${scripts(a, "../")}
@@ -259,16 +278,16 @@ function card(cat, a, prefix) {
   const thumb = `media/thumbs/${a.name}.png`;
   const isBuilt = a.status === "built";
   const img = isBuilt && existsSync(join(ROOT, thumb))
-    ? `<a class="prx-card-thumb" href="${page}" tabindex="-1" aria-hidden="true"><img src="${prefix}${thumb}" alt="" loading="lazy"></a>\n`
+    ? `<a class="prx-card-thumb" href="${page}" tabindex="-1"><img src="${prefix}${thumb}" alt="${esc(`${a.id} ${copy.title} chart preview`)}" loading="lazy"></a>\n`
     : "";
   const title = isBuilt ? `<a href="${page}">${esc(copy.title)}</a>` : esc(copy.title);
   const links = isBuilt
-    ? `\n<p class="prx-card-links"><a href="${prefix}embed/${a.name}.html">standalone</a></p>`
+    ? `\n<p class="prx-card-links"><a href="${prefix}embed/${a.name}.html">Open standalone</a></p>`
     : "";
   return `<article class="prx-card prx-card-${a.status}">
 ${img}<div class="prx-card-body">
 <p class="prx-card-id">${esc(a.id)}${isBuilt ? "" : ` · <span class="prx-status">${a.status}</span>`}</p>
-<h3>${title}</h3>
+<h3 class="no-anchor">${title}</h3>
 <p>${esc(copy.description)}</p>${cardCredit(a)}${links}
 </div>
 </article>`;
@@ -354,7 +373,8 @@ function navYml(cat) {
 
 /** The merged catalog.json (no comments in JSON, so its "about" says it is generated). */
 function catalogJson(cat) {
-  const about = "Build inputs: catalog/site.json and catalog/entries/; do not edit. Edit those files instead.";
+  const version = read("VERSION").trim();
+  const about = `postrank Explorer ${version} — Build inputs: catalog/site.json and catalog/entries/; do not edit. Edit those files instead.`;
   return JSON.stringify({ about, parts: cat.parts, apps: cat.apps }, null, 2) + "\n";
 }
 
@@ -426,11 +446,19 @@ function main() {
   for (const [rel, text] of files) {
     const abs = join(ROOT, rel);
     const old = existsSync(abs) ? readFileSync(abs, "utf8") : null;
-    if (old === text) continue;
-    if (CHECK) { problems.push(`${old === null ? "missing" : "stale"} ${rel}`); continue; }
-    mkdirSync(dirname(abs), { recursive: true });
-    writeFileSync(abs, text);
-    written += 1;
+    if (old !== text) {
+      if (CHECK) { problems.push(`${old === null ? "missing" : "stale"} ${rel}`); continue; }
+      mkdirSync(dirname(abs), { recursive: true });
+      writeFileSync(abs, text);
+      written += 1;
+    }
+    if (!CHECK && !PRE_RENDER && rel.startsWith("embed/")) {
+      const docsAbs = join(ROOT, "docs", rel);
+      if (existsSync(docsAbs)) {
+        const deployed = deployedStandalone(text);
+        if (readFileSync(docsAbs, "utf8") !== deployed) { writeFileSync(docsAbs, deployed); written += 1; }
+      }
+    }
   }
   for (const rel of target ? [] : strays(files)) {
     if (CHECK) problems.push(`extra ${rel} (no built catalog entry)`);

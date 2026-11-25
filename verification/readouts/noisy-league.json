@@ -516,9 +516,9 @@
         },
         {
           "select": "[data-prx-readout=\"read-expected\"]",
-          "about": "read-out: expected pairs in the wrong order, closed form (base-R oracle), four significant digits",
+          "about": "read-out: expected pairs in the wrong order, closed form (base-R oracle), three significant digits",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -774,9 +774,9 @@
         },
         {
           "select": "[data-prx-readout=\"read-expected\"]",
-          "about": "read-out: expected pairs in the wrong order, closed form (base-R oracle), four significant digits",
+          "about": "read-out: expected pairs in the wrong order, closed form (base-R oracle), three significant digits",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1051,7 +1051,10 @@
         },
         {
           "select": "[data-prx-readout=\"avg-wrong\"]",
-          "about": "replay summary: average pairs in the wrong order",
+          "about": "replay summary: average pairs in the wrong order (three significant digits)",
+          "format": {
+            "fn": "formatReadoutExpected"
+          },
           "source": "registry",
           "ref": "league.replay20.avg.misordered",
           "value": 83.9
@@ -1060,10 +1063,7 @@
           "select": "[data-prx-readout=\"avg-wrong\"]",
           "about": "replay summary: average pairs in the wrong order (independent base-R oracle row)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 2
-            }
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -1075,9 +1075,9 @@
         },
         {
           "select": "[data-prx-readout=\"expected-wrong\"]",
-          "about": "replay summary: expected pairs in the wrong order, closed form (base-R oracle), four significant digits",
+          "about": "replay summary: expected pairs in the wrong order, closed form (base-R oracle), three significant digits",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -3462,11 +3462,11 @@
         {
           "select": ".prx-readout",
           "kind": "text",
-          "about": "the read-out word for word: v1's three sentences (the first draw, its truth line, and the replays' averages)",
+          "about": "the concise Frame v2 read-out at Twenty replays (<= 32 words, 3 significant figures)",
           "source": "literal",
           "ref": "9.4",
           "slots": true,
-          "value": "First draw, seed ⟨seed⟩: of the ⟨ext⟩ extreme positions by estimate, small units hold ⟨small⟩, medium units ⟨medium⟩ and large units ⟨large⟩; truly they hold ⟨ts⟩, ⟨tm⟩ and ⟨tl⟩. Of the top ⟨k⟩ by estimate, ⟨top⟩ are in the true top ⟨k2⟩, and the estimates order ⟨wrong⟩ of the ⟨M⟩ pairs the wrong way (expected over many draws: ⟨expected⟩). Over ⟨R⟩ replays, small units hold ⟨avgSmall⟩ and large units ⟨avgLarge⟩ of the extreme positions on average."
+          "value": "Seed ⟨seed⟩: small units hold ⟨small⟩, medium units ⟨medium⟩ and large units ⟨large⟩ (⟨top⟩ in true top ⟨k⟩; ⟨wrong⟩ wrong pairs vs ⟨expected⟩ expected). Over ⟨R⟩ replays: ⟨avgSmall⟩ small, ⟨avgLarge⟩ large."
         }
       ]
     },
@@ -3955,9 +3955,9 @@
         },
         {
           "select": "[data-prx-readout=\"read-expected\"]",
-          "about": "read-out: the expectation does not depend on the seed (base-R oracle), four significant digits",
+          "about": "read-out: the expectation does not depend on the seed (base-R oracle), three significant digits",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -4367,6 +4367,9 @@
         {
           "select": "[data-prx-readout=\"avg-wrong\"]",
           "about": "replays clamped to twenty: true values shown (reveal=yes)",
+          "format": {
+            "fn": "formatReadoutExpected"
+          },
           "source": "registry",
           "ref": "league.replay20.avg.misordered",
           "value": 83.9
@@ -4375,10 +4378,7 @@
           "select": "[data-prx-readout=\"avg-wrong\"]",
           "about": "replays clamped to twenty: true values shown (reveal=yes) (independent base-R oracle row)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 2
-            }
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {

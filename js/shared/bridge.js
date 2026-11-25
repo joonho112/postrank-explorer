@@ -25,7 +25,7 @@
 
 export const CONFIG = Object.freeze({
   messageKey: "prx",
-  reservedKeys: Object.freeze(["preset", "theme", "open"]),
+  reservedKeys: Object.freeze(["preset", "theme", "open", "hide"]),
   themes: Object.freeze(["light", "dark"]),
   onWords: Object.freeze(["on", "true", "1", "yes"]),
   offWords: Object.freeze(["off", "false", "0", "no"]),
@@ -146,7 +146,8 @@ export function readQuery({ allowed = [], types, window: win } = {}) {
     }
     seen.add(key);
     if (key === "theme") {
-      if (CONFIG.themes.includes(value)) out.theme = value;
+      if (value === "system") out.theme = null; // The host follows its media query.
+      else if (CONFIG.themes.includes(value)) out.theme = value;
       else drop(`theme takes ${CONFIG.themes.join(", ")}`);
     } else if (key === "preset") {
       const v = toText(value);

@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,7 +72,27 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -105,6 +125,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/naive-thresholding.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Coherence of pairwise threshold decisions – postrank Explorer">
+<meta property="og:description" content="Pairwise threshold decisions can conflict with each other, even when no strict cycle occurs.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/naive-thresholding.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/naive-thresholding.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -593,7 +618,7 @@ window.Quarto = {
 </header>
 
 
-<p>A pairwise threshold reports a direction when its error probability is strictly below <span class="math inline"><math><mi>τ</mi></math></span>. Applied separately to each pair, this rule can produce directions that no grade report can reproduce. For example, if the report withholds A–B and B–C, A and C must share a grade too. A stated direction for A–C would contradict those two decisions. The triple display counts these contradictions and directed cycles. The card overlay shows which directions the archived grade report states under the same released probabilities.</p>
+<p>Thresholding each pair separately states a direction whenever its error probability falls strictly below <span class="math inline"><math><mi>τ</mi></math></span>. Compare those isolated pair choices with coherent grade reports across triples of firms.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -602,26 +627,32 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Race λ .25.</strong> Naive thresholding states 1,575 directions. Among 147,440 triples, 32,773 have two pairs withheld and the third stated. For the selected triple, the withheld pairs would force every firm into the same grade, contradicting the stated direction.</li>
-<li><strong>Race λ .10.</strong> The two-withheld count is 24,278. The triple selector and map arrows locate other conflicts in the matrix.</li>
-<li><strong>Race λ .50.</strong> The count falls to 15,107. The rule reports more directions, yet fewer triples have two withheld pairs and one stated pair.</li>
-<li><strong>Race λ .75.</strong> The count falls again to 3,108. Even without a strict directed cycle, the withheld pairs can conflict with a direction the rule states.</li>
-<li><strong>Race λ .25, card blocks.</strong> The card withholds 575 confident pairs and states 324 directions whose errors exceed τ. The selected triple retains its identity within these blocks. KRW’s card has no cap on the number of grades, so these differences arise from coherence.</li>
-<li><strong>Gender λ 1.00.</strong> All 4,656 pairs are stated, but 1 directed cycle precludes a coherent grade report. The absence of cycles at the race baseline does not extend to every target and threshold.</li>
+<li><strong>Race λ .25.</strong> Naive thresholding states 1,575 directions and leaves 32,773 of 147,440 triples with two withheld pairs and one stated.</li>
+<li><strong>Race λ .10.</strong> The two-withheld conflict count is 24,278.</li>
+<li><strong>Race λ .50.</strong> Reporting more directions reduces two-withheld conflicts to 15,107.</li>
+<li><strong>Race λ .75.</strong> Conflicts fall further to 3,108 without any strict directed cycle.</li>
+<li><strong>Race λ .25, card blocks.</strong> The card withholds 575 confident pairs and states 324 directions above τ to restore coherence without a grade cap.</li>
+<li><strong>Gender λ 1.00.</strong> All 4,656 pairs are stated, leaving 1 directed cycle that precludes a coherent grade report.</li>
 </ul>
+<details>
+<summary>
+Transitivity and archived cards
+</summary>
+<p>A shared grade leaves the direction between two firms unranked, and sharing a grade is transitive: withholding A–B and B–C puts all three firms in one grade, contradicting a stated direction on A–C. Threshold decisions and archived KRW cards are evaluated here under the released signed-target probabilities.</p>
+</details>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>A shared grade leaves the direction between two firms unranked. We count threshold decisions using the released probabilities for the signed target. KRW selected the archived cards with their own code and archived probabilities. Here we evaluate those cards under the released probabilities and use the overlay to compare their directions with the separate pairwise decisions.</p>
 <p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only; as adapted in postrank 1.1.0 (<code>pr_case_krw</code>), changes noted; no endorsement is implied. Provided as is, without warranty. <strong>The data describe KRW’s correspondence experiment, not any firm’s current conduct.</strong></p>
 </div>
 </div>
 </div>
 <p>Standalone: <a href="../../embed/naive-thresholding.html">naive-thresholding</a>, for example <code>?lambda=.25&amp;blocks=true&amp;triple=0</code>.</p>
 <p>Related applications: <a href="../../pages/grades/coherence.html">Coherence constraints on pairwise decisions</a>, <a href="../../pages/rules/deciles-quartiles.html">Deciles and quartiles of posterior means</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-pair-versus-grade">Withholding a pair and constructing a common grade</a>.</p>
 
 
 </section>
@@ -1094,7 +1125,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

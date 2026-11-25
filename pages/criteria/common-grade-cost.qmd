@@ -4,11 +4,7 @@ subtitle: "4.5 · commonality costs from postrank, with live and archived exampl
 description: "Increase in each criterion's risk relative to its own optimum in the same report family."
 ---
 
-A criterion may have higher risk under a common report than it would have under grades chosen for that
-criterion alone. We call the difference the commonality cost. Each connector joins the separate minimum to
-the risk of the common report for that criterion. Both evaluations use the same set of possible reports and
-withholding cost. Equal error weights can still give unequal costs. The larger examples use optimization
-bounds saved with the original reports.
+Under a common report, a criterion can carry higher risk than under grades chosen for that criterion alone. The gap $\Delta_k$ is its commonality cost within the same report family and withholding price.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,23 +16,19 @@ bounds saved with the original reports.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Equal weights.** The excess risks are .0490 on score A and .0145 on score B. Each connector joins the criterion-specific optimum to its common-report evaluation. The comparison table keeps each criterion’s risk separate from its wrong share.
-- **Score A only.** The common report is score A’s own best, so score A has zero excess risk and score B has excess risk .1481.
-  Score B still has its own comparison; a zero error weight does not remove that criterion from the display.
-- **w .70.** The common report becomes {A} > {B, C, D} > {E, F}: the excess risks are .0253 on score A and .0563 on score B.
-  Moving a weight changes the objective used to select the common report.
-- **Score B only.** Two common reports tie. Score A has excess risk .1580 under one and .1697 under the other; score B has zero excess risk. Both common reports and both of score B’s own optima are shown, with their equal-risk tolerance.
-- **Thirty sites, higher price.** The archived common report states 276 pairs. Snap’s cost is .4455, and its
-  expected wrong share among those stated directions is .784. The cost interval comes from optimization bounds.
-- **Thirty sites, lower price.** The common report withholds every direction, yet each criterion could prefer a
-  report of its own. Costs are .0895, .0749 and .1022 for poverty, frl and snap, respectively.
+- **Equal weights.** Excess risks are .0490 on score A and .0145 on score B, joining each criterion's own minimum to its common-report risk.
+- **Score A only.** The common report matches score A's own optimum: score A gives up 0 and score B gives up .148.
+- **w .70.** The common report becomes {A} > {B, C, D} > {E, F}, with excess risks .0253 on score A and .0563 on score B.
+- **Score B only.** Two common reports tie: score A pays .158 under one and .170 under the other, while score B pays 0.
+- **Thirty sites, higher price.** The archived common report states 276 pairs; snap's cost is .446 and its wrong share among stated pairs is .784.
+- **Thirty sites, lower price.** The common report withholds every pair, yet separate optima give costs .0895, .0749, and .102 for poverty, frl, and snap.
 
-::: {.callout-note appearance="simple"}
-The package writes this risk difference as $\Delta_k$. It measures the cost of a common report under the chosen
-loss. Judging the weights or the consequences of using the report requires additional information. The
-thirty-site results come from archived analyses of posterior draws. Their intervals are bounds on the minimum
-from the search. We show the separate grade vectors where the archive includes them.
-:::
+<details>
+<summary>Scope and archived bounds</summary>
+
+The package writes this risk difference as $\Delta_k$. It measures the cost of a common report under the chosen loss; judging the weights or downstream consequences requires additional information. The thirty-site results come from archived posterior-draw analyses whose intervals bound the solver search minimum.
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r

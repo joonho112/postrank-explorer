@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,39 +72,38 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
 
-  <script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
     }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
+  }, {once: true});
+})();
 </script>
+
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/coherence.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Coherence constraints on pairwise decisions – postrank Explorer">
+<meta property="og:description" content="Compatibility of isolated-pair decisions with an ordered grade report.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/coherence.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/coherence.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -593,7 +592,7 @@ window.Quarto = {
 </header>
 
 
-<p>The pairwise actions that minimize expected loss need not fit into a single grade report. Consider three units A, B, and C with independent normal posteriors. Moving B’s mean changes the probabilities for pairs that include B and can change which directions are worth stating at the chosen withholding cost <span class="math inline"><math><mi>τ</mi></math></span>. The density panel shows the three posteriors. The other panels compare the risk of deciding each pair separately with the risk of the best grade report. Their difference is the additional risk of requiring one ordered partition for all three pairs.</p>
+<p>Choosing the lowest-loss action for each pair separately need not yield a valid grade report. Moving middle firm B’s posterior mean shows when coherence adds risk.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -603,24 +602,21 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Middle at 1.00.</strong> A–B and B–C are withheld separately, while A above C has probability .921 and is stated. Transitivity of shared grades contradicts that direction. The minimum coherent risk is .1728. Both optimal reports, named in the read-out, resolve the conflict by stating an additional direction; the strip under the curves shades their extra cost.</li>
-<li><strong>Middle at .50.</strong> B moves closer to C. The choices now form {A} &gt; {B, C}, with risk .1410. The same report attains the minimum from deciding each pair separately.</li>
-<li><strong>Middle at .80.</strong> The mean is just outside the shaded band and the report reaches risk .1589. Additional displayed digits resolve probabilities near the decision boundary.</li>
-<li><strong>Middle at 1.00, τ .10.</strong> The withholding cost decreases. The best report is {A, B, C}, risk .1000; it withholds the confident outer pair too. The pairwise choices remain incompatible with a grade report, but the minimum-risk coherent resolution has changed.</li>
-<li><strong>Middle at 1.00, τ .25.</strong> The threshold falls to .75, below .760. Every pair is stated, the shaded band vanishes, and {A} &gt; {B} &gt; {C} represents the pairwise choices. The density panel is unchanged because τ affects the loss rather than the posterior.</li>
+<li><strong>Middle at 1.00.</strong> Isolated pairs withhold A–B and B–C while stating A above C (probability .921). Shared grades are transitive, so the best coherent reports reach risk .173.</li>
+<li><strong>Middle at .50.</strong> B sits closer to C, so the pairwise choices print directly as {A} &gt; {B, C} at risk .141.</li>
+<li><strong>Middle at .80.</strong> Just below the shaded band, the pairwise choices still print as one report at risk .159.</li>
+<li><strong>Middle at 1.00, τ .10.</strong> Lowering the withholding cost shifts the best coherent report to {A, B, C} at risk .100, withholding the confident outer pair too.</li>
+<li><strong>Middle at 1.00, τ .25.</strong> The threshold drops to .75, below .760, so every pair is stated as {A} &gt; {B} &gt; {C} and the incoherent band disappears.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Sharing a grade is transitive. If A shares a grade with B and B with C, the report must also withhold the comparison of A and C. Kline, Rose and Walters describe the conflict with the separate pair decisions as a “Condorcet cycle in indifferences.” These are posteriors set by hand for teaching. The browser evaluates every report of the stated family, lists equal-risk optima and gives their tolerance; the band is an aid to reading the picture, while compatibility is checked directly against the reports.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Transitivity and scope notes
+</summary>
+<p>Sharing a grade is transitive. If A shares a grade with B and B with C, the report must also withhold the comparison of A and C. Kline, Rose and Walters describe the conflict with the separate pair decisions as a “Condorcet cycle in indifferences.” These are posteriors set by hand for teaching. The browser evaluates every report of the stated family, lists equal-risk optima, and records their equal-risk tolerance in the disclosures.</p>
+</details>
 <p>Standalone: <a href="../../embed/coherence.html">coherence</a>, for example <code>?omega2=.81&amp;tau=.20</code>.</p>
 <p>Related applications: <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a>, <a href="../../pages/grades/coherence-finite.html">Coherence in a finite three-unit example</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-pair-versus-grade">Withholding a pair and constructing a common grade</a>.</p>
 
 
 </section>
@@ -1093,7 +1089,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

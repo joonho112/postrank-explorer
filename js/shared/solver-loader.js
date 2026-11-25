@@ -31,7 +31,10 @@ export function loadSolver({ win = typeof window !== "undefined" ? window : null
     const script = win.document.createElement("script");
     script.src = url;
     script.onload = () => (win.PRX_SOLVER ? start() : reject(new Error("the solver bundle loaded but did not start")));
-    script.onerror = () => reject(new Error(`the solver bundle could not be loaded (${url})`));
+    script.onerror = () => {
+      script.remove();
+      reject(new Error(`the solver bundle could not be loaded (${url})`));
+    };
     win.document.head.appendChild(script);
   });
   loads.set(win, loading);

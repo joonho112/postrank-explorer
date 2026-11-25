@@ -4,7 +4,7 @@ subtitle: "1.6 · the prior SD of a teaching posterior, after Walters' teaching 
 description: "Repeated-sampling squared error and pairwise posterior probabilities across prior standard deviations."
 ---
 
-A smaller prior standard deviation pulls posterior means closer to the prior mean in the normal–normal model. Analysts may choose the prior standard deviation or estimate it from the data by empirical Bayes. We vary it from .01 to 1 for the same simulated league used in [normal–normal posterior shrinkage](shrinkage.qmd). With the prior centered on the average true value, posterior means have the smallest average squared error when the prior spread is close to the spread of the true values. The prior standard deviation also changes the [posterior probability of each direction](two-units.qmd). The horizontal axis is logarithmic.
+Varying the prior standard deviation from .01 to 1 across the [simulated league](shrinkage.qmd) shows that posterior means minimize squared error near the true spread while reshaping [pairwise posterior probabilities](two-units.qmd).
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,32 +16,19 @@ A smaller prior standard deviation pulls posterior means closer to the prior mea
 
 ## Numerical illustrations {#what-to-try}
 
-- **Near the true spread.** At prior SD .15 both distance curves are at their lowest point among the slider's
-  settings: .0096 in this draw (the estimates: .0163) and .0075 over many draws. A finer search puts the closed form's
-  lowest point at about .146, next to the true spread, .149.
-- **Much too narrow.** At .02 the posterior means end farther from the true values than the estimates: .0197 against
-  .0163 in this draw, .0191 against .0175 over many draws. In this draw the posterior puts one direction above .90 in
-  only 6 of the 435 pairs.
-- **Too narrow.** At .05 the expected pairs against the true order are 87.45, against 88.12 for the estimates and
-  80.66 at their fewest; in this draw 17 units end farther than their estimates were.
-- **Too wide.** At .45 the expected distance is .0133, as at .05, yet in this draw the posterior puts one direction
-  above .90 in 159 pairs instead of 66. These are the posterior's own probabilities; whether such directions are right
-  under the true values is checked in [Reported error and reference-law evaluation](../grades/reported-and-realized.qmd). In this draw 13 units end farther, as
-  at every prior SD from about .23 on.
-- **Another draw.** With seed 20261031 this draw's distance is lowest at .12 (.0092); over many draws it stays lowest
-  at .15 (.0075).
+- **Near the true spread.** At prior SD .15 (true spread .149), mean squared error hits its grid minimum in this draw (.00958 vs. .0163 for estimates) and expected (.00754 vs. .0175; fine grid .146).
+- **Much too narrow.** At .02, overshrinking raises squared error above the estimates (.0197 vs. .0163 in this draw; .0191 vs. .0175 expected), and only 6 of the 435 pairs exceed .90.
+- **Too narrow.** At .05, squared error rises to .0148 (.0133 expected), expected misordered pairs reach 87.4, and 17 of 30 units end farther from truth.
+- **Too wide.** At .45, expected squared error matches .05 at .0133 (.0136 in this draw), yet 159 of the 435 pairs exceed .90 (45 exceed .99) and 13 units end farther.
+- **Another draw.** Under seed 20261031, this draw's minimum moves to .12 (.00917), while expected squared error stays lowest at .15 (.00754).
 
-::: {.callout-note appearance="simple"}
-The curve labeled "Over many draws" gives the expected error across samples with the true values fixed. We compute this expectation in closed form. The postrank theory book (ch. 18) calls this a fixed-parameter experiment.
-postrank fits no model and reads the posterior it is given (ch. 18, "Hyperparameters, precision and represented
-uncertainty"). The best report at each prior SD and the error share it claims are shown in
-[Reported error and reference-law evaluation](../grades/reported-and-realized.qmd). The
-normal–normal shrinkage follows Walters' Mixtape slides (p. 27).
-:::
+<details>
+<summary>Fixed-parameter experiment and source notes</summary>
 
-Standalone: [embed/shrinkage-price.html](../../embed/shrinkage-price.html), for example `?priorSd=.30` or
-`?preset=another-draw&theme=dark`.
+The dashed curve ("expected") gives the closed-form expected squared error across repeated estimate draws with the true values fixed — a fixed-parameter experiment in the postrank theory book (ch. 24, "Hyperparameters, precision and represented uncertainty"). postrank fits no model and takes the posterior it is given as input; whether high-probability directions hold under the true values is examined in [Reported error and reference-law evaluation](../grades/reported-and-realized.qmd). Normal–normal shrinkage follows Walters' Mixtape slides (p. 27).
 
-Related applications: [Normal–normal posterior shrinkage](shrinkage.qmd) (1.5) ·
-[Selection bias at the extremes of a ranking](winners-curse.qmd) (1.4) ·
-[Reported error and reference-law evaluation](../grades/reported-and-realized.qmd) (2.9).
+</details>
+
+Standalone: [embed/shrinkage-price.html](../../embed/shrinkage-price.html). Related: [Normal–normal posterior shrinkage](shrinkage.qmd) (1.5) · [Selection bias at the extremes](winners-curse.qmd) (1.4) · [Reported error and reference-law evaluation](../grades/reported-and-realized.qmd) (2.9).
+
+Theory book · [Hyperparameters, precision and represented uncertainty](https://joonho112.github.io/postrank-theory-book/chapters/24-misspecification-calibration.html#sec-producer-model-error).

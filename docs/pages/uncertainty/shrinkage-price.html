@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/shrinkage-price.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sensitivity to the prior standard deviation – postrank Explorer">
+<meta property="og:description" content="Repeated-sampling squared error and pairwise posterior probabilities across prior standard deviations.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/shrinkage-price.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/shrinkage-price.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>A smaller prior standard deviation pulls posterior means closer to the prior mean in the normal–normal model. Analysts may choose the prior standard deviation or estimate it from the data by empirical Bayes. We vary it from .01 to 1 for the same simulated league used in <a href="../../pages/uncertainty/shrinkage.html">normal–normal posterior shrinkage</a>. With the prior centered on the average true value, posterior means have the smallest average squared error when the prior spread is close to the spread of the true values. The prior standard deviation also changes the <a href="../../pages/uncertainty/two-units.html">posterior probability of each direction</a>. The horizontal axis is logarithmic.</p>
+<p>Varying the prior standard deviation from .01 to 1 across the <a href="../../pages/uncertainty/shrinkage.html">simulated league</a> shows that posterior means minimize squared error near the true spread while reshaping <a href="../../pages/uncertainty/two-units.html">pairwise posterior probabilities</a>.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,24 +600,20 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Near the true spread.</strong> At prior SD .15 both distance curves are at their lowest point among the slider’s settings: .0096 in this draw (the estimates: .0163) and .0075 over many draws. A finer search puts the closed form’s lowest point at about .146, next to the true spread, .149.</li>
-<li><strong>Much too narrow.</strong> At .02 the posterior means end farther from the true values than the estimates: .0197 against .0163 in this draw, .0191 against .0175 over many draws. In this draw the posterior puts one direction above .90 in only 6 of the 435 pairs.</li>
-<li><strong>Too narrow.</strong> At .05 the expected pairs against the true order are 87.45, against 88.12 for the estimates and 80.66 at their fewest; in this draw 17 units end farther than their estimates were.</li>
-<li><strong>Too wide.</strong> At .45 the expected distance is .0133, as at .05, yet in this draw the posterior puts one direction above .90 in 159 pairs instead of 66. These are the posterior’s own probabilities; whether such directions are right under the true values is checked in <a href="../../pages/grades/reported-and-realized.html">Reported error and reference-law evaluation</a>. In this draw 13 units end farther, as at every prior SD from about .23 on.</li>
-<li><strong>Another draw.</strong> With seed 20261031 this draw’s distance is lowest at .12 (.0092); over many draws it stays lowest at .15 (.0075).</li>
+<li><strong>Near the true spread.</strong> At prior SD .15 (true spread .149), mean squared error hits its grid minimum in this draw (.00958 vs.&nbsp;.0163 for estimates) and expected (.00754 vs.&nbsp;.0175; fine grid .146).</li>
+<li><strong>Much too narrow.</strong> At .02, overshrinking raises squared error above the estimates (.0197 vs.&nbsp;.0163 in this draw; .0191 vs.&nbsp;.0175 expected), and only 6 of the 435 pairs exceed .90.</li>
+<li><strong>Too narrow.</strong> At .05, squared error rises to .0148 (.0133 expected), expected misordered pairs reach 87.4, and 17 of 30 units end farther from truth.</li>
+<li><strong>Too wide.</strong> At .45, expected squared error matches .05 at .0133 (.0136 in this draw), yet 159 of the 435 pairs exceed .90 (45 exceed .99) and 13 units end farther.</li>
+<li><strong>Another draw.</strong> Under seed 20261031, this draw’s minimum moves to .12 (.00917), while expected squared error stays lowest at .15 (.00754).</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The curve labeled “Over many draws” gives the expected error across samples with the true values fixed. We compute this expectation in closed form. The postrank theory book (ch.&nbsp;18) calls this a fixed-parameter experiment. postrank fits no model and reads the posterior it is given (ch.&nbsp;18, “Hyperparameters, precision and represented uncertainty”). The best report at each prior SD and the error share it claims are shown in <a href="../../pages/grades/reported-and-realized.html">Reported error and reference-law evaluation</a>. The normal–normal shrinkage follows Walters’ Mixtape slides (p.&nbsp;27).</p>
-</div>
-</div>
-</div>
-<p>Standalone: <a href="../../embed/shrinkage-price.html">embed/shrinkage-price.html</a>, for example <code>?priorSd=.30</code> or <code>?preset=another-draw&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/shrinkage.html">Normal–normal posterior shrinkage</a> (1.5) · <a href="../../pages/uncertainty/winners-curse.html">Selection bias at the extremes of a ranking</a> (1.4) · <a href="../../pages/grades/reported-and-realized.html">Reported error and reference-law evaluation</a> (2.9).</p>
+<details>
+<summary>
+Fixed-parameter experiment and source notes
+</summary>
+<p>The dashed curve (“expected”) gives the closed-form expected squared error across repeated estimate draws with the true values fixed — a fixed-parameter experiment in the postrank theory book (ch.&nbsp;24, “Hyperparameters, precision and represented uncertainty”). postrank fits no model and takes the posterior it is given as input; whether high-probability directions hold under the true values is examined in <a href="../../pages/grades/reported-and-realized.html">Reported error and reference-law evaluation</a>. Normal–normal shrinkage follows Walters’ Mixtape slides (p.&nbsp;27).</p>
+</details>
+<p>Standalone: <a href="../../embed/shrinkage-price.html">embed/shrinkage-price.html</a>. Related: <a href="../../pages/uncertainty/shrinkage.html">Normal–normal posterior shrinkage</a> (1.5) · <a href="../../pages/uncertainty/winners-curse.html">Selection bias at the extremes</a> (1.4) · <a href="../../pages/grades/reported-and-realized.html">Reported error and reference-law evaluation</a> (2.9).</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/24-misspecification-calibration.html#sec-producer-model-error">Hyperparameters, precision and represented uncertainty</a>.</p>
 
 
 </section>
@@ -1065,7 +1086,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

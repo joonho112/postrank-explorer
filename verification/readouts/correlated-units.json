@@ -3,7 +3,7 @@
   "app": "correlated-units",
   "catalog": "1.9",
   "from": "postrank-explorer-v1 verification/readouts/two-units.json (the correlation box's cases)",
-  "about": "Two correlated normal posteriors. The result line under the difference figure gives corr, the SD of the difference with corr and independent, and pi_AB with corr and independent; the read-out repeats corr, pi_AB and the independent pi_AB; the formula at these settings has 11 numbers (SD_A, SD_B, 2, corr, SD_A, SD_B, SD of the difference, gap, SD of the difference, z, pi_AB); the slider's note names its end, .95. Ported from v1's correlation-box cases (corr50, corr-plus-sites, corr-minus-sites, corr-unequal, corr-negative-means, corr-clamped, corr-minus95) without deeper=corr, which v3 does not have: the box is the app. In corr50 the core read-out's independent pi_AB is the result line's independent value, and the slider, figure and table indices count this app's own (the correlation slider is the fifth slider; the difference figure and its table are the third). Probabilities are rows of the base-R oracle (oracle-pairwise, pairDirection); settings, the gap, the SDs of the difference and z come from v1's frozen registry (settings.*, cf.pair.*). New in v3: the presets independent, corr95 and shared-mean, an update case, and the shared prior mean. With equal SEs the shared prior mean cancels from the difference, so its pi_AB is Phi(B(y_A - y_B)/sqrt(2 B SE^2)) = Phi(.04/sqrt(.016)) = Phi(sqrt(.1)), whatever the SD of the prior mean: the same value as Phi(.2/sqrt(.4)) at means .30 and .10 with SDs .20 and .60, which the oracle row and the registry give independently; z is sqrt(.1) for the same reason. The model's other numbers (the correlation .645, the posterior means and SDs) have no golden row yet; they are read back by the general rules only. The model's posterior is engine sharedMeanPosterior when the prior mean is uncertain (case shared-mean) and, with its SD at 0, the known-mean limit, engine normalPosterior with correlation 0 (case shared-known-mean), so both branches are pinned. Review 044 repair (X-01): the figures now read in result-first order (the pair, the difference with its result line, each unit's posterior, the key), so the difference is the second figure and the units' the third: the index-based selectors of the difference's text alternative and of the two hidden tables' captions follow them (same figures, same literals). The pair figure's title carries pi_AB and the independent pi_AB (hooks pair-pi, pair-pi-indep), checked in cases independent, corr50, corr-minus95 and shared-mean against the result line's oracle rows.",
+  "about": "Two correlated normal posteriors (Frame v2). The toolbar places the primary correlation slider (or prior-mean SD slider in shared-mean mode) in ctx.controls with wrapping presets and secondary parameters in Settings. The concise 3-sig-fig read-out sits directly below the toolbar; the primary stage pairs the joint posterior (.90 ellipse + equality diagonal) with the difference A - B density and its 3-sig-fig result strip; marginal unit posteriors and exact 6-decimal summaries live in Data, and formulas in Method.",
   "cases": [
     {
       "id": "default",
@@ -21,19 +21,18 @@
           "select": ".prx-readout",
           "kind": "text",
           "slots": true,
-          "about": "the read-out at the defaults: the chosen correlation against independent posteriors, and the side of one half the means fix",
+          "about": "the concise v2 read-out at the defaults: the chosen correlation against independent posteriors, and the side of one half the means fix",
           "source": "literal",
           "ref": "9.4",
-          "value": "Correlation ⟨corr⟩ gives πAB = ⟨pi⟩ (independent: ⟨indep⟩). Because the pair's posterior is normal and A's posterior mean is above B's, πAB stays above one half at every correlation."
+          "value": "Correlation ⟨corr⟩ gives πAB = ⟨pi⟩ (independent: ⟨indep⟩). Under joint normality, with A's mean above B's, πAB stays above one half at every correlation."
         },
         {
           "select": "[data-prx-part~=\"legend\"]",
           "kind": "text",
-          "slots": true,
-          "about": "the key under the pair: the chosen correlation's two line styles (solid ellipse, dash-dot difference), dotted for independent posteriors in both figures, the + of the posterior means, and that the ellipse only marks where .90 of the posterior lies",
+          "about": "compact stage key under the pair and difference figures",
           "source": "literal",
           "ref": "11.4",
-          "value": "with the chosen correlation (ellipse; difference)independent (both figures)the two true values equal+the posterior meansA's true value larger: its posterior probability is πABEach ellipse only marks where ⟨level⟩ of its posterior lies. The line itself has probability zero (the difference is normal with positive SD), so πBA = ⟨one⟩ − πAB."
+          "value": "with the chosen correlation (ellipse; difference)independent (dotted)equal values+posterior meansA larger (πAB)"
         }
       ]
     },
@@ -54,13 +53,16 @@
           "about": "the SD of the difference, independent",
           "source": "registry",
           "ref": "cf.pair.p1.diffsd",
-          "value": 0.2828427124746189
+          "value": 0.2828427124746189,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"corr-pi\"]",
           "about": "pi_AB in the result line (base-R oracle)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -82,7 +84,10 @@
           "about": "the read-out: the independent pi_AB",
           "source": "registry",
           "ref": "cf.pair.p1.pi",
-          "value": 0.7602499389065233
+          "value": 0.7602499389065233,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-tex=\"corr-worked\"] mtext",
@@ -118,24 +123,24 @@
         },
         {
           "select": ".prx-slider output",
-          "index": 0,
-          "about": "slider: posterior mean of A",
+          "index": 1,
+          "about": "slider: posterior mean of A (in Settings)",
           "source": "registry",
           "ref": "settings.mean30",
           "value": 0.3
         },
         {
           "select": ".prx-slider output",
-          "index": 2,
-          "about": "slider: posterior mean of B",
+          "index": 3,
+          "about": "slider: posterior mean of B (in Settings)",
           "source": "registry",
           "ref": "settings.mean10",
           "value": 0.1
         },
         {
           "select": ".prx-slider output",
-          "index": 4,
-          "about": "slider: corr",
+          "index": 0,
+          "about": "slider: corr (primary slider in ctx.controls)",
           "source": "registry",
           "ref": "settings.corr00",
           "value": 0
@@ -172,7 +177,7 @@
           "select": "[data-prx-part~=\"table\"] caption",
           "index": 2,
           "kind": "text",
-          "about": "caption of the units' figure's data table (as in 1.8)",
+          "about": "caption of the units' figure's data table (in Data disclosure)",
           "source": "literal",
           "ref": "11.4",
           "value": "Posterior mean and SD of each unit"
@@ -181,7 +186,7 @@
           "select": "[data-prx-readout=\"pair-pi\"]",
           "about": "the pair figure's title: pi_AB (at correlation 0 the only value; review 044, X-01)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -210,27 +215,36 @@
           "about": "SD of A minus B with corr .50",
           "source": "registry",
           "ref": "cf.pair.p1corr50.diffsd",
-          "value": 0.1999999999999999
+          "value": 0.1999999999999999,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"corr-sd-indep\"]",
           "about": "SD of A minus B for independent posteriors",
           "source": "registry",
           "ref": "cf.pair.p1.diffsd",
-          "value": 0.2828427124746189
+          "value": 0.2828427124746189,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"corr-pi\"]",
           "about": "pi_AB with corr .50",
           "source": "registry",
           "ref": "cf.pair.p1corr50.pi",
-          "value": 0.8413447460685429
+          "value": 0.8413447460685429,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"corr-pi\"]",
           "about": "pi_AB with corr .50 (independent base-R oracle)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -244,7 +258,7 @@
           "select": "[data-prx-readout=\"corr-pi-indep\"]",
           "about": "pi_AB for independent posteriors (v1's core read-out value, here the result line's independent value)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -336,15 +350,15 @@
         },
         {
           "select": ".prx-slider output",
-          "index": 4,
-          "about": "slider: corr",
+          "index": 0,
+          "about": "slider: corr (primary slider in ctx.controls)",
           "source": "registry",
           "ref": "settings.corr50",
           "value": 0.5
         },
         {
           "select": "[data-prx-readout=\"corr-max\"]",
-          "about": "the slider's end, named in the note under the slider",
+          "about": "the slider's end, named in the note inside Settings",
           "source": "registry",
           "ref": "settings.corr95",
           "value": 0.95
@@ -361,13 +375,16 @@
           "about": "the read-out: pi_AB with corr",
           "source": "registry",
           "ref": "cf.pair.p1corr50.pi",
-          "value": 0.8413447460685429
+          "value": 0.8413447460685429,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"live-corr-pi\"]",
           "about": "the read-out: pi_AB with corr (independent base-R oracle)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -381,7 +398,7 @@
           "select": "[data-prx-readout=\"live-corr-pi-indep\"]",
           "about": "the read-out: independent pi_AB",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -433,7 +450,7 @@
           "select": "[data-prx-readout=\"pair-pi\"]",
           "about": "the pair figure's title: pi_AB with corr .50 (review 044, X-01)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -447,7 +464,7 @@
           "select": "[data-prx-readout=\"pair-pi-indep\"]",
           "about": "the pair figure's title: the independent pi_AB",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -467,7 +484,7 @@
         {
           "select": "[data-prx-readout=\"corr-pi\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -480,7 +497,7 @@
         {
           "select": "[data-prx-readout=\"corr-pi-indep\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -518,7 +535,7 @@
         {
           "select": "[data-prx-readout=\"corr-pi\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -531,7 +548,7 @@
         {
           "select": "[data-prx-readout=\"corr-pi-indep\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -545,7 +562,7 @@
           "select": "[data-prx-readout=\"live-corr-pi\"]",
           "about": "the read-out",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -565,7 +582,7 @@
         {
           "select": "[data-prx-readout=\"corr-pi\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -585,7 +602,7 @@
         {
           "select": "[data-prx-readout=\"corr-pi\"]",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -604,8 +621,8 @@
       "expect": [
         {
           "select": ".prx-slider output",
-          "index": 4,
-          "about": "slider: corr clamped",
+          "index": 0,
+          "about": "slider: corr clamped (primary slider in ctx.controls)",
           "source": "registry",
           "ref": "settings.corr95",
           "value": 0.95
@@ -620,13 +637,16 @@
           "select": "[data-prx-readout=\"corr-pi\"]",
           "source": "registry",
           "ref": "cf.pair.p1corr95.pi",
-          "value": 0.9992172988709987
+          "value": 0.9992172988709987,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"corr-pi\"]",
           "about": "cf.pair.p1corr95.pi (independent base-R oracle)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -640,7 +660,7 @@
     },
     {
       "id": "corr95",
-      "about": "Preset corr95: the slider's upper end; the two true values nearly move as one, and pi_AB is .999.",
+      "about": "Preset corr95: the slider's upper end; the two true values nearly move as one, and pi_AB is above .999.",
       "preset": "corr95",
       "expect": [
         {
@@ -653,13 +673,16 @@
           "select": "[data-prx-readout=\"corr-pi\"]",
           "source": "registry",
           "ref": "cf.pair.p1corr95.pi",
-          "value": 0.9992172988709987
+          "value": 0.9992172988709987,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"live-corr-pi\"]",
           "about": "the read-out (independent base-R oracle)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -680,7 +703,7 @@
           "select": "[data-prx-readout=\"corr-pi\"]",
           "about": "pi_AB with corr -.95 (independent base-R oracle)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -694,7 +717,7 @@
           "select": "[data-prx-readout=\"live-corr-pi\"]",
           "about": "the same in the read-out (independent base-R oracle)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -709,13 +732,16 @@
           "about": "SD of A minus B for independent posteriors",
           "source": "registry",
           "ref": "cf.pair.p1.diffsd",
-          "value": 0.2828427124746189
+          "value": 0.2828427124746189,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"pair-pi\"]",
           "about": "the pair figure's title: pi_AB with corr -.95 (the review's loss check: .694 next to the turned ellipse)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -729,7 +755,7 @@
           "select": "[data-prx-readout=\"pair-pi-indep\"]",
           "about": "the pair figure's title: the independent pi_AB (.760)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -743,14 +769,14 @@
     },
     {
       "id": "shared-mean",
-      "about": "Preset shared-mean: estimates .30 and .10, SEs .20 and .20, prior SD .10, SD of the prior mean .50. Equal SEs: pi_AB = Phi(sqrt(.1)) and z = sqrt(.1) (see the file's about), from the oracle row and the registry keys for means .30 and .10 with SDs .20 and .60. The caption adds the plain gloss: the browser computes this posterior from a prior set by hand. The comparison is the same two posteriors taken as independent, named so in the read-out, the result line, the key and the alt texts; the model note calls the weight k, the share kept.",
+      "about": "Preset shared-mean: estimates .30 and .10, SEs .20 and .20, prior SD .10, SD of the prior mean .50. Equal SEs: pi_AB = Phi(sqrt(.1)) and z = sqrt(.1), from the oracle row and the registry keys for means .30 and .10 with SDs .20 and .60.",
       "preset": "shared-mean",
       "expect": [
         {
           "select": "[data-prx-readout=\"corr-pi\"]",
           "about": "pi_AB with the model's correlation: Phi(sqrt(.1)) (base-R oracle)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -765,7 +791,10 @@
           "about": "the same in the read-out: Phi(sqrt(.1))",
           "source": "registry",
           "ref": "cf.pair.p2.pi",
-          "value": 0.6240851829770754
+          "value": 0.6240851829770754,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-tex=\"corr-worked\"] mtext",
@@ -817,7 +846,7 @@
           "about": "the read-out from a shared prior mean: its correlation and pi_AB against the same two posteriors taken as independent",
           "source": "literal",
           "ref": "9.4",
-          "value": "The shared prior mean gives correlation ⟨corr⟩ and πAB = ⟨pi⟩ (taken as independent: ⟨indep⟩). Because the pair's posterior is normal and A's posterior mean is above B's, πAB stays above one half at every correlation."
+          "value": "The shared prior mean gives correlation ⟨corr⟩ and πAB = ⟨pi⟩ (taken as independent: ⟨indep⟩). Under joint normality, with A's mean above B's, πAB stays above one half at every correlation."
         },
         {
           "select": ".cu-result",
@@ -841,7 +870,7 @@
           "select": "[data-prx-readout=\"pair-pi\"]",
           "about": "the pair figure's title: pi_AB with the model's correlation, Phi(sqrt(.1))",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -855,7 +884,7 @@
     },
     {
       "id": "shared-known-mean",
-      "about": "The shared-prior-mean model with the SD of the prior mean at 0 (the prior mean known): the correlation is 0 and the result line takes its corr-0 form, while pi_AB is still Phi(sqrt(.1)). With the prior mean known nothing is shared: the model note and the read-out say the two posteriors are independent. This is the branch without sharedMeanPosterior (which takes an uncertain prior mean only): each unit's normal posterior around the known prior mean (engine normalPosterior).",
+      "about": "The shared-prior-mean model with the SD of the prior mean at 0 (the prior mean known): the correlation is 0 and the result line takes its corr-0 form, while pi_AB is still Phi(sqrt(.1)).",
       "query": "?source=shared&yA=.30&seA=.20&yB=.10&seB=.20&priorSd=.10&meanSd=0",
       "expect": [
         {
@@ -869,7 +898,7 @@
           "select": "[data-prx-readout=\"corr-pi\"]",
           "about": "pi_AB: Phi(sqrt(.1)) (base-R oracle)",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           },
           "source": "oracle",
           "ref": {
@@ -903,7 +932,7 @@
           "about": "the read-out with the prior mean known: independent posteriors, named as such",
           "source": "literal",
           "ref": "9.4",
-          "value": "The prior mean is known, so nothing is shared: correlation ⟨corr⟩ and πAB = ⟨pi⟩. Because the pair's posterior is normal and A's posterior mean is above B's, πAB stays above one half at every correlation."
+          "value": "With a known prior mean, correlation is ⟨corr⟩ and πAB = ⟨pi⟩. Under joint normality, with A's mean above B's, πAB stays above one half at every correlation."
         }
       ]
     },
@@ -921,13 +950,19 @@
           "select": "[data-prx-readout=\"corr-pi\"]",
           "source": "registry",
           "ref": "cf.pair.p1corr50.pi",
-          "value": 0.8413447460685429
+          "value": 0.8413447460685429,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"corr-sd\"]",
           "source": "registry",
           "ref": "cf.pair.p1corr50.diffsd",
-          "value": 0.1999999999999999
+          "value": 0.1999999999999999,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         }
       ]
     },
@@ -945,7 +980,10 @@
           "select": "[data-prx-readout=\"live-corr-pi\"]",
           "source": "registry",
           "ref": "cf.pair.p2.pi",
-          "value": 0.6240851829770754
+          "value": 0.6240851829770754,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         }
       ]
     }

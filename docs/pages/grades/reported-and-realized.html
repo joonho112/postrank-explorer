@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/reported-and-realized.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reported error and reference-law evaluation – postrank Explorer">
+<meta property="og:description" content="Comparison of conditional error expectations with realized errors at fixed true values.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/reported-and-realized.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/reported-and-realized.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -544,7 +569,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Reported error and reference-law evaluation</h1>
-<p class="subtitle lead">2.9 · after the postrank theory book, ch.&nbsp;18</p>
+<p class="subtitle lead">2.9 · after the postrank theory book, ch.&nbsp;24</p>
 </div>
 
 <div>
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The reported error share is the expected fraction of wrong directions under the posterior that selected the report. We can hold the report fixed and compute the same expectation under a separate reference law. The open point gives the share actually wrong at the league’s fixed true values. These three quantities can differ. The lower panels show why by comparing what changes when we sample new observations and when we draw latent values conditional on the observations already selected.</p>
+<p>A grade report claims an expected wrong share under the posterior that selected it. Compare that claim with a separate reference law and the errors realized at fixed true values.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,24 +600,21 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Same conditional laws.</strong> The report states 152 pair directions. Both conditional expectations are .0632, and the share wrong at the fixed true values is .0526. Across repeated samples, the observed error shares can fall on either side of the common expectation.</li>
-<li><strong>Narrow prior, five grades.</strong> The report claims .140, while the reference expectation for that same report is .115. Their absolute difference is below the largest pair-error gap, .4981. This setting changes the prior, cost and grade cap together. Moving just the prior slider also selects a new report; each setting’s two expectations evaluate that newly selected report under both laws.</li>
-<li><strong>Lower cost, two grades.</strong> Only 56 pair directions are stated, with claimed share .0254. The two laws still agree. In the grade groups, pairs inside a grade are withheld, and the denominator counts only pairs stated across grades.</li>
-<li><strong>One grade, no disclosure.</strong> There are 0 stated directions and every share reads “NA: no disclosure.” No wrong directions is different from a defined error share of zero. The posterior-draw wrong count remains zero because this report makes no comparisons.</li>
+<li><strong>Same conditional laws.</strong> The report states 152 pair directions; both expectations equal .0632 (same prior), while the realized wrong share at fixed truth is .0526.</li>
+<li><strong>Narrow prior, five grades.</strong> The report claims .140 while the reference expectation is .115; their gap stays within the pair-error bound δ = .498.</li>
+<li><strong>Lower cost, two grades.</strong> Only 56 pair directions are stated, with claimed and reference share .0254; pairs inside each grade are withheld.</li>
+<li><strong>One grade, no disclosure.</strong> With 0 stated directions, every share reads “NA: no disclosure,” distinct from a defined error share of zero.</li>
 </ul>
-<p>The lower panels separate two experiments. Observation replays keep all true values fixed, redraw estimates, and choose a new report each time. Choose a replay with the slider or select a point in the replay chart. Posterior draws keep the selected observations and report fixed, then vary latent values under the chosen conditional law. The histogram and running average describe that chosen law; adding draws reduces simulation noise without testing whether the law is correct.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>We hold the league’s true values fixed across samples. Chapter 18’s conditional calibration identity applies to draws from the reference law, so the replays here do not test that identity. The pair-gap bound limits how far the two model expectations for a fixed report can differ. Its target is the difference in expectations.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Observation replays, posterior draws, and calibration notes
+</summary>
+<p>Observation replays hold all true values fixed, redraw noisy estimates, and reselect a report each time. Select a replay with the slider or directly on the replay chart.</p>
+<p>Open <strong>Data and posterior draw checks</strong> for a separate experiment that freezes the selected observations and report, then draws latent values under a declared conditional law. Chapter 18’s conditional calibration identity applies to draws from the reference law, not to replays at fixed true values; the pair-gap bound limits only the difference between the two model expectations for a fixed report.</p>
+</details>
 <p>Standalone: <a href="../../embed/reported-and-realized.html">reported and realized shares</a>, for example <code>?priorSd=.05</code>.</p>
 <p>Related applications: <a href="../../pages/grades/disclosed-errors.html">Expected and realized errors among stated directions</a>, <a href="../../pages/uncertainty/shrinkage-price.html">Sensitivity to the prior standard deviation</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/24-misspecification-calibration.html#sec-self-reported-calibration">Self-reported error and calibration</a>.</p>
 
 
 </section>
@@ -1065,7 +1087,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

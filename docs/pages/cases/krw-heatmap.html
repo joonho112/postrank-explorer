@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/cases/krw-heatmap.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Firm-pair probabilities and report-card blocks – postrank Explorer">
+<meta property="og:description" content="Comparison of isolated-pair thresholds with the relations in KRW’s coherent cards.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/cases/krw-heatmap.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/krw-heatmap.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Each cell gives the posterior probability that the row firm’s contact gap is larger than the column firm’s gap. Darker blue indicates stronger support for that direction. The threshold shows which directions would minimize loss if each pair were decided on its own. The grade blocks show what the archived report actually states. Some high-probability directions lie within a grade and are withheld. Some directions between grades fall short of the pairwise threshold. Select a cell or choose two firms to read their comparison above the matrix.</p>
+<p>Which firm-pair directions pass the isolated cut 1 − τ, and which pairs does a coherent card withhold or state?</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,11 +600,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>All direction probabilities.</strong> The Blues legend reads “Pr(row truly higher)”. Arrow keys move through every cell, including the diagonal. Each cell names both firms and gives their relation in the card.</li>
-<li><strong>Above the threshold.</strong> At λ .25, the corresponding withholding cost is τ .20. The strict pairwise rule would state 1,575 pairs whose favored direction has probability above .80. Other cells fade, while the gray diagonal continues to mark self-comparisons.</li>
-<li><strong>Add the card blocks.</strong> Orange hatching marks 575 confident pairs withheld within a grade. Purple outlines mark 324 stated pairs whose error exceeds τ. The discrepancies can arise from requiring one coherent report, even with no grade cap.</li>
-<li><strong>λ .50 blocks.</strong> The threshold admits 2,994 pairs. Of these, 49 are withheld by the card; 545 stated pairs have error above the current τ. Varying the reward changes both the threshold and the selected archived card.</li>
-<li><strong>Gender blocks.</strong> The target is the signed male-name contact advantage. Negative gaps favor female-named applicants. Both row-above-column directions retain this signed orientation.</li>
+<li><strong>All direction probabilities.</strong> The Blues legend shows “Pr(row truly higher)” for every ordered pair.</li>
+<li><strong>Above the threshold.</strong> At λ = .25 (τ = .200), the pairwise rule states 1,575 pairs above .800.</li>
+<li><strong>Add the card blocks.</strong> Hatching marks 575 confident pairs withheld inside grades; purple outlines mark 324 stated pairs with error above τ.</li>
+<li><strong>λ .50 blocks.</strong> The cut admits 2,994 pairs; the card withholds 49 and states 545 with error above τ.</li>
+<li><strong>Gender blocks.</strong> Switches to the signed male-name contact advantage.</li>
 </ul>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -587,13 +612,11 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>KRW’s code selected the grid cards using their archived probabilities and solver tolerances. The app holds those grades fixed and evaluates them with the released postrank probabilities. The baseline race card is in Figure 7, and the gender card is in Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.</p>
-<p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC as stated by the deposit, noncommercial use only; as adapted in postrank 1.1.0 (<code>pr_case_krw</code>), changes noted. Provided as is, without warranty; no endorsement is implied. <strong>These historical data do not describe any firm’s current conduct.</strong></p>
+<p>Archived cards follow KRW’s code (Figures 5A, 7, 10A and 14) under released postrank probabilities. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only (<code>pr_case_krw</code>). Provided as is, without warranty; no endorsement implied. <strong>Historical data, not current firm conduct.</strong></p>
 </div>
 </div>
 </div>
-<p>Standalone: <a href="../../embed/krw-heatmap.html">krw-heatmap</a>.</p>
-<p>Related applications: <a href="../../pages/grades/two-denominators.html">Error rates under two denominators</a>, <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a>.</p>
+<p>Standalone: <a href="../../embed/krw-heatmap.html">krw-heatmap</a>. Related: <a href="../../pages/grades/two-denominators.html">Error rates under two denominators</a>, <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a>.</p>
 
 
 </section>
@@ -1066,7 +1089,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

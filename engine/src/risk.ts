@@ -13,8 +13,8 @@
 //   Equality-neutral loss (ch. 11 sec-tie-aware-loss, prp-tie-aware-risk; App. B sec-tie-aware-notation):
 //              R_TA = (A_TA + τ(T_w − Q_w))/M = R0 + M⁻¹ Σ_{g_i<g_j}(c_ij − τ δ_ij), R0 = τ T_w/M, with
 //              strict errors b, distinctness d, c = Σ_k w_k b_k, δ = Σ_k w_k d_k, T_w = Σ_{i<j} δ_ij.
-//   Disclosed-error estimands (ch. 16 sec-disclosed-error-estimands): ERR = E[A]/E[N], the mean of A/N over
-//              cases with N > 0, the zero-imputed mean, Pr(N > 0) and E[N/M]; with case weights p (ch. 16,
+//   Disclosed-error estimands (ch. 22 sec-disclosed-error-estimands): ERR = E[A]/E[N], the mean of A/N over
+//              cases with N > 0, the zero-imputed mean, Pr(N > 0) and E[N/M]; with case weights p (ch. 22,
 //              "Averaging conventions for disclosed-error fractions"; v3 helpers) ERR = Σ p·A/Σ p·N,
 //              meanFraction = Σ_{N>0} p·A/N / Σ_{N>0} p, zeroImputed = Σ_{N>0} p·A/N, positiveFrequency =
 //              Σ_{N>0} p, meanDisclosure = Σ p·N/M ((Σ p·N)/M for one common M), plain sums in case order.
@@ -505,7 +505,7 @@ export function equalityNeutralRisk(g: ArrayLike<number>, tie: TieInput | TieLaw
 }
 
 /**
- * Averaging conventions for disclosed-error fractions over equally likely cases [{ A, N, M? }] (ch. 16):
+ * Averaging conventions for disclosed-error fractions over equally likely cases [{ A, N, M? }] (ch. 22):
  * ERR = ΣA/ΣN, the mean of A/N over cases with N > 0, the zero-imputed mean, Pr(N > 0) and E[N/M]
  * (M per case, or `options.M` for all; null when unknown). With `weights` p (one probability per case: the
  * kernel of a randomized report or a design over datasets) ERR = Σ p·A / Σ p·N (null when Σ p·N = 0),

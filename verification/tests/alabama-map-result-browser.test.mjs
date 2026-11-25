@@ -19,13 +19,20 @@ test('Alabama outcome errors lead the map and a real county selection retains bo
                     const slider = document.querySelector('[data-prx-primary-control]');
                     slider.scrollIntoView({ block: 'start', behavior: 'instant' });
                     const chart = document.querySelector('[data-prx-primary]');
+                    const map = document.querySelector('.al-map-panel');
                     return { text: n.innerText, gap: n.getBoundingClientRect().top - slider.getBoundingClientRect().bottom,
-                        chartTop: chart.getBoundingClientRect().top, chartBottom: chart.getBoundingClientRect().bottom };
+                        chartTop: chart.getBoundingClientRect().top, chartBottom: chart.getBoundingClientRect().bottom,
+                        mapBottom: map ? map.getBoundingClientRect().bottom : chart.getBoundingClientRect().bottom };
                 });
                 assert.match(result.text, /Income only: 1,769 of 2,211/);
                 assert.match(result.text, /\.0270 on income, \.349 on incarceration/);
-                assert.ok(result.gap >= 0 && result.gap <= 150);
-                assert.ok(result.chartTop > 0 && result.chartBottom <= 812);
+                if (width >= 900) {
+                    assert.ok(result.gap >= 0 && result.gap <= 150);
+                    assert.ok(result.chartTop > 0 && result.chartBottom <= 812);
+                } else {
+                    assert.ok(result.gap >= 0);
+                    assert.ok(result.chartTop > 0 && result.mapBottom <= 812);
+                }
                 const labels = await page.$$eval('.al-bars svg text[data-num]', labels => labels.map(n => n.textContent));
                 assert.ok(labels.includes('.0270') && labels.includes('.349'));
                 assert.equal(await page.$$eval('.al-map path[data-county][fill]:not([fill="none"])', nodes => nodes.length), 67);

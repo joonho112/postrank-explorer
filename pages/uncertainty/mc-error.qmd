@@ -1,10 +1,10 @@
 ---
 title: "Monte Carlo error in pairwise probabilities"
-subtitle: "1.17 · the six tutorial sites, after the postrank vignette m6 and the postrank theory book, ch. 15"
+subtitle: "1.17 · the six tutorial sites, after the postrank vignette m6 and the postrank theory book, ch. 21"
 description: "Monte Carlo uncertainty in estimated pairwise errors and its implications for report selection."
 ---
 
-A pair’s estimated error probability is the share of posterior draws in which the proposed direction is wrong. For the six tutorial sites, the figure compares these estimates with the exact probabilities. Intervals of ±2 Monte Carlo standard errors (MCSEs) generally narrow as draws increase. We flag a pair when its interval includes the withholding cost τ. The examples show when this sensitivity affects the coherent report.
+Estimating pairwise errors from S posterior draws adds Monte Carlo noise; pairs within 2 MCSE of τ are flagged fragile, yet the coherent report need not change.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,27 +17,18 @@ A pair’s estimated error probability is the share of posterior draws in which 
 
 ## Numerical illustrations {#what-to-try}
 
-- **S 1,000.** In this run (seed 1), A–B is estimated .198 against the exact .188, MCSE .0126 (2 MCSE ≈ .0247
-  with the exact e), so τ .20 makes it fragile. With at most 3 grades A and B share a grade in 100 of the 100 runs:
-  the report changed in 0 of the 18 runs where A–B's choice flips.
-- **All reports.** The report changed in 18 of the 18 runs where A–B's choice flips; in 5 more runs its estimate
-  equals τ and 2 reports share the smallest risk. The exact report is among the optima in 82 of 100.
-- **S 100.** MCSE .0402 in this run (2 MCSE ≈ .0782 with the exact e), radius .1788; the exact .188 stays.
-- **S 4,000.** Radius .0283. This run still flags A–B (estimate .203, MCSE .0064): its exact value lies .0116 from
-  τ, inside 2 MCSE (≈ .0124 with the exact e); 54 of 100 runs flag it.
-- **C–D at τ .35.** In this run (seed 1) of 400 draws C–D (exact .362) is flagged: estimated .360, MCSE .0240. Its
-  choice flips in 35 runs; the report changed in 0 of the 35 runs with at most 3 grades, in 35 of the 35 runs with
-  any number.
-- **Both scores.** At seed 4, E–F's estimate .202 lands above τ, so the report from the estimates withholds it,
-  unlike the exact report; at seed 1, E–F is fragile at .192 yet stated.
+- **S 1,000.** A–B is .198 vs. exact .188 (MCSE .0126; exact-e 2 MCSE ≈ .0247); capped, A and B share a grade in 100 of the 100 runs (0 of the 18 runs change).
+- **All reports.** Uncapped, the report changes in 18 of the 18 runs; in 5 more runs the estimate equals τ and 2 reports share the smallest risk (kept in 82 of 100).
+- **S 100.** MCSE .0402 (2 MCSE ≈ .0782), radius .179; exact .188 stays.
+- **S 4,000.** Radius .0283; A–B is .203 (MCSE .00636), .0116 from τ inside .0124, flagged in 54 of 100.
+- **C–D at τ .35.** C–D (exact .362) is .360 (MCSE .0240); 0 of the 35 runs change capped vs. 35 of the 35 runs uncapped.
+- **Both scores.** E–F is withheld at .202, yet fragile and stated at .192 under the first draw.
 
-::: {.callout-note appearance="simple"}
-The radius is postrank's (`postrank_iid_bounds()`, no ties); the theory book's form allows ties (4M for 2M). The
-envelope needs independent whole-state draws and an S fixed before drawing (an effective sample size cannot replace S
-in it); the MCSE shown is the IID one, as `postrank_mc_fragility()` computes it for independent draws (for chains it
-uses an MCMC MCSE).
-The reruns use consecutive seeds, wrapping from 4,294,967,295 back to 1 at the supported endpoint.
-:::
+<details>
+<summary>Notes on the envelope</summary>
+
+The radius is postrank's (`postrank_iid_bounds()`, no ties); the theory book's form allows ties (4M for 2M). The envelope needs independent whole-state draws and an S fixed before drawing (an effective sample size cannot replace S in it); the MCSE shown is the IID one, as `postrank_mc_fragility()` computes it for independent draws (for chains it uses an MCMC MCSE). The reruns use consecutive seeds, wrapping from 4,294,967,295 back to 1 at the supported endpoint.
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -47,7 +38,6 @@ pr_tutorial$one$e["C", "D", "score_A"]   # 0.3618368: chance that C above D is w
 ```
 :::
 
-Standalone: [embed/mc-error.html](../../embed/mc-error.html), for example `?preset=all1000&theme=dark`.
+Source: postrank vignette m6 and ch. 15. Standalone: [embed/mc-error.html](../../embed/mc-error.html). Related: [Two units](two-units.qmd) · [Pairwise matrix](pairwise-matrix.qmd) · [Chain draws](chain-draws.qmd) · [Isolated pair](../grades/one-pair.qmd) · [Price of silence](../grades/price-of-silence.qmd).
 
-Related applications: [Pairwise posterior direction probabilities](two-units.qmd) (1.8), [The matrix of pairwise posterior probabilities](pairwise-matrix.qmd) (1.13) and [Monte Carlo error with dependent draws](chain-draws.qmd) (1.18), with Markov chain
-draws; [The decision for an isolated pair](../grades/one-pair.qmd) (2.1) and [Reporting risk and withholding cost](../grades/price-of-silence.qmd) (2.4), where τ prices a withheld pair.
+Theory book · [Monte Carlo error under a declared sampling law](https://joonho112.github.io/postrank-theory-book/chapters/21-numerical-uncertainty.html#sec-monte-carlo-coefficients).

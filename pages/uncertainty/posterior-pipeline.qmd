@@ -4,7 +4,7 @@ subtitle: "1.7 · after Walters (Mixtape slides) and Kline, Rose and Walters (20
 description: "Separation of model fitting, posterior calculation and grade-report selection."
 ---
 
-A grade report requires a posterior distribution and a rule for deciding which comparisons to state. The analyst chooses a model and prior and fits them to the observed data $Y$ to obtain $\Pr(\theta \mid Y)$. postrank uses the resulting posterior to select a grade report. The four boxes trace these steps for two units and identify which choices the analyst makes. The table beneath the boxes lists which calculations are available for each representation of the posterior.
+An analyst fits a model and prior to data $Y$ to obtain $\Pr(\theta \mid Y)$; `postrank` acts only at the final step, turning that supplied posterior into grades.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,25 +17,18 @@ A grade report requires a posterior distribution and a rule for deciding which c
 
 ## Numerical illustrations {#what-to-try}
 
-- **Box 1 (Data).** $Y$ holds the estimates and their SEs: .25 (SE .10) for A and .05 (SE .20) for B. postrank never
-  reads $Y$ itself, only a posterior computed from it.
-- **Box 2 (Model).** The prior SD, .15, is the analyst's choice, set by hand here. With each SE it sets how much of its
-  estimate each posterior mean keeps: .692 for A, .360 for the noisier B.
-- **Box 3 (Posterior).** The posterior is the input to postrank. The posterior means are .173 and .018, and $\pi$ = .856 is the
-  probability that A is truly higher. **B more precise** (SE .10, as for A): B keeps .692 too, its mean is .035, and
-  $\pi$ rises to .880.
-- **Box 4 (Decision).** The postrank step: stating A above B is wrong with probability .144, less than τ = .20, so
-  postrank states it, {A} > {B}, the best of all 3 reports. At **τ .10** withholding costs less than .144, so
-  postrank withholds the pair: {A, B}.
-- **Prior SD .05.** With a narrower prior, A's posterior mean falls to .050 and $\pi$ to .762.
-  Stating A above B would now be wrong with probability .238, so postrank withholds the pair: {A, B}. The prior changes the report through its effect on the posterior probability.
+- **Box 1 (Data).** $Y$ holds `.25` (SE `.10`) for A and `.05` (SE `.20`) for B.
+- **Box 2 (Model).** Prior SD `.15` keeps `.692` of A's estimate and `.360` of B's.
+- **Box 3 (Posterior).** Means `.173` and `.0180` give $\pi = .856$; **B more precise** (SE `.10`) keeps `.692`, raising B to `.0346` and $\pi$ to `.880`.
+- **Box 4 (Decision).** `{A} > {B}` costs `.144` vs. $\tau = .20$ (`best of all 3 reports`); **τ .10** withholds `{A, B}`.
+- **Prior SD .05.** Shrinks A to `.0500` and $\pi$ to `.762` (error `.238`), withholding `{A, B}`.
 
-::: {.callout-note appearance="simple"}
-Kline, Rose and Walters (2024), Section III.A–B, set out the empirical Bayes posteriors behind their firm grades (KRW
-call them beliefs). In their talk, slides 34 and 37 show the model for first names, not for the firms; slides 43 to 52
-set out the empirical Bayes model for the firms. Walters' Mixtape slides on empirical Bayes (p. 13) set out the same
-recipe. The two units here are set by hand, and the browser computes their posterior; postrank fits no model.
-:::
+<details>
+<summary>Source notes (Walters; Kline, Rose and Walters, 2024)</summary>
+
+Kline, Rose and Walters (2024), Section III.A–B, set out the empirical Bayes posteriors behind their firm grades (KRW call them beliefs). In their talk, slides 34 and 37 show the model for first names, not for the firms; slides 43 to 52 set out the empirical Bayes model for the firms. Walters' Mixtape slides on empirical Bayes (p. 13) set out the same recipe. The two units here are set by hand, and the browser computes their posterior; `postrank` fits no model.
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -45,8 +38,6 @@ postrank_coefficient_capabilities(pr_tutorial$one)[c("weighted_at_most_G_problem
 ```
 :::
 
-Standalone: [embed/posterior-pipeline.html](../../embed/posterior-pipeline.html), for example `?box=3&open=boxes` or
-`?preset=narrow&theme=dark`.
+Standalone: [embed/posterior-pipeline.html](../../embed/posterior-pipeline.html) (`?box=3&open=boxes` or `?preset=narrow&theme=dark`).
 
-Related applications: [Normal–normal posterior shrinkage](shrinkage.qmd) (1.5), [Pairwise posterior direction probabilities](two-units.qmd)
-(1.8) and [The decision for an isolated pair](../grades/one-pair.qmd) (2.1).
+Related: [Normal–normal posterior shrinkage](shrinkage.qmd) (1.5), [Pairwise posterior direction probabilities](two-units.qmd) (1.8), [The decision for an isolated pair](../grades/one-pair.qmd) (2.1).

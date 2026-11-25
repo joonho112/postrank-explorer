@@ -24,8 +24,8 @@ function inputDelimiter(text) {
     else if(!quoted){
       if(c===',')return ',';
       if(c==='\r'||c==='\n'){if(nonblank)return hasTab?'\t':',';hasTab=false;}
-      else if(c==='\t')hasTab=true;
-      else if(c.trim())nonblank=true;
+      else if(c==='\t'){if(hasTab)return '\t';hasTab=true;}
+      else if(c.trim()){if(hasTab)return '\t';nonblank=true;}
     }
   }
   return hasTab?'\t':',';

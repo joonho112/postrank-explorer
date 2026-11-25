@@ -1,14 +1,10 @@
 ---
 title: "Standardized-evidence flags in a league"
-subtitle: "3.4 · a simulated league after the postrank theory book, ch. 17"
+subtitle: "3.4 · a simulated league after the postrank theory book, ch. 23"
 description: "Pairwise directions and posterior risk of a thirty-unit flag report."
 ---
 
-The flag rule groups thirty units according to how far each estimate lies from the league mean in standard error
-units. It treats the reference as fixed even though the mean is itself estimated. A unit can receive a higher
-flag than a unit with a larger estimate if the two estimates have different precision. The matrix shows the
-directions implied by the flags. Once the groups are assigned, we use the posterior to count expected errors
-and evaluate reporting risk.
+Grouping thirty units by standardized distance from the league mean treats an estimated reference as fixed and can rank precise lower estimates above noisy higher ones.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,21 +17,21 @@ and evaluate reporting risk.
 
 ## Numerical illustrations {#what-to-try}
 
-- **League, cutoff 1.96.** The flag groups contain 6, 22 and 2 units. They state 188 of 435 pairs. Under the
-  teaching posterior, E/N is .130 and risk is .1696. The gray row bands identify units placed below another unit
-  whose estimate is smaller; the outlined matrix cells locate the same reversals.
-- **Same flags, flat prior.** The report still states 188 pairs. We evaluate the same directions under independent normal posteriors centered on the estimates, with SDs equal to their SEs.
-- **League, cutoff 2.576.** The stricter cutoff changes membership of the outer flag groups. The matrix changes in whole blocks:
-  all pairs between different flag groups are stated, and all pairs within a group are withheld. A cell within a group leaves the two units unranked.
-- **Same report, τ .10.** The same 188 pairs are stated. The all-withheld comparison has risk τ = .10. The cheaper baseline depends on the withholding cost even when the report does not change.
+- **League, cutoff 1.96.** Groups of 6, 22 and 2 state 188 of 435 pairs (E/N = .130, risk .170, 20 reversals, max error .649).
+- **Same flags, flat prior.** The same 188 pairs are evaluated under flat-prior normals around the estimates.
+- **League, cutoff 2.576.** Shrinks the outer groups and updates matrix blocks.
+- **Same report, τ .10.** Keeps 188 stated pairs while lowering all-withheld risk to τ = .10.
 
-::: {.callout-note appearance="simple"}
-At the first setting, 20 stated directions reverse the order of the estimates. The largest error probability is
-.649 even though the average error probability is below the withholding cost. That difference matters because
-the flag rule uses only the estimates and their SEs, with no constraint on the expected errors of individual
-comparisons. Both matrix axes follow decreasing estimates. Use the arrow keys or the table to read the cell values.
-:::
+<details>
+<summary>Reversals and individual comparison errors</summary>
+
+At cutoff 1.96, 20 stated directions reverse the order of the estimates, and the largest error probability is
+.649 even though E/N lies below τ. Both matrix axes follow decreasing estimates; use the arrow keys, pointer, or Data table to inspect any pair.
+
+</details>
 
 Standalone: [flags-in-the-league](../../embed/flags-in-the-league.html), for example `?crit=1.96&prior=teaching&tau=.10`.
 
 Related applications: [Grades based on standardized evidence](evidence-flags.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).
+
+Theory book · [Teacher growth categories: evidence, precision, and the choice of assessment](https://joonho112.github.io/postrank-theory-book/chapters/02-education-access.html#sec-educational-performance) · [Benchmarks for selection, classification, and stability](https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-selection-benchmarks).

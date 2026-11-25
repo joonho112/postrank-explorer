@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/profiles/profile-dependence.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Error overlap – postrank Explorer">
+<meta property="og:description" content="Same domain laws. Different decisions.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/profiles/profile-dependence.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/profile-dependence.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -613,10 +638,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Coincident failures.</strong> The two directions each have error probability 1/10, and they fail together. Stating both gives probability 1/10 of at least one error, below the cap 3/20. That card alone minimizes expected loss at 1/10.</li>
+<li><strong>Coincident.</strong> The two directions each have error probability 1/10, and they fail together. Stating both gives probability 1/10 of at least one error, below the cap 3/20. That card alone minimizes expected loss at 1/10.</li>
 <li><strong>Disjoint failures.</strong> The marginal probabilities remain 1/10, but the probability of at least one error rises to 1/5 if the report states both. The cap rules out that card. Two cards tie at risk 7/40, each stating one positive direction and withholding the other.</li>
-<li><strong>Independent domains.</strong> At overlap c=1/100, the probability of at least one error when stating both is 19/100. This exceeds the joint cap even under independence, so the same two cards tie for the lowest risk.</li>
-<li><strong>At the joint cap.</strong> At c=1/20, the probability of at least one error when stating both is exactly 3/20. A probability equal to the cap is allowed, so that card is feasible and uniquely optimal.</li>
+<li><strong>Independent.</strong> At overlap c=1/100, the probability of at least one error when stating both is 19/100. This exceeds the joint cap even under independence, so the same two cards tie for the lowest risk.</li>
+<li><strong>At joint cap.</strong> At c=1/20, the probability of at least one error when stating both is exactly 3/20. A probability equal to the cap is allowed, so that card is feasible and uniquely optimal.</li>
 </ul>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -648,9 +673,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Source: <a href="https://joonho112.github.io/postrank/articles/mdomain-decisions.html">postrank multidomain decisions</a>.</p>
+</section></details>
 <p>Standalone: <a href="../../embed/profile-dependence.html">open this app</a>, for example <code>?preset=coincident&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="../../pages/profiles/profile-separability.html">Separate optimization under additive loss</a>, <a href="../../pages/criteria/two-scores.html">A common grade report for two scores</a> and <a href="../../pages/criteria/error-budgets.html">Criterion-specific expected-error budgets</a>.</p>
-</section></details>
 
 
 
@@ -1123,7 +1148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

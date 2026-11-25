@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/two-units.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pairwise posterior direction probabilities – postrank Explorer">
+<meta property="og:description" content="Direction probabilities from the difference of two independent normal posterior variables.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/two-units.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/two-units.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>For two units A and B, <span class="math inline"><math><mrow><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mo>=</mo><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>θ</mi><mi>A</mi></msub><mo>&gt;</mo><msub><mi>θ</mi><mi>B</mi></msub><mo lspace="0.22em" rspace="0.22em" stretchy="false">|</mo><mi>Y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span> is the posterior probability that A’s true value exceeds B’s. The probability is the area above zero under the posterior distribution of A − B. With independent normal posteriors, the variance of this difference equals the sum of the two marginal variances. The figure puts both marginals and their difference on the same scales so the reader can see how the two uncertainties enter the comparison.</p>
+<p>For two units A and B, <span class="math inline"><math><mrow><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mo>=</mo><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>θ</mi><mi>A</mi></msub><mo>&gt;</mo><msub><mi>θ</mi><mi>B</mi></msub><mo lspace="0.22em" rspace="0.22em" stretchy="false">|</mo><mi>Y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span> is the posterior probability that A’s true value exceeds B’s—the area above zero under the posterior of A − B.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -638,21 +663,15 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Means .30 and .10, SDs .20 and .20.</strong> The two posteriors overlap substantially, while <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .760. The SD of the difference is .283. A’s mean is .707 of these SDs above B’s.</li>
-<li><strong>Means .30 and .10, SDs .20 and .60 (B much less precise).</strong> The same gap, but the difference widens to SD .632, so A’s mean is only .316 SDs of it above B’s, and <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> falls to .624, closer to one half.</li>
-<li><strong>Means .20 and .20, SDs .20 and .40.</strong> With equal means each direction has probability .500, for either choice of marginal SDs; the difference keeps mean 0 and only spreads out (SD .447).</li>
-<li><strong>Means 1.20 and .95, SDs .20 and .20 (tutorial sites A and B).</strong> Sites A and B of the six fictional sites in postrank’s tutorial data: <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .812. The package stores one minus this number, the chance that stating A above B would be wrong.</li>
+<li><strong>Means .30 and .10, SDs .20 and .20.</strong> <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .760; difference SD .283 (.707 SDs above).</li>
+<li><strong>Means .30 and .10, SDs .20 and .60.</strong> Difference widens to SD .632 (.316 SDs above), lowering <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> to .624.</li>
+<li><strong>Means .20 and .20, SDs .20 and .40.</strong> Equal means give <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .500 (difference SD .447).</li>
+<li><strong>Means 1.20 and .95, SDs .20 and .20.</strong> Tutorial sites A and B give <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = .812.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The example specifies two independent normal posteriors. Under this model, the unit with the larger posterior mean is more likely to have the larger true value for any positive SDs. Also, <span class="math inline"><math><mrow><msub><mi>π</mi><mrow><mi>B</mi><mi>A</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>−</mo><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></mrow></math></span>, because the two true values have probability zero of being equal. Kline, Rose and Walters (2024), section II.E, Example 1, and slide 27 of their talk, use the special case of this formula with both SDs equal to 1.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>Model assumptions and source notes</summary>
+<p>Under independent normal posteriors with positive SDs, the larger mean always gives π &gt; .5 and π<sub>BA</sub> = 1 − π<sub>AB</sub> because equality has probability zero. Kline, Rose and Walters (2024), section II.E, Example 1, and slide 27 use the special case with both SDs equal to 1.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -671,8 +690,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Standalone: <a href="../../embed/two-units.html">embed/two-units.html</a>, for example <code>?muA=.30&amp;sdA=.20&amp;muB=.10&amp;sdB=.60</code> or <code>?preset=equal-means&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/correlated-units.html">Posterior dependence and pairwise comparisons</a> (1.9) drops independence; <a href="../../pages/uncertainty/beyond-normal.html">Marginal summaries and joint direction probabilities</a> (1.10) drops the normal shape, and with its joint laws independence too; <a href="../../pages/uncertainty/interval-overlap.html">Marginal interval overlap and direction probabilities</a> (1.11) shows overlapping intervals beside a confident direction, and <a href="../../pages/uncertainty/pairwise-matrix.html">The matrix of pairwise posterior probabilities</a> (1.13) shows this probability for every pair of thirty units.</p>
+<p>Standalone: <a href="../../embed/two-units.html">embed/two-units.html</a> (<code>?muA=.30&amp;sdA=.20&amp;muB=.10&amp;sdB=.60</code> or <code>?preset=equal-means&amp;theme=dark</code>). Related: <a href="../../pages/uncertainty/correlated-units.html">1.9</a>, <a href="../../pages/uncertainty/beyond-normal.html">1.10</a>, <a href="../../pages/uncertainty/interval-overlap.html">1.11</a>, <a href="../../pages/uncertainty/pairwise-matrix.html">1.13</a>.</p>
 
 
 </section>
@@ -1145,7 +1163,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

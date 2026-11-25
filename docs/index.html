@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,15 +72,40 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="styles/tokens.css">
 <link rel="stylesheet" href="styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="postrank Explorer">
+<meta property="og:description" content="Methods and numerical illustrations for posterior ranking, common grade reports and multidomain profiles under uncertainty.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/index.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/noisy-league.png">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -534,12 +559,12 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -554,7 +579,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -566,34 +591,62 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>When two schools have similar estimates, a strict ranking still puts one above the other. An ordered grade report can place both schools in the same grade and leave their comparison unstated. To evaluate either report, we count the comparisons it makes and use the posterior distribution to estimate how many of those directions are wrong.</p>
-<p>The examples use methods implemented in the postrank R package. The package takes a posterior or pairwise probabilities as input. The examples cover simulated data and released studies of firms, schools, and counties. In the five <a href="./pages/criteria/index.html#domain-profiles">Domain profiles</a> applications, each domain has its own grade column. The examples show when the columns can be selected separately and when a limit on errors across domains changes the best combination.</p>
+<p>Ordered grade reports state directions across grades while leaving unresolved comparisons within a grade unstated, and multidomain profiles retain a separate grade column for each outcome. These 84 interactive illustrations accompany the <code>postrank</code> R package across simulated posteriors and released studies of firms, schools, and counties.</p>
 <section id="organisation" class="level2">
 <h2 class="anchored" data-anchor-id="organisation">Applications by topic</h2>
 <div class="prx-story">
-<ul>
-<li><strong><a href="./pages/uncertainty/index.html">Uncertainty</a>.</strong> How sampling error affects ranks and how the posterior changes the comparison. The <a href="./pages/uncertainty/shrinkage.html">normal–normal example</a> shows that estimates with different precision can change order after shrinkage.</li>
-<li><strong><a href="./pages/grades/index.html">Grade reports</a>.</strong> How a report balances expected mistakes against unstated comparisons. <a href="./pages/grades/price-of-silence.html">Withholding cost</a> sets the cost of leaving a pair unstated relative to stating the wrong direction.</li>
-<li><strong><a href="./pages/rules/index.html">Reporting rules</a>.</strong> How tiers, evidence flags, and posterior cuts compare. <a href="./pages/rules/rule-comparison.html">Matched-disclosure comparisons</a> hold the number of stated pairs fixed so that rules can be compared by their expected errors.</li>
-<li><strong><a href="./pages/criteria/index.html">Multiple criteria</a>.</strong> Two ways to report on several outcomes for the same units.
-<ul>
-<li><strong><a href="./pages/criteria/index.html#common-grades">Common grades</a>.</strong> The <a href="./pages/criteria/two-scores.html">two-score example</a> shows how one grade column performs on both scores. Other examples compare weights, error budgets, and minimax risk.</li>
-<li><strong><a href="./pages/criteria/index.html#domain-profiles">Domain profiles</a>.</strong> The <a href="./pages/profiles/profile-common-vs-domain.html">common and separate cards</a> show what changes when domains can have different grades. <a href="./pages/profiles/profile-separability.html">Separability</a> and <a href="./pages/profiles/profile-dependence.html">dependence</a> show when a joint limit changes the choice. <a href="./pages/profiles/profile-resolution.html">Resolution</a> and <a href="./pages/profiles/fictional-site-profiles.html">forty fictional sites</a> show how much detail each domain retains.</li>
-</ul></li>
-<li><strong><a href="./pages/cases/index.html">Cases</a>.</strong> Firm contact gaps, school chronic absence, and historical county outcomes. The <a href="./pages/cases/cde-cuts.html">school example</a> evaluates tertiles and minimum-risk grades under the same posterior.</li>
-<li><strong><a href="./pages/tools/index.html">Tools</a>.</strong> Build a report from supplied posterior summaries or revisit a released case. The <a href="./pages/tools/report-designer.html">case-report tool</a> exports the data source, targets, settings, and report.</li>
+<ul class="prx-home-tiles">
+  <li class="prx-home-tile">
+    <a class="prx-tile-thumb" href="pages/uncertainty/noisy-league.html" tabindex="-1"><img src="media/thumbs/noisy-league.png" alt="1.3 Ranking noisy estimates chart preview" loading="lazy"></a>
+    <span class="prx-tile-meta">Part 1 · 18 apps</span>
+    <strong class="prx-tile-head"><a href="pages/uncertainty/index.html">Uncertainty</a></strong>
+    <span class="prx-tile-copy">How sampling error distorts strict league tables and how the posterior measures pairwise direction certainty. <a href="pages/uncertainty/noisy-league.html">Ranking noisy estimates</a>.</span>
+  </li>
+  <li class="prx-home-tile">
+    <a class="prx-tile-thumb" href="pages/grades/frontier.html" tabindex="-1"><img src="media/thumbs/frontier.png" alt="2.10 The error–disclosure frontier chart preview" loading="lazy"></a>
+    <span class="prx-tile-meta">Part 2 · 20 apps</span>
+    <strong class="prx-tile-head"><a href="pages/grades/index.html">Grade reports</a></strong>
+    <span class="prx-tile-copy">How ordered grades trade expected wrong directions against withheld pairs along the error–disclosure frontier. <a href="pages/grades/frontier.html">The error–disclosure frontier</a>.</span>
+  </li>
+  <li class="prx-home-tile">
+    <a class="prx-tile-thumb" href="pages/rules/rule-comparison.html" tabindex="-1"><img src="media/thumbs/rule-comparison.png" alt="3.7 Comparison at matched disclosure chart preview" loading="lazy"></a>
+    <span class="prx-tile-meta">Part 3 · 13 apps</span>
+    <strong class="prx-tile-head"><a href="pages/rules/index.html">Reporting rules</a></strong>
+    <span class="prx-tile-copy">How fixed quantile tiers, evidence flags, and posterior cuts compare at matched disclosure and under repeated sampling. <a href="pages/rules/rule-comparison.html">Comparison at matched disclosure</a>.</span>
+  </li>
+  <li class="prx-home-tile">
+    <a class="prx-tile-thumb" href="pages/criteria/two-scores.html" tabindex="-1"><img src="media/thumbs/two-scores.png" alt="4.3 A common grade report for two scores chart preview" loading="lazy"></a>
+    <span class="prx-tile-meta">Part 4 &amp; P · 19 apps</span>
+    <strong class="prx-tile-head"><a href="pages/criteria/index.html">Multiple criteria</a></strong>
+    <span class="prx-tile-copy">Compare one shared grade column across outcomes with separate domain columns under joint error limits. <a href="pages/criteria/two-scores.html">A common grade report for two scores</a>.</span>
+    <ul class="prx-tile-sub">
+      <li><strong><a href="pages/criteria/index.html#common-grades">Common grades</a></strong> <span>(14)</span></li>
+      <li><strong><a href="pages/criteria/index.html#domain-profiles">Domain profiles</a></strong> <span>(5)</span></li>
+    </ul>
+  </li>
+  <li class="prx-home-tile">
+    <a class="prx-tile-thumb" href="pages/cases/alabama-map.html" tabindex="-1"><img src="media/thumbs/alabama-map.png" alt="5.12 A common report for Alabama county outcomes chart preview" loading="lazy"></a>
+    <span class="prx-tile-meta">Part 5 · 12 apps</span>
+    <strong class="prx-tile-head"><a href="pages/cases/index.html">Cases</a></strong>
+    <span class="prx-tile-copy">Firm contact gaps (KRW), California school chronic absence, and Alabama county income and incarceration outcomes. <a href="pages/cases/alabama-map.html">Alabama county outcomes</a>.</span>
+  </li>
+  <li class="prx-home-tile">
+    <a class="prx-tile-thumb" href="pages/tools/report-designer.html" tabindex="-1"><img src="media/thumbs/report-designer.png" alt="T.2 Case-report specification and export chart preview" loading="lazy"></a>
+    <span class="prx-tile-meta">Part T · 2 apps</span>
+    <strong class="prx-tile-head"><a href="pages/tools/index.html">Tools</a></strong>
+    <span class="prx-tile-copy">Build a report from supplied posterior summaries in the browser or specify and export a released case analysis. <a href="pages/tools/report-designer.html">Case-report design and export</a>.</span>
+  </li>
 </ul>
 </div>
-<p>The <a href="./catalog.html">catalog</a> lists the applications by category, concept, and data source. Application 1.3 is the third example in Part 1. Each page includes worked examples with preset settings. The standalone versions also run offline from the downloaded site folder.</p>
+<p>Browse all 84 applications with search and topic filters in the <a href="./catalog.html">application catalog</a>, look up symbols and reporting definitions in <a href="./pages/words.html">terminology and notation</a>, or embed standalone views in slides (<a href="./catalog.html#embedding">embed instructions</a>).</p>
 </section>
 <section id="numerical-verification" class="level2">
 <h2 class="anchored" data-anchor-id="numerical-verification">Numerical verification</h2>
-<p>The checks compare earlier examples with results from postrank 1.1.0 and independent base-R calculations. They also run the exported R workflows with postrank 1.2.0. For the multidomain examples, they compare feasible reports, optimal reports, and ties with results from postrank 1.2.0 using exact fractions. The live finite-law profile examples search every candidate in their stated sets. The forty-site example displays results saved from a separate analysis. The repository records the sources, fields, licenses, and checksums for the released data.</p>
-<p>Each numerical illustration is checked against the values displayed at its stated settings. The result identifies the family of reports searched. Agreement in these examples establishes that the implementations agree for the inputs tested. Assessing calibration requires evidence about how the posterior model performs outside these calculations. The test inputs and comparison code are in <code>verification/</code> and <code>r-export/</code>.</p>
+<p>Every application’s displayed quantities are checked against <code>postrank</code> 1.1.0 / 1.2.0 and independent base-R calculations, including exact rational checks for finite-law multidomain profiles. Each result names the report family searched; numerical agreement verifies implementation consistency on the tested inputs rather than external posterior calibration. Chapter references follow the <code>postrank</code> theory book (v5); source provenance, field definitions, licenses, and checksums live in <code>verification/</code> and <code>r-export/</code>.</p>
 </section>
 <section id="about" class="level2">
 <h2 class="anchored" data-anchor-id="about">About</h2>
-<p>The website was developed by JoonHo Lee, The University of Alabama (<a href="mailto:jlee296@ua.edu">jlee296@ua.edu</a>). It accompanies research on posterior ranking and ordered grade reporting.</p>
+<p>Developed by JoonHo Lee, The University of Alabama (<a href="mailto:jlee296@ua.edu">jlee296@ua.edu</a>), accompanying research on posterior ranking, ordered grade reporting, and multidomain profiles.</p>
 </section>
 <section id="acknowledgements" class="level2">
 <h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgments</h2>
@@ -1066,7 +1119,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

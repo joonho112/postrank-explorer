@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/cases/alabama-map.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A common report for Alabama county outcomes – postrank Explorer">
+<meta property="og:description" content="Criterion-specific evaluation of common grades for historical income and incarceration outcomes.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/cases/alabama-map.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/alabama-map.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A single grade report compares Alabama counties on two historical outcomes, household income and incarceration. Grade 1 indicates higher income and lower incarceration. Changing the weight changes the relative cost of mistakes on the two outcomes. The map links each county’s grade to the marginal intervals in the table.</p>
+<p>One common grade report compares Alabama’s 67 counties on historical income and incarceration; shifting the weight trades wrong directions between outcomes.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,22 +635,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>“Equal weights.”</strong> Crenshaw County is the only county in grade one. Montgomery and Russell share grade five. The expected error shares among stated comparisons are .0520 for income and .172 for incarceration.</li>
-<li><strong>“Income only.”</strong> The report states 1,769 of 2,211 pairs. The incarceration error share rises to .349. Under <strong>“Income .80”</strong>, the incarceration and income shares are .305 and .0305, respectively. Each risk uses the loss for its own weights.</li>
-<li><strong>“Fixed income D1.”</strong> At equal weights the archived D1 grades have risk .1906, compared with .1998 for D2. The corresponding map is available below the main comparison.</li>
-<li><strong>“Color counties by this report.”</strong> Choose an archived report or edit the grades. The table gives each county’s grades and intervals and shows how the stated comparisons differ from archived P. <strong>“Incarceration only”</strong> gives shares .312 on income and .0873 on incarceration.</li>
+<li><strong>“Equal weights.”</strong> Crenshaw County stands alone in grade one (.0520 wrong on income, .172 on incarceration).</li>
+<li><strong>“Income only.”</strong> States 1,769 of 2,211 pairs (.349 wrong on incarceration); <strong>“Income .80”</strong> gives .305 and .0305.</li>
+<li><strong>“Fixed income D1.”</strong> Equal-weight risk is .191, vs.&nbsp;.200 under <strong>“Fixed incarceration D2.”</strong></li>
+<li><strong>“Incarceration only.”</strong> Wrong shares flip to .312 on income and .0873 on incarceration.</li>
 </ul>
-<p>The browser searches cuts of one order, based on the counties’ weighted average posterior ranks. At the original cost and cap, the search reproduces P at equal weights, D1 for income alone, and D2 for incarceration alone. The archived solver status and bounds apply to those original runs. The commonality table reports how much risk the original common report adds for each outcome compared with a report optimized for that outcome alone. Its bounds apply to the original loss and the full family allowed by the grade cap.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The estimates pool race and gender for cohorts born in 1978–83 whose parents were at the 25th income percentile. The outcomes are household income in 2014–15 and incarceration on April 1, 2010. The grades describe associations for those cohorts. Present-day need, eligibility, and the causal effect of growing up in a county would require other evidence. The two separate fits give marginal distributions for each outcome. Data: Chetty, Friedman, Hendren, Jones and Porter (2022), Opportunity Atlas replication, Harvard Dataverse doi:10.7910/DVN/NKCQM1; Opportunity Insights and U.S. Census Bureau, CC BY 4.0; as adapted in postrank 1.1.0. Changes: Alabama filtering, favorable target orientation, supplied marginal summaries, archived reports and browser searches. Boundaries: U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20m), via usmapdata 1.1.0; public domain. No endorsement implied.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Cohort scope and commonality notes
+</summary>
+<p>The browser searches cuts of one order from weighted average posterior ranks, reproducing archived P at equal weights, D1 for income alone, and D2 for incarceration alone at the original cost and cap. The archived commonality table bounds how much risk the common report adds for each outcome relative to its own single-outcome optimum under the original loss and grade cap.</p>
+Opportunity Atlas estimates pool race and gender for 1978–83 birth cohorts with parents at the 25th income percentile (household income in 2014–15; incarceration on April 1, 2010). Grades summarize historical associations for those cohorts rather than present-day need, eligibility, or causal place effects; the two outcomes were fit separately and supply marginal intervals.
+</details>
+<p>Data: Chetty, Friedman, Hendren, Jones and Porter (2022), doi:10.7910/DVN/NKCQM1 (CC BY 4.0, postrank 1.1.0). Boundaries: U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20m), via usmapdata 1.1.0. No endorsement implied.</p>
 <details class="prx-recipe">
 <summary>
 In postrank
@@ -634,8 +656,7 @@ In postrank
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>al <span class="ot">&lt;-</span> <span class="fu">load_or_compute</span>(<span class="st">"case_alabama67"</span>); <span class="fu">get_profile</span>(al)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pr_case_alabama<span class="sc">$</span>reference<span class="sc">$</span>commonality[, <span class="fu">c</span>(<span class="st">"criterion"</span>, <span class="st">"cost_lower_A"</span>, <span class="st">"cost_upper_A"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<p>Standalone: <a href="../../embed/alabama-map.html">embed/alabama-map.html</a>, for example <code>?w=.5&amp;overlay=income</code>.</p>
-<p>Related applications: <a href="../../pages/criteria/common-grade-cost.html">Criterion-specific excess risk of a common report</a> · <a href="../../pages/cases/krw-two.html">A common report for race and gender gaps</a>.</p>
+<p><a href="../../embed/alabama-map.html">Standalone embed</a> (<code>?w=.5&amp;overlay=income</code>) · Related: <a href="../../pages/criteria/common-grade-cost.html">Common-grade cost</a> · <a href="../../pages/cases/krw-two.html">Race and gender gaps</a>.</p>
 
 
 </section>
@@ -1108,7 +1129,7 @@ In postrank
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/cases/krw-lambda.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="KRW’s archived reward path – postrank Explorer">
+<meta property="og:description" content="Disclosure and expected errors of archived cards across the λ grid.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/cases/krw-lambda.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/krw-lambda.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>KRW’s archive gives a card at each hundredth of the reward λ from zero to one. The cards generally state more pairs as the reward for a correct direction rises, although disclosure falls at some steps. The figure evaluates each fixed card using the released pair probabilities and shows which comparisons change from the preceding grid point. KRW chose the cards with their archived probabilities and solver tolerances, which matter when comparing this path with exact optima under one posterior.</p>
+<p>KRW’s archive gives one card at each hundredth of λ from zero to one, showing how disclosure and expected wrong directions move together.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,26 +600,27 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>λ .25: published race card.</strong> The baseline card states 1,324 pairs, with E/N .136. Grade counts appear on a logarithmic scale. DR divides expected errors by all possible pairs.</li>
-<li><strong>λ .08: first race split.</strong> Genuine Parts stands alone above the other 96 firms. Its standard error is smaller than AutoNation’s, despite AutoNation’s larger estimate. Risk .07406 is just below its own all-withheld reference; the comparison needs the extra decimal.</li>
-<li><strong>λ .01: one grade.</strong> The card at the first positive λ states no direction, so E/N is undefined. The table also includes the archived card at λ zero, where postrank risk is undefined.</li>
-<li><strong>λ .30: statements and silence.</strong> Against the preceding grid row, 830 pairs become stated and 92 become withheld. The comparison uses the adjacent archived rows each time.</li>
-<li><strong>λ .98: disclosure dip.</strong> Between λ .97 and .98, the number of stated comparisons falls from 4,620 to 4,614.</li>
-<li><strong>λ 1: end of grid.</strong> DR and E/N coincide at .268 because every pair is stated. The complete Purples matrix uses a different scale: it shades stated errors, unlike the Blues direction probabilities in the heat-map app.</li>
+<li><strong>λ .25 &amp; λ .01.</strong> The published race card states 1,324 pairs (E/N .136); at the first positive λ (.01), no pair is stated.</li>
+<li><strong>λ .08: first race split.</strong> Genuine Parts stands above the other 96 firms at risk .07406.</li>
+<li><strong>λ .30, λ .98 &amp; λ 1.</strong> At .30, 830 pairs become stated and 92 withheld; stated pairs dip from 4,620 (.97) to 4,614 (.98) and reach all pairs at λ 1 (DR = E/N = .268).</li>
 </ul>
+<details>
+<summary>
+Archived path and figure notes
+</summary>
+<p>KRW’s code selected the grid cards using their archived probabilities and solver tolerances; the app holds those grades fixed and evaluates them with the released postrank probabilities. Baseline race card: Figure 7; gender card: Figure 14 (§VIII); Figures 5A and 6 (§V.E); Figure 10A (§VI.B).</p>
+</details>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>KRW’s code selected the grid cards using their archived probabilities and solver tolerances. The app holds those grades fixed and evaluates them with the released postrank probabilities. The baseline race card is in Figure 7, and the gender card is in Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.</p>
-<p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC as stated by the deposit, noncommercial use only; as adapted in postrank 1.1.0 (<code>pr_case_krw</code>), changes noted. Provided as is, without warranty; no endorsement is implied. <strong>These historical data do not describe any firm’s current conduct.</strong></p>
+<p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only; adapted in postrank 1.1.0 (<code>pr_case_krw</code>), changes noted. No endorsement implied; provided as is. <strong>These historical data do not describe any firm’s current conduct.</strong></p>
 </div>
 </div>
 </div>
-<p>Standalone: <a href="../../embed/krw-lambda.html">krw-lambda</a>.</p>
-<p>Related applications: <a href="../../pages/grades/two-denominators.html">Error rates under two denominators</a>, <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a>.</p>
+<p>Standalone: <a href="../../embed/krw-lambda.html">krw-lambda</a> · Related: <a href="../../pages/grades/two-denominators.html">Error rates under two denominators</a>, <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a>.</p>
 
 
 </section>
@@ -1067,7 +1093,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

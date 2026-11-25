@@ -1,10 +1,10 @@
 ---
 title: "Reported error and reference-law evaluation"
-subtitle: "2.9 · after the postrank theory book, ch. 18"
+subtitle: "2.9 · after the postrank theory book, ch. 24"
 description: "Comparison of conditional error expectations with realized errors at fixed true values."
 ---
 
-The reported error share is the expected fraction of wrong directions under the posterior that selected the report. We can hold the report fixed and compute the same expectation under a separate reference law. The open point gives the share actually wrong at the league's fixed true values. These three quantities can differ. The lower panels show why by comparing what changes when we sample new observations and when we draw latent values conditional on the observations already selected.
+A grade report claims an expected wrong share under the posterior that selected it. Compare that claim with a separate reference law and the errors realized at fixed true values.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,30 +16,23 @@ The reported error share is the expected fraction of wrong directions under the 
 
 ## Numerical illustrations {#what-to-try}
 
-- **Same conditional laws.** The report states 152 pair directions. Both conditional expectations are .0632,
-  and the share wrong at the fixed true values is .0526. Across repeated samples, the observed error shares can fall on either side of the common expectation.
-- **Narrow prior, five grades.** The report claims .140, while the reference expectation for that same report
-  is .115. Their absolute difference is below the largest pair-error gap, .4981. This setting changes the
-  prior, cost and grade cap together. Moving just the prior slider also selects a new report; each setting's
-  two expectations evaluate that newly selected report under both laws.
-- **Lower cost, two grades.** Only 56 pair directions are stated, with claimed share .0254. The two laws still
-  agree. In the grade groups, pairs inside a grade are withheld, and the denominator counts only pairs
-  stated across grades.
-- **One grade, no disclosure.** There are 0 stated directions and every share reads “NA: no disclosure.” No
-  wrong directions is different from a defined error share of zero. The posterior-draw wrong count remains
-  zero because this report makes no comparisons.
+- **Same conditional laws.** The report states 152 pair directions; both expectations equal .0632 (same prior), while the realized wrong share at fixed truth is .0526.
+- **Narrow prior, five grades.** The report claims .140 while the reference expectation is .115; their gap stays within the pair-error bound δ = .498.
+- **Lower cost, two grades.** Only 56 pair directions are stated, with claimed and reference share .0254; pairs inside each grade are withheld.
+- **One grade, no disclosure.** With 0 stated directions, every share reads “NA: no disclosure,” distinct from a defined error share of zero.
 
-The lower panels separate two experiments. Observation replays keep all true values fixed, redraw estimates,
-and choose a new report each time. Choose a replay with the slider or select a point in the replay chart.
-Posterior draws keep the selected observations and report fixed,
-then vary latent values under the chosen conditional law. The histogram and running average describe that
-chosen law; adding draws reduces simulation noise without testing whether the law is correct.
+<details>
+<summary>Observation replays, posterior draws, and calibration notes</summary>
 
-::: {.callout-note appearance="simple"}
-We hold the league's true values fixed across samples. Chapter 18's conditional calibration identity applies to draws from the reference law, so the replays here do not test that identity. The pair-gap bound limits how far the two model expectations for a fixed report can differ. Its target is the difference in expectations.
-:::
+Observation replays hold all true values fixed, redraw noisy estimates, and reselect a report each time. Select a replay with the slider or directly on the replay chart.
+
+Open **Data and posterior draw checks** for a separate experiment that freezes the selected observations and report, then draws latent values under a declared conditional law. Chapter 18's conditional calibration identity applies to draws from the reference law, not to replays at fixed true values; the pair-gap bound limits only the difference between the two model expectations for a fixed report.
+
+</details>
 
 Standalone: [reported and realized shares](../../embed/reported-and-realized.html), for example `?priorSd=.05`.
 
 Related applications: [Expected and realized errors among stated directions](disclosed-errors.qmd),
 [Sensitivity to the prior standard deviation](../uncertainty/shrinkage-price.qmd).
+
+Theory book · [Self-reported error and calibration](https://joonho112.github.io/postrank-theory-book/chapters/24-misspecification-calibration.html#sec-self-reported-calibration).

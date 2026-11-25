@@ -1,13 +1,10 @@
 ---
 title: "Reasons for a withheld comparison"
-subtitle: "4.12 · after the postrank theory book, chapters 10, 12, 19 and 21"
+subtitle: "4.12 · postrank theory book, ch. 10, 12, 25 and 32"
 description: "How the cost of ranking an isolated pair compares with the cost of ranking it in a full report."
 ---
 
-When two units share a grade, the report leaves their direction unranked. Select a pair to see what it costs
-to state either direction on its own and what it costs to require that direction in a complete report. The
-posterior stays fixed for both comparisons. Several tests can account for the same withheld pair. The
-changed-pair table shows how requiring one direction also changes other comparisons in the report.
+Sharing a grade leaves two units unranked, not equal. Select a pair to compare standalone cost against full-report risk.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -19,20 +16,19 @@ changed-pair table shows how requiring one direction also changes other comparis
 
 ## Numerical illustrations {#what-to-try}
 
-- **Coherence**: the six-site report withholds A–B even though its isolated forward cost is below the withholding cost. The minimum-cost complete report stating A above B has risk .1019, with a change of +.008513. Removing the cap does not remove this difference. The table lists the other directions that change and their contributions to the risk difference.
-- **Certain conflict**: each criterion is certain about B–C, but they point opposite ways. Requiring B above C produces risk .1667, with a change of +.025000. The reverse direction is a separate search with a different full report and cost.
-- **Uncertainty**: the two criteria agree within every stipulated state. Their directional expected costs are .4000 and .6000, while each known state's smaller directional cost is zero. Here the isolated direction is costly because the states disagree about which unit is higher.
-- **Fixed order**: B above C is feasible along the declared order, but its minimum-cost report has risk .3167. The unrestricted family provides a separate comparison. Under **Indivisible block**, requiring those two units to stay together makes both directions infeasible.
-- **CDE subset**: all 523,251 reports with at most three grades belong to the declared search. Forward and reverse requirements are evaluated separately. The schools were chosen to span the range for this illustration. The result applies to these schools under the
-  fixed statewide prior.
-- **KRW fixed order**: the search contains 147,537 contiguous-cut reports. Relaxing the cap keeps the expected-rank order fixed. The reports are new postrank calculations for that order, separate from KRW's archived cards.
+- **Coherence**: the six-site baseline withholds A–B even though standalone A above B costs less than $\tau$; requiring it in a coherent report yields risk .102 (+.00851).
+- **Certain conflict**: the two criteria oppose with certainty on B–C; requiring B above C yields risk .167 (+.0250).
+- **Uncertainty**: criteria agree within each state, yet cross-state uncertainty makes standalone directions cost .400 and .600.
+- **Fixed order**: B above C reaches risk .317 along the declared order, while **Indivisible block** makes both directions infeasible.
+- **CDE subset**: evaluates all 523,251 reports with at most three grades under the fixed statewide prior.
+- **KRW fixed order**: evaluates 147,537 contiguous-cut reports along the fixed expected-rank order.
 
 ::: {.callout-note}
-The extra risk measures the cost of the required direction under the given posterior and report family. It
-can reflect more than one reason for withholding. The case views give the data sources and assumptions.
-CDE source conditions apply. KRW is noncommercial use only under CC-BY-NC, with no endorsement implied.
+Several reasons can overlap on the same withheld pair. CDE source conditions apply; KRW is noncommercial use only under CC-BY-NC, with no endorsement implied.
 :::
 
 [Open standalone](../../embed/why-withheld.html), for example `?preset=fixed-order`.
 
 Related applications: [Opposing criterion directions](conflict-pairs.qmd), [A common grade report for two scores](two-scores.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).
+
+Theory book · [Worked exact examples](https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-worked-examples) · [Interpretation of withheld comparisons](https://joonho112.github.io/postrank-theory-book/chapters/32-governance-communication.html#sec-governance-withholding) · [Interpretation of a shared grade and complete withholding](https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#what-silence-means) · [Conflict, withholding, and the limits of pairwise decisions](https://joonho112.github.io/postrank-theory-book/chapters/12-conflict-estimands.html#sec-conflict-withholding).

@@ -9,7 +9,7 @@
   "data": [
     "engine"
   ],
-  "credit": "Built for this site (bivariate normal; a shared, uncertain prior mean makes posteriors move together); dependence after the postrank theory book, ch. 9 and 18.",
+  "credit": "Built for this site (bivariate normal; a shared, uncertain prior mean makes posteriors move together); dependence after the postrank theory book, ch. 9 (“Dependence and pairwise comparison probabilities”) and ch. 24 (“Hyperparameters, precision and represented uncertainty”).",
   "math": true,
   "caption": "Two posterior values whose dependence can change.",
   "presets": [
@@ -59,8 +59,8 @@
     {
       "preset": "corr95",
       "shows": [
-        ".063",
-        ".999"
+        ".0632",
+        "above .999"
       ]
     },
     {
@@ -72,6 +72,9 @@
     },
     {
       "preset": "shared-mean",
+      "open": [
+        "settings"
+      ],
       "shows": [
         ".30",
         ".10",
@@ -86,8 +89,11 @@
     },
     {
       "query": "source=shared&yA=.30&seA=.20&yB=.10&seB=.20&priorSd=.10&meanSd=0",
+      "open": [
+        "data"
+      ],
       "shows": [
-        ".089",
+        ".0894",
         ".624"
       ]
     }

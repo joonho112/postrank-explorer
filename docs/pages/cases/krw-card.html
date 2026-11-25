@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/cases/krw-card.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="KRW’s race and gender report cards – postrank Explorer">
+<meta property="og:description" content="Marginal summaries and pairwise statements in the archived cards for 97 firms.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/cases/krw-card.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/krw-card.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>KRW’s cards report which firms have larger contact gaps by placing firms in ordered grades. The grade assignments and expected error rates can change with the target or the reward λ for a correct direction.</p>
+<p>KRW’s cards group 97 firms into ordered contact-gap grades; how do cuts and error shares shift with the target and reward λ?</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -574,29 +599,25 @@ ul.task-list li input[type="checkbox"] {
 <script>window.__prxApp = PRX["krw-card"].mountWidget(document.getElementById("app"));</script>
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
-<p>Grade 1 is highest on the chosen target. The card states directions between grades and withholds them within a grade. A correct direction earns λ, a wrong direction costs 1, and withholding pays 0. DR divides expected errors by all pairs. E/N divides them by the number of pairs the card states.</p>
 <ul>
-<li><strong>Published race card.</strong> The card states 1,324 of 4,656 pairs, with expected wrong share E/N .136. Its risk .1818 comprises .0387 for errors and .1431 for withholding. In this card, comparisons between distant grades have lower expected error rates than comparisons between adjacent grades.</li>
-<li><strong>Reveal grade 1.</strong> The remaining bands stay in place. As each grade is revealed, its firms enter the disclosure and between-grade tables.</li>
-<li><strong>Sort by estimate.</strong> State Farm moves 69 rows inside its grade. Changing the row order changes no reported direction. Genuine Parts and AutoNation illustrate why estimates alone do not determine the card.</li>
-<li><strong>λ .08: first race split.</strong> The risk .07406 is slightly below all withheld, .07407. The extra decimal prevents rounding from hiding that distinction. The displayed card is still an archived KRW grid card.</li>
-<li><strong>Published gender card.</strong> It states 731 pairs. Both ends of its signed scale are contact gaps; three stated directions are more likely wrong than right. The note identifies these firms and probabilities.</li>
-<li><strong>One grade.</strong> Nothing is stated. E/N is NA: no disclosure, meaning undefined; the app draws no E/N bar.</li>
+<li><strong>Published race card.</strong> States 1,324 of 4,656 pairs with expected wrong share E/N = .136 (risk .182 = .0387 errors + .143 withholding).</li>
+<li><strong>Reveal grade 1.</strong> Steps through grades from 1 downward while keeping remaining bands fixed.</li>
+<li><strong>Sort by estimate.</strong> State Farm moves 69 rows inside Grade 2 without changing any stated direction.</li>
+<li><strong>λ .08: first race split.</strong> Risk .07406 sits just below all withheld (.07407).</li>
+<li><strong>Published gender card.</strong> States 731 pairs across opposite-sign gaps; 3 stated directions are more likely wrong than right.</li>
+<li><strong>One grade.</strong> States nothing; E/N is NA: no disclosure.</li>
 </ul>
-<p>The precision plot places each firm’s original sampling SE beside its grade. The table identifies each firm. KRW’s prior depends on precision. Firms with uncertain estimates can share the middle grade while having very different contact gaps.</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>KRW’s code selected the grid cards using their archived probabilities and solver tolerances. The app holds those grades fixed and evaluates them with the released postrank probabilities. The baseline race card is in Figure 7, and the gender card is in Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.</p>
-<p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC as stated by the deposit, noncommercial use only; as adapted in postrank 1.1.0 (<code>pr_case_krw</code>), changes noted. Provided as is, without warranty; no endorsement is implied. <strong>These historical data do not describe any firm’s current conduct.</strong></p>
+<p>Archived grid cards follow KRW’s code (Figures 7, 10A and 14) and are evaluated under released postrank probabilities. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only, as adapted in postrank (<code>pr_case_krw</code>). Provided as is, without warranty; no endorsement is implied. <strong>These historical data do not describe any firm’s current conduct.</strong></p>
 </div>
 </div>
 </div>
-<p>Standalone: <a href="../../embed/krw-card.html">krw-card</a>.</p>
-<p>Related applications: <a href="../../pages/grades/two-denominators.html">Error rates under two denominators</a>, <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a>.</p>
+<p>Standalone: <a href="../../embed/krw-card.html">open this app</a>. Related: <a href="../../pages/grades/two-denominators.html">Error rates under two denominators</a>, <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a>.</p>
 
 
 </section>
@@ -1069,7 +1090,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

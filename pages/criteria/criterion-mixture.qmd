@@ -4,10 +4,7 @@ subtitle: "4.8 · after the postrank theory book, ch. 11–12"
 description: "Drawing one criterion for a fixed report reproduces its weighted risk on average."
 ---
 
-Consider a fixed grade report and draw one criterion, with chances given by the error weights. Evaluate the whole
-report on that criterion. The average risk over these draws equals the weighted risk computed directly. The
-draw applies to all units and all pairs, preserving their joint distribution within the chosen criterion.
-The report is already fixed when the criterion is drawn.
+Fix a grade report first, then draw one criterion with probabilities equal to the loss weights. Evaluating the whole report on that criterion reproduces direct weighted risk.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -19,25 +16,12 @@ The report is already fixed when the criterion is drawn.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Weighted report.** Both calculations give risk .0933. The criterion contributions are .0453 and .0480.
-  Select a criterion column to inspect its whole vector. Report 1/1/1/1/2/3 stays fixed.
-- **Certain opposition.** The two directions each cost .5000, while withholding costs .3000. Both criteria
-  distinguish the units with certainty. The same criterion choice applies to both units and every reported pair.
-- **Three actions tie.** All 3 actions cost .5000. Other reports share the weighted minimum even though their risks differ by criterion. Each report is evaluated before a criterion is drawn.
-- **Two against one.** The cheaper direction costs .3333, the reverse .6667, and withholding .4000. A certain
-  two-against-one split can favor disclosure. The adjacent one-third boundary preset retains both actions sharing
-  the minimum instead of treating equality as a strict preference.
-- **Zero error weight.** The cheaper weighted direction costs 0, although the ignored criterion’s own risk
-  is 1.0000. Its selection chance is 0, so this branch contributes nothing. The column still shows how the report fares on that criterion.
-- **No-cap coherence.** Among all 4,683 reports, 1/2/2/3/4/5 states 14 pairs with risk .1275. It states A above C
-  with weighted error .3803 and B above D with .3813, both above τ .35. There is no grade cap in this example.
-
-::: {.callout-note appearance="simple"}
-The criterion draw is independent of the targets conditional on the supplied information. Its probabilities
-are the weights in the loss. In postrank, a strict direction counts as wrong when the target values are equal.
-The link to KRW's strict-count objective requires matching the law, targets, orientation, units and report
-family, as well as the affine and equality conditions of that result.
-:::
+- **Weighted report.** Report 1/1/1/1/2/3 has risk .0933 from contributions .0453 and .0480.
+- **Certain opposition.** Withholding costs .300 while **Data** shows strict directions cost .500.
+- **Three actions tie.** All 3 reports tie at weighted risk .500.
+- **Two against one.** Risk is .333; **Data** shows standalone costs .333, .667, and .400.
+- **Zero error weight.** **Data** shows directional minimum 0 and chance 0 on risk 1.0000.
+- **No-cap coherence.** Among 4,683 reports, 1/2/2/3/4/5 states 14 pairs at risk .127 (**Data**: errors .380, .381 above $\tau$ .35).
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 The fixed default report reproduces the two calculations; small floating-point rounding differences do not change
@@ -50,6 +34,15 @@ sum(c(.5,.5)*ev$criterion_risk); ev$weighted_risk
 ```
 :::
 
+<details>
+<summary>Mixture independence and KRW correspondence</summary>
+
+The criterion draw is independent of the targets conditional on the supplied information, with probabilities given by the loss weights. In postrank, a strict direction counts as wrong when target values are equal. Correspondence to KRW's strict-count objective requires matching the law, targets, orientation, units, and report family, plus the affine and equality conditions of that result.
+
+</details>
+
 Standalone: [open this app](../../embed/criterion-mixture.html), for example `?preset=coherence&theme=dark`.
 
 Related applications: [Opposing criterion directions](conflict-pairs.html) · [A common grade report for two scores](two-scores.html).
+
+Theory book · [A criterion mixture and its scalar correspondence](https://joonho112.github.io/postrank-theory-book/chapters/11-multicriteria-loss.html#sec-criterion-mixture) · [Conflict, withholding, and the limits of pairwise decisions](https://joonho112.github.io/postrank-theory-book/chapters/12-conflict-estimands.html#sec-conflict-withholding).

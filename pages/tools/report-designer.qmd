@@ -1,11 +1,10 @@
 ---
 title: "Case-report specification and export"
-subtitle: "T.2 · after the postrank theory book, chapter 21, and the reading/exporting vignette"
+subtitle: "T.2 · after the postrank theory book, chapters 26 and 32, and the reading/exporting vignette"
 description: "Reports accompanied by target definitions, computation scope, error-budget checks and source information."
 ---
 
-The tool builds a grade report from the released probabilities for each case. The budget applies to the report
-on the screen. The reporting view records the outcome, model assumptions, and search used to produce the grades.
+Build a grade report from released case probabilities, check error budgets on the displayed grades, and export the model sentence, CSV tables, and R verification script.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,19 +16,27 @@ on the screen. The reporting view records the outcome, model assumptions, and se
 
 ## Numerical illustrations {#what-to-try}
 
-- **CDE: three-grade family.** The browser enumerates all 523,251 capped reports. The chosen report states
-  45 pairs. The result applies to the twelve schools in the teaching subset.
-- **KRW: equal weights.** The result is labeled “optimal within this order” and states 636 pairs. Changing the weight
-  can change the order and which reports the search considers. The supplied intervals describe race and gender separately.
-- **Alabama: equal weights.** The report states 1,249 pairs. Grade 1 indicates favorable historical outcomes,
-  including lower incarceration. The case and its text download give the population and interval level.
-- **CDE: cap two.** The family contains 4,095 reports. Compare its best report with the archived report at the same withholding cost.
-- **CDE: mean-order cap four.** The computation switches to the posterior-mean order. It is optimal only among
-  cuts of that order. The budget table gives the difference between the allowed and expected error counts.
-- **CDE: all withheld.** E/N reads NA: no disclosure. A homogeneous budget passes without stating anything,
-  so a pass alone does not establish useful or error-free disclosure.
+- **CDE: three-grade family.** Enumerates 523,251 capped reports; states 45 pairs.
+- **KRW: equal weights.** Labeled “optimal within this order”; states 636 pairs.
+- **Alabama: equal weights.** States 1,249 pairs; Grade 1 marks favorable outcomes, not need.
+- **CDE: cap two.** Searches 4,095 reports; compare with the archived solve in **Data**.
+- **CDE: mean-order cap four.** Uses the posterior-mean order and checks error budgets.
+- **CDE: all withheld.** E/N reads NA: no disclosure; a budget pass alone is uninformative.
 
-::: {.callout-note appearance="simple"}
+::: {.callout-note collapse="true" title="In postrank"}
+The mean-order cap-four result states 54 pairs, with risk .0368858. Run the example with postrank 1.2.0 and its bundled CDE data.
+
+```r
+library(postrank)
+x <- pr_case_cde$input; s <- postrank_settings(weights = c(negative_chronic_absence = 1), tau = .2, G_max = 4)
+a <- postrank_cuts(x$summaries$means[, 1], x, s, direction = "descending", rule = "optimal")
+a$evaluation[c("N", "E_over_N", "primary_risk")]
+```
+:::
+
+<details>
+<summary>Scope, sources, and CSV conventions</summary>
+
 The archived status, bound, and gap apply to the archived computation. The current search has its own scope.
 A shared grade leaves the comparison unstated. The expected error share describes individual comparisons in
 aggregate, and the probability that every stated comparison is correct requires a joint calculation. A decision
@@ -42,20 +49,11 @@ Alabama uses [Opportunity Atlas](https://doi.org/10.7910/DVN/NKCQM1) historical 
 The case notes and downloads give the source, changes, rights, and conditioning. These details appear on each CSV row.
 Relations use `1` for row above column,
 `-1` for column above row, `0` for withheld, and `NA` on the diagonal.
-:::
-
-::: {.callout-note collapse="true" title="In postrank"}
-The mean-order cap-four result states 54 pairs, with risk .0368858. With postrank 1.1.0 loaded:
-
-```r
-x <- pr_case_cde$input; s <- postrank_settings(weights = c(negative_chronic_absence = 1), tau = .2, G_max = 4)
-a <- postrank_cuts(x$summaries$means[, 1], x, s, direction = "descending", rule = "optimal")
-a$evaluation[c("N", "E_over_N", "primary_risk")]
-```
-:::
-
-Standalone: [report-designer](../../embed/report-designer.html).
-
-Related applications: [Posterior summaries in a grade report](../grades/report-card.qmd), [Restrictions on the report family](../grades/families.qmd).
 
 Further reporting considerations: [Criterion-specific excess risk of a common report](../criteria/common-grade-cost.qmd), [Comparison at matched disclosure](../rules/rule-comparison.qmd), [Mixtures of frontier reports](../grades/frontier-mixtures.qmd), [Selection and evaluation using posterior draws](../grades/chosen-and-judged.qmd), [Averaging error shares across reports](../grades/averaging-errors.qmd).
+
+</details>
+
+Standalone: [open this app](../../embed/report-designer.html) · Related: [Posterior summaries in a grade report](../grades/report-card.qmd), [Restrictions on the report family](../grades/families.qmd).
+
+Theory book · [Specification of a common report](https://joonho112.github.io/postrank-theory-book/chapters/26-krw-illustration.html#sec-krw-common-report-scope) · [Documentation and correction](https://joonho112.github.io/postrank-theory-book/chapters/32-governance-communication.html#sec-governance-transparency-appeal).

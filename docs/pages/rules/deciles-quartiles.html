@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/deciles-quartiles.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Deciles and quartiles of posterior means – postrank Explorer">
+<meta property="og:description" content="Evaluation of fixed posterior-mean tiers on KRW’s discordance and informativeness axes.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/deciles-quartiles.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/deciles-quartiles.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Quartiles and deciles split firms into nearly equal groups by posterior mean, keeping exact score ties together. We compare these reports with archived cards using Kline, Rose and Walters’s measures of discordance and informativeness. Both calculations use the released pair probabilities. In each example below, the selected archived card makes fewer expected wrong directions per possible pair and provides more information than the fixed tiers. The comparison evaluates reports that have already been chosen.</p>
+<p>Quartiles and deciles split firms into nearly equal posterior-mean groups, keeping exact score ties together. Compare these fixed tiers with KRW’s archived cards on discordance and informativeness.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,18 +635,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Race quartiles, card λ .60.</strong> The quartile point has DR .1696 and I .4185. The ringed card has lower DR, .1678, and higher I, .4336. The size patterns show how the card’s grade boundaries differ from the nearly equal quartiles.</li>
-<li><strong>Race deciles, card λ .82.</strong> Deciles move to DR .2271 and I .4550, while the selected card reaches .2243 and .4589. The deciles disclose more pairs than the quartiles. The selected card still has lower DR and higher I.</li>
-<li><strong>Gender quartiles, card λ .64.</strong> Under the signed male-name contact-gap target, quartiles have DR .1978 and I .3621; the card gives .1908 and .3875. These coordinates concern a different target from the race comparisons.</li>
-<li><strong>Gender deciles, card λ .80.</strong> Deciles give DR .2525 and I .4042; the card gives .2373 and .4078. The comparison depends on the selected λ. The selected card need not improve both coordinates at every grid setting.</li>
+<li><strong>Race quartiles, card λ .60.</strong> Quartiles sit at DR .170 and I .419; the ringed card reaches lower DR (.168) and higher I (.434).</li>
+<li><strong>Race deciles, card λ .82.</strong> Deciles move to DR .227 and I .455, while the selected card reaches .224 and .459.</li>
+<li><strong>Gender quartiles, card λ .64.</strong> Under the signed male-name contact-gap target, quartiles give DR .198 and I .362; the card gives .191 and .388.</li>
+<li><strong>Gender deciles, card λ .80.</strong> Deciles give DR .252 and I .404; the card gives .237 and .408. Not every λ improves both axes.</li>
 </ul>
+<details>
+<summary>
+Reporting axes and archived-card provenance
+</summary>
+<p>KRW discuss deciles and quartiles in §IV.B (Figure 2C) and reporting possibilities in §V.E (Figure 6). The diamonds show the fixed tiers, while the curve joins cards that KRW selected using their archived probabilities. Here each card’s coordinates are recomputed under the released signed-target probabilities without rerunning that search. KRW write τ̄ for informativeness.</p>
+</details>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>KRW discuss deciles and quartiles in §IV.B and Figure 2C, and reporting possibilities in §V.E and Figure 6. The diamonds show the fixed tiers. The curve joins cards that KRW selected using their archived probabilities. We recompute each card’s coordinates with the released probabilities without rerunning that search. KRW use τ̄ for informativeness. For gender, the target is the signed contact gap.</p>
 <p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only; as adapted in postrank 1.1.0 (<code>pr_case_krw</code>), changes noted; no endorsement is implied. Provided as is, without warranty. <strong>The data describe KRW’s correspondence experiment, not any firm’s current conduct.</strong></p>
 </div>
 </div>
@@ -1118,7 +1148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

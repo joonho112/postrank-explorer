@@ -1,10 +1,10 @@
 ---
 title: "Restrictions on the report family"
-subtitle: "2.12 · postrank's report families; four-unit example after the theory book, chapter 14"
+subtitle: "2.12 · postrank's report families; four-unit example after the theory book, chapters 9 and 25"
 description: "Consequences of grade caps, exact grade counts and fixed-order restrictions for minimum risk."
 ---
 
-The report with the smallest risk depends on which reports the analyst allows. A cap permits any number of occupied grades up to a limit. An exact count requires every permitted grade to be occupied, and a fixed order allows only cuts between adjacent units in that order. The figure compares the best report in each family at the same withholding cost and on the same scale. Rearranging the units changes the possible cuts of the fixed order while leaving the unrestricted family intact.
+Minimum reporting risk depends on which grade reports are allowed: all reports, at most *G* grades, exactly *G* occupied grades, or contiguous cuts of one declared unit order.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,25 +16,18 @@ The report with the smallest risk depends on which reports the analyst allows. A
 
 ## Numerical illustrations {#what-to-try}
 
-- **Exactly six.** The family contains 720 strict rankings. Its best report costs .0480, while the unrestricted
-  reference costs .0372. Requiring every site to have its own grade forces the report to state an uncertain direction.
-  The selected row identifies this direction and its error probability.
-- **At most three.** The capped family contains 603 reports, including reports that use fewer grades. Exactly the
-  required number gives a smaller family of 540. Here both best risks are .0417; the shared scale makes that
-  equality visible. Further grade restrictions can change the minimum at this fixed cost.
-- **B before A.** The declared order allows 32 contiguous reports. Its best cut costs .0379, above the unrestricted
-  .0372. The arrows in the Declared order box modify the declared order. The dynamic program searches cuts of the declared order, and the line under the rows checks its answer against enumeration of those same cuts.
-- **Two criteria.** The four-unit example has 24 reports with every grade distinct, 75 in the unrestricted family,
-  and 8 contiguous cuts. The exact-count row costs 7/40. The law's table gives the criterion-specific errors and their weighted average: the orange segment now measures expected weighted wrong directions.
+- **Exactly six.** Across 720 strict rankings, minimum risk is .0480 versus .0372 unrestricted.
+- **At most three.** Both the 603 capped reports and 540 three-grade reports reach .0417.
+- **B before A.** Cutting the declared order searches 32 reports at risk .0379 versus .0372.
+- **Two criteria.** Among 24 strict orders, 75 total reports, and 8 cuts, four grades cost 7/40.
+- **A dominating set.** At τ = 4/9, unrestricted optima cost 4/15 while a two-grade cap costs 17/54.
 
-- **A dominating set.** At τ = 4/9, every unrestricted best report separates {A, B} above {X, Y}, at risk 4/15.
-  The best report with the grade cap costs 17/54 and puts X with A. The cap can make the separating rearrangement
-  infeasible. The law panel checks the strict cross-set premise again whenever you change the price.
+<details>
+<summary>Family nesting and tie rules</summary>
 
-::: {.callout-note appearance="simple"}
-At a fixed withholding cost, adding eligible reports can only lower the minimum risk or leave it unchanged. The dashed mark gives the risk of withholding every pair. A family that requires several occupied grades excludes that report. Equal-risk reports are identified in the rows and the read-out,
-and the box of search lines states the order family's tie rule. All examples are specified for teaching.
-:::
+At a fixed withholding cost, enlarging the allowed family can only lower the minimum risk or leave it unchanged. The dashed mark gives the risk of withholding every pair; requiring multiple occupied grades excludes that report. Equal-risk ties and the fixed-order dynamic program's tie rule appear in **Data and family search details**. All examples are specified for teaching.
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -48,3 +41,5 @@ This cuts the expected-rank order; its result agrees with the exact-count optimu
 Standalone: [families](../../embed/families.html), for example `?family=exact&G=2&tau=.40`.
 
 Related applications: [Reporting risk and withholding cost](price-of-silence.qmd), [Grade reports as pairwise decisions](report-builder.qmd).
+
+Theory book · [Grade actions and disclosed comparisons](https://joonho112.github.io/postrank-theory-book/chapters/09-targets-actions-laws.html#sec-grade-actions) · [Common grades under an exact joint target law](https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-exact-common-grade).

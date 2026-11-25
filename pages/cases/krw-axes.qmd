@@ -4,11 +4,7 @@ subtitle: "5.2 · after Kline, Rose and Walters (2024), Section II"
 description: "Affine equivalence of KRW's loss and postrank's risk over the six-site report family."
 ---
 
-The scatterplot evaluates each of the 4,683 six-site reports twice. One axis uses KRW's loss at reward λ, and the
-other uses postrank's risk at the corresponding withholding cost τ. An increasing affine transformation relates
-the two scores when the target has no ties and both objectives use the same posterior and report family. Under
-those conditions, the two objectives choose the same reports. A separate panel evaluates an archived firm card
-using the released probabilities.
+Scoring all 4,683 six-site reports by KRW's loss at λ and by postrank's risk at τ = λ/(1 + λ) relates both objectives by an increasing affine transformation.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,15 +17,20 @@ using the released probabilities.
 
 ## Numerical illustrations {#what-to-try}
 
-- **λ 1, flat line** gives slope 0. The full order 1/2/3/4/5/6 has DR .0480 and expected correct minus wrong per pair .904. KRW call the minimizing grades Condorcet ranks. The separate 97-firm panel evaluates the fixed grid card.
-- **λ .25** gives slope 3. Both objectives choose 1/2/3/3/4/5, with postrank risk .0372. The ring marks the full grade assignment.
-- **τ .25, whole grid** checks every report at 49 values of τ. Both objectives return the same set of reports at 49 of 49 values. The table gives the corresponding λ and grade vectors.
-- **λ .08** gives τ .0741 and 1/1/2/2/3/3. More pairs share a grade when a correct direction earns less.
-- **τ .40** moves the other slider: λ becomes 2/3 and the full order returns. Arrow keys on the figure read every report, including reports away from the best line.
+- **λ 1, flat line** gives slope 0; the full order has DR .0480 and expected correct minus wrong per pair .904 (Condorcet ranks).
+- **λ .25** gives slope 3; both objectives choose 1/2/3/3/4/5 with postrank risk .0372.
+- **τ .25, whole grid** checks 49 values of τ; both objectives return the same best-report set at 49 of 49 values.
+- **λ .08** gives τ .0741 and coarsens the optimum to 1/1/2/2/3/3.
+- **τ .40** sets λ to 2/3 and restores full order 1/2/3/4/5/6.
 
-The identity holds for the same posterior probabilities, target orientation, units, and report family. For every report, postrank's risk equals τ plus the product of one minus τ and KRW's risk at the matching λ. The residual records numerical rounding in this identity. A tolerance determines which computed risks count as equal.
+<details>
+<summary>Scope and archived-card notes</summary>
 
-KRW chose the archived card using their original probabilities. The fixed-card evaluation uses the released postrank probabilities, so it cannot establish that the card minimizes risk under those probabilities. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only, without warranty. Changes: postrank 1.1.0 midpoint-cell pair probabilities; archived λ-grid cards retained. No endorsement is implied. These data describe the historical correspondence experiment, not any firm's current conduct.
+The identity holds for the same posterior probabilities, target orientation, units, and report family. For every report, postrank's risk equals τ plus the product of one minus τ and KRW's risk at the matching λ. The residual records numerical rounding in this identity, and a tolerance determines which computed risks count as equal. KRW chose the archived 97-firm card using their original probabilities; the fixed-card evaluation in Data uses the released postrank probabilities, so it cannot establish that the card minimizes risk under those probabilities.
+
+</details>
+
+Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only, without warranty; no endorsement is implied. Changes: postrank 1.1.0 midpoint-cell pair probabilities; archived λ-grid cards retained. **These data describe the historical correspondence experiment, not any firm's current conduct.**
 
 [Open the standalone app](../../embed/krw-axes.html?preset=lambda1).
 

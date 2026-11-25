@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,13 +72,38 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/tier-sizes.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Disclosure determined by tier sizes – postrank Explorer">
+<meta property="og:description" content="How many pairwise directions are stated for each pattern of tier sizes.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/tier-sizes.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/tier-sizes.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -545,7 +570,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Disclosure determined by tier sizes</h1>
-<p class="subtitle lead">3.2 · after the postrank theory book, ch.&nbsp;9, 16 and 17</p>
+<p class="subtitle lead">3.2 · after the postrank theory book, ch.&nbsp;9, 22 and 23</p>
 </div>
 
 <div>
@@ -567,7 +592,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>A report with three balanced tiers states more pairwise directions than a report with two small tiers and one large tier. In both reports, units in different tiers are ranked and units in the same tier are left unranked. The number of pairs in each category follows from the tier sizes. The distribution counts how many ordered size patterns yield each disclosure count. It holds the number of units and tiers fixed and gives each valid size pattern equal weight.</p>
+<p>Tier sizes alone determine how many pairs are ranked across tiers and how many stay unranked within tiers. Holding unit and tier counts fixed, the distribution weights every nonempty ordered size pattern equally.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -577,24 +602,21 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Balanced thirty.</strong> Sizes 10, 10, 10 state 300 of 435 pairs, a share of .690. Each withheld triangle contributes its within-tier count to the grouped formula. Balanced sizes reach the maximum for this number of tiers.</li>
-<li><strong>Two tiny tiers.</strong> Sizes 1, 1, 28 state only 57 pairs, although they use the same number of tiers. The balanced reference still states 300. Moving the smallest tiers to another position gives the same disclosure but another ordered size pattern.</li>
-<li><strong>Four tiers.</strong> Sizes 8, 7, 8, 7 state 337 pairs (.775). These tiers reach the largest possible disclosure when four tiers share thirty units.</li>
-<li><strong>Balanced twelve.</strong> Three groups of four state 48 of 66 pairs. Enter another size vector or move the individual controls to compare groups with the same total.</li>
-<li><strong>Unbalanced twelve.</strong> Sizes 5, 4, 3 state 47 pairs, below the balanced maximum of 48. A zero size or incorrect total is invalid; the result remains unavailable until the vector is feasible.</li>
+<li><strong>Balanced thirty.</strong> Sizes 10, 10, 10 state 300 of 435 pairs (.690), attaining the maximum disclosure for three tiers.</li>
+<li><strong>Two tiny tiers.</strong> Sizes 1, 1, 28 state only 57 pairs against the balanced maximum of 300; reordering those sizes yields another pattern with the same disclosure.</li>
+<li><strong>Four tiers.</strong> Sizes 8, 7, 8, 7 state 337 pairs (.775), the maximum for four tiers of thirty units.</li>
+<li><strong>Balanced twelve.</strong> Three groups of four state 48 of 66 pairs; open <strong>Settings</strong> to edit the size vector or individual tiers.</li>
+<li><strong>Unbalanced twelve.</strong> Sizes 5, 4, 3 state 47 pairs, below the balanced maximum of 48.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The distribution includes every ordered size pattern with at least one unit per tier. A pattern is counted once regardless of how many ways the units could be assigned to it. Quantile rules usually produce nearly balanced sizes, although postrank can merge neighboring tiers to keep equal estimates together. The formula gives the exact number of comparisons for any valid sizes. To assess their accuracy, we would also need the assignments and the probabilities for the pairs they disclose.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Composition weights and tie notes
+</summary>
+<p>The distribution includes every ordered size pattern with at least one unit per tier. Each pattern is counted once regardless of how many ways units could be assigned to it. Quantile rules usually produce nearly balanced sizes, although postrank can merge neighboring tiers to keep equal estimates together. Assessing accuracy requires unit assignments and pairwise posterior error probabilities in addition to tier sizes.</p>
+</details>
 <p>Standalone: <a href="../../embed/tier-sizes.html">embed/tier-sizes.html</a>, for example <code>?preset=tiny&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="../../pages/rules/fixed-tiers.html">Fixed quantile tiers</a>, with the full league, pair map and expected wrong directions; <a href="../../pages/grades/how-many-reports.html">The number of ordered grade reports</a>, which counts assignments to ordered grades.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/09-targets-actions-laws.html#prp-grade-representation-counts">Representations and disclosed-pair counts</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier">Comparing reports at matched disclosure</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-fair-comparator-framework">Comparator definitions and scope</a>.</p>
 
 
 </section>
@@ -1067,7 +1089,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

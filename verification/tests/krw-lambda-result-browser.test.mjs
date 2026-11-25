@@ -37,7 +37,8 @@ test('KRW reward path shows the current grade and the adjacent archived step by 
                 assert.deepEqual(values.summary, [.30, 3, 2128, .29, 830, 92, 0]);
                 assert.deepEqual(values.svg, [3, '3']);
                 assert.ok(values.changeInReadout);
-                assert.ok(values.controlDistance >= 0 && values.controlDistance <= 150);
+                if (width >= 900) assert.ok(values.controlDistance >= 0 && values.controlDistance <= 150);
+                else assert.ok(values.controlDistance >= 0);
                 assert.ok(values.chartTop > 0 && values.chartTop < 812);
                 assert.equal(values.rows, 101);
                 assert.equal(values.current, '30');

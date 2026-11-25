@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/pairwise-matrix.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The matrix of pairwise posterior probabilities – postrank Explorer">
+<meta property="og:description" content="Pairwise probabilities under alternative orderings of the same units.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/pairwise-matrix.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/pairwise-matrix.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>Each cell gives the posterior probability <span class="math inline"><math><mrow><msub><mi>π</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>θ</mi><mi>i</mi></msub><mo>&gt;</mo><msub><mi>θ</mi><mi>j</mi></msub><mo lspace="0.22em" rspace="0.22em" stretchy="false">|</mo><mi>Y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span> that the true value for row <span class="math inline"><math><mi>i</mi></math></span> exceeds that for column <span class="math inline"><math><mi>j</mi></math></span>. Equality has posterior probability zero here, so the transposed cell gives <span class="math inline"><math><mrow><mn>1</mn><mo>−</mo><msub><mi>π</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow></math></span>. Sorting by posterior mean places many of the least certain comparisons near the diagonal under independent normal posteriors. Comparisons between units with imprecise posteriors may remain uncertain even farther from the diagonal. Changing the sort moves each unit’s row and column together. The probability for a given pair stays the same.</p>
+<p>Each cell gives <span class="math inline"><math><mrow><msub><mi>π</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>θ</mi><mi>i</mi></msub><mo>&gt;</mo><msub><mi>θ</mi><mi>j</mi></msub><mo lspace="0.22em" rspace="0.22em" stretchy="false">|</mo><mi>Y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span>, the posterior probability that row <span class="math inline"><math><mi>i</mi></math></span> exceeds column <span class="math inline"><math><mi>j</mi></math></span> (<span class="math inline"><math><mrow><mn>1</mn><mo>−</mo><msub><mi>π</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow></math></span> across the diagonal), across alternative unit orderings.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -638,22 +663,16 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Six sites, by posterior mean.</strong> C above D, .638, is the least certain direction, and its cell is next to the diagonal; A above B (.812) and E above F (.856) follow. Below the diagonal each cell is one minus its mirror: D above C is .362.</li>
-<li><strong>Six sites, by label.</strong> The label order already follows the posterior means. C above D still has probability .638.</li>
-<li><strong>League, by label.</strong> Of 435 pairs, the least certain, U19 above U25 at .502, sits 6 cells from the diagonal. None of these 10 least certain pairs is next to the diagonal; the farthest is 26 cells away.</li>
-<li><strong>League, by posterior mean.</strong> The middle-blue cells now form a band: U19 above U25 is next to the diagonal, and so are 8 of these 10 least certain pairs; the farthest is 2 cells away.</li>
-<li><strong>Two imprecise units.</strong> At prior SD .10 the cell in row U22, column U25 is 5 cells from the diagonal, yet its probability is only .528: both are small units with posterior SD .089.</li>
+<li><strong>Six sites, by posterior mean.</strong> C above D (.638) sits next to the diagonal (mirror .362); in <strong>Data</strong>, A above B (.812) and E above F (.856) follow.</li>
+<li><strong>Six sites, by label.</strong> Same order: C above D stays .638.</li>
+<li><strong>League, by label.</strong> Across 435 pairs, U19 above U25 (.502) is 6 cells from the diagonal (in <strong>Data</strong>: None of these 10 adjacent; farthest 26 cells away).</li>
+<li><strong>League, by posterior mean.</strong> U19 above U25 moves next to the diagonal, with 8 of these 10 adjacent (farthest 2 cells away in <strong>Data</strong>).</li>
+<li><strong>Two imprecise units.</strong> At prior SD .10, row U22, column U25 is 5 cells from the diagonal at .528 (both posterior SD .089).</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The six sites are fictional after-school sites, A to F, from postrank’s tutorial data: their normal posteriors for the reading score are set by hand and taken as given. An evaluation office grades them to set the order of its visits. The league is that of <a href="../../pages/uncertainty/noisy-league.html">Ranking noisy estimates</a>, with the posterior of <a href="../../pages/uncertainty/shrinkage.html">normal–normal posterior shrinkage</a>. Two imprecise units can have direction probabilities near one half even when they are far apart in the ranking. Kline, Rose and Walters (2024) plot these probabilities for pairs of first names in Section IV.B, Figure 2A, and talk slide 38. They refer to the posteriors as beliefs. Slide 54 shows the same heat map for the firms. KRW put one half on the diagonal by convention; postrank leaves the diagonal empty.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>Model assumptions and source notes</summary>
+<p>The six fictional after-school sites (A to F, from postrank's tutorial data) have normal reading-score posteriors taken as given. The simulated league follows <a href="../../pages/uncertainty/noisy-league.html">Ranking noisy estimates</a> under <a href="../../pages/uncertainty/shrinkage.html">normal–normal posterior shrinkage</a>; two imprecise units can remain near one half even far from the diagonal. Kline, Rose and Walters (2024) plot these heat maps for first names (Figure 2A; slide 38) and firms (slide 54), putting .5 on the diagonal where postrank leaves it empty.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -672,8 +691,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Standalone: <a href="../../embed/pairwise-matrix.html">embed/pairwise-matrix.html</a>, for example <code>?data=league&amp;sort=label</code> or <code>?preset=imprecise&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a>, <a href="../../pages/uncertainty/interval-overlap.html">Marginal interval overlap and direction probabilities</a>, <a href="../../pages/uncertainty/overlap-in-the-league.html">Interval overlap across 435 pairs</a> (the same league pairs) and <a href="../../pages/uncertainty/ranking-claims.html">Expected errors in a strict ranking</a>.</p>
+<p>Standalone: <a href="../../embed/pairwise-matrix.html">embed/pairwise-matrix.html</a> (<code>?data=league&amp;sort=label</code> or <code>?preset=imprecise&amp;theme=dark</code>). Related: <a href="../../pages/uncertainty/two-units.html">1.8</a>, <a href="../../pages/uncertainty/interval-overlap.html">1.11</a>, <a href="../../pages/uncertainty/overlap-in-the-league.html">1.12</a>, <a href="../../pages/uncertainty/ranking-claims.html">1.16</a>.</p>
 
 
 </section>
@@ -1146,7 +1164,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

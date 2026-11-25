@@ -48,6 +48,9 @@
         {
           "select": "[data-prx-readout=\"diff-mean\"]",
           "about": "posterior mean of A minus B",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p1.gap",
           "value": 0.1999999999999999
@@ -55,6 +58,9 @@
         {
           "select": "[data-prx-readout=\"diff-sd\"]",
           "about": "posterior SD of A minus B",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p1.diffsd",
           "value": 0.2828427124746189
@@ -62,6 +68,9 @@
         {
           "select": "[data-prx-readout=\"z\"]",
           "about": "the gap in SDs of the difference",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p1.z",
           "value": 0.7071067811865476
@@ -283,7 +292,7 @@
           "about": "the read-out's two sentences, word for word (A's mean above B's)",
           "source": "literal",
           "ref": "11.4",
-          "value": "The probability that A's true value is larger than B's is πAB = ⟨pi⟩, and the reverse is πBA = ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference above B's."
+          "value": "A exceeds B with probability πAB = ⟨pi⟩ (reverse πBA = ⟨pi-reverse⟩). Difference A − B has mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩: A's mean is ⟨z⟩ SDs above B's."
         },
         {
           "select": "[data-prx-formula=\"ab\"] mtext",
@@ -349,18 +358,27 @@
         {
           "select": "[data-prx-readout=\"diff-mean\"]",
           "about": "the same gap as the prediction's setting",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p1.gap",
           "value": 0.1999999999999999
         },
         {
           "select": "[data-prx-readout=\"diff-sd\"]",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p2.diffsd",
           "value": 0.6324555320336759
         },
         {
           "select": "[data-prx-readout=\"z\"]",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p2.z",
           "value": 0.31622776601683805
@@ -442,18 +460,27 @@
         },
         {
           "select": "[data-prx-readout=\"diff-mean\"]",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p3.gap",
           "value": 0
         },
         {
           "select": "[data-prx-readout=\"diff-sd\"]",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p3.diffsd",
           "value": 0.44721359549995776
         },
         {
           "select": "[data-prx-readout=\"z\"]",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p3.z",
           "value": 0
@@ -462,10 +489,10 @@
           "select": "[data-prx-part~=\"readout\"]",
           "kind": "text",
           "slots": true,
-          "about": "with equal means the read-out says the two means are 0 SDs of the difference apart",
+          "about": "with equal means the read-out says the two means are 0 SDs apart",
           "source": "literal",
           "ref": "11.4",
-          "value": "The probability that A's true value is larger than B's is πAB = ⟨pi⟩, and the reverse is πBA = ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so the two means are ⟨z⟩ SDs of the difference apart."
+          "value": "A exceeds B with probability πAB = ⟨pi⟩ (reverse πBA = ⟨pi-reverse⟩). Difference A − B has mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩: the means are ⟨z⟩ SDs apart."
         }
       ]
     },
@@ -579,7 +606,7 @@
           "about": "A's mean below B's: the size of the gap with below",
           "source": "literal",
           "ref": "11.4",
-          "value": "The probability that A's true value is larger than B's is πAB = ⟨pi⟩, and the reverse is πBA = ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference below B's."
+          "value": "A exceeds B with probability πAB = ⟨pi⟩ (reverse πBA = ⟨pi-reverse⟩). Difference A − B has mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩: A's mean is ⟨z⟩ SDs below B's."
         }
       ]
     },
@@ -683,7 +710,7 @@
           "about": "a probability shown as a bound follows its symbol in words, here both of them",
           "source": "literal",
           "ref": "11.4",
-          "value": "The probability that A's true value is larger than B's, πAB, is ⟨pi⟩, and the reverse, πBA, is ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference above B's."
+          "value": "A exceeds B with probability πAB ⟨pi⟩ (reverse πBA ⟨pi-reverse⟩). Difference A − B has mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩: A's mean is ⟨z⟩ SDs above B's."
         },
         {
           "select": "[data-prx-formula=\"ab\"] mtext",
@@ -812,7 +839,7 @@
           "about": "both probabilities shown as bounds follow their symbols in words",
           "source": "literal",
           "ref": "11.4",
-          "value": "The probability that A's true value is larger than B's, πAB, is ⟨pi⟩, and the reverse, πBA, is ⟨pi-reverse⟩. The difference A minus B has posterior mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩, so A's mean is ⟨z⟩ SDs of the difference above B's."
+          "value": "A exceeds B with probability πAB ⟨pi⟩ (reverse πBA ⟨pi-reverse⟩). Difference A − B has mean ⟨diff-mean⟩ and SD ⟨diff-sd⟩: A's mean is ⟨z⟩ SDs above B's."
         },
         {
           "select": "[data-prx-formula=\"ab\"] mtext",
@@ -880,6 +907,9 @@
         },
         {
           "select": "[data-prx-readout=\"diff-sd\"]",
+          "format": {
+            "fn": "formatReadoutEst"
+          },
           "source": "registry",
           "ref": "cf.pair.p2.diffsd",
           "value": 0.6324555320336759

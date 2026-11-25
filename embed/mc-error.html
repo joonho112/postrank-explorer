@@ -3,15 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="prx-page-root" content="../docs/">
 <link rel="icon" href="data:,">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/mc-error.html">
 <!-- 1.17 mc-error. Build inputs: catalog.json; do not edit. -->
 <title>Monte Carlo error in pairwise probabilities · postrank Explorer</title>
 <script>
-  // ?theme=light|dark wins over the viewer's prefers-color-scheme
+  // ?theme=light|dark wins over prefers-color-scheme; ?hide=chrome|title,caption,presets,disclosures trims slide chrome (credit stays visible)
   (function () {
-    var t = new URLSearchParams(location.search).get("theme");
+    var q = new URLSearchParams(location.search), t = q.get("theme"), h = q.get("hide");
     if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    if (t === "system") document.documentElement.dataset.themePreference = "system";
+    if (h) {
+      var allow = { title: 1, caption: 1, presets: 1, disclosures: 1 }, out = [];
+      h.split(",").forEach(function (raw) {
+        var k = raw.trim().toLowerCase();
+        if (k === "chrome") ["title", "caption"].forEach(function (c) { if (out.indexOf(c) < 0) out.push(c); });
+        else if (allow[k] && out.indexOf(k) < 0) out.push(k);
+      });
+      if (out.length) document.documentElement.setAttribute("data-prx-hide", out.join(" "));
+    }
   })();
 </script>
 <link rel="stylesheet" href="../styles/tokens.css">
@@ -22,7 +33,8 @@
 <main>
 <h1 class="prx-embed-title">Monte Carlo error in pairwise probabilities</h1>
 <div id="app"><p>This app needs JavaScript.</p></div>
-<p class="prx-embed-credit">postrank Explorer · 1.17 · After the postrank vignette m6, “Monte Carlo uncertainty and diagnostics”, and the postrank theory book, ch. 15. · author data CC BY 4.0 · <a href="../pages/uncertainty/mc-error.html">page</a></p>
+<p class="prx-embed-credit">postrank Explorer · 1.17 · After the postrank vignette m6, “Monte Carlo uncertainty and diagnostics”, and the postrank theory book, ch. 21 (“Monte Carlo error under a declared sampling law”). · author data CC BY 4.0 · <a class="prx-embed-open" href="../docs/pages/uncertainty/mc-error.html">Open full page</a></p>
+<details class="prx-embed-theory"><summary>Theory references</summary><ul><li><a href="https://joonho112.github.io/postrank-theory-book/chapters/21-numerical-uncertainty.html#sec-monte-carlo-coefficients">Chapter 21 · Monte Carlo error under a declared sampling law</a></li></ul></details>
 </main>
 <!-- classic scripts only, so this page works from file:// -->
 <script src="../js/vendor/d3.min.js"></script>

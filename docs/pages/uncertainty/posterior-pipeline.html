@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/posterior-pipeline.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="From data to posterior decisions – postrank Explorer">
+<meta property="og:description" content="Separation of model fitting, posterior calculation and grade-report selection.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/posterior-pipeline.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/posterior-pipeline.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>A grade report requires a posterior distribution and a rule for deciding which comparisons to state. The analyst chooses a model and prior and fits them to the observed data <span class="math inline"><math><mi>Y</mi></math></span> to obtain <span class="math inline"><math><mrow><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>θ</mi><mo lspace="0.22em" rspace="0.22em" stretchy="false">|</mo><mi>Y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span>. postrank uses the resulting posterior to select a grade report. The four boxes trace these steps for two units and identify which choices the analyst makes. The table beneath the boxes lists which calculations are available for each representation of the posterior.</p>
+<p>An analyst fits a model and prior to data <span class="math inline"><math><mi>Y</mi></math></span> to obtain <span class="math inline"><math><mrow><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>θ</mi><mo lspace="0.22em" rspace="0.22em" stretchy="false">|</mo><mi>Y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span>; <code>postrank</code> acts only at the final step, turning that supplied posterior into grades.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -638,22 +663,18 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Box 1 (Data).</strong> <span class="math inline"><math><mi>Y</mi></math></span> holds the estimates and their SEs: .25 (SE .10) for A and .05 (SE .20) for B. postrank never reads <span class="math inline"><math><mi>Y</mi></math></span> itself, only a posterior computed from it.</li>
-<li><strong>Box 2 (Model).</strong> The prior SD, .15, is the analyst’s choice, set by hand here. With each SE it sets how much of its estimate each posterior mean keeps: .692 for A, .360 for the noisier B.</li>
-<li><strong>Box 3 (Posterior).</strong> The posterior is the input to postrank. The posterior means are .173 and .018, and <span class="math inline"><math><mi>π</mi></math></span> = .856 is the probability that A is truly higher. <strong>B more precise</strong> (SE .10, as for A): B keeps .692 too, its mean is .035, and <span class="math inline"><math><mi>π</mi></math></span> rises to .880.</li>
-<li><strong>Box 4 (Decision).</strong> The postrank step: stating A above B is wrong with probability .144, less than τ = .20, so postrank states it, {A} &gt; {B}, the best of all 3 reports. At <strong>τ .10</strong> withholding costs less than .144, so postrank withholds the pair: {A, B}.</li>
-<li><strong>Prior SD .05.</strong> With a narrower prior, A’s posterior mean falls to .050 and <span class="math inline"><math><mi>π</mi></math></span> to .762. Stating A above B would now be wrong with probability .238, so postrank withholds the pair: {A, B}. The prior changes the report through its effect on the posterior probability.</li>
+<li><strong>Box 1 (Data).</strong> <span class="math inline"><math><mi>Y</mi></math></span> holds <code>.25</code> (SE <code>.10</code>) for A and <code>.05</code> (SE <code>.20</code>) for B.</li>
+<li><strong>Box 2 (Model).</strong> Prior SD <code>.15</code> keeps <code>.692</code> of A’s estimate and <code>.360</code> of B’s.</li>
+<li><strong>Box 3 (Posterior).</strong> Means <code>.173</code> and <code>.0180</code> give <span class="math inline"><math><mrow><mi>π</mi><mo>=</mo><mn>.856</mn></mrow></math></span>; <strong>B more precise</strong> (SE <code>.10</code>) keeps <code>.692</code>, raising B to <code>.0346</code> and <span class="math inline"><math><mi>π</mi></math></span> to <code>.880</code>.</li>
+<li><strong>Box 4 (Decision).</strong> <code>{A} &gt; {B}</code> costs <code>.144</code> vs.&nbsp;<span class="math inline"><math><mrow><mi>τ</mi><mo>=</mo><mn>.20</mn></mrow></math></span> (<code>best of all 3 reports</code>); <strong>τ .10</strong> withholds <code>{A, B}</code>.</li>
+<li><strong>Prior SD .05.</strong> Shrinks A to <code>.0500</code> and <span class="math inline"><math><mi>π</mi></math></span> to <code>.762</code> (error <code>.238</code>), withholding <code>{A, B}</code>.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Kline, Rose and Walters (2024), Section III.A–B, set out the empirical Bayes posteriors behind their firm grades (KRW call them beliefs). In their talk, slides 34 and 37 show the model for first names, not for the firms; slides 43 to 52 set out the empirical Bayes model for the firms. Walters’ Mixtape slides on empirical Bayes (p.&nbsp;13) set out the same recipe. The two units here are set by hand, and the browser computes their posterior; postrank fits no model.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Source notes (Walters; Kline, Rose and Walters, 2024)
+</summary>
+<p>Kline, Rose and Walters (2024), Section III.A–B, set out the empirical Bayes posteriors behind their firm grades (KRW call them beliefs). In their talk, slides 34 and 37 show the model for first names, not for the firms; slides 43 to 52 set out the empirical Bayes model for the firms. Walters’ Mixtape slides on empirical Bayes (p.&nbsp;13) set out the same recipe. The two units here are set by hand, and the browser computes their posterior; <code>postrank</code> fits no model.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -672,8 +693,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Standalone: <a href="../../embed/posterior-pipeline.html">embed/posterior-pipeline.html</a>, for example <code>?box=3&amp;open=boxes</code> or <code>?preset=narrow&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/shrinkage.html">Normal–normal posterior shrinkage</a> (1.5), <a href="../../pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a> (1.8) and <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a> (2.1).</p>
+<p>Standalone: <a href="../../embed/posterior-pipeline.html">embed/posterior-pipeline.html</a> (<code>?box=3&amp;open=boxes</code> or <code>?preset=narrow&amp;theme=dark</code>).</p>
+<p>Related: <a href="../../pages/uncertainty/shrinkage.html">Normal–normal posterior shrinkage</a> (1.5), <a href="../../pages/uncertainty/two-units.html">Pairwise posterior direction probabilities</a> (1.8), <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a> (2.1).</p>
 
 
 </section>
@@ -1146,7 +1167,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

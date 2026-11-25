@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/how-many-reports.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The number of ordered grade reports – postrank Explorer">
+<meta property="og:description" content="Sizes of unrestricted, grade-restricted and fixed-order report families.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/how-many-reports.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/how-many-reports.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -544,7 +569,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">The number of ordered grade reports</h1>
-<p class="subtitle lead">2.3 · after the postrank theory book, ch.&nbsp;14, and the postrank vignette m5</p>
+<p class="subtitle lead">2.3 · after the postrank theory book, ch.&nbsp;9, and the postrank vignette m5</p>
 </div>
 
 <div>
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>An ordered grade report groups the units and specifies the order of the groups. Thus, the full family contains every strict ranking and every report that gives some units the same grade. A cap on the number of occupied grades reduces this family. A fixed-order family contains only reports formed by cutting that order. The curves compare the sizes of these families on a logarithmic scale. The small examples show which changes to the grouping or order produce a distinct report.</p>
+<p>An ordered grade report partitions units into ordered grades, including strict rankings and reports with ties. Compare how unrestricted, grade-capped, and fixed-order report families grow with unit count.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,24 +600,21 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Three units.</strong> There are 13 ordered grade reports but only 6 strict rankings. In the small examples, some reports group letters, while others give each letter its own box. Swapping the positions of occupied boxes changes which directions are stated.</li>
-<li><strong>Six units.</strong> There are 4,683 reports in all. The cap permits 603, the exact grade count permits 540, and cuts of one declared order permit 32. The capped family includes reports with fewer occupied grades, which explains its larger count than the exact family.</li>
-<li><strong>Eight units.</strong> All reports reach 545,835, compared with 6,051 under the cap and 128 along one order. Colors and dash patterns identify the families even when their counts are close. The legend shows counts at the selected number of units, and the labels at the right show counts for twelve units. The arrow-key reader and table give every count.</li>
-<li><strong>Twelve units.</strong> There are 28,091,567,595 reports in the full family, while the cap leaves 523,251. The hollow squares mark problem sizes encountered elsewhere in this collection. Counting those possibilities does not require generating every report.</li>
-<li><strong>An empty exact family.</strong> The small example has 0 reports: the requested number of nonempty grades exceeds its number of units. An empty family has no logarithmic height, so its count stays in the table of exact counts.</li>
+<li><strong>Three units.</strong> There are 13 ordered grade reports against 6 strict rankings; open <strong>Examples of what is counted</strong> to step through small grade-box partitions.</li>
+<li><strong>Six units.</strong> All reports reach 4,683, while the cap leaves 603, exact three-grade reports reach 540, and cuts of one declared order leave 32.</li>
+<li><strong>Eight units.</strong> All reports reach 545,835, compared with 6,051 under the cap and 128 along one order.</li>
+<li><strong>Twelve units.</strong> Full reports reach 28,091,567,595, while the cap leaves 523,251; hollow squares mark problem sizes used elsewhere on this site.</li>
+<li><strong>An empty exact family.</strong> At two units and three required grades, 0 reports fit; empty families appear as zero in <strong>Exact counts by n and family</strong>.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>A report that follows a declared order can cut only between adjacent units in that order. This example has no equal-score blocks. These counts describe the number of eligible reports. The posterior risks and the work required to find the best report depend on the particular problem and algorithm.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Declared orders and scope notes
+</summary>
+<p>A report that follows a declared order can cut only between adjacent units in that order. This example has no equal-score blocks. These counts describe the number of eligible reports; posterior risks and search effort depend on the problem and algorithm.</p>
+</details>
 <p>Standalone: <a href="../../embed/how-many-reports.html">report counts</a>, for example <code>?n=8&amp;G=3</code>.</p>
 <p>Related applications: <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a>, <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/09-targets-actions-laws.html#exact-counts-caps-and-a-fixed-order">Exact grade counts, grade caps and fixed orders</a>.</p>
 
 
 </section>
@@ -1065,7 +1087,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

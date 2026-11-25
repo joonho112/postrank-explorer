@@ -44,7 +44,7 @@
 // describe(node, root) -> a short selector-like path for messages; notRendered(node, root)
 export const CONFIG = Object.freeze({
   numberScope: [
-    '[data-prx-part~="readout"]', '[data-prx-part~="table"]', '[data-prx-part~="chart"]', '[data-prx-part~="legend"]',
+    '[data-prx-part~="readout"]', '[data-prx-part~="scope"]', '[data-prx-part~="table"]', '[data-prx-part~="chart"]', '[data-prx-part~="legend"]',
     '[data-prx-part~="caption"]', '[data-prx-part~="notes"]', '[data-prx-part~="title"]', '[data-prx-part~="disclosures"]', '.prx-disclosure:not([data-prx-placement="controls"]) > .prx-disclosure-body', "[aria-live]", "table",
     "figure", "svg", "output", "math", ".prx-math-label", "[data-prx-label]", "[data-prx-caption]",
   ].join(", "),
@@ -242,13 +242,17 @@ export function exactDisplayProblem(display, raw, { style = "fraction", digits =
       let rounded = scaled / value.d;
       const twiceRemainder = 2n * (scaled % value.d);
       if (twiceRemainder > value.d || (twiceRemainder === value.d && rounded % 2n !== 0n)) rounded += 1n;
-      let text = rounded.toString();
-      if (digits > 0) {
-        text = text.padStart(digits + 1, "0");
-        text = text.slice(0, -digits) + "." + text.slice(-digits);
-        if (style === "decimal" && value.n < value.d) text = text.replace(/^0\./, ".");
+      if (style === "percent" && digits === 0 && rounded === 0n) {
+        expected = "below 1%";
+      } else {
+        let text = rounded.toString();
+        if (digits > 0) {
+          text = text.padStart(digits + 1, "0");
+          text = text.slice(0, -digits) + "." + text.slice(-digits);
+          if (style === "decimal" && value.n < value.d) text = text.replace(/^0\./, ".");
+        }
+        expected = text + (style === "percent" ? "%" : "");
       }
-      expected = text + (style === "percent" ? "%" : "");
     }
   }
   return display === expected ? null : `display "${display}" != exact ${style} display "${expected}"`;

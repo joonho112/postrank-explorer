@@ -3,7 +3,7 @@
   "app": "flags-in-the-league",
   "catalog": "3.4",
   "from": "v1 verification/readouts/evidence-flags.json",
-  "about": "Full R-02 view split. Original numeric expectations preserved; gates removed and posterior caption uses v3 wording.",
+  "about": "Full R-02 view split (Frame v2, 3-sig-fig readouts). Original numeric expectations preserved; gates removed and posterior caption uses v3 wording.",
   "cases": [
     {
       "id": "preset-league-196",
@@ -17,7 +17,7 @@
           "ref": "settings.tau20",
           "value": 0.2,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           }
         },
         {
@@ -63,21 +63,30 @@
           "about": "E/N",
           "source": "registry",
           "ref": "league.default.prior15.flags196.tau20.EoverN",
-          "value": 0.12963663361445169
+          "value": 0.12963663361445169,
+          "format": {
+            "fn": "formatShare"
+          }
         },
         {
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk at tau .20",
           "source": "registry",
           "ref": "league.default.prior15.flags196.tau20.risk",
-          "value": 0.1695900853322228
+          "value": 0.1695900853322228,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
         },
         {
           "select": "[data-prx-readout=\"maxstated\"]",
           "about": "largest error of a stated direction",
           "source": "registry",
           "ref": "league.default.prior15.flags196.tau20.maxstated",
-          "value": 0.6492693498484499
+          "value": 0.6492693498484499,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"overhalf\"]",
@@ -138,7 +147,7 @@
           "ref": "settings.tau20",
           "value": 0.2,
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           }
         },
         {
@@ -199,14 +208,20 @@
           "about": "E/N",
           "source": "registry",
           "ref": "league.default.prior15.flags196.tau20.EoverN",
-          "value": 0.12963663361445169
+          "value": 0.12963663361445169,
+          "format": {
+            "fn": "formatShare"
+          }
         },
         {
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk at tau .20",
           "source": "registry",
           "ref": "league.default.prior15.flags196.tau20.risk",
-          "value": 0.1695900853322228
+          "value": 0.1695900853322228,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
         }
       ],
       "update": [
@@ -269,21 +284,30 @@
           "about": "E/N",
           "source": "registry",
           "ref": "league.default.prior15.flags196.tau20.EoverN",
-          "value": 0.12963663361445169
+          "value": 0.12963663361445169,
+          "format": {
+            "fn": "formatShare"
+          }
         },
         {
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk at tau .20",
           "source": "registry",
           "ref": "league.default.prior15.flags196.tau20.risk",
-          "value": 0.1695900853322228
+          "value": 0.1695900853322228,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
         },
         {
           "select": "[data-prx-readout=\"maxstated\"]",
           "about": "largest error of a stated direction",
           "source": "registry",
           "ref": "league.default.prior15.flags196.tau20.maxstated",
-          "value": 0.6492693498484499
+          "value": 0.6492693498484499,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"overhalf\"]",

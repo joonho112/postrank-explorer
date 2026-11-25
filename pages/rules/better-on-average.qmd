@@ -1,14 +1,10 @@
 ---
 title: "Expected and state-specific reporting loss"
-subtitle: "3.11 · after the postrank theory book, ch. 16–18 and vignette m2"
+subtitle: "3.11 · after the postrank theory book, ch. 22 and vignette m2"
 description: "Comparison of minimum expected loss with realized losses in paired posterior draws."
 ---
 
-A report that minimizes posterior expected loss can lose to another report in many individual states. This
-comparison keeps both reports fixed and evaluates them on the same posterior states. The frequency with which
-the comparison report has lower loss and the average difference in loss answer different questions. The
-finite-state example gives both quantities exactly. The simulations show how estimates of those quantities
-vary across samples.
+Minimizing posterior expected loss does not guarantee winning every state: pairing two fixed reports across draws separates average risk from draw-by-draw wins.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,28 +16,20 @@ vary across samples.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Inside the family.** Among 63 reports with at most two grades, the best has conditional risk .0940; the two
-  posterior-mean tiers have .1046. Yet that common rule wins 57 of these 100 paired draws. The difference in loss can be large even when the common rule wins more often. Points below the dashed diagonal
-  show states where the common rule has lower loss.
-- **Outside the family.** The comparison retains the two-grade family but uses a three-tier comparator. Its conditional
-  risk .0417 is below .0940. The search still allows only two grades, so its minimum applies only to reports in that family.
-- **Two-state law.** The best report withholds at risk .2500; the expected-rank order has risk .3000. Nevertheless
-  the rule wins with exact probability .700 and wins 65 of these 100 sampled draws. The state table gives the exact probabilities and losses. The scatter shows the sampled outcomes.
-- **A short run.** The rule wins 9 of 10 draws, and the paired mean difference is −.00667, favoring it in this
-  finite sample. The exact conditional difference is positive; the paired Monte Carlo SE quantifies numerical sampling variation.
-- **A silent common rule.** Its risk is .2000 and its disclosed-error fraction is “NA: no disclosure.” Silence
-  costs τ per pair, so a report that states nothing does not have zero reporting loss.
-- **Identical reports.** The summary reads “ties 100”: both reports have the same loss in every drawn state.
-  Draw selection gives the corresponding state, grades and wrong counts.
+- **Inside the family.** Across 63 two-grade reports, the best has risk .0940 vs. .105 for tiers, yet tiers win 57 draws.
+- **Outside the family.** Three tiers reach .0417 vs. .0940 by leaving the two-grade cap.
+- **Two-state law.** Withholding has risk .250 vs. .300 for rank order, which wins with chance .700 (65 draws).
+- **A short run.** Tiers win 9 of 10 draws (mean gap −.00667).
+- **A silent common rule.** Silence has risk .200 and wrong share “NA: no disclosure.”
+- **Identical reports.** Comparing the optimum with itself gives ties 100.
 
-::: {.callout-note appearance="simple"}
-Reporting loss adds wrong stated directions and withholding costs and divides the sum by all pairs. The wrong
-fraction uses stated pairs as its denominator. The minimum expected loss applies to reports in the search under
-the given posterior and loss. The paired standard error measures how the estimated difference varies across
-posterior samples. The model is fixed throughout.
-:::
+<details>
+<summary>Loss and sampling notes</summary>
 
-Standalone: [embed/better-on-average.html](../../embed/better-on-average.html), for example `?preset=short&theme=dark`.
+Reporting loss adds wrong stated directions and withholding costs over all pairs, whereas the wrong fraction divides by stated pairs. Minimum expected loss applies within the searched family under the fixed posterior; paired Monte Carlo SE measures sample variation across draws.
 
-Related applications: [Comparison at matched disclosure](rule-comparison.qmd) and
-[Selection and evaluation using posterior draws](../grades/chosen-and-judged.qmd), which selects from estimated coefficients.
+</details>
+
+Standalone: [embed/better-on-average.html](../../embed/better-on-average.html). Related: [Comparison at matched disclosure](rule-comparison.qmd), [Selection and evaluation using posterior draws](../grades/chosen-and-judged.qmd).
+
+Theory book · [Conditional Bayes dominance and its limits](https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-conditional-bayes-dominance) · [Evaluation laws and disclosure frontiers](https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-evaluation-frontiers).

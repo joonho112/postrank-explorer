@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/two-denominators.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Error rates under two denominators – postrank Explorer">
+<meta property="og:description" content="Relation between expected errors per possible pair and expected errors per stated pair.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/two-denominators.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/two-denominators.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>The same report can have a low expected error rate over all possible pairs and a much higher rate among the directions it states. Both rates use the same expected wrong count E. KRW’s discordance rate, DR, divides E by all M unordered pairs, and <span class="math inline"><math><mrow><mi>E</mi><mi>/</mi><mi>N</mi></mrow></math></span> divides it by the N stated pairs. For positive N, <span class="math inline"><math><mrow><mpadded lspace="0"><mi>DR</mi></mpadded><mo>=</mo><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><mi>N</mi><mi>/</mi><mi>M</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>×</mo><mi>E</mi><mi>/</mi><mi>N</mi></mrow></math></span>, where N/M is the fraction of pairs the report states. We compare the two rates for a synthetic report and KRW’s archived race card.</p>
+<p>Both error rates divide the same expected wrong count <span class="math inline"><math><mi>E</mi></math></span> by different pair totals: KRW’s discordance rate <span class="math inline"><math><mrow><mpadded lspace="0"><mi>DR</mi></mpadded><mo>=</mo><mi>E</mi><mi>/</mi><mi>M</mi></mrow></math></span> uses all <span class="math inline"><math><mi>M</mi></math></span> pairs, while <span class="math inline"><math><mrow><mi>E</mi><mi>/</mi><mi>N</mi></mrow></math></span> uses the <span class="math inline"><math><mi>N</mi></math></span> stated pairs.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -637,21 +662,14 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>τ .25.</strong> The synthetic best report states 14 of 15 pairs, a share .933. DR is .0238, while the expected share wrong among stated pairs is .0255. The two rates are close because almost all pairs are stated.</li>
-<li><strong>KRW setting.</strong> The race card states 1,324 of 4,656 pairs, a share .284. DR .0387 divides the expected wrong count by all pairs; E/N .136 divides it by the stated pairs. Its KRW risk is −.0227 and its postrank risk is .1818, evaluated on the released probabilities.</li>
-<li><strong>All pairs stated.</strong> The synthetic report states all 15 pairs. Both rates are .0480 because their denominators coincide. The race card remains fixed as the controls change; its title records the costs at which it was chosen.</li>
+<li><strong>τ .25.</strong> Stating 14 of 15 pairs (share .933) gives DR .0238 and E/N .0255; the two rates stay close when almost all pairs are stated.</li>
+<li><strong>KRW setting.</strong> KRW’s race card states 1,324 of 4,656 pairs (share .284), shrinking E/N .136 to DR .0387 (KRW risk −.0227, postrank risk .1818).</li>
+<li><strong>All pairs stated.</strong> Stating all 15 pairs makes both denominators equal, so DR and E/N both equal .0480 while the archived card stays fixed.</li>
 </ul>
-<p>The rounded identity uses an approximation sign because multiplying rounded rates need not reproduce the rounded product exactly. Both rates are expectations over pairs. The chance of at least one error in the report depends on the joint distribution of those errors.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>KRW’s archived card statistics and the evaluation on released pair probabilities agree at the displayed digits. The released probabilities differ slightly from KRW’s archived probabilities. We use the archived grade assignments as given and evaluate them under postrank’s loss. Its risk below the cost of withholding every pair implies that its expected error share is below that cost at this setting.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>Rounding and archived card probabilities</summary>
+<p>For positive <em>N</em>, DR = (<em>N</em>/<em>M</em>) × <em>E</em>/<em>N</em>; rounded displays use an approximation sign when multiplying rounded shares does not reproduce the rounded product. Both rates are expectations over pairs, whereas the chance of at least one error depends on the joint distribution. KRW's archived card statistics and the evaluation on released pair probabilities agree at the displayed digits; we evaluate the archived grade assignments under postrank's loss.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -670,7 +688,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; replication deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. Adapted in postrank 1.1.0 (<code>pr_case_krw</code>), changes noted: archived card statistics retained, risks recomputed on released probabilities. No endorsement is implied. The data describe KRW’s correspondence experiment, not any firm’s current conduct.</p>
+<p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1; CC-BY-NC (no version), noncommercial use only; adapted in postrank 1.1.0 (<code>pr_case_krw</code>), changes noted; no endorsement is implied; describes KRW’s correspondence experiment, not current conduct.</p>
 <p>Standalone: <a href="../../embed/two-denominators.html">open the app</a>, for example <code>?tau=.25</code>.</p>
 <p>Related applications: <a href="../../pages/grades/disclosed-errors.html">Expected and realized errors among stated directions</a> · <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a> · <a href="../../pages/cases/krw-lambda.html">KRW’s archived reward path</a>.</p>
 
@@ -1145,7 +1163,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

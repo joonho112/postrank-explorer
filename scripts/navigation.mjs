@@ -86,3 +86,11 @@ export function activeNavigationHtml(nav, parts) {
 </script>
 `;
 }
+
+
+/** Source embeds sit beside the published docs/ tree. Deployed embeds sit inside it. */
+export function deployedStandalone(html) {
+  return html
+    .replace('<meta name="prx-page-root" content="../docs/">', '<meta name="prx-page-root" content="../">')
+    .replace('class="prx-embed-open" href="../docs/pages/', 'class="prx-embed-open" href="../pages/');
+}

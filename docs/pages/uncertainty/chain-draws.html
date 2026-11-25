@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/chain-draws.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Monte Carlo error with dependent draws – postrank Explorer">
+<meta property="og:description" content="Finite-sample uncertainty of pair probabilities estimated from a stationary two-state Markov chain.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/chain-draws.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/chain-draws.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -606,7 +631,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Monte Carlo error with dependent draws</h1>
-<p class="subtitle lead">1.18 · after the postrank theory book, ch.&nbsp;15, and the postrank vignette m6</p>
+<p class="subtitle lead">1.18 · after the postrank theory book, ch.&nbsp;21, and the postrank vignette m6</p>
 </div>
 
 <div>
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>Consecutive Markov chain draws often contain less information about <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> than the same number of independent draws. The stationary example has two equally probable states, A above B and A below B, so <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = 1/2. Increasing the chance of staying in the current state makes consecutive draws more alike and increases the variance of the estimated probability. The transition probabilities give its exact finite-sample variance and the failure rate of the independence-based bound.</p>
+<p>Correlated Markov chain draws carry less information about <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> than independent draws, inflating estimator variance so nominal independence-based error bounds fail far too often.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -637,23 +662,17 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Stay .99.</strong> Treated as 100 independent draws, the estimate has SD .0500 (its exact SD is .376), and the iid error bound (radius .148) would fail in at most .05 of runs; in these 2,000 chains it fails in .801 (1,602 chains; exact chance .804). A chain that never switches (chance .370) fails by itself.</li>
-<li><strong>Stay .99, chain-aware.</strong> The exact SD is .376 (variance .1412), compared with .0500 (.002500) for independent draws. This is the variance of 1.77 independent draws. The long-run formula gives 1.01, an approximation for long chains. The bands now span almost all of 0 to 1.</li>
-<li><strong>A stuck chain.</strong> Chain 7 never switches: its estimate is 0 and its iid MCSE is 0, yet <span class="math inline"><math><msub><mi>π</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub></math></span> = 1/2. Of these 2,000 chains, 720 never switch.</li>
-<li><strong>Stay .50.</strong> Independent draws: correlation 0, the variance of 100 independent draws, and the iid error bound fails in 10 of the 2,000 runs (.005; exact .004), well under .05.</li>
-<li><strong>1,000 draws.</strong> Ten times as many draws give the variance of 10.6 independent draws, and the iid error bound, now of radius .047, still fails in .777 of these chains (exact .770).</li>
-<li><strong>postrank’s chains.</strong> In pr_toy_mcmc the pooled share is .172 against the known .2, its MCMC MCSE .0576 against .00835 by the iid formula; R-hat 1.0905 and bulk ESS 42.95 flag the slow mixing. The fixed report’s loss is .248 against 4/15 (.191 to .296 by chain).</li>
+<li><strong>Stay .99.</strong> Naive iid SD is .0500 vs.&nbsp;exact .376; the .05 iid bound (±.148) fails in 1,602 of the 2,000 chains (.801; exact .804), at least .370 from never switching.</li>
+<li><strong>Stay .99, chain-aware.</strong> Exact SD is .376 (variance .141) vs.&nbsp;.0500 (.00250) iid, matching 1.77 independent draws (long-run 1.01).</li>
+<li><strong>A stuck chain.</strong> Chain 7 never switches; 720 chains never switch.</li>
+<li><strong>Stay .50.</strong> Independent draws fail in 10 of the 2,000 chains (.00500; exact .00352).</li>
+<li><strong>1,000 draws.</strong> Precision equals 10.6 independent draws; the ±.0468 bound fails in .777 of chains (exact .770).</li>
+<li><strong>postrank’s chains.</strong> Open <em>Data</em>: <code>pr_toy_mcmc</code> gives share .172 vs.&nbsp;.2 (MCMC MCSE .0576 vs.&nbsp;.00835 iid; R-hat 1.0905, ESS 42.95) and loss .248 vs.&nbsp;4/15 (.191 to .296 by chain).</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The two-state chain is restated from the postrank theory book, ch.&nbsp;15 (“Finite-sample coefficient error in a stationary two-state chain”); We calculate the exact values from the transition probability and count the outcomes of chains simulated in the browser. In postrank, <code>postrank_iid_bounds()</code> refuses MCMC draws, and <code>postrank_diagnose()</code> reports R-hat, ESS and an MCMC MCSE for them (vignette m6, “Monte Carlo uncertainty and diagnostics”).</p>
-</div>
-</div>
-</div>
+<details class="prx-prose-details">
+<summary>Source and package notes</summary>
+<p>The stationary two-state chain with $\pi_{AB} = 1/2$ is restated from the postrank theory book, ch. 21 (“A finite-sample coefficient bound for dependent draws”); exact finite-sample variances and tail probabilities follow from the transition probability alongside outcomes counted across chains simulated in the browser. In postrank, <code>postrank_iid_bounds()</code> refuses MCMC draws, and <code>postrank_diagnose()</code> reports R-hat, ESS and an MCMC MCSE for them (vignette m6, “Monte Carlo uncertainty and diagnostics”).</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -673,7 +692,8 @@ window.Quarto = {
 </div>
 </div>
 <p>Standalone: <a href="../../embed/chain-draws.html">embed/chain-draws.html</a>, for example <code>?stay=.95&amp;draws=200</code> or <code>?preset=aware&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/posterior-pipeline.html">From data to posterior decisions</a> (1.7) lists the forms a posterior can take: postrank validates the structure of draws, and its MCMC diagnostics flag problems but do not prove convergence. <a href="../../pages/uncertainty/mc-error.html">Monte Carlo error in pairwise probabilities</a> (1.17) shows the Monte Carlo error of independent draws.</p>
+<p>Related applications: <a href="../../pages/uncertainty/posterior-pipeline.html">From data to posterior decisions</a> (1.7) and <a href="../../pages/uncertainty/mc-error.html">Monte Carlo error in pairwise probabilities</a> (1.17).</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/21-numerical-uncertainty.html#sec-dependent-monte-carlo">A finite-sample coefficient bound for dependent draws</a>.</p>
 
 
 </section>
@@ -1146,7 +1166,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

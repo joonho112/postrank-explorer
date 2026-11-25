@@ -4,8 +4,7 @@ subtitle: "5.3 · after Kline, Rose and Walters (2024), Figures 7, 10A and 14"
 description: "Marginal summaries and pairwise statements in the archived cards for 97 firms."
 ---
 
-KRW's cards report which firms have larger contact gaps by placing firms in ordered grades. The grade assignments
-and expected error rates can change with the target or the reward λ for a correct direction.
+KRW's cards group 97 firms into ordered contact-gap grades; how do cuts and error shares shift with the target and reward λ?
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,36 +16,15 @@ and expected error rates can change with the target or the reward λ for a corre
 
 ## Numerical illustrations {#what-to-try}
 
-Grade 1 is highest on the chosen target. The card states directions between grades and withholds them within a
-grade. A correct direction earns λ, a wrong direction costs 1, and withholding pays 0. DR divides expected errors
-by all pairs. E/N divides them by the number of pairs the card states.
-
-- **Published race card.** The card states 1,324 of 4,656 pairs, with expected wrong share E/N .136.
-  Its risk .1818 comprises .0387 for errors and .1431 for withholding. In this card, comparisons between distant grades have lower expected error rates than comparisons between adjacent grades.
-- **Reveal grade 1.** The remaining bands stay in place. As each grade is revealed, its firms enter the disclosure
-  and between-grade tables.
-- **Sort by estimate.** State Farm moves 69 rows inside its grade. Changing the row order changes no reported
-  direction. Genuine Parts and AutoNation illustrate why estimates alone do not determine the card.
-- **λ .08: first race split.** The risk .07406 is slightly below all withheld, .07407. The extra decimal
-  prevents rounding from hiding that distinction. The displayed card is still an archived KRW grid card.
-- **Published gender card.** It states 731 pairs. Both ends of its signed scale are contact gaps; three stated
-  directions are more likely wrong than right. The note identifies these firms and probabilities.
-- **One grade.** Nothing is stated. E/N is NA: no disclosure, meaning undefined; the app draws no E/N bar.
-
-The precision plot places each firm's original sampling SE beside its grade. The table identifies each firm.
-KRW's prior depends on precision. Firms with uncertain estimates can share the middle grade while having very different contact gaps.
+- **Published race card.** States 1,324 of 4,656 pairs with expected wrong share E/N = .136 (risk .182 = .0387 errors + .143 withholding).
+- **Reveal grade 1.** Steps through grades from 1 downward while keeping remaining bands fixed.
+- **Sort by estimate.** State Farm moves 69 rows inside Grade 2 without changing any stated direction.
+- **λ .08: first race split.** Risk .07406 sits just below all withheld (.07407).
+- **Published gender card.** States 731 pairs across opposite-sign gaps; 3 stated directions are more likely wrong than right.
+- **One grade.** States nothing; E/N is NA: no disclosure.
 
 ::: {.callout-note appearance="simple"}
-KRW's code selected the grid cards using their archived probabilities and solver tolerances. The app holds those
-grades fixed and evaluates them with the released postrank probabilities. The baseline race card is in Figure 7,
-and the gender card is in Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.
-
-Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC
-as stated by the deposit, noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted.
-Provided as is, without warranty; no endorsement is implied. **These historical data do not describe any firm’s
-current conduct.**
+Archived grid cards follow KRW's code (Figures 7, 10A and 14) and are evaluated under released postrank probabilities. Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only, as adapted in postrank (`pr_case_krw`). Provided as is, without warranty; no endorsement is implied. **These historical data do not describe any firm's current conduct.**
 :::
 
-Standalone: [krw-card](../../embed/krw-card.html).
-
-Related applications: [Error rates under two denominators](../grades/two-denominators.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).
+Standalone: [open this app](../../embed/krw-card.html). Related: [Error rates under two denominators](../grades/two-denominators.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).

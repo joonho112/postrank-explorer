@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/one-correction.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sensitivity to corrections and unit removal – postrank Explorer">
+<meta property="og:description" content="Changes in pairwise reported relations after modifying one marginal distribution or the comparison population.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/one-correction.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/one-correction.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -579,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Sensitivity to corrections and unit removal</h1>
-<p class="subtitle lead">2.20 · after the postrank theory book, chapters 17 and 21</p>
+<p class="subtitle lead">2.20 · after the postrank theory book, chapters 23 and 32</p>
 </div>
 
 <div>
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Correcting one unit’s posterior mean or standard deviation can change comparisons between units whose posteriors remain fixed. Dropping a unit can have the same effect. The report assigns grades jointly, so a change to one unit can move the boundaries between other units’ grades. The two cards share the same scales. The matrix and list compare which directions the reports state or withhold. When a unit leaves the population, we compare only the pairwise decisions for the remaining units.</p>
+<p>Grades are assigned jointly, so correcting one unit’s posterior—or removing a unit—can move grade boundaries and change reported relations between units whose posteriors stayed fixed.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,24 +635,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Correct a mean.</strong> The first result names 2 of 10 changed pairs between untouched units, D–E and E–F. The correction moves one site down while rearranging boundaries among other sites. The relation table distinguishes new disclosures from new withholding decisions.</li>
-<li><strong>No correction.</strong> The original posterior is retained and 0 of 10 untouched pairs change. The two cards describe the same report. Varying the corrected mean identifies the next boundary change.</li>
-<li><strong>More uncertainty.</strong> Under a tighter grade cap, raising one site’s posterior SD changes 6 of 10 untouched pairs. The ten pairs still have the same posterior probabilities. The new grade assignment changes how the report treats six of them.</li>
-<li><strong>Drop a unit.</strong> Removing a site changes 1 of 10 remaining pairs. The relation comparison excludes the removed site and compares directions, rather than numerical grade labels.</li>
-<li><strong>Drop U15 from the league.</strong> The original card has grade sizes 1, 12, 15, 2; the new card has sizes 9, 17, 3. Among the remaining units, 107 of 406 relations change: 62 newly withheld and 45 newly stated. The expected-rank order is recomputed after removal, and each report is optimal within its own order, with no grade cap.</li>
-<li><strong>Two scores, drop C.</strong> Equal-weight scores A and B use all reports. Removing C changes 2 of 10 remaining pairs: A–B and A–D become stated. Both marginal-card views show the same common grades; neither score alone chose them.</li>
+<li><strong>Correct a mean.</strong> Lowering C changes 2 of 10 untouched pairs (D–E, E–F).</li>
+<li><strong>No correction.</strong> The original posterior changes 0 of 10 untouched pairs.</li>
+<li><strong>More uncertainty.</strong> Raising A’s SD under a two-grade cap changes 6 of 10 untouched pairs.</li>
+<li><strong>Drop a unit.</strong> Removing E changes 1 of 10 remaining pairs.</li>
+<li><strong>Drop U15 from the league.</strong> Grades shift from sizes 1, 12, 15, 2 to sizes 9, 17, 3; 107 of 406 relations change (62 newly withheld, 45 newly stated).</li>
+<li><strong>Two scores, drop C.</strong> Equal-weight scores change 2 of 10 pairs: A–B and A–D become stated.</li>
 </ul>
-<p>The two single-score views let the reader correct one marginal posterior. The two-score and league views remove a unit. Each comparison holds the withholding cost and grade policy fixed.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The example uses independent normal posteriors and changes only the marginal for the selected score. Refitting a model to corrected data could also change other marginals. Dropping a unit retains the remaining marginal distributions but changes the population, pair count and possibly the declared order. The display compares relations on common IDs and checks unchanged pair probabilities for every criterion. An excluded unit is unassessed here, not assigned the lowest grade.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Marginal assumptions and excluded units
+</summary>
+The example uses independent normal posteriors and changes only the selected marginal; refitting a model to corrected data could also move other marginals. Removing a unit keeps the remaining marginals fixed while changing the comparison population, pair count, and any recomputed expected-rank order. Excluded units are unassessed here rather than assigned the lowest grade.
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -649,6 +669,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Standalone: <a href="../../embed/one-correction.html">open the app</a>, for example <code>?preset=league-drop</code>.</p>
 <p>Related applications: <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a> · <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-rules-objectives">Common rules and competing objectives</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/32-governance-communication.html#sec-governance-transparency-appeal">Documentation and correction</a>.</p>
 
 
 </section>
@@ -1121,7 +1142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

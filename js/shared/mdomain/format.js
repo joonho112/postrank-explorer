@@ -35,7 +35,10 @@ export function formatExactText(raw, options = {}) {
   let rounded = scaled / d;
   const twice = 2n * (scaled % d);
   if (twice > d || (twice === d && rounded % 2n === 1n)) rounded += 1n;
-  if (digits === 0) return String(rounded) + (style === "percent" ? "%" : "");
+  if (digits === 0) {
+    if (style === "percent" && rounded === 0n) return "below 1%";
+    return String(rounded) + (style === "percent" ? "%" : "");
+  }
   const text = String(rounded).padStart(digits + 1, "0");
   const integer = text.slice(0, -digits), decimal = text.slice(-digits);
   return style === "percent" ? `${integer}.${decimal}%` : `${integer === "0" ? "" : integer}.${decimal}`;

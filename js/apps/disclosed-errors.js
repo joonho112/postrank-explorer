@@ -1,202 +1,86 @@
-// Linked report evaluation and posterior draws, with six normal sites or the shared three-unit law.
-//
-// Layout (review 044 repair: X-01 result-first frame and the substantial redesign G2-F4/G2-F6 of 2.8). base.js's
-// result-first frame, top to bottom:
-//   controls   one row: the Example radio, the Report select (ctx.primaryControl) and the τ slider; then a closed
-//              "Grades, family and seed" box in the controls row (ctx.disclosure placement "controls": the grade
-//              selects of the law shown, the Family shown radio and the Seed field), which also opens when the
-//              reader picks "Your own" in the Report select; the preset row on its own line
-//   read-out   directly under the controls; it ends with one of three statements: "E ≤ τN guaranteed …" (the exact
-//              optimum of a family with all-withheld), "E ≤ τN holds here but is not guaranteed …" or "E > τN: worse
-//              than withholding every pair" (review 044, G2-F6)
-//   matrix | result column (side by side from a 44rem charts container; CSS container query, no script):
-//     left     the relation matrix (ctx.primaryGraphic) and its legend, then "Possible true values in this draw"
-//     right    the tiles N, E, E/N, all-right (+ the union bound for the finite law) and τ; for the finite law the
-//              coupling slider right under the tiles, then the order table, the formula for E and the fixed pair
-//              errors; the Draw once / Draw 100 / Clear buttons directly above a compact histogram whose zero bin is
-//              labeled "every stated direction right", the running average with the dashed E, the draws summary
-//              and the Monte Carlo caption
-//   bound row  full width: a one-line badge ("E ≤ τN applies: …", "E ≤ τN holds here but is not guaranteed: …" or
-//              "E > τN: …"), the one risk/count diagnostic line, a closed "Why" box with the explanatory sentences
-//              (the bound line, the caution, or the side-by-side line, the reason and the own-risk line), then the
-//              best report of the family shown with the "Use the best report" button
-// The DOM follows the phone order (matrix, result column, this draw, bound row), so at 375 px the tiles, the Draw
-// buttons and the histogram follow the matrix; on a wide container named grid areas put "this draw" under the
-// matrix on the left. Every key, preset, hook (data-prx-readout, data-prx-bound, data-prx-own, data-prx-diagnostic),
-// data-num, hidden table and keyboard reader is unchanged; content was moved, not removed.
-//
-// Exports used by 2.9 reported-and-realized keep their behavior for its calls: createDrawControls,
-// drawHistogram (new options zeroLabel and height, off by default) and drawRunningAverage (new option height).
+// App entry point for 2.8 disclosed-errors ("How often are stated directions wrong?") — Frame v2 upgrade.
+// Preserves 100% of ../shared/domain/disclosed-errors.js re-exports untouched for 2.9 reported-and-realized,
+// while overriding mountWidget with frame: "v2": compact primary controls (Example segmented, Report select, τ slider)
+// + wrapping presets + Settings disclosure, concise <= 35-word 3-sig-fig readout preserving the G2-F6 three-statement
+// optimality distinction, clean zero-placeholder first-load stage pairing the [data-prx-primary] pair-error matrix with
+// 3-sig-fig summary tiles, draw controls, and [data-prx-bound] badge row, and complete exact tables/formulas in Data and Method.
+import { mobileControls } from "../shared/mobile-controls.js";
+import {
+  CONFIG,
+  blocksText,
+  countsOf,
+  createDrawControls,
+  drawTrueValueStrip,
+  drawsOf,
+  finiteCoupling,
+  parseCap,
+  parseGrades,
+  reportOf,
+} from "../shared/domain/disclosed-errors.js";
 import { createWidget, uid } from "../shared/base.js";
 import { gradeColors, labelOn, numText, plot } from "../shared/chart.js";
-import { formatCount, formatDecimal, formatEoverN, formatExpectedCount, formatGrades, formatProb, formatRational, formatRisk, formatSci, formatSetting, formatShare } from "../shared/format.js";
+import {
+  formatCount,
+  formatDecimal,
+  formatEoverN,
+  formatGrades,
+  formatProb,
+  formatRational,
+  formatReadoutExpected,
+  formatReadoutProb,
+  formatReadoutRisk,
+  formatSci,
+  formatSetting,
+  formatShare,
+} from "../shared/format.js";
 import { captionNode, exposeResult, familySizeNode, labelNode, tagNode } from "../shared/labels.js";
 import { formulaNums, renderTex } from "../shared/math.js";
 import {
-  canonicalGrade, disclosure, evaluateReport, exactOptimum, familySize, finiteLawDraws, finiteLawPairwise, gaussianDraws, runningMean, summaryStats, realizedWrong, relations,
-  statedAbove, wrongCountDistribution,
+  disclosure,
+  evaluateReport,
+  exactOptimum,
+  familySize,
+  finiteLawPairwise,
+  realizedWrong,
+  relations,
+  runningMean,
+  statedAbove,
+  summaryStats,
+  wrongCountDistribution,
 } from "../pr-core.js";
-import { THREE_UNIT_LAW, THREE_UNIT_ERRORS } from "../shared/three-unit-law.js";
+import { THREE_UNIT_ERRORS, THREE_UNIT_LAW } from "../shared/three-unit-law.js";
 import SIX from "../../data/released/six-sites.json" with { type: "json" };
 
-export const CONFIG = Object.freeze({
-  name: "disclosed-errors",
-  label: "How often are disclosed directions wrong: a report's expected wrong directions, their share among the stated pairs, and draws of possible true values",
-  title: "Stated directions that turn out wrong",
-  className: "prx-de",
-  laws: Object.freeze(["six", "finite"]),
-  law: "six",
-  tau: Object.freeze({ min: 0.02, max: 0.5, step: 0.01, value: 0.2 }),
-  draws: Object.freeze({ min: 0, max: 2000, value: 0, many: 100 }),
-  seed: Object.freeze({ min: 0, max: 999999, value: 1 }),
-  cap: Object.freeze({ capped: 3, none: "none", value: "none", split: 4.5, noneWords: Object.freeze(["none", "all", "off", "no", "false"]) }),
-  grades: Object.freeze({ maxLabel: 99, maxUnits: 6, value: Object.freeze([1, 2, 3, 3, 4, 5]) }),
-  six: Object.freeze({ array: "one", spread: 2 }),
-  law3: THREE_UNIT_LAW,
-  // the report each example starts from when the learner switches to it
-  starts: Object.freeze({ six: Object.freeze([1, 2, 3, 3, 4, 5]), finite: Object.freeze([1, 1, 2]) }),
-  // named reports in each example's menu (blocks are written from the grade vector)
-  named: Object.freeze({
-    six: Object.freeze([
-      Object.freeze([1, 2, 3, 3, 4, 5]), Object.freeze([1, 1, 2, 2, 3, 3]), Object.freeze([1, 2, 3, 4, 5, 6]), Object.freeze([1, 1, 1, 1, 1, 1]),
-    ]),
-    finite: Object.freeze([Object.freeze([1, 1, 2]), Object.freeze([1, 2, 2]), Object.freeze([1, 2, 3]), Object.freeze([1, 1, 1])]),
-  }),
-  digits: Object.freeze({ mean: 3, theta: 2, tauN: 1, tauNFine: 2 }),
-  tauNTolerance: 1e-9,
-  // a risk within this of τ counts as equal to τ when the widget says whether E ≤ τN holds for a learner's report
-  riskTolerance: 1e-12,
-  matrix: Object.freeze({
-    marginTop: 22, marginLeft: 22, marginRight: 4, marginBottom: 4,
-    minCell: 34, maxCell: 56, inset: 0.5, dotShare: 0.3, hatchSpacing: 6, hatchWidth: 1.2, symbolShare: 0.42, labelWeight: 700,
-    wrongWidth: 3, wrongInset: 2.5, crossShare: 0.26, crossDx: 0.27, crossDy: 0.25, labelHalo: 3,
-  }),
-  strip: Object.freeze({ row: 24, marginTop: 8, marginBottom: 40, marginLeft: 84, marginRight: 14, domain: Object.freeze([-2, 2.4]), r: 5, tick: 9, labelOffset: 34, link: 2 }),
-  // compact: 2.8's own heights in the result column (review 044 repair); 2.9 keeps the defaults. zero: the margins
-  // when the zero bin carries its words under the axis (drawHistogram option zeroLabel)
-  hist: Object.freeze({ height: 176, marginTop: 22, marginBottom: 42, marginLeft: 44, marginRight: 10, half: 0.38, minBins: 3, labelOffset: 36, labelDy: -6,
-    compact: 190, zero: Object.freeze({ marginBottom: 74, labelOffset: 66, dy: 25 }) }),
-  run: Object.freeze({ height: 196, marginTop: 18, marginBottom: 42, marginLeft: 44, marginRight: 14, maxPoints: 400, minX: 10, rule: "5 3", labelOffset: 36, top: 1.15, minTop: 0.5,
-    compact: 150 }),
-  // Observable Plot's default spacing of y ticks (px): a compact figure asks for the tick count the original height gave,
-  // so it shows the same tick values (review 044 repair: moved, not thinned)
-  plotTickSpacing: 35,
-  text: Object.freeze({
-    lawLegend: "Example",
-    lawSix: "Six sites, score A (independent normal posteriors)",
-    lawFinite: "Three units, a finite law (theory book, chapter 10)",
-    reportLabel: "Report",
-    ownReport: "Your own (set the grades below)",
-    gradesLegend: "Grade of each unit (grade 1 = highest priority; labels are tidied)",
-    gradeOf: "Grade of",
-    familyLegend: "Family shown",
-    familyAll: "All reports",
-    familyCap: "At most",
-    familyCapEnd: "grades",
-    reports: "reports",
-    tauSlider: "Withholding cost τ",
-    tauHint: "A wrong stated direction costs 1; staying silent on one pair costs τ. E and E/N do not depend on τ.",
-    drawOne: "Draw once",
-    drawMany: "Draw",
-    drawReset: "Clear the draws",
-    seedLabel: "Seed",
-    drawsFull: "The widget keeps at most",
-    drawsFullEnd: "draws; clear them to start again.",
-    matrixHeading: "The report, and this draw",
-    matrixAlt: "Relation matrix of the report: each cell says whether the report states the row unit above the column unit, withholds the pair, or states the row unit below; a stated direction that is wrong in the current draw is crossed and outlined.",
-    matrixTable: "The pairs, what the report does with each, the error of each stated direction and whether it is wrong in this draw",
-    relationTitle: "Row unit relative to column unit in this report",
-    relAbove: "row stated above (the number: the error of that statement)",
-    relWithheld: "withheld: same grade (not a claim of equality)",
-    relBelow: "row stated below",
-    gradeKey: "circle: the unit's grade",
-    wrongKey: "cross and outline: a stated direction that is wrong in this draw",
-    drawHeading: "Possible true values in this draw",
-    stripAlt: "Each site's drawn true value as a dot, against a gray line from its posterior mean minus 2 SD to plus 2 SD.",
-    stripTable: "The drawn true values of this draw",
-    stripKey: Object.freeze(["dot: the value drawn for this site; gray line and tick: its posterior, mean ± ", " SD; black line: a stated pair that this draw puts the other way round"]),
-    noDraw: "No draws yet. Press Draw once or Draw",
-    noDrawShort: "No draw yet.",
-    lawTableHeading: "The four possible orders",
-    lawTableCaption: "Each order with its probability and the number of this report's stated directions it makes wrong",
-    orderCol: "Order, highest first",
-    probCol: "Probability",
-    wrongCol: "Wrong stated directions",
-    lastDrawCol: "Last draw",
-    resultsHeading: "Expected and realized wrong directions",
-    tileN: "Directions stated, N",
-    tileE: "Expected wrong directions, E",
-    tileEN: "Expected share wrong, E/N",
-    tileTau: "Withholding cost τ",
-    naNote: "none of the pairs is stated",
-    histHeading: "Draws by the number of wrong stated directions",
-    histAlt: "Bars: how many of the draws had zero, one, two or more wrong stated directions.",
-    histTable: "Draws by the number of wrong stated directions",
-    runHeading: "Average number wrong over the draws so far",
-    runAlt: "Line: the average number of wrong stated directions over the first draws, as the draws accumulate; the dashed line is E.",
-    runTable: "The running average of the wrong count",
-    runKeyLine: "solid line: the average over the draws so far",
-    runKeyE: "dashed line: E, the expected number wrong",
-    drawsLead: "The average comes from these draws; E and E/N come from the error probabilities. Changing the report keeps the draws, so the same possible true values are scored against the new report.",
-    note: "Six fictional sites from the postrank tutorial, score A, and a finite three-unit law from the postrank theory book, chapter 10. The six latent values are independent normals; both posteriors are taken as given",
-    tolerance: "Equal-risk tolerance",
-    toleranceGloss: "(risks closer than this count as equal).",
-    useBest: "Use the best report",
-    boundYes: "E ≤ τN applies:",
-    boundYesEnd: ", a family that includes the all-withheld report.",
-    boundAverage: "The bound concerns the average over the stated pairs; a single stated direction can still have an error above τ.",
-    boundNo: "E/N and τ side by side (not a bound):",
-    notInFamily: "This report is not in the family shown, so no bound is shown for it.",
-    notOptimum: "The E ≤ τN optimality badge is shown only for the exact optimum of the family shown, when that family includes the all-withheld report; this report is not that optimum at this τ.",
-    noAllWithheld: "The family shown does not include the all-withheld report, so no bound is shown.",
-    holdsOwn: "E ≤ τN holds for this report (risk",
-    holdsOwnEnd: "≤ τ), though it is not guaranteed by optimality: it holds exactly when the risk is at most τ.",
-    failsOwn: "E > τN for this report (risk",
-    failsOwnEnd: "> τ): it does worse than withholding every pair.",
-    // review 044 repair (G2-F4, G2-F6): the controls box, the one-line badge, its "Why" box and the read-out's last clause
-    settingsSix: "Grades, family and seed",
-    settingsFinite: "Grades and seed",
-    whyTitle: "Why",
-    seedTag: "seed",
-    zeroBin: "every stated\ndirection right",
-    badgeHolds: "E ≤ τN holds here but is not guaranteed:",
-    badgeFails: "E > τN:",
-    badgeFailsEnd: "worse than withholding every pair.",
-    badgeReason: Object.freeze({
-      notInFamily: "this report is not in the family shown.",
-      noAllWithheld: "the family shown does not include the all-withheld report.",
-      notOptimum: "this report is not the family optimum.",
-    }),
-    readoutApplies: "; E ≤ τN guaranteed (exact optimum of a family with all-withheld).",
-    readoutHolds: Object.freeze({
-      notInFamily: "; E ≤ τN holds here but is not guaranteed (this report is not in the family shown).",
-      noAllWithheld: "; E ≤ τN holds here but is not guaranteed (the family shown does not include the all-withheld report).",
-      notOptimum: "; E ≤ τN holds here but is not guaranteed (this report is not the family optimum).",
-    }),
-    readoutFails: "; E > τN: worse than withholding every pair.",
-  }),
-});
+export * from "../shared/domain/disclosed-errors.js";
 
 const T = CONFIG.text;
 const MX = CONFIG.matrix;
 const SVGNS = "http://www.w3.org/2000/svg";
-const L3 = CONFIG.law3;
+const L3 = THREE_UNIT_LAW;
 
-// ---------------------------------------------------------------------------------------------- the two examples
-
-/** The released error array of score A (JSON null on the diagonal becomes NaN). */
 function sixErrors() {
   const a = SIX.arrays[CONFIG.six.array];
-  return { ids: a.ids.slice(), criteria: a.criteria.slice(), e: a.e.map((m) => m.map((row) => row.map((v) => (v === null ? Number.NaN : v)))) };
+  return {
+    ids: a.ids.slice(),
+    criteria: a.criteria.slice(),
+    e: a.e.map((m) => m.map((row) => row.map((v) => (v === null ? Number.NaN : v)))),
+  };
 }
 
 const UNITS = SIX.tables.units;
 const LAWS = Object.freeze({
   six: Object.freeze({
-    key: "six", ids: Object.freeze(UNITS.id.slice()), E: sixErrors(), means: UNITS.mean_A.slice(), sds: UNITS.sd_A.slice(), unitWord: "site",
+    key: "six",
+    ids: Object.freeze(UNITS.id.slice()),
+    E: sixErrors(),
+    means: UNITS.mean_A.slice(),
+    sds: UNITS.sd_A.slice(),
+    unitWord: "site",
   }),
   finite: Object.freeze({
-    key: "finite", ids: L3.ids, unitWord: "unit",
+    key: "finite",
+    ids: L3.ids,
+    unitWord: "unit",
     E: THREE_UNIT_ERRORS,
   }),
 });
@@ -204,110 +88,13 @@ const LAWS = Object.freeze({
 const familyOf = (law, cap) => (law === "six" && cap !== CONFIG.cap.none ? { kind: "atMost", G: cap } : { kind: "all" });
 const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
 
-const couplingCache = new Map();
-/** Same pair probabilities, another joint law. At zero, keep the original four-state draw-index API. */
-export function finiteCoupling(u = 0) {
-  if (typeof u !== "number" || !Number.isFinite(u) || u < 0 || u > L3.probs[3]) throw new RangeError("finiteCoupling: u must be between 0 and .1");
-  if (u === 0) return L3;
-  if (!couplingCache.has(u)) {
-    const order = "BCA";
-    const states = [...L3.states.slice(0, 3), L3.ids.map(id => [L3.ids.length - order.indexOf(id)]), L3.states[3]];
-    couplingCache.set(u, { ids: L3.ids, orders: [...L3.orders.slice(0, 3), order, L3.orders[3]], states,
-      probs: [L3.probs[0] - u, L3.probs[1] + u, L3.probs[2], u, L3.probs[3] - u] });
-  }
-  return couplingCache.get(u);
-}
 const finiteErrors = new Map();
 function finiteLawFor(u = 0) {
   const joint = finiteCoupling(u);
-  if (u !== 0 && !finiteErrors.has(u)) finiteErrors.set(u, finiteLawPairwise(joint.states, joint.probs, { ids: L3.ids, criteria: THREE_UNIT_ERRORS.criteria }));
+  if (u !== 0 && !finiteErrors.has(u)) {
+    finiteErrors.set(u, finiteLawPairwise(joint.states, joint.probs, { ids: L3.ids, criteria: THREE_UNIT_ERRORS.criteria }));
+  }
   return { ...LAWS.finite, joint, E: u === 0 ? THREE_UNIT_ERRORS : finiteErrors.get(u) };
-}
-
-// ---------------------------------------------------------------------------------------------- keys
-
-/** grades: an array or "1,2,3" / "1/2/3"; labels rounded and clamped to 1 … maxLabel; at most six entries. */
-export function parseGrades(v) {
-  const list = Array.isArray(v) || ArrayBuffer.isView(v) ? Array.from(v)
-    : typeof v === "string" ? v.split(/[\s,/]+/).filter((s) => s !== "").map(Number) : null;
-  if (!list || list.length < 1) return undefined;
-  const out = [];
-  for (const x of list) {
-    const n = typeof x === "number" ? x : Number(x);
-    if (!Number.isFinite(n)) return undefined;
-    out.push(Math.min(CONFIG.grades.maxLabel, Math.max(1, Math.round(n))));
-  }
-  return out.slice(0, CONFIG.grades.maxUnits);
-}
-
-/** cap: 3 or "none" (a number goes to the nearer of the two; words meaning "no cap" give "none"). */
-export function parseCap(v) {
-  if (typeof v === "string" && CONFIG.cap.noneWords.includes(v.trim().toLowerCase())) return CONFIG.cap.none;
-  const n = typeof v === "number" ? v : typeof v === "string" && v.trim() !== "" ? Number(v) : Number.NaN;
-  if (!Number.isFinite(n)) return undefined;
-  return n < CONFIG.cap.split ? CONFIG.cap.capped : CONFIG.cap.none;
-}
-
-/** The report shown: the labels cut or filled to the law's units, in canonical form. */
-export function reportOf(state) {
-  const law = state.law === "finite" ? finiteLawFor(state.coupling ?? 0) : LAWS[state.law];
-  const n = law.ids.length;
-  let raw = Array.from(state.grades ?? []).slice(0, n);
-  if (raw.length === 0) raw = Array.from(CONFIG.starts[state.law]);
-  while (raw.length < n) raw.push(Math.max(...raw));
-  return { law, n, raw, g: Array.from(canonicalGrade(raw)) };
-}
-
-/** The units of each grade, grade 1 first. */
-function blocksOf(g, ids) {
-  const G = Math.max(...g);
-  const out = [];
-  for (let k = 1; k <= G; k += 1) out.push(ids.filter((_, i) => g[i] === k));
-  return out;
-}
-
-/** "{A, B} > {C}" (letters only, so it is plain text). */
-export const blocksText = (g, ids) => blocksOf(g, ids).map((b) => `{${b.join(", ")}}`).join(" > ");
-
-/** A value as an exact fraction when it is one (the finite law), else in the risk format. */
-function exact(v) {
-  try { return formatRational(v); } catch { return formatRisk(v); }
-}
-
-// ---------------------------------------------------------------------------------------------- draws (cached)
-
-const drawCache = { key: null, theta: null };
-/** The first S draws of one seed: six sites, theta[s][i] = [value]; finite law, the index of the order drawn. */
-export function drawsOf(law, seed, S, coupling = 0) {
-  if (S < 1) return [];
-  const key = `${law}|${seed}|${S}|${law === "finite" ? coupling : 0}`;
-  if (drawCache.key === key) return drawCache.theta;
-  let out;
-  if (law === "six") out = gaussianDraws(LAWS.six.means, LAWS.six.sds, S, seed);
-  else {
-    out = Array.from(finiteLawDraws(finiteCoupling(coupling).probs, S, seed));
-  }
-  drawCache.key = key;
-  drawCache.theta = out;
-  return out;
-}
-
-const countCache = { key: null, counts: null };
-/** Wrong stated directions of report g in each of the first S draws (realizedWrong). */
-export function countsOf(law, seed, S, g, coupling = 0) {
-  if (S < 1) return [];
-  const key = `${law}|${seed}|${S}|${g.join(",")}|${law === "finite" ? coupling : 0}`;
-  if (countCache.key === key) return countCache.counts;
-  const draws = drawsOf(law, seed, S, coupling);
-  let counts;
-  if (law === "six") counts = draws.map((theta) => realizedWrong(g, theta).D[0]);
-  else {
-    const byOrder = finiteCoupling(coupling).states.map((st) => realizedWrong(g, st).D[0]);
-    counts = draws.map((k) => byOrder[k]);
-  }
-  countCache.key = key;
-  countCache.counts = counts;
-  return counts;
 }
 
 const optCache = new Map();
@@ -315,68 +102,87 @@ function optimumOf(law, cap, tau, coupling = 0) {
   const key = `${law}|${cap}|${tau}|${law === "finite" ? coupling : 0}`;
   if (!optCache.has(key)) {
     if (optCache.size >= 128) optCache.delete(optCache.keys().next().value);
-    optCache.set(key, exactOptimum(law === "finite" ? finiteLawFor(coupling).E : LAWS[law].E, { tau, family: familyOf(law, cap) }));
+    optCache.set(
+      key,
+      exactOptimum(law === "finite" ? finiteLawFor(coupling).E : LAWS[law].E, { tau, family: familyOf(law, cap) }),
+    );
   }
   return optCache.get(key);
 }
 
-const CSS = `.prx-de .prx-de-heading{
-  margin: 0 0 0.35rem;
-  font-size: 0.95em;
-  font-weight: 600;
-  color: var(--prx-fg-heading);
+function exact(v) {
+  try {
+    return formatRational(v);
+  } catch {
+    return formatReadoutRisk(v);
+  }
 }
-.prx-de .prx-de-panel{
+
+const safeDec = (v, digits) => {
+  if (v === 0) return "0";
+  const floor = 0.5 * 10 ** -digits;
+  return Math.abs(v) < floor ? formatSci(v, { sig: 3 }) : formatDecimal(v, { digits });
+};
+
+const READOUT_CLAUSES = Object.freeze({
+  applies: "; E ≤ τN guaranteed (optimum with all-withheld).",
+  holds: Object.freeze({
+    notInFamily: "; E ≤ τN holds here but is not guaranteed (outside family).",
+    noAllWithheld: "; E ≤ τN holds here but is not guaranteed (no all-withheld).",
+    notOptimum: "; E ≤ τN holds here but is not guaranteed (not family optimum).",
+  }),
+  fails: "; E > τN: worse than withholding every pair.",
+});
+
+const V2_CSS = `
+.prx-de .prx-stage > *,
+.prx-de .prx-stage .prx-de-main > * {
+  grid-area: auto;
   min-width: 0;
-  margin: 0 0 1rem;
 }
-/* review 044 repair (G2-F4): the controls row holds the Example radio (its two options stacked), the Report select
-   and the τ slider, their labels on one line; the grade selects, the family radio and the seed sit in the closed box
-   after them */
-.prx-de .prx-controls{
-  align-items: flex-start;
+.prx-widget.prx-de[data-prx-frame="v2"] .prx-toolbar > .prx-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.9rem;
+  align-items: flex-end;
 }
-.prx-de .prx-de-law{
+.prx-de .prx-de-law {
   flex: 0 1 auto;
   min-width: 0;
 }
-.prx-de .prx-de-law .prx-radio{
+.prx-de .prx-de-report {
   display: flex;
-  margin: 0.15rem 0 0;
-}
-.prx-de .prx-de-family{
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 1rem;
-}
-.prx-de .prx-de-family > legend{
-  flex: 1 1 100%;
-}
-.prx-de .prx-de-report{
-  display: flex;
-  flex: 0 1 16rem;
+  flex: 0 1 15.5rem;
   min-width: 0;
 }
-.prx-de .prx-de-report > .prx-select{
+.prx-de .prx-de-report > .prx-select {
   flex: 1 1 auto;
   min-width: 0;
 }
-.prx-de .prx-de-report select{
+.prx-de .prx-de-report select {
+  width: 100%;
   max-width: 100%;
 }
-.prx-de .prx-de-grades{
+.prx-widget.prx-de[data-prx-frame="v2"] .prx-controls > .prx-slider {
+  flex: 1 1 12.5rem;
+  max-width: 16.5rem;
+}
+.prx-de .prx-de-settings > summary {
+  min-width: 12.5em;
+}
+.prx-de .prx-de-grades {
   display: flex;
-  flex: 1 1 18rem;
+  flex: 1 1 24rem;
   flex-wrap: wrap;
-  gap: 0.25rem 0.75rem;
+  gap: 0.3rem 0.7rem;
   min-width: 0;
   padding: 0;
   border: 0;
 }
-.prx-de .prx-de-grades > legend{
+.prx-de .prx-de-grades > legend {
   flex: 1 1 100%;
 }
-.prx-de .prx-de-grades .prx-select{
+.prx-de .prx-de-grades .prx-select {
   display: inline-flex;
   flex: 0 0 auto;
   gap: 0.3rem;
@@ -384,477 +190,444 @@ const CSS = `.prx-de .prx-de-heading{
   width: auto;
   margin: 0;
 }
-.prx-de .prx-de-grades .prx-select > label{
+.prx-de .prx-de-grades .prx-select > label {
   margin: 0;
 }
-/* the closed box keeps one width under both laws ("Grades, family and seed" / "Grades and seed"), so the τ slider beside
-   it keeps its width and its hint its lines, and the preset row does not move when a preset changes the law */
-.prx-de .prx-de-settings > summary{
-  min-width: 13.5em;
+.prx-de .prx-de-family {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
 }
-/* in the open box the six grade selects share one line where there is room */
-.prx-de .prx-de-settings .prx-de-grades{
-  flex-basis: 27rem;
+.prx-de .prx-de-family > legend {
+  flex: 1 1 100%;
 }
-.prx-de .prx-de-seed{
+.prx-de .prx-de-seed {
   flex: 0 0 auto;
   width: auto;
 }
-.prx-de .prx-de-seed input{
+.prx-de .prx-de-seed input {
   width: 7em;
 }
-/* the charts: one column (the phone order of the DOM), two from a 44rem charts container: the matrix and "this draw"
-   on the left, the result column on the right, the bound row under both. A container query, so no script switches it */
-.prx-de .prx-de-charts{
-  container: prx-de-charts / inline-size;
-}
-.prx-de .prx-de-main{
+
+.prx-de .prx-stage .prx-de-main {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  column-gap: 1.5rem;
+  gap: 0.5rem 1.25rem;
   align-items: start;
   min-width: 0;
 }
-@container prx-de-charts (min-width: 44rem){
-  .prx-de .prx-de-main{
-    grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas: "matrix result" "draw result" "bound bound";
+@media (min-width: 52rem) {
+  .prx-de[data-prx-frame="v2"] .prx-stage .prx-de-main {
+    grid-template-columns: minmax(min(100%, 20rem), auto) minmax(min(100%, 19rem), 1fr);
   }
-  .prx-de .prx-de-area-matrix{ grid-area: matrix; }
-  .prx-de .prx-de-area-result{ grid-area: result; }
-  .prx-de .prx-de-area-draw{ grid-area: draw; }
-  .prx-de .prx-de-area-bound{ grid-area: bound; }
+  .prx-de[data-prx-frame="v2"] .prx-stage .prx-de-main[data-has-draws="false"] {
+    align-items: center;
+  }
+  .prx-de[data-prx-frame="v2"] .prx-stage .prx-de-area-matrix {
+    grid-column: 1;
+  }
+  .prx-de[data-prx-frame="v2"] .prx-stage .prx-de-area-result {
+    grid-column: 2;
+  }
+  .prx-de[data-prx-frame="v2"] .prx-stage .prx-de-area-draw,
+  .prx-de[data-prx-frame="v2"] .prx-stage .prx-de-area-bound {
+    grid-column: 1 / -1;
+  }
 }
-.prx-de .prx-de-side, .prx-de .prx-de-sub, .prx-de .prx-de-chart, .prx-de .prx-de-matrix, .prx-de .prx-de-thisdraw{
+
+.prx-de .prx-stage .prx-de-heading {
+  margin: 0 0 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--prx-plot-fg);
+}
+.prx-de .prx-de-panel,
+.prx-de .prx-de-side,
+.prx-de .prx-de-sub,
+.prx-de .prx-de-chart,
+.prx-de .prx-de-matrix,
+.prx-de .prx-de-thisdraw {
   min-width: 0;
   max-width: 100%;
-}
-.prx-de .prx-de-thisdraw{
-  margin: 0 0 1rem;
-}
-.prx-de .prx-de-side > .prx-de-panel{
-  margin-bottom: 0.6rem;
-}
-.prx-de .prx-de-coupling{
-  margin: 0.5rem 0 0;
-}
-.prx-de .prx-de-coupling .prx-slider{
-  max-width: 24rem;
-}
-.prx-de .prx-de-coupling-result{
-  grid-column: 1 / -1;
   margin: 0;
-  font-size: 0.95em;
-  font-variant-numeric: tabular-nums;
 }
-/* the draws, directly under the tiles: the buttons above the histogram, then the running average */
-.prx-de .prx-de-draws{
-  margin-top: 0.2rem;
-}
-.prx-de .prx-de-draw-row{
-  display: flex;
-  flex: 0 1 auto;
-  flex-wrap: wrap;
-  gap: 0.5rem 0.75rem;
-  align-items: center;
-  margin: 0 0 0.35rem;
-}
-.prx-de .prx-de-draw-buttons{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.prx-de .prx-de-seedtag{
-  align-self: center;
-  font-size: 0.85em;
-  color: var(--prx-fg-muted);
-  font-variant-numeric: tabular-nums;
-}
-.prx-de .prx-de-draws > .prx-de-sub + .prx-de-note + .prx-de-sub, .prx-de .prx-de-draws > .prx-de-sub + .prx-de-sub{
-  margin-top: 0.6rem;
-}
-.prx-de .prx-de-note{
-  margin: 0.35rem 0 0.5rem;
-  font-size: 0.9em;
-  color: var(--prx-fg-muted);
-}
-.prx-de .prx-de-tiles{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
-  gap: 0.5rem;
-}
-.prx-de .prx-de-tile{
+.prx-de .prx-stage .prx-de-side {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.65rem;
+}
+.prx-de .prx-stage .prx-de-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 7.4rem), 1fr));
+  gap: 0.45rem;
+}
+.prx-de .prx-stage .prx-de-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
   min-width: 0;
-  padding: 0.4rem 0.55rem;
-  background: var(--prx-bg);
-  border: 1px solid var(--prx-border);
-  border-radius: var(--prx-radius, 6px);
+  padding: 0.3rem 0.45rem;
+  background: var(--prx-plot-bg);
+  border: 1px solid var(--prx-cell-border);
+  border-radius: 6px;
 }
-.prx-de .prx-de-tile-name{
-  font-size: 0.85em;
-  color: var(--prx-fg-muted);
+.prx-de .prx-stage .prx-de-tile-name {
+  font-size: 0.78rem;
+  line-height: 1.25;
+  color: var(--prx-plot-muted);
 }
-.prx-de .prx-de-tile-value{
-  font-size: 1.15em;
+.prx-de .prx-stage .prx-de-tile-value {
+  font-size: 1.05rem;
   font-weight: 600;
+  line-height: 1.25;
   font-variant-numeric: tabular-nums;
+  color: var(--prx-plot-fg);
   overflow-wrap: anywhere;
 }
-.prx-de .prx-de-tile-note, .prx-de .prx-de-event-note{
-  font-size: 0.8em;
+.prx-de .prx-stage .prx-de-tile-note,
+.prx-de .prx-stage .prx-de-event-note {
+  font-size: 0.76rem;
   font-weight: 400;
-  color: var(--prx-fg-muted);
+  line-height: 1.25;
+  color: var(--prx-plot-muted);
 }
-.prx-de .prx-de-event-note{
+.prx-de .prx-stage .prx-de-event-note {
   display: block;
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
 }
-/* before a draw the all-right tile keeps the line of its estimate, and its note is as tall as the longer of its two
-   wordings (the other one, hidden, sizes the box through ::after), so the tiles (and the Draw buttons under them) keep
-   their place on the first draw */
-.prx-de .prx-de-tile-pending{
+.prx-de .prx-stage .prx-de-tile-pending {
   display: block;
-  height: 1.4em;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--prx-plot-muted);
 }
-.prx-de .prx-de-mc-note{
+.prx-de .prx-stage .prx-de-mc-note {
   display: grid;
 }
-.prx-de .prx-de-mc-note > span, .prx-de .prx-de-mc-note::after{
+.prx-de .prx-stage .prx-de-mc-note > span,
+.prx-de .prx-stage .prx-de-mc-note::after {
   grid-area: 1 / 1;
 }
-.prx-de .prx-de-mc-note::after{
+.prx-de .prx-stage .prx-de-mc-note::after {
   content: attr(data-prx-other);
   visibility: hidden;
 }
-.prx-de .prx-de-caption{
-  margin: 0.35rem 0 0.5rem;
-  font-size: 0.85em;
-  font-style: italic;
-  color: var(--prx-fg-muted);
-}
-/* the bound row (full width under both columns): the badge, the diagnostic line, the "Why" box, the best report */
-.prx-de .prx-de-boundrow{
-  min-width: 0;
-  margin: 0 0 0.75rem;
-}
-.prx-de .prx-de-bound p, .prx-de .prx-de-best p{
-  margin: 0.4rem 0 0;
-  font-size: 0.95em;
-}
-.prx-de .prx-de-bound > .prx-de-badge{
-  margin-top: 0;
-}
-.prx-de .prx-de-why{
+
+.prx-de .prx-stage .prx-de-coupling {
   margin: 0.5rem 0 0;
 }
-.prx-de .prx-de-why .prx-disclosure-body > p:first-child{
-  margin-top: 0;
+.prx-de .prx-stage .prx-de-coupling .prx-slider {
+  max-width: 24rem;
 }
-.prx-de .prx-de-badge{
-  padding: 0.45rem 0.6rem;
-  background: var(--prx-bg-raised);
-  border-left: 3px solid var(--prx-accent);
-  border-radius: var(--prx-radius, 6px);
-}
-.prx-de .prx-de-badge-no{
-  border-left-color: var(--prx-border-strong);
-}
-.prx-de .prx-de-badge .prx-result-label, .prx-de .prx-de-label .prx-result-label{
-  font-weight: 600;
-}
-.prx-de .prx-de-caution{
-  font-size: 0.9em;
-}
-.prx-de .prx-de-best{
-  margin-top: 0.5rem;
-}
-.prx-de .prx-de-boundrow > .prx-btn{
-  margin-top: 0.5rem;
-}
-.prx-de .prx-de-label{
-  font-size: 0.9em;
-}
-.prx-de .prx-de-drawline, .prx-de .prx-de-summary{
-  margin: 0.25rem 0 0.5rem;
-  font-size: 0.95em;
-  overflow-wrap: anywhere;
-}
-.prx-de .prx-de-thetas{
-  display: block;
-  margin-top: 0.15rem;
-  font-size: 0.9em;
-  color: var(--prx-fg-muted);
+.prx-de .prx-stage .prx-de-coupling-result {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
+  color: var(--prx-plot-fg);
 }
-.prx-de .prx-de-lawbox{
-  min-width: 0;
-  margin: 0.5rem 0 0.25rem;
+
+.prx-de .prx-stage .prx-de-draws {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
-.prx-de .prx-de-table{
-  margin: 0 0 0.5rem;
-  border-collapse: collapse;
-  font-size: 0.95em;
-  font-variant-numeric: tabular-nums;
-}
-.prx-de .prx-de-table caption{
-  caption-side: top;
-  padding: 0 0 0.25rem;
-  text-align: left;
-  color: var(--prx-fg-muted);
-}
-.prx-de .prx-de-table th, .prx-de .prx-de-table td{
-  padding: 0.2rem 0.5rem 0.2rem 0;
-  text-align: left;
-  border-bottom: 1px solid var(--prx-border);
-}
-.prx-de .prx-de-table :is(th, td):last-child{
-  padding-inline-end: 0;
-}
-.prx-de .prx-de-table thead th{
-  overflow-wrap: normal;
-}
-.prx-de .prx-de-table td{
-  text-align: right;
-}
-.prx-de .prx-de-table td.prx-de-lastcell{
-  text-align: left;
-  font-style: italic;
-  white-space: nowrap;
-}
-.prx-de .prx-de-table tr.prx-de-last th, .prx-de .prx-de-table tr.prx-de-last td{
-  font-weight: 600;
-}
-.prx-de .prx-de-formula{
-  max-width: 100%;
-  overflow-x: auto;
-}
-.prx-de .prx-de-legend{
+.prx-de .prx-de-draw-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 0.75rem;
-  margin: 0.35rem 0 0;
-  padding: 0.35rem 0.5rem;
-  font-size: 0.85em;
+  gap: 0.45rem 0.65rem;
+  align-items: center;
+  margin: 0;
+}
+.prx-de .prx-de-draw-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.prx-de .prx-de-seedtag {
+  font-size: 0.8125rem;
+  color: var(--prx-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.prx-de .prx-stage .prx-de-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.65rem;
+  margin: 0.3rem 0 0;
+  padding: 0.28rem 0.45rem;
+  font-size: 0.8125rem;
   color: var(--prx-plot-fg);
   background: var(--prx-plot-bg);
-  border-radius: var(--prx-radius, 6px);
+  border: 1px solid var(--prx-plot-grid);
+  border-radius: 5px;
 }
-.prx-de .prx-de-legend-title{
-  flex: 1 1 100%;
-  font-weight: 600;
-}
-.prx-de .prx-de-key{
+.prx-de .prx-stage .prx-de-key {
   display: inline-flex;
-  gap: 0.35rem;
+  gap: 0.3rem;
   align-items: center;
   min-width: 0;
 }
-.prx-de .prx-de-swatch{
+.prx-de .prx-stage .prx-de-swatch {
   flex: none;
   display: inline-block;
-  width: 1em;
-  height: 1em;
+  width: 0.9rem;
+  height: 0.9rem;
   border: 1px solid var(--prx-cell-border);
 }
-.prx-de .prx-de-swatch-hatch{
+.prx-de .prx-stage .prx-de-swatch-hatch {
   background: repeating-linear-gradient(45deg, var(--prx-hatch) 0 1px, var(--prx-rel-withheld) 1px 5px);
 }
-.prx-de .prx-de-swatch-dot{
+.prx-de .prx-stage .prx-de-swatch-dot {
   background: var(--prx-grade-1);
   border-radius: 50%;
 }
-.prx-de .prx-de-swatch-cross{
+.prx-de .prx-stage .prx-de-swatch-cross {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8em;
+  font-size: 0.75em;
   font-weight: 700;
   line-height: 1;
   background: var(--prx-plot-bg);
-  border: 2.5px solid var(--prx-plot-fg);
+  border: 2px solid var(--prx-plot-fg);
 }
-.prx-de .prx-de-swatch-line{
+.prx-de .prx-stage .prx-de-swatch-line {
   height: 0;
   border: 0;
   border-top: 2px solid var(--prx-plot-fg);
 }
-.prx-de .prx-de-swatch-rule{
+.prx-de .prx-stage .prx-de-swatch-rule {
   height: 0;
   border: 0;
   border-top: 2px dashed var(--prx-err);
 }
+
+.prx-de .prx-stage .prx-de-drawline,
+.prx-de .prx-stage .prx-de-summary {
+  margin: 0.2rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--prx-plot-fg);
+  overflow-wrap: anywhere;
+}
+.prx-de .prx-stage .prx-de-thetas {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.8125rem;
+  color: var(--prx-plot-muted);
+  font-variant-numeric: tabular-nums;
+}
+.prx-de .prx-stage .prx-de-note,
+.prx-de .prx-de-note {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--prx-fg-muted);
+}
+.prx-de .prx-stage .prx-de-caption {
+  margin: 0.15rem 0 0;
+  font-size: 0.8125rem;
+  font-style: italic;
+  color: var(--prx-plot-muted);
+}
+
+.prx-de .prx-stage .prx-de-boundrow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+  padding-top: 0.3rem;
+  border-top: 1px solid var(--prx-plot-grid);
+}
+.prx-de .prx-stage .prx-de-bound {
+  width: 100%;
+  min-width: 0;
+}
+.prx-de .prx-stage .prx-de-bound > p {
+  margin: 0.3rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--prx-plot-fg);
+}
+.prx-de .prx-stage .prx-de-bound > .prx-de-badge {
+  margin-top: 0;
+  padding: 0.35rem 0.55rem;
+  background: var(--prx-plot-bg);
+  border: 1px solid var(--prx-plot-grid);
+  border-left: 3px solid var(--prx-plot-fg);
+  border-radius: 5px;
+}
+.prx-de .prx-stage .prx-de-bound > .prx-de-badge.prx-de-badge-no {
+  border-left-color: var(--prx-cell-border);
+}
+.prx-de .prx-de-why {
+  margin: 0.35rem 0;
+  border-color: var(--prx-border);
+}
+.prx-de .prx-de-why > summary {
+  min-height: 2.25rem;
+  padding: 0.3rem 0;
+  font-size: 0.875rem;
+}
+.prx-de .prx-de-why .prx-disclosure-body > p {
+  margin: 0.35rem 0 0;
+  font-size: 0.875rem;
+}
+.prx-de .prx-de-why .prx-disclosure-body > p:first-child {
+  margin-top: 0;
+}
+
+.prx-de .prx-de-table {
+  width: 100%;
+  margin: 0.35rem 0 0.65rem;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.prx-de .prx-de-table caption {
+  caption-side: top;
+  padding: 0 0 0.25rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--prx-fg-muted);
+}
+.prx-de .prx-de-table th,
+.prx-de .prx-de-table td {
+  padding: 0.25rem 0.55rem 0.25rem 0;
+  text-align: left;
+  border-bottom: 1px solid var(--prx-border);
+}
+.prx-de .prx-de-table td {
+  text-align: right;
+}
+.prx-de .prx-de-table td.prx-de-textcell,
+.prx-de .prx-de-table td.prx-de-lastcell {
+  text-align: left;
+}
+.prx-de .prx-de-table td.prx-de-lastcell {
+  font-style: italic;
+  white-space: nowrap;
+}
+.prx-de .prx-de-table tr.prx-de-last th,
+.prx-de .prx-de-table tr.prx-de-last td {
+  font-weight: 600;
+}
+.prx-de .prx-de-formula {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 0.4rem 0;
+}
+.prx-de .prx-de-best p {
+  margin: 0.3rem 0 0;
+  font-size: 0.875rem;
+}
+.prx-de .prx-de-label {
+  color: var(--prx-fg-muted);
+}
+
+@media (pointer: coarse), (max-width: 48em) {
+  .prx-de .prx-de-why > summary {
+    min-height: var(--prx-touch-target, 2.75rem);
+  }
+}
+@media (max-width: 48em) {
+  .prx-widget.prx-de[data-prx-frame="v2"] {
+    padding: 0.45rem;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] .prx-title {
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] .prx-toolbar {
+    gap: 0.3rem 0.45rem;
+    margin-bottom: 0.3rem;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] .prx-toolbar > .prx-controls {
+    width: 100%;
+    gap: 0.3rem 0.55rem;
+  }
+  .prx-de .prx-de-law,
+  .prx-de .prx-de-report,
+  .prx-widget.prx-de[data-prx-frame="v2"] .prx-controls > .prx-slider {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+  .prx-de .prx-de-law .prx-seg-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] .prx-presets {
+    width: 100%;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] .prx-presets .prx-seg-label {
+    display: none;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] .prx-presets .prx-seg-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] .prx-presets .prx-seg,
+  .prx-de .prx-de-law .prx-seg {
+    padding: 0.15rem 0.35rem;
+    font-size: 0.77rem;
+    line-height: 1.15;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] > .prx-readout {
+    margin-bottom: 0.35rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.3;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] .prx-stage {
+    padding: 0.4rem 0.45rem;
+  }
+  .prx-de .prx-stage .prx-de-main {
+    gap: 0.5rem;
+  }
+  .prx-de .prx-stage .prx-de-side {
+    gap: 0.45rem;
+  }
+  .prx-de .prx-stage .prx-de-tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.3rem;
+  }
+  .prx-de .prx-stage .prx-de-tile {
+    padding: 0.28rem 0.38rem;
+  }
+  .prx-de .prx-stage .prx-de-tile[data-na="true"] {
+    grid-column: span 2;
+  }
+  .prx-de .prx-stage .prx-de-tile-name {
+    font-size: 0.74rem;
+  }
+  .prx-de .prx-stage .prx-de-tile-value {
+    font-size: 0.95rem;
+  }
+  .prx-de .prx-de-draw-row {
+    flex: 1 1 100%;
+  }
+  .prx-de .prx-de-draw-buttons {
+    gap: 0.3rem;
+  }
+  .prx-de .prx-de-draw-buttons .prx-btn {
+    padding-inline: 0.42rem;
+    font-size: 0.8rem;
+  }
+  .prx-de .prx-stage .prx-de-legend {
+    padding: 0.2rem 0.35rem;
+    font-size: 0.76rem;
+    gap: 0.15rem 0.5rem;
+  }
+  .prx-widget.prx-de[data-prx-frame="v2"] > .prx-disclosures {
+    margin-top: 0.45rem;
+    gap: 0.35rem;
+  }
+}
 `;
-
-/** Shared draw buttons and seed field; caller renders disabled states from its draws key. */
-export function createDrawControls(ctx) {
-  const { h } = ctx;
-  const btnOne = ctx.button({ label: T.drawOne, key: "draw-one", onClick: () => ctx.set({ draws: ctx.state.draws + 1 }) });
-  const btnMany = ctx.button({ label: [`${T.drawMany} `, ctx.num(CONFIG.draws.many, formatCount(CONFIG.draws.many))], key: "draw-many", onClick: () => ctx.set({ draws: ctx.state.draws + CONFIG.draws.many }) });
-  const btnReset = ctx.button({ label: T.drawReset, key: "draw-reset", onClick: () => ctx.set({ draws: 0 }) });
-  const seed = ctx.numberInput({
-    label: T.seedLabel, min: CONFIG.seed.min, max: CONFIG.seed.max, step: 1, value: ctx.state.seed, name: "seed",
-    onInput: (v) => { if (Number.isFinite(v)) ctx.set({ seed: Math.round(v) }); },
-  });
-  const drawNote = h("p", { class: "prx-de-note", "data-prx-part": "notes", hidden: true });
-  const drawRow = h("div", { class: "prx-de-draw-row" }, h("div", { class: "prx-de-draw-buttons" }, btnOne.root, btnMany.root, btnReset.root), seed.root);
-
-  return { row: drawRow, note: drawNote, one: btnOne, many: btnMany, clear: btnReset, seed };
-}
-
-
-/** Empirical wrong-count histogram with the original top-bin rule and keyboard table. Options (2.8 only; the defaults
- *  are the original figure, as 2.9 draws it): zeroEvent fills the zero bin and names its event in the alt text, table
- *  and keyboard; zeroLabel also writes "every stated direction right" under the zero bin, below its tick (review 044
- *  repair, G2-F4: the zero bin is labeled on the figure); height sets the figure's height. */
-export function drawHistogram(ctx, histSlot, counts, N, { zeroEvent = false, zeroLabel = false, height = CONFIG.hist.height } = {}) {
-  const H = CONFIG.hist;
-  const named = zeroEvent && zeroLabel;
-  const top = N < H.minBins ? N : Math.max(H.minBins - 1, Math.min(N, Math.max(0, ...counts)));
-  const bins = Array.from({ length: top + 1 }, (_, k) => ({ k, draws: 0 }));
-  for (const x of counts) bins[Math.min(top, x)].draws += 1;
-  plot(histSlot, {
-    alt: T.histAlt + (zeroEvent ? " The zero bin is the event that every stated direction is right." : ""),
-    table: {
-      caption: T.histTable,
-      columns: [
-        { label: "Wrong stated directions", value: "k", format: (v) => formatCount(v) },
-        { label: "Draws", value: "draws", format: (v) => formatCount(v) },
-        ...(zeroEvent ? [{ label: "Event", value: d => d.k === 0 ? "every stated direction right" : "some stated direction wrong", num: false }] : []),
-      ],
-      rows: bins,
-    },
-    height, marginTop: H.marginTop, marginBottom: named ? H.zero.marginBottom : H.marginBottom, marginLeft: H.marginLeft, marginRight: H.marginRight,
-    color: { type: "identity" },
-    x: { domain: [-1 / 2, top + 1 / 2], ticks: bins.map((b) => b.k), label: "wrong stated directions in a draw", labelAnchor: "center", labelArrow: "none", labelOffset: named ? H.zero.labelOffset : H.labelOffset },
-    y: { label: "draws", labelArrow: "none", grid: true, nice: true,
-      ...(named || height !== H.height ? { ticks: (H.height - H.marginTop - H.marginBottom) / CONFIG.plotTickSpacing } : {}) },
-    marks: (c, P) => [
-      P.rectY(bins, { x1: (d) => d.k - H.half, x2: (d) => d.k + H.half, y: "draws", fill: d => zeroEvent && d.k === 0 ? c.post : c.plotGrid, stroke: c.plotFg }),
-      P.ruleY([0], { stroke: c.plotAxis }),
-      numText(bins, { x: "k", y: "draws", value: "draws", format: (v) => formatCount(v), dy: H.labelDy, lineAnchor: "bottom", fill: c.plotFg }),
-      // the zero bin's event in words, on its own lines between the tick labels and the axis label
-      named ? P.text([0], { x: (d) => d, y: () => 0, text: () => T.zeroBin, dy: H.zero.dy, lineAnchor: "top", fill: c.post, fontWeight: 600 }) : null,
-    ],
-    keyboard: { data: bins, x: "k", y: "draws", sort: false, label: T.histHeading, title: (d) => `${formatCount(d.draws)} ${d.draws === 1 ? "draw" : "draws"} with ${formatCount(d.k)}${d.k === top && top < N ? " or more" : ""} wrong stated directions.${zeroEvent && d.k === 0 ? " Every stated direction is right in this zero bin." : ""}` },
-  });
-}
-
-/** Engine running means, at most 400 displayed points, and the expected-count reference. Option height (2.8's compact
- *  figure; the default is the original height, as 2.9 draws it). */
-export function drawRunningAverage(ctx, runSlot, counts, E, { height = CONFIG.run.height } = {}) {
-  const R = CONFIG.run;
-  const S = counts.length;
-  const means = runningMean(counts);
-  const visible = Math.min(S, R.maxPoints);
-  const pts = Array.from({ length: visible }, (_, k) => {
-    const i = visible === 1 ? 0 : Math.round(k * (S - 1) / (visible - 1));
-    return { s: i + 1, avg: means[i] };
-  });
-  const top = Math.max(R.minTop, E * R.top, ...pts.map((p) => p.avg));
-  plot(runSlot, {
-    alt: T.runAlt,
-    table: {
-      caption: T.runTable,
-      columns: [
-        { label: "Draws so far", value: "s", format: (v) => formatCount(v) },
-        { label: "Average wrong", value: "avg", format: (v) => formatDecimal(v, { digits: CONFIG.digits.mean }) },
-      ],
-      rows: pts,
-    },
-    height, marginTop: R.marginTop, marginBottom: R.marginBottom, marginLeft: R.marginLeft, marginRight: R.marginRight,
-    x: { domain: [1, Math.max(R.minX, S)], label: "draws so far", labelAnchor: "center", labelArrow: "none", labelOffset: R.labelOffset },
-    y: { domain: [0, top], label: null, nice: true, grid: true,
-      ...(height !== R.height ? { ticks: (R.height - R.marginTop - R.marginBottom) / CONFIG.plotTickSpacing } : {}) },
-    marks: (c, P) => [
-      P.ruleY([E], { stroke: c.err, strokeDasharray: R.rule, strokeWidth: 2 }),
-      P.line(pts, { x: "s", y: "avg", stroke: c.plotFg, strokeWidth: 2 }),
-      P.dot(pts.slice(-1), { x: "s", y: "avg", r: 3, fill: c.plotFg }),
-    ],
-    keyboard: { data: pts.slice(-1), x: "s", y: "avg", sort: false, label: T.runHeading, title: (d) => `After ${formatCount(d.s)} draws the average is ${formatDecimal(d.avg, { digits: CONFIG.digits.mean })} wrong stated directions; E is ${formatExpectedCount(E)}.` },
-  });
-}
-
-/** Normal-law draw panel; rep.law supplies ids, means, sds and rep.g supplies grades. */
-export function drawTrueValueStrip(ctx, stripSlot, rep, theta, wrongPairs, { domain = CONFIG.strip.domain } = {}) {
-  const S = CONFIG.strip;
-  const ids = rep.law.ids;
-  const rows = ids.map((id, i) => ({
-    id, i, grade: rep.g[i], label: `${id} (grade ${rep.g[i]})`, theta: theta[i][0], mean: rep.law.means[i],
-    lo: rep.law.means[i] - CONFIG.six.spread * rep.law.sds[i], hi: rep.law.means[i] + CONFIG.six.spread * rep.law.sds[i],
-  }));
-  const labels = rows.map((r) => r.label);
-  const links = wrongPairs.map((p) => ({ x1: rows[p.i].theta, y1: rows[p.i].label, x2: rows[p.j].theta, y2: rows[p.j].label }));
-  plot(stripSlot, {
-    alt: T.stripAlt,
-    table: {
-      caption: T.stripTable,
-      columns: [
-        { label: "Site", value: "id" },
-        { label: "Grade in the report", value: "grade", format: (v) => formatCount(v) },
-        { label: "Drawn value", value: "theta", format: (v) => formatDecimal(v, { digits: CONFIG.digits.theta }) },
-        { label: "Posterior mean", value: "mean", format: (v) => formatDecimal(v, { digits: CONFIG.digits.theta }) },
-      ],
-      rows,
-    },
-    height: S.marginTop + S.marginBottom + rows.length * S.row,
-    marginTop: S.marginTop, marginBottom: S.marginBottom, marginLeft: S.marginLeft, marginRight: S.marginRight,
-    x: { domain: Array.from(domain), label: "true value θ in this draw", labelAnchor: "center", labelArrow: "none", labelOffset: S.labelOffset },
-    y: { domain: labels, label: null, tickSize: 0 },
-    marks: (c, P) => [
-      P.ruleY(rows, { y: "label", x1: "lo", x2: "hi", stroke: c.plotGrid, strokeWidth: S.r }),
-      P.tickX(rows, { y: "label", x: "mean", stroke: c.plotMuted, strokeWidth: 2, inset: S.row / 2 - S.tick / 2 }),
-      P.link(links, { x1: "x1", y1: "y1", x2: "x2", y2: "y2", stroke: c.plotFg, strokeWidth: S.link }),
-      P.dot(rows, { y: "label", x: "theta", r: S.r, fill: c.plotFg, stroke: c.plotBg }),
-    ],
-    keyboard: {
-      data: rows, x: "theta", y: "label", sort: false, label: T.drawHeading,
-      title: (d) => `${d.id}, grade ${d.grade}: drawn value ${formatDecimal(d.theta, { digits: CONFIG.digits.theta })}, posterior mean ${formatDecimal(d.mean, { digits: CONFIG.digits.theta })}.`,
-    },
-  });
-  return rows;
-}
-
-/** Render the current draw and its NA-safe share; theta is supplied for normal laws. */
-export function drawCurrentDraw(ctx, { line: drawLine, strip: stripSlot, key: stripKey }, rep, state, rw, last, { theta = null, domain = CONFIG.strip.domain } = {}) {
-  const { h } = ctx;
-  const ro = (name, raw, display) => { const n = ctx.num(raw, display); n.setAttribute("data-prx-readout", name); return n; };
-  const S = state.draws;
-  const appendValues = () => {
-    if (rep.law.key === "finite") return;
-    const rows = drawTrueValueStrip(ctx, stripSlot, rep, theta, rw.pairs[0], { domain });
-    const vals = rows.flatMap((r, i) => [i ? ", " : "", `${r.id} `, ro(`theta.${r.id}`, r.theta, formatDecimal(r.theta, { digits: CONFIG.digits.theta }))]);
-    drawLine.append(h("span", { class: "prx-de-thetas" }, " Drawn values: ", ...vals, "."));
-  };
-  stripSlot.hidden = rep.law.key === "finite" || S === 0;
-  stripKey.hidden = stripSlot.hidden;
-  if (S === 0 || !rw) {
-    drawLine.replaceChildren(T.noDrawShort);
-    return;
-  }
-  const N = rw.N;
-  const k = rw.D[0];
-  const head = ["Draw ", ro("drawIndex", S, formatCount(S)), " of ", ctx.num(S, formatCount(S)), ": "];
-  const joint = rep.law.joint ?? L3;
-  if (rep.law.key === "finite") head.push("the order ", joint.orders[last].split("").join(" > "), " (probability ", ctx.num(joint.probs[last], exact(joint.probs[last])), "). ");
-  if (N === 0) {
-    drawLine.replaceChildren(...head, rep.law.key === "finite" ? "Nothing" : "nothing", " is stated, so nothing can be wrong; the share is ", ro("lastShare", null, formatEoverN(null)), ".");
-    appendValues();
-    return;
-  }
-  const wrongWords = rw.pairs[0].map((p) => `${rep.law.ids[p.i]} above ${rep.law.ids[p.j]}`);
-  const shareV = rw.DoverN[0];
-  drawLine.replaceChildren(...head, ro("last", k, formatCount(k)), ` of the `, ctx.num(N, formatCount(N)), ` stated directions ${k === 1 ? "is" : "are"} wrong (share in this draw `,
-    ro("lastShare", shareV, rep.law.key === "finite" ? exact(shareV) : formatShare(shareV)), ")",
-    wrongWords.length ? `: ${wrongWords.join(", ")}.` : ".");
-  appendValues();
-
-}
-
-// ---------------------------------------------------------------------------------------------- widget
 
 export function mountWidget(el, spec = {}) {
   return createWidget(el, spec, {
@@ -862,9 +635,8 @@ export function mountWidget(el, spec = {}) {
     label: CONFIG.label,
     title: CONFIG.title,
     className: CONFIG.className,
-    css: CSS,
-    // the shared result-first frame (review 044, X-01): controls and preset row, the read-out, the charts, the caption
-    layout: "result-first",
+    frame: "v2",
+    css: V2_CSS,
     keys: {
       law: { type: "choice", values: CONFIG.laws.slice(), value: CONFIG.law },
       grades: { type: "custom", parse: (v) => parseGrades(v), value: CONFIG.grades.value.slice() },
@@ -872,13 +644,13 @@ export function mountWidget(el, spec = {}) {
       tau: { type: "number", min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: CONFIG.tau.value },
       draws: { type: "integer", min: CONFIG.draws.min, max: CONFIG.draws.max, value: CONFIG.draws.value },
       seed: { type: "integer", min: CONFIG.seed.min, max: CONFIG.seed.max, value: CONFIG.seed.value },
-      coupling: { type: "number", min: 0, max: L3.probs[3], step: .005, value: 0 },
+      coupling: { type: "number", min: 0, max: L3.probs[3], step: 0.005, value: 0 },
     },
     build(ctx) {
       const { h } = ctx;
       const hatchId = uid("prx-de-hatch");
+      const tauHintId = uid("prx-de-tau-hint");
 
-      // --- node helpers: numbers carry data-num; read-out numbers also a data-prx-readout name
       const ro = (name, raw, display) => {
         const n = ctx.num(raw, display);
         n.setAttribute("data-prx-readout", name);
@@ -888,157 +660,274 @@ export function mountWidget(el, spec = {}) {
       const gradeNum = (g, name) => (name ? ro(name, g.slice(), formatGrades(g)) : ctx.num(g.slice(), formatGrades(g)));
       const tauNText = (v, law) => {
         if (law === "finite") return exact(v);
+        if (v === 0) return "0";
         const d = CONFIG.digits;
-        const one = Math.abs(v * (10 ** d.tauN) - Math.round(v * (10 ** d.tauN))) < CONFIG.tauNTolerance;
+        const one = Math.abs(v * 10 ** d.tauN - Math.round(v * 10 ** d.tauN)) < CONFIG.tauNTolerance;
         return formatDecimal(v, { digits: one ? d.tauN : d.tauNFine });
       };
-      const eText = (v, law) => (law === "finite" ? exact(v) : formatExpectedCount(v));
+      const eRoText = (v, law) => (law === "finite" ? exact(v) : formatReadoutExpected(v));
       const enText = (v, law) => (v === null || v === undefined ? formatEoverN(null) : law === "finite" ? exact(v) : formatShare(v));
-      const errText = (v, law) => (law === "finite" ? exact(v) : formatProb(v));
+      const probRoText = (v, law) => (law === "finite" ? exact(v) : formatReadoutProb(v));
+      const riskRoText = (v, law) => (law === "finite" ? exact(v) : formatReadoutRisk(v));
+      const matrixErrText = (v, law) => (law === "finite" ? exact(v) : formatProb(v));
 
-      // --- controls (review 044 repair, G2-F4): the Example radio, the Report select and the τ slider in one row; the
-      // grade selects, the family radio and the seed in a closed box after them ("controls" placement: before the preset
-      // row; open, it takes a whole row); choosing "Your own" in the Report select opens it
+      // --- Primary controls: Example segmented, Report select, τ slider
       let settings = null;
-      const lawRadio = ctx.radioGroup({
-        legend: T.lawLegend, name: "law", className: "prx-de-law",
-        options: [{ value: "six", label: T.lawSix }, { value: "finite", label: T.lawFinite }],
+      const lawSeg = ctx.segmented({
+        label: T.lawLegend,
+        name: "law",
+        className: "prx-de-law",
+        options: [
+          { value: "six", label: "Six sites (normal)" },
+          { value: "finite", label: "Three-unit law" },
+        ],
         value: ctx.state.law,
         onChange: (v) => ctx.set({ law: v, grades: Array.from(CONFIG.starts[v]), draws: 0 }),
       });
+
       const reportMenus = {};
       const gradeBoxes = {};
       for (const key of CONFIG.laws) {
         const law = LAWS[key];
         const options = CONFIG.named[key].map((g) => ({ value: g.join(","), label: `${blocksText(g, law.ids)}` }));
-        options.push({ value: "custom", label: T.ownReport });
+        options.push({ value: "custom", label: "Your own" });
         reportMenus[key] = ctx.select({
-          label: T.reportLabel, name: `report-${key}`, options, value: CONFIG.starts[key].join(","),
+          label: T.reportLabel,
+          name: `report-${key}`,
+          options,
+          value: CONFIG.starts[key].join(","),
           onChange: (v) => {
-            // "Your own (set the grades below)": the grade selects are in the box below, so it opens
-            if (v === "custom") { if (settings && !settings.open) settings.open = true; return; }
+            if (v === "custom") {
+              if (settings && !settings.open) settings.open = true;
+              return;
+            }
             if (v) ctx.set({ grades: v.split(",").map(Number) });
           },
         });
-        // the control a reader changes first: it moves the matrix, the tiles and the read-out (measurement reads from it)
         ctx.primaryControl(reportMenus[key].input);
         const n = law.ids.length;
-        const selects = law.ids.map((id, i) => ctx.select({
-          label: id, name: `grade-${key}-${id}`,
-          options: Array.from({ length: n }, (_, k) => ({ value: k + 1, label: String(k + 1) })),
-          value: CONFIG.starts[key][i],
-          onChange: (v) => {
-            const rep = reportOf(ctx.state);
-            const raw = rep.g.slice();
-            raw[i] = v;
-            ctx.set({ grades: raw });
-          },
-        }));
+        const selects = law.ids.map((id, i) =>
+          ctx.select({
+            label: id,
+            name: `grade-${key}-${id}`,
+            options: Array.from({ length: n }, (_, k) => ({ value: k + 1, label: String(k + 1) })),
+            value: CONFIG.starts[key][i],
+            onChange: (v) => {
+              const rep = reportOf(ctx.state);
+              const raw = rep.g.slice();
+              raw[i] = v;
+              ctx.set({ grades: raw });
+            },
+          }),
+        );
         for (const [i, s] of selects.entries()) s.input.setAttribute("aria-label", `${T.gradeOf} ${law.ids[i]}`);
         const box = h("fieldset", { class: "prx-control prx-de-grades" }, h("legend", {}, T.gradesLegend), ...selects.map((s) => s.root));
         gradeBoxes[key] = { box, selects };
       }
-      const famSizes = { all: familySize(LAWS.six.ids.length, { kind: "all" }), cap: familySize(LAWS.six.ids.length, { kind: "atMost", G: CONFIG.cap.capped }) };
+
+      const famSizes = {
+        all: familySize(LAWS.six.ids.length, { kind: "all" }),
+        cap: familySize(LAWS.six.ids.length, { kind: "atMost", G: CONFIG.cap.capped }),
+      };
       const familyRadio = ctx.radioGroup({
-        legend: T.familyLegend, name: "cap", className: "prx-de-family",
+        legend: T.familyLegend,
+        name: "cap",
+        className: "prx-de-family",
         options: [
           { value: CONFIG.cap.none, label: [`${T.familyAll}, `, ctx.num(famSizes.all, formatCount(famSizes.all)), ` ${T.reports}`] },
-          { value: CONFIG.cap.capped, label: [`${T.familyCap} `, ctx.num(CONFIG.cap.capped, formatCount(CONFIG.cap.capped)), ` ${T.familyCapEnd}, `, ctx.num(famSizes.cap, formatCount(famSizes.cap)), ` ${T.reports}`] },
+          {
+            value: CONFIG.cap.capped,
+            label: [
+              `${T.familyCap} `,
+              ctx.num(CONFIG.cap.capped, formatCount(CONFIG.cap.capped)),
+              ` ${T.familyCapEnd}, `,
+              ctx.num(famSizes.cap, formatCount(famSizes.cap)),
+              ` ${T.reports}`,
+            ],
+          },
         ],
         value: ctx.state.cap,
         onChange: (v) => ctx.set({ cap: v }),
       });
+
       const tau = ctx.slider({
-        label: T.tauSlider, min: CONFIG.tau.min, max: CONFIG.tau.max, step: CONFIG.tau.step, value: ctx.state.tau,
-        name: "tau", hint: ["A wrong stated direction costs ", ctx.num(1, formatCount(1)), "; staying silent on one pair costs τ. E and E/N do not depend on τ."], onInput: (v) => ctx.set({ tau: v }),
+        label: T.tauSlider,
+        ...ctx.key("tau"),
+        format: formatSetting,
+        onInput: (v) => ctx.set({ tau: v }),
       });
+      tau.input.setAttribute("aria-describedby", tauHintId);
+
       const { row: drawRow, note: drawNote, one: btnOne, many: btnMany, clear: btnReset, seed } = createDrawControls(ctx);
+      const seedTag = h("span", { class: "prx-de-seedtag" });
+      (drawRow.querySelector(".prx-de-draw-buttons") ?? drawRow).append(seedTag);
       const reportBox = h("div", { class: "prx-de-report" }, reportMenus.six.root, reportMenus.finite.root);
-      ctx.controls.append(lawRadio.root, reportBox, tau.root);
-      settings = ctx.disclosure({ name: "settings", title: T.settingsSix, placement: "controls", className: "prx-de-settings" });
-      // the seed field leaves the draw row (2.8 only: 2.9's own draw row keeps it) for the box
+      ctx.controls.append(lawSeg.root, reportBox, tau.root, drawRow, drawNote);
+
+      settings = ctx.settingsBox(T.settingsSix, { className: "prx-de-settings" });
       seed.root.classList.add("prx-de-seed");
       settings.body.append(gradeBoxes.six.box, gradeBoxes.finite.box, familyRadio.root, seed.root);
 
-      // --- panels (the DOM in the phone order: matrix, result column, this draw, bound row; named grid areas place
-      // them on a wide container, CSS above)
+      // --- Stage: [data-prx-primary] matrix, persistent 3-sig-fig tiles + coupling + draw charts, current draw (hidden at S=0), bound row
+      ctx.stage.removeAttribute("data-prx-primary");
       const matrixSlot = ctx.primaryGraphic(h("div", { class: "prx-de-matrix" }));
       const matrixLegend = h("div", { class: "prx-de-legend", "data-prx-part": "legend" });
-      const stripSlot = h("div", { class: "prx-de-chart" });
-      const drawLine = h("p", { class: "prx-de-drawline", "data-prx-part": "readout" });
-      const stripKey = h("div", { class: "prx-de-legend", "data-prx-part": "legend" }, h("span", {}, T.stripKey[0], ctx.num(CONFIG.six.spread, formatCount(CONFIG.six.spread)), T.stripKey[1]));
-      const lawTableSlot = h("div", { class: "prx-de-law-table", "data-prx-part": "readout" });
-      const lawFormula = h("div", { class: "prx-de-formula", "data-prx-part": "readout", "data-prx-tex": "law-E" });
-      const lawHeading = h("h4", { class: "prx-de-heading", text: T.lawTableHeading });
-      const coupling = ctx.slider({ label: "Coupling shift u", ...ctx.key("coupling"), format: v => formatDecimal(v, { digits: 3 }), onInput: u => ctx.set({ coupling: u }),
-        hint: "Moves probability among whole orders while keeping every pair's wrong-direction probability unchanged." });
+      const matrixPanel = h(
+        "section",
+        { class: "prx-de-panel prx-de-area-matrix", "aria-label": T.matrixHeading, "data-prx-part": "chart" },
+        matrixSlot,
+        matrixLegend,
+      );
+
+      const tiles = h("div", { class: "prx-de-tiles", "data-prx-part": "readout" });
+      const tileEls = {};
+      const tile = (key, name) => {
+        const value = h("span", { class: "prx-de-tile-value" });
+        const root = h("div", { class: "prx-de-tile" }, h("span", { class: "prx-de-tile-name", text: name }), value);
+        tileEls[key] = { root, value };
+        return root;
+      };
+      tiles.append(
+        tile("N", "Stated pairs N"),
+        tile("E", "Expected wrong E"),
+        tile("EN", "Expected share E/N"),
+        tile("allRight", "All stated right"),
+        tile("union", "Union lower bound"),
+        tile("tau", "Cost τ"),
+      );
+
+      const coupling = ctx.slider({
+        label: "Coupling shift u",
+        ...ctx.key("coupling"),
+        format: (v) => formatDecimal(v, { digits: 3 }),
+        onInput: (u) => ctx.set({ coupling: u }),
+      });
       const couplingValue = h("strong");
       const couplingResult = h("p", { class: "prx-de-coupling-result" }, "Exact all-right probability: ", couplingValue);
       coupling.output.after(couplingResult);
-      const pairErrors = h("p", { class: "prx-de-note" });
-      ctx.scrollRegion(lawTableSlot, "Finite-law order table");
-      // finite law: the coupling slider directly under the all-right and union tiles; the order table, the formula for E
-      // and the fixed pair errors after the tiles' notes
       const couplingBox = h("div", { class: "prx-de-coupling" }, coupling.root);
-      const lawBox = h("div", { class: "prx-de-lawbox" }, lawHeading, lawTableSlot, lawFormula, pairErrors);
-      const matrixPanel = h("section", { class: "prx-de-panel prx-de-area-matrix", "aria-label": T.matrixHeading, "data-prx-part": "chart" },
-        h("h4", { class: "prx-de-heading", text: T.matrixHeading }), matrixSlot, matrixLegend);
-      const thisDraw = h("div", { class: "prx-de-thisdraw prx-de-area-draw" }, h("h4", { class: "prx-de-heading", text: T.drawHeading }), drawLine, stripSlot, stripKey);
-
-      const tiles = h("div", { class: "prx-de-tiles", "data-prx-part": "readout" });
-      const evalCaption = h("p", { class: "prx-de-caption", "data-prx-part": "caption" });
-      const eventNote = h("p", { class: "prx-de-note" });
-      const resultsPanel = h("section", { class: "prx-de-panel", "aria-label": T.resultsHeading },
-        h("h4", { class: "prx-de-heading", text: T.resultsHeading }), tiles, couplingBox, eventNote, evalCaption, lawBox);
+      const resultsPanel = h("section", { class: "prx-de-panel", "aria-label": T.resultsHeading }, tiles, couplingBox);
 
       const histSlot = h("div", { class: "prx-de-chart" });
-      const histEvent = h("p", { class: "prx-de-note", "data-prx-part": "readout" });
+      const histEvent = h("p", { class: "prx-de-summary", "data-prx-part": "readout" });
+      const histSub = h("div", { class: "prx-de-sub", hidden: true }, h("h4", { class: "prx-de-heading", text: T.histHeading }), histSlot, histEvent);
+
       const runSlot = h("div", { class: "prx-de-chart" });
-      const runLegend = h("div", { class: "prx-de-legend", "data-prx-part": "legend" },
+      const runLegend = h(
+        "div",
+        { class: "prx-de-legend", "data-prx-part": "legend" },
         h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-line" }), T.runKeyLine),
-        h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-rule" }), T.runKeyE));
-      const drawsSummary = h("p", { class: "prx-de-summary", "data-prx-part": "readout" });
-      const mcCaption = h("p", { class: "prx-de-caption", "data-prx-part": "caption" });
-      // the seed the next draws use, beside the buttons (the field itself is in the box above)
-      const seedTag = h("span", { class: "prx-de-seedtag" });
-      (drawRow.querySelector(".prx-de-draw-buttons") ?? drawRow).append(seedTag);
-      const histSub = h("div", { class: "prx-de-sub" }, h("h4", { class: "prx-de-heading", text: T.histHeading }), histSlot, histEvent);
-      const runSub = h("div", { class: "prx-de-sub" }, h("h4", { class: "prx-de-heading", text: T.runHeading }), runSlot, runLegend);
-      // six sites with stated pairs: the all-right note that changes with the draws (under the zero-bin note, or under
-      // the "No draws yet" note), below the buttons so a first draw does not move them
-      const eventNoteSix = h("p", { class: "prx-de-note" });
-      const noDraws = h("p", { class: "prx-de-note", "data-prx-part": "notes" }, `${T.noDraw} `, ctx.num(CONFIG.draws.many, formatCount(CONFIG.draws.many)), ".");
-      // the buttons directly above the histogram (review 044 repair: the draw's result next to the button)
-      const drawsPanel = h("section", { class: "prx-de-panel prx-de-draws", "aria-label": T.runHeading, "data-prx-part": "chart" },
-        drawRow, drawNote, noDraws, histSub, eventNoteSix, runSub, drawsSummary, mcCaption);
+        h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-rule" }), T.runKeyE),
+      );
+      const drawsSummary = h("p", { class: "prx-de-summary", "data-prx-part": "readout", hidden: true });
+      const mcCaption = h("p", { class: "prx-de-caption", "data-prx-part": "caption", hidden: true });
+      const runSub = h("div", { class: "prx-de-sub", hidden: true }, h("h4", { class: "prx-de-heading", text: T.runHeading }), runSlot, runLegend);
+
+      const drawsPanel = h(
+        "section",
+        { class: "prx-de-panel prx-de-draws", "aria-label": T.runHeading, "data-prx-part": "chart", hidden: true },
+        histSub,
+        runSub,
+        drawsSummary,
+        mcCaption,
+      );
       const resultCol = h("div", { class: "prx-de-side prx-de-area-result" }, resultsPanel, drawsPanel);
 
-      // --- the bound row: the one-line badge, the one diagnostic line and a closed "Why" box (data-prx-bound on the
-      // wrapper, so its label, family size and "not a bound" wording stay inside it), then the best report and its button
+      const drawLine = h("p", { class: "prx-de-drawline", "data-prx-part": "readout" });
+      const stripSlot = h("div", { class: "prx-de-chart" });
+      const stripKey = h(
+        "div",
+        { class: "prx-de-legend", "data-prx-part": "legend" },
+        h("span", {}, T.stripKey[0], ctx.num(CONFIG.six.spread, formatCount(CONFIG.six.spread)), T.stripKey[1]),
+      );
+      const thisDraw = h(
+        "div",
+        { class: "prx-de-thisdraw prx-de-area-draw", hidden: true },
+        h("h4", { class: "prx-de-heading", text: T.drawHeading }),
+        drawLine,
+        stripSlot,
+        stripKey,
+      );
+
       const boundBox = h("div", { class: "prx-de-bound", "data-prx-part": "readout" });
       const badgeLine = h("p", { class: "prx-de-badge" });
       const diagLine = h("p", {});
       const why = ctx.disclosure({ name: "why", title: T.whyTitle, placement: "none", className: "prx-de-why" });
-      boundBox.append(badgeLine, diagLine, why.root);
-      const best = h("div", { class: "prx-de-best", "data-prx-part": "readout" });
-      const bestBtn = ctx.button({ label: T.useBest, key: "use-best", onClick: () => { const o = optimumOf(ctx.state.law, ctx.state.cap, ctx.state.tau, ctx.state.coupling); if (!o.empty) ctx.set({ grades: Array.from(o.grade) }); } });
-      const boundRow = h("div", { class: "prx-de-boundrow prx-de-area-bound" }, boundBox, best, bestBtn.root);
+      boundBox.append(badgeLine, diagLine);
+      const bestBtn = ctx.button({
+        label: T.useBest,
+        key: "use-best",
+        onClick: () => {
+          const o = optimumOf(ctx.state.law, ctx.state.cap, ctx.state.tau, ctx.state.coupling);
+          if (!o.empty) ctx.set({ grades: Array.from(o.grade) });
+        },
+      });
+      const boundRow = h("div", { class: "prx-de-boundrow prx-de-area-bound" }, boundBox, bestBtn.root);
 
-      ctx.charts.classList.add("prx-de-charts");
-      ctx.charts.append(h("div", { class: "prx-de-main" }, matrixPanel, resultCol, thisDraw, boundRow));
-      ctx.caption.replaceChildren(h("span", {}, `${T.note} (`), captionNode(ctx, "teaching-posterior"), ").");
+      const mainGrid = h("div", { class: "prx-de-main" }, matrixPanel, resultCol, thisDraw, boundRow);
+      ctx.stage.append(mainGrid);
 
-      // Linked figures
+      // --- Data and exact values disclosure
+      const dataBox = ctx.dataBox("Data and exact values");
+      const sixUnitsTableSlot = h("div");
+      const sixPairsTableSlot = h("div");
+      const sixDataWrap = h("div", {}, sixUnitsTableSlot, sixPairsTableSlot);
 
-      function drawMatrix(rep, rel, wrong) {
+      const lawHeading = ctx.panelTitle(T.lawTableHeading);
+      const lawTableSlot = h("div", { class: "prx-de-law-table" });
+      ctx.scrollRegion(lawTableSlot, "Finite-law order table");
+      const pairErrors = h("p", { class: "prx-de-note" });
+      const finiteDataWrap = h("div", {}, lawHeading, lawTableSlot, pairErrors);
+      dataBox.body.append(sixDataWrap, finiteDataWrap);
+
+      // --- Method and details disclosure
+      const methodBox = ctx.methodBox("Method and details");
+      const best = h("div", { class: "prx-de-best" });
+      const tauHintEl = h(
+        "p",
+        { id: tauHintId, class: "prx-de-note", "data-prx-part": "notes" },
+        "A wrong stated direction costs ",
+        ctx.num(1, formatCount(1)),
+        "; staying silent on one pair costs τ. E and E/N do not depend on τ.",
+      );
+      const eventNote = h("p", { class: "prx-de-note" });
+      const lawFormula = h("div", { class: "prx-de-formula", "data-prx-tex": "law-E" });
+      const drawsLeadNote = h("p", { class: "prx-de-note" }, T.drawsLead);
+      const matrixDetailNote = h(
+        "p",
+        { class: "prx-de-note" },
+        "Six fictional sites from the postrank tutorial, score A (independent normal posteriors), and the three-unit finite law from the postrank theory book, chapter 10. Withheld cells share a grade without claiming equality.",
+      );
+      methodBox.body.append(why.root, best, tauHintEl, eventNote, lawFormula, drawsLeadNote, matrixDetailNote);
+
+      ctx.caption.replaceChildren(
+        "Six fictional sites and a three-unit finite law (",
+        captionNode(ctx, "teaching-posterior"),
+        "; ",
+        captionNode(ctx, "fixed-report"),
+        ").",
+      );
+
+      // --- Render helpers
+
+      function drawMatrix(rep, rel, wrong, hasDraws) {
         const { n, g, law } = rep;
         const ids = law.ids;
         const e0 = law.E.e[0];
-        const avail = matrixSlot.clientWidth || Math.min(ctx.width(), MX.maxCell * n + MX.marginLeft + MX.marginRight);
-        const cell = Math.max(MX.minCell, Math.min(MX.maxCell, Math.floor((avail - MX.marginLeft - MX.marginRight) / n)));
+        matrixSlot.style.maxWidth = "";
+        const stageW = mainGrid.clientWidth || ctx.stage.clientWidth || ctx.width();
+        const twoCol = Boolean(ctx.win?.matchMedia?.("(min-width: 52rem)")?.matches) && stageW > 640;
+        const slotW = matrixSlot.clientWidth;
+        const rawAvail = twoCol
+          ? Math.max(slotW, stageW - 332)
+          : slotW || Math.min(stageW, 86 * n + MX.marginLeft + MX.marginRight);
+        const maxCell = n <= 3 ? 86 : 64;
+        const avail = Math.min(rawAvail, maxCell * n + MX.marginLeft + MX.marginRight);
+        const cell = Math.max(MX.minCell, Math.min(maxCell, Math.floor((avail - MX.marginLeft - MX.marginRight) / n)));
         const width = MX.marginLeft + MX.marginRight + n * cell;
         const height = MX.marginTop + MX.marginBottom + n * cell;
         matrixSlot.style.maxWidth = `${width}px`;
+
         const cells = [];
         const diag = [];
         const every = [];
@@ -1059,27 +948,38 @@ export function mountWidget(el, spec = {}) {
           }
         }
         const G = Math.max(...g);
-        const relWords = (d) => (d.rel === 1 ? `the report states ${d.row} above ${d.col}, wrong with probability ${errText(d.e, law.key)}${d.wrong ? "; wrong in this draw" : ""}`
-          : d.rel === -1 ? `the report states ${d.col} above ${d.row}`
-            : `the report withholds this pair (${d.row} and ${d.col} share grade ${g[d.i]})`);
+        const relWords = (d) =>
+          d.rel === 1
+            ? `the report states ${d.row} above ${d.col}, wrong with probability ${matrixErrText(d.e, law.key)}${d.wrong ? "; wrong in this draw" : ""}`
+            : d.rel === -1
+              ? `the report states ${d.col} above ${d.row}`
+              : `the report withholds this pair (${d.row} and ${d.col} share grade ${g[d.i]})`;
+
         const columns = [
           { label: "Pair", value: (r) => (r.rel === 0 ? `${ids[r.a]} and ${ids[r.b]}` : `${ids[r.a]} above ${ids[r.b]}`) },
           { label: "The report", value: (r) => (r.rel === 0 ? "withholds the pair" : "states this direction") },
+          { label: "Error of the stated direction", value: (r) => r.e, format: (v) => (v === null ? "none: withheld" : matrixErrText(v, law.key)) },
+          { label: "Wrong in this draw", value: (r) => (r.rel === 0 ? "withheld" : r.wrong ? "yes" : "no") },
         ];
-        columns.push({ label: "Error of the stated direction", value: (r) => r.e, format: (v) => (v === null ? "none: withheld" : errText(v, law.key)) });
-        columns.push({ label: "Wrong in this draw", value: (r) => (r.rel === 0 ? "withheld" : r.wrong ? "yes" : "no") });
+
         plot(matrixSlot, {
           alt: T.matrixAlt,
           table: { caption: T.matrixTable, columns, rows: pairs },
-          width, height,
-          marginTop: MX.marginTop, marginLeft: MX.marginLeft, marginRight: MX.marginRight, marginBottom: MX.marginBottom,
+          width,
+          height,
+          marginTop: MX.marginTop,
+          marginLeft: MX.marginLeft,
+          marginRight: MX.marginRight,
+          marginBottom: MX.marginBottom,
           x: { domain: ids.slice(), padding: 0, axis: "top", label: null, tickSize: 0 },
           y: { domain: ids.slice(), padding: 0, label: null, tickSize: 0 },
           color: { type: "identity" },
           marks: (c, P) => {
             const fillOf = (d) => (d.rel === 1 ? c.relAbove : d.rel === -1 ? c.relBelow : c.relWithheld);
             const filled = cells.map((d) => ({ ...d, fill: fillOf(d), ink: labelOn(fillOf(d), c) }));
-            const above = filled.filter((d) => d.rel === 1);
+            const aboveAll = filled.filter((d) => d.rel === 1);
+            const aboveClean = aboveAll.filter((d) => !d.wrong);
+            const aboveWrong = aboveAll.filter((d) => d.wrong);
             const below = filled.filter((d) => d.rel === -1);
             const withheld = filled.filter((d) => d.rel === 0);
             const wrongCells = filled.filter((d) => d.wrong);
@@ -1088,111 +988,180 @@ export function mountWidget(el, spec = {}) {
             const hatch = () => {
               const defs = ctx.doc.createElementNS(SVGNS, "defs");
               const pat = ctx.doc.createElementNS(SVGNS, "pattern");
-              for (const [k, v] of Object.entries({ id: hatchId, patternUnits: "userSpaceOnUse", width: MX.hatchSpacing, height: MX.hatchSpacing, patternTransform: "rotate(45)" })) pat.setAttribute(k, String(v));
+              for (const [k, v] of Object.entries({
+                id: hatchId,
+                patternUnits: "userSpaceOnUse",
+                width: MX.hatchSpacing,
+                height: MX.hatchSpacing,
+                patternTransform: "rotate(45)",
+              })) {
+                pat.setAttribute(k, String(v));
+              }
               const line = ctx.doc.createElementNS(SVGNS, "line");
-              for (const [k, v] of Object.entries({ x1: 0, y1: 0, x2: 0, y2: MX.hatchSpacing, stroke: c.hatch, "stroke-width": MX.hatchWidth })) line.setAttribute(k, String(v));
+              for (const [k, v] of Object.entries({ x1: 0, y1: 0, x2: 0, y2: MX.hatchSpacing, stroke: c.hatch, "stroke-width": MX.hatchWidth })) {
+                line.setAttribute(k, String(v));
+              }
               pat.append(line);
               defs.append(pat);
               return defs;
             };
-            const symbolSize = Math.round(cell * MX.symbolShare);
+            const symbolSize = Math.max(13, Math.round(cell * MX.symbolShare));
+            const crossSize = Math.max(13, Math.round(cell * 0.25));
+            const fmtCell = (v) => (law.key === "finite" ? exact(v) : formatProb(v, { bounds: "symbols" }));
             return [
               P.cell(diag, { x: "col", y: "row", fill: c.plotGrid, inset: MX.inset }),
               P.cell(filled, { x: "col", y: "row", fill: "fill", stroke: c.cellBorder, strokeWidth: 1, inset: MX.inset }),
               hatch,
               P.cell(withheld, { x: "col", y: "row", fill: `url(#${hatchId})`, inset: MX.inset }),
               P.text(below, { x: "col", y: "row", text: () => "<", fill: "ink", fontWeight: MX.labelWeight, fontSize: symbolSize }),
-              numText(above, { x: "col", y: "row", value: "e", format: (v) => (law.key === "finite" ? exact(v) : formatProb(v, { bounds: "symbols" })), fill: "ink", stroke: "fill", strokeWidth: MX.labelHalo, paintOrder: "stroke" }),
+              aboveClean.length
+                ? numText(aboveClean, {
+                    x: "col",
+                    y: "row",
+                    value: "e",
+                    format: fmtCell,
+                    fill: "ink",
+                    stroke: "fill",
+                    strokeWidth: MX.labelHalo,
+                    paintOrder: "stroke",
+                    fontSize: 13,
+                  })
+                : null,
+              aboveWrong.length
+                ? numText(aboveWrong, {
+                    x: "col",
+                    y: "row",
+                    value: "e",
+                    format: fmtCell,
+                    dy: 5,
+                    fill: "ink",
+                    stroke: "fill",
+                    strokeWidth: MX.labelHalo,
+                    paintOrder: "stroke",
+                    fontSize: 13,
+                  })
+                : null,
               wrongCells.length ? P.cell(wrongCells, { x: "col", y: "row", fill: "none", stroke: c.plotFg, strokeWidth: MX.wrongWidth, inset: MX.wrongInset }) : null,
-              wrongCells.length ? P.text(wrongCells, { x: "col", y: "row", text: () => "✕", dx: cell * MX.crossDx, dy: -cell * MX.crossDy, fill: c.plotFg, stroke: c.plotBg, strokeWidth: MX.labelHalo, paintOrder: "stroke", fontWeight: MX.labelWeight, fontSize: Math.round(cell * MX.crossShare) }) : null,
+              wrongCells.length
+                ? P.text(wrongCells, {
+                    x: "col",
+                    y: "row",
+                    text: () => "✕",
+                    dx: Math.round(cell * 0.29),
+                    dy: -Math.round(cell * 0.29),
+                    fill: c.plotFg,
+                    stroke: c.plotBg,
+                    strokeWidth: MX.labelHalo,
+                    paintOrder: "stroke",
+                    fontWeight: MX.labelWeight,
+                    fontSize: crossSize,
+                  })
+                : null,
               P.dot(dots, { x: "col", y: "row", r: cell * MX.dotShare, fill: "fill", stroke: c.plotBg }),
-              numText(dots, { x: "col", y: "row", value: "grade", format: (v) => formatCount(v), fill: "ink" }),
+              numText(dots, { x: "col", y: "row", value: "grade", format: (v) => formatCount(v), fill: "ink", fontSize: 13 }),
             ];
           },
           keyboard: {
-            data: every, x: "col", y: "row", key: (d) => `${d.row}${d.col}`, sort: false, columns: n,
+            data: every,
+            x: "col",
+            y: "row",
+            key: (d) => `${d.row}${d.col}`,
+            sort: false,
+            columns: n,
             label: T.matrixAlt,
             title: (d) => (d.diagonal ? `Row ${d.row}, column ${d.col}: the same ${law.unitWord}, in grade ${d.grade}.` : `Row ${d.row}, column ${d.col}: ${relWords(d)}.`),
           },
         });
+
         const keys = [
-          h("span", { class: "prx-de-legend-title", text: T.relationTitle }),
-          h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch", style: { background: "var(--prx-rel-above)" } }), T.relAbove),
-          h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-hatch" }), T.relWithheld),
-          h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch", style: { background: "var(--prx-rel-below)" } }), T.relBelow),
-          h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-dot" }), T.gradeKey),
+          h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch", style: { background: "var(--prx-rel-above)" } }), "row > col (error)"),
+          h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-hatch" }), "withheld"),
+          h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch", style: { background: "var(--prx-rel-below)" } }), "row < col"),
+          h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-dot" }), "grade"),
         ];
-        keys.push(h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-cross", text: "✕" }), T.wrongKey));
+        if (hasDraws) {
+          keys.push(h("span", { class: "prx-de-key" }, h("span", { class: "prx-de-swatch prx-de-swatch-cross", text: "✕" }), "wrong in draw"));
+        }
         matrixLegend.replaceChildren(...keys);
       }
 
-      // ------------------------------------------------------------------------------------- this draw
-
-
-      function drawLawTable(rep, last, tauV) {
-        const joint = rep.law.joint;
-        const byOrder = joint.states.map((st) => realizedWrong(rep.g, st));
-        lawHeading.textContent = joint === L3 ? T.lawTableHeading : "Orders and their coupling probabilities";
-        const rows = joint.orders.map((o, s) => {
-          const lastCell = last === s ? "this draw" : "";
-          return h("tr", { class: last === s ? "prx-de-last" : null },
-            h("th", { scope: "row", text: o.split("").join(" > ") }),
-            h("td", {}, ctx.num(joint.probs[s], exact(joint.probs[s]))),
-            h("td", {}, ro(`order${s}.wrong`, byOrder[s].D[0], formatCount(byOrder[s].D[0]))),
-            h("td", { class: "prx-de-lastcell", text: lastCell }));
-        });
-        lawTableSlot.replaceChildren(h("table", { class: "prx-de-table" },
-          h("caption", { text: T.lawTableCaption }),
-          h("thead", {}, h("tr", {}, h("th", { scope: "col", text: T.orderCol }), h("th", { scope: "col", text: T.probCol }), h("th", { scope: "col", text: T.wrongCol }), h("th", { scope: "col", text: T.lastDrawCol }))),
-          h("tbody", {}, ...rows)));
-        // E = Σ (probability of the order) × (wrong stated directions in it)
-        const ev = evaluateReport(rep.g, rep.law.E, { tau: tauV });
-        const f = formulaNums();
-        const terms = joint.probs.map((p, s) => `${f.num(p, exact(p))}\\cdot${f.num(byOrder[s].D[0], formatCount(byOrder[s].D[0]))}`);
-        // Two probability-times-count terms per line keep every term and the result visible on a phone.
-        const lines = [];
-        for (let i = 0; i < terms.length; i += 2) lines.push(`${i ? "&\\quad+ " : "E &= "}${terms.slice(i, i + 2).join(" + ")}`);
-        lines.push(`&= \\;${f.num(ev.Ew, exact(ev.Ew))}`);
-        renderTex(lawFormula, `\\begin{aligned}${lines.join(" \\\\ ")}\\end{aligned}`, { display: true, nums: f.raws });
-        pairErrors.replaceChildren("Wrong-direction probabilities stay fixed: ", ...[[0, 1], [0, 2], [1, 2]].flatMap(([i, j], k) => [k ? "; " : "", `${joint.ids[i]} above ${joint.ids[j]}: `, ro(`pairError.${joint.ids[i]}${joint.ids[j]}`, rep.law.E.e[0][i][j], exact(rep.law.E.e[0][i][j]))]), ". The joint event can change even though these pair probabilities do not.");
+      function renderCurrentDraw(rep, state, rw, last, theta) {
+        const S = state.draws;
+        thisDraw.hidden = S === 0;
+        stripSlot.hidden = rep.law.key === "finite" || S === 0;
+        stripKey.hidden = stripSlot.hidden;
+        if (S === 0 || !rw) {
+          drawLine.replaceChildren();
+          return;
+        }
+        const appendValues = () => {
+          if (rep.law.key === "finite") return;
+          const rows = drawTrueValueStrip(ctx, stripSlot, rep, theta, rw.pairs[0]);
+          const vals = rows.flatMap((r, i) => [
+            i ? ", " : "",
+            `${r.id} `,
+            ro(`theta.${r.id}`, r.theta, safeDec(r.theta, CONFIG.digits.theta)),
+          ]);
+          drawLine.append(h("span", { class: "prx-de-thetas" }, " Drawn values: ", ...vals, "."));
+        };
+        const N = rw.N;
+        const k = rw.D[0];
+        const head = ["Draw ", ro("drawIndex", S, formatCount(S)), " of ", ctx.num(S, formatCount(S)), ": "];
+        const joint = rep.law.joint ?? L3;
+        if (rep.law.key === "finite") {
+          head.push("the order ", joint.orders[last].split("").join(" > "), " (probability ", ctx.num(joint.probs[last], exact(joint.probs[last])), "). ");
+        }
+        if (N === 0) {
+          drawLine.replaceChildren(
+            ...head,
+            rep.law.key === "finite" ? "Nothing" : "nothing",
+            " is stated, so nothing can be wrong; the share is ",
+            ro("lastShare", null, formatEoverN(null)),
+            ".",
+          );
+          appendValues();
+          return;
+        }
+        const wrongWords = rw.pairs[0].map((p) => `${rep.law.ids[p.i]} above ${rep.law.ids[p.j]}`);
+        const shareV = rw.DoverN[0];
+        drawLine.replaceChildren(
+          ...head,
+          ro("last", k, formatCount(k)),
+          " of the ",
+          ctx.num(N, formatCount(N)),
+          ` stated directions ${k === 1 ? "is" : "are"} wrong (share in this draw `,
+          ro("lastShare", shareV, rep.law.key === "finite" ? exact(shareV) : formatShare(shareV)),
+          ")",
+          wrongWords.length ? `: ${wrongWords.join(", ")}.` : ".",
+        );
+        appendValues();
       }
 
-      // ------------------------------------------------------------------------------------- draws
-
-
-
-      // ------------------------------------------------------------------------------------- read-outs and bound
-
-      // the tiles are made once and their values rewritten (review 044 repair: a first draw keeps the reader's place,
-      // since the browser's scroll anchoring can hold on to a tile that is not replaced)
-      const tileEls = {};
-      const tile = (key, name) => {
-        const value = h("span", { class: "prx-de-tile-value" });
-        const root = h("div", { class: "prx-de-tile" }, h("span", { class: "prx-de-tile-name", text: name }), value);
-        tileEls[key] = { root, value };
-        return root;
-      };
-      tiles.append(tile("N", T.tileN), tile("E", T.tileE), tile("EN", T.tileEN), tile("allRight", "Every stated direction right"),
-        tile("union", "Union lower bound"), tile("tau", T.tileTau));
-      // six sites with stated pairs: the note under the estimate in one of two fixed wordings; the other wording sizes
-      // the box (CSS ::after, hidden), so the tile keeps its height when the first draw switches the wording
-      const MC_NOTES = Object.freeze({ none: "Draw to estimate; independent normal latent values", some: "Monte Carlo estimate; independent normal latent values" });
-      const mcNote = (S) => h("span", { class: "prx-de-event-note prx-de-mc-note", "data-prx-other": S ? MC_NOTES.none : MC_NOTES.some }, h("span", {}, S ? MC_NOTES.some : MC_NOTES.none));
+      const MC_NOTES = Object.freeze({ none: "Draw to estimate", some: "Monte Carlo estimate" });
+      const mcNote = (S) =>
+        h("span", { class: "prx-de-event-note prx-de-mc-note", "data-prx-other": S ? MC_NOTES.none : MC_NOTES.some }, h("span", {}, S ? MC_NOTES.some : MC_NOTES.none));
 
       function drawTiles(rep, ev, tauV, event, S) {
         const lawKey = rep.law.key;
         const EN = ev.EoverN[0];
-        const enValue = EN === null
-          ? [ro("EoverN", null, formatEoverN(null)), h("span", { class: "prx-de-tile-note" }, " (N/M = ", ctx.num(ev.s, formatCount(ev.s)), ": ", T.naNote, ")")]
-          : [ro("EoverN", EN, enText(EN, lawKey))];
+        const enValue =
+          EN === null
+            ? [ro("EoverN", null, formatEoverN(null)), h("span", { class: "prx-de-tile-note" }, " (N/M = ", ctx.num(ev.s, formatCount(ev.s)), ": ", T.naNote, ")")]
+            : [ro("EoverN", EN, enText(EN, lawKey))];
         tileEls.N.value.replaceChildren(ro("N", ev.N, formatCount(ev.N)), " of ", ro("M", ev.M, formatCount(ev.M)));
-        tileEls.E.value.replaceChildren(ro("E", ev.Ew, eText(ev.Ew, lawKey)));
+        tileEls.E.value.replaceChildren(ro("E", ev.Ew, eRoText(ev.Ew, lawKey)));
+        tileEls.EN.root.setAttribute("data-na", EN === null ? "true" : "false");
         tileEls.EN.value.replaceChildren(...enValue);
         const six = lawKey === "six" && ev.N > 0;
-        tileEls.allRight.value.replaceChildren(...(event
-          ? [ro("allRight", event.pNone, lawKey === "finite" ? exact(event.pNone) : formatProb(event.pNone)),
-            six ? mcNote(S) : h("span", { class: "prx-de-event-note" }, ev.N === 0 ? "vacuous: no directions stated" : "exact finite-law probability")]
-          : [h("span", { class: "prx-de-tile-pending", "aria-hidden": "true" }), mcNote(0)]));
+        tileEls.allRight.root.hidden = !event;
+        tileEls.allRight.value.replaceChildren(
+          ...(event
+            ? [
+                ro("allRight", event.pNone, probRoText(event.pNone, lawKey)),
+                six ? mcNote(S) : h("span", { class: "prx-de-event-note" }, ev.N === 0 ? "vacuous" : "exact"),
+              ]
+            : []),
+        );
         tileEls.union.root.hidden = lawKey !== "finite";
         if (lawKey === "finite") {
           tileEls.union.value.replaceChildren(ro("unionLower", event.unionBound, exact(event.unionBound)));
@@ -1202,13 +1171,34 @@ export function mountWidget(el, spec = {}) {
           couplingValue.replaceChildren();
         }
         tileEls.tau.value.replaceChildren(ro("tau", tauV, formatSetting(tauV)));
-        const sixNote = lawKey === "six" && ev.N > 0;
-        eventNote.hidden = sixNote;
-        eventNoteSix.hidden = !sixNote;
-        if (ev.N === 0) eventNote.replaceChildren("The all-right event has probability ", ctx.num(event.pNone, formatProb(event.pNone)), " because it makes no assertions. E/N remains ", ctx.num(null, formatEoverN(null)), ".");
-        else if (lawKey === "finite") eventNote.replaceChildren("E/N averages errors across stated pairs. The all-right event requires every statement to hold together; its union lower bound is max(", ctx.num(0, formatCount(0)), ", ", ctx.num(1, formatCount(1)), " − E). The coupling control changes this joint event while keeping the pair probabilities fixed.");
-        else eventNoteSix.replaceChildren(...(S ? ["All-right probability is estimated from ", ctx.num(S, formatCount(S)), " draws of independent normal latent values; it is not an exact normal-law calculation. The finite-law mode gives an exact event probability and union bound."] : ["Draw independent normal latent values to estimate the all-right event. The finite-law mode gives an exact event probability and union bound."]));
-        evalCaption.replaceChildren("(", captionNode(ctx, "fixed-report"), ")");
+
+        if (ev.N === 0) {
+          eventNote.replaceChildren(
+            "The all-right event has probability ",
+            ctx.num(event.pNone, formatReadoutProb(event.pNone)),
+            " because it makes no assertions. E/N remains ",
+            ctx.num(null, formatEoverN(null)),
+            ".",
+          );
+        } else if (lawKey === "finite") {
+          eventNote.replaceChildren(
+            "E/N averages errors across stated pairs. The all-right event requires every statement to hold together; its union lower bound is max(",
+            ctx.num(0, formatCount(0)),
+            ", ",
+            ctx.num(1, formatCount(1)),
+            " − E). The coupling control changes this joint event while keeping the pair probabilities fixed.",
+          );
+        } else {
+          eventNote.replaceChildren(
+            ...(S
+              ? [
+                  "All-right probability is estimated from ",
+                  ctx.num(S, formatCount(S)),
+                  " draws of independent normal latent values; it is not an exact normal-law calculation. The finite-law mode gives an exact event probability and union bound.",
+                ]
+              : ["Draw independent normal latent values to estimate the all-right event. The finite-law mode gives an exact event probability and union bound."]),
+          );
+        }
       }
 
       function drawBound(rep, ev, opt, tauV) {
@@ -1222,43 +1212,98 @@ export function mountWidget(el, spec = {}) {
         const EN = ev.EoverN[0];
         const holds = ev.risk <= tauV + CONFIG.riskTolerance;
         const reason = !inFamily ? "notInFamily" : !opt.empty && !opt.containsAllWithheld ? "noAllWithheld" : "notOptimum";
-        // review 044 repair (G2-F4, G2-F6): one badge line, the one diagnostic line, and the explanatory sentences in the
-        // closed "Why" box; the wrapper carries data-prx-bound, so the bound's label and family size stay inside it
+
         boundBox.setAttribute("data-prx-bound", applies ? "applies" : "not-shown");
         diagLine.setAttribute("data-prx-diagnostic", holds ? "holds" : "fails");
-        diagLine.replaceChildren("Risk R = ", ro("diagnosticRisk", ev.risk, lawKey === "finite" ? exact(ev.risk) : formatRisk(ev.risk)), holds ? " ≤ τ = " : " > τ = ", tauNode(tauV), "; equivalently E = ", ro("diagnosticE", ev.Ew, eText(ev.Ew, lawKey)), holds ? " ≤ τN = " : " > τN = ", ro("diagnosticTauN", tauN, tauNText(tauN, lawKey)), ".");
+        diagLine.replaceChildren(
+          "Risk R = ",
+          ro("diagnosticRisk", ev.risk, riskRoText(ev.risk, lawKey)),
+          holds ? " ≤ τ = " : " > τ = ",
+          tauNode(tauV),
+          "; E = ",
+          ro("diagnosticE", ev.Ew, eRoText(ev.Ew, lawKey)),
+          holds ? " ≤ τN = " : " > τN = ",
+          ro("diagnosticTauN", tauN, tauNText(tauN, lawKey)),
+          ".",
+        );
+
         const lines = [];
-        // the badge's state (a new hook, review 044 repair: applies, holds without a guarantee, or fails)
         badgeLine.setAttribute("data-prx-badge", applies ? "applies" : holds ? "holds" : "fails");
         if (applies) {
           badgeLine.className = "prx-de-badge";
-          badgeLine.replaceChildren(h("strong", {}, `${T.boundYes} `), tagNode(ctx, opt), T.boundYesEnd);
+          badgeLine.replaceChildren(h("strong", {}, `${T.boundYes} `), tagNode(ctx, opt), " (includes all-withheld).");
           if (ev.N === 0) {
-            lines.push(h("p", {}, "Here nothing is stated: E = ", ro("boundE", ev.Ew, eText(ev.Ew, lawKey)), " and τN = ", ro("tauN", tauN, tauNText(tauN, lawKey)), ", and the share E/N is ", ro("boundEN", null, formatEoverN(null)), "."));
+            lines.push(
+              h(
+                "p",
+                {},
+                "Here nothing is stated: E = ",
+                ro("boundE", ev.Ew, eRoText(ev.Ew, lawKey)),
+                " and τN = ",
+                ro("tauN", tauN, tauNText(tauN, lawKey)),
+                ", and the share E/N is ",
+                ro("boundEN", null, formatEoverN(null)),
+                ".",
+              ),
+            );
           } else {
-            lines.push(h("p", {}, "Here E = ", ro("boundE", ev.Ew, eText(ev.Ew, lawKey)), " ≤ τN = ", tauNode(tauV), " × ", ctx.num(ev.N, formatCount(ev.N)), " = ", ro("tauN", tauN, tauNText(tauN, lawKey)),
-              ", so E/N = ", ro("boundEN", EN, enText(EN, lawKey)), " ≤ τ = ", tauNode(tauV), "."));
-            const over = sa.count > 0
-              ? [" The largest error among this report's stated directions is ", ro("maxStated", sa.max, errText(sa.max, lawKey)), ", above τ."]
-              : [" The largest error among this report's stated directions is ", ro("maxStated", sa.max, errText(sa.max, lawKey)), "."];
+            lines.push(
+              h(
+                "p",
+                {},
+                "Here E = ",
+                ro("boundE", ev.Ew, eRoText(ev.Ew, lawKey)),
+                " ≤ τN = ",
+                tauNode(tauV),
+                " × ",
+                ctx.num(ev.N, formatCount(ev.N)),
+                " = ",
+                ro("tauN", tauN, tauNText(tauN, lawKey)),
+                ", so E/N = ",
+                ro("boundEN", EN, enText(EN, lawKey)),
+                " ≤ τ = ",
+                tauNode(tauV),
+                ".",
+              ),
+            );
+            const over =
+              sa.count > 0
+                ? [" The largest error among this report's stated directions is ", ro("maxStated", sa.max, probRoText(sa.max, lawKey)), ", above τ."]
+                : [" The largest error among this report's stated directions is ", ro("maxStated", sa.max, probRoText(sa.max, lawKey)), "."];
             lines.push(h("p", { class: "prx-de-caution" }, T.boundAverage, ...over));
           }
         } else {
           badgeLine.className = "prx-de-badge prx-de-badge-no";
-          badgeLine.replaceChildren(...(holds ? [h("strong", {}, T.badgeHolds), ` ${T.badgeReason[reason]}`] : [h("strong", {}, T.badgeFails), ` ${T.badgeFailsEnd}`]));
+          badgeLine.replaceChildren(
+            ...(holds
+              ? [h("strong", {}, T.badgeHolds), ` ${T.badgeReason[reason].replace(/\.$/, "")} (not a bound).`]
+              : [h("strong", {}, T.badgeFails), ` ${T.badgeFailsEnd.replace(/\.$/, "")} (not a bound).`]),
+          );
           const whyText = reason === "notInFamily" ? T.notInFamily : reason === "noAllWithheld" ? T.noAllWithheld : T.notOptimum;
-          lines.push(h("p", { class: "prx-de-sidebyside" }, h("strong", {}, `${T.boundNo} `),
-            ...(EN === null ? ["E/N is ", ro("boundEN", null, formatEoverN(null)), " (nothing is stated); τ = ", tauNode(tauV), "."]
-              : ["E/N = ", ro("boundEN", EN, enText(EN, lawKey)), " and τ = ", tauNode(tauV), "."])));
+          lines.push(
+            h(
+              "p",
+              { class: "prx-de-sidebyside" },
+              h("strong", {}, `${T.boundNo} `),
+              ...(EN === null
+                ? ["E/N is ", ro("boundEN", null, formatEoverN(null)), " (nothing is stated); τ = ", tauNode(tauV), "."]
+                : ["E/N = ", ro("boundEN", EN, enText(EN, lawKey)), " and τ = ", tauNode(tauV), "."]),
+            ),
+          );
           lines.push(h("p", {}, whyText));
           if (ev.N > 0) {
-            const r = ro("ownRisk", ev.risk, lawKey === "finite" ? exact(ev.risk) : formatRisk(ev.risk));
-            lines.push(h("p", { class: "prx-de-own", "data-prx-own": holds ? "holds" : "fails" },
-              ...(holds ? [`${T.holdsOwn} `, r, ` ${T.holdsOwnEnd}`] : [`${T.failsOwn} `, r, ` ${T.failsOwnEnd}`])));
+            const r = ro("ownRisk", ev.risk, riskRoText(ev.risk, lawKey));
+            lines.push(
+              h(
+                "p",
+                { class: "prx-de-own", "data-prx-own": holds ? "holds" : "fails" },
+                ...(holds ? [`${T.holdsOwn} `, r, ` ${T.holdsOwnEnd}`] : [`${T.failsOwn} `, r, ` ${T.failsOwnEnd}`]),
+              ),
+            );
           }
         }
         why.body.replaceChildren(...lines);
-        // the best report of the family shown, with its label (exactOptimum)
+
         if (opt.empty) {
           best.replaceChildren(h("p", {}, "The family shown is empty."));
           bestBtn.root.hidden = true;
@@ -1267,21 +1312,130 @@ export function mountWidget(el, spec = {}) {
         const optima = opt.grades.map((x) => Array.from(x));
         const items = optima.flatMap((x, k) => [k ? " or " : "", blocksText(x, rep.law.ids), " (", ro(`optimum${k}`, x, formatGrades(x)), ")"]);
         const label = ["This is the ", labelNode(ctx, opt), " (", familySizeNode(ctx, opt), ` ${T.reports}, every one evaluated)`];
-        if (opt.tieCount > 1) label.push("; ", ctx.num(opt.tieCount, formatCount(opt.tieCount)), " reports share the smallest risk; the read-outs list them");
+        if (opt.tieCount > 1) {
+          label.push("; ", ctx.num(opt.tieCount, formatCount(opt.tieCount)), " reports share the smallest risk; the read-outs list them");
+        }
         label.push(`. ${T.tolerance} `, ctx.num(opt.tieTol, formatSci(opt.tieTol, { trim: true })), ` ${T.toleranceGloss}`);
         best.replaceChildren(
           h("p", {}, h("strong", {}, optima.length > 1 ? "Best reports in the family shown at this τ: " : "Best report in the family shown at this τ: "), ...items, "."),
-          h("p", { class: "prx-de-label" }, ...label));
+          h("p", { class: "prx-de-label" }, ...label),
+        );
         bestBtn.root.hidden = isOpt;
         return { applies, isOpt, holds, reason };
+      }
+
+      function renderCompactHistogram(counts, N) {
+        const H = CONFIG.hist;
+        const top = N < H.minBins ? N : Math.max(H.minBins - 1, Math.min(N, Math.max(0, ...counts)));
+        const bins = Array.from({ length: top + 1 }, (_, k) => ({ k, draws: 0 }));
+        for (const x of counts) bins[Math.min(top, x)].draws += 1;
+        plot(histSlot, {
+          alt: `${T.histAlt} The zero bin is the event that every stated direction is right.`,
+          table: {
+            caption: T.histTable,
+            columns: [
+              { label: "Wrong stated directions", value: "k", format: (v) => formatCount(v) },
+              { label: "Draws", value: "draws", format: (v) => formatCount(v) },
+              { label: "Event", value: (d) => (d.k === 0 ? "every stated direction right" : "some stated direction wrong"), num: false },
+            ],
+            rows: bins,
+          },
+          height: 196,
+          marginTop: H.marginTop,
+          marginBottom: 84,
+          marginLeft: H.marginLeft,
+          marginRight: 14,
+          color: { type: "identity" },
+          x: {
+            domain: [-0.5, top + 0.5],
+            ticks: bins.map((b) => b.k),
+            label: "wrong stated directions in a draw",
+            labelAnchor: "center",
+            labelArrow: "none",
+            labelOffset: 78,
+          },
+          y: {
+            label: "draws",
+            labelArrow: "none",
+            grid: true,
+            nice: true,
+            ticks: (H.height - H.marginTop - H.marginBottom) / CONFIG.plotTickSpacing,
+          },
+          marks: (c, P) => [
+            P.rectY(bins, { x1: (d) => d.k - H.half, x2: (d) => d.k + H.half, y: "draws", fill: (d) => (d.k === 0 ? c.post : c.plotGrid), stroke: c.plotFg }),
+            P.ruleY([0], { stroke: c.plotAxis }),
+            numText(bins, { x: "k", y: "draws", value: "draws", format: (v) => formatCount(v), dy: H.labelDy, lineAnchor: "bottom", fill: c.plotFg }),
+            P.text([0], { x: (d) => d, y: () => 0, text: () => T.zeroBin, dy: 24, lineAnchor: "top", fill: c.post, fontWeight: 600 }),
+          ],
+          keyboard: {
+            data: bins,
+            x: "k",
+            y: "draws",
+            sort: false,
+            label: T.histHeading,
+            title: (d) =>
+              `${formatCount(d.draws)} ${d.draws === 1 ? "draw" : "draws"} with ${formatCount(d.k)}${d.k === top && top < N ? " or more" : ""} wrong stated directions.${d.k === 0 ? " Every stated direction is right in this zero bin." : ""}`,
+          },
+        });
+      }
+
+      function renderCompactRunningAverage(counts, E) {
+        const R = CONFIG.run;
+        const S = counts.length;
+        const means = runningMean(counts);
+        const visible = Math.min(S, R.maxPoints);
+        const pts = Array.from({ length: visible }, (_, k) => {
+          const i = visible === 1 ? 0 : Math.round((k * (S - 1)) / (visible - 1));
+          return { s: i + 1, avg: means[i] };
+        });
+        const top = Math.max(R.minTop, E * R.top, ...pts.map((p) => p.avg));
+        plot(runSlot, {
+          alt: T.runAlt,
+          table: {
+            caption: T.runTable,
+            columns: [
+              { label: "Draws so far", value: "s", format: (v) => formatCount(v) },
+              { label: "Average wrong", value: "avg", format: (v) => safeDec(v, CONFIG.digits.mean) },
+            ],
+            rows: pts,
+          },
+          height: R.compact,
+          marginTop: R.marginTop,
+          marginBottom: 44,
+          marginLeft: R.marginLeft,
+          marginRight: R.marginRight,
+          x: { domain: [1, Math.max(R.minX, S)], label: "draws so far", labelAnchor: "center", labelArrow: "none", labelOffset: 38 },
+          y: {
+            domain: [0, top],
+            label: null,
+            nice: true,
+            grid: true,
+            ticks: (R.height - R.marginTop - R.marginBottom) / CONFIG.plotTickSpacing,
+          },
+          marks: (c, P) => [
+            P.ruleY([E], { stroke: c.err, strokeDasharray: R.rule, strokeWidth: 2 }),
+            P.line(pts, { x: "s", y: "avg", stroke: c.plotFg, strokeWidth: 2 }),
+            P.dot(pts.slice(-1), { x: "s", y: "avg", r: 3, fill: c.plotFg }),
+          ],
+          keyboard: {
+            data: pts.slice(-1),
+            x: "s",
+            y: "avg",
+            sort: false,
+            label: T.runHeading,
+            title: (d) => `After ${formatCount(d.s)} draws the average is ${safeDec(d.avg, CONFIG.digits.mean)} wrong stated directions; E is ${formatReadoutExpected(E)}.`,
+          },
+        });
       }
 
       function drawDraws(rep, ev, counts, state) {
         const S = counts.length;
         const N = ev.N;
-        noDraws.hidden = S > 0;
+        drawsPanel.hidden = S === 0;
         histSub.hidden = S === 0;
         runSub.hidden = S === 0;
+        drawsSummary.hidden = S === 0;
+        mcCaption.hidden = S === 0;
         if (S === 0) {
           drawsSummary.replaceChildren();
           mcCaption.replaceChildren();
@@ -1290,41 +1444,196 @@ export function mountWidget(el, spec = {}) {
         }
         const mean = summaryStats(counts).mean;
         const share = N === 0 ? null : mean / N;
-        drawHistogram(ctx, histSlot, counts, N, { zeroEvent: true, zeroLabel: true, height: CONFIG.hist.compact });
-        const zeroCount = counts.filter(x => x === 0).length;
-        const pZero = summaryStats(counts.map(x => x === 0 ? 1 : 0)).mean;
-        histEvent.replaceChildren("The zero bin is the event “every stated direction right”: ", ro("zeroDraws", zeroCount, formatCount(zeroCount)), " of ", ctx.num(S, formatCount(S)), " draws. Its Monte Carlo frequency is ", ro("zeroFrequency", pZero, formatProb(pZero)), ".", N === 0 ? " With no directions stated, this event is vacuous." : "");
-        drawRunningAverage(ctx, runSlot, counts, ev.Ew, { height: CONFIG.run.compact });
+        renderCompactHistogram(counts, N);
+        const zeroCount = counts.filter((x) => x === 0).length;
+        const pZero = summaryStats(counts.map((x) => (x === 0 ? 1 : 0))).mean;
+        histEvent.replaceChildren(
+          "Zero bin (“every stated direction right”): ",
+          ro("zeroDraws", zeroCount, formatCount(zeroCount)),
+          " of ",
+          ctx.num(S, formatCount(S)),
+          " draws (",
+          ro("zeroFrequency", pZero, formatReadoutProb(pZero)),
+          ").",
+          N === 0 ? " With no directions stated, this event is vacuous." : "",
+        );
+        renderCompactRunningAverage(counts, ev.Ew);
         const lawKey = rep.law.key;
         drawsSummary.replaceChildren(
-          "Over ", ro("S", S, formatCount(S)), S === 1 ? " draw" : " draws", ": on average ", ro("mean", mean, formatDecimal(mean, { digits: CONFIG.digits.mean })),
-          " wrong stated directions per draw (share of the stated directions ", ro("meanShare", share, formatShare(share)),
-          "), against E = ", ctx.num(ev.Ew, eText(ev.Ew, lawKey)), " (E/N = ", ctx.num(ev.EoverN[0], enText(ev.EoverN[0], lawKey)), ").");
+          "Over ",
+          ro("S", S, formatCount(S)),
+          S === 1 ? " draw" : " draws",
+          ": mean ",
+          ro("mean", mean, formatReadoutExpected(mean)),
+          " wrong per draw (share ",
+          ro("meanShare", share, formatShare(share)),
+          "), vs. E = ",
+          ctx.num(ev.Ew, eRoText(ev.Ew, lawKey)),
+          " (E/N = ",
+          ctx.num(ev.EoverN[0], enText(ev.EoverN[0], lawKey)),
+          ").",
+        );
         const mc = { label: "monte-carlo", S, seed: state.seed, mean };
         exposeResult(ctx, mc, "mc");
-        mcCaption.replaceChildren("(", captionNode(ctx, "monte-carlo", mc), ". ", T.drawsLead, ")");
+        mcCaption.replaceChildren("(", captionNode(ctx, "monte-carlo", mc), ")");
         return { mean, share };
       }
 
+      function drawDataTables(rep, rel, last, tauV) {
+        const lawKey = rep.law.key;
+        sixDataWrap.hidden = lawKey !== "six";
+        finiteDataWrap.hidden = lawKey !== "finite";
+        lawFormula.hidden = lawKey !== "finite";
 
-      // ------------------------------------------------------------------------------------- render
+        if (lawKey === "six") {
+          const ids = rep.law.ids;
+          const unitRows = ids.map((id, i) =>
+            h(
+              "tr",
+              {},
+              h("th", { scope: "row", text: id }),
+              h("td", {}, ctx.num(rep.g[i], formatCount(rep.g[i]))),
+              h("td", {}, ctx.num(rep.law.means[i], safeDec(rep.law.means[i], 4))),
+              h("td", {}, ctx.num(rep.law.sds[i], safeDec(rep.law.sds[i], 4))),
+            ),
+          );
+          sixUnitsTableSlot.replaceChildren(
+            h(
+              "table",
+              { class: "prx-de-table" },
+              h("caption", { text: "Six-site normal posteriors (score A) and current report grades" }),
+              h(
+                "thead",
+                {},
+                h(
+                  "tr",
+                  {},
+                  h("th", { scope: "col", text: "Site" }),
+                  h("th", { scope: "col", text: "Grade" }),
+                  h("th", { scope: "col", text: "Posterior mean" }),
+                  h("th", { scope: "col", text: "Posterior SD" }),
+                ),
+              ),
+              h("tbody", {}, ...unitRows),
+            ),
+          );
 
+          const e0 = rep.law.E.e[0];
+          const pairRows = [];
+          for (let i = 0; i < ids.length; i += 1) {
+            for (let j = i + 1; j < ids.length; j += 1) {
+              const r = rel[i][j];
+              const [a, b] = r === -1 ? [j, i] : [i, j];
+              const err = r === 0 ? null : e0[a][b];
+              const loss = r === 0 ? tauV : e0[a][b];
+              pairRows.push(
+                h(
+                  "tr",
+                  {},
+                  h("th", { scope: "row", text: r === 0 ? `${ids[i]} and ${ids[j]}` : `${ids[a]} above ${ids[b]}` }),
+                  h("td", { class: "prx-de-textcell", text: r === 0 ? "withheld" : "stated" }),
+                  h("td", {}, err === null ? "withheld" : ctx.num(err, safeDec(err, 6))),
+                  h("td", {}, ctx.num(loss, r === 0 ? formatSetting(tauV) : safeDec(loss, 6))),
+                ),
+              );
+            }
+          }
+          sixPairsTableSlot.replaceChildren(
+            h(
+              "table",
+              { class: "prx-de-table" },
+              h("caption", { text: "Exact pair decisions, wrong-direction probabilities, and loss contributions" }),
+              h(
+                "thead",
+                {},
+                h(
+                  "tr",
+                  {},
+                  h("th", { scope: "col", text: "Pair" }),
+                  h("th", { scope: "col", text: "Action" }),
+                  h("th", { scope: "col", text: "Wrong probability" }),
+                  h("th", { scope: "col", text: "Pair loss" }),
+                ),
+              ),
+              h("tbody", {}, ...pairRows),
+            ),
+          );
+          return;
+        }
+
+        const joint = rep.law.joint;
+        const byOrder = joint.states.map((st) => realizedWrong(rep.g, st));
+        lawHeading.textContent = joint === L3 ? T.lawTableHeading : "Orders and their coupling probabilities";
+        const rows = joint.orders.map((o, s) => {
+          const lastCell = last === s ? "this draw" : "";
+          return h(
+            "tr",
+            { class: last === s ? "prx-de-last" : null },
+            h("th", { scope: "row", text: o.split("").join(" > ") }),
+            h("td", {}, ctx.num(joint.probs[s], exact(joint.probs[s]))),
+            h("td", {}, ro(`order${s}.wrong`, byOrder[s].D[0], formatCount(byOrder[s].D[0]))),
+            h("td", { class: "prx-de-lastcell", text: lastCell }),
+          );
+        });
+        lawTableSlot.replaceChildren(
+          h(
+            "table",
+            { class: "prx-de-table" },
+            h("caption", { text: T.lawTableCaption }),
+            h(
+              "thead",
+              {},
+              h(
+                "tr",
+                {},
+                h("th", { scope: "col", text: T.orderCol }),
+                h("th", { scope: "col", text: T.probCol }),
+                h("th", { scope: "col", text: T.wrongCol }),
+                h("th", { scope: "col", text: T.lastDrawCol }),
+              ),
+            ),
+            h("tbody", {}, ...rows),
+          ),
+        );
+
+        const ev = evaluateReport(rep.g, rep.law.E, { tau: tauV });
+        const f = formulaNums();
+        const terms = joint.probs.map((p, s) => `${f.num(p, exact(p))}\\cdot${f.num(byOrder[s].D[0], formatCount(byOrder[s].D[0]))}`);
+        const lines = [];
+        for (let i = 0; i < terms.length; i += 2) lines.push(`${i ? "&\\quad+ " : "E &= "}${terms.slice(i, i + 2).join(" + ")}`);
+        lines.push(`&= \\;${f.num(ev.Ew, exact(ev.Ew))}`);
+        renderTex(lawFormula, `\\begin{aligned}${lines.join(" \\\\ ")}\\end{aligned}`, { display: true, nums: f.raws });
+
+        pairErrors.replaceChildren(
+          "Wrong-direction probabilities stay fixed: ",
+          ...[[0, 1], [0, 2], [1, 2]].flatMap(([i, j], k) => [
+            k ? "; " : "",
+            `${joint.ids[i]} above ${joint.ids[j]}: `,
+            ro(`pairError.${joint.ids[i]}${joint.ids[j]}`, rep.law.E.e[0][i][j], exact(rep.law.E.e[0][i][j])),
+          ]),
+          ". The joint event can change even though these pair probabilities do not.",
+        );
+      }
+
+      mobileControls(ctx, { primary: [reportBox, drawRow, drawNote] });
       return {
         render(state, info = {}) {
+          // PR-06 / PR-09 disclosure guard: toggling <details> preserves "Your own" select state and avoids re-firing ctx.readout
+          if (info?.reason === "disclosure") return;
+
           ctx.root.setAttribute("aria-busy", "true");
           try {
             const rep = reportOf(state);
             const lawKey = rep.law.key;
-            // controls
-            lawRadio.set(lawKey);
+
+            lawSeg.set(lawKey);
             for (const key of CONFIG.laws) {
               const on = key === lawKey;
               reportMenus[key].root.hidden = !on;
               gradeBoxes[key].box.hidden = !on;
             }
             const named = CONFIG.named[lawKey].find((x) => same(Array.from(x), rep.g));
-            // a render because the box opened (the reader chose "Your own") keeps the menu on "Your own"
-            if (info.reason !== "disclosure") reportMenus[lawKey].set(named ? named.join(",") : "custom");
+            reportMenus[lawKey].set(named ? named.join(",") : "custom");
             settings.summary.textContent = lawKey === "six" ? T.settingsSix : T.settingsFinite;
             gradeBoxes[lawKey].selects.forEach((s, i) => s.set(rep.g[i]));
             familyRadio.root.hidden = lawKey !== "six";
@@ -1333,6 +1642,7 @@ export function mountWidget(el, spec = {}) {
             coupling.set(state.coupling);
             seed.set(state.seed);
             seedTag.replaceChildren(`${T.seedTag} `, ctx.num(state.seed, formatSetting(state.seed)));
+
             const full = state.draws >= CONFIG.draws.max;
             btnOne.setDisabled(full);
             btnMany.setDisabled(full);
@@ -1341,16 +1651,22 @@ export function mountWidget(el, spec = {}) {
             if (full) drawNote.replaceChildren(`${T.drawsFull} `, ctx.num(CONFIG.draws.max, formatCount(CONFIG.draws.max)), ` ${T.drawsFullEnd}`);
             drawNote.hidden = !full;
 
-            // engine
             const ev = evaluateReport(rep.g, rep.law.E, { tau: state.tau });
             exposeResult(ctx, ev, "evaluation");
             const opt = optimumOf(lawKey, state.cap, state.tau, state.coupling);
             const S = state.draws;
+            mainGrid.setAttribute("data-has-draws", S > 0 ? "true" : "false");
+
             const counts = countsOf(lawKey, state.seed, S, rep.g, state.coupling);
-            // With N=0 the event is law-independent; one state suffices for that structural identity.
-            const event = lawKey === "finite" ? wrongCountDistribution(rep.g, rep.law.joint.states, rep.law.joint.probs)
-              : ev.N === 0 ? wrongCountDistribution(rep.g, [rep.law.means.map(v => [v])], [1])
-                : S > 0 ? { pNone: summaryStats(counts.map(x => x === 0 ? 1 : 0)).mean } : null;
+            const event =
+              lawKey === "finite"
+                ? wrongCountDistribution(rep.g, rep.law.joint.states, rep.law.joint.probs)
+                : ev.N === 0
+                  ? wrongCountDistribution(rep.g, [rep.law.means.map((v) => [v])], [1])
+                  : S > 0
+                    ? { pNone: summaryStats(counts.map((x) => (x === 0 ? 1 : 0))).mean }
+                    : null;
+
             let rw = null;
             let last = null;
             if (S > 0) {
@@ -1359,27 +1675,45 @@ export function mountWidget(el, spec = {}) {
               rw = realizedWrong(rep.g, lawKey === "six" ? last : rep.law.joint.states[last]);
             }
             const wrong = new Set((rw?.pairs[0] ?? []).map((p) => `${p.i},${p.j}`));
+            const rel = relations(rep.g);
 
-            drawMatrix(rep, relations(rep.g), wrong);
-            drawCurrentDraw(ctx, { line: drawLine, strip: stripSlot, key: stripKey }, rep, { ...state, draws: S }, rw, last, { theta: lawKey === "six" && S > 0 ? last : null });
+            drawMatrix(rep, rel, wrong, S > 0);
+            renderCurrentDraw(rep, { ...state, draws: S }, rw, last, lawKey === "six" && S > 0 ? last : null);
             drawTiles(rep, ev, state.tau, event, S);
             const b = drawBound(rep, ev, opt, state.tau);
-            lawBox.hidden = lawKey !== "finite";
             couplingBox.hidden = lawKey !== "finite";
-            if (lawKey === "finite") drawLawTable(rep, S > 0 ? last : null, state.tau);
+            drawDataTables(rep, rel, S > 0 ? last : null, state.tau);
             const d = drawDraws(rep, ev, counts, { ...state, draws: S });
 
-            // the read-out line
-            const at = lawKey === "six" ? "Six sites" : "Three-unit law";
-            const parts = [`${at}, report ${blocksText(rep.g, rep.law.ids)} (`, gradeNum(rep.g, "grades"), "), τ = ", tauNode(state.tau), ": states ",
-              ...(ev.N === 0 ? ["no direction"] : [ctx.num(ev.N, formatCount(ev.N)), ev.N === 1 ? " direction" : " directions"]), "; E = ", ctx.num(ev.Ew, eText(ev.Ew, lawKey)),
-              ", E/N = ", ctx.num(ev.EoverN[0], enText(ev.EoverN[0], lawKey))];
-            if (event) parts.push(lawKey === "finite" ? "; exact all-right probability " : ev.N === 0 ? "; vacuous all-right probability " : "; Monte Carlo all-right estimate ", ctx.num(event.pNone, lawKey === "finite" ? exact(event.pNone) : formatProb(event.pNone)));
-            // review 044 (G2-F6): three distinct statements, guaranteed / holds but not guaranteed / fails
-            parts.push(b.applies ? T.readoutApplies : b.holds ? T.readoutHolds[b.reason] : T.readoutFails);
-            if (d) parts.push(" After ", ctx.num(S, formatCount(S)), S === 1 ? " draw" : " draws", ", the average is ", ctx.num(d.mean, formatDecimal(d.mean, { digits: CONFIG.digits.mean })), " wrong per draw.");
+            // Concise <= 35-word 3-sig-fig readout preserving G2-F6 three-statement distinction
+            const parts = [
+              "Report ",
+              gradeNum(rep.g, "grades"),
+              " at τ = ",
+              tauNode(state.tau),
+              " states ",
+              ctx.num(ev.N, formatCount(ev.N)),
+              " of ",
+              ctx.num(ev.M, formatCount(ev.M)),
+              " pairs: E = ",
+              ctx.num(ev.Ew, eRoText(ev.Ew, lawKey)),
+              ", E/N = ",
+              ctx.num(ev.EoverN[0], enText(ev.EoverN[0], lawKey)),
+            ];
+            if (lawKey === "finite" && ev.N > 0 && event) {
+              parts.push(", all-right ", ctx.num(event.pNone, exact(event.pNone)));
+            }
+            if (d) {
+              parts.push(
+                " (",
+                ctx.num(d.mean, formatReadoutExpected(d.mean)),
+                " mean over ",
+                ctx.num(S, formatCount(S)),
+                S === 1 ? " draw)" : " draws)",
+              );
+            }
+            parts.push(b.applies ? READOUT_CLAUSES.applies : b.holds ? READOUT_CLAUSES.holds[b.reason] : READOUT_CLAUSES.fails);
             ctx.readout.set(parts);
-
           } finally {
             ctx.root.removeAttribute("aria-busy");
           }

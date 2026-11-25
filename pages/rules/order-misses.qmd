@@ -1,13 +1,11 @@
 ---
 title: "Restrictions imposed by a fixed order"
-subtitle: "3.6 · after the postrank theory book, ch. 19, three-unit law"
+subtitle: "3.6 · after the postrank theory book, ch. 25, three-unit law"
 description: "When grades that follow the posterior means miss a lower-risk report."
 ---
 
-Unit A has the highest posterior mean in this three-unit example because its true value is large in the less
-probable state. In the more probable state, B ranks first. Requiring grades to follow the mean order can
-therefore exclude the lowest-risk report. The state table gives the joint posterior, and the report table shows
-which grades each order allows. Both orders are evaluated at the same withholding cost.
+In this three-unit posterior, unit A has the largest posterior mean from a rare high-value state while B ranks first
+most often, so requiring grades to follow the mean order can miss the lowest-risk report.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -19,18 +17,23 @@ which grades each order allows. Both orders are evaluated at the same withholdin
 
 ## Numerical illustrations {#what-to-try}
 
-- **Mean order: τ .25.** At two stated pairs, the mean-order boundary expects 7/10 wrong directions against 3/10 with any order. At this price, the best mean-order cut withholds every direction at risk .2500. Searching all reports gives risk .1833 by placing B above A and C.
-- **Expected ranks: τ .25.** The order becomes B, C, A and its best cut recovers risk .1833. The highlighted summary row and report strips follow the order switch; all four rule cards remain available.
-- **Equal risk: τ .30.** Reports 2/1/2 and 3/1/2 share the minimum. Both disclosure counts and the equal-risk tolerance are reported because the optimum is not unique.
-- **Mean order: τ .50.** The mean-order cuts have risk .4000 against .2000 for the best report. The expected-rank order still reaches the unrestricted boundary.
-- **Mean order: τ .10.** Both methods withhold every pair at risk .1000. The imposed order misses only above the cost at which disclosure first becomes worthwhile.
+- **Mean order: τ .25.** At two stated pairs, the mean-order boundary expects 7/10 wrong directions against 3/10 across all orders; the best mean-order cut withholds all pairs at risk .250 while placing B above A and C reaches .183.
+- **Expected ranks: τ .25.** Switching to expected ranks orders the units B, C, A and recovers risk .183.
+- **Equal risk: τ .30.** Reports 2/1/2 and 3/1/2 tie at the minimum risk, stating two and three pairs respectively.
+- **Mean order: τ .50.** Mean-order cuts have risk .400 against .200 for the unrestricted optimum.
+- **Mean order: τ .10.** Both methods withhold every pair at risk .100; the imposed order misses only above the cost where disclosure first pays.
 
-::: {.callout-note appearance="simple"}
+<details>
+<summary>Numerical illustrations and notes</summary>
+
 The result depends on the two states and their probabilities. The cut method searches every allowed boundary
 within one order, whereas the joint benchmark searches every report that meets the cap. A different cap changes
 which reports enter the comparison. Each point on the curve compares the two methods at a common cost.
-:::
+
+</details>
 
 Standalone: [order-misses](../../embed/order-misses.html), for example `?order=rank&tau=.25`.
 
 Related applications: [Tiers and optimized cuts of posterior rankings](posterior-tiers.qmd), [Restrictions on the report family](../grades/families.qmd).
+
+Theory book · [Target uncertainty, directional reporting, and allocation with one place](https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-objective-precision-contrast).

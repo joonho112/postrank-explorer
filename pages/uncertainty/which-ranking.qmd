@@ -1,10 +1,10 @@
 ---
 title: "Alternative rankings from a posterior distribution"
-subtitle: "1.14 · after the postrank theory book, ch. 19, and Kline, Rose and Walters (2024)"
+subtitle: "1.14 · after the postrank theory book, ch. 25, and Kline, Rose and Walters (2024)"
 description: "Rankings by posterior mean, expected rank and top-group probability need not coincide."
 ---
 
-Three summaries of the same posterior can give different rankings. The figure compares the posterior mean, the expected rank, and the posterior probability of belonging to a specified top group. Expected rank averages a unit's position over the posterior, with rank 1 assigned to the largest value. The first example uses three units to show why these summaries can order a pair differently. The simulated league shows how much uncertainty remains in a unit's rank and how a change of measurement scale can alter an ordering by posterior mean.
+One posterior can rank units differently by posterior mean, expected rank (average position, 1st largest), and top-group probability when posteriors differ in width or skew.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,28 +17,20 @@ Three summaries of the same posterior can give different rankings. The figure co
 
 ## Numerical illustrations {#what-to-try}
 
-- **Three-unit law, posterior mean.** A has the largest posterior mean, a value it takes in neither state, yet its
-  expected rank, 2.4, is the worst: A is first with probability .3 and last otherwise. The two orders differ on 2 of
-  the 3 pairs.
-- **Three-unit law, first place.** B is the most likely to be first (.7); C never is.
-- **Three-unit law, √θ.** On the square-root scale A's posterior mean falls to 1.34, below B's 2.00 and C's 1.73, so
-  the first column now follows the expected ranks: 0 of the 3 pairs differ.
-- **League, expected rank.** U13, a small unit with posterior SD .120, is 6th by posterior mean but 8th by expected
-  rank (9.59): the large units U06 and U24 pass it. Its 90% rank interval runs from rank 1 to rank 24. The two
-  orders differ on 6 of the 435 pairs.
-- **League, top ten.** U21 is the unit most often in the top ten in 4,000 Monte Carlo draws (.96; one standard error
-  is below .01), ahead of U26 (.94), which has the largest posterior mean. Two units are never in the top ten.
-- **League, exp(10θ).** On this scale U13 climbs from 6th to 3rd by posterior mean (4.09), and the posterior-mean order disagrees with the expected-rank order for 40 of the 435 pairs.
+- **Three-unit law, posterior mean.** A has the largest mean yet the worst expected rank, 2.4 (first .3, last otherwise); 2 of the 3 pairs differ.
+- **Three-unit law, first place.** B is most likely first (.7); C never is.
+- **Three-unit law, √θ.** A's mean falls to 1.34, below B's 2.00 and C's 1.73; 0 of the 3 pairs differ.
+- **League, expected rank.** Small U13 (SD .120) drops from 6th by mean to 8th by expected rank (9.59) behind U06 and U24, with 90% interval from rank 1 to rank 24; 6 of the 435 pairs differ.
+- **League, top ten.** Over 4,000 draws, U21 leads (.957) ahead of U26 (.942). Two units are never in the top ten.
+- **League, exp(10θ).** U13 climbs from 6th to 3rd by mean (4.09); 40 of the 435 pairs differ.
 
-::: {.callout-note appearance="simple"}
-We specify the three-unit distribution and the league's posterior directly. postrank uses these distributions as inputs. Rankings by posterior means appear in Kline, Rose and Walters (2024), Section IV.B and the notes to Figure
-2C, where empirical Bayes posterior means are coarsened into deciles and quartiles; talk slide 59 sets such rules
-beside their grades for the firms. Their Section II.F names the expected rank.
-:::
+<details>
+<summary>Sources and background</summary>
 
-Standalone: [embed/which-ranking.html](../../embed/which-ranking.html), for example `?data=league&unit=U06` or
-`?preset=league-exp&expK=20&theme=dark`.
+We specify the three-unit distribution and the league's posterior directly; postrank uses these distributions as inputs. Rankings by posterior means appear in Kline, Rose and Walters (2024), Section IV.B and the notes to Figure 2C, where empirical Bayes posterior means are coarsened into deciles and quartiles; talk slide 59 sets such rules beside their grades for the firms. Their Section II.F names the expected rank.
 
-Related applications: [Majority comparisons and expected ranks](majority-wins.qmd) (1.15) counts the pairs each unit more
-likely wins; [Expected errors in a strict ranking](ranking-claims.qmd) (1.16), [Normal–normal posterior shrinkage](shrinkage.qmd) (1.5)
-and [Restrictions imposed by a fixed order](../rules/order-misses.qmd) (3.6).
+</details>
+
+Source: postrank theory book, ch. 25 (“Target uncertainty, directional reporting, and allocation with one place”); Kline, Rose and Walters (2024). Standalone: [embed/which-ranking.html](../../embed/which-ranking.html). Related: [Majority wins](majority-wins.qmd) · [Ranking claims](ranking-claims.qmd) · [Posterior shrinkage](shrinkage.qmd) · [Order misses](../rules/order-misses.qmd).
+
+Theory book · [Target uncertainty, directional reporting, and allocation with one place](https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-objective-precision-contrast).

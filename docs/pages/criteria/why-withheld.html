@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,64 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
 
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
+
+  <script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
+<link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/why-withheld.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reasons for a withheld comparison – postrank Explorer">
+<meta property="og:description" content="How the cost of ranking an isolated pair compares with the cost of ranking it in a full report.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/why-withheld.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/why-withheld.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -544,7 +596,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Reasons for a withheld comparison</h1>
-<p class="subtitle lead">4.12 · after the postrank theory book, chapters 10, 12, 19 and 21</p>
+<p class="subtitle lead">4.12 · postrank theory book, ch.&nbsp;10, 12, 25 and 32</p>
 </div>
 
 <div>
@@ -566,7 +618,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>When two units share a grade, the report leaves their direction unranked. Select a pair to see what it costs to state either direction on its own and what it costs to require that direction in a complete report. The posterior stays fixed for both comparisons. Several tests can account for the same withheld pair. The changed-pair table shows how requiring one direction also changes other comparisons in the report.</p>
+<p>Sharing a grade leaves two units unranked, not equal. Select a pair to compare standalone cost against full-report risk.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,12 +627,12 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Coherence</strong>: the six-site report withholds A–B even though its isolated forward cost is below the withholding cost. The minimum-cost complete report stating A above B has risk .1019, with a change of +.008513. Removing the cap does not remove this difference. The table lists the other directions that change and their contributions to the risk difference.</li>
-<li><strong>Certain conflict</strong>: each criterion is certain about B–C, but they point opposite ways. Requiring B above C produces risk .1667, with a change of +.025000. The reverse direction is a separate search with a different full report and cost.</li>
-<li><strong>Uncertainty</strong>: the two criteria agree within every stipulated state. Their directional expected costs are .4000 and .6000, while each known state’s smaller directional cost is zero. Here the isolated direction is costly because the states disagree about which unit is higher.</li>
-<li><strong>Fixed order</strong>: B above C is feasible along the declared order, but its minimum-cost report has risk .3167. The unrestricted family provides a separate comparison. Under <strong>Indivisible block</strong>, requiring those two units to stay together makes both directions infeasible.</li>
-<li><strong>CDE subset</strong>: all 523,251 reports with at most three grades belong to the declared search. Forward and reverse requirements are evaluated separately. The schools were chosen to span the range for this illustration. The result applies to these schools under the fixed statewide prior.</li>
-<li><strong>KRW fixed order</strong>: the search contains 147,537 contiguous-cut reports. Relaxing the cap keeps the expected-rank order fixed. The reports are new postrank calculations for that order, separate from KRW’s archived cards.</li>
+<li><strong>Coherence</strong>: the six-site baseline withholds A–B even though standalone A above B costs less than <span class="math inline"><math><mi>τ</mi></math></span>; requiring it in a coherent report yields risk .102 (+.00851).</li>
+<li><strong>Certain conflict</strong>: the two criteria oppose with certainty on B–C; requiring B above C yields risk .167 (+.0250).</li>
+<li><strong>Uncertainty</strong>: criteria agree within each state, yet cross-state uncertainty makes standalone directions cost .400 and .600.</li>
+<li><strong>Fixed order</strong>: B above C reaches risk .317 along the declared order, while <strong>Indivisible block</strong> makes both directions infeasible.</li>
+<li><strong>CDE subset</strong>: evaluates all 523,251 reports with at most three grades under the fixed statewide prior.</li>
+<li><strong>KRW fixed order</strong>: evaluates 147,537 contiguous-cut reports along the fixed expected-rank order.</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -592,11 +644,12 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The extra risk measures the cost of the required direction under the given posterior and report family. It can reflect more than one reason for withholding. The case views give the data sources and assumptions. CDE source conditions apply. KRW is noncommercial use only under CC-BY-NC, with no endorsement implied.</p>
+<p>Several reasons can overlap on the same withheld pair. CDE source conditions apply; KRW is noncommercial use only under CC-BY-NC, with no endorsement implied.</p>
 </div>
 </div>
 <p><a href="../../embed/why-withheld.html">Open standalone</a>, for example <code>?preset=fixed-order</code>.</p>
 <p>Related applications: <a href="../../pages/criteria/conflict-pairs.html">Opposing criterion directions</a>, <a href="../../pages/criteria/two-scores.html">A common grade report for two scores</a>, <a href="../../pages/grades/report-card.html">Posterior summaries in a grade report</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-worked-examples">Worked exact examples</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/32-governance-communication.html#sec-governance-withholding">Interpretation of withheld comparisons</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#what-silence-means">Interpretation of a shared grade and complete withholding</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/12-conflict-estimands.html#sec-conflict-withholding">Conflict, withholding, and the limits of pairwise decisions</a>.</p>
 
 
 </section>
@@ -1069,7 +1122,7 @@ Note
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -36,7 +36,7 @@
           "ref": "league.default.prior15.tiers3.tau20.E",
           "value": 51.86392046017462,
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           }
         },
         {
@@ -51,7 +51,10 @@
           "about": "expected loss per pair (risk) at tau .20",
           "source": "registry",
           "ref": "league.default.prior15.tiers3.tau20.risk",
-          "value": 0.18129636887396466
+          "value": 0.18129636887396466,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
         },
         {
           "select": "[data-prx-readout=\"tau\"]",
@@ -64,7 +67,7 @@
           "select": "[data-prx-readout=\"allWithheld\"]",
           "about": "the all-withheld report's risk equals tau",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "registry",
           "ref": "settings.tau20",
@@ -160,7 +163,10 @@
           "about": "largest error of a stated direction",
           "source": "registry",
           "ref": "r01.tiers10.tau20.maxstated",
-          "value": 0.8016595628677452
+          "value": 0.8016595628677452,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"N\"]",
@@ -183,7 +189,7 @@
           "ref": "league.default.prior15.tiers10.tau20.E",
           "value": 89.40270202297638,
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           }
         },
         {
@@ -198,7 +204,10 @@
           "about": "risk, above the all-withheld risk tau",
           "source": "registry",
           "ref": "league.default.prior15.tiers10.tau20.risk",
-          "value": 0.21931655637465836
+          "value": 0.21931655637465836,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
         },
         {
           "select": "[data-prx-readout=\"over\"]",
@@ -212,7 +221,10 @@
           "about": "largest error of a stated direction",
           "source": "registry",
           "ref": "r01.tiers10.tau20.maxstated",
-          "value": 0.8016595628677452
+          "value": 0.8016595628677452,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-tex=\"share\"] mtext",
@@ -241,7 +253,7 @@
           "select": "[data-prx-readout=\"allWithheld\"]",
           "about": "the all-withheld report's risk equals tau",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "registry",
           "ref": "settings.tau20",
@@ -294,7 +306,10 @@
           "about": "E of four tiers",
           "source": "registry",
           "ref": "r01.tiers4.tau20.E",
-          "value": 61.60709236014215
+          "value": 61.60709236014215,
+          "format": {
+            "fn": "formatReadoutExpected"
+          }
         },
         {
           "select": "[data-prx-readout=\"EoverN\"]",
@@ -308,7 +323,10 @@
           "about": "risk of four tiers",
           "source": "registry",
           "ref": "r01.tiers4.tau20.risk",
-          "value": 0.18668297094285552
+          "value": 0.18668297094285552,
+          "format": {
+            "fn": "formatReadoutRisk"
+          }
         },
         {
           "select": "[data-prx-tex=\"share\"] mtext",
@@ -397,7 +415,10 @@
           "about": "largest error of a stated direction",
           "source": "registry",
           "ref": "r01.tiers3.tau20.maxstated",
-          "value": 0.6388012455882287
+          "value": 0.6388012455882287,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": "[data-prx-readout=\"over\"]",
@@ -411,7 +432,10 @@
           "about": "largest error of a stated direction",
           "source": "registry",
           "ref": "r01.tiers3.tau20.maxstated",
-          "value": 0.6388012455882287
+          "value": 0.6388012455882287,
+          "format": {
+            "fn": "formatReadoutProb"
+          }
         },
         {
           "select": ".prx-ft-errors .prx-ft-line",
@@ -434,7 +458,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "risk of the all-withheld report equals tau (the engine sums the withholding term in floating point)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "registry",
           "ref": "settings.tau20",
@@ -535,7 +559,7 @@
           "select": "[data-prx-readout=\"risk\"]",
           "about": "one tier: the risk equals tau (the engine sums the withholding term in floating point)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "registry",
           "ref": "settings.tau02",
@@ -555,7 +579,7 @@
         {
           "select": "[data-prx-readout=\"E\"]",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "registry",
           "ref": "league.default.prior15.strictest.E",

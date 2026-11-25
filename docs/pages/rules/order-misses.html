@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/order-misses.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Restrictions imposed by a fixed order – postrank Explorer">
+<meta property="og:description" content="When grades that follow the posterior means miss a lower-risk report.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/order-misses.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/order-misses.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -544,7 +569,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Restrictions imposed by a fixed order</h1>
-<p class="subtitle lead">3.6 · after the postrank theory book, ch.&nbsp;19, three-unit law</p>
+<p class="subtitle lead">3.6 · after the postrank theory book, ch.&nbsp;25, three-unit law</p>
 </div>
 
 <div>
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Unit A has the highest posterior mean in this three-unit example because its true value is large in the less probable state. In the more probable state, B ranks first. Requiring grades to follow the mean order can therefore exclude the lowest-risk report. The state table gives the joint posterior, and the report table shows which grades each order allows. Both orders are evaluated at the same withholding cost.</p>
+<p>In this three-unit posterior, unit A has the largest posterior mean from a rare high-value state while B ranks first most often, so requiring grades to follow the mean order can miss the lowest-risk report.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,24 +600,21 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Mean order: τ .25.</strong> At two stated pairs, the mean-order boundary expects 7/10 wrong directions against 3/10 with any order. At this price, the best mean-order cut withholds every direction at risk .2500. Searching all reports gives risk .1833 by placing B above A and C.</li>
-<li><strong>Expected ranks: τ .25.</strong> The order becomes B, C, A and its best cut recovers risk .1833. The highlighted summary row and report strips follow the order switch; all four rule cards remain available.</li>
-<li><strong>Equal risk: τ .30.</strong> Reports 2/1/2 and 3/1/2 share the minimum. Both disclosure counts and the equal-risk tolerance are reported because the optimum is not unique.</li>
-<li><strong>Mean order: τ .50.</strong> The mean-order cuts have risk .4000 against .2000 for the best report. The expected-rank order still reaches the unrestricted boundary.</li>
-<li><strong>Mean order: τ .10.</strong> Both methods withhold every pair at risk .1000. The imposed order misses only above the cost at which disclosure first becomes worthwhile.</li>
+<li><strong>Mean order: τ .25.</strong> At two stated pairs, the mean-order boundary expects 7/10 wrong directions against 3/10 across all orders; the best mean-order cut withholds all pairs at risk .250 while placing B above A and C reaches .183.</li>
+<li><strong>Expected ranks: τ .25.</strong> Switching to expected ranks orders the units B, C, A and recovers risk .183.</li>
+<li><strong>Equal risk: τ .30.</strong> Reports 2/1/2 and 3/1/2 tie at the minimum risk, stating two and three pairs respectively.</li>
+<li><strong>Mean order: τ .50.</strong> Mean-order cuts have risk .400 against .200 for the unrestricted optimum.</li>
+<li><strong>Mean order: τ .10.</strong> Both methods withhold every pair at risk .100; the imposed order misses only above the cost where disclosure first pays.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
+<details>
+<summary>
+Numerical illustrations and notes
+</summary>
 <p>The result depends on the two states and their probabilities. The cut method searches every allowed boundary within one order, whereas the joint benchmark searches every report that meets the cap. A different cap changes which reports enter the comparison. Each point on the curve compares the two methods at a common cost.</p>
-</div>
-</div>
-</div>
+</details>
 <p>Standalone: <a href="../../embed/order-misses.html">order-misses</a>, for example <code>?order=rank&amp;tau=.25</code>.</p>
 <p>Related applications: <a href="../../pages/rules/posterior-tiers.html">Tiers and optimized cuts of posterior rankings</a>, <a href="../../pages/grades/families.html">Restrictions on the report family</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-objective-precision-contrast">Target uncertainty, directional reporting, and allocation with one place</a>.</p>
 
 
 </section>
@@ -1065,7 +1087,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

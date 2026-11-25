@@ -4,7 +4,7 @@ subtitle: "1.4 · the simulated league, after Walters (2024) and Andrews, Kitaga
 description: "Repeated-sampling bias of selected extreme estimates and its dependence on the prior used for shrinkage."
 ---
 
-The largest estimates in a ranking tend to overstate their units' true values because units with positive sampling errors are more likely to rank near the top. The reverse holds at the bottom. In a simulation of thirty units, we compare estimates and posterior means with the true values of units selected by their estimates. A normal prior centered on the average true value, with a standard deviation close to the true spread, reduces the average upward bias of the highest estimates. The posterior means differ from the true values by −.007 on average in this example.
+Selecting units with the largest estimates picks positive sampling errors on average; shrinking with a normal prior matched to the true spread removes nearly all of that upward bias.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,26 +16,10 @@ The largest estimates in a ranking tend to overstate their units' true values be
 
 ## Numerical illustrations {#what-to-try}
 
-- **Top 3.** Over the 2,000 replays, estimate minus true value averages .160 for the top 3 by estimate; for their
-  posterior means at prior SD .15, near the true values' spread of .149, it averages −.007. Replay 1 is the draw that
-  1.3 and 1.5 show first: .071 and −.031.
-- **Replay 9.** In this sample, the differences from the true values average −.043 for the top 3 estimates and −.117 for their posterior means. The average bias across samples allows for individual samples like this one.
-- **Top 1.** Over the replays, the largest estimate overshoots most: .220 above its unit's true value on average,
-  against .081 for the top 10 (set k to 10). Its posterior mean averages −.024.
-- **Bottom 3.** The lower-tail comparison has the opposite sign: on average over the replays the bottom 3 sit below their true values, −.150, and their posterior means have average difference −.013.
-- **Prior SD .05.** A prior narrower than the true spread induces excessive shrinkage: on average over the replays the top
-  3's posterior means end at −.131, below their true values (at prior SD .10, −.063).
+- **Top 3.** Across 2,000 replays, top-3 estimates average .160 above truth while posterior means at prior SD .15 (true SD .149) average −.00685; replay 1 gives .0709 and −.0308.
+- **Replay 9.** In replay 9 alone, top-3 estimates and posterior means differ from truth by −.0429 and −.117.
+- **Top 1.** Selecting only the single largest estimate raises average overshoot to .220 (vs. .0814 for k = 10), shrunk to −.0238.
+- **Bottom 3.** At the bottom end, estimates average −.150 from truth and posterior means average −.0132.
+- **Prior SD .05.** A prior narrower than the true spread overshrinks top-3 posterior means to −.131 (or −.0628 at prior SD .10).
 
-::: {.callout-note appearance="simple"}
-Walters (2024, Handbook of Labor Economics, section 3.5) points to the upward bias of the largest estimate that the
-ranking step creates. Andrews, Kitagawa and McCloskey (2024, "Inference on Winners") give inference on the top unit's
-value that accounts for it. The posterior here comes from one normal prior set by hand for teaching; postrank does not
-fit it. The reporting procedure takes the resulting posterior as its input. In an application, the analyst cannot check these differences directly because the true values are unknown.
-:::
-
-Standalone: [embed/winners-curse.html](../../embed/winners-curse.html), for example `?k=5&side=bottom` or
-`?preset=prior05&theme=dark`.
-
-Related applications: [Ranking noisy estimates](noisy-league.qmd) (1.3), the same league and its replays;
-[Normal–normal posterior shrinkage](shrinkage.qmd) (1.5), the posterior that pulls these estimates in; and
-[Sensitivity to the prior standard deviation](shrinkage-price.qmd) (1.6), the prior SD over its whole range.
+Source: Simulated thirty-unit league after Walters (2024, Handbook of Labor Economics, section 3.5) and Andrews, Kitagawa and McCloskey (2024, "Inference on Winners"). Standalone: [embed/winners-curse.html](../../embed/winners-curse.html). Related: [Ranking noisy estimates](noisy-league.qmd) · [Normal–normal posterior shrinkage](shrinkage.qmd) · [Sensitivity to the prior standard deviation](shrinkage-price.qmd).

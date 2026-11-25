@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/cases/cde-tau-path.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="School-report changes along the withholding-cost path – postrank Explorer">
+<meta property="og:description" content="Exact optimal disclosure and changes in individual school-pair relations as τ varies.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/cases/cde-tau-path.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/cde-tau-path.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,28 +591,28 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>As withholding becomes more costly, the minimum-risk report changes at specific values of τ.</p>
+<p>As withholding cost τ rises, the minimum-risk school report steps to higher disclosure at exact thresholds.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
 <script src="../../js/bundles/cde-tau-path.js"></script>
 <script>window.__prxApp = PRX["cde-tau-path"].mountWidget(document.getElementById("app"));</script>
-<p>The chart tracks how many pairs each report states. At each change, the table names the comparisons that appear, disappear, or reverse. It also includes equal-risk reports at the boundaries and transitions below the slider’s minimum. The archived runs appear separately, with their original solver status and gap.</p>
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>The usual setting</strong> uses τ .20. The optimum states 45 pairs in groups of sizes 3, 6, 3.</li>
-<li><strong>Past the last interior boundary</strong> uses τ .45. The optimum states 47 pairs in grades of sizes 4, 5, 3. The table names every pair whose relation changes.</li>
-<li><strong>The early boundaries</strong> keeps the slider at its low end. The exact boundaries near .000162 and .000263 lie below that minimum but remain in the tables, including the step to 27 pairs.</li>
-<li><strong>The upper endpoint</strong> reaches τ .50. The path still states 47 pairs, and the chart retains all 13 archived solves.</li>
+<li><strong>The usual setting.</strong> At τ = .20, the optimum states 45 pairs in sizes 3, 6, 3 (risk .0638).</li>
+<li><strong>Past the last interior boundary.</strong> At τ = .45, the optimum states 47 pairs in sizes 4, 5, 3 (risk .143).</li>
+<li><strong>The early boundaries.</strong> At τ = .01, exact steps at .000162 and .000263 reach 27 and 45 pairs below the slider minimum.</li>
+<li><strong>The upper endpoint.</strong> At τ = .50, the optimum states 47 pairs across 13 archived solves (risk .158).</li>
 </ul>
-<p>The posterior, criterion weight, and set of reports with at most three grades stay fixed along the path. Under those conditions, a higher τ cannot reduce the number of pairs stated by an exact optimum. The number can rise even as the report drops or reverses particular comparisons.</p>
-<p>Each point’s risk uses its own value of τ, so risks at two steps evaluate different losses. At a boundary, the table lists the equal-risk reports and the tolerance used to identify ties. The archived HiGHS runs used the same report family. Their solver status and gap describe those runs, while the browser path comes from enumeration.</p>
-<p>Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (<code>pr_case_cde</code>). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply (<a href="https://www.cde.ca.gov/re/di/cr/index.asp" class="uri">https://www.cde.ca.gov/re/di/cr/index.asp</a>); the data are not relicensed and are provided as is without warranty. No CDE endorsement is implied.</p>
-<p>The path describes what the reports say about chronic absence within the subset. At each cost, a shared grade leaves that comparison unstated. California uses separate rules for Dashboard colors. The path supplies no statewide optimality or calibration result and does not estimate school quality or causal effects.</p>
-<p><a href="../../embed/cde-tau-path.html">Open the standalone app</a>.</p>
-<p>Related applications: <a href="../../pages/criteria/why-withheld.html">Reasons for a withheld comparison</a> · <a href="../../pages/grades/frontier.html">The error–disclosure frontier</a>.</p>
-<p>Related school analyses: <a href="../../pages/cases/cde-cuts.html">School tertiles and minimum-risk grades</a> · <a href="../../pages/cases/cde-one-disclosure.html">School reports at matched disclosure</a> · <a href="../../pages/cases/cde-pair.html">A high-probability school comparison withheld</a>.</p>
+<details>
+<summary>
+Path properties and scope notes
+</summary>
+<p>With posterior, criterion weight, and the three-grade family held fixed, increasing τ never reduces the total number of stated pairs in an exact optimum, yet moving a whole block boundary can newly withhold pairs stated earlier or state pairs whose individual error exceeds τ. Data lists every changed pair, equal-risk boundary ties within numerical tolerance, and the 13 archived HiGHS runs alongside the browser’s exact enumeration. A shared grade leaves relative chronic absence unstated. This twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools (prior-estimation uncertainty is not propagated). California’s Dashboard colors, school quality, causal effects, and statewide calibration require separate evidence. Related: <a href="../../pages/criteria/why-withheld.html">Reasons for a withheld comparison</a> · <a href="../../pages/grades/frontier.html">The error–disclosure frontier</a>.</p>
+</details>
+<p>Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, adapted in postrank 1.1.0 (<code>pr_case_cde</code>); <a href="https://www.cde.ca.gov/re/di/cr/index.asp" class="uri">https://www.cde.ca.gov/re/di/cr/index.asp</a>; not relicensed, provided as is; No CDE endorsement is implied.</p>
+<p>Standalone: <a href="../../embed/cde-tau-path.html">cde-tau-path</a>. Related: <a href="../../pages/cases/cde-cuts.html">School tertiles and cuts</a> · <a href="../../pages/cases/cde-one-disclosure.html">Matched disclosure</a> · <a href="../../pages/cases/cde-pair.html">Withheld pair</a>.</p>
 
 
 </section>
@@ -1060,7 +1085,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -4,7 +4,7 @@ subtitle: "1.13 · after Kline, Rose and Walters (2024), Figure 2A and slides 38
 description: "Pairwise probabilities under alternative orderings of the same units."
 ---
 
-Each cell gives the posterior probability $\pi_{ij} = \Pr(\theta_i > \theta_j \mid Y)$ that the true value for row $i$ exceeds that for column $j$. Equality has posterior probability zero here, so the transposed cell gives $1 - \pi_{ij}$. Sorting by posterior mean places many of the least certain comparisons near the diagonal under independent normal posteriors. Comparisons between units with imprecise posteriors may remain uncertain even farther from the diagonal. Changing the sort moves each unit's row and column together. The probability for a given pair stays the same.
+Each cell gives $\pi_{ij} = \Pr(\theta_i > \theta_j \mid Y)$, the posterior probability that row $i$ exceeds column $j$ ($1 - \pi_{ij}$ across the diagonal), across alternative unit orderings.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,25 +17,18 @@ Each cell gives the posterior probability $\pi_{ij} = \Pr(\theta_i > \theta_j \m
 
 ## Numerical illustrations {#what-to-try}
 
-- **Six sites, by posterior mean.** C above D, .638, is the least certain direction, and its cell is next to the
-  diagonal; A above B (.812) and E above F (.856) follow. Below the diagonal each cell is one minus its mirror: D
-  above C is .362.
-- **Six sites, by label.** The label order already follows the posterior means. C above D still has probability .638.
-- **League, by label.** Of 435 pairs, the least certain, U19 above U25 at .502, sits 6 cells from the diagonal.
-  None of these 10 least certain pairs is next to the diagonal; the farthest is 26 cells away.
-- **League, by posterior mean.** The middle-blue cells now form a band: U19 above U25 is next to the diagonal, and
-  so are 8 of these 10 least certain pairs; the farthest is 2 cells away.
-- **Two imprecise units.** At prior SD .10 the cell in row U22, column U25 is 5 cells from the diagonal, yet its
-  probability is only .528: both are small units with posterior SD .089.
+- **Six sites, by posterior mean.** C above D (.638) sits next to the diagonal (mirror .362); in **Data**, A above B (.812) and E above F (.856) follow.
+- **Six sites, by label.** Same order: C above D stays .638.
+- **League, by label.** Across 435 pairs, U19 above U25 (.502) is 6 cells from the diagonal (in **Data**: None of these 10 adjacent; farthest 26 cells away).
+- **League, by posterior mean.** U19 above U25 moves next to the diagonal, with 8 of these 10 adjacent (farthest 2 cells away in **Data**).
+- **Two imprecise units.** At prior SD .10, row U22, column U25 is 5 cells from the diagonal at .528 (both posterior SD .089).
 
-::: {.callout-note appearance="simple"}
-The six sites are fictional after-school sites, A to F, from postrank's tutorial data: their normal posteriors for
-the reading score are set by hand and taken as given. An evaluation office grades them to set the order of its
-visits. The league is that of [Ranking noisy estimates](noisy-league.qmd), with the posterior of
-[normal–normal posterior shrinkage](shrinkage.qmd). Two imprecise units can have direction probabilities near one half even when they are far apart in the
-ranking. Kline, Rose and Walters (2024) plot these probabilities for pairs of first names in Section IV.B, Figure 2A, and talk slide 38. They refer to the posteriors as beliefs. Slide 54 shows the same
-heat map for the firms. KRW put one half on the diagonal by convention; postrank leaves the diagonal empty.
-:::
+```{=html}
+<details>
+<summary>Model assumptions and source notes</summary>
+<p>The six fictional after-school sites (A to F, from postrank's tutorial data) have normal reading-score posteriors taken as given. The simulated league follows <a href="noisy-league.qmd">Ranking noisy estimates</a> under <a href="shrinkage.qmd">normal&ndash;normal posterior shrinkage</a>; two imprecise units can remain near one half even far from the diagonal. Kline, Rose and Walters (2024) plot these heat maps for first names (Figure 2A; slide 38) and firms (slide 54), putting .5 on the diagonal where postrank leaves it empty.</p>
+</details>
+```
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -45,8 +38,4 @@ round(1 - pr_tutorial$one$e[, , "score_A"], 3)   # the six sites' matrix (C, D: 
 ```
 :::
 
-Standalone: [embed/pairwise-matrix.html](../../embed/pairwise-matrix.html), for example `?data=league&sort=label` or
-`?preset=imprecise&theme=dark`.
-
-Related applications: [Pairwise posterior direction probabilities](two-units.qmd), [Marginal interval overlap and direction probabilities](interval-overlap.qmd), [Interval overlap across 435 pairs](overlap-in-the-league.qmd) (the same league
-pairs) and [Expected errors in a strict ranking](ranking-claims.qmd).
+Standalone: [embed/pairwise-matrix.html](../../embed/pairwise-matrix.html) (`?data=league&sort=label` or `?preset=imprecise&theme=dark`). Related: [1.8](two-units.qmd), [1.11](interval-overlap.qmd), [1.12](overlap-in-the-league.qmd), [1.16](ranking-claims.qmd).

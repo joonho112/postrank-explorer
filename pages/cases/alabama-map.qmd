@@ -4,9 +4,7 @@ subtitle: "5.12 · Opportunity Atlas data, one common grade on a map"
 description: "Criterion-specific evaluation of common grades for historical income and incarceration outcomes."
 ---
 
-A single grade report compares Alabama counties on two historical outcomes, household income and incarceration.
-Grade 1 indicates higher income and lower incarceration. Changing the weight changes the relative cost of mistakes
-on the two outcomes. The map links each county's grade to the marginal intervals in the table.
+One common grade report compares Alabama's 67 counties on historical income and incarceration; shifting the weight trades wrong directions between outcomes.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -18,16 +16,20 @@ on the two outcomes. The map links each county's grade to the marginal intervals
 
 ## Numerical illustrations {#what-to-try}
 
-- **“Equal weights.”** Crenshaw County is the only county in grade one. Montgomery and Russell share grade five. The expected error shares among stated comparisons are .0520 for income and .172 for incarceration.
-- **“Income only.”** The report states 1,769 of 2,211 pairs. The incarceration error share rises to .349. Under **“Income .80”**, the incarceration and income shares are .305 and .0305, respectively. Each risk uses the loss for its own weights.
-- **“Fixed income D1.”** At equal weights the archived D1 grades have risk .1906, compared with .1998 for D2. The corresponding map is available below the main comparison.
-- **“Color counties by this report.”** Choose an archived report or edit the grades. The table gives each county's grades and intervals and shows how the stated comparisons differ from archived P. **“Incarceration only”** gives shares .312 on income and .0873 on incarceration.
+- **“Equal weights.”** Crenshaw County stands alone in grade one (.0520 wrong on income, .172 on incarceration).
+- **“Income only.”** States 1,769 of 2,211 pairs (.349 wrong on incarceration); **“Income .80”** gives .305 and .0305.
+- **“Fixed income D1.”** Equal-weight risk is .191, vs. .200 under **“Fixed incarceration D2.”**
+- **“Incarceration only.”** Wrong shares flip to .312 on income and .0873 on incarceration.
 
-The browser searches cuts of one order, based on the counties' weighted average posterior ranks. At the original cost and cap, the search reproduces P at equal weights, D1 for income alone, and D2 for incarceration alone. The archived solver status and bounds apply to those original runs. The commonality table reports how much risk the original common report adds for each outcome compared with a report optimized for that outcome alone. Its bounds apply to the original loss and the full family allowed by the grade cap.
+<details>
+<summary>Cohort scope and commonality notes</summary>
 
-::: {.callout-note appearance="simple"}
-The estimates pool race and gender for cohorts born in 1978–83 whose parents were at the 25th income percentile. The outcomes are household income in 2014–15 and incarceration on April 1, 2010. The grades describe associations for those cohorts. Present-day need, eligibility, and the causal effect of growing up in a county would require other evidence. The two separate fits give marginal distributions for each outcome. Data: Chetty, Friedman, Hendren, Jones and Porter (2022), Opportunity Atlas replication, Harvard Dataverse doi:10.7910/DVN/NKCQM1; Opportunity Insights and U.S. Census Bureau, CC BY 4.0; as adapted in postrank 1.1.0. Changes: Alabama filtering, favorable target orientation, supplied marginal summaries, archived reports and browser searches. Boundaries: U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20m), via usmapdata 1.1.0; public domain. No endorsement implied.
-:::
+The browser searches cuts of one order from weighted average posterior ranks, reproducing archived P at equal weights, D1 for income alone, and D2 for incarceration alone at the original cost and cap. The archived commonality table bounds how much risk the common report adds for each outcome relative to its own single-outcome optimum under the original loss and grade cap.
+
+Opportunity Atlas estimates pool race and gender for 1978–83 birth cohorts with parents at the 25th income percentile (household income in 2014–15; incarceration on April 1, 2010). Grades summarize historical associations for those cohorts rather than present-day need, eligibility, or causal place effects; the two outcomes were fit separately and supply marginal intervals.
+</details>
+
+Data: Chetty, Friedman, Hendren, Jones and Porter (2022), doi:10.7910/DVN/NKCQM1 (CC BY 4.0, postrank 1.1.0). Boundaries: U.S. Census Bureau, Cartographic Boundary Files, 2025 (1:20m), via usmapdata 1.1.0. No endorsement implied.
 
 <details class="prx-recipe">
 <summary>In postrank</summary>
@@ -39,6 +41,4 @@ pr_case_alabama$reference$commonality[, c("criterion", "cost_lower_A", "cost_upp
 ```
 </details>
 
-Standalone: [embed/alabama-map.html](../../embed/alabama-map.html), for example `?w=.5&overlay=income`.
-
-Related applications: [Criterion-specific excess risk of a common report](../criteria/common-grade-cost.qmd) · [A common report for race and gender gaps](krw-two.qmd).
+[Standalone embed](../../embed/alabama-map.html) (`?w=.5&overlay=income`) · Related: [Common-grade cost](../criteria/common-grade-cost.qmd) · [Race and gender gaps](krw-two.qmd).

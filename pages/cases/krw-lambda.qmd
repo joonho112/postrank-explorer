@@ -4,11 +4,7 @@ subtitle: "5.5 · after Kline, Rose and Walters (2024), Figures 5A, 6 and 7"
 description: "Disclosure and expected errors of archived cards across the λ grid."
 ---
 
-KRW's archive gives a card at each hundredth of the reward λ from zero to one. The cards generally state more
-pairs as the reward for a correct direction rises, although disclosure falls at some steps. The figure evaluates
-each fixed card using the released pair probabilities and shows which comparisons change from the preceding
-grid point. KRW chose the cards with their archived probabilities and solver tolerances, which matter when
-comparing this path with exact optima under one posterior.
+KRW's archive gives one card at each hundredth of λ from zero to one, showing how disclosure and expected wrong directions move together.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,28 +16,19 @@ comparing this path with exact optima under one posterior.
 
 ## Numerical illustrations {#what-to-try}
 
-- **λ .25: published race card.** The baseline card states 1,324 pairs, with E/N .136. Grade counts appear on a logarithmic scale. DR divides expected errors by all possible pairs.
-- **λ .08: first race split.** Genuine Parts stands alone above the other 96 firms. Its standard error is
-  smaller than AutoNation’s, despite AutoNation’s larger estimate. Risk .07406 is just below its own all-withheld
-  reference; the comparison needs the extra decimal.
-- **λ .01: one grade.** The card at the first positive λ states no direction, so E/N is undefined. The table also
-  includes the archived card at λ zero, where postrank risk is undefined.
-- **λ .30: statements and silence.** Against the preceding grid row, 830 pairs become stated and 92 become
-  withheld. The comparison uses the adjacent archived rows each time.
-- **λ .98: disclosure dip.** Between λ .97 and .98, the number of stated comparisons falls from 4,620 to 4,614.
-- **λ 1: end of grid.** DR and E/N coincide at .268 because every pair is stated. The complete Purples matrix uses a different scale: it shades stated errors, unlike the Blues direction probabilities in the heat-map app.
+- **λ .25 & λ .01.** The published race card states 1,324 pairs (E/N .136); at the first positive λ (.01), no pair is stated.
+- **λ .08: first race split.** Genuine Parts stands above the other 96 firms at risk .07406.
+- **λ .30, λ .98 & λ 1.** At .30, 830 pairs become stated and 92 withheld; stated pairs dip from 4,620 (.97) to 4,614 (.98) and reach all pairs at λ 1 (DR = E/N = .268).
+
+<details>
+<summary>Archived path and figure notes</summary>
+
+KRW's code selected the grid cards using their archived probabilities and solver tolerances; the app holds those grades fixed and evaluates them with the released postrank probabilities. Baseline race card: Figure 7; gender card: Figure 14 (§VIII); Figures 5A and 6 (§V.E); Figure 10A (§VI.B).
+
+</details>
 
 ::: {.callout-note appearance="simple"}
-KRW's code selected the grid cards using their archived probabilities and solver tolerances. The app holds those
-grades fixed and evaluates them with the released postrank probabilities. The baseline race card is in Figure 7,
-and the gender card is in Figure 14 (§VIII). Figures 5A and 6 are in §V.E, and Figure 10A is in §VI.B.
-
-Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC
-as stated by the deposit, noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted.
-Provided as is, without warranty; no endorsement is implied. **These historical data do not describe any firm’s
-current conduct.**
+Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only; adapted in postrank 1.1.0 (`pr_case_krw`), changes noted. No endorsement implied; provided as is. **These historical data do not describe any firm’s current conduct.**
 :::
 
-Standalone: [krw-lambda](../../embed/krw-lambda.html).
-
-Related applications: [Error rates under two denominators](../grades/two-denominators.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).
+Standalone: [krw-lambda](../../embed/krw-lambda.html) · Related: [Error rates under two denominators](../grades/two-denominators.qmd), [Posterior summaries in a grade report](../grades/report-card.qmd).

@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/stability.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Report stability under repeated measurement – postrank Explorer">
+<meta property="og:description" content="How new measurements of the same units change the directions a report states.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/stability.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/stability.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -544,7 +569,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Report stability under repeated measurement</h1>
-<p class="subtitle lead">3.12 · after the postrank theory book, ch.&nbsp;17, repeated-data stability</p>
+<p class="subtitle lead">3.12 · after the postrank theory book, ch.&nbsp;23, repeated-data stability</p>
 </div>
 
 <div>
@@ -572,28 +597,24 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../js/vendor/plot.min.js"></script>
 <script src="../../js/bundles/stability.js"></script>
 <script>window.__prxApp = PRX["stability"].mountWidget(document.getElementById("app"));</script>
-<p>For each pair of measurements, we count comparisons that become stated, become withheld or reverse direction. We report these changes alongside the number of pairs stated and each report’s expected errors. A rule that withholds every pair is perfectly stable by this measure, but provides no directions. The simulation holds the true values and standard errors fixed and calculates a fresh posterior for each dataset under the same prior.</p>
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Optimal cuts.</strong> The first observation states 251 pairs. The second report and relation-change grid show that the criterion is the same, but the measurements and fitted posterior summaries change. The pair control selects a repeated-measurement experiment.</li>
-<li><strong>Estimate tiers.</strong> The first report states 300 pairs. The fixed tier sizes keep disclosure constant here, even when different units occupy those grades. The comparison table separates disclosure from the fraction of changed relations.</li>
-<li><strong>Prior SD .05.</strong> The same measurements are reused with a narrower assumed prior. We recalculate the posterior means, probabilities and optimal cuts under this narrower prior. The true values stay fixed.</li>
-<li><strong>Withhold every pair.</strong> Every relation stays withheld. The claimed error fraction reads NA: no disclosure. Its stability is no evidence that the report is informative.</li>
-<li><strong>τ .05.</strong> A lower price makes withholding cheaper. The histogram and disclosure column describe repeated-data stability, separately from reporting risk.</li>
+<li><strong>Optimal cuts.</strong> Observation A states 251 pairs; open <strong>Data, paired measurements and repeat distribution</strong> for both refitted reports, the pair-change matrix and the replay histogram.</li>
+<li><strong>Estimate tiers.</strong> Fixed three-tier sizes hold disclosure at 300 pairs in both datasets while units trade grades.</li>
+<li><strong>Prior SD .05.</strong> A narrower assumed prior (.05) shrinks posterior means and lowers relation turnover on the same fixed truth.</li>
+<li><strong>Withhold every pair.</strong> Pooled E/N reads NA: no disclosure—zero turnover only because no direction is stated.</li>
+<li><strong>τ .05.</strong> Lowering τ to .05 prices withholding more cheaply, reducing both disclosure and relation changes.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>We draw independent normal measurement errors for the same units, true values and SEs. Each report’s error fraction uses the posterior from its own measurements. The pooled fraction adds the two expected wrong counts and divides by their total disclosure. The optimal-cut rule searches boundaries within the posterior-mean order for each dataset.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Repeated-measurement design and notes
+</summary>
+<p>For each pair of measurements, we count comparisons that become stated, become withheld or reverse direction alongside the share of pairs stated and each report’s expected errors. The simulation holds the thirty true values and known standard errors fixed, draws two independent normal measurement-error vectors per pair, and computes a fresh normal posterior for each dataset under the chosen prior. Pooled claimed E/N sums expected wrong counts across both observations and divides by their total stated pairs; optimal cuts search contiguous boundaries within each dataset’s posterior-mean order.</p>
+</details>
 <p>Standalone: <a href="../../embed/stability.html">stability</a>, for example <code>?preset=cuts&amp;pair=2</code>.</p>
 <p>Related applications: <a href="../../pages/rules/fixed-tiers.html">Fixed quantile tiers</a>, <a href="../../pages/rules/posterior-tiers.html">Tiers and optimized cuts of posterior rankings</a>, <a href="../../pages/grades/averaging-errors.html">Averaging error shares across reports</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-selection-benchmarks">Benchmarks for selection, classification, and stability</a>.</p>
 
 
 </section>
@@ -1066,7 +1087,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

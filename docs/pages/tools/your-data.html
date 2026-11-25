@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/tools/your-data.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Reports from supplied posterior summaries – postrank Explorer">
+<meta property="og:description" content="Local calculation from normal summaries, declared priors or pairwise probability matrices.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/tools/your-data.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/your-data.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The tool builds a grade report from posterior means and standard deviations, estimates with standard errors and a prior, or pairwise probability matrices. The result names the set of reports searched. The calculation runs in your browser, where your input records stay.</p>
+<p>Paste posterior means and SDs, estimates with SEs and a stated prior, or pairwise probability matrices to build a grade report locally in your browser without uploading records.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,15 +600,20 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Eight posterior summaries</strong> uses the first 8 units from the league example, which differ in precision. The report states 17 pairs and has weighted risk .1455.</li>
-<li><strong>Eight estimates, flat prior</strong> uses a normal posterior for each unit, centered on its estimate with SD equal to its SE. The grades agree with the first example even though the posterior probabilities and risk differ. Here the risk is .1368.</li>
-<li><strong>Eight estimates, Normal prior</strong> centers the prior at zero with SD .15. The posterior matches the first example, and the risk is .1455. The prior is a separate assumption from the estimates and their SEs.</li>
-<li><strong>Two probability matrices</strong> uses the supplied probabilities for two criteria at six sites. The common report states 9 pairs at weighted risk .0933. The matrices provide pair probabilities without site means or intervals.</li>
-<li><strong>Thirty posterior summaries</strong> exceeds the enumeration limit. The tool searches cuts of the weighted expected-rank order, which depends on the criterion weights. The best report in that order states 251 pairs at risk .1581.</li>
-<li><strong>All reports tied</strong> has 541 reports with the same minimum risk. The list displays the first 100 and gives the total. With every comparison withheld, the expected error share is shown as NA.</li>
+<li><strong>Eight posterior summaries</strong> — 8 units with unequal precision; states 17 pairs at weighted risk .146.</li>
+<li><strong>Eight estimates, flat prior</strong> — posterior SD equals SE; same grades at risk .137.</li>
+<li><strong>Eight estimates, Normal prior</strong> — shrinks toward zero (SD .15); matches the first example at risk .146.</li>
+<li><strong>Two probability matrices</strong> — two criteria without marginal intervals; states 9 pairs at weighted risk .0933.</li>
+<li><strong>Thirty posterior summaries</strong> — searches expected-rank cuts beyond enumeration; states 251 pairs at risk .158.</li>
+<li><strong>All reports tied</strong> — 541 equal-risk reports (100 retained); with no pair stated, E/N is NA.</li>
 </ul>
+<details>
+<summary>
+Input assumptions, validation and local exports
+</summary>
 <p>The normal-input calculation assumes that the units are independent given the model. Use joint draws or a joint law in R when the units are correlated. For matrices, specify the event and where the probabilities came from. The input assumes zero probability of latent equality and a zero comparison margin. The checks cover dimensions, ranges, and whether opposite directions sum to one. A joint law, calibration, and numerical accuracy need separate evidence. Leave unassessed units out of the input because a bottom grade would assert comparisons about them.</p>
 <p>Apply keeps the previous report until the new input passes the checks. A download includes the input and settings used in the displayed report. The URL carries settings only, so paste the records and source descriptions again after a reload. If you open the optional joint solver, its status and gap describe the search using the supplied probabilities.</p>
+</details>
 <p><a href="../../embed/your-data.html?preset=league8-posterior">Open the standalone tool</a>.</p>
 <p>Related applications: <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a> · <a href="../../pages/uncertainty/pairwise-matrix.html">The matrix of pairwise posterior probabilities</a> · <a href="../../pages/grades/computing-grades.html">Computation of optimal grade reports</a>.</p>
 
@@ -1058,7 +1088,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

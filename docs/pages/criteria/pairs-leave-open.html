@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/pairs-leave-open.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Quantities not identified by pairwise probabilities – postrank Explorer">
+<meta property="og:description" content="Limits of pairwise probabilities for composite targets and joint-correctness events.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/pairs-leave-open.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/pairs-leave-open.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -544,7 +569,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Quantities not identified by pairwise probabilities</h1>
-<p class="subtitle lead">4.13 · after the postrank theory book, chapters 11 and 19, and vignettes m2/m3</p>
+<p class="subtitle lead">4.13 · after the postrank theory book, chapters 11 and 25, and vignettes m2/m3</p>
 </div>
 
 <div>
@@ -566,38 +591,31 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Pairwise probabilities are enough to calculate the additive expected risk of a fixed report. To know how often every statement is right, we also need to know how the errors occur together.</p>
+<p>Pairwise probabilities fix a report’s additive expected risk, whereas composite directions and joint all-correct probabilities depend on how errors occur together.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
 <script src="../../js/bundles/pairs-leave-open.js"></script>
 <script>window.__prxApp = PRX["pairs-leave-open"].mountWidget(document.getElementById("app"));</script>
-<p>In the finite examples, we change how the two criteria’s states are paired while holding fixed each criterion’s full distribution for the two units. A fixed report then has the same additive risk under every pairing. Its chance of being right on all criteria can change, as can the probability of a direction on a composite. The composite depends on the magnitudes of the targets as well as their order.</p>
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Together</strong>: each disclosed direction has additive risk .5000. For A above B, the probability that both criteria are right is .5. The displayed state masses belong to entire arrays; they do not describe independently drawn criterion columns.</li>
-<li><strong>Opposite</strong>: the additive risk stays .5000, while both the forward composite error and the probability of being right on every criterion become 0. The composite is always positive, although the criteria point opposite ways within each state. The full table retains all reporting actions.</li>
-<li><strong>Halfway</strong>: the all-criteria probability is .250. The wrong-count distribution changes with the coupling even though its expectation and every report’s additive risk stay fixed. Error weights and withholding cost remain separate controls; changing them changes the loss.</li>
-<li><strong>One zero error weight</strong>: the probability of zero weighted wrong count is .5, while all-criteria correctness is 0. A criterion given zero error weight still belongs to the all-criteria event. The weighted wrong count can be zero even when a direction on that criterion is wrong.</li>
-<li><strong>Select withholding</strong>: the wrong or correct fraction reads “NA: no disclosure.” Because the report states no directions, no direction can be wrong.</li>
-<li><strong>Five statements</strong>: the fixed report’s mean weighted fraction correct is .870, but the probability all its statements are right on every criterion is .750. It makes 5 statements. The second state has weighted wrong count 2.600; the criterion grid gives its whole-state probability and contribution to the average.</li>
+<li><strong>Together</strong>: Additive risk and all-criteria correctness are both .500 when the criteria agree across states.</li>
+<li><strong>Opposite</strong>: Additive risk stays .500, whereas forward composite error and all-criteria correctness drop to 0.</li>
+<li><strong>Halfway</strong>: All-criteria correctness is .250 while expected wrong count and additive risk remain unchanged.</li>
+<li><strong>One zero error weight</strong>: Zero weighted wrong count has probability .500, while all-criteria correctness is 0.</li>
+<li><strong>Select withholding</strong>: Withholding every pair leaves mean accuracy at “NA: no disclosure” with vacuous no-error events.</li>
+<li><strong>Five statements</strong>: Mean weighted accuracy is .870 across 5 statements vs.&nbsp;.750 all-criteria correctness; in <strong>Data</strong>, state two has 2.600 weighted wrong count.</li>
 </ul>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>In these examples, larger target values mean higher reporting priority. The state editor changes the association between criteria while preserving each criterion’s distribution. The complete report table shows which report has the lowest risk and how the selected report fares under each loss. Marginal pair probabilities alone leave the joint events and the composite posterior undetermined.</p>
-</div>
-</div>
+<details>
+<summary>
+Coupling, composite targets, and scope
+</summary>
+<p>Changing how the two criteria’s states are paired while holding each criterion’s two-unit distribution fixed leaves every fixed report’s additive risk invariant. Joint all-criteria correctness and composite directions still move because composite targets depend on magnitudes and joint events depend on whole-state probabilities. Larger target values indicate higher reporting priority; marginal pair probabilities alone leave joint events and composite posteriors undetermined.</p>
+</details>
 <p><a href="../../embed/pairs-leave-open.html">Open standalone</a>, for example <code>?preset=opposite&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="../../pages/criteria/composite-or-criterion.html">Composite targets and criterion directions</a>, <a href="../../pages/criteria/conflict-pairs.html">Opposing criterion directions</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/11-multicriteria-loss.html#sec-weighted-directional-risk">Weighted directional risk from a supplied selection law</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-exact-common-grade">Common grades under an exact joint target law</a>.</p>
 
 
 </section>
@@ -1070,7 +1088,7 @@ Note
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

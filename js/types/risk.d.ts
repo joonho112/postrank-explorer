@@ -217,7 +217,7 @@ export declare function krwRisk(g: ArrayLike<number>, E: ErrorArray, options: Kr
  */
 export declare function equalityNeutralRisk(g: ArrayLike<number>, tie: TieInput | TieLawPairwise, options: RiskOptions): EqualityNeutralRisk;
 /**
- * Averaging conventions for disclosed-error fractions over equally likely cases [{ A, N, M? }] (ch. 16):
+ * Averaging conventions for disclosed-error fractions over equally likely cases [{ A, N, M? }] (ch. 22):
  * ERR = ΣA/ΣN, the mean of A/N over cases with N > 0, the zero-imputed mean, Pr(N > 0) and E[N/M]
  * (M per case, or `options.M` for all; null when unknown). With `weights` p (one probability per case: the
  * kernel of a randomized report or a design over datasets) ERR = Σ p·A / Σ p·N (null when Σ p·N = 0),

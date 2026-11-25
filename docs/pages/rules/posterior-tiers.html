@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/posterior-tiers.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tiers and optimized cuts of posterior rankings – postrank Explorer">
+<meta property="og:description" content="Comparison of fixed posterior tiers, optimized boundaries and joint report optimization.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/posterior-tiers.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/posterior-tiers.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -579,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Tiers and optimized cuts of posterior rankings</h1>
-<p class="subtitle lead">3.5 · after the postrank theory book, ch.&nbsp;17, and postrank’s fixed-order cuts</p>
+<p class="subtitle lead">3.5 · after the postrank theory book, ch.&nbsp;23, and postrank’s fixed-order cuts</p>
 </div>
 
 <div>
@@ -601,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>A grade report built from an existing ranking inherits that ranking’s order. Quantile tiers also fix the boundaries by group size. Optimal cuts allow those boundaries to vary while keeping the order fixed. For eight units, we can also enumerate the feasible reports and compare both methods with the unrestricted minimum under the same posterior and withholding cost. For the larger examples, we compare cuts of a fixed order. <strong>Reports, orders and scopes</strong> lists the reports searched and the resulting disclosure counts.</p>
+<p>Fixed quantile tiers set boundaries by group size; optimal cuts adjust those boundaries while keeping the posterior order fixed.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,21 +635,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Eight units: optimal cuts.</strong> Both orders’ cuts state 17 pairs at risk .1455, matching the best of 6,051 reports with at most three grades. Fixed tiers state 21 pairs at risk .1612. This equality between cuts and the joint optimum is a property of these units.</li>
-<li><strong>League: fixed tiers.</strong> The tiers state 300 pairs at risk .1731. Optimizing their boundaries states 251 at risk .1581. Every rule uses the same posterior and price, but these reports disclose different amounts.</li>
-<li><strong>Thirty sites: rank cuts.</strong> The cuts state 303 pairs at risk .1603, after searching 4,090 contiguous reports. The orders table shows that the two orders need not coincide for their chosen cuts to agree.</li>
-<li><strong>Eight units: all reports.</strong> The benchmark expands to 545,835 reports. The reported family determines the scope of the gap for each rule and grade cap.</li>
+<li><strong>Eight units: optimal cuts.</strong> Mean-order and rank-order cuts state 17 pairs at risk .146, matching the best of 6,051 reports; tiers state 21 at .161.</li>
+<li><strong>League: fixed tiers.</strong> Tiers state 300 pairs at risk .173; mean-order cuts state 251 at .158.</li>
+<li><strong>Thirty sites: rank cuts.</strong> Rank cuts state 303 pairs at risk .160 across 4,090 contiguous reports.</li>
+<li><strong>Eight units: all reports.</strong> Searches all 545,835 reports.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>When the quantile boundaries are among the allowed cuts of an order, the minimum over those cuts cannot have higher risk than the quantile report. Searching other orders may yield a lower minimum within the grade cap. The comparison also depends on the objective. A cut that minimizes directional error can differ from one that minimizes error on a composite score. We do not estimate the gap to the joint optimum for the larger examples.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Numerical illustrations and notes
+</summary>
+<p>When the quantile boundaries are among the allowed cuts of an order, the minimum over those cuts cannot have higher risk than the quantile report. Searching other orders may yield a lower minimum within the grade cap. The comparison also depends on the objective: a cut that minimizes directional error can differ from one that minimizes error on a composite score. We do not estimate the gap to the joint optimum for the larger examples.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -637,14 +658,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">poverty =</span> <span class="dv">1</span>, <span class="at">frl =</span> <span class="dv">0</span>, <span class="at">snap =</span> <span class="dv">0</span>); s <span class="ot">&lt;-</span> <span class="fu">postrank_settings</span>(<span class="at">weights =</span> w, <span class="at">tau =</span> .<span class="dv">25</span>, <span class="at">G_max =</span> <span class="dv">4</span>L)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pm <span class="ot">&lt;-</span> <span class="fu">postrank_cuts</span>(pr_example_gaussian<span class="sc">$</span>means[, <span class="st">"poverty"</span>], pr_example_gaussian, s, <span class="at">direction =</span> <span class="st">"descending"</span>, <span class="at">method =</span> <span class="st">"posterior_mean"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">risk =</span> pm<span class="sc">$</span>risk)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(postrank)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">poverty =</span> <span class="dv">1</span>, <span class="at">frl =</span> <span class="dv">0</span>, <span class="at">snap =</span> <span class="dv">0</span>); s <span class="ot">&lt;-</span> <span class="fu">postrank_settings</span>(<span class="at">weights =</span> w, <span class="at">tau =</span> .<span class="dv">25</span>, <span class="at">G_max =</span> <span class="dv">4</span>L)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pm <span class="ot">&lt;-</span> <span class="fu">postrank_cuts</span>(pr_example_gaussian<span class="sc">$</span>means[, <span class="st">"poverty"</span>], pr_example_gaussian, s, <span class="at">direction =</span> <span class="st">"descending"</span>, <span class="at">method =</span> <span class="st">"posterior_mean"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">risk =</span> pm<span class="sc">$</span>risk)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 <p>Standalone: <a href="../../embed/posterior-tiers.html">posterior-tiers</a>, for example <code>?preset=league8-cuts</code>.</p>
 <p>Related applications: <a href="../../pages/rules/order-misses.html">Restrictions imposed by a fixed order</a>, <a href="../../pages/grades/families.html">Restrictions on the report family</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-fair-comparator-framework">Comparator definitions and scope</a>.</p>
 
 
 </section>
@@ -1117,7 +1140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

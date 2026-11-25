@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/profiles/fictional-site-profiles.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Site profiles – postrank Explorer">
+<meta property="og:description" content="Forty sites. Two priorities. Saved fictional reports.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/profiles/fictional-site-profiles.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/fictional-site-profiles.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -613,11 +638,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Primary saved card.</strong> Composition S has no disclosed comparisons, so its error proportion is not defined. Community C discloses 500 pairs. All forty sites occupy three profile cells.</li>
-<li><strong>Wider-threshold saved card.</strong> With threshold 1/10, S discloses 300 pairs and C discloses 500. Their union contains 548 distinct pairs, including 16 with crossed directions. Five of six profile cells are occupied.</li>
-<li><strong>Crossed site profiles.</strong> In the wider card, S11 has grades (1,2) and S18 has (2,1). S11 has higher reported composition priority, and S18 has higher reported community priority. The grades report those priorities separately.</li>
-<li><strong>Composition comparison withheld.</strong> In the primary card, S11 and S18 share composition grade 1. Their composition direction is withheld, while community grades 2 and 1 give S18 higher community priority.</li>
-<li><strong>An empty profile cell.</strong> In the wider card, zero sites have community grade 3 and composition grade 1. The grid shows that combination alongside the occupied cells.</li>
+<li><strong>Primary card.</strong> In the primary saved card, composition S has no disclosed comparisons, so its error proportion is not defined. Community C discloses 500 pairs. All forty sites occupy three profile cells.</li>
+<li><strong>Wider threshold.</strong> In the wider-threshold saved card (threshold 1/10), S discloses 300 pairs and C discloses 500. Their union contains 548 distinct pairs, including 16 with crossed directions. Five of six profile cells are occupied.</li>
+<li><strong>Crossed profiles.</strong> In the wider card, S11 has grades (1,2) and S18 has (2,1). S11 has higher reported composition priority, and S18 has higher reported community priority. The grades report those priorities separately.</li>
+<li><strong>S withheld.</strong> In the primary card, S11 and S18 share composition grade 1. Their composition direction is withheld, while community grades 2 and 1 give S18 higher community priority.</li>
+<li><strong>Empty cell.</strong> In the wider card, zero sites have community grade 3 and composition grade 1. The grid shows that combination alongside the occupied cells.</li>
 </ul>
 <p>At the primary threshold of 1/20, 25 errors among 500 stated comparisons reach the threshold and 26 exceed it. The original analysis estimated a zero probability of exceeding the threshold in either domain. It also found at least one error in 1,871 of 8,000 selection states. The saved output does not include expected error fractions for domains that state comparisons.</p>
 <div class="callout callout-style-simple callout-note">
@@ -650,9 +675,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Content: JoonHo Lee, <a href="https://github.com/joonho112/need-based-prek-funding-tutorial">From Noisy Indicators to Pre-K Funding Priorities</a>, adapted under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Original recipe code: MIT.</p>
+</section></details>
 <p>Standalone: <a href="../../embed/fictional-site-profiles.html">open this app</a>, for example <code>?preset=crossed&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="../../pages/profiles/profile-common-vs-domain.html">Common or profile?</a> and <a href="../../pages/profiles/profile-dependence.html">Error overlap</a>.</p>
-</section></details>
 
 
 
@@ -1125,7 +1150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

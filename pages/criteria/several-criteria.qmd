@@ -4,8 +4,7 @@ subtitle: "4.1 · after the postrank vignette m2 and theory book, ch. 12"
 description: "Criterion-specific scales, orderings and pairwise direction probabilities for common units."
 ---
 
-The same sites can rank differently on reading growth and family engagement. The site with the largest posterior
-mean on one measure may rank lower on the other.
+The same units can rank differently across criteria, and each criterion carries its own pairwise direction probabilities. Compare posterior-mean orders and marginal intervals for any pair of sites.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -15,29 +14,20 @@ mean on one measure may rank lower on the other.
 <script>window.__prxApp = PRX["several-criteria"].mountWidget(document.getElementById("app"));</script>
 ```
 
-The panels show the posterior means and marginal intervals on their original scales. Lines connect the same
-site across the two orders. Selecting a pair gives the probability that the proposed direction is wrong on
-each criterion. This comparison can show strong support for opposite directions or weak support on either
-measure. The priority order also depends on whether a higher or lower score calls for an earlier visit.
-
 ## Numerical illustrations {#what-to-try}
 
-- **Thirty sites.** There are 397 opposing pairs among 435 pairs. The highest posterior mean belongs to a different
-  site on each criterion. Alignment by unit labels displays each unit's criterion-specific profiles.
-- **Six sites, B–C.** The error of stating B above C is .007 on score A and .961 on score B. The complete list has
-  3 opposing pairs. A very likely direction on one criterion can be very unlikely on another.
-- **Six sites, B–D.** The errors are .002 on score A and .760 on score B. The difference remains visible when both panels use the same order of site labels.
-- **Reverse score B.** Lower score B now means higher priority. The error of stating B above C on the oriented
-  score becomes .039. This change reverses the direction that counts as higher priority without changing the underlying scores.
-- **Wider intervals.** The marginal level becomes 95%, while the 397 opposing pairs stay the same. Interval level
-  changes the displayed uncertainty bands, not the supplied posterior probabilities or mean orders.
+- **Thirty sites.** Across 435 pairs, 397 have opposing preferred directions, and a different site leads each criterion’s mean order.
+- **Six sites, B–C.** Stating B above C has error .00666 on score A and .961 on score B, one of 3 opposing pairs.
+- **Six sites, B–D.** Stating B above D has error .00234 on score A and .760 on score B under aligned unit labels.
+- **Reverse score B.** Treating lower score B as higher priority reduces the B-above-C error on score B to .0385.
+- **Wider intervals.** Raising marginal intervals to 95% widens uncertainty bands while keeping all 397 opposing pairs unchanged.
 
-::: {.callout-note appearance="simple"}
-In the six-site example, score A measures standardized reading growth and score B is a standardized index
-of family engagement. Higher scores ordinarily imply earlier visits to document site practices. The example
-assigns no funding. Each interval describes one marginal normal posterior. The released marginal summaries for
-thirty sites leave the joint draws and the distribution of a composite undetermined.
-:::
+<details>
+<summary>Marginal normal summaries and scope</summary>
+
+In the six-site example, score A represents standardized reading growth and score B represents standardized family engagement, where higher scores ordinarily indicate earlier site visits without assigning funding. Each interval summarizes one marginal normal posterior; the thirty-site marginal release leaves cross-criterion joint draws and composite distributions undetermined.
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -50,3 +40,5 @@ pr_tutorial$two$e["B", "D", ]
 Standalone: [open this app](../../embed/several-criteria.html), for example `?preset=six-bc&theme=dark`.
 
 Related applications: [The decision for an isolated pair](../grades/one-pair.html) · [The matrix of pairwise posterior probabilities](../uncertainty/pairwise-matrix.html).
+
+Theory book · [Composite and criterion-specific reporting targets](https://joonho112.github.io/postrank-theory-book/chapters/12-conflict-estimands.html#sec-two-estimands).

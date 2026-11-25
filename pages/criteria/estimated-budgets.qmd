@@ -1,14 +1,10 @@
 ---
 title: "Error budgets under estimated pairwise probabilities"
-subtitle: "4.14 · after the postrank theory book, ch. 15"
+subtitle: "4.14 · after the postrank theory book, ch. 21"
 description: "How a bound on Monte Carlo error changes which reports can satisfy an error budget."
 ---
 
-An error budget caps the expected share of wrong stated directions. A report may pass that budget when we use
-estimated probabilities and fail it under the exact probabilities. A uniform error bound lets us use a tighter
-estimated budget to find reports that definitely pass, and a looser one to retain every report that passes.
-We check the bound and both claims about the report sets separately. A separate fixed-size simulation shows
-how often a bound of this kind can hold over repeated draws from the same law.
+A report meeting an error budget under estimated pair probabilities can fail under the exact posterior. A uniform error margin ε brackets exact feasibility between inner and outer sets.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,30 +16,22 @@ how often a bound of this kind can hold over repeated draws from the same law.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Estimated pass.** For A above B, the estimated wrong share is .200 and the exact supplied-law share is .300.
-  The budget is .25. The estimate passes and the exact probability fails. The number line shows the tighter threshold .15 and
-  looser threshold .35.
-- **Negative inner.** The signed inner threshold is −.05, even though the estimated wrong share is 0. Replacing
-  this threshold with zero would wrongly admit A above B. The all-withheld report still passes the count-form
-  tests, with no defined wrong share.
-- **Exactly two.** Requiring two grades removes all-withheld. The inner family has 0 reports; the exact family
-  also happens to be empty here. Their separate counters matter: an empty inner family alone would not establish
-  exact infeasibility.
-- **Radius too small.** The proposed radius is reduced to .05 with the exact law unchanged.
-  The coefficient checks read “no,” and an inner member fails the exact budget. The report that passes the tighter estimate but fails the exact budget is shown in the table.
-- **Raw comparisons.** With advisory tolerance removed, its coefficient check reads “no.” At the default radius,
-  the tiny raw excess explains why the strict check fails while the tolerant comparison passes. The actual
-  inclusions are separate tests, not consequences of accepting a soft tolerance.
-- **Fixed-S IID.** The simulation uses 1,000 complete states drawn from the independent normal posteriors for six sites. Score B has error weight 0 but remains protected by its .03
-  budget. Requiring exactly two grades gives an empty inner family while the exact family remains nonempty.
+- **Estimated pass.** For A above B, estimated share .200 passes budget .25 while exact share .300 fails, bracketed by .15 and .35.
+- **Negative inner.** At estimated share 0, signed inner threshold −.05 stays negative so A above B is excluded.
+- **Exactly two.** Requiring two grades excludes full withholding and leaves 0 reports in the inner set.
+- **Radius too small.** Margin .05 breaks the error bound ("no") and admits an inner report that fails the exact budget.
+- **Raw comparisons.** Removing float tolerance makes the strict bound check read "no" on tiny floating-point excess.
+- **Fixed-S IID.** With 1,000 draws across six sites, score B has weight 0 yet stays protected by its .03 budget.
 
-::: {.callout-note appearance="simple"}
-The two-unit example specifies the exact and estimated probabilities directly. In the simulation, the chance
-that all estimated coefficients fall within the bound is at least one minus α across repeated samples of the
-same size from the same law. This probability describes the numerical estimates under that law. Compliance
-under the model is still determined by the exact expected wrong share. The thresholds can be negative.
-:::
+<details>
+<summary>Model notes</summary>
+
+The two-unit example specifies exact and estimated pairwise probabilities directly. In the fixed-sample simulation, all estimated pair coefficients fall within the uniform error margin with probability at least $1 - \alpha$ across repeated draws of the same size from the supplied law. Compliance under the model is determined by the exact expected wrong share, and signed thresholds can be negative or exceed one.
+
+</details>
 
 Standalone: [Error budgets under estimated pairwise probabilities](../../embed/estimated-budgets.html).
 
 Related applications: [Criterion-specific expected-error budgets](error-budgets.qmd) · [Monte Carlo error in pairwise probabilities](../uncertainty/mc-error.qmd).
+
+Theory book · [Effects of coefficient error on risk and feasibility](https://joonho112.github.io/postrank-theory-book/chapters/21-numerical-uncertainty.html#sec-coefficient-error).

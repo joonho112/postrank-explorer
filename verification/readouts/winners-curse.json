@@ -13,10 +13,7 @@
           "select": "[data-prx-readout=\"read-est\"]",
           "about": "read-out: estimate minus true value, averaged over the replays (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -30,10 +27,7 @@
           "select": "[data-prx-readout=\"avg-est\"]",
           "about": "table: the same average (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -47,10 +41,7 @@
           "select": "[data-prx-readout=\"mean-est\"]",
           "about": "upper histogram heading: the mean at the dashed line (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -64,10 +55,7 @@
           "select": "[data-prx-readout=\"read-post\"]",
           "about": "read-out: posterior mean minus true value, averaged over the replays (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -81,10 +69,7 @@
           "select": "[data-prx-readout=\"avg-post\"]",
           "about": "table: the same average (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -98,10 +83,7 @@
           "select": "[data-prx-readout=\"mean-post\"]",
           "about": "lower histogram heading: the mean at the dashed line (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -115,10 +97,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -132,10 +111,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -149,10 +125,7 @@
           "select": "[data-prx-readout=\"read-shown-post\"]",
           "about": "read-out: the replay shown, posterior mean minus true value (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -166,10 +139,7 @@
           "select": "[data-prx-readout=\"shown-post\"]",
           "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -284,7 +254,10 @@
           "about": "prior SD hint: the spread (SD) of the true values",
           "source": "registry",
           "ref": "league.spec.theta.sd",
-          "value": 0.14937466480710787
+          "value": 0.14937466480710787,
+          "format": {
+            "fn": "formatReadoutEst"
+          }
         },
         {
           "select": "[data-prx-readout=\"obs-small\"]",
@@ -379,10 +352,7 @@
           "select": "[data-prx-readout=\"lead-est\"]",
           "about": "the lead: the gap of the estimates over the 2,000 replays (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -396,10 +366,7 @@
           "select": "[data-prx-readout=\"lead-post\"]",
           "about": "the lead: what is left of it for the posterior means (base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -437,10 +404,7 @@
           "select": "[data-prx-readout=\"read-est\"]",
           "about": "read-out: estimate minus true value, averaged over the replays (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -454,10 +418,7 @@
           "select": "[data-prx-readout=\"avg-est\"]",
           "about": "table: the same average (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -471,10 +432,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -488,10 +446,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -512,10 +467,7 @@
           "select": "[data-prx-readout=\"read-est\"]",
           "about": "read-out: estimate minus true value, averaged over the replays (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -529,10 +481,7 @@
           "select": "[data-prx-readout=\"avg-est\"]",
           "about": "table: the same average (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -546,10 +495,7 @@
           "select": "[data-prx-readout=\"mean-est\"]",
           "about": "upper histogram heading: the mean at the dashed line (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -563,10 +509,7 @@
           "select": "[data-prx-readout=\"read-post\"]",
           "about": "read-out: posterior mean minus true value, averaged over the replays (2,000 replays, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -580,10 +523,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value (seed 20261038, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -597,10 +537,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same (seed 20261038, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -614,10 +551,7 @@
           "select": "[data-prx-readout=\"read-shown-post\"]",
           "about": "read-out: the replay shown, posterior mean minus true value (seed 20261038, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -631,10 +565,7 @@
           "select": "[data-prx-readout=\"shown-post\"]",
           "about": "table: the same (seed 20261038, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -704,10 +635,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, bottom 3, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -721,10 +649,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same, replay shown (seed 20261030, bottom 3, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -738,10 +663,7 @@
           "select": "[data-prx-readout=\"read-shown-post\"]",
           "about": "read-out: the replay shown, posterior mean minus true value (seed 20261030, bottom 3, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -755,10 +677,7 @@
           "select": "[data-prx-readout=\"shown-post\"]",
           "about": "table: the same, replay shown (seed 20261030, bottom 3, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -788,10 +707,7 @@
           "select": "[data-prx-readout=\"read-est\"]",
           "about": "read-out: estimate minus true value, averaged over the replays (2,000 replays, base-R oracle; independent of the prior SD)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -805,10 +721,7 @@
           "select": "[data-prx-readout=\"avg-est\"]",
           "about": "table: the same average (2,000 replays, base-R oracle; independent of the prior SD)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -822,10 +735,7 @@
           "select": "[data-prx-readout=\"mean-est\"]",
           "about": "upper histogram heading: the mean at the dashed line (2,000 replays, base-R oracle; independent of the prior SD)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -869,10 +779,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -886,10 +793,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -903,10 +807,7 @@
           "select": "[data-prx-readout=\"read-shown-post\"]",
           "about": "read-out: the replay shown, posterior mean minus true value (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -920,10 +821,7 @@
           "select": "[data-prx-readout=\"shown-post\"]",
           "about": "table: the same, replay shown (seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -951,10 +849,10 @@
         {
           "select": ".prx-wc-lead",
           "kind": "text",
-          "about": "the lead when the posterior means' average reads .000: the whole gap, with the estimates' average in the sentence",
+          "about": "the lead when the posterior means average .000487 (3 sig figs, under a tenth of .182): nearly the whole gap",
           "source": "literal",
           "ref": "9.4",
-          "value": "At this prior SD the posterior means are on target to three decimals, on average over these replays: they take back the whole gap of ⟨e⟩ between estimate and true value.",
+          "value": "At this prior SD the posterior means take back nearly the whole gap: on average over these replays, the gap of ⟨e⟩ between estimate and true value shrinks to ⟨p⟩.",
           "slots": true
         }
       ]
@@ -968,10 +866,7 @@
           "select": "[data-prx-readout=\"read-est\"]",
           "about": "read-out: estimate minus true value, averaged over the replays (20 replays at seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -985,10 +880,7 @@
           "select": "[data-prx-readout=\"avg-est\"]",
           "about": "table: the same average (20 replays at seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1002,10 +894,7 @@
           "select": "[data-prx-readout=\"mean-est\"]",
           "about": "upper histogram heading: the mean at the dashed line (20 replays at seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1019,10 +908,7 @@
           "select": "[data-prx-readout=\"read-post\"]",
           "about": "read-out: posterior mean minus true value, averaged over the replays (20 replays at seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1036,10 +922,7 @@
           "select": "[data-prx-readout=\"avg-post\"]",
           "about": "table: the same average (20 replays at seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1053,10 +936,7 @@
           "select": "[data-prx-readout=\"mean-post\"]",
           "about": "lower histogram heading: the mean at the dashed line (20 replays at seed 20261030, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1070,10 +950,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value (seed 20261031, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1087,10 +964,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same (seed 20261031, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1104,10 +978,7 @@
           "select": "[data-prx-readout=\"read-shown-post\"]",
           "about": "read-out: the replay shown, posterior mean minus true value (seed 20261031, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1121,10 +992,7 @@
           "select": "[data-prx-readout=\"shown-post\"]",
           "about": "table: the same (seed 20261031, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1238,10 +1106,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value (seed 20261038, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1255,10 +1120,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same (seed 20261038, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1272,10 +1134,7 @@
           "select": "[data-prx-readout=\"read-shown-post\"]",
           "about": "read-out: the replay shown, posterior mean minus true value (seed 20261038, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1289,10 +1148,7 @@
           "select": "[data-prx-readout=\"shown-post\"]",
           "about": "table: the same (seed 20261038, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1383,10 +1239,7 @@
           "select": "[data-prx-readout=\"read-est\"]",
           "about": "read-out: estimate minus true value, averaged over the replays (top 1, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1400,10 +1253,7 @@
           "select": "[data-prx-readout=\"avg-est\"]",
           "about": "table: the same average (top 1, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1417,10 +1267,7 @@
           "select": "[data-prx-readout=\"mean-est\"]",
           "about": "upper histogram heading: the mean at the dashed line (top 1, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1434,10 +1281,7 @@
           "select": "[data-prx-readout=\"read-post\"]",
           "about": "read-out: posterior mean minus true value, averaged over the replays (top 1, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1451,10 +1295,7 @@
           "select": "[data-prx-readout=\"avg-post\"]",
           "about": "table: the same average (top 1, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1468,10 +1309,7 @@
           "select": "[data-prx-readout=\"mean-post\"]",
           "about": "lower histogram heading: the mean at the dashed line (top 1, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1485,10 +1323,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value (seed 20261031, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1502,10 +1337,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same (seed 20261031, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1519,10 +1351,7 @@
           "select": "[data-prx-readout=\"read-shown-post\"]",
           "about": "read-out: the replay shown, posterior mean minus true value (seed 20261031, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1536,10 +1365,7 @@
           "select": "[data-prx-readout=\"shown-post\"]",
           "about": "table: the same (seed 20261031, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1574,10 +1400,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value averaged over its units (seed 20261030, top 10, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1591,10 +1414,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same, replay shown (seed 20261030, top 10, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1608,10 +1428,7 @@
           "select": "[data-prx-readout=\"read-shown-post\"]",
           "about": "read-out: the replay shown, posterior mean minus true value (seed 20261030, top 10, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1625,10 +1442,7 @@
           "select": "[data-prx-readout=\"shown-post\"]",
           "about": "table: the same, replay shown (seed 20261030, top 10, prior SD .05, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1663,10 +1477,7 @@
           "select": "[data-prx-readout=\"read-shown-est\"]",
           "about": "read-out: the replay shown, estimate minus true value (replay 20, seed 20261050, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1680,10 +1491,7 @@
           "select": "[data-prx-readout=\"shown-est\"]",
           "about": "table: the same (replay 20, seed 20261050, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1697,10 +1505,7 @@
           "select": "[data-prx-readout=\"read-shown-post\"]",
           "about": "read-out: the replay shown, posterior mean minus true value (replay 20, seed 20261050, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {
@@ -1714,10 +1519,7 @@
           "select": "[data-prx-readout=\"shown-post\"]",
           "about": "table: the same (replay 20, seed 20261050, base-R oracle)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutEst"
           },
           "source": "oracle",
           "ref": {

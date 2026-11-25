@@ -55,6 +55,9 @@
         {
           "select": "[data-prx-readout=\"s\"]",
           "about": "share of the pairs the race card states",
+          "format": {
+            "fn": "formatShare"
+          },
           "source": "registry",
           "ref": "krw.race.card.s",
           "value": 0.284364261168385
@@ -63,7 +66,7 @@
           "select": "[data-prx-readout=\"s\"]",
           "about": "s from the base-R oracle row",
           "format": {
-            "fn": "formatProb"
+            "fn": "formatShare"
           },
           "source": "oracle",
           "ref": {
@@ -410,10 +413,10 @@
         {
           "select": ".prx-readout",
           "kind": "text",
-          "about": "the read-out word for word: v1's three sentences, then how many of the card's directions run as the table orders them (by estimate here) and how many the other way",
+          "about": "the concise Frame v2 read-out at the estimate order (3 significant figures)",
           "source": "literal",
           "ref": "9.4",
-          "value": "The league table states a direction for every one of the ⟨M⟩ pairs of firms. KRW's race card states ⟨N⟩ of them, a share of ⟨s⟩: the pairs whose two firms are in different grades. It is silent on the ⟨withheld⟩ pairs that share a grade (⟨i1⟩ inside grade ⟨g1⟩, ⟨i2⟩ inside grade ⟨g2⟩ and ⟨i3⟩ inside grade ⟨g3⟩). Of the ⟨n⟩ directions the card states, ⟨agree⟩ run as the table does and ⟨against⟩ the other way.",
+          "value": "Ranking by estimate asserts all ⟨M⟩ pairs (wrong share ⟨tblErr⟩). KRW's race card states ⟨N⟩ pairs (⟨s⟩, wrong share ⟨cardErr⟩; ⟨against⟩ reverse the table) and withholds ⟨withheld⟩.",
           "slots": true
         },
         {
@@ -514,11 +517,11 @@
         {
           "select": ".prx-readout",
           "kind": "text",
-          "about": "the read-out at the estimate order: v1's sentences and the card-level split",
+          "about": "the concise Frame v2 read-out at the estimate order (3 significant figures)",
           "source": "literal",
           "ref": "9.4",
           "slots": true,
-          "value": "The league table states a direction for every one of the ⟨M⟩ pairs of firms. KRW's race card states ⟨N⟩ of them, a share of ⟨s⟩: the pairs whose two firms are in different grades. It is silent on the ⟨withheld⟩ pairs that share a grade (⟨i1⟩ inside grade ⟨g1⟩, ⟨i2⟩ inside grade ⟨g2⟩ and ⟨i3⟩ inside grade ⟨g3⟩). Of the ⟨n⟩ directions the card states, ⟨agree⟩ run as the table does and ⟨against⟩ the other way."
+          "value": "Ranking by estimate asserts all ⟨M⟩ pairs (wrong share ⟨tblErr⟩). KRW's race card states ⟨N⟩ pairs (⟨s⟩, wrong share ⟨cardErr⟩; ⟨against⟩ reverse the table) and withholds ⟨withheld⟩."
         }
       ]
     },
@@ -771,7 +774,7 @@
           "source": "literal",
           "ref": "9.4",
           "slots": true,
-          "value": "The league table states a direction for every one of the ⟨M⟩ pairs of firms. KRW's race card states ⟨N⟩ of them, a share of ⟨s⟩: the pairs whose two firms are in different grades. It is silent on the ⟨withheld⟩ pairs that share a grade (⟨i1⟩ inside grade ⟨g1⟩, ⟨i2⟩ inside grade ⟨g2⟩ and ⟨i3⟩ inside grade ⟨g3⟩). All ⟨n⟩ directions the card states run as the table does."
+          "value": "Ranking by posterior mean asserts all ⟨M⟩ pairs (wrong share ⟨tblErr⟩). KRW's race card states ⟨N⟩ pairs (⟨s⟩, wrong share ⟨cardErr⟩; all agree with the table) and withholds ⟨withheld⟩."
         },
         {
           "select": ".prx-cz-pairs",
@@ -805,6 +808,9 @@
         {
           "select": "[data-prx-readout=\"s\"]",
           "about": "share of the pairs the gender card states",
+          "format": {
+            "fn": "formatShare"
+          },
           "source": "registry",
           "ref": "krw.gender.card.s",
           "value": 0.157001718213058
@@ -962,11 +968,11 @@
         {
           "select": ".prx-readout",
           "kind": "text",
-          "about": "the gender card's read-out: v1's sentences (four grades), then 730 directions as the table does and 1 the other way",
+          "about": "the gender card's concise Frame v2 read-out (3 significant figures)",
           "source": "literal",
           "ref": "9.4",
           "slots": true,
-          "value": "The league table states a direction for every one of the ⟨M⟩ pairs of firms. KRW's gender card states ⟨N⟩ of them, a share of ⟨s⟩: the pairs whose two firms are in different grades. It is silent on the ⟨withheld⟩ pairs that share a grade (⟨i1⟩ inside grade ⟨g1⟩, ⟨i2⟩ inside grade ⟨g2⟩, ⟨i3⟩ inside grade ⟨g3⟩ and ⟨i4⟩ inside grade ⟨g4⟩). Of the ⟨n⟩ directions the card states, ⟨agree⟩ run as the table does and ⟨against⟩ the other way."
+          "value": "Ranking by estimate asserts all ⟨M⟩ pairs (wrong share ⟨tblErr⟩). KRW's gender card states ⟨N⟩ pairs (⟨s⟩, wrong share ⟨cardErr⟩; ⟨against⟩ reverses the table) and withholds ⟨withheld⟩."
         }
       ]
     },

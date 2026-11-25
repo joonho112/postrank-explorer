@@ -40,7 +40,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "expected wrong directions, E",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -67,6 +67,9 @@
         {
           "select": "[data-prx-readout=\"boundE\"]",
           "about": "E in the bound line (registry)",
+          "format": {
+            "fn": "formatReadoutExpected"
+          },
           "source": "registry",
           "ref": "six.A.all.tau20.E",
           "value": 0.3575763412613397
@@ -88,6 +91,9 @@
         {
           "select": "[data-prx-readout=\"maxStated\"]",
           "about": "the largest stated error, A above B",
+          "format": {
+            "fn": "formatReadoutProb"
+          },
           "source": "registry",
           "ref": "g05.six.r123345.tau20.maxstated",
           "value": 0.188379558905791
@@ -192,6 +198,9 @@
         {
           "select": "[data-prx-readout=\"mean\"]",
           "about": "average wrong stated directions over the 100 draws",
+          "format": {
+            "fn": "formatReadoutExpected"
+          },
           "source": "registry",
           "ref": "g05.six.r123345.mc.seed1.S100.mean",
           "value": 0.36
@@ -221,7 +230,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "E beside the draws",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -269,10 +278,7 @@
           "select": "[data-prx-readout=\"mean\"]",
           "about": "average wrong count over the 100 draws of seed 1 (base-R evaluation under the draws' empirical law)",
           "format": {
-            "fn": "formatDecimal",
-            "options": {
-              "digits": 3
-            }
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -365,7 +371,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "E = 0",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -688,6 +694,9 @@
         {
           "select": "[data-prx-readout=\"mean\"]",
           "about": "average over the five draws",
+          "format": {
+            "fn": "formatReadoutExpected"
+          },
           "source": "registry",
           "ref": "g05.six.r123345.mc.seed424242.S5.mean",
           "value": 1.2000000000000002
@@ -717,7 +726,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "E (postrank 1.1.0)",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "golden",
           "ref": {
@@ -751,6 +760,9 @@
         {
           "select": "[data-prx-readout=\"maxStated\"]",
           "about": "the largest stated error, D above E",
+          "format": {
+            "fn": "formatReadoutProb"
+          },
           "source": "registry",
           "ref": "g05.six.r112233.tau20.maxstated",
           "value": 0.0107781333800082
@@ -857,7 +869,7 @@
           "select": "[data-prx-readout=\"E\"]",
           "about": "E of the strict order",
           "format": {
-            "fn": "formatExpectedCount"
+            "fn": "formatReadoutExpected"
           },
           "source": "oracle",
           "ref": {
@@ -901,7 +913,7 @@
           "select": "[data-prx-readout=\"ownRisk\"]",
           "about": "risk of the strict order at tau .20 (base-R evaluation)",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -2449,7 +2461,7 @@
           },
           "value": 0.65,
           "format": {
-            "fn": "formatProb"
+            "fn": "formatReadoutProb"
           }
         },
         {

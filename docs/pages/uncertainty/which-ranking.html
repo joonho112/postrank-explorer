@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,13 +72,38 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/which-ranking.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Alternative rankings from a posterior distribution – postrank Explorer">
+<meta property="og:description" content="Rankings by posterior mean, expected rank and top-group probability need not coincide.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/which-ranking.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/which-ranking.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -545,7 +570,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Alternative rankings from a posterior distribution</h1>
-<p class="subtitle lead">1.14 · after the postrank theory book, ch.&nbsp;19, and Kline, Rose and Walters (2024)</p>
+<p class="subtitle lead">1.14 · after the postrank theory book, ch.&nbsp;25, and Kline, Rose and Walters (2024)</p>
 </div>
 
 <div>
@@ -567,7 +592,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Three summaries of the same posterior can give different rankings. The figure compares the posterior mean, the expected rank, and the posterior probability of belonging to a specified top group. Expected rank averages a unit’s position over the posterior, with rank 1 assigned to the largest value. The first example uses three units to show why these summaries can order a pair differently. The simulated league shows how much uncertainty remains in a unit’s rank and how a change of measurement scale can alter an ordering by posterior mean.</p>
+<p>One posterior can rank units differently by posterior mean, expected rank (average position, 1st largest), and top-group probability when posteriors differ in width or skew.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -577,25 +602,21 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Three-unit law, posterior mean.</strong> A has the largest posterior mean, a value it takes in neither state, yet its expected rank, 2.4, is the worst: A is first with probability .3 and last otherwise. The two orders differ on 2 of the 3 pairs.</li>
-<li><strong>Three-unit law, first place.</strong> B is the most likely to be first (.7); C never is.</li>
-<li><strong>Three-unit law, √θ.</strong> On the square-root scale A’s posterior mean falls to 1.34, below B’s 2.00 and C’s 1.73, so the first column now follows the expected ranks: 0 of the 3 pairs differ.</li>
-<li><strong>League, expected rank.</strong> U13, a small unit with posterior SD .120, is 6th by posterior mean but 8th by expected rank (9.59): the large units U06 and U24 pass it. Its 90% rank interval runs from rank 1 to rank 24. The two orders differ on 6 of the 435 pairs.</li>
-<li><strong>League, top ten.</strong> U21 is the unit most often in the top ten in 4,000 Monte Carlo draws (.96; one standard error is below .01), ahead of U26 (.94), which has the largest posterior mean. Two units are never in the top ten.</li>
-<li><strong>League, exp(10θ).</strong> On this scale U13 climbs from 6th to 3rd by posterior mean (4.09), and the posterior-mean order disagrees with the expected-rank order for 40 of the 435 pairs.</li>
+<li><strong>Three-unit law, posterior mean.</strong> A has the largest mean yet the worst expected rank, 2.4 (first .3, last otherwise); 2 of the 3 pairs differ.</li>
+<li><strong>Three-unit law, first place.</strong> B is most likely first (.7); C never is.</li>
+<li><strong>Three-unit law, √θ.</strong> A’s mean falls to 1.34, below B’s 2.00 and C’s 1.73; 0 of the 3 pairs differ.</li>
+<li><strong>League, expected rank.</strong> Small U13 (SD .120) drops from 6th by mean to 8th by expected rank (9.59) behind U06 and U24, with 90% interval from rank 1 to rank 24; 6 of the 435 pairs differ.</li>
+<li><strong>League, top ten.</strong> Over 4,000 draws, U21 leads (.957) ahead of U26 (.942). Two units are never in the top ten.</li>
+<li><strong>League, exp(10θ).</strong> U13 climbs from 6th to 3rd by mean (4.09); 40 of the 435 pairs differ.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>We specify the three-unit distribution and the league’s posterior directly. postrank uses these distributions as inputs. Rankings by posterior means appear in Kline, Rose and Walters (2024), Section IV.B and the notes to Figure 2C, where empirical Bayes posterior means are coarsened into deciles and quartiles; talk slide 59 sets such rules beside their grades for the firms. Their Section II.F names the expected rank.</p>
-</div>
-</div>
-</div>
-<p>Standalone: <a href="../../embed/which-ranking.html">embed/which-ranking.html</a>, for example <code>?data=league&amp;unit=U06</code> or <code>?preset=league-exp&amp;expK=20&amp;theme=dark</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/majority-wins.html">Majority comparisons and expected ranks</a> (1.15) counts the pairs each unit more likely wins; <a href="../../pages/uncertainty/ranking-claims.html">Expected errors in a strict ranking</a> (1.16), <a href="../../pages/uncertainty/shrinkage.html">Normal–normal posterior shrinkage</a> (1.5) and <a href="../../pages/rules/order-misses.html">Restrictions imposed by a fixed order</a> (3.6).</p>
+<details>
+<summary>
+Sources and background
+</summary>
+<p>We specify the three-unit distribution and the league’s posterior directly; postrank uses these distributions as inputs. Rankings by posterior means appear in Kline, Rose and Walters (2024), Section IV.B and the notes to Figure 2C, where empirical Bayes posterior means are coarsened into deciles and quartiles; talk slide 59 sets such rules beside their grades for the firms. Their Section II.F names the expected rank.</p>
+</details>
+<p>Source: postrank theory book, ch.&nbsp;25 (“Target uncertainty, directional reporting, and allocation with one place”); Kline, Rose and Walters (2024). Standalone: <a href="../../embed/which-ranking.html">embed/which-ranking.html</a>. Related: <a href="../../pages/uncertainty/majority-wins.html">Majority wins</a> · <a href="../../pages/uncertainty/ranking-claims.html">Ranking claims</a> · <a href="../../pages/uncertainty/shrinkage.html">Posterior shrinkage</a> · <a href="../../pages/rules/order-misses.html">Order misses</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/25-worked-examples.html#sec-objective-precision-contrast">Target uncertainty, directional reporting, and allocation with one place</a>.</p>
 
 
 </section>
@@ -1068,7 +1089,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

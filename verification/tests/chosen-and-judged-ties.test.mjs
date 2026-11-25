@@ -87,19 +87,21 @@ test("2.18: the read-out states the range and the tie count (data-num hooks); th
   try {
     const ro = m.root.querySelector(".prx-readout");
     const text = ro.textContent.replace(/\s+/g, " ").trim();
-    assert.match(text, /67 look better on their own draws and 33 look worse \(33–37 depending on how the 14 tied selections are broken\); mean signed gap −\.00139\./);
+    assert.match(text, /^Across 100 runs of 100 draws, 67 look better on their own draws and 33 look worse \(33–37 depending on how the 14 tied selections are broken\); mean signed gap −\.00139\.$/);
+    const words = text.split(/\s+/).filter(Boolean).length;
+    assert.ok(words <= 35, `readout word count ${words} <= 35`);
     const raw = (hook) => Number(m.root.querySelector(`[data-prx-readout="${hook}"]`).getAttribute("data-num"));
     assert.equal(raw("worse"), 33);
     assert.equal(raw("worse-min"), 33);
     assert.equal(raw("worse-max"), 37);
     assert.equal(raw("tied-runs"), 14);
-    assert.equal(m.root.getAttribute("data-prx-layout"), "result-first");
-    // the cloud is the primary graphic, and the followed run's line sits directly under it with the run slider
+    assert.equal(m.root.getAttribute("data-prx-frame"), "v2");
+    // the cloud is the primary graphic, and the followed run's line sits directly under it
     const primary = m.root.querySelectorAll("[data-prx-primary]");
     assert.equal(primary.length, 1);
     assert.ok(primary[0].querySelector("svg"));
-    const line = m.root.querySelector(".cj-follow").textContent.replace(/\s+/g, " ");
-    assert.match(line, /^Run 1 \(seed 1\): own-draw risk \.0373 against exact \.0379, so gap −\.00061; \|gap\| ≤ \.05041 · 2 tied reports \(gaps −\.00061, \+\.00016\)$/);
+    const line = m.root.querySelector(".cj-follow").textContent.replace(/\s+/g, " ").trim();
+    assert.match(line, /^Run 1 \(seed 1\): own-draw risk \.0373 against exact \.0379, so gap −\.000613; \|gap\| ≤ \.0504 · 2 tied reports \(gaps −\.000613, \+\.000162\)$/);
     assert.equal(raw("follow-gap"), raw("gap"), "the line and the card show the same gap");
   } finally { m.close(); }
 });
@@ -108,7 +110,41 @@ test("2.18: without tied selections the headline has no range (Tighter family pr
   const m = await mountCase({ module: MODULE, query: "?preset=cap" });
   try {
     const text = m.root.querySelector(".prx-readout").textContent.replace(/\s+/g, " ").trim();
-    assert.match(text, /53 look better on their own draws and 47 look worse; mean signed gap \+\.00002\./);
+    assert.match(text, /^Across 100 runs of 100 draws, 53 look better on their own draws and 47 look worse; mean signed gap \+1\.50e−5\.$/);
     assert.equal(m.root.querySelector('[data-prx-readout="tied-runs"]'), null);
+  } finally { m.close(); }
+});
+
+test("2.18: scheduleStages manages aria-busy cleanly and cancels pending reruns on destroy (B4 + PR-06)", async () => {
+  const m = await mountCase({ module: MODULE, query: "?preset=own" });
+  try {
+    // Toggling Data disclosure does not rewrite the stage cloud SVG (PR-06)
+    const stageSvgBefore = m.root.querySelector(".prx-stage svg");
+    const dataDetails = m.root.querySelector('details[data-prx-disclosure="data"]');
+    assert.ok(dataDetails);
+    dataDetails.open = true;
+    dataDetails.dispatchEvent(new m.win.Event("toggle"));
+    assert.equal(m.root.querySelector(".prx-stage svg"), stageSvgBefore);
+
+    // Uncached seed triggers staged computation with aria-busy="true", then settles cleanly
+    const activeTimers = new Set();
+    const origSetTimeout = m.win.setTimeout.bind(m.win);
+    const origClearTimeout = m.win.clearTimeout.bind(m.win);
+    m.win.setTimeout = (fn, ms, ...args) => {
+      const id = origSetTimeout((...a) => { activeTimers.delete(id); fn(...a); }, ms, ...args);
+      activeTimers.add(id);
+      return id;
+    };
+    m.win.clearTimeout = (id) => {
+      activeTimers.delete(id);
+      return origClearTimeout(id);
+    };
+
+    m.handle.update({ seed: 7777 });
+    assert.equal(m.root.getAttribute("aria-busy"), "true");
+    assert.ok(activeTimers.size > 0);
+    m.handle.destroy();
+    assert.equal(activeTimers.size, 0, "zero leaked timers after destroy()");
+    assert.equal(m.root.hasAttribute("aria-busy"), false);
   } finally { m.close(); }
 });

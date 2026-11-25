@@ -5,13 +5,13 @@
   "title": "Draws that remember",
   "idea": "Successive MCMC draws are usually positively correlated, so a pair probability estimated from them carries more Monte Carlo error than the iid formula says, and an iid error bound can fail far more often than its α.",
   "status": "built",
-  "from": "new concept · theory book ch. 15 (dependent Monte Carlo; the two-state chain); postrank vignette m6 (loss traces, MCMC diagnostics) and pr_toy_mcmc; picture: a two-state trace with its running estimate and, under it, the spread of the estimate over many chains against the iid reference, the iid ±2 MCSE band and radius; the reader sets the stay probability, S and the number of chains",
+  "from": "new concept · theory book ch. 21 (dependent Monte Carlo; the two-state chain); postrank vignette m6 (loss traces, MCMC diagnostics) and pr_toy_mcmc; picture: a two-state trace with its running estimate and, under it, the spread of the estimate over many chains against the iid reference, the iid ±2 MCSE band and radius; the reader sets the stay probability, S and the number of chains",
   "data": [
     "engine",
     "data/released/toy-mcmc.json"
   ],
-  "credit": "After the postrank theory book, ch. 15, and the postrank vignette m6.",
-  "caption": "The two directions have probability one half each, as in chapter 15 of the postrank theory book. The chains start from that distribution.",
+  "credit": "After the postrank theory book, ch. 21 (“A finite-sample coefficient bound for dependent draws”), and the postrank vignette m6.",
+  "caption": "The two directions have probability one half each, as in chapter 21 of the postrank theory book. The chains start from that distribution.",
   "presets": [
     {
       "id": "book",
@@ -62,8 +62,8 @@
       "preset": "aware",
       "shows": [
         ".376",
-        ".1412",
-        ".002500",
+        ".141",
+        ".00250",
         "1.77",
         "1.01"
       ]
@@ -79,21 +79,24 @@
       "preset": "independent",
       "shows": [
         "10 of the 2,000",
-        ".005",
-        ".004"
+        ".00500",
+        ".00352"
       ]
     },
     {
       "preset": "longer",
       "shows": [
         "10.6",
-        ".047",
+        ".0468",
         ".777",
         ".770"
       ]
     },
     {
       "preset": "toy",
+      "open": [
+        "data"
+      ],
       "shows": [
         ".172",
         ".0576",

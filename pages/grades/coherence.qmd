@@ -4,7 +4,7 @@ subtitle: "2.6 · after Kline, Rose and Walters (2024), Example 1"
 description: "Compatibility of isolated-pair decisions with an ordered grade report."
 ---
 
-The pairwise actions that minimize expected loss need not fit into a single grade report. Consider three units A, B, and C with independent normal posteriors. Moving B's mean changes the probabilities for pairs that include B and can change which directions are worth stating at the chosen withholding cost $\tau$. The density panel shows the three posteriors. The other panels compare the risk of deciding each pair separately with the risk of the best grade report. Their difference is the additional risk of requiring one ordered partition for all three pairs.
+Choosing the lowest-loss action for each pair separately need not yield a valid grade report. Moving middle firm B's posterior mean shows when coherence adds risk.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,20 +17,21 @@ The pairwise actions that minimize expected loss need not fit into a single grad
 
 ## Numerical illustrations {#what-to-try}
 
-- **Middle at 1.00.** A–B and B–C are withheld separately, while A above C has probability .921 and is stated.
-  Transitivity of shared grades contradicts that direction. The minimum coherent risk is .1728. Both optimal reports, named in the read-out, resolve the conflict by stating an additional direction; the strip under the curves shades their extra cost.
-- **Middle at .50.** B moves closer to C. The choices now form {A} > {B, C}, with risk .1410. The same report attains the minimum from deciding each pair separately.
-- **Middle at .80.** The mean is just outside the shaded band and the report reaches risk .1589. Additional displayed digits resolve probabilities near the decision boundary.
-- **Middle at 1.00, τ .10.** The withholding cost decreases. The best report is {A, B, C}, risk .1000; it withholds the
-  confident outer pair too. The pairwise choices remain incompatible with a grade report, but the minimum-risk coherent resolution has changed.
-- **Middle at 1.00, τ .25.** The threshold falls to .75, below .760. Every pair is stated, the shaded band vanishes,
-  and {A} > {B} > {C} represents the pairwise choices. The density panel is unchanged because τ affects the loss rather than the posterior.
+- **Middle at 1.00.** Isolated pairs withhold A–B and B–C while stating A above C (probability .921). Shared grades are transitive, so the best coherent reports reach risk .173.
+- **Middle at .50.** B sits closer to C, so the pairwise choices print directly as {A} > {B, C} at risk .141.
+- **Middle at .80.** Just below the shaded band, the pairwise choices still print as one report at risk .159.
+- **Middle at 1.00, τ .10.** Lowering the withholding cost shifts the best coherent report to {A, B, C} at risk .100, withholding the confident outer pair too.
+- **Middle at 1.00, τ .25.** The threshold drops to .75, below .760, so every pair is stated as {A} > {B} > {C} and the incoherent band disappears.
 
-::: {.callout-note appearance="simple"}
-Sharing a grade is transitive. If A shares a grade with B and B with C, the report must also withhold the comparison of A and C. Kline, Rose and Walters describe the conflict with the separate pair decisions as a “Condorcet cycle in indifferences.” These are posteriors set by hand for teaching. The browser evaluates every report of the stated family,
-lists equal-risk optima and gives their tolerance; the band is an aid to reading the picture, while compatibility is checked directly against the reports.
-:::
+<details>
+<summary>Transitivity and scope notes</summary>
+
+Sharing a grade is transitive. If A shares a grade with B and B with C, the report must also withhold the comparison of A and C. Kline, Rose and Walters describe the conflict with the separate pair decisions as a “Condorcet cycle in indifferences.” These are posteriors set by hand for teaching. The browser evaluates every report of the stated family, lists equal-risk optima, and records their equal-risk tolerance in the disclosures.
+
+</details>
 
 Standalone: [coherence](../../embed/coherence.html), for example `?omega2=.81&tau=.20`.
 
 Related applications: [The decision for an isolated pair](one-pair.qmd), [Coherence in a finite three-unit example](coherence-finite.qmd).
+
+Theory book · [Withholding a pair and constructing a common grade](https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-pair-versus-grade).

@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/computing-grades.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Computation of optimal grade reports – postrank Explorer">
+<meta property="og:description" content="Enumeration, fixed-order dynamic programming and joint optimization with explicit result bounds.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/computing-grades.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/computing-grades.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -606,7 +631,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Computation of optimal grade reports</h1>
-<p class="subtitle lead">2.16 · after the postrank theory book, ch.&nbsp;14, and vignette m5</p>
+<p class="subtitle lead">2.16 · after the postrank theory book, ch.&nbsp;19, and vignette m5</p>
 </div>
 
 <div>
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>Enumeration scores every eligible report. Dynamic programming searches among contiguous cuts of one declared order, and joint optimization searches across orders. The binary relations show which pair decisions fit into a grade report. The joint solver returns the best risk found, a lower bound, and their difference.</p>
+<p>Enumeration scores every report in a small family, fixed-order dynamic programming cuts one declared order, and joint optimization returns an incumbent risk, lower bound and gap.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -638,23 +663,19 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>DP: six sites, τ .20.</strong> The posterior-mean order admits 16 contiguous reports with at most three grades. Its current answer is {A, B} &gt; {C, D} &gt; {E, F}, with risk .0417. Enumeration checks all 603 reports in the capped family and finds the same answer here. Here the capped optimum follows the posterior-mean order.</li>
-<li><strong>DP: inspect one cell.</strong> The table has filled 8 of 15 feasible cells. For the current cell’s alternatives, the last cut is at b = 2. “Next cell” advances the recursion; “Fill table” shows the backtrack. The selected report remains visible above the recursion controls. Negative savings mean withholding costs more than stating those fixed-order directions.</li>
-<li><strong>Twelve units.</strong> The unrestricted family contains 28,091,567,595 reports. At most three grades reduces that to 523,251, while a declared order permits only 67 contiguous cuts. Equal vertical distances on the log axis represent multiplication.</li>
-<li><strong>A broken binary pattern.</strong> The pattern is not transitive, though completeness holds: 2 &gt; 1. No grade vector produces this relation. The valid-pattern view enumerates all thirteen coherent reports; setting both directions to one means a shared grade, not latent equality.</li>
-<li><strong>Joint search: twenty units.</strong> HiGHS loads only when the joint-search control is activated for 20 league units. The output gives the status, incumbent risk, lower bound and absolute risk gap. The separate four-unit example has risks .1750 and .1500 under different grade-count restrictions, showing why a bound must keep its family.</li>
-<li><strong>Joint: six units.</strong> For 6 league units, the fixed-order candidate has risk .1455 from 32 contiguous reports. Press <strong>Load HiGHS and solve</strong> to compare the joint result with the exhaustive enumeration reference of .1455.</li>
+<li><strong>DP: six sites, τ .20.</strong> Among 16 contiguous reports, {A, B} &gt; {C, D} &gt; {E, F} achieves risk .0417, matching all 603 capped reports.</li>
+<li><strong>DP: inspect one cell.</strong> At step 8 of 15, the current cell chooses cut b = 2.</li>
+<li><strong>Twelve units.</strong> Unrestricted reports reach 28,091,567,595, capped drop to 523,251, and one order leaves 67 cuts.</li>
+<li><strong>A broken binary pattern.</strong> Sum 2 &gt; 1 violates the triangle inequality: the pattern is not transitive.</li>
+<li><strong>Joint search: twenty units.</strong> HiGHS loads on demand for 20 league units; the four-unit example compares family risks .175 and .150.</li>
+<li><strong>Joint: six units.</strong> For 6 league units, 32 contiguous reports give candidate risk .146 before solving.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
+<details>
+<summary>
+Model and solver notes
+</summary>
 <p>The six fictional sites use the postrank tutorial’s score-A normal posteriors. The solver uses independent normal posteriors for a simulated league. Its objective gives risk <span class="math inline"><math><mrow><mi>R</mi><mo>=</mo><mi>τ</mi><mo>+</mo><mi>Z</mi><mi>/</mi><mi>M</mi></mrow></math></span>. Divide an absolute objective gap by <span class="math inline"><math><mi>M</mi></math></span> to obtain a risk gap. A solver status or zero gap does not certify exact arithmetic or the posterior model. These distinctions follow theory chapter 14 and vignette m5. The R package selects HiGHS explicitly; Gurobi is its default backend and there is no automatic fallback.</p>
-</div>
-</div>
-</div>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -676,6 +697,7 @@ window.Quarto = {
 </div>
 <p>Standalone: <a href="../../embed/computing-grades.html">open the app</a>, for example <code>?view=count&amp;n=12&amp;cap=3</code>.</p>
 <p>Related applications: <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/19-computing-grades.html#sec-solver-qualifications">Feasible reports, bounds, and computational scope</a>.</p>
 
 
 </section>
@@ -1148,7 +1170,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

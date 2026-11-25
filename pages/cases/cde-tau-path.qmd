@@ -4,7 +4,7 @@ subtitle: "5.11 · the public twelve-school CDE example"
 description: "Exact optimal disclosure and changes in individual school-pair relations as τ varies."
 ---
 
-As withholding becomes more costly, the minimum-risk report changes at specific values of τ.
+As withholding cost τ rises, the minimum-risk school report steps to higher disclosure at exact thresholds.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -14,27 +14,20 @@ As withholding becomes more costly, the minimum-risk report changes at specific 
 <script>window.__prxApp = PRX["cde-tau-path"].mountWidget(document.getElementById("app"));</script>
 ```
 
-The chart tracks how many pairs each report states. At each change, the table names the comparisons that
-appear, disappear, or reverse. It also includes equal-risk reports at the boundaries and transitions below
-the slider's minimum. The archived runs appear separately, with their original solver status and gap.
-
 ## Numerical illustrations {#what-to-try}
 
-- **The usual setting** uses τ .20. The optimum states 45 pairs in groups of sizes 3, 6, 3.
-- **Past the last interior boundary** uses τ .45. The optimum states 47 pairs in grades of sizes 4, 5, 3. The table names every pair whose relation changes.
-- **The early boundaries** keeps the slider at its low end. The exact boundaries near .000162 and .000263 lie below that minimum but remain in the tables, including the step to 27 pairs.
-- **The upper endpoint** reaches τ .50. The path still states 47 pairs, and the chart retains all 13 archived solves.
+- **The usual setting.** At τ = .20, the optimum states 45 pairs in sizes 3, 6, 3 (risk .0638).
+- **Past the last interior boundary.** At τ = .45, the optimum states 47 pairs in sizes 4, 5, 3 (risk .143).
+- **The early boundaries.** At τ = .01, exact steps at .000162 and .000263 reach 27 and 45 pairs below the slider minimum.
+- **The upper endpoint.** At τ = .50, the optimum states 47 pairs across 13 archived solves (risk .158).
 
-The posterior, criterion weight, and set of reports with at most three grades stay fixed along the path. Under those conditions, a higher τ cannot reduce the number of pairs stated by an exact optimum. The number can rise even as the report drops or reverses particular comparisons.
+<details>
+<summary>Path properties and scope notes</summary>
 
-Each point's risk uses its own value of τ, so risks at two steps evaluate different losses. At a boundary, the table lists the equal-risk reports and the tolerance used to identify ties. The archived HiGHS runs used the same report family. Their solver status and gap describe those runs, while the browser path comes from enumeration.
+With posterior, criterion weight, and the three-grade family held fixed, increasing τ never reduces the total number of stated pairs in an exact optimum, yet moving a whole block boundary can newly withhold pairs stated earlier or state pairs whose individual error exceeds τ. Data lists every changed pair, equal-risk boundary ties within numerical tolerance, and the 13 archived HiGHS runs alongside the browser's exact enumeration. A shared grade leaves relative chronic absence unstated. This twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools (prior-estimation uncertainty is not propagated). California's Dashboard colors, school quality, causal effects, and statewide calibration require separate evidence. Related: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
 
-Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (`pr_case_cde`). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply (<https://www.cde.ca.gov/re/di/cr/index.asp>); the data are not relicensed and are provided as is without warranty. No CDE endorsement is implied.
+</details>
 
-The path describes what the reports say about chronic absence within the subset. At each cost, a shared grade leaves that comparison unstated. California uses separate rules for Dashboard colors. The path supplies no statewide optimality or calibration result and does not estimate school quality or causal effects.
+Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, adapted in postrank 1.1.0 (`pr_case_cde`); <https://www.cde.ca.gov/re/di/cr/index.asp>; not relicensed, provided as is; No CDE endorsement is implied.
 
-[Open the standalone app](../../embed/cde-tau-path.html).
-
-Related applications: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
-
-Related school analyses: [School tertiles and minimum-risk grades](cde-cuts.qmd) · [School reports at matched disclosure](cde-one-disclosure.qmd) · [A high-probability school comparison withheld](cde-pair.qmd).
+Standalone: [cde-tau-path](../../embed/cde-tau-path.html). Related: [School tertiles and cuts](cde-cuts.qmd) · [Matched disclosure](cde-one-disclosure.qmd) · [Withheld pair](cde-pair.qmd).

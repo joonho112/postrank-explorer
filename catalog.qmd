@@ -2,11 +2,21 @@
 title: "Application catalog"
 subtitle: "Index by category, concept and data source"
 description: "Applications on posterior ranking, common grade reports, and multidomain profiles."
+page-layout: full
 ---
 
-Use the filters together to find applications by topic and data source. For example, the school cases use chronic
-absence data, while the uncertainty examples often use simulated data. Search includes page titles, descriptions,
-and preset names. In **Multiple criteria**, the common-grade applications use a shared grade column and the
-profile applications give each domain its own column. Each entry links to the full page and a standalone app.
+Filter the 84 applications by category, concept, or data source; search covers titles, descriptions, and preset labels. Every entry opens as a full page or a standalone view (see [slide and page embedding](#embedding)).
+
+## Applications
 
 {{< include _catalog.md >}}
+
+## Standalone and slide embeds {#embedding}
+
+Every application has a standalone page at `embed/<name>.html` that runs with zero network requests and works offline from a local site folder. Append `?preset=<id>` or state keys (such as `?tau=.20&w=.8`) to open a specific view, `?theme=light` or `?theme=dark` to pin the color scheme, and `?hide=chrome` (or any comma-separated combination of `title`, `caption`, `presets`, `disclosures`; source and license credits always remain visible) to fit lecture slides cleanly:
+
+```html
+<iframe src="https://joonho112.github.io/postrank-explorer/embed/frontier.html?preset=matched&hide=chrome"
+  width="100%" height="560" style="border:0" loading="lazy"
+  title="The error-disclosure frontier"></iframe>
+```

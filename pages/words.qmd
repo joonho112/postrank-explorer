@@ -7,7 +7,35 @@ description: "Definitions of posterior quantities, common grades, multidomain pr
 An Alabama county and a California school are both units, but their reports compare different outcomes. The
 definitions below specify what is compared, how the posterior enters the comparison, and which reports can be chosen.
 
-## Targets and posterior uncertainty
+```{=html}
+<nav class="prx-words-jump" aria-label="Jump to section or symbol">
+  <div class="prx-words-jump__group">
+    <span class="prx-words-jump__label">Sections:</span>
+    <a href="#targets-and-posterior-uncertainty">Targets</a>
+    <a href="#grade-reports-disclosure-and-error">Grades &amp; error</a>
+    <a href="#report-families-and-comparisons">Families &amp; criteria</a>
+    <a href="#multidomain-profiles-and-joint-protection">Domain profiles</a>
+  </div>
+  <div class="prx-words-jump__group">
+    <span class="prx-words-jump__label">Symbols:</span>
+    <a href="#sym-theta">&theta;<sub>i</sub></a>
+    <a href="#sym-pi">&pi;<sub>ij</sub></a>
+    <a href="#sym-e">e<sub>ij</sub></a>
+    <a href="#sym-g">g</a>
+    <a href="#sym-n">N</a>
+    <a href="#sym-eovern">E/N</a>
+    <a href="#sym-dr">DR</a>
+    <a href="#sym-tau">&tau;</a>
+    <a href="#sym-lambda">&lambda;</a>
+    <a href="#sym-frontier">Frontier</a>
+    <a href="#sym-w">w<sub>k</sub></a>
+    <a href="#sym-q">q<sub>k</sub></a>
+    <a href="#sym-profile">G</a>
+  </div>
+</nav>
+```
+
+## Targets and posterior uncertainty {#targets-and-posterior-uncertainty}
 
 ::: {.prx-glossary}
 
@@ -16,7 +44,7 @@ Unit; criterion $k$
 
     **Examples:** [Multiple criteria](criteria/several-criteria.qmd) · [Supplied summaries](tools/your-data.qmd)
 
-$\theta_i$
+<span id="sym-theta"></span>$\theta_i$
 :   The target for unit $i$, coded so that higher values receive higher reporting priority. The application states what higher priority means for that target.
 
     **Examples:** [Two-unit comparison](uncertainty/two-units.qmd) · [Alabama counties](cases/alabama-map.qmd)
@@ -26,12 +54,12 @@ Posterior
 
     **Examples:** [Posterior shrinkage](uncertainty/shrinkage.qmd) · [Posterior inputs](uncertainty/posterior-pipeline.qmd)
 
-$\pi_{ij}$
+<span id="sym-pi"></span>$\pi_{ij}$
 :   The posterior probability of a direction such as $\Pr(\theta_i>\theta_j)$. This calculation uses the joint distribution of the two targets because the event depends on their difference.
 
     **Examples:** [Direction probabilities](uncertainty/two-units.qmd) · [Interval overlap](uncertainty/interval-overlap.qmd)
 
-$e_{ij}^{(k)}$
+<span id="sym-e"></span>$e_{ij}^{(k)}$
 :   The probability that stating $i$ above $j$ is wrong on criterion $k$. Under the zero-margin weak-error convention, equality makes either strict direction wrong. If equality has positive probability, the two directional errors sum to more than one. Each example specifies the event and any comparison margin.
 
     **Examples:** [Pairwise decisions](grades/one-pair.qmd) · [Posterior equality](grades/ties-and-withholding.qmd)
@@ -48,11 +76,11 @@ Expected rank
 
 :::
 
-## Grade reports, disclosure and error
+## Grade reports, disclosure and error {#grade-reports-disclosure-and-error}
 
 ::: {.prx-glossary}
 
-Common-grade report $g$ (P1)
+<span id="sym-g"></span>Common-grade report $g$ (P1)
 :   An ordered grouping of the units, with grade 1 at the high-priority end. The report states a direction between grades. Within a grade it leaves the comparison unstated. Using the report to allocate places or resources requires a separate rule.
 
     **Examples:** [Report construction](grades/report-builder.qmd) · [Allocation objectives](rules/one-place.qmd)
@@ -62,7 +90,7 @@ $n$, $M$
 
     **Example:** [Report-family counts](grades/how-many-reports.qmd)
 
-$N$, $s=N/M$
+<span id="sym-n"></span>$N$, $s=N/M$
 :   The number of stated pairs and the disclosure share. The remaining $M-N$ pairs are withheld.
 
     **Example:** [Disclosure from tier sizes](rules/tier-sizes.qmd)
@@ -72,22 +100,22 @@ $E_k$
 
     **Example:** [Expected and realized errors](grades/disclosed-errors.qmd)
 
-$E_k/N$
+<span id="sym-eovern"></span>$E_k/N$
 :   The expected wrong share among stated pairs of a fixed report. It is **NA: no disclosure** when $N=0$.
 
     **Example:** [Error-rate denominators](grades/two-denominators.qmd)
 
-$DR_k=E_k/M$
+<span id="sym-dr"></span>$DR_k=E_k/M$
 :   The expected wrong count per possible pair. Withholding can reduce this rate by reducing the set of stated directions. The criterion subscript is usually omitted in single-criterion examples.
 
     **Example:** [Error-rate denominators](grades/two-denominators.qmd)
 
-$\tau$
+<span id="sym-tau"></span>$\tau$
 :   The cost per withheld pair when a wrong stated direction costs one. Weighted risk is $R_\tau=(E_w+\tau(M-N))/M$.
 
     **Example:** [Reporting risk](grades/price-of-silence.qmd)
 
-$\lambda$, $\phi$
+<span id="sym-lambda"></span>$\lambda$, $\phi$
 :   KRW's reward for a correct direction and the informed share in their stipulated audience model. The conversion is $\tau=\lambda/(1+\lambda)$ and $\phi=1-2\tau$. The positive-cost audience range is $0<\lambda\leq1$, $0<\tau\leq1/2$ and $0\leq\phi<1$. Equivalence of optimal reports requires the stated common-posterior, tie-free and common-family conditions.
 
     **Examples:** [Loss-scale conversion](cases/lambda-tau.qmd) · [Equivalent reporting losses](cases/krw-axes.qmd)
@@ -98,7 +126,7 @@ A loss-minimizing report satisfies $E_w\leq\tau N$ when the family includes the 
 comparison. The inequality follows by comparing the chosen report's loss with that benchmark. A grade report
 chosen by a different rule may exceed the benchmark.
 
-## Report families and comparisons
+## Report families and comparisons {#report-families-and-comparisons}
 
 ::: {.prx-glossary}
 
@@ -107,7 +135,7 @@ Family; grade cap
 
     **Examples:** [Report families](grades/families.qmd) · [Computation methods](grades/computing-grades.qmd)
 
-Frontier
+<span id="sym-frontier"></span>Frontier
 :   The lower convex boundary of expected wrong counts plotted against disclosure for a specified report family. A point on an edge may require randomizing between complete reports. Two reports can minimize risk at the same $\tau$ while stating different numbers of pairs.
 
     **Examples:** [Error–disclosure frontier](grades/frontier.qmd) · [Comparison constraints](rules/same-tau-or-same-n.qmd)
@@ -117,12 +145,12 @@ $\psi$
 
     **Example:** [Mixtures of reports](grades/frontier-mixtures.qmd)
 
-$w_k$, $E_w=\sum_k w_k E_k$
+<span id="sym-w"></span>$w_k$, $E_w=\sum_k w_k E_k$
 :   Nonnegative criterion error weights summing to one, and the weighted expected wrong count. These weights apply to directional losses. Coefficients of a scalar composite target have a separate role.
 
     **Examples:** [Common grades](criteria/two-scores.qmd) · [Composite targets](criteria/composite-or-criterion.qmd)
 
-$q_k$
+<span id="sym-q"></span>$q_k$
 :   An expected-error budget, expressed in count form as $E_k\leq q_kN$. With no stated directions both sides are zero, although the error share is undefined. Some applications use budgets only to evaluate the displayed report; others use them to restrict selection.
 
     **Examples:** [Budget-constrained families](criteria/error-budgets.qmd) · [Case-report checks](tools/report-designer.qmd)
@@ -162,7 +190,7 @@ definitions explain how those grades are compared and how joint errors enter the
 
 ::: {.prx-glossary}
 
-Domain $d$; profile matrix $G$
+<span id="sym-profile"></span>Domain $d$; profile matrix $G$
 :   A substantive reporting coordinate and its grade column. The matrix has units on rows and domains on columns.
     A common-grade report uses the same column across criteria; a multidomain profile (P2) permits separate columns.
     Grade 1 denotes the highest reported priority within its own domain.

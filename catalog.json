@@ -1,5 +1,5 @@
 {
-  "about": "Build inputs: catalog/site.json and catalog/entries/; do not edit. Edit those files instead.",
+  "about": "postrank Explorer 3.6.0 — Build inputs: catalog/site.json and catalog/entries/; do not edit. Edit those files instead.",
   "parts": [
     {
       "key": "1",
@@ -90,9 +90,12 @@
           "preset": "race-card",
           "shows": [
             "4,656",
+            ".300",
             "1,324",
             ".284",
-            "1,219 run as the table does and 105 the other way",
+            ".136",
+            "1,219",
+            "105",
             "3,332"
           ]
         },
@@ -102,9 +105,9 @@
             ".402",
             ".216",
             "80 other firms",
-            "other 96 firms",
             "16",
-            "15 as the table does and 1 the other way"
+            "96",
+            "15 agree, 1 reverse"
           ]
         },
         {
@@ -115,7 +118,7 @@
             "rank 14 by posterior mean",
             ".155",
             "16",
-            "2 as the table does and 14 the other way"
+            "2 agree, 14 reverse"
           ]
         },
         {
@@ -123,8 +126,7 @@
           "shows": [
             ".250",
             ".330",
-            ".071",
-            ".433",
+            ".0714",
             "1,324"
           ]
         },
@@ -134,7 +136,9 @@
             "sizes 1, 3, 89, 4",
             "731",
             ".157",
-            "730 run as the table does and 1 the other way",
+            ".115",
+            "730 agree",
+            "1 reverses",
             "96"
           ]
         }
@@ -186,7 +190,7 @@
           "shows": [
             ".50",
             "12 of 20",
-            "13.65",
+            "13.7",
             ".229",
             "−.271"
           ]
@@ -195,15 +199,15 @@
           "preset": "draws200",
           "shows": [
             "132 of 200",
-            "136.54",
-            ".6827"
+            "137",
+            ".683"
           ]
         },
         {
           "preset": "seed2",
           "shows": [
             "18 of 20",
-            "13.65"
+            "13.7"
           ]
         },
         {
@@ -217,7 +221,7 @@
         {
           "preset": "se05",
           "shows": [
-            "−.068",
+            "−.0678",
             "12 of 20"
           ]
         }
@@ -287,8 +291,8 @@
             "20 replays",
             "small units hold 4.35 of the 10 extreme positions",
             "large units 2.00",
-            "83.90 of the 435 pairs",
-            "88.12",
+            "83.9 of the 435 pairs",
+            "88.1",
             "7.45"
           ]
         },
@@ -353,16 +357,16 @@
           "preset": "top3",
           "shows": [
             ".160",
-            "−.007",
+            "−.00685",
             ".149",
-            ".071",
-            "−.031"
+            ".0709",
+            "−.0308"
           ]
         },
         {
           "preset": "replay9",
           "shows": [
-            "−.043",
+            "−.0429",
             "−.117"
           ]
         },
@@ -370,20 +374,20 @@
           "preset": "top1",
           "shows": [
             ".220",
-            "−.024"
+            "−.0238"
           ]
         },
         {
           "query": "seed=20261029&replays=2000&k=10&side=top&priorSd=.15&draw=1",
           "shows": [
-            ".081"
+            ".0814"
           ]
         },
         {
           "preset": "bottom3",
           "shows": [
             "−.150",
-            "−.013"
+            "−.0132"
           ]
         },
         {
@@ -395,7 +399,7 @@
         {
           "query": "seed=20261029&replays=2000&k=3&side=top&priorSd=.10&draw=1",
           "shows": [
-            "−.063"
+            "−.0628"
           ]
         }
       ]
@@ -412,7 +416,7 @@
         "engine"
       ],
       "math": true,
-      "credit": "After Kline, Rose and Walters (2024), sections III, V.B and V.E and slide 49; the postrank theory book, ch. 20; and Walters, Mixtape slides p. 27.",
+      "credit": "After Kline, Rose and Walters (2024), sections III, V.B and V.E and slide 49; the postrank theory book, ch. 26 (“Empirical Bayes specification”); and Walters, Mixtape slides p. 27.",
       "caption": "The posterior is calculated from the chosen normal prior and the estimates with their standard errors.",
       "presets": [
         {
@@ -445,24 +449,24 @@
         {
           "preset": "prior15",
           "shows": [
-            ".64",
-            ".31",
-            ".10",
+            ".640",
+            ".308",
+            ".100",
             "37 of the 435"
           ]
         },
         {
           "preset": "prior05",
           "shows": [
-            ".94",
-            ".50",
+            ".941",
+            ".500",
             "71 of the 435"
           ]
         },
         {
           "preset": "equal-se",
           "shows": [
-            ".69",
+            ".692",
             "0 of the 435"
           ]
         },
@@ -470,9 +474,9 @@
           "preset": "truth",
           "shows": [
             ".0163",
-            ".0096",
+            ".00958",
             ".162",
-            ".098",
+            ".0982",
             ".149",
             "14 of 30"
           ]
@@ -499,7 +503,7 @@
       "data": [
         "engine"
       ],
-      "credit": "Built for this site; normal-normal shrinkage after Walters, Mixtape slides p. 27; a producer's hyperparameters and a fixed-parameter experiment, after the postrank theory book, ch. 18.",
+      "credit": "Built for this site; normal-normal shrinkage after Walters, Mixtape slides p. 27; a producer's hyperparameters and a fixed-parameter experiment, after the postrank theory book, ch. 24 (“Hyperparameters, precision and represented uncertainty”).",
       "caption": "The posterior is calculated from the chosen normal prior and the estimates with their standard errors.",
       "presets": [
         {
@@ -532,9 +536,9 @@
         {
           "preset": "spread",
           "shows": [
-            ".0096",
+            ".00958",
             ".0163",
-            ".0075",
+            ".00754",
             ".146",
             ".149"
           ]
@@ -552,9 +556,9 @@
         {
           "preset": "too-narrow",
           "shows": [
-            "87.45",
-            "88.12",
-            "80.66",
+            ".0148",
+            ".0133",
+            "87.4",
             "17"
           ]
         },
@@ -562,10 +566,10 @@
           "preset": "too-wide",
           "shows": [
             ".0133",
+            ".0136",
             "159",
-            "66",
-            "13",
-            ".23"
+            "45",
+            "13"
           ]
         },
         {
@@ -573,9 +577,9 @@
           "shows": [
             "20261031",
             ".12",
-            ".0092",
+            ".00917",
             ".15",
-            ".0075"
+            ".00754"
           ]
         }
       ]
@@ -654,7 +658,7 @@
           "preset": "posterior",
           "shows": [
             ".173",
-            ".018",
+            ".0180",
             ".856"
           ]
         },
@@ -663,7 +667,7 @@
           "shows": [
             ".10",
             ".692",
-            ".035",
+            ".0346",
             ".880"
           ]
         },
@@ -688,7 +692,7 @@
           "preset": "narrow",
           "shows": [
             ".05",
-            ".050",
+            ".0500",
             ".762",
             ".238",
             "{A, B}"
@@ -775,7 +779,7 @@
       "data": [
         "engine"
       ],
-      "credit": "Built for this site (bivariate normal; a shared, uncertain prior mean makes posteriors move together); dependence after the postrank theory book, ch. 9 and 18.",
+      "credit": "Built for this site (bivariate normal; a shared, uncertain prior mean makes posteriors move together); dependence after the postrank theory book, ch. 9 (“Dependence and pairwise comparison probabilities”) and ch. 24 (“Hyperparameters, precision and represented uncertainty”).",
       "math": true,
       "caption": "Two posterior values whose dependence can change.",
       "presets": [
@@ -825,8 +829,8 @@
         {
           "preset": "corr95",
           "shows": [
-            ".063",
-            ".999"
+            ".0632",
+            "above .999"
           ]
         },
         {
@@ -838,6 +842,9 @@
         },
         {
           "preset": "shared-mean",
+          "open": [
+            "settings"
+          ],
           "shows": [
             ".30",
             ".10",
@@ -852,8 +859,11 @@
         },
         {
           "query": "source=shared&yA=.30&seA=.20&yB=.10&seB=.20&priorSd=.10&meanSd=0",
+          "open": [
+            "data"
+          ],
           "shows": [
-            ".089",
+            ".0894",
             ".624"
           ]
         }
@@ -934,7 +944,7 @@
         {
           "preset": "w50",
           "open": [
-            "mixture-help"
+            "method"
           ],
           "shows": [
             ".450",
@@ -984,31 +994,31 @@
         {
           "preset": "touch90",
           "shows": [
-            "1.645",
-            "3.290",
-            "1.414",
-            "2.326",
+            "1.64",
+            "3.29",
+            "1.41",
+            "2.33",
             ".990"
           ]
         },
         {
           "preset": "touch95",
           "shows": [
-            "3.920",
+            "3.92",
             ".997"
           ]
         },
         {
           "preset": "gap2",
           "shows": [
-            "1.290",
+            "1.29",
             ".921"
           ]
         },
         {
           "preset": "gap1",
           "shows": [
-            "2.290",
+            "2.29",
             ".760"
           ]
         }
@@ -1062,13 +1072,13 @@
             "88",
             ".988",
             "U13 above U05",
-            ".005"
+            ".00549"
           ]
         },
         {
           "preset": "league-apart",
           "shows": [
-            ".002",
+            ".00219",
             ".988"
           ]
         },
@@ -1078,7 +1088,7 @@
             ".107",
             ".904",
             "−.105",
-            "−.014"
+            "−.0143"
           ]
         },
         {
@@ -1144,6 +1154,9 @@
       "try": [
         {
           "preset": "six-mean",
+          "open": [
+            "data"
+          ],
           "shows": [
             "C above D",
             ".638",
@@ -1164,6 +1177,9 @@
         },
         {
           "preset": "league-label",
+          "open": [
+            "data"
+          ],
           "shows": [
             "435 pairs",
             "U19 above U25",
@@ -1175,6 +1191,9 @@
         },
         {
           "preset": "league-mean",
+          "open": [
+            "data"
+          ],
           "shows": [
             "U19 above U25",
             "next to the diagonal",
@@ -1207,8 +1226,8 @@
         "engine"
       ],
       "math": true,
-      "credit": "Built for this site; the three-unit law after the postrank theory book, ch. 19; expected ranks after ch. 5; the scale switch after ch. 4 and 12; rankings by posterior means after Kline, Rose and Walters (2024), Section IV.B and the notes to Figure 2C, and talk slide 59.",
-      "caption": "The three-unit law after the postrank theory book, ch. 19, and a simulated league built for this site; every summary is computed in this browser.",
+      "credit": "Built for this site; the three-unit law after the postrank theory book, ch. 25 (“Target uncertainty, directional reporting, and allocation with one place”); expected ranks after ch. 5; the scale switch after ch. 4 and 12; rankings by posterior means after Kline, Rose and Walters (2024), Section IV.B and the notes to Figure 2C, and talk slide 59.",
+      "caption": "The three-unit law after the postrank theory book, ch. 25, and a simulated league built for this site; every summary is computed in this browser.",
       "presets": [
         {
           "id": "puzzle-mean",
@@ -1282,8 +1301,8 @@
           "preset": "league-top10",
           "shows": [
             "4,000",
-            ".96",
-            ".94",
+            ".957",
+            ".942",
             "Two units are never in the top ten"
           ]
         },
@@ -1312,7 +1331,7 @@
         "engine"
       ],
       "math": true,
-      "credit": "Law on orders after the postrank theory book, ch. 10; shared grades at λ = 1 after ch. 16; Condorcet ranks after Kline, Rose and Walters (2024), section II.F, whose remark that the count of wins equals the posterior mean of the rank (the expected rank) does not hold in general (postrank theory book, ch. 10). Firms as adapted in postrank 1.1.0 (pr_case_krw). Cards computed with KRW's code (KRW replication companion) under KRW's archived pair probabilities.",
+      "credit": "Law on orders after the postrank theory book, ch. 10; shared grades at λ = 1 after ch. 22 (“Comparing reports at matched disclosure”); Condorcet ranks after Kline, Rose and Walters (2024), section II.F, whose remark that the count of wins equals the posterior mean of the rank (the expected rank) does not hold in general (postrank theory book, ch. 10). Firms as adapted in postrank 1.1.0 (pr_case_krw). Cards computed with KRW's code (KRW replication companion) under KRW's archived pair probabilities.",
       "caption": "The law on orders after the postrank theory book, ch. 10, a simulated league built for this site and KRW's 97 firms; every order and count is computed in this browser from each data set's pair probabilities.",
       "presets": [
         {
@@ -1381,7 +1400,7 @@
           "preset": "krw-gender",
           "shows": [
             ".5008",
-            ".5022",
+            ".502",
             ".5014",
             "45 pairs",
             "96 grades"
@@ -1431,6 +1450,9 @@
       "try": [
         {
           "preset": "krw",
+          "open": [
+            "data"
+          ],
           "shows": [
             "4,656",
             "1,249",
@@ -1441,9 +1463,12 @@
         },
         {
           "preset": "top10",
+          "open": [
+            "data"
+          ],
           "shows": [
             "45",
-            "18.22",
+            "18.2",
             "17,014,861",
             "5,834"
           ]
@@ -1452,17 +1477,20 @@
           "preset": "six",
           "shows": [
             "15",
-            ".7194",
+            ".719",
             "C above D",
             ".362"
           ]
         },
         {
           "preset": "league",
+          "open": [
+            "data"
+          ],
           "shows": [
             "435",
-            "94.48",
-            "102.2",
+            "94.5",
+            "102",
             "37",
             "88",
             "80.69"
@@ -1483,7 +1511,7 @@
         "engine"
       ],
       "math": true,
-      "credit": "After the postrank vignette m6, “Monte Carlo uncertainty and diagnostics”, and the postrank theory book, ch. 15.",
+      "credit": "After the postrank vignette m6, “Monte Carlo uncertainty and diagnostics”, and the postrank theory book, ch. 21 (“Monte Carlo error under a declared sampling law”).",
       "caption": "Six fictional sites from the postrank tutorial; their normal law is set by hand, and the draws are simulated in this browser.",
       "presets": [
         {
@@ -1520,6 +1548,9 @@
       "try": [
         {
           "preset": "s1000",
+          "open": [
+            "data"
+          ],
           "shows": [
             ".198",
             ".188",
@@ -1531,6 +1562,9 @@
         },
         {
           "preset": "all1000",
+          "open": [
+            "data"
+          ],
           "shows": [
             "18 of the 18 runs",
             "5 more runs",
@@ -1543,7 +1577,7 @@
           "shows": [
             ".0402",
             ".0782",
-            ".1788",
+            ".179",
             ".188"
           ]
         },
@@ -1552,7 +1586,7 @@
           "shows": [
             ".0283",
             ".203",
-            ".0064",
+            ".00636",
             ".0116",
             ".0124",
             "54 of 100"
@@ -1560,6 +1594,9 @@
         },
         {
           "preset": "cd35",
+          "open": [
+            "data"
+          ],
           "shows": [
             ".362",
             ".360",
@@ -1589,13 +1626,13 @@
       "title": "Draws that remember",
       "idea": "Successive MCMC draws are usually positively correlated, so a pair probability estimated from them carries more Monte Carlo error than the iid formula says, and an iid error bound can fail far more often than its α.",
       "status": "built",
-      "from": "new concept · theory book ch. 15 (dependent Monte Carlo; the two-state chain); postrank vignette m6 (loss traces, MCMC diagnostics) and pr_toy_mcmc; picture: a two-state trace with its running estimate and, under it, the spread of the estimate over many chains against the iid reference, the iid ±2 MCSE band and radius; the reader sets the stay probability, S and the number of chains",
+      "from": "new concept · theory book ch. 21 (dependent Monte Carlo; the two-state chain); postrank vignette m6 (loss traces, MCMC diagnostics) and pr_toy_mcmc; picture: a two-state trace with its running estimate and, under it, the spread of the estimate over many chains against the iid reference, the iid ±2 MCSE band and radius; the reader sets the stay probability, S and the number of chains",
       "data": [
         "engine",
         "data/released/toy-mcmc.json"
       ],
-      "credit": "After the postrank theory book, ch. 15, and the postrank vignette m6.",
-      "caption": "The two directions have probability one half each, as in chapter 15 of the postrank theory book. The chains start from that distribution.",
+      "credit": "After the postrank theory book, ch. 21 (“A finite-sample coefficient bound for dependent draws”), and the postrank vignette m6.",
+      "caption": "The two directions have probability one half each, as in chapter 21 of the postrank theory book. The chains start from that distribution.",
       "presets": [
         {
           "id": "book",
@@ -1646,8 +1683,8 @@
           "preset": "aware",
           "shows": [
             ".376",
-            ".1412",
-            ".002500",
+            ".141",
+            ".00250",
             "1.77",
             "1.01"
           ]
@@ -1663,21 +1700,24 @@
           "preset": "independent",
           "shows": [
             "10 of the 2,000",
-            ".005",
-            ".004"
+            ".00500",
+            ".00352"
           ]
         },
         {
           "preset": "longer",
           "shows": [
             "10.6",
-            ".047",
+            ".0468",
             ".777",
             ".770"
           ]
         },
         {
           "preset": "toy",
+          "open": [
+            "data"
+          ],
           "shows": [
             ".172",
             ".0576",
@@ -1799,6 +1839,9 @@
       "try": [
         {
           "preset": "one-four-one",
+          "open": [
+            "counts"
+          ],
           "shows": [
             "9 of the 15 pairs",
             "6",
@@ -1807,6 +1850,9 @@
         },
         {
           "preset": "pairs",
+          "open": [
+            "counts"
+          ],
           "shows": [
             "12 of the 15 pairs",
             "3",
@@ -1815,6 +1861,9 @@
         },
         {
           "preset": "four-units",
+          "open": [
+            "counts"
+          ],
           "shows": [
             "3 of the 6 pairs",
             ".500"
@@ -1840,7 +1889,7 @@
       "data": [
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 14, and the postrank vignette m5.",
+      "credit": "After the postrank theory book, ch. 9 (“Exact grade counts, grade caps and fixed orders”), and the postrank vignette m5.",
       "caption": "Exact counts of ordered grade reports from the postrank engine; counts only, with no posterior or optimization.",
       "presets": [
         {
@@ -1989,7 +2038,7 @@
       "data": [
         "data/released/six-sites.json"
       ],
-      "credit": "After the postrank theory book, ch. 11 and 16.",
+      "credit": "After the postrank theory book, ch. 10 (“Scalar normalization and withholding cost”) and ch. 22 (“Feasible frontier endpoints and cost paths”).",
       "caption": "Six fictional sites from the postrank tutorial, reading score only; normal posteriors set by hand for teaching. Every report in the selected family is evaluated in this browser.",
       "presets": [
         {
@@ -2102,21 +2151,21 @@
           "preset": "omega50",
           "shows": [
             "{A} > {B, C}",
-            ".1410"
+            ".141"
           ]
         },
         {
           "preset": "omega100",
           "shows": [
             ".921",
-            ".1728"
+            ".173"
           ]
         },
         {
           "preset": "omega100-tau10",
           "shows": [
             "{A, B, C}",
-            ".1000"
+            ".100"
           ]
         },
         {
@@ -2130,7 +2179,7 @@
         {
           "preset": "omega80",
           "shows": [
-            ".1589"
+            ".159"
           ]
         }
       ],
@@ -2216,7 +2265,7 @@
         "data/released/six-sites.json",
         "engine"
       ],
-      "credit": "Definitions after Kline, Rose and Walters (2024), slides 22 and 25–26; finite law after the postrank theory book, chapter 10. Joint-event interpretation after the postrank theory book, chapter 6.",
+      "credit": "Definitions after Kline, Rose and Walters (2024), slides 22 and 25–26; finite law after the postrank theory book, chapter 10. Joint-event interpretation after the postrank theory book, chapter 15 (“Mean and joint protection on declared scopes”).",
       "caption": "Six fictional sites with independent normal latent values and a three-unit finite law; posteriors taken as given, not fitted by postrank.",
       "presetLabel": "Presets",
       "presets": [
@@ -2260,7 +2309,7 @@
             "100",
             ".360",
             ".0257",
-            ".3576"
+            ".358"
           ]
         },
         {
@@ -2296,11 +2345,11 @@
       "title": "Reported and realized error",
       "idea": "For a fixed report, its claimed wrong share and its expectation under an explicit reference law differ by at most the largest pair-error probability gap; a single fixed-truth realization can lie on either side.",
       "status": "built",
-      "from": "new concept · theory book ch. 18 (reported and realized loss; a producer's model); builds on v1 G-05; a prior-SD control (from 1.6) sets the claim against realized shares at fixed true values, which is not the calibration identity of ch. 18; picture: a fixed report's claimed E/N under an assumed prior SD (the reader's control) beside its expected share under another law and the realized shares over replays of the simulated league",
+      "from": "new concept · theory book ch. 24 (reported and realized loss; a producer's model); builds on v1 G-05; a prior-SD control (from 1.6) sets the claim against realized shares at fixed true values, which is not the calibration identity of ch. 24; picture: a fixed report's claimed E/N under an assumed prior SD (the reader's control) beside its expected share under another law and the realized shares over replays of the simulated league",
       "data": [
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 18.",
+      "credit": "After the postrank theory book, ch. 24 (“Self-reported error and calibration”).",
       "caption": "Simulated league of 30 units with deterministic true values and SEs .20, .10 and .05. Independent normal-normal teaching laws with prior mean 0; the reference prior SD is .15. Fixed-truth observation replays are not the conditional calibration identity.",
       "presets": [
         {
@@ -2338,7 +2387,7 @@
           "shows": [
             ".140",
             ".115",
-            ".4981"
+            ".498"
           ]
         },
         {
@@ -2368,7 +2417,7 @@
       "data": [
         "data/released/six-sites.json"
       ],
-      "credit": "After Kline, Rose and Walters (2024), slides 58–60; frontier after the postrank theory book, ch. 16.",
+      "credit": "After Kline, Rose and Walters (2024), slides 58–60; frontier after the postrank theory book, ch. 22 (“Comparing reports at matched disclosure”).",
       "caption": "Six fictional sites from the postrank tutorial, score A only; their normal posteriors are specified for teaching and taken as given. Every report of the family is evaluated in this browser.",
       "presets": [
         {
@@ -2397,7 +2446,7 @@
           "preset": "tau20",
           "shows": [
             "14",
-            ".3576",
+            ".358",
             ".0372"
           ]
         },
@@ -2405,7 +2454,7 @@
           "preset": "tau15",
           "shows": [
             "13",
-            ".1692",
+            ".169",
             ".0313"
           ]
         },
@@ -2413,7 +2462,7 @@
           "preset": "tau40",
           "shows": [
             "15",
-            ".7194",
+            ".719",
             ".0480"
           ]
         },
@@ -2422,7 +2471,7 @@
           "shows": [
             "603",
             "12",
-            ".02477",
+            ".0248",
             ".0417"
           ]
         }
@@ -2440,7 +2489,7 @@
         "data/released/six-sites.json",
         "engine"
       ],
-      "credit": "Four-unit law after the postrank theory book, ch. 16.",
+      "credit": "Four-unit law after the postrank theory book, ch. 22 (“Comparing reports at matched disclosure”).",
       "caption": "Six fictional sites and stipulated finite laws; complete reports are randomized at a specified mean disclosure.",
       "presets": [
         {
@@ -2476,22 +2525,22 @@
             "8",
             "12",
             ".50",
-            ".01714"
+            ".0171"
           ]
         },
         {
           "preset": "m9",
           "shows": [
             ".25",
-            ".01332",
-            ".1597",
-            ".1464"
+            ".0133",
+            ".160",
+            ".146"
           ]
         },
         {
           "preset": "m12",
           "shows": [
-            ".02477",
+            ".0248",
             "no mixture is needed"
           ]
         },
@@ -2526,7 +2575,7 @@
         "data/released/six-sites.json",
         "engine"
       ],
-      "credit": "Built on postrank's families (Kline, Rose and Walters (2024), slides 21, 24 and 57, use no cap); four-unit example after the postrank theory book, ch. 14.",
+      "credit": "Built on postrank's families (Kline, Rose and Walters (2024), slides 21, 24 and 57, use no cap); report families after the postrank theory book, ch. 9 (“Grade actions and disclosed comparisons”), and four-unit example after ch. 25.",
       "caption": "Six fictional sites from the postrank tutorial, or the theory book's four-unit two-criterion law; the declared family determines the search.",
       "presets": [
         {
@@ -2645,6 +2694,9 @@
         },
         {
           "preset": "six-rank-reveal",
+          "open": [
+            "method"
+          ],
           "shows": [
             "Grade 1",
             "With one grade shown there is nothing to compare yet."
@@ -2655,7 +2707,7 @@
           "shows": [
             "303",
             "435",
-            ".1603",
+            ".160",
             ".121",
             ".2019",
             ".1672",
@@ -2708,6 +2760,9 @@
         },
         {
           "preset": "race-setting",
+          "open": [
+            "data"
+          ],
           "shows": [
             "1,324",
             "4,656",
@@ -2772,16 +2827,18 @@
         {
           "preset": "weak",
           "shows": [
-            ".2500",
-            ".5000",
-            ".9000"
+            ".250",
+            ".500",
+            ".900"
           ]
         },
         {
           "preset": "neutral",
+          "open": [
+            "method"
+          ],
           "shows": [
-            ".1000",
-            ".1500",
+            ".100",
             ".150",
             ".600",
             ".867"
@@ -2790,7 +2847,7 @@
         {
           "preset": "none",
           "shows": [
-            ".2500"
+            ".250"
           ]
         },
         {
@@ -2802,6 +2859,9 @@
         },
         {
           "preset": "certain",
+          "open": [
+            "data"
+          ],
           "shows": [
             "0",
             "only withholding",
@@ -2817,12 +2877,12 @@
       "title": "How the best report is found",
       "idea": "This browser searches small families report by report, dynamic programming cuts one declared order exactly, and postrank's solver takes the joint problem and reports its status, bound and gap.",
       "status": "built",
-      "from": "new concept · v1 storyboard P-08; theory book ch. 14; postrank vignette m5 (enumeration, fixed-order DP, MIP with status, bound and gap); picture: family sizes on a log axis, the 0/1 patterns of three units, the dynamic-programming table filling cell by cell, and a HiGHS solve with its incumbent risk, bound, gap and status",
+      "from": "new concept · v1 storyboard P-08; theory book ch. 19; postrank vignette m5 (enumeration, fixed-order DP, MIP with status, bound and gap); picture: family sizes on a log axis, the 0/1 patterns of three units, the dynamic-programming table filling cell by cell, and a HiGHS solve with its incumbent risk, bound, gap and status",
       "data": [
         "data/released/six-sites.json",
         "engine"
       ],
-      "credit": "After the postrank vignette m5 and the theory book, ch. 14.",
+      "credit": "After the postrank vignette m5 and the postrank theory book, ch. 19 (“Feasible reports, bounds, and computational scope”).",
       "caption": "Family counts and search results computed in this browser. Six fictional sites use the postrank tutorial score-A posterior; the joint solver uses a frozen simulated league. Optimization answers only for its stated family and supplied probabilities.",
       "presets": [
         {
@@ -2892,15 +2952,15 @@
           "preset": "joint-solver",
           "shows": [
             "20 league units",
-            ".1750",
-            ".1500"
+            ".175",
+            ".150"
           ]
         },
         {
           "preset": "joint-solver-six",
           "shows": [
             "6 league units",
-            ".1455",
+            ".146",
             "32 contiguous reports"
           ]
         }
@@ -2914,12 +2974,12 @@
       "title": "Judging a report under another law",
       "idea": "A report chosen under one posterior and judged under another can have a different risk; within the same family its regret is at most twice the largest weighted gap between the two laws' pair error probabilities, plus the optimizer's gap.",
       "status": "built",
-      "from": "new concept · v1 storyboard P-11; theory book ch. 16 and 18 (regret under a different law); picture: two posteriors for the same units, a report chosen under one and judged under both, its regret and the bound 2d + η",
+      "from": "new concept · v1 storyboard P-11; theory book ch. 24 (regret under a different law); picture: two posteriors for the same units, a report chosen under one and judged under both, its regret and the bound 2d + η",
       "data": [
         "data/released/six-sites.json",
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 16 and 18.",
+      "credit": "After the postrank theory book, ch. 24 (“Risk discrepancy bounds on a common action family”).",
       "caption": "Six fictional sites, reading score only: two independent normal laws set by hand for teaching. A law is declared for selection and another for evaluation; this comparison does not establish empirical calibration.",
       "presets": [
         {
@@ -2959,7 +3019,7 @@
         {
           "preset": "move",
           "shows": [
-            ".1360",
+            ".136",
             ".0542",
             ".0817",
             "3"
@@ -2987,7 +3047,7 @@
           "shows": [
             ".0132",
             "1",
-            ".0008",
+            ".000755",
             ".0263"
           ]
         }
@@ -3000,13 +3060,13 @@
       "title": "Scored on the draws that chose it",
       "idea": "A report chosen on posterior draws can look better or worse on them than under the exact law, though better on average; the gap is at most N/M times the draws' largest pair-probability error, which shrinks as draws grow.",
       "status": "built",
-      "from": "new concept · postrank vignette m6 (fixed and selected actions; cross-fitting as the package view of fold grades) and theory book ch. 15 (the envelope covers selection on the same draws); picture: reruns of S draws, each run's chosen report scored on its own draws against its exact risk, the signed gap over runs, and the regret bound 2δ_w + η",
+      "from": "new concept · postrank vignette m6 (fixed and selected actions; cross-fitting as the package view of fold grades) and theory book ch. 21 (the envelope covers selection on the same draws); picture: reruns of S draws, each run's chosen report scored on its own draws against its exact risk, the signed gap over runs, and the regret bound 2δ_w + η",
       "data": [
         "data/released/six-sites.json",
         "data/released/cache-toy.json",
         "engine"
       ],
-      "credit": "After the postrank vignette m6 and the theory book, ch. 15.",
+      "credit": "After the postrank vignette m6 and the postrank theory book, ch. 21 (“Effects of coefficient error on risk and feasibility”).",
       "caption": "Six fictional normal posteriors; reports selected from independent posterior draws and evaluated on those same draws and the exact declared law. A separate cached package toy shows fold reports.",
       "presets": [
         {
@@ -3040,20 +3100,20 @@
           "preset": "own",
           "shows": [
             "33 look worse",
-            "−.00061"
+            "−.000613"
           ]
         },
         {
           "preset": "worse",
           "shows": [
-            "+.00072"
+            "+.000720"
           ]
         },
         {
           "preset": "more",
           "shows": [
             "4,000 draws",
-            "−.00025"
+            "−.000246"
           ]
         },
         {
@@ -3078,11 +3138,11 @@
       "title": "Three ways to average a wrong share",
       "idea": "Over datasets, or outcomes of a randomized report, the wrong share of stated directions has three averages that generally differ: a ratio of expected counts, a mean over datasets that state something, and a mean counting silent ones as zero.",
       "status": "built",
-      "from": "new concept · theory book ch. 8 and 16 (disclosed-error estimands) and App. B; v1 storyboard P-11, the error view; picture: three dataset cards with editable (wrong, stated) counts and the three averages as bars beside Pr(N > 0) and the mean disclosure; modes for a randomized report and for replicated leagues",
+      "from": "new concept · theory book ch. 8 and 22 (disclosed-error estimands) and App. B; v1 storyboard P-11, the error view; picture: three dataset cards with editable (wrong, stated) counts and the three averages as bars beside Pr(N > 0) and the mean disclosure; modes for a randomized report and for replicated leagues",
       "data": [
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 8 and 16.",
+      "credit": "After the postrank theory book, ch. 8 (“Realized false discovery proportions and three probability laws”) and ch. 22 (“Averaging conventions for disclosed-error fractions”).",
       "caption": "Three-outcome evaluation, a lottery over fixed reports, and simulated repeated datasets; the three averaging conventions answer different questions.",
       "presets": [
         {
@@ -3160,12 +3220,12 @@
       "title": "One correction moves other grades",
       "idea": "Grades are chosen together, so correcting one unit's input, or dropping a unit, can change the relation between two other units.",
       "status": "built",
-      "from": "new concept · theory book ch. 17 (information sets) and ch. 21 (transparency, appeal, documentation); postrank_compare() relations; picture: the card before and after the reader corrects one unit's mean or SD, or drops a unit, with the relation-change matrix and the count of changed pairs between units the reader did not touch",
+      "from": "new concept · theory book ch. 23 (comparator scope) and ch. 32 (transparency, appeal, documentation); postrank_compare() relations; picture: the card before and after the reader corrects one unit's mean or SD, or drops a unit, with the relation-change matrix and the count of changed pairs between units the reader did not touch",
       "data": [
         "data/released/six-sites.json",
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 17 and 21.",
+      "credit": "After the postrank theory book, ch. 23 (“Common rules and competing objectives”) and ch. 32 (“Documentation and correction”).",
       "caption": "Independent normal teaching posteriors. Six-site reports are optimized in their named full or capped family; the frozen league uses best cuts of a recomputed expected-rank order. Removed units are excluded, not graded last.",
       "presets": [
         {
@@ -3255,7 +3315,7 @@
       "data": [
         "engine"
       ],
-      "credit": "Simulated data; rule definition after the postrank theory book, ch. 17.",
+      "credit": "Simulated data; rule definition after the postrank theory book, ch. 23 (“Comparator definitions and scope”).",
       "caption": "Thirty simulated units, cut into tiers by their estimates; the chance a direction is wrong comes from a normal posterior (prior mean 0, SD .15).",
       "presets": [
         {
@@ -3291,9 +3351,9 @@
             "300",
             "435",
             ".690",
-            "51.86",
+            "51.9",
             ".173",
-            ".1813"
+            ".181"
           ]
         },
         {
@@ -3301,9 +3361,9 @@
           "shows": [
             "405",
             ".931",
-            "89.40",
+            "89.4",
             ".221",
-            ".2193",
+            ".219",
             "197",
             ".802"
           ]
@@ -3327,14 +3387,14 @@
           "preset": "tiers30",
           "shows": [
             "435",
-            "102.2"
+            "102"
           ]
         },
         {
           "query": "G=1&tau=.20&outline=1",
           "shows": [
             "NA: no disclosure",
-            ".2000"
+            ".200"
           ]
         }
       ],
@@ -3351,7 +3411,7 @@
       "data": [
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 9, 16 and 17.",
+      "credit": "After the postrank theory book, ch. 9 (“Representations and disclosed-pair counts”), ch. 22 (“Comparing reports at matched disclosure”), and ch. 23 (“Comparator definitions and scope”).",
       "math": true,
       "caption": "Ordered positive tier-size patterns, each with equal weight; no posterior errors are inferred from disclosure counts. Quantile ties are kept together by the package.",
       "presets": [
@@ -3431,7 +3491,7 @@
       "data": [
         "engine"
       ],
-      "credit": "Two-unit example after the postrank theory book, ch. 2.",
+      "credit": "Two-unit example after the postrank theory book, ch. 2 (“Teacher growth categories: evidence, precision, and the choice of assessment”) and ch. 23 (“Benchmarks for selection, classification, and stability”).",
       "caption": "Two units against the reference 0; independent normal posteriors price the stated direction.",
       "presets": [
         {
@@ -3461,8 +3521,7 @@
           "shows": [
             "4.00",
             "1.50",
-            ".686",
-            ".6862"
+            ".686"
           ]
         },
         {
@@ -3478,7 +3537,7 @@
           "shows": [
             "2.00",
             "0",
-            ".2000"
+            ".200"
           ]
         },
         {
@@ -3502,7 +3561,7 @@
       "data": [
         "engine"
       ],
-      "credit": "Built for this site; flag rule after the postrank theory book, ch. 2 and 17.",
+      "credit": "Built for this site; flag rule after the postrank theory book, ch. 2 (“Teacher growth categories: evidence, precision, and the choice of assessment”) and ch. 23 (“Benchmarks for selection, classification, and stability”).",
       "presets": [
         {
           "id": "league-196",
@@ -3536,7 +3595,7 @@
             "188",
             "435",
             ".130",
-            ".1696",
+            ".170",
             "20",
             ".649"
           ]
@@ -3575,7 +3634,7 @@
         "engine",
         "data/released/thirty-sites.json"
       ],
-      "credit": "League built for this site (the eight units are its U01–U08); 30-site example from the postrank package (synthetic); tiers after the postrank theory book, ch. 17.",
+      "credit": "League built for this site (the eight units are its U01–U08); 30-site example from the postrank package (synthetic); tiers after the postrank theory book, ch. 23 (“Comparator definitions and scope”).",
       "math": false,
       "caption": "One supplied posterior and one withholding price for every rule; fixed tiers, optimized cuts within named orders, and exhaustive optimization only on the eight units.",
       "presets": [
@@ -3605,29 +3664,26 @@
           "preset": "league8-cuts",
           "shows": [
             "17",
-            ".1455",
+            ".146",
             "6,051",
             "21",
-            ".1612"
-          ],
-          "open": [
-            "reports"
+            ".161"
           ]
         },
         {
           "preset": "pm-tiers",
           "shows": [
             "300",
-            ".1731",
+            ".173",
             "251",
-            ".1581"
+            ".158"
           ]
         },
         {
           "preset": "thirty",
           "shows": [
             "303",
-            ".1603",
+            ".160",
             "4,090"
           ]
         },
@@ -3650,7 +3706,7 @@
       "data": [
         "engine"
       ],
-      "credit": "Three-unit example after the postrank theory book, ch. 19.",
+      "credit": "Three-unit example after the postrank theory book, ch. 25 (“Target uncertainty, directional reporting, and allocation with one place”).",
       "caption": "Three units with two possible states of their true values; exact probabilities, every report evaluated in this browser.",
       "presets": [
         {
@@ -3685,18 +3741,18 @@
           "shows": [
             "7/10",
             "3/10",
-            ".2500",
-            ".1833"
+            ".250",
+            ".183"
           ],
           "open": [
-            "matched"
+            "method"
           ]
         },
         {
           "preset": "rank25",
           "shows": [
             "B, C, A",
-            ".1833"
+            ".183"
           ]
         },
         {
@@ -3709,14 +3765,14 @@
         {
           "preset": "tau50",
           "shows": [
-            ".4000",
-            ".2000"
+            ".400",
+            ".200"
           ]
         },
         {
           "preset": "tau10",
           "shows": [
-            ".1000"
+            ".100"
           ]
         }
       ],
@@ -3734,7 +3790,7 @@
       "data": [
         "engine"
       ],
-      "credit": "Frontier after the postrank theory book, ch. 16; rules as points after Kline, Rose and Walters (2024), slides 58–60.",
+      "credit": "Frontier after the postrank theory book, ch. 22 (“Comparing reports at matched disclosure”); rules as points after Kline, Rose and Walters (2024), slides 58–60.",
       "caption": "Units U01–U08 of the simulated league under a normal posterior (prior mean 0, SD .15); flags against the mean of all 30 league estimates.",
       "presets": [
         {
@@ -3782,13 +3838,13 @@
         {
           "preset": "same-n",
           "open": [
-            "mixture"
+            "method"
           ],
           "shows": [
             "21",
-            "3.114",
-            "2.951",
-            ".1634",
+            "3.11",
+            "2.95",
+            ".163",
             ".667",
             "3.013"
           ]
@@ -3797,7 +3853,7 @@
           "preset": "tiers",
           "shows": [
             "21",
-            ".6429"
+            ".643"
           ]
         },
         {
@@ -3811,7 +3867,7 @@
           "preset": "strict-low-tau",
           "shows": [
             "28",
-            ".2305",
+            ".230",
             "risk above all-withheld"
           ]
         },
@@ -3819,7 +3875,7 @@
           "preset": "cap3",
           "shows": [
             "6,051",
-            ".4796"
+            ".480"
           ]
         },
         {
@@ -3847,7 +3903,7 @@
       "data": [
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 16–17.",
+      "credit": "After the postrank theory book, ch. 22 (“Comparing reports at matched disclosure”) and ch. 23 (“Comparator definitions and scope”).",
       "presets": [
         {
           "id": "same-tau",
@@ -3895,16 +3951,16 @@
           "preset": "same-tau",
           "shows": [
             "21",
-            ".1612",
+            ".161",
             "17",
-            ".1455"
+            ".146"
           ]
         },
         {
           "preset": "same-n",
           "shows": [
             "21",
-            ".1634"
+            ".163"
           ]
         },
         {
@@ -3912,7 +3968,7 @@
           "shows": [
             "436",
             "300",
-            "48.31"
+            "48.3"
           ]
         },
         {
@@ -3931,7 +3987,7 @@
           "preset": "withheld",
           "shows": [
             "0",
-            ".2000"
+            ".200"
           ]
         }
       ],
@@ -3978,37 +4034,37 @@
         {
           "preset": "race-four",
           "shows": [
-            ".1696",
-            ".4185",
-            ".1678",
-            ".4336"
+            ".170",
+            ".419",
+            ".168",
+            ".434"
           ]
         },
         {
           "preset": "race-ten",
           "shows": [
-            ".2271",
-            ".4550",
-            ".2243",
-            ".4589"
+            ".227",
+            ".455",
+            ".224",
+            ".459"
           ]
         },
         {
           "preset": "gender-four",
           "shows": [
-            ".1978",
-            ".3621",
-            ".1908",
-            ".3875"
+            ".198",
+            ".362",
+            ".191",
+            ".388"
           ]
         },
         {
           "preset": "gender-ten",
           "shows": [
-            ".2525",
-            ".4042",
-            ".2373",
-            ".4078"
+            ".252",
+            ".404",
+            ".237",
+            ".408"
           ]
         }
       ]
@@ -4109,12 +4165,12 @@
       "title": "Better on average, not in every draw",
       "idea": "The best report has the smallest expected loss within its family under the law that chose it; in a single draw, a common rule can do better.",
       "status": "built",
-      "from": "new concept · theory book ch. 16 (conditional Bayes dominance) and ch. 18; postrank vignette m2; picture: the per-draw realized loss of the best report against a common rule's, with the 45° line, the share of draws the rule wins and the mean difference; a toggle takes the rule outside the family",
+      "from": "new concept · theory book ch. 22 (conditional Bayes dominance and oracle information); postrank vignette m2; picture: the per-draw realized loss of the best report against a common rule's, with the 45° line, the share of draws the rule wins and the mean difference; a toggle takes the rule outside the family",
       "data": [
         "data/released/six-sites.json",
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 16.",
+      "credit": "After the postrank theory book, ch. 22 (“Conditional Bayes dominance and its limits”).",
       "caption": "Conditional posterior experiment: both reports are selected once from the declared law and then fixed across paired whole-state draws. Dominance concerns expected total reporting loss within the named family.",
       "presets": [
         {
@@ -4151,10 +4207,13 @@
       "try": [
         {
           "preset": "inside",
+          "open": [
+            "data"
+          ],
           "shows": [
             "63",
             ".0940",
-            ".1046",
+            ".105",
             "57"
           ]
         },
@@ -4167,9 +4226,12 @@
         },
         {
           "preset": "finite",
+          "open": [
+            "data"
+          ],
           "shows": [
-            ".2500",
-            ".3000",
+            ".250",
+            ".300",
             ".700",
             "65"
           ]
@@ -4183,9 +4245,12 @@
         },
         {
           "preset": "silent",
+          "open": [
+            "data"
+          ],
           "shows": [
             "NA: no disclosure",
-            ".2000"
+            ".200"
           ]
         },
         {
@@ -4203,11 +4268,11 @@
       "title": "Measure again, grade again",
       "idea": "Measuring again and grading again changes some pair relations; stability has to be read beside disclosure, because withholding every pair is perfectly stable.",
       "status": "built",
-      "from": "new concept · theory book ch. 17 (stability needs its own repeated-data law); picture: two replications of the league side by side with their relation changes, and a replay histogram of the share of changed relations beside N/M and E/N for several rules",
+      "from": "new concept · theory book ch. 23 (stability needs its own repeated-data law); picture: two replications of the league side by side with their relation changes, and a replay histogram of the share of changed relations beside N/M and E/N for several rules",
       "data": [
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 17.",
+      "credit": "After the postrank theory book, ch. 23 (“Benchmarks for selection, classification, and stability”).",
       "caption": "Fixed-truth paired measurement experiment; every observation refits its stipulated posterior.",
       "presets": [
         {
@@ -4276,11 +4341,11 @@
       "title": "A grade is not an allocation",
       "idea": "With a fixed number of places or a fixed threshold, posterior means, the chances of being in the top or above the threshold, and the grades can pick differently; using grades for either needs one more rule.",
       "status": "built",
-      "from": "new concept · theory book ch. 17 (selection benchmarks; threshold classification with asymmetric costs), ch. 19 and ch. 21; picture: rules as points of expected selected value against expected overlap with the true top (in threshold mode, against expected classification loss), each with its reporting risk; the reader sets the places or the threshold, τ and the law",
+      "from": "new concept · theory book ch. 23 (selection benchmarks; threshold classification with asymmetric costs) and ch. 25; picture: rules as points of expected selected value against expected overlap with the true top (in threshold mode, against expected classification loss), each with its reporting risk; the reader sets the places or the threshold, τ and the law",
       "data": [
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 17 and 19.",
+      "credit": "After the postrank theory book, ch. 23 (“Benchmarks for selection, classification, and stability”) and ch. 25 (“Target uncertainty, directional reporting, and allocation with one place”).",
       "presets": [
         {
           "id": "three",
@@ -4338,23 +4403,23 @@
         {
           "preset": "three",
           "shows": [
-            ".1833",
-            "4.000",
+            ".183",
+            "4.00",
             ".700"
           ]
         },
         {
           "preset": "mean",
           "shows": [
-            ".4667",
-            "6.000",
+            ".467",
+            "6.00",
             ".300"
           ]
         },
         {
           "preset": "two25",
           "shows": [
-            "5.000",
+            "5.00",
             ".500"
           ]
         },
@@ -4377,18 +4442,18 @@
           "preset": "league-five",
           "shows": [
             ".558",
-            "2.733",
-            "2.825"
+            "2.73",
+            "2.83"
           ]
         },
         {
           "preset": "same-risk",
           "shows": [
-            ".2000",
+            ".200",
             "3",
             "2",
-            "1.700",
-            "1.300"
+            "1.70",
+            "1.30"
           ]
         }
       ]
@@ -4445,7 +4510,7 @@
         {
           "preset": "six-bc",
           "shows": [
-            ".007",
+            ".00666",
             ".961",
             "3"
           ]
@@ -4453,14 +4518,14 @@
         {
           "preset": "six-bd",
           "shows": [
-            ".002",
+            ".00234",
             ".760"
           ]
         },
         {
           "preset": "reverse-b",
           "shows": [
-            ".039"
+            ".0385"
           ]
         },
         {
@@ -4484,8 +4549,8 @@
         "data/released/six-sites.json",
         "data/released/thirty-sites.json"
       ],
-      "credit": "After the postrank theory book, ch. 12.",
-      "caption": "Synthetic supplied laws after the postrank theory book, ch. 12 and 19. Isolated-pair costs, not an optimized common grade.",
+      "credit": "After the postrank theory book, ch. 12 (“Conflict, withholding, and the limits of pairwise decisions”) and ch. 25 (“Common grades under an exact joint target law”).",
+      "caption": "Synthetic supplied laws after the postrank theory book, ch. 12 and 25. Isolated-pair costs, not an optimized common grade.",
       "presets": [
         {
           "id": "six-bc",
@@ -4532,37 +4597,43 @@
         {
           "preset": "six-bc",
           "shows": [
-            ".4841",
-            ".5159",
+            ".484",
+            ".516",
             "3"
           ]
         },
         {
           "preset": "thirty",
           "shows": [
-            ".3652",
+            ".365",
             "397"
           ]
         },
         {
           "preset": "certain",
           "shows": [
-            ".5000",
-            ".2000"
+            ".500",
+            ".200"
           ]
         },
         {
           "preset": "uncertain",
+          "open": [
+            "data"
+          ],
           "shows": [
-            ".5000",
+            ".500",
             "0"
           ]
         },
         {
           "preset": "zero-weight",
+          "open": [
+            "data"
+          ],
           "shows": [
             "0",
-            "1.0000"
+            "1.00"
           ]
         },
         {
@@ -4573,7 +4644,7 @@
           "shows": [
             ".6000",
             ".9000",
-            ".7500"
+            ".750"
           ]
         }
       ]
@@ -4828,7 +4899,7 @@
         {
           "preset": "w100",
           "shows": [
-            ".1481"
+            ".148"
           ]
         },
         {
@@ -4842,14 +4913,14 @@
           "preset": "w0",
           "shows": [
             "Two common reports tie",
-            ".1580",
-            ".1697"
+            ".158",
+            ".170"
           ]
         },
         {
           "preset": "thirty-35",
           "shows": [
-            ".4455",
+            ".446",
             ".784",
             "276"
           ]
@@ -4859,7 +4930,7 @@
           "shows": [
             ".0895",
             ".0749",
-            ".1022"
+            ".102"
           ]
         }
       ]
@@ -4876,8 +4947,8 @@
         "data/released/six-sites.json",
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 12 (four-unit law after ch. 19), and the postrank vignette m2.",
-      "caption": "Supplied synthetic laws after the postrank theory book, ch. 12 and19, and vignette m2. Both losses use one law, withholding price and report family.",
+      "credit": "After the postrank theory book, ch. 12 (“Composite and criterion-specific reporting targets”; four-unit law after ch. 25), and the postrank vignette m2.",
+      "caption": "Supplied synthetic laws after the postrank theory book, ch. 12 and 25, and vignette m2. Both losses use one law, withholding price and report family.",
       "presets": [
         {
           "id": "known",
@@ -4924,10 +4995,10 @@
         {
           "preset": "known",
           "shows": [
-            ".2500",
-            ".7500",
-            ".3000",
-            "1.0000",
+            ".250",
+            ".750",
+            ".300",
+            "1.00",
             "0",
             "1/2",
             "2/1"
@@ -4939,15 +5010,14 @@
             "data"
           ],
           "shows": [
-            ".250",
-            ".2500"
+            ".250"
           ]
         },
         {
           "preset": "composite-tie",
           "shows": [
-            "1.0000",
-            ".3000"
+            "1.00",
+            ".300"
           ]
         },
         {
@@ -4959,7 +5029,7 @@
             "75",
             "1/2/2/3",
             "1/1/2/3",
-            ".1417",
+            ".142",
             ".0333",
             "5"
           ]
@@ -4967,7 +5037,7 @@
         {
           "preset": "exp",
           "shows": [
-            ".1417",
+            ".142",
             "1/1/2/2",
             ".0667"
           ]
@@ -5070,6 +5140,9 @@
         },
         {
           "preset": "zero-weight",
+          "open": [
+            "data"
+          ],
           "shows": [
             ".0906",
             ".240",
@@ -5152,28 +5225,37 @@
         },
         {
           "preset": "opposition",
+          "open": [
+            "data"
+          ],
           "shows": [
-            ".5000",
-            ".3000"
+            ".500",
+            ".300"
           ]
         },
         {
           "preset": "all-actions",
           "shows": [
             "3",
-            ".5000"
+            ".500"
           ]
         },
         {
           "preset": "majority",
+          "open": [
+            "data"
+          ],
           "shows": [
-            ".3333",
-            ".6667",
-            ".4000"
+            ".333",
+            ".667",
+            ".400"
           ]
         },
         {
           "preset": "zero-weight",
+          "open": [
+            "data"
+          ],
           "shows": [
             "0",
             "1.0000"
@@ -5181,13 +5263,16 @@
         },
         {
           "preset": "coherence",
+          "open": [
+            "data"
+          ],
           "shows": [
             "4,683",
             "1/2/2/3/4/5",
             "14",
-            ".1275",
-            ".3803",
-            ".3813",
+            ".127",
+            ".380",
+            ".381",
             ".35"
           ]
         }
@@ -5258,14 +5343,14 @@
           "preset": "w90",
           "shows": [
             ".0605",
-            ".2296"
+            ".230"
           ]
         },
         {
           "preset": "w70",
           "shows": [
             ".0882",
-            ".1378"
+            ".138"
           ]
         },
         {
@@ -5277,39 +5362,39 @@
         {
           "preset": "w0",
           "shows": [
-            ".1996",
-            ".2113"
+            ".200",
+            ".211"
           ]
         },
         {
           "preset": "low",
           "shows": [
-            ".2500"
+            ".250"
           ]
         },
         {
           "preset": "high",
           "shows": [
-            ".1500"
+            ".150"
           ]
         },
         {
           "preset": "minimax",
           "shows": [
-            ".2500"
+            ".250"
           ]
         },
         {
           "preset": "zero",
           "shows": [
-            ".2500"
+            ".250"
           ]
         },
         {
           "preset": "opposition",
           "shows": [
-            ".5000",
-            "1.0000"
+            ".500",
+            "1.00"
           ]
         }
       ],
@@ -5464,7 +5549,7 @@
             "8 times",
             "32 times",
             ".250",
-            "1"
+            "1.00"
           ]
         },
         {
@@ -5512,15 +5597,15 @@
       "title": "Why do these two share a grade?",
       "idea": "A shared grade can come from an uncertain direction, from criteria that conflict, from coherence with other pairs or from the family's limits, and the grade does not say which.",
       "status": "built",
-      "from": "new concept · theory book ch. 10, 12, 19 and 21; postrank vignette a2 (pairwise support); picture: the relation matrix; clicking a shared-grade pair opens four tests (the isolated rule, the criteria's directions, stated alone, the family) and the cheapest report that states the pair, with its extra risk",
+      "from": "new concept · theory book ch. 10, 12, 25 and 32; postrank vignette a2 (pairwise support); picture: the relation matrix; clicking a shared-grade pair opens four tests (the isolated rule, the criteria's directions, stated alone, the family) and the cheapest report that states the pair, with its extra risk",
       "data": [
         "data/released/six-sites.json",
         "data/released/case-cde.json",
         "data/released/case-krw.json",
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 19 and 21. Firms as adapted in postrank 1.1.0 (pr_case_krw). 12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde).",
-      "caption": "Six fictional sites and restated finite teaching laws; case views carry their released conditioning, attribution and license notices. Four nonexclusive tests under the supplied law; same grade means not compared.",
+      "credit": "After the postrank theory book, ch. 10, ch. 12 (“Conflict, withholding, and the limits of pairwise decisions”), ch. 25, and ch. 32 (“Interpretation of withheld comparisons”). Firms as adapted in postrank 1.1.0 (pr_case_krw). 12-school teaching subset as adapted in postrank 1.1.0 (pr_case_cde).",
+      "caption": "Six fictional sites and restated finite teaching laws (CC BY 4.0); case views show their released conditioning, attribution and license notices. Same grade means not compared.",
       "presets": [
         {
           "id": "coherence",
@@ -5567,28 +5652,28 @@
         {
           "preset": "coherence",
           "shows": [
-            ".1019",
-            "+.008513"
+            ".102",
+            "+.00851"
           ]
         },
         {
           "preset": "certain-conflict",
           "shows": [
-            ".1667",
-            "+.025000"
+            ".167",
+            "+.0250"
           ]
         },
         {
           "preset": "uncertainty",
           "shows": [
-            ".4000",
-            ".6000"
+            ".400",
+            ".600"
           ]
         },
         {
           "preset": "fixed-order",
           "shows": [
-            ".3167"
+            ".317"
           ]
         },
         {
@@ -5612,12 +5697,12 @@
       "title": "What pair probabilities leave open",
       "idea": "Pair probabilities fix the weighted risk but not the chance that a composite direction is right or that every stated direction is right; those need the joint law.",
       "status": "built",
-      "from": "new concept · theory book ch. 11 and 19; postrank vignettes m2 and m3 (information requirements) and inputs-and-producers; picture: a joint-law editor for two units on two criteria (presets together and opposite), where what the pair probabilities fix stays locked while composite and joint quantities move",
+      "from": "new concept · theory book ch. 11 and 25; postrank vignettes m2 and m3 (information requirements) and inputs-and-producers; picture: a joint-law editor for two units on two criteria (presets together and opposite), where what the pair probabilities fix stays locked while composite and joint quantities move",
       "data": [
         "engine"
       ],
-      "credit": "After the postrank theory book, ch. 11 (four-unit law after ch. 19), and the postrank vignette m3.",
-      "caption": "Restated synthetic finite laws after the postrank theory book, chapters 11 and 19, and vignettes m2/m3. Within-criterion pair errors determine additive expected risk; composite and joint-event probabilities use the complete stipulated law.",
+      "credit": "After the postrank theory book, ch. 11 (“Weighted directional risk from a supplied selection law”; four-unit law after ch. 25), and the postrank vignette m3.",
+      "caption": "Restated synthetic finite laws after the postrank theory book, chapters 11 and 25, and vignettes m2/m3. Within-criterion pair errors determine additive expected risk; composite and joint-event probabilities use the complete stipulated law.",
       "presets": [
         {
           "id": "together",
@@ -5654,14 +5739,13 @@
         {
           "preset": "together",
           "shows": [
-            ".5000",
-            ".5"
+            ".500"
           ]
         },
         {
           "preset": "opposite",
           "shows": [
-            ".5000",
+            ".500",
             "0"
           ]
         },
@@ -5674,7 +5758,7 @@
         {
           "preset": "zero-weight",
           "shows": [
-            ".5",
+            ".500",
             "0"
           ]
         },
@@ -5686,6 +5770,9 @@
         },
         {
           "preset": "chapter",
+          "open": [
+            "data"
+          ],
           "shows": [
             ".870",
             ".750",
@@ -5702,13 +5789,13 @@
       "title": "A budget met on estimated probabilities",
       "idea": "With pair probabilities estimated from draws, a report can meet an error budget on the estimates yet fail it under the exact law; when the draws' error bound holds, inner and outer families bracket the compliant reports.",
       "status": "built",
-      "from": "new concept · theory book ch. 15 (estimated protections; the bound holds with probability at least 1 − α); postrank vignette m6; postrank_protection_envelopes(); picture: a membership grid of reports against inner, estimated, exact and outer families, and a number line per report with the estimated and exact E/N, q and q ± ε; the reader sets t, ε and the exact-count switch",
+      "from": "new concept · theory book ch. 21 (estimated protections; the bound holds with probability at least 1 − α); postrank vignette m6; postrank_protection_envelopes(); picture: a membership grid of reports against inner, estimated, exact and outer families, and a number line per report with the estimated and exact E/N, q and q ± ε; the reader sets t, ε and the exact-count switch",
       "data": [
         "engine",
         "data/released/six-sites.json"
       ],
-      "credit": "After the postrank theory book, ch. 15.",
-      "caption": "After the postrank theory book, ch. 15; supplied-law expected-error protections, with signed inner and outer thresholds.",
+      "credit": "After the postrank theory book, ch. 21 (“Effects of coefficient error on risk and feasibility”).",
+      "caption": "After the postrank theory book, ch. 21; supplied-law expected-error protections, with signed inner and outer thresholds.",
       "presets": [
         {
           "id": "nominal",
@@ -5814,12 +5901,12 @@
         },
         {
           "id": "low-tau",
-          "label": "Lower withholding cost",
+          "label": "Lower cost",
           "query": "law=crossed&tauIndex=0&weightIndex=0&unit=A&report=profile&candidate=canonical"
         },
         {
           "id": "unequal-weights",
-          "label": "Greater weight on S",
+          "label": "More weight on S",
           "query": "law=crossed&tauIndex=2&weightIndex=1&unit=A&report=profile&candidate=canonical"
         }
       ],
@@ -5871,27 +5958,27 @@
       "presets": [
         {
           "id": "dependent-coincident",
-          "label": "Dependent domains, separate choices",
+          "label": "Separate choices",
           "query": "couplingIndex=10&zeroWeight=false&protected=false&candidate=p%3A1%2C2%7C1%2C2"
         },
         {
           "id": "dependent-disjoint",
-          "label": "Different dependence, same minimum",
+          "label": "Same minimum",
           "query": "couplingIndex=0&zeroWeight=false&protected=false&candidate=p%3A1%2C2%7C1%2C2"
         },
         {
           "id": "zero-weight",
-          "label": "Zero loss weight in S",
+          "label": "Zero S weight",
           "query": "couplingIndex=0&zeroWeight=true&protected=false&candidate=p%3A1%2C2%7C1%2C2"
         },
         {
           "id": "independent-joint",
-          "label": "Independent domains with a joint guard",
+          "label": "Independent, cap",
           "query": "couplingIndex=1&zeroWeight=false&protected=true&candidate=p%3A1%2C2%7C1%2C2"
         },
         {
           "id": "guarded-coincident",
-          "label": "Joint guard with coincident failures",
+          "label": "Coincident, cap",
           "query": "couplingIndex=10&zeroWeight=false&protected=true&candidate=p%3A1%2C2%7C1%2C2"
         }
       ],
@@ -5952,17 +6039,17 @@
         },
         {
           "id": "independent",
-          "label": "Independent domains",
+          "label": "Independent",
           "query": "couplingIndex=1&candidate=p%3A1%2C2%7C1%2C2"
         },
         {
           "id": "boundary",
-          "label": "At the joint cap",
+          "label": "At joint cap",
           "query": "couplingIndex=5&candidate=p%3A1%2C2%7C1%2C2"
         },
         {
           "id": "coincident",
-          "label": "Coincident failures",
+          "label": "Coincident",
           "query": "couplingIndex=10&candidate=p%3A1%2C2%7C1%2C2"
         }
       ],
@@ -6014,22 +6101,22 @@
       "presets": [
         {
           "id": "lower-budget",
-          "label": "Tighter joint budget",
+          "label": "Tighter budget",
           "query": "noiseIndex=1&budgetIndex=3&candidate=canonical"
         },
         {
           "id": "larger-budget",
-          "label": "Larger joint budget",
+          "label": "Larger budget",
           "query": "noiseIndex=1&budgetIndex=5&candidate=canonical"
         },
         {
           "id": "both-domains",
-          "label": "Both domains disclosed",
+          "label": "Both disclosed",
           "query": "noiseIndex=1&budgetIndex=6&candidate=canonical"
         },
         {
           "id": "more-reversals",
-          "label": "More posterior reversals",
+          "label": "More reversals",
           "query": "noiseIndex=2&budgetIndex=6&candidate=canonical"
         }
       ],
@@ -6090,27 +6177,27 @@
       "presets": [
         {
           "id": "primary",
-          "label": "Primary saved card",
+          "label": "Primary card",
           "query": "scenario=primary&site=S11&pair=S01%7CS02&cell=site"
         },
         {
           "id": "wide",
-          "label": "Wider-threshold saved card",
+          "label": "Wider threshold",
           "query": "scenario=wide&site=S11&pair=S11%7CS12&cell=site"
         },
         {
           "id": "crossed",
-          "label": "Crossed site profiles",
+          "label": "Crossed profiles",
           "query": "scenario=wide&site=S11&pair=S11%7CS18&cell=site"
         },
         {
           "id": "withheld",
-          "label": "Composition comparison withheld",
+          "label": "S withheld",
           "query": "scenario=primary&site=S11&pair=S11%7CS18&cell=site"
         },
         {
           "id": "empty-cell",
-          "label": "An empty profile cell",
+          "label": "Empty cell",
           "query": "scenario=wide&site=S11&pair=S11%7CS18&cell=3%2C1"
         }
       ],
@@ -6645,7 +6732,7 @@
         "data/released/krw-lambda-grid.json",
         "data/released/krw-absolute-gender.json"
       ],
-      "credit": "Signed and absolute targets after the postrank theory book, ch. 4 and 20, and the postrank vignette a3; gender gaps after Kline, Rose and Walters (2024), section VIII (gender target). Firms as adapted in postrank 1.1.0 (pr_case_krw).",
+      "credit": "Signed and absolute targets after the postrank theory book, ch. 4 (“Signed and absolute disparities”) and ch. 26 (“Signed race and gender targets”), and the postrank vignette a3; gender gaps after Kline, Rose and Walters (2024), section VIII (gender target). Firms as adapted in postrank 1.1.0 (pr_case_krw).",
       "caption": "All 97 firms; exact released contact-gap pair probabilities and supplied central 90% intervals. The data describe KRW’s historical experiment, not any firm’s current conduct.",
       "presets": [
         {
@@ -6722,7 +6809,7 @@
         {
           "preset": "w50",
           "shows": [
-            ".2455"
+            ".245"
           ]
         },
         {
@@ -6743,7 +6830,7 @@
       "id": "5.8",
       "name": "cde-cuts",
       "part": "5",
-      "title": "Twelve schools: tiers and grades",
+      "title": "School tertiles and minimum-risk grades",
       "idea": "Dragging two cuts through the twelve schools' posterior order shows that at τ .20 the tertiles state three more pairs than the best report with at most three grades but expect far more wrong directions.",
       "status": "built",
       "from": "v1 view · v1 S-01 case-cde, the cuts view and the comparison panel",
@@ -6780,29 +6867,29 @@
           "preset": "tertiles",
           "shows": [
             "48",
-            "1.829",
-            ".082255"
+            "1.83",
+            ".0823"
           ]
         },
         {
           "preset": "archived",
           "shows": [
             "45",
-            ".063774"
+            ".0638"
           ]
         },
         {
           "preset": "one-cut",
           "shows": [
             "36",
-            ".091293"
+            ".0913"
           ]
         },
         {
           "preset": "tau45",
           "shows": [
             "47",
-            ".143197"
+            ".143"
           ]
         }
       ]
@@ -6848,15 +6935,15 @@
           "preset": "matched48",
           "shows": [
             "34,650",
-            "1.829",
-            "1.909"
+            "1.83",
+            "1.91"
           ]
         },
         {
           "preset": "matched46",
           "shows": [
             "46",
-            ".4551",
+            ".455",
             ".500"
           ]
         },
@@ -6864,7 +6951,7 @@
           "preset": "matched30",
           "shows": [
             "30",
-            ".005174",
+            ".00517",
             ".167"
           ]
         },
@@ -6872,7 +6959,7 @@
           "preset": "other-cuts",
           "shows": [
             "21",
-            "1.116"
+            "1.12"
           ]
         }
       ]
@@ -6917,28 +7004,28 @@
         {
           "preset": "pair-fi",
           "shows": [
-            ".9999",
-            ".064087",
+            "above .999",
+            ".0641",
             "175,099"
           ]
         },
         {
           "preset": "reverse",
           "shows": [
-            ".112261"
+            ".112"
           ]
         },
         {
           "preset": "tertiles",
           "shows": [
             "48",
-            ".082255"
+            ".0823"
           ]
         },
         {
           "preset": "tau45",
           "shows": [
-            ".143197"
+            ".143"
           ]
         }
       ]
@@ -6984,14 +7071,16 @@
           "preset": "tau20",
           "shows": [
             "45",
-            "3, 6, 3"
+            "3, 6, 3",
+            ".0638"
           ]
         },
         {
           "preset": "tau45",
           "shows": [
             "47",
-            "4, 5, 3"
+            "4, 5, 3",
+            ".143"
           ]
         },
         {
@@ -7006,7 +7095,8 @@
           "preset": "endpoint",
           "shows": [
             "13",
-            "47"
+            "47",
+            ".158"
           ]
         }
       ]
@@ -7090,13 +7180,13 @@
         {
           "preset": "income-report",
           "shows": [
-            ".1906"
+            ".191"
           ]
         },
         {
           "preset": "incarceration-report",
           "shows": [
-            ".1998"
+            ".200"
           ]
         }
       ]
@@ -7154,19 +7244,19 @@
           "shows": [
             "8 units",
             "17",
-            ".1455"
+            ".146"
           ]
         },
         {
           "preset": "league8-flat",
           "shows": [
-            ".1368"
+            ".137"
           ]
         },
         {
           "preset": "league8-normal",
           "shows": [
-            ".1455"
+            ".146"
           ]
         },
         {
@@ -7180,7 +7270,7 @@
           "preset": "league30-posterior",
           "shows": [
             "251",
-            ".1581"
+            ".158"
           ]
         },
         {

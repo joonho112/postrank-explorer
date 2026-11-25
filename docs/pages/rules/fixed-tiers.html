@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,13 +72,38 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/fixed-tiers.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fixed quantile tiers – postrank Explorer">
+<meta property="og:description" content="Posterior evaluation of directions stated by quantile groups of the estimates.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/fixed-tiers.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/fixed-tiers.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -545,7 +570,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Fixed quantile tiers</h1>
-<p class="subtitle lead">3.1 · a simulated league, after the postrank theory book, ch.&nbsp;9, 16 and 17</p>
+<p class="subtitle lead">3.1 · a simulated league, after the postrank theory book, ch.&nbsp;9, 22 and 23</p>
 </div>
 
 <div>
@@ -567,7 +592,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>A quantile-tier rule sorts units by their estimates and divides them into groups of nearly equal size. It places every unit in a higher tier above every unit in a lower tier and leaves pairs in the same tier unranked. The rule uses the estimates to make these assignments. We use a posterior distribution to assess how often the directions would be wrong and how much the report would cost if withholding also carries a penalty.</p>
+<p>A quantile-tier rule cuts estimate order into nearly equal groups, ranking higher tiers above lower tiers and withholding same-tier pairs. Posterior probabilities evaluate its expected wrong directions and reporting risk.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -577,24 +602,21 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Three tiers.</strong> Three groups of 10 state 300 of 435 pairs, a share of .690. Under the teaching posterior they expect 51.86 wrong directions, .173 per stated direction, and risk .1813 at τ .20. The marks identify all stated pairs with error above τ, including comparisons across several boundaries.</li>
-<li><strong>Ten tiers, marks on.</strong> Disclosure rises to 405 pairs (.931), but expected wrong directions rise to 89.40 and E/N to .221. There are 197 marked pairs; the largest stated error is .802. At this τ, the tier rule has risk .2193, compared with .2000 if it withholds every direction. Here τ sets the cost of withholding.</li>
-<li><strong>Four tiers.</strong> Quantile positions produce sizes 8, 7, 8, 7 and state 337 pairs (.775). The grouped formula counts within-tier withheld pairs. The equal-size closed form disappears because four does not divide thirty.</li>
-<li><strong>Two tiers.</strong> Groups of 15 state 225 pairs (.517). The triangles in the pair map mark comparisons within a tier. Use the arrow keys to read individual cells.</li>
-<li><strong>Thirty tiers.</strong> Every pair is stated. The tiers follow the estimates, so their 102.2 expected wrong directions differ from the 94.48 of the posterior-mean ranking in <a href="../../pages/uncertainty/ranking-claims.html">Ranking states many claims</a>. With G set to one, E/N becomes “NA: no disclosure,” while risk is .2000.</li>
+<li><strong>Three tiers.</strong> Three groups of 10 state 300 of 435 pairs (.690). Under the teaching posterior, expected wrong directions are 51.9 (.173 per stated pair) and risk is .181 at τ = .20.</li>
+<li><strong>Ten tiers, marks on.</strong> Disclosure rises to 405 pairs (.931), while expected wrong directions rise to 89.4 (E/N = .221) and risk to .219; 197 stated pairs have error above τ (largest .802).</li>
+<li><strong>Four tiers.</strong> Quantile positions give sizes 8, 7, 8, 7 and state 337 pairs (.775); <strong>Method and formulas</strong> shows the grouped binomial count without the equal-size shortcut.</li>
+<li><strong>Two tiers.</strong> Two groups of 15 state 225 pairs (.517), leaving two within-tier triangles along the diagonal.</li>
+<li><strong>Thirty tiers.</strong> Stating all 435 pairs in estimate order expects 102 wrong directions; with a single tier, E/N becomes “NA: no disclosure” and risk is .200.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The example uses one set of estimates for thirty simulated units and independent normal posteriors based on a prior with mean 0 and SD .15. A change in τ changes the reporting loss and which errors the app marks. The estimates still determine tier membership. If an exact tie spans two tiers, postrank merges those tiers to keep the tied units together.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Simulation and tie-handling notes
+</summary>
+<p>The example uses one set of estimates for thirty simulated units and independent normal posteriors based on a prior with mean 0 and SD .15. Changing τ alters the reporting loss and which stated pairs exceed τ without moving tier membership. In <a href="../../pages/uncertainty/ranking-claims.html">Ranking states many claims</a>, ranking by posterior means rather than raw estimates changes the expected wrong count. If an exact tie spans two tiers, postrank merges those tiers to keep tied units together.</p>
+</details>
 <p>Standalone: <a href="../../embed/fixed-tiers.html">embed/fixed-tiers.html</a>, for example <code>?preset=ten-tiers&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a> and <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a>, where the report is optimized at a stated price.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-fair-comparator-framework">Comparator definitions and scope</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/09-targets-actions-laws.html#prp-grade-representation-counts">Representations and disclosed-pair counts</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier">Comparing reports at matched disclosure</a>.</p>
 
 
 </section>
@@ -1067,7 +1089,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

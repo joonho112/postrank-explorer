@@ -4,11 +4,7 @@ subtitle: "3.9 · after Kline, Rose and Walters (2024), Figures 2C and 6"
 description: "Evaluation of fixed posterior-mean tiers on KRW's discordance and informativeness axes."
 ---
 
-Quartiles and deciles split firms into nearly equal groups by posterior mean, keeping exact score ties together.
-We compare these reports with archived cards using Kline, Rose and Walters's measures of discordance and
-informativeness. Both calculations use the released pair probabilities. In each example below, the selected
-archived card makes fewer expected wrong directions per possible pair and provides more information than the
-fixed tiers. The comparison evaluates reports that have already been chosen.
+Quartiles and deciles split firms into nearly equal posterior-mean groups, keeping exact score ties together. Compare these fixed tiers with KRW's archived cards on discordance and informativeness.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -20,21 +16,19 @@ fixed tiers. The comparison evaluates reports that have already been chosen.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Race quartiles, card λ .60.** The quartile point has DR .1696 and I .4185. The ringed card has lower DR,
-  .1678, and higher I, .4336. The size patterns show how the card's grade boundaries differ from the nearly equal quartiles.
-- **Race deciles, card λ .82.** Deciles move to DR .2271 and I .4550, while the selected card reaches .2243
-  and .4589. The deciles disclose more pairs than the quartiles. The selected card still has lower DR and higher I.
-- **Gender quartiles, card λ .64.** Under the signed male-name contact-gap target, quartiles have DR .1978
-  and I .3621; the card gives .1908 and .3875. These coordinates concern a different target from the race comparisons.
-- **Gender deciles, card λ .80.** Deciles give DR .2525 and I .4042; the card gives .2373 and .4078.
-  The comparison depends on the selected λ. The selected card need not improve both coordinates at every grid setting.
+- **Race quartiles, card λ .60.** Quartiles sit at DR .170 and I .419; the ringed card reaches lower DR (.168) and higher I (.434).
+- **Race deciles, card λ .82.** Deciles move to DR .227 and I .455, while the selected card reaches .224 and .459.
+- **Gender quartiles, card λ .64.** Under the signed male-name contact-gap target, quartiles give DR .198 and I .362; the card gives .191 and .388.
+- **Gender deciles, card λ .80.** Deciles give DR .252 and I .404; the card gives .237 and .408. Not every λ improves both axes.
+
+<details>
+<summary>Reporting axes and archived-card provenance</summary>
+
+KRW discuss deciles and quartiles in §IV.B (Figure 2C) and reporting possibilities in §V.E (Figure 6). The diamonds show the fixed tiers, while the curve joins cards that KRW selected using their archived probabilities. Here each card's coordinates are recomputed under the released signed-target probabilities without rerunning that search. KRW write τ̄ for informativeness.
+
+</details>
 
 ::: {.callout-note appearance="simple"}
-KRW discuss deciles and quartiles in §IV.B and Figure 2C, and reporting possibilities in §V.E and Figure 6.
-The diamonds show the fixed tiers. The curve joins cards that KRW selected using their archived probabilities.
-We recompute each card's coordinates with the released probabilities without rerunning that search. KRW use τ̄
-for informativeness. For gender, the target is the signed contact gap.
-
 Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC,
 noncommercial use only; as adapted in postrank 1.1.0 (`pr_case_krw`), changes noted; no endorsement is implied.
 Provided as is, without warranty. **The data describe KRW's correspondence experiment, not any firm's current conduct.**

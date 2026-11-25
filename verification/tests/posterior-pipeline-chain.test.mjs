@@ -22,8 +22,8 @@ test("1.7: the result-first order, the chain as the primary graphic, its four he
   const m = await mountCase({ module: APP });
   try {
     const order = [...m.root.children].map((n) => n.getAttribute("data-prx-part"));
-    assert.deepEqual(order, ["controls", "readout", "chart", "disclosures", "caption"]);
-    assert.equal(m.root.getAttribute("data-prx-layout"), "result-first");
+    assert.deepEqual(order, ["toolbar", "readout", "chart", "scope", "disclosures", "caption"]);
+    assert.equal(m.root.getAttribute("data-prx-frame"), "v2");
     const flow = m.root.querySelector(".prx-pp-flow");
     assert.ok(flow.hasAttribute("data-prx-primary"), "the chain's row of stages is the primary graphic");
     const stages = [...flow.querySelectorAll(":scope > .prx-pp-stage")];

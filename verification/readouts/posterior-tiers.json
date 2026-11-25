@@ -117,6 +117,9 @@
         {
           "select": "[data-prx-readout=\"ladder-pm-tiers-risk\"]",
           "about": "pm-tiers risk on the risk ladder",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "league.default.prior15.pmtiers3.tau20.risk",
           "value": 0.17313091636529
@@ -131,6 +134,9 @@
         {
           "select": "[data-prx-readout=\"ladder-pm-cuts-risk\"]",
           "about": "pm-cuts risk on the risk ladder",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "league.default.prior15.pmcuts3.tau20.risk",
           "value": 0.15806797310378426
@@ -138,6 +144,9 @@
         {
           "select": "[data-prx-readout=\"ladder-er-cuts-risk\"]",
           "about": "er-cuts risk on the risk ladder",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "league.default.prior15.exprank3.tau20.risk",
           "value": 0.15806797310378426
@@ -306,7 +315,7 @@
           "select": "[data-prx-readout=\"ladder-pm-cuts-risk\"]",
           "about": "pm-cuts risk on the risk ladder",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -320,7 +329,7 @@
           "select": "[data-prx-readout=\"ladder-optimum-risk\"]",
           "about": "optimum risk on the risk ladder",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -347,6 +356,9 @@
         {
           "select": "[data-prx-readout=\"ladder-pm-tiers-risk\"]",
           "about": "pm-tiers risk on the risk ladder",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "league8.default.prior15.pmtiers3.tau20.risk",
           "value": 0.16122376619367731
@@ -442,7 +454,7 @@
           "select": "[data-prx-readout=\"ladder-optimum-risk\"]",
           "about": "optimum risk on the risk ladder",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "oracle",
           "ref": {
@@ -524,7 +536,7 @@
           "select": "[data-prx-readout=\"ladder-er-cuts-risk\"]",
           "about": "er-cuts risk on the risk ladder",
           "format": {
-            "fn": "formatRisk"
+            "fn": "formatReadoutRisk"
           },
           "source": "golden",
           "ref": {
@@ -537,6 +549,9 @@
         {
           "select": "[data-prx-readout=\"ladder-pm-cuts-risk\"]",
           "about": "pm-cuts risk on the risk ladder",
+          "format": {
+            "fn": "formatReadoutRisk"
+          },
           "source": "registry",
           "ref": "thirty.poverty.pmorder.cap4.tau25.risk",
           "value": 0.16029380995624715

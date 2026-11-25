@@ -1,14 +1,10 @@
 ---
 title: "Disclosure determined by tier sizes"
-subtitle: "3.2 · after the postrank theory book, ch. 9, 16 and 17"
+subtitle: "3.2 · after the postrank theory book, ch. 9, 22 and 23"
 description: "How many pairwise directions are stated for each pattern of tier sizes."
 ---
 
-A report with three balanced tiers states more pairwise directions than a report with two small tiers and one large
-tier. In both reports, units in different tiers are ranked and units in the same tier are left unranked. The
-number of pairs in each category follows from the tier sizes. The distribution counts how many ordered size
-patterns yield each disclosure count. It holds the number of units and tiers fixed and gives each valid size
-pattern equal weight.
+Tier sizes alone determine how many pairs are ranked across tiers and how many stay unranked within tiers. Holding unit and tier counts fixed, the distribution weights every nonempty ordered size pattern equally.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -21,24 +17,22 @@ pattern equal weight.
 
 ## Numerical illustrations {#what-to-try}
 
-- **Balanced thirty.** Sizes 10, 10, 10 state 300 of 435 pairs, a share of .690. Each withheld triangle contributes
-  its within-tier count to the grouped formula. Balanced sizes reach the maximum for this number of tiers.
-- **Two tiny tiers.** Sizes 1, 1, 28 state only 57 pairs, although they use the same number of tiers. The balanced
-  reference still states 300. Moving the smallest tiers to another position gives the same disclosure but another
-  ordered size pattern.
-- **Four tiers.** Sizes 8, 7, 8, 7 state 337 pairs (.775). These tiers reach the largest possible disclosure when four tiers share thirty units.
-- **Balanced twelve.** Three groups of four state 48 of 66 pairs. Enter another size vector or move the individual controls to compare groups with the same total.
-- **Unbalanced twelve.** Sizes 5, 4, 3 state 47 pairs, below the balanced maximum of 48. A zero size or incorrect total is invalid; the result remains unavailable until the vector is feasible.
+- **Balanced thirty.** Sizes 10, 10, 10 state 300 of 435 pairs (.690), attaining the maximum disclosure for three tiers.
+- **Two tiny tiers.** Sizes 1, 1, 28 state only 57 pairs against the balanced maximum of 300; reordering those sizes yields another pattern with the same disclosure.
+- **Four tiers.** Sizes 8, 7, 8, 7 state 337 pairs (.775), the maximum for four tiers of thirty units.
+- **Balanced twelve.** Three groups of four state 48 of 66 pairs; open **Settings** to edit the size vector or individual tiers.
+- **Unbalanced twelve.** Sizes 5, 4, 3 state 47 pairs, below the balanced maximum of 48.
 
-::: {.callout-note appearance="simple"}
-The distribution includes every ordered size pattern with at least one unit per tier. A pattern is counted once
-regardless of how many ways the units could be assigned to it. Quantile rules usually produce nearly balanced
-sizes, although postrank can merge neighboring tiers to keep equal estimates together. The formula gives the
-exact number of comparisons for any valid sizes. To assess their accuracy, we would also need the assignments
-and the probabilities for the pairs they disclose.
-:::
+<details>
+<summary>Composition weights and tie notes</summary>
+
+The distribution includes every ordered size pattern with at least one unit per tier. Each pattern is counted once regardless of how many ways units could be assigned to it. Quantile rules usually produce nearly balanced sizes, although postrank can merge neighboring tiers to keep equal estimates together. Assessing accuracy requires unit assignments and pairwise posterior error probabilities in addition to tier sizes.
+
+</details>
 
 Standalone: [embed/tier-sizes.html](../../embed/tier-sizes.html), for example `?preset=tiny&theme=dark`.
 
 Related applications: [Fixed quantile tiers](fixed-tiers.qmd), with the full league, pair map and expected wrong
- directions; [The number of ordered grade reports](../grades/how-many-reports.qmd), which counts assignments to ordered grades.
+directions; [The number of ordered grade reports](../grades/how-many-reports.qmd), which counts assignments to ordered grades.
+
+Theory book · [Representations and disclosed-pair counts](https://joonho112.github.io/postrank-theory-book/chapters/09-targets-actions-laws.html#prp-grade-representation-counts) · [Comparing reports at matched disclosure](https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier) · [Comparator definitions and scope](https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-fair-comparator-framework).

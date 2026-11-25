@@ -47,8 +47,9 @@ export function inspectFictionalSiteProfiles(state={}){
  return {...base,selectedSite,selectedPair,selectedCell,cellMode:cell==='site'?'site':'manual'};
 }
 const CSS=`${VISUAL_CSS}
-.fsp select{min-height:44px}.fsp .fsp-map-point{cursor:pointer;outline:none}.fsp .fsp-map-point:focus .fsp-map-hit,.fsp .fsp-map-cell:focus{stroke:var(--prx-plot-focus);stroke-width:3}.fsp .fsp-map-cell{cursor:pointer;outline:none}.fsp .fsp-map-cell:focus-visible{outline:3px solid var(--prx-plot-focus);outline-offset:2px}.fsp .fsp-map-note{padding:.35rem .85rem .6rem;font-size:.88rem;color:var(--prx-plot-fg);line-height:1.4}
-.fsp{min-width:0}.fsp .fsp-layout{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,25rem),1fr));gap:1rem;min-width:0}.fsp .fsp-section{min-width:0;margin:.8rem 0}.fsp .fsp-note{font-size:.88rem;line-height:1.45}.fsp .fsp-scroll{overflow-x:auto;max-width:100%;min-width:0}
+.fsp select{min-height:44px}.fsp .mdv-stage .mdv-figure figcaption,.fsp .fsp-map-note{font-size:max(14px,.88rem)}.fsp .fsp-map-point{cursor:pointer;outline:none}.fsp .fsp-map-point:focus .fsp-map-hit,.fsp .fsp-map-cell:focus{stroke:var(--prx-plot-focus);stroke-width:3}.fsp .fsp-map-cell{cursor:pointer;outline:none}.fsp .fsp-map-cell:focus-visible{outline:3px solid var(--prx-plot-focus);outline-offset:2px}.fsp .fsp-map-note{padding:.35rem .85rem .6rem;color:var(--prx-plot-fg);line-height:1.4}
+.fsp [data-mdv-scope]{margin:.25rem 0 .55rem;font-size:.82rem;line-height:1.35;color:var(--prx-fg-muted)}.fsp [data-mdv-scope] a{display:inline-flex;align-items:center;min-height:24px}
+.fsp{min-width:0}.fsp .fsp-layout{display:grid;gap:.5rem;min-width:0}.fsp .fsp-section{min-width:0;margin:.8rem 0}.fsp .fsp-note{font-size:.88rem;line-height:1.45}.fsp .fsp-scroll{overflow-x:auto;max-width:100%;min-width:0}
 .fsp .fsp-table{width:max-content;min-width:100%;max-width:none;border-collapse:collapse;font-size:.88rem}.fsp .fsp-table th,.fsp .fsp-table td{padding:.4rem;text-align:left;white-space:nowrap;border-bottom:1px solid var(--prx-border)}
 .fsp tr[data-fsp-selected-site=true]{outline:2px solid var(--prx-accent);outline-offset:-2px}.fsp tr[data-fsp-cell-member=true]{background:var(--prx-plot-bg)}.fsp .fsp-source{overflow-wrap:anywhere}.fsp .fsp-status{font-weight:600}.fsp [data-prx-readout=site-id]{font-weight:600}
 `;
@@ -70,7 +71,7 @@ function drawProfileMap(ctx,visual,result,state){
  const height=top+rows*rowHeight+28;
  const {svg,figure,width,colors}=scene(ctx,visual.stage,{height,label:'Saved fictional site profiles: composition grades in columns, community grades in rows, one point per original site and directions for the inspected pair.'});
  svg.setAttribute('role','group');svg.setAttribute('data-fsp-map-columns',String(columns));svg.setAttribute('data-fsp-map-rows',String(rows));
- figure.insertBefore(ctx.h('figcaption',{},'S site composition · C community. Each dot is a site. Square and diamond mark the inspected pair.'),svg);
+ figure.insertBefore(ctx.h('figcaption',{},'S site composition · C community. Each dot is a site; square and diamond mark the pair. Arrow keys step cells or sites.'),svg);
  const selected=result.selectedPair,ids=[selected.unitA,selected.unitB];
  svg.append(svgText(ctx,width/2,19,'Inspected pair',{'font-size':15,'text-anchor':'middle','font-weight':600}));
  const pairLeft=Math.max(90,width*.32),pairRight=width-47;
@@ -90,21 +91,27 @@ function drawProfileMap(ctx,visual,result,state){
  svg.append(svgText(ctx,(left+width-right)/2,111,'S grade →',{'font-size':15,'text-anchor':'middle','font-weight':600}),svgText(ctx,4,top+9,'C ↓',{'font-size':15,'font-weight':600}));
  for(let c=1;c<=columns;c++)svg.append(svgCount(ctx,left+(c-.5)*cellWidth,130,c,{'font-size':15,'text-anchor':'middle'}));
  for(let r=1;r<=rows;r++)svg.append(svgCount(ctx,25,top+(r-.5)*rowHeight+5,r,{'font-size':15,'text-anchor':'middle'}));
- const pointGroups=[];
+ // Cell backgrounds receive pointer clicks. Their focusable outlines can then follow
+ // the displayed rows in the Tab sequence while site points retain original-ID order.
+ const siteRow=result.selectedSite.values[1],cellOutlines=[],pointGroups=[];
  for(const cell of result.cells){
   const x=left+(cell.columnGrade-1)*cellWidth,y=top+(cell.rowGrade-1)*rowHeight,key=`${cell.rowGrade},${cell.columnGrade}`,isSelected=result.selectedCell?.rowGrade===cell.rowGrade&&result.selectedCell?.columnGrade===cell.columnGrade;
-  const rect=svgNode(ctx,'rect',{class:'fsp-map-cell',x:x+2,y:y+2,width:cellWidth-4,height:rowHeight-4,rx:5,fill:colors.plotBg,stroke:isSelected?colors.plotFg:colors.plotGrid,'stroke-width':isSelected?2.5:1,'stroke-dasharray':isSelected?'4 3':undefined,role:'button',tabindex:isSelected||(!result.selectedCell&&key==='1,1')?0:-1,'aria-label':`C grade ${cell.rowGrade}, S grade ${cell.columnGrade}; ${cell.count} sites.${isSelected?' Inspected cell.':''}`,'aria-pressed':String(isSelected),'data-mdv-role':'profile-cell','data-mdv-cell':key,'data-mdv-count':String(cell.count),'data-prx-focus-key':`profile-map-cell:${key}`});
-  const choose=()=>ctx.set({cell:key});rect.addEventListener('click',choose);rect.addEventListener('keydown',event=>{
+  const bounds={x:x+2,y:y+2,width:cellWidth-4,height:rowHeight-4,rx:5};
+  const choose=()=>ctx.set({cell:key});
+  const background=svgNode(ctx,'rect',{...bounds,fill:colors.plotBg,'aria-hidden':'true',style:'cursor:pointer'});
+  background.addEventListener('click',choose);svg.append(background);
+  const rect=svgNode(ctx,'rect',{class:'fsp-map-cell',...bounds,fill:'none','pointer-events':'stroke',stroke:isSelected?colors.plotFg:colors.plotGrid,'stroke-width':isSelected?2.5:1,'stroke-dasharray':isSelected?'4 3':undefined,role:'button',tabindex:isSelected||(!result.selectedCell&&key==='1,1')?0:-1,'aria-label':`C grade ${cell.rowGrade}, S grade ${cell.columnGrade}; ${cell.count} sites.${isSelected?' Inspected cell.':''}`,'aria-pressed':String(isSelected),'data-mdv-role':'profile-cell','data-mdv-cell':key,'data-mdv-count':String(cell.count),'data-prx-focus-key':`profile-map-cell:${key}`});
+  rect.addEventListener('click',choose);rect.addEventListener('keydown',event=>{
    if(event.key==='Enter'||event.key===' '){event.preventDefault();choose();return;}
    const shift={ArrowRight:[0,1],ArrowLeft:[0,-1],ArrowDown:[1,0],ArrowUp:[-1,0]}[event.key];if(!shift)return;event.preventDefault();
    const rr=(cell.rowGrade-1+shift[0]+rows)%rows+1,cc=(cell.columnGrade-1+shift[1]+columns)%columns+1,next=`${rr},${cc}`;ctx.set({cell:next});visual.stage.querySelector(`[data-mdv-cell="${next}"]`)?.focus?.();
-  });svg.append(rect);
+  });cellOutlines.push({row:cell.rowGrade,rect});
   if(cell.count===0)svg.append(svgText(ctx,x+cellWidth/2,y+rowHeight/2+5,'Empty',{'font-size':15,'text-anchor':'middle','data-fsp-empty-cell':key,'pointer-events':'none'}));
   const spacing=Math.min(20,(cellWidth-18)/packingColumns),used=Math.min(packingColumns,cell.members.length),start=x+(cellWidth-(Math.max(1,used)-1)*spacing)/2;
   for(let i=0;i<cell.members.length;i++){
    const id=cell.members[i],px=start+(i%packingColumns)*spacing,py=y+20+Math.floor(i/packingColumns)*20,active=id===state.site,pairIndex=ids.indexOf(id),index=result.grades.unitIds.indexOf(id),grades=result.grades.values[index];
    const group=svgNode(ctx,'g',{class:'fsp-map-point',role:'button',tabindex:active?0:-1,'aria-label':`${id}; S grade ${grades[0]}, C grade ${grades[1]}.${active?' Highlighted site.':''}${pairIndex>=0?' Member of inspected pair.':''}`,'aria-pressed':String(active),'data-mdv-role':'site','data-mdv-unit':id,'data-mdv-s':String(grades[0]),'data-mdv-c':String(grades[1]),'data-mdv-site-selected':String(active),'data-mdv-pair-member':String(pairIndex>=0),'data-prx-focus-key':`profile-map-site:${id}`});
-   group.append(svgNode(ctx,'rect',{class:'fsp-map-hit','data-prx-focus-ring':'',x:px-9,y:py-9,width:18,height:18,rx:3,fill:'transparent',stroke:'transparent'}));
+   group.append(svgNode(ctx,'rect',{class:'fsp-map-hit','data-prx-focus-ring':'',x:px-12.5,y:py-12.5,width:25,height:25,rx:3,fill:'transparent',stroke:'transparent'}));
    if(active)group.append(svgNode(ctx,'circle',{cx:px,cy:py,r:8.3,fill:'none',stroke:colors.plotFg,'stroke-width':1.5,'data-fsp-highlight':id}));
    group.append(svgNode(ctx,'circle',{cx:px,cy:py,r:5.1,fill:active?colors.accent:colors.plotFg,'data-fsp-site-dot':id}));
    if(pairIndex===0)group.append(svgNode(ctx,'rect',{x:px-6.5,y:py-6.5,width:13,height:13,fill:'none',stroke:colors.crit[0],'stroke-width':1.7}));
@@ -117,9 +124,11 @@ function drawProfileMap(ctx,visual,result,state){
    });pointGroups.push({id,group});
   }
  }
+ for(const {row,rect} of cellOutlines)if(row<=siteRow)svg.append(rect);
  for(const {group}of pointGroups.sort((a,b)=>IDS.indexOf(a.id)-IDS.indexOf(b.id)))svg.append(group);
+ for(const {row,rect} of cellOutlines)if(row>siteRow)svg.append(rect);
  svg.append(svgText(ctx,width/2,height-6,'First grade = higher domain priority',{'font-size':15,'text-anchor':'middle'}));
- const inspector=ctx.h('div',{class:'fsp-map-note','data-fsp-map-inspector':'','role':'group','aria-label':'Highlighted site and inspected cell'},'Highlighted site ',named(ctx,result.selectedSite.unitId),' · S ',count(ctx,result.selectedSite.values[0]),' · C ',count(ctx,result.selectedSite.values[1]),'. ',result.cellMode==='manual'?'Cell inspected separately. ':'Cell follows highlighted site. ',result.selectedCell?ctx.h('span',{},count(ctx,result.selectedCell.count),' in cell.'):'Cell absent in this card.');figure.append(inspector);
+ const inspector=ctx.h('div',{class:'fsp-map-note','data-fsp-map-inspector':'','role':'group','aria-label':'Highlighted site and inspected cell'},'Highlighted site ',named(ctx,result.selectedSite.unitId),' · S ',count(ctx,result.selectedSite.values[0]),' · C ',count(ctx,result.selectedSite.values[1]),'. ',result.cellMode==='manual'?'Cell inspected separately. ':'Cell follows highlighted site. ',result.selectedCell?ctx.h('span',{},count(ctx,result.selectedCell.count),' in cell.'):'Cell absent in this card.');figure.append(inspector,ctx.h('p',{class:'fsp-map-note'},'The saved grades describe composition and community separately. Distance between cells has no numerical interpretation.'));
 }
 
 export function mountWidget(el,spec={}){
@@ -137,6 +146,7 @@ export function mountWidget(el,spec={}){
   const grid=section(ctx,'Profile cells and highlighted site'),pair=section(ctx,'A pair of sites'),sites=section(ctx,'Every site in its original order'),stored=section(ctx,'Stored selection and diagnostic summaries'),sourceDetails=section(ctx,'Source, target identities and conditioning');
   ctx.charts.append(ctx.h('div',{class:'fsp-layout'},grid,pair),sites,stored,sourceDetails);
   const visual=createVisualFrame(ctx,{mainControl:scenario.root,firstPreset:'crossed'});
+  ctx.listen(ctx.root.querySelector('.mdv-toolbar'),'focusin',event=>{const t=/** @type {HTMLElement|null} */(event.target);if(t?.matches?.('button.prx-seg'))t.scrollIntoView?.({block:'nearest',inline:'nearest',behavior:'instant'});});
   return {render(state){
    visual.sync();
    const r=inspectFictionalSiteProfiles(state),{payload,counts,derived,selectedSite,selectedPair,selectedCell}=r;
@@ -165,7 +175,7 @@ export function mountWidget(el,spec={}){
    sourceDetails.replaceChildren(ctx.panelTitle('Source, target identities and conditioning'),ctx.h('p',{},'These estimates summarize the states used in the original analyses. Feasibility under the intended posterior and independent validation would require separate evidence.'),details,ctx.h('p',{class:'fsp-source'},named(ctx,attribution.copyright),'. ',attribution.title,'. Content: ',ctx.h('a',{href:attribution.license_url,target:'_blank',rel:'noopener','data-prx-label':'license'},attribution.content_license),'. ',ctx.h('a',{href:attribution.source_url,target:'_blank',rel:'noopener'},'Original tutorial and source'),'. ',attribution.original_code_license,' ',attribution.changes));
    drawProfileMap(ctx,visual,r,state);
    ctx.readout.set([named(ctx,selectedPair.unitA),' and ',named(ctx,selectedPair.unitB),' · ',PAIR_DESCRIPTIONS[selectedPair.classification],'.']);
-   visual.setScope(['Saved fictional report · ',named(ctx,'JoonHo Lee'),' · ',ctx.h('a',{href:payload.attribution.license_url,target:'_blank',rel:'noopener'},'CC BY'),'. No refit or posterior certificate. No overall site order; packing within cells has no distance meaning.']);
+   visual.setScope(['Saved fictional report · ',named(ctx,'JoonHo Lee'),' · ',ctx.h('a',{href:payload.attribution.license_url,target:'_blank',rel:'noopener'},'CC BY'),' · no refit or posterior certificate · no overall site order or cell distance.']);
   }};
  }});
 }

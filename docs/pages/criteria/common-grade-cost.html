@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/common-grade-cost.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Criterion-specific excess risk of a common report – postrank Explorer">
+<meta property="og:description" content="Increase in each criterion’s risk relative to its own optimum in the same report family.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/common-grade-cost.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/common-grade-cost.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>A criterion may have higher risk under a common report than it would have under grades chosen for that criterion alone. We call the difference the commonality cost. Each connector joins the separate minimum to the risk of the common report for that criterion. Both evaluations use the same set of possible reports and withholding cost. Equal error weights can still give unequal costs. The larger examples use optimization bounds saved with the original reports.</p>
+<p>Under a common report, a criterion can carry higher risk than under grades chosen for that criterion alone. The gap <span class="math inline"><math><msub><mrow><mi mathvariant="normal">Δ</mi><mspace></mspace></mrow><mi>k</mi></msub></math></span> is its commonality cost within the same report family and withholding price.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -637,23 +662,19 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Equal weights.</strong> The excess risks are .0490 on score A and .0145 on score B. Each connector joins the criterion-specific optimum to its common-report evaluation. The comparison table keeps each criterion’s risk separate from its wrong share.</li>
-<li><strong>Score A only.</strong> The common report is score A’s own best, so score A has zero excess risk and score B has excess risk .1481. Score B still has its own comparison; a zero error weight does not remove that criterion from the display.</li>
-<li><strong>w .70.</strong> The common report becomes {A} &gt; {B, C, D} &gt; {E, F}: the excess risks are .0253 on score A and .0563 on score B. Moving a weight changes the objective used to select the common report.</li>
-<li><strong>Score B only.</strong> Two common reports tie. Score A has excess risk .1580 under one and .1697 under the other; score B has zero excess risk. Both common reports and both of score B’s own optima are shown, with their equal-risk tolerance.</li>
-<li><strong>Thirty sites, higher price.</strong> The archived common report states 276 pairs. Snap’s cost is .4455, and its expected wrong share among those stated directions is .784. The cost interval comes from optimization bounds.</li>
-<li><strong>Thirty sites, lower price.</strong> The common report withholds every direction, yet each criterion could prefer a report of its own. Costs are .0895, .0749 and .1022 for poverty, frl and snap, respectively.</li>
+<li><strong>Equal weights.</strong> Excess risks are .0490 on score A and .0145 on score B, joining each criterion’s own minimum to its common-report risk.</li>
+<li><strong>Score A only.</strong> The common report matches score A’s own optimum: score A gives up 0 and score B gives up .148.</li>
+<li><strong>w .70.</strong> The common report becomes {A} &gt; {B, C, D} &gt; {E, F}, with excess risks .0253 on score A and .0563 on score B.</li>
+<li><strong>Score B only.</strong> Two common reports tie: score A pays .158 under one and .170 under the other, while score B pays 0.</li>
+<li><strong>Thirty sites, higher price.</strong> The archived common report states 276 pairs; snap’s cost is .446 and its wrong share among stated pairs is .784.</li>
+<li><strong>Thirty sites, lower price.</strong> The common report withholds every pair, yet separate optima give costs .0895, .0749, and .102 for poverty, frl, and snap.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The package writes this risk difference as <span class="math inline"><math><msub><mrow><mi mathvariant="normal">Δ</mi><mspace></mspace></mrow><mi>k</mi></msub></math></span>. It measures the cost of a common report under the chosen loss. Judging the weights or the consequences of using the report requires additional information. The thirty-site results come from archived analyses of posterior draws. Their intervals are bounds on the minimum from the search. We show the separate grade vectors where the archive includes them.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Scope and archived bounds
+</summary>
+<p>The package writes this risk difference as <span class="math inline"><math><msub><mrow><mi mathvariant="normal">Δ</mi><mspace></mspace></mrow><mi>k</mi></msub></math></span>. It measures the cost of a common report under the chosen loss; judging the weights or downstream consequences requires additional information. The thirty-site results come from archived posterior-draw analyses whose intervals bound the solver search minimum.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1146,7 +1167,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

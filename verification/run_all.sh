@@ -32,7 +32,7 @@ step "internal links"                             node verification/check_links.
 step "page prose (legacy250–450; P visible<=160)"               node verification/check_pages.mjs
 step "browser: pages and embeds"                  node verification/check_browser.mjs
 # Real Chrome files share the host CPU; staged CPU×4 assertions need isolated files, as the app timing gate does.
-step "browser interaction regressions"             node --test --test-concurrency=1 "verification/browser-tests/*.test.mjs"
+step "browser interaction regressions"             node --test --test-concurrency=1 --test-force-exit "verification/browser-tests/*.test.mjs"
 step "What to try numbers"                        node verification/check_try.mjs
 step "required data notices (page and standalone)"  node verification/check_notices.mjs
 step "solver bundle in Chrome"                     node verification/check_solver.mjs

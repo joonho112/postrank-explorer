@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,39 +107,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
 
-  <script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
     }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
+  }, {once: true});
+})();
 </script>
+
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/uncertainty/majority-wins.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Majority comparisons and expected ranks – postrank Explorer">
+<meta property="og:description" content="Relation between majority-win counts, posterior-mean rankings and expected ranks.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/uncertainty/majority-wins.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/majority-wins.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -628,7 +627,7 @@ window.Quarto = {
 </header>
 
 
-<p>The majority-win count <span class="math inline"><math><mrow><msub><mi>H</mi><mi>i</mi></msub><mo>=</mo><mi>#</mi><mrow><mo fence="true" form="prefix" stretchy="false">{</mo><mi>j</mi><mo lspace="0.2222em" rspace="0.2222em">:</mo><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>θ</mi><mi>i</mi></msub><mo>&gt;</mo><msub><mi>θ</mi><mi>j</mi></msub><mo lspace="0.22em" rspace="0.22em" stretchy="false">|</mo><mi>Y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mo>&gt;</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo fence="true" form="postfix" stretchy="false">}</mo></mrow></mrow></math></span> counts the units that <span class="math inline"><math><mi>i</mi></math></span> is more likely to exceed. Expected rank uses the full probabilities, <span class="math inline"><math><mrow><msubsup><mover><mi>R</mi><mo stretchy="false" class="chr-med wbk-med-acc" style="math-depth:0;">‾</mo></mover><mi>i</mi><mo stretchy="false" lspace="0em" rspace="0em">↓</mo></msubsup><mo>=</mo><mn>1</mn><mo>+</mo><msub><mo movablelimits="false">∑</mo><mrow><mi>j</mi><mo>≠</mo><mi>i</mi></mrow></msub><mrow><mi>Pr</mi><mo>⁡</mo></mrow><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mi>θ</mi><mi>j</mi></msub><mo>&gt;</mo><msub><mi>θ</mi><mi>i</mi></msub><mo lspace="0.22em" rspace="0.22em" stretchy="false">|</mo><mi>Y</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow></mrow></math></span>. Under independent normal posteriors, ordering the win counts gives the same ranking as ordering the posterior means. The simulated and archived examples show how the rankings can diverge under other distributions. We also compare them with the cards of Kline, Rose and Walters (KRW) at λ = 1, when a correct direction earns as much as an incorrect direction costs.</p>
+<p>Counting pairs a unit more likely wins matches posterior-mean order under independent normal posteriors, yet diverges from expected rank and general laws.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -638,11 +637,11 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Law on orders.</strong> A beats B and C, each only with probability .51; B’s one win is nearly sure (.99). A has the most wins. B has the best expected rank, 1.52 compared with A’s 1.98.</li>
-<li><strong>League.</strong> Majority wins give the posterior-mean order: 0 of the 435 pairs differ. The expected-rank order states 6 pairs against the majority; U13 is 8th by it (9.59) and 6th by the other two.</li>
-<li><strong>League, prior SD .30.</strong> The win count and posterior-mean order still disagree on 0 of the 435 pairs. Expected rank now orders 12 pairs against the majority.</li>
-<li><strong>KRW, race.</strong> Majority wins form a strict order. Against it the posterior-mean order states 35 of the 4,656 pairs and the expected-rank order 62; KRW’s card at λ = 1 states none against it, so no full ranking expects fewer wrong claims: 1,248, against 1,249 for the posterior-mean order.</li>
-<li><strong>KRW, gender.</strong> Macy’s beats Jones Lang LaSalle (.5008), which beats Dollar General (.5022), which beats Macy’s (.5014): a cycle, and the three win 45 pairs each. KRW’s card at λ = 1 (96 grades) puts Macy’s and Dollar General in one grade, within KRW’s solver tolerances.</li>
+<li><strong>Law on orders.</strong> A wins two pairs (.51 each); B’s .99 win puts B first by expected rank (1.52 vs.&nbsp;1.98).</li>
+<li><strong>League.</strong> Majority wins match posterior means (0 of the 435 pairs differ); expected rank reverses 6 pairs (U13: 8th, 9.59 vs.&nbsp;6th).</li>
+<li><strong>League, prior SD .30.</strong> Majority wins and posterior means differ on 0 of the 435 pairs; expected rank reverses 12 pairs.</li>
+<li><strong>KRW, race.</strong> Posterior mean reverses 35 of the 4,656 pairs (1,249 wrong) and expected rank 62; λ = 1 card reverses none (1,248).</li>
+<li><strong>KRW, gender.</strong> Macy’s (.5008), Jones Lang LaSalle (.502), and Dollar General (.5014) cycle at 45 pairs each; the card uses 96 grades.</li>
 </ul>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -650,7 +649,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>KRW call the grades at λ = 1 Condorcet ranks (Section II.F). Their remark there that the count of wins is equivalent to the posterior mean rank (the expected rank) does not hold in general: on the race gaps, majority wins and the expected rank order 62 pairs differently. The data describe KRW’s correspondence experiment, not any firm’s current conduct. Data: Kline, Rose and Walters (2024), <em>A Discrimination Report Card</em>, American Economic Review, doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. Pair probabilities as adapted in postrank 1.1.0 (pr_case_krw). Cards computed with KRW’s code (KRW replication companion) under KRW’s archived pair probabilities (<a href="../../pages/cases/krw-lambda.html">KRW’s cards along λ</a>). Changes noted; no endorsement by the authors is implied.</p>
+<p>Data: Kline, Rose and Walters (2024), doi:10.1257/aer.20230700; deposit doi:10.3886/E198284V1, CC-BY-NC, noncommercial use only (<code>pr_case_krw</code>; <a href="../../pages/cases/krw-lambda.html">KRW’s cards along λ</a>). No endorsement is implied. <strong>Data describe KRW’s experiment, not current conduct.</strong></p>
 </div>
 </div>
 </div>
@@ -672,8 +671,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Standalone: <a href="../../embed/majority-wins.html">embed/majority-wins.html</a>, for example <code>?data=krw&amp;criterion=gender&amp;unit=95</code>.</p>
-<p>Related applications: <a href="../../pages/uncertainty/which-ranking.html">Alternative rankings from a posterior distribution</a> (1.14) and <a href="../../pages/uncertainty/ranking-claims.html">Expected errors in a strict ranking</a> (1.16).</p>
+<p>Standalone: <a href="../../embed/majority-wins.html">embed/majority-wins.html</a>. Related: <a href="../../pages/uncertainty/which-ranking.html">Alternative rankings from a posterior distribution</a>, <a href="../../pages/uncertainty/ranking-claims.html">Expected errors in a strict ranking</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-rank-score-distance-bridge">Expected rank, probability scores, and signed-order distance</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#sec-matched-disclosure-frontier">Comparing reports at matched disclosure</a>.</p>
 
 
 </section>
@@ -1146,7 +1145,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

@@ -4,7 +4,7 @@ subtitle: "5.9 · the public twelve-school CDE example"
 description: "Expected-error distribution of the three-grade reports that state 48 pairs."
 ---
 
-The tertiles state as many comparisons as any report with three grades for these twelve schools.
+Among all three-grade reports stating 48 pairs for these twelve schools, the tertiles expect the fewest wrong directions.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -14,24 +14,21 @@ The tertiles state as many comparisons as any report with three grades for these
 <script>window.__prxApp = PRX["cde-one-disclosure"].mountWidget(document.getElementById("app"));</script>
 ```
 
-The figure gives the expected error range for each number of stated pairs. At the maximum of 48 pairs,
-the histogram compares the tertiles with every other report stating that many. The lower convex boundary
-also considers choosing among complete reports at random.
-
 ## Numerical illustrations {#what-to-try}
 
-- **At the tertiles’ disclosure** shows all 34,650 reports at N = 48. The tertiles have the fewest expected errors, with E = 1.829. The next report has E = 1.909.
-- **Between feasible disclosures** selects N = 46. No single report in this family states exactly 46 pairs, while the lower hull reaches H = .4551 by a mixture with weight .500 on the more-disclosing report.
-- **A lower mixture** selects N = 30. The hull value is .005174, using weight .167 on the more-disclosing endpoint.
-- **Other cuts, full range** places cuts at 1 and 2. The selected report states 21 pairs and expects 1.116 wrong directions; the enlarged axis shows the complete ranges at every disclosure.
+- **At the tertiles’ disclosure.** Across 34,650 reports at N = 48, tertiles win with E = 1.83 (next 1.91).
+- **Between feasible disclosures.** At N = 46, the lower hull reaches .455 with mixture weight .500.
+- **A lower mixture.** At N = 30, the hull reaches .00517 with mixture weight .167.
+- **Other cuts, full range.** Cuts 1 and 2 state 21 pairs with E = 1.12 across the full range.
 
-Only three groups of four can reach 48 stated pairs. A randomized rule that averages 48 stated pairs must choose only reports at that maximum. The tertiles already have the fewest expected errors among those reports, so randomization cannot improve on them at 48.
+<details>
+<summary>Randomization and scope notes</summary>
 
-The mixture weight is the probability of choosing the report that states more pairs. The histogram and the table available by keyboard give the full error distribution. A shorter table lists the five reports with the fewest expected errors.
+Only three groups of four can reach 48 stated pairs. A randomized rule averaging 48 pairs must put weight exclusively on maximum-disclosure reports, so randomization cannot improve on the tertiles at 48. At intermediate disclosures, the mixture weight is the probability of choosing the report that states more pairs, while Data provides the complete error histogram and the five least-error grade vectors at N = 48. This twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools (prior-estimation uncertainty is not propagated). California's Dashboard colors follow separate rules, and this distribution provides no measure of school quality, causal effects, or statewide calibration. Related: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
 
-Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (`pr_case_cde`). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply (<https://www.cde.ca.gov/re/di/cr/index.asp>); the data are not relicensed and are provided as is without warranty. No CDE endorsement is implied.
+</details>
 
-The error distribution applies to comparisons of chronic absence within this subset. A shared grade leaves a comparison unstated. California's Dashboard colors use separate rules, and the distribution provides no basis for estimating school quality, causal effects, statewide optimality, or calibration.
+Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, adapted in postrank 1.1.0 (`pr_case_cde`); <https://www.cde.ca.gov/re/di/cr/index.asp>; not relicensed, provided as is; No CDE endorsement is implied.
 
 ::: {.callout-note collapse="true"}
 ## In postrank
@@ -45,8 +42,4 @@ postrank_evaluate(g, pr_case_cde$input, weights = c(negative_chronic_absence = 1
 ```
 :::
 
-[Open the standalone app](../../embed/cde-one-disclosure.html).
-
-Related applications: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
-
-Related school analyses: [School tertiles and minimum-risk grades](cde-cuts.qmd) · [A high-probability school comparison withheld](cde-pair.qmd) · [School-report changes along the withholding-cost path](cde-tau-path.qmd).
+Standalone: [cde-one-disclosure](../../embed/cde-one-disclosure.html). Related: [School tertiles and cuts](cde-cuts.qmd) · [Withheld pair](cde-pair.qmd) · [τ path](cde-tau-path.qmd).

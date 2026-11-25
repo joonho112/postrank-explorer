@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,12 +107,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
 
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
+
+  <script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
+<link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/grades/tau-path.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Optimal reports along the withholding-cost path – postrank Explorer">
+<meta property="og:description" content="The lower envelope of affine report-risk functions and its change points.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/grades/tau-path.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/tau-path.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -579,7 +631,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Optimal reports along the withholding-cost path</h1>
-<p class="subtitle lead">2.5 · after the postrank theory book, ch.&nbsp;11 and 16</p>
+<p class="subtitle lead">2.5 · after the postrank theory book, ch.&nbsp;10 and 22</p>
 </div>
 
 <div>
@@ -601,7 +653,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The risk of a fixed report changes linearly with the withholding cost. The slope is the share of pairs the report withholds. The lowest line at each τ gives the smallest risk in the selected family. Where the lowest line changes, the reports on either side of that point tie. A cap on the number of grades can remove some of these reports and change the path. The low-cost view shows the first transitions, including the range over which the best report withholds every pair.</p>
+<p>Each fixed report’s posterior risk is a straight line in <span class="math inline"><math><mi>τ</mi></math></span> whose slope is the share of withheld pairs. The lower envelope traces the minimum-risk report across <span class="math inline"><math><mi>τ</mi></math></span>, bending wherever the optimal report changes.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -610,22 +662,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Overview.</strong> The unrestricted best report states 14 pairs, with risk .0372. The capped comparison gives .0417. Each faint line gives the risk of a fixed report. The heavy line traces the lowest risk, and the bands below show the costs over which each report attains it. Arrow keys identify the reports on the envelope. Complete path gives their exact intervals.</li>
-<li><strong>Before the first bend.</strong> The report states 0 of 15 pairs, and risk equals the withholding cost .0005. The low-cost strip includes the all-withheld report that an overview starting farther right would miss. The left boundary is a limit, since the cost is positive.</li>
-<li><strong>Small cost, coherent report.</strong> The best report states 12 of 15 pairs, including 2 directions whose error exceeds the withholding cost. The list under Complete path gives the error probability for each newly stated direction. These choices are made jointly, so the path cannot be read as a collection of isolated-pair thresholds.</li>
-<li><strong>Exactly at a bend.</strong> 2 reports share the smallest risk. Both neighboring segments include the shared endpoint; the read-out shows the first report under the stated equal-risk tolerance. Moving just beyond the bend changes which line is lowest.</li>
-<li><strong>Three-grade cap.</strong> At the larger cost the capped report still states 12 of 15 pairs, with risk .0817; the unrestricted comparison gives .0480. Restricting the available grades changes the decision problem even though the posterior and the price of withholding are the same.</li>
+<li><strong>Overview.</strong> The unrestricted optimum states 14 pairs (risk .0372), compared with .0417 under the three-grade cap. Open <strong>Complete path</strong> for exact intervals.</li>
+<li><strong>Before the first bend.</strong> The report states 0 of 15 pairs, with withholding cost .0005.</li>
+<li><strong>Small cost, coherent report.</strong> The optimum states 12 of 15 pairs, including 2 directions whose error exceeds <span class="math inline"><math><mi>τ</mi></math></span> because grades are chosen jointly.</li>
+<li><strong>Exactly at a bend.</strong> At <span class="math inline"><math><mrow><mi>τ</mi><mo>≈</mo><mn>.144</mn></mrow></math></span>, 2 reports share the smallest risk where neighboring segments meet.</li>
+<li><strong>Three-grade cap.</strong> At <span class="math inline"><math><mrow><mi>τ</mi><mo>=</mo><mn>.40</mn></mrow></math></span>, the capped report states 12 of 15 pairs (risk .0817) while the unrestricted optimum reaches .0480.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The site posteriors are normal and specified for this example. A separate panel shows targets with equal means. In that example, some reports minimize risk at a single cost. The path includes them even though they occupy no interval of positive length.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Model assumptions and endpoint notes
+</summary>
+<p>The six fictional site posteriors are normal and specified for teaching. An independent three-unit equal-mean example illustrates reports that minimize risk only at a single endpoint <span class="math inline"><math><mrow><mi>τ</mi><mo>=</mo><mn>.50</mn></mrow></math></span> without occupying an interval of positive length.</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -647,6 +695,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Standalone: <a href="../../embed/tau-path.html">the τ path</a>, for example <code>?tau=.005&amp;zoom=low</code>.</p>
 <p>Related applications: <a href="../../pages/grades/price-of-silence.html">Reporting risk and withholding cost</a>, <a href="../../pages/grades/report-builder.html">Grade reports as pairwise decisions</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-scalar-reduction">Scalar normalization and withholding cost</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#which-endpoints-and-paths-actually-exist">Feasible frontier endpoints and cost paths</a>.</p>
 
 
 </section>
@@ -1119,7 +1168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

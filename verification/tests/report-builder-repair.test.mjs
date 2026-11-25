@@ -129,10 +129,10 @@ test("a touch swipe that starts on a site does not drag it; a hold or a sideways
   }
 });
 
-test("the one-line result under the boxes carries N of M, the change, the share, the withheld pairs and the grades", () => {
+test("the one-line result in the counts box carries N of M, the change, the share, the withheld pairs and the grades", () => {
   const { env, handle, chip } = mountBuilder();
   try {
-    const result = () => env.el.querySelector(".prx-rb-builder .prx-rb-boxes + .prx-rb-result");
+    const result = () => env.el.querySelector('details[data-prx-disclosure="counts"] .prx-rb-result');
     const hook = (name) => result().querySelector(`[data-prx-readout="${name}"]`)?.getAttribute("data-num");
     assert.equal(result().textContent.replace(/\s+/g, " ").trim(), "9 of 15 pairs stated, share .600; 6 withheld; 3 grades.");
     assert.deepEqual(["result-N", "result-M", "result-share", "result-withheld", "result-G"].map(hook), ["9", "15", "0.6", "6", "3"]);
@@ -166,6 +166,27 @@ test("the full hint and the counts are folded, complete, into closed boxes (X-14
     for (const sel of [".prx-rb-tiles", ".prx-rb-rule", ".prx-rb-inside table", ".prx-rb-vector", ".prx-rb-side"]) assert.ok(counts.querySelector(sel), sel);
     assert.equal(counts.querySelectorAll(".prx-rb-inside tbody tr").length, 4, "three grades and the total");
     assert.ok(env.el.querySelector('.prx-rb-orientation[data-prx-part="notes"]'), "the orientation line is plain text, not a legend panel");
+  } finally {
+    handle.destroy();
+    env.restore();
+  }
+});
+
+test("frame v2 keeps builder and matrix together in stage, exposes the 1-line edit cue, and folds disclosures", () => {
+  const { env, handle } = mountBuilder();
+  try {
+    const widget = env.el.querySelector(".prx-widget");
+    assert.equal(widget.getAttribute("data-prx-frame"), "v2");
+    const stage = widget.querySelector(".prx-stage");
+    assert.ok(stage.querySelector(".prx-rb-builder"), "grade builder sits inside v2 stage");
+    assert.ok(stage.querySelector(".prx-rb-matrix-chart svg"), "pair relation matrix sits inside v2 stage");
+    assert.equal(
+      stage.querySelector(".prx-rb-cue")?.textContent,
+      "Drag a site, or focus a site and press 1–6 / ↑↓",
+    );
+    const disclosures = widget.querySelector(".prx-disclosures");
+    assert.ok(disclosures.querySelector('details[data-prx-disclosure="counts"]'));
+    assert.ok(disclosures.querySelector('details[data-prx-disclosure="keyboard"]'));
   } finally {
     handle.destroy();
     env.restore();

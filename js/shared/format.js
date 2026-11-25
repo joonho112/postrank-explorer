@@ -97,6 +97,73 @@ export function formatExpectedCount(x) {
   return ENGINE_FORMATTERS[f.fn](x, { ...f.options });
 }
 
+/** Primary readout probability at 3 sig figs with strict boundary floors/ceilings (CP-1.2, S1-03):
+ *  0 -> "0", 1 -> "1", (0, .001) -> "below .001", (.999, 1) -> "above .999", else formatSig(x, { sig: 3 }). */
+export function formatReadoutProb(x) {
+  if (typeof x !== "number" || !Number.isFinite(x)) return NA;
+  if (x === 0) return "0";
+  if (x === 1) return "1";
+  if (x > 0 && x < 0.001) return "below .001";
+  if (x > 0.999 && x < 1) return "above .999";
+  return formatSig(x, { sig: 3 });
+}
+
+/** Primary readout risk / loss / increment at 3 sig figs (CP-1.2, S1-03):
+ *  0 -> "0", 0 < |x| < 1e-4 -> formatSci(x, { sig: 3 }), else formatSig(x, { sig: 3 }); prepends "+" when signed && x > 0. */
+export function formatReadoutRisk(x, { signed = false } = {}) {
+  if (typeof x !== "number" || !Number.isFinite(x)) return NA;
+  if (x === 0) return "0";
+  const s = Math.abs(x) < 1e-4 ? formatSci(x, { sig: 3 }) : formatSig(x, { sig: 3 });
+  return signed && x > 0 && !s.startsWith("+") ? `+${s}` : s;
+}
+
+/** Primary readout expected count at 3 sig figs (CP-1.2; Data tables retain formatExpectedCount at sig 4):
+ *  0 -> "0", 0 < |x| < 1e-4 -> formatSci(x, { sig: 3 }), else formatSig(x, { sig: 3 }). */
+export function formatReadoutExpected(x) {
+  if (typeof x !== "number" || !Number.isFinite(x)) return NA;
+  if (x === 0) return "0";
+  return Math.abs(x) < 1e-4 ? formatSci(x, { sig: 3 }) : formatSig(x, { sig: 3 });
+}
+
+/** Primary readout continuous estimate / posterior mean / SE / z-score at 3 sig figs (CP-1.2):
+ *  0 -> "0", 0 < |x| < 1e-4 -> formatSci(x, { sig: 3 }), else formatSig(x, { sig: 3 }). */
+export function formatReadoutEst(x, { signed = false } = {}) {
+  if (typeof x !== "number" || !Number.isFinite(x)) return NA;
+  if (x === 0) return "0";
+  const s = Math.abs(x) < 1e-4 ? formatSci(x, { sig: 3 }) : formatSig(x, { sig: 3 });
+  return signed && x > 0 && !s.startsWith("+") ? `+${s}` : s;
+}
+
+/** Near-tie distinguishing formatter (S2-01, e.g., 5.3 krw-card lam08):
+ *  Accepts (x, ref, opts) or (x, { ref, ...opts }) for check_readouts compatibility.
+ *  Finds the smallest sig in [minSig..maxSig] where formatSig(x, { sig }) !== formatSig(ref, { sig }). */
+export function formatDistinguishing(x, refOrOptions, maybeOptions = {}) {
+  if (typeof x !== "number" || !Number.isFinite(x)) return NA;
+  let ref = refOrOptions;
+  let opts = maybeOptions;
+  if (refOrOptions !== null && typeof refOrOptions === "object") {
+    opts = refOrOptions;
+    ref = /** @type {{ ref?: number }} */ (refOrOptions).ref;
+  }
+  const { minSig = 3, maxSig = 8, signed = false } = /** @type {{ minSig?: number, maxSig?: number, signed?: boolean }} */ (opts ?? {});
+  const lo = Math.max(1, Math.trunc(minSig));
+  const hi = Math.max(lo, Math.trunc(maxSig));
+  if (x === 0) return "0";
+  const fmtAt = (v, k) => (v === 0 ? "0" : Math.abs(v) < 1e-4 ? formatSci(v, { sig: k }) : formatSig(v, { sig: k }));
+  let sig = lo;
+  if (typeof ref === "number" && Number.isFinite(ref) && x !== ref) {
+    sig = hi;
+    for (let k = lo; k <= hi; k += 1) {
+      if (fmtAt(x, k) !== fmtAt(ref, k)) {
+        sig = k;
+        break;
+      }
+    }
+  }
+  const s = fmtAt(x, sig);
+  return signed && x > 0 && !s.startsWith("+") ? `+${s}` : s;
+}
+
 /** A report written as its grades from the top, units in index order inside a grade: blocksText([1, 1, 2, 3],
  *  ["A", "B", "C", "D"]) → "{A, B} > {C} > {D}". `grade` is a canonical grade vector (grades 1..G all used). */
 export function blocksText(grade, ids) {
@@ -120,7 +187,7 @@ export const CONFIG = Object.freeze({
   glossWords: Object.freeze({ is: " is ", times: " × ", ten: "10" }),
 });
 
-const SCI = /^([−-]?)(\d+(?:\.\d+)?)e([−-]?)(\d+)$/u;
+const SCI = /^([+−-]?)(\d+(?:\.\d+)?)e([−-]?)(\d+)$/u;
 
 /** The reading of a display string in scientific notation, or null (see the header). */
 export function sciGloss(display) {
@@ -128,14 +195,16 @@ export function sciGloss(display) {
   if (!m) return null;
   const W = CONFIG.glossWords;
   const power = `${W.ten}${m[3] ? CONFIG.superMinus : ""}${[...m[4]].map((d) => CONFIG.superscript[Number(d)]).join("")}`;
-  const sign = m[1] ? MINUS : "";
+  const sign = m[1] === "+" ? "+" : m[1] ? MINUS : "";
   const value = m[2] === "1" ? `${sign}${power}` : `${sign}${m[2]}${W.times}${power}`;
   return `${String(display).trim()}${W.is}${value}`;
 }
 
 /** The data-num attribute string for a raw value (see the header). */
 export function dataNum(raw) {
-  if (Array.isArray(raw) || ArrayBuffer.isView(raw)) return Array.from(raw, (v) => dataNum(v)).join(CONFIG.listSeparator);
+  if (Array.isArray(raw) || (ArrayBuffer.isView(raw) && !(raw instanceof DataView))) {
+    return Array.from(/** @type {ArrayLike<unknown>} */ (raw), (v) => dataNum(v)).join(CONFIG.listSeparator);
+  }
   if (typeof raw === "bigint") return raw.toString();
   if (typeof raw === "number" && Number.isFinite(raw)) return String(raw);
   if (typeof raw === "string" && isCanonicalExact(raw)) return raw;
@@ -148,17 +217,29 @@ function displayOf(raw, display) {
   if (display === undefined || display === null) {
     throw new TypeError("numSpan: a display string (the formatted value) is required; use a format.js formatter");
   }
+  if (typeof display === "object" && typeof (/** @type {{ nodeType?: unknown }} */ (display)).nodeType === "number") {
+    return String((/** @type {{ textContent?: string | null }} */ (display)).textContent ?? "");
+  }
   return String(display);
 }
 
-/** Put data-num and the display text on an existing element; returns the element. */
+/** Put data-num and the display text on an existing element; strips any stale descendant [data-num]. */
 export function setNum(node, raw, display) {
+  const text = displayOf(raw, display);
+  if (typeof node.querySelectorAll === "function") {
+    for (const desc of node.querySelectorAll(`[${CONFIG.attribute}]`)) {
+      desc.removeAttribute(CONFIG.attribute);
+    }
+  }
   node.setAttribute(CONFIG.attribute, dataNum(raw));
-  node.textContent = displayOf(raw, display);
+  node.textContent = text;
   return node;
 }
 
-/** <span class="prx-num" data-num="raw">display</span> (see the header). */
+/** <span class="prx-num" data-num="raw">display</span> (see the header).
+ *  @param {unknown} raw
+ *  @param {unknown} display
+ *  @param {{ document?: Document, className?: string, title?: string }} [options] */
 export function numSpan(raw, display, { document: doc, className, title } = {}) {
   const d = doc ?? globalThis.document;
   if (!d) throw new Error("numSpan: no document (pass { document })");
@@ -187,7 +268,13 @@ export function decimalsNeeded(v) {
 export function tickLabel(v, i, ticks) {
   if (typeof v !== "number") return v === null || v === undefined ? "" : String(v);
   if (!Number.isFinite(v)) return NA;
-  const list = Array.isArray(ticks) || ArrayBuffer.isView(ticks) ? Array.from(ticks) : [v];
-  const digits = list.reduce((m, t) => Math.max(m, typeof t === "number" ? decimalsNeeded(t) : 0), decimalsNeeded(v));
+  const list =
+    Array.isArray(ticks) || (ArrayBuffer.isView(ticks) && !(ticks instanceof DataView))
+      ? Array.from(/** @type {ArrayLike<unknown>} */ (ticks))
+      : [v];
+  let digits = decimalsNeeded(v);
+  for (const t of list) {
+    if (typeof t === "number") digits = Math.max(digits, decimalsNeeded(t));
+  }
   return formatDecimal(v, { digits });
 }

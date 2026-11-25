@@ -5,17 +5,17 @@
   "title": "Where criteria disagree",
   "idea": "When criteria disagree about a pair's direction, stating either direction costs something even with no uncertainty, when both sides carry positive weight; on a posterior, uncertainty and conflict mix.",
   "status": "built",
-  "from": "new concept \u00b7 theory book ch. 12 (conflicting pairs); picture: a map of the pairs on which the criteria disagree, with each such pair's three costs at equal weights (either direction, withholding) and the smaller weighted error",
+  "from": "new concept · theory book ch. 12 (conflicting pairs); picture: a map of the pairs on which the criteria disagree, with each such pair's three costs at equal weights (either direction, withholding) and the smaller weighted error",
   "data": [
     "data/released/six-sites.json",
     "data/released/thirty-sites.json"
   ],
-  "credit": "After the postrank theory book, ch. 12.",
-  "caption": "Synthetic supplied laws after the postrank theory book, ch. 12 and 19. Isolated-pair costs, not an optimized common grade.",
+  "credit": "After the postrank theory book, ch. 12 (“Conflict, withholding, and the limits of pairwise decisions”) and ch. 25 (“Common grades under an exact joint target law”).",
+  "caption": "Synthetic supplied laws after the postrank theory book, ch. 12 and 25. Isolated-pair costs, not an optimized common grade.",
   "presets": [
     {
       "id": "six-bc",
-      "label": "Six sites, B\u2013C",
+      "label": "Six sites, B–C",
       "query": "data=six&pair=auto&w=.5&tau=.2"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "id": "ch19",
-      "label": "Certain B\u2013C conflict",
+      "label": "Certain B–C conflict",
       "query": "data=ch19&pair=B,C&w=.6&tau=.2"
     },
     {
@@ -58,46 +58,54 @@
     {
       "preset": "six-bc",
       "shows": [
-        ".4841",
-        ".5159",
+        ".484",
+        ".516",
         "3"
       ]
     },
     {
       "preset": "thirty",
       "shows": [
-        ".3652",
+        ".365",
         "397"
       ]
     },
     {
       "preset": "certain",
       "shows": [
-        ".5000",
-        ".2000"
+        ".500",
+        ".200"
       ]
     },
     {
       "preset": "uncertain",
+      "open": [
+        "data"
+      ],
       "shows": [
-        ".5000",
+        ".500",
         "0"
       ]
     },
     {
       "preset": "zero-weight",
+      "open": [
+        "data"
+      ],
       "shows": [
         "0",
-        "1.0000"
+        "1.00"
       ]
     },
     {
       "preset": "latent-ties",
-      "open": ["data"],
+      "open": [
+        "data"
+      ],
       "shows": [
         ".6000",
         ".9000",
-        ".7500"
+        ".750"
       ]
     }
   ]

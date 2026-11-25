@@ -4,7 +4,7 @@ subtitle: "5.8 · the public twelve-school CDE example"
 description: "Fixed cuts and unrestricted three-grade reporting for a twelve-school chronic-absence example."
 ---
 
-Two cuts in the order of posterior mean chronic absence divide the twelve schools into grades.
+Two cuts in posterior-mean chronic absence divide twelve schools into up to three grades.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -14,24 +14,21 @@ Two cuts in the order of posterior mean chronic absence divide the twelve school
 <script>window.__prxApp = PRX["cde-cuts"].mountWidget(document.getElementById("app"));</script>
 ```
 
-Moving a cut can change both how many comparisons the report states and which schools it compares. The browser
-evaluates those cuts and searches all reports with at most three grades. It uses the same posterior and withholding
-cost τ for both. Grade 1 identifies the schools reported to have lower chronic absence.
-
 ## Numerical illustrations {#what-to-try}
 
-- **Tertiles** puts four schools in each of three grades. The report states 48 pairs, with 1.829 expected errors and risk .082255. The minimum-risk report states 45 pairs and has risk .063774.
-- **Archived grades** puts the cuts after positions 3 and 9. The resulting grades match the archived report, which states 45 pairs at risk .063774. Every pair has the same relation in both reports.
-- **One boundary** puts both controls at position 6. One distinct boundary gives two grades, 36 stated pairs and risk .091293.
-- **Higher withholding cost** raises τ to .45. The optimum now states 47 pairs and has risk .143197. The changed-pair table identifies the resulting relation changes.
+- **Tertiles.** States 48 pairs with E = 1.83 and risk .0823 (optimum: 45 pairs, risk .0638).
+- **Archived grades.** Cuts 3 and 9 match the archived report (45 pairs, risk .0638).
+- **One boundary.** Position 6 gives two grades, 36 pairs, and risk .0913.
+- **Higher withholding cost.** At τ = .45, the optimum states 47 pairs at risk .143.
 
-The cuts follow the posterior mean order. The full search also considers assignments that depart from that order. The displayed average-error bound applies to the report that minimizes risk at the displayed τ. It places no separate threshold on individual comparisons in the tertiles. Both reports use the same loss, so their risks can be compared even when they state different numbers of pairs.
+<details>
+<summary>Scope and Dashboard notes</summary>
 
-The dots and intervals summarize each school's posterior. Schools in the same grade appear in posterior mean order, but the report leaves their relative chronic absence rates unstated.
+Moving a cut changes both how many comparisons the report states and which schools it compares. The cuts follow the posterior-mean order, while the full search considers every assignment with at most three grades under the same posterior and withholding cost τ. Grade 1 identifies lower chronic absence; schools in the same grade have no stated direction. This twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools (prior-estimation uncertainty is not propagated). California's Dashboard colors follow separate status-and-change rules, and the loss comparison provides no measure of school quality, causal effects, or statewide calibration. Related: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
 
-Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, as adapted in postrank 1.1.0 (`pr_case_cde`). This deliberately spread twelve-school teaching subset is conditional on a statewide prior fitted to 5,834 eligible schools; prior-estimation uncertainty is not propagated. CDE source conditions apply (<https://www.cde.ca.gov/re/di/cr/index.asp>); the data are not relicensed and are provided as is without warranty. No CDE endorsement is implied.
+</details>
 
-The example compares ways to report chronic absence among these twelve schools. California's Dashboard colors follow separate status-and-change rules. The loss comparison provides no measure of school quality or causal effects, and assessing statewide performance or calibration would require other evidence.
+Data: California Department of Education, 2026 California School Dashboard chronic absenteeism data, academic year 2025–26, adapted in postrank 1.1.0 (`pr_case_cde`); <https://www.cde.ca.gov/re/di/cr/index.asp>; not relicensed, provided as is; No CDE endorsement is implied.
 
 ::: {.callout-note collapse="true"}
 ## In postrank
@@ -45,8 +42,4 @@ postrank_evaluate(g, pr_case_cde$input, weights = c(negative_chronic_absence = 1
 ```
 :::
 
-[Open the standalone app](../../embed/cde-cuts.html).
-
-Related applications: [Reasons for a withheld comparison](../criteria/why-withheld.qmd) · [The error–disclosure frontier](../grades/frontier.qmd).
-
-Related school analyses: [School reports at matched disclosure](cde-one-disclosure.qmd) · [A high-probability school comparison withheld](cde-pair.qmd) · [School-report changes along the withholding-cost path](cde-tau-path.qmd).
+Standalone: [cde-cuts](../../embed/cde-cuts.html). Related: [Matched disclosure](cde-one-disclosure.qmd) · [Withheld pair](cde-pair.qmd) · [τ path](cde-tau-path.qmd).

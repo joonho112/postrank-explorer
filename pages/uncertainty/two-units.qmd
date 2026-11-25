@@ -4,7 +4,7 @@ subtitle: "1.8 · the direction probability of two independent normal posteriors
 description: "Direction probabilities from the difference of two independent normal posterior variables."
 ---
 
-For two units A and B, $\pi_{AB} = \Pr(\theta_A > \theta_B \mid Y)$ is the posterior probability that A's true value exceeds B's. The probability is the area above zero under the posterior distribution of A − B. With independent normal posteriors, the variance of this difference equals the sum of the two marginal variances. The figure puts both marginals and their difference on the same scales so the reader can see how the two uncertainties enter the comparison.
+For two units A and B, $\pi_{AB} = \Pr(\theta_A > \theta_B \mid Y)$ is the posterior probability that A's true value exceeds B's—the area above zero under the posterior of A − B.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -17,19 +17,17 @@ For two units A and B, $\pi_{AB} = \Pr(\theta_A > \theta_B \mid Y)$ is the poste
 
 ## Numerical illustrations {#what-to-try}
 
-- **Means .30 and .10, SDs .20 and .20.** The two posteriors overlap substantially, while $\pi_{AB}$ = .760. The SD of the difference is .283. A's mean is .707 of these SDs above B's.
-- **Means .30 and .10, SDs .20 and .60 (B much less precise).** The same gap, but the difference widens to SD .632,
-  so A's mean is only .316 SDs of it above B's, and $\pi_{AB}$ falls to .624, closer to one half.
-- **Means .20 and .20, SDs .20 and .40.** With equal means each direction has probability .500, for either choice of marginal SDs; the difference keeps mean 0 and only spreads out (SD .447).
-- **Means 1.20 and .95, SDs .20 and .20 (tutorial sites A and B).** Sites A and B of the six fictional sites in
-  postrank's tutorial data: $\pi_{AB}$ = .812. The package stores one minus this number, the chance that stating A
-  above B would be wrong.
+- **Means .30 and .10, SDs .20 and .20.** $\pi_{AB}$ = .760; difference SD .283 (.707 SDs above).
+- **Means .30 and .10, SDs .20 and .60.** Difference widens to SD .632 (.316 SDs above), lowering $\pi_{AB}$ to .624.
+- **Means .20 and .20, SDs .20 and .40.** Equal means give $\pi_{AB}$ = .500 (difference SD .447).
+- **Means 1.20 and .95, SDs .20 and .20.** Tutorial sites A and B give $\pi_{AB}$ = .812.
 
-::: {.callout-note appearance="simple"}
-The example specifies two independent normal posteriors. Under this model, the unit with the larger posterior mean is more likely to have the larger true value for any positive SDs. Also, $\pi_{BA} = 1 - \pi_{AB}$, because the two true values have
-probability zero of being equal. Kline, Rose and Walters (2024), section II.E, Example 1, and slide 27 of their talk,
-use the special case of this formula with both SDs equal to 1.
-:::
+```{=html}
+<details>
+<summary>Model assumptions and source notes</summary>
+<p>Under independent normal posteriors with positive SDs, the larger mean always gives &pi; &gt; .5 and &pi;<sub>BA</sub> = 1 &minus; &pi;<sub>AB</sub> because equality has probability zero. Kline, Rose and Walters (2024), section II.E, Example 1, and slide 27 use the special case with both SDs equal to 1.</p>
+</details>
+```
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -39,11 +37,4 @@ pnorm((1.20 - .95) / sqrt(.20^2 + .20^2))    # 0.8116204: the app's formula at t
 ```
 :::
 
-Standalone: [embed/two-units.html](../../embed/two-units.html), for example `?muA=.30&sdA=.20&muB=.10&sdB=.60` or
-`?preset=equal-means&theme=dark`.
-
-Related applications: [Posterior dependence and pairwise comparisons](correlated-units.qmd) (1.9) drops independence;
-[Marginal summaries and joint direction probabilities](beyond-normal.qmd) (1.10) drops the normal shape, and with its joint laws
-independence too; [Marginal interval overlap and direction probabilities](interval-overlap.qmd) (1.11) shows overlapping intervals beside
-a confident direction, and [The matrix of pairwise posterior probabilities](pairwise-matrix.qmd) (1.13) shows this probability for every pair of
-thirty units.
+Standalone: [embed/two-units.html](../../embed/two-units.html) (`?muA=.30&sdA=.20&muB=.10&sdB=.60` or `?preset=equal-means&theme=dark`). Related: [1.9](correlated-units.qmd), [1.10](beyond-normal.qmd), [1.11](interval-overlap.qmd), [1.13](pairwise-matrix.qmd).

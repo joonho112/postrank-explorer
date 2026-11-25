@@ -4,51 +4,40 @@
 // unit's average position under the posterior, 1 at the top), on three data sets:
 //   orders   the postrank theory book's ch. 10 law on orders (A, B, C with probability .51; B, C, A, .48; C, B, A, .01;
 //            restated and recomputed by the engine): the two orders part ways, and the law gives orders only, not
-//            values, so it has no posterior mean (two columns). This is postrank Explorer v1 L-09's collapsed box on
-//            the law on orders, shown at once: its lead sentence, its table of majority wins and expected ranks and
-//            its closing sentence
+//            values, so it has no posterior mean (two columns).
 //   league   the simulated league (league30, drawLeague(LEAGUE_SEED), the teaching posterior normalPosterior with prior
 //            mean 0 and the prior SD key): independent normal posteriors, so majority wins give the posterior-mean
-//            order exactly, at every prior SD; the expected rank parts from both on a few pairs
+//            order exactly, at every prior SD; the expected rank parts from both on a few pairs.
 //   krw      Kline, Rose and Walters' 97 firms (data/released/case-krw.json, race or gender pair probabilities as
 //            adapted in postrank 1.1.0): on race the majority relation is a strict order of its own, and KRW's card at
 //            λ = 1 (data/released/krw-lambda-grid.json, the grid's λ = 1 row; KRW call these grades Condorcet ranks,
 //            section II.F) states no pair against it; on gender the relation has one cycle of three firms, which win
-//            as many pairs each, and the λ = 1 card puts two of them in one grade, within KRW's solver tolerances
-// Views, all drawn from one state (the chart and the unit come first, the data set's panel under them):
-//   orders   a slope chart (app 1.14's drawSlopeChart): one column per order, units from 1st (top) to last, a line per
-//            unit, crossings where two orders disagree, dashed boxes around equal values (the gender cycle's three
-//            firms share their win count); the majority column is shaded. For KRW's firms KRW's card at λ = 1 is a
-//            column of its own beside majority wins, in its grade order (its shared grade on gender a dashed box)
-//   panel    the data set: the law on orders (lead, table, closing), the league's posteriors, or KRW's card at λ = 1
-//            beside the posterior-mean and expected-rank orders (the pairs each states against the majority, its
-//            expected wrong claims and DR), the cycle (engine majorityWins' cycleTriples) and the card's shared grade
-//   unit     the selected unit (or the one under the pointer): its wins, expected rank and posterior mean with their
-//            places; its pairs as bars (navy: the chance it is above the other unit; gray: the chance the other is
-//            above it), surest win first, with a dashed line at one half, so the wins are the navy bars that pass
-//            the line and the expected rank is one plus the gray parts; the two formulas worked
-// Numbers: majorityWins (wins, cycles, strict order), expectedRank (exact, as postrank_expected_rank) or rankSummaries
-// (the law), scoreOrder (orders and equal-value blocks), statedAbove at τ = 1/2 (the stated pairs whose direction is
-// more likely wrong than right: against the majority, for these tie-free laws), misorderedPairs (majority wins
-// against the posterior means), evaluateReport (E, N, G, E/M of a full ranking or a card), lambdaToTau, pairCount.
-// The pair probabilities shown are 1 − e (e: the engine's weak error of stating one unit above the other).
-// Selection and hover follow app 1.14 (geometry hit test, attribute toggles; the card follows the unit under the
-// pointer); a click on a bar selects that unit, and hovering a bar marks it in the slope chart.
+//            as many pairs each, and the λ = 1 card puts two of them in one grade, within KRW's solver tolerances.
 //
-// Keys: data ("orders" | "league" | "krw"), criterion ("race" | "gender"; KRW only), priorSd (.02-.60, league only),
-// unit ("" = the default unit, or a unit id of the data set; a KRW firm may also be named).
+// Frame v2 layout:
+//   toolbar  primary Data select + wrapping preset chips + Settings disclosure (unit selector, KRW criterion, prior SD)
+//   readout  concise <= 35-word live readout at 3 sig figs (formatDistinguishing on near-ties per S2-01)
+//   stage    selected unit, first-place evidence, linked ranking and pairwise probability charts
+//   data     exact law/ranking/unit tables
+//   method   worked H_i and E[R_i] = n - sum_{j != i} pi_{ij} identity + league/source notes
+//   caption  catalog caption + standalone KRW CC-BY-NC notice when KRW is selected
+import { mobileControls } from "../shared/mobile-controls.js";
 import { appLink, createWidget } from "../shared/base.js";
 import { numText, plot } from "../shared/chart.js";
-import { formatCount, formatDecimal, formatExpectedCount, formatFraction, formatProb, formatSetting, formatShare } from "../shared/format.js";
+import {
+  formatCount, formatDecimal, formatDistinguishing, formatExpectedCount, formatFraction, formatProb,
+  formatReadoutProb, formatSci, formatSetting, formatShare, formatSig,
+} from "../shared/format.js";
 import { captionNode } from "../shared/labels.js";
 import { formulaNums, renderTex } from "../shared/math.js";
+import { ro as createReadout } from "../shared/readout.js";
 import {
-  LEAGUE_SEED, drawLeague, errorArray, evaluateReport, expectedRank, finiteLawPairwise, lambdaToTau, majorityWins,
-  misorderedPairs, normalPosterior, pairCount, rankSummaries, scoreOrder, statedAbove, strictOrder,
+  LEAGUE_SEED, errorArray, evaluateReport, expectedRank, finiteLawPairwise, lambdaToTau, majorityWins,
+  misorderedPairs, pairCount, rankSummaries, scoreOrder, statedAbove, strictOrder,
 } from "../pr-core.js";
 import {
-  CONFIG as WR, LEAGUE, captionedTable, cssFor, drawSlopeChart, fill, fillText, markUnits, placeText, rankColumns, slopeUnitAt,
-} from "./which-ranking.js";
+  CONFIG as WR, LEAGUE, captionedTable, cssFor, dataset as rankingDataset, drawSlopeChart, fill, fillText, markUnits, placeText, rankColumns, slopeUnitAt,
+} from "../shared/domain/which-ranking.js";
 import KRW from "../../data/released/case-krw.json" with { type: "json" };
 import GRID from "../../data/released/krw-lambda-grid.json" with { type: "json" };
 
@@ -82,37 +71,50 @@ export const CONFIG = Object.freeze({
     league: Object.freeze({ mean: 3, sd: 3, se: 2, er: 2, prob: 2 }),
     krw: Object.freeze({ mean: 3, er: 2, prob: 4 }),
   }),
-  // slope charts: app 1.14's geometry for three units (two columns here) and for the league; for the 97 firms a denser
-  // one without unit labels (the card names the firm under the pointer)
+  // Frame v2 generous slope-chart geometry (>= 13px SVG text across all datasets and widths)
   bump: Object.freeze({
-    // two columns: narrower, with room on the left for the band behind the first column
-    orders: Object.freeze({ ...WR.bump.puzzle, maxWidth: 300, marginLeft: 40 }),
-    league: WR.bump.league,
-    // labelGap also sets how wide a box of equal values may be (no unit labels here, so it can be wide)
-    krw: Object.freeze({ rowH: 8, marginTop: 50, marginBottom: 8, marginLeft: 14, marginRight: 14, maxWidth: 560, dot: 2.4, font: 9, valueFont: 10, labelGap: 12, tieW: 0.1 }),
+    orders: Object.freeze({
+      ...WR.bump.puzzle,
+      rowH: 62, marginTop: 50, marginBottom: 12, marginLeft: 54, marginRight: 66,
+      maxWidth: 500, dot: 6.5, font: 14, valueFont: 13.5, labelGap: 13, tieW: 0.16,
+    }),
+    league: Object.freeze({
+      ...WR.bump.league,
+      rowH: 18.5, marginTop: 56, marginBottom: 10, marginLeft: 46, marginRight: 46,
+      maxWidth: 820, dot: 3.6, font: 13, valueFont: 13, labelGap: 8, tieW: 0.1,
+    }),
+    krw: Object.freeze({
+      rowH: 7.5, marginTop: 58, marginBottom: 10, marginLeft: 20, marginRight: 20,
+      maxWidth: 840, dot: 2.5, font: 13, valueFont: 13, labelGap: 8, tieW: 0.1,
+    }),
   }),
-  // the selected unit's pairs: bars on one probability axis
+  // the selected unit's pairs beside the order chart: bars on one probability axis (>= 13px text)
   pairs: Object.freeze({
-    orders: Object.freeze({ height: 170, marginTop: 18, marginBottom: 26, marginLeft: 34, marginRight: 12, maxWidth: 300, padding: 0.4, valueFont: 12 }),
-    league: Object.freeze({ height: 170, marginTop: 14, marginBottom: 10, marginLeft: 34, marginRight: 12, maxWidth: 520, padding: 0.15, valueFont: 0 }),
-    krw: Object.freeze({ height: 170, marginTop: 14, marginBottom: 10, marginLeft: 34, marginRight: 12, maxWidth: 520, padding: 0.1, valueFont: 0 }),
-    dash: "4,3", line: 1.25, valueDy: -4,
+    orders: Object.freeze({ height: 175, marginTop: 20, marginBottom: 28, marginLeft: 36, marginRight: 14, maxWidth: 420, padding: 0.4, valueFont: 13 }),
+    league: Object.freeze({ height: 175, marginTop: 14, marginBottom: 12, marginLeft: 36, marginRight: 14, maxWidth: 640, padding: 0.15, valueFont: 0 }),
+    krw: Object.freeze({ height: 175, marginTop: 14, marginBottom: 12, marginLeft: 36, marginRight: 14, maxWidth: 680, padding: 0.1, valueFont: 0 }),
+    dash: "4,3", line: 1.25, valueDy: -5,
   }),
   text: Object.freeze({
     // controls
     dataLegend: "Data",
-    dataOrders: "Law on orders (theory book, chapter 10)",
-    dataLeague: "Simulated league (30 units)",
-    dataKrw: "KRW's 97 firms",
+    dataSelectOrders: "Law on orders",
+    dataSelectLeague: "League (30)",
+    dataSelectKrw: "KRW (97)",
+    unitLabel: "Selected unit",
+    firmLabel: "Selected firm",
     critLegend: "KRW's contact gap",
     critRace: "Race (white over Black names)",
     critGender: "Gender (male over female names)",
     priorLabel: "Prior SD of the league's teaching posterior",
-    // {app}: the title of app 1.5, a link once it is built (base.js appLink)
     priorHint: "A smaller prior SD pulls the league's posterior means closer together and narrows each posterior (see {app}).",
     shrinkageApp: "shrinkage",
+    settingsTitle: "Settings",
+    dataBoxTitle: "Data and exact values",
+    methodBoxTitle: "Method and identity",
+    stageCue: "Click, hover, or arrow-key a line to inspect",
     howTo: "Hover, focus or tap a dot or a bar to follow one unit; a click, a tap or keyboard focus on a dot selects it, and a click on a bar selects that unit. With the keyboard, Tab to a figure and use the arrow keys.",
-    // the law on orders (v1 L-09's box)
+    // the law on orders (Data disclosure)
     lawHeading: "The law on orders",
     lawLead: "A law on orders only: the true order is A, B, C with probability {pABC}; B, C, A with probability {pBCA}; and C, B, A with probability {pCBA}. A is above B with probability {piAB} and above C with probability {piAC}, so A wins both of its pairs by a majority. B is above C with probability {piBC}.",
     lawTableCaption: "Majority wins and expected ranks under the law on orders",
@@ -122,13 +124,17 @@ export const CONFIG = Object.freeze({
     colExpected: "Expected rank",
     lawEnd: "A wins the most pairs, but its wins are narrow; B's one win is nearly certain. Expected rank weighs how sure each win is, so it puts B first, while counting majority wins puts A first.",
     lawNoMean: "The law fixes the order of the three units in each state, not their values, so it has no posterior mean: the chart compares two orders.",
-    // the league
+    // the league (Data & Method disclosures)
     leagueHeading: "The simulated league",
+    leagueTableCaption: "Simulated league units by majority wins: posterior summaries and expected ranks",
+    leagueTable: "Simulated league units by majority wins",
+    colGroup: "Size group",
+    colSe: "SE",
+    colPostSd: "Posterior SD",
     leagueLaw: "Each league unit has an independent normal posterior, the teaching posterior of {app}. For independent normal posteriors, whatever their SDs, the larger posterior mean is always the more likely direction. So a unit beats by a majority exactly the units below it by posterior mean, and majority wins give the posterior-mean order at every prior SD.",
     leagueWidths: " The posteriors differ in width (posterior SD {small} for the small units, {medium} for the medium, {large} for the large). The expected rank weighs how sure each pair is, so it can put a few pairs the other way.",
-    // KRW
+    // KRW (Data disclosure)
     krwHeading: "KRW's card at λ = {one}",
-    // the card and λ glossed once (λ: KRW's weight on a correct direction against a wrong one)
     krwLead: "KRW's card: the grades KRW's code gives the firms for a weight λ on a correct direction against a wrong one; at λ = {one} the two weigh the same, and KRW call these grades Condorcet ranks (section II.F). Every order here ranks a firm higher for a larger {target} contact advantage, as the posterior judges it.",
     targetWords: Object.freeze({ race: "white-name", gender: "male-name" }),
     gapWords: Object.freeze({ race: "race", gender: "gender" }),
@@ -146,16 +152,13 @@ export const CONFIG = Object.freeze({
     krwCardOther: "KRW's {gap} card at λ = {one} states {N} of the {M} pairs and expects {E} of them wrong.",
     krwCycle: "The majority relation has one cycle: {a} beats {b} with probability {p1}, {b} beats {c} with {p2} and {c} beats {a} with {p3}. Each of the three wins {w} pairs, so they share a dashed box, and no full ranking can state all three pairs in their more likely direction.",
     krwCycles: "The majority relation has {count} cycles of three firms, so no full ranking can state every pair in its more likely direction.",
-    // the card's shared grade, in two plain sentences (one paragraph)
     krwTie: "The card at λ = {one} has {G} grades: {x} and {y} share one, and it states {s} above {t} against the majority (wrong with probability {e}).",
     krwTieTol: " At λ = {one} stating {w} above {l} (probability {p}) beats one shared grade unless the pair is an even split (theory book, chapter 16); an exact solution would split this grade, which lies within KRW's solver tolerances.",
     grade1: Object.freeze({
       race: "Grade 1 = stated highest on white-name contact advantage, as the posterior judges it.",
       gender: "Grade 1 = stated highest on male-name contact advantage, as the posterior judges it.",
     }),
-    // the different-disclosure caption, glossed
     differentGloss: " (they state different numbers of pairs)",
-    firmWord: "firm",
     firmRef: "{name} (KRW firm {id})",
     statusFirm: "{status}: {name}, KRW firm {id}.",
     // slope chart
@@ -184,15 +187,22 @@ export const CONFIG = Object.freeze({
     colMeanValue: "Posterior mean",
     colWinsValue: "Majority wins",
     colCardValue: "Grade on KRW's card",
-    // the unit card
+    // the selected-unit strip and pairwise bars
     cardSelected: "Selected unit",
     cardHovered: "Unit under the pointer",
     cardSelectedFirm: "Selected firm",
     cardHoveredFirm: "Firm under the pointer",
-    cardLine: "{id}: wins {w} of its {pairs} pairs by a majority ({pw}); expected rank {er} ({pe}); posterior mean {m} ({pm}).",
-    cardLineNoMean: "{id}: wins {w} of its {pairs} pairs by a majority ({pw}); expected rank {er} ({pe}).",
+    cardLine: "Wins {w} of its {pairs} pairs by a majority ({pw}); expected rank {er} ({pe}); posterior mean {m} ({pm}).",
+    cardLineNoMean: "Wins {w} of its {pairs} pairs by a majority ({pw}); expected rank {er} ({pe}).",
     cardLeague: "{id}, a {group} unit (SE {se}), posterior SD {sd}.",
     cardCycle: "{id} is one of the three firms in the majority cycle.",
+    firstExact: "Chance of first place: {p}.",
+    firstDraws: "First in {count} of {draws} posterior draws.",
+    firstPairwise: "First-place probability requires a joint law beyond the released pair probabilities.",
+    opponentWin: "{u} above {j}: {p}. Counts as a majority win.",
+    opponentLoss: "{u} above {j}: {p}. The opponent wins this pair.",
+    opponentTie: "{u} above {j}: {p}. Neither unit wins this pair.",
+    ordersPairs: "Pairwise: A > B {ab} · A > C {ac} · B > C {bc}.",
     groupWords: Object.freeze({ small: "small", medium: "medium", large: "large" }),
     pairsHeading: "The pairs of {id}, surest win first",
     pairsAlt: "Bar chart of the pairs of {id}: one bar per other unit, sorted from the surest win to the surest loss; navy up to the chance that {id} is above the other unit, gray above it to one; a dashed line at one half.",
@@ -207,29 +217,24 @@ export const CONFIG = Object.freeze({
     keyHalf: "one half",
     pairsNote: "Majority wins count the navy bars that pass one half; the expected rank is one plus the gray parts, so it also counts how sure each win is.",
     texWorked: "The two counts worked",
+    texIdentity: "Expected-rank pairwise identity",
     formulaNote: "A unit beats another by a majority when stating it above the other is less often wrong than the reverse: with no equal true values, a probability above one half (theory book, chapter 10). The expected rank is the unit's average position under the posterior, {one} at the top; θ is a true value and Y the data. No two units here can have equal true values; where they can, postrank's expected rank also counts each unit with an equal value as higher.",
     formulaNoteKrw: " In the formulas, u is the firm named above.",
-    // read-out
-    headOrders: "Law on orders: ",
-    headLeague: "Simulated league, prior SD {prior}: ",
-    headKrw: "KRW's {n} firms, {gap} gap: ",
-    readOrders: "majority wins put {wfirst} first (it wins {wcount} pairs), expected rank puts {efirst} first ({er1}, against {wfirst2}'s {er2}).",
-    readOrdersAgainst: " The expected-rank order states {b} of the {M} pairs against the majority.",
-    readLeagueSame: "majority wins give the posterior-mean order exactly ({mis} of the {M} pairs differ).",
-    readLeagueDiff: "majority wins and the posterior means order {mis} of the {M} pairs differently.",
-    readLeagueAgainst: " The expected-rank order states {b} {pairs} against the majority.",
-    readStrict: "the majority relation is a strict order.",
-    readCycleOne: "the majority relation has {c} cycle of three firms, so no full ranking follows it.",
-    readCycleMany: "the majority relation has {c} cycles of three firms, so no full ranking follows it.",
-    readKrwAgainst: " Against the majority, the posterior-mean order states {a} of the {M} pairs and the expected-rank order {b}; KRW's card at λ = {one} states {c}.",
+    // concise Frame v2 readouts (<= 35 words, 3 sig figs + S2-01 near-tie distinguishing)
+    readOrders: "Law on orders: majority wins rank {wfirst} first ({wcount} wins), while expected rank puts {efirst} first ({er1} vs. {wfirst2}'s {er2}), stating {b} of {M} pairs against the majority.",
+    readLeagueSame: "Simulated league (prior SD {prior}): majority wins match posterior-mean order ({mis} of the {M} pairs differ); expected rank states {b} {pairs} against the majority.",
+    readLeagueDiff: "Simulated league (prior SD {prior}): majority wins and posterior means order {mis} of the {M} pairs differently; expected rank states {b} {pairs} against the majority.",
+    readKrwRace: "KRW's {n} firms ({gap}): strict majority order. Against it, posterior mean states {a} of the {M} pairs ({em} wrong) and expected rank {b}; λ = {one} card states none ({ec}).",
+    readKrwStrictOther: "KRW's {n} firms ({gap}): strict majority order. Against majority: posterior mean {a} of the {M} pairs, expected rank {b}, λ = {one} card {c} ({G} grades).",
+    readKrwSoleCycle: "KRW's {n} firms ({gap}): {cyc} cycle ({w} pairs won each; {p1}, {p2}, {p3}). Against majority: posterior mean {a} of {M}, expected rank {b}, λ = {one} card {c} ({G} grades).",
+    readKrwCycles: "KRW's {n} firms ({gap}): {cyc} majority cycles. Against majority: posterior mean {a} of {M}, expected rank {b}, λ = {one} card {c} ({G} grades).",
     none: "none",
     // notes and captions
     noteOrders: "Three units and a law on their orders only, after the postrank theory book, chapter 10; there are no values, data or fitted model, so every number here is exact.",
-    noteLeague: "Simulated league of {n} units (ten small, ten medium, ten large), one fixed draw of the estimates (seed {seed}); teaching posterior with a normal prior of mean {zero} and SD {prior}. Majority wins and expected ranks are exact.",
+    noteLeague: "Simulated league of {n} units (ten small, ten medium, ten large), one fixed draw of the estimates (seed {seed}); teaching posterior with a normal prior of mean {zero} and SD {prior}. Majority wins and expected ranks are exact. First-place counts use {draws} posterior draws with seed {drawSeed}.",
     noteKrw: "KRW's firms: the log contact gap of white-named minus Black-named applications (race) or of male-named minus female-named applications (gender), with a smoothed version of KRW's posteriors (continuous cells in place of KRW's posterior grids); the cards come from KRW's code.",
     postLead: "The league's posterior: ",
-    // one KRW notice (data_contract.json scope cc-by-nc-krw; CR-054): DOIs, the license as the deposit states it (no
-    // version), noncommercial, a change note, no endorsement, the conduct line
+    // one KRW notice (data_contract.json scope cc-by-nc-krw; CR-054)
     noticeKrw: "Data: Kline, Rose and Walters (2024), A Discrimination Report Card, American Economic Review, doi:10.1257/aer.20230700; replication deposit doi:10.3886/E198284V1; CC-BY-NC as stated by the deposit (no version), noncommercial use only. The data shown here are provided as is and without warranty. No endorsement by the authors is implied.",
     noticeKrwChanges: "Changes: the pair probabilities as adapted in postrank 1.1.0 (pr_case_krw), a smoothed version of KRW's posteriors. The cards at λ = 1 computed with KRW's code (KRW replication companion) under KRW's archived pair probabilities. Majority wins, expected ranks and the counts computed in this browser.",
     noticeKrwConduct: "The data describe KRW's correspondence experiment, not any firm's current conduct.",
@@ -243,8 +248,6 @@ const LAW = CONFIG.law;
 // ---------------------------------------------------------------------------------------------- data
 
 const LEAGUE_IDS = Object.freeze(Array.from(LEAGUE.ids));
-const LEAGUE_SE = Object.freeze(Array.from(LEAGUE.se));
-const LEAGUE_EST = Object.freeze(Array.from(drawLeague(LEAGUE_SEED).estimate));
 const nanDiagonal = (m) => m.map((row) => row.map((v) => (v === null || v === undefined ? Number.NaN : v)));
 
 /** KRW's released firms and the λ grid's card row, or null when either file lacks what the app reads. */
@@ -288,12 +291,10 @@ function finish(d) {
   d.M = pairCount(d.n);
   d.e = d.E.e[0];
   d.mw = majorityWins(d.E);
-  // the units of the majority relation's cyclic triples (engine cycleTriples: [a, x, y], a beats x, x beats y, y beats a)
   d.cycleMembers = new Set(d.mw.cycleTriples.flat());
   d.byWins = scoreOrder(d.mw.wins, { direction: "descending", ids: d.ids });
   d.byEr = scoreOrder(d.er, { direction: "ascending", ids: d.ids });
   d.byMean = d.mean ? scoreOrder(d.mean, { direction: "descending", ids: d.ids }) : null;
-  // KRW's card in its grade order (grade 1 first; a shared grade is a block of equal values)
   d.byCard = d.card ? scoreOrder(d.card, { direction: "ascending", ids: d.ids }) : null;
   const against = (g) => statedAbove(g, d.E, { tau: HALF });
   d.erOrder = strictOrder(d.er, { direction: "ascending" });
@@ -301,7 +302,6 @@ function finish(d) {
   if (d.mean) {
     d.meanOrder = strictOrder(d.mean);
     d.against.mean = against(d.meanOrder).count;
-    // pairs that majority wins and the posterior means order differently (a tie in one only counts)
     d.misMean = misorderedPairs(d.mw.wins, d.mean).count;
   }
   if (d.card) {
@@ -321,17 +321,15 @@ function lawData() {
   const r = rankSummaries({ states, probs: LAW.probs.slice() });
   return finish({
     key: "orders", geom: "orders", ids: LAW.ids.slice(), names: LAW.ids.slice(), firm: false,
-    E: { ids: pair.ids, criteria: pair.criteria, e: pair.e }, pi: pair.pi[0], er: r.expectedRank, mean: null,
+    E: { ids: pair.ids, criteria: pair.criteria, e: pair.e }, pi: pair.pi[0], er: r.expectedRank, first: r.rankProbs[0], mean: null,
   });
 }
 
 /** The simulated league at one prior SD: the teaching posterior, its pair array and exact expected ranks. */
 function leagueData(priorSd) {
-  const post = normalPosterior(LEAGUE_EST.slice(), LEAGUE_SE.slice(), { priorMean: CONFIG.priorMean, priorSd });
-  const mean = Array.from(post.mean);
-  const sd = Array.from(post.sd);
-  const E = errorArray(mean, sd, { ids: LEAGUE_IDS.slice() });
-  return finish({ key: `league:${priorSd}`, geom: "league", priorSd, ids: LEAGUE_IDS.slice(), names: LEAGUE_IDS.slice(), firm: false, E, er: expectedRank(E), mean, sd });
+  const { ids, mean, sd, er, rankProbs } = rankingDataset("league", priorSd);
+  const E = errorArray(mean, sd, { ids });
+  return finish({ key: `league:${priorSd}`, geom: "league", priorSd, ids, names: ids, firm: false, E, er, mean, sd, first: rankProbs[0] });
 }
 
 /** KRW's firms on one criterion: the released pair array, posterior means, exact expected ranks and the λ = 1 card. */
@@ -376,13 +374,11 @@ export function defaultUnit(cc) {
   return cc.wins.order[0];
 }
 
-/** i beats j by a majority (majorityWins' rule): stating i above j is less often wrong than the reverse (used for the
- * one pair a card leaves in one grade). */
+/** i beats j by a majority (majorityWins' rule): stating i above j is less often wrong than the reverse. */
 const beats = (d, i, j) => d.e[i][j] < d.e[j][i] - CONFIG.tieTol;
 
-/** The one cyclic triple of the majority relation (engine cycleTriples), as [a, b, c] with a (its first unit in data
- * order) beating b, b beating c and c beating a, when the relation has exactly one and its three units win as many
- * pairs each (so they share a box of equal win counts); else null. */
+/** The one cyclic triple of the majority relation (engine cycleTriples), as [a, b, c] when the relation has exactly
+ * one and its three units win as many pairs each; else null. */
 function soleCycle(d) {
   if (d.mw.cycleTriples.length !== 1) return null;
   const cyc = d.mw.cycleTriples[0];
@@ -398,40 +394,89 @@ function cardTies(card) {
   return out;
 }
 
+/** Format a cycle probability at 3 sig figs, expanding via formatDistinguishing only on near-ties (S2-01). */
+function formatCycleProb(val, allProbs) {
+  const base3 = formatSig(val, { sig: 3 });
+  const refs = [HALF, ...allProbs.filter((x) => x !== val)];
+  let closest = null;
+  for (const r of refs) {
+    if (formatSig(r, { sig: 3 }) === base3) {
+      if (closest === null || Math.abs(val - r) < Math.abs(val - closest)) closest = r;
+    }
+  }
+  return closest !== null ? formatDistinguishing(val, closest, { minSig: 3 }) : formatReadoutProb(val);
+}
+
 // ---------------------------------------------------------------------------------------------- CSS
 
 const CSS = `${cssFor(CONFIG.className)}
-.prx-mw .prx-mw-data, .prx-mw .prx-mw-crit { display: flex; flex-wrap: wrap; column-gap: 1rem; }
-.prx-mw .prx-mw-data > legend, .prx-mw .prx-mw-crit > legend { flex: 1 1 100%; }
-.prx-mw .prx-mw-data > .prx-radio, .prx-mw .prx-mw-crit > .prx-radio { font-weight: 400; }
-.prx-mw .prx-mw-panel { margin: 1.25rem 0 0; min-width: 0; container-type: inline-size; }
+/* PR-01: reset legacy domain/which-ranking.js container/grid rules inside Frame v2 */
+.prx-widget.prx-mw[data-prx-frame="v2"] .prx-toolbar > .prx-controls { align-items: flex-end; }
+.prx-widget.prx-mw[data-prx-frame="v2"] .prx-stage > *,
+.prx-widget.prx-mw[data-prx-frame="v2"] .prx-wr-grid { grid-template-columns: minmax(0, 1fr); grid-area: auto; }
+@media (max-width: 40em) {
+  .prx-widget.prx-mw[data-prx-frame="v2"] .prx-toolbar { gap: 0.3rem 0.45rem; margin-bottom: 0.35rem; }
+  .prx-widget.prx-mw[data-prx-frame="v2"] .prx-presets .prx-seg-buttons { gap: 0.25rem; }
+  .prx-widget.prx-mw[data-prx-frame="v2"] .prx-presets .prx-seg { padding-inline: 0.42rem; font-size: 0.8125rem; }
+  .prx-widget.prx-mw[data-prx-frame="v2"] > .prx-readout { margin-bottom: 0.45rem; padding: 0.28rem 0.5rem; }
+  .prx-widget.prx-mw[data-prx-frame="v2"] .prx-stage { padding: 0.45rem 0.55rem; }
+  .prx-widget.prx-mw[data-prx-frame="v2"] .prx-stage .prx-mw-cue { display: none; }
+}
+.prx-mw .prx-mw-crit { display: flex; flex-wrap: wrap; column-gap: 1rem; }
+.prx-mw .prx-mw-crit > legend { flex: 1 1 100%; }
+.prx-mw .prx-mw-crit > .prx-radio { font-weight: 400; }
+.prx-mw .prx-mw-unit-select select { max-width: 18rem; }
+/* Stage layout: header + 1-line selected-unit strip + generous >= 13px bump chart */
+.prx-mw .prx-stage .prx-mw-bump { min-width: 0; container-type: inline-size; }
+.prx-mw .prx-mw-comparison { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; align-items: start; }
+.prx-mw .prx-mw-comparison > * { min-width: 0; }
+@container (min-width: 36rem) {
+  .prx-mw[data-prx-data="orders"] .prx-mw-comparison { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+}
+@container (min-width: 43rem) {
+  .prx-mw .prx-mw-comparison { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); }
+}
+.prx-mw .prx-stage .prx-mw-stage-head {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 0.75rem;
+  margin: 0 0 0.35rem;
+}
+.prx-mw .prx-stage .prx-mw-stage-head .prx-wr-heading { margin: 0; font-size: 0.9375rem; color: var(--prx-plot-fg); }
+.prx-mw .prx-stage .prx-mw-cue { font-size: 0.8125rem; color: var(--prx-plot-muted); }
+.prx-mw .prx-stage .prx-mw-inspect.prx-wr-card {
+  margin: 0 0 0.45rem; padding: 0.35rem 0.65rem;
+  background: var(--prx-plot-bg); color: var(--prx-plot-fg);
+  border: 1px solid var(--prx-border); border-left: 3px solid var(--prx-post); border-radius: 6px;
+  font-size: 0.875rem; line-height: 1.4;
+}
+.prx-mw .prx-stage .prx-mw-inspect p { display: inline; margin: 0 0.4rem 0 0; }
+.prx-mw .prx-stage .prx-mw-inspect p:last-child { margin-right: 0; }
+.prx-mw .prx-stage .prx-mw-inspect .prx-wr-card-status { color: var(--prx-plot-fg); }
+.prx-mw .prx-wr-bump-chart [data-prx-role="header"] { font-size: 13px; }
+.prx-mw[data-prx-data="krw"] .prx-mw-bump [data-prx-role="value"]:not([data-prx-on]) { display: none; }
+.prx-mw[data-prx-data="krw"] .prx-mw-bump [data-prx-role="value"][data-prx-on] { font-weight: 600; }
+/* Disclosures (Data & Method) */
+.prx-mw .prx-mw-panel { margin: 0 0 0.85rem; min-width: 0; container-type: inline-size; }
 @container (max-width: 30rem) {
   .prx-mw .prx-mw-krw-table { font-size: 0.82em; }
   .prx-mw .prx-mw-krw-table th, .prx-mw .prx-mw-krw-table td { padding: 0.15rem 0.3rem; }
 }
 .prx-mw .prx-mw-panel p { margin: 0.35rem 0 0; }
-.prx-mw .prx-mw-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem 1.5rem; align-items: start; min-width: 0; }
-@container (min-width: 46rem) {
-  .prx-mw .prx-mw-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .prx-mw .prx-mw-unit { position: sticky; top: var(--prx-mw-top, 0.5rem); }
-}
-.prx-mw[data-prx-mw-site] { --prx-mw-top: 4.5rem; }
-.prx-mw .prx-mw-bump, .prx-mw .prx-mw-unit { min-width: 0; }
-.prx-mw .prx-mw-unit.prx-wr-card { margin: 0; }
-.prx-mw .prx-mw-pairs-title { margin: 0.6rem 0 0.2rem; font-size: 0.92em; font-weight: 600; color: var(--prx-fg-heading); }
+.prx-mw .prx-mw-pairs-box { margin: 0; min-width: 0; }
+.prx-mw .prx-mw-pairs-title { margin: 0 0 0.25rem; font-size: 0.92em; font-weight: 600; color: var(--prx-fg-heading); }
 .prx-mw .prx-mw-pairs-chart .prx-chart-area { cursor: pointer; }
 .prx-mw .prx-mw-legend { margin: 0.2rem 0 0; padding: 0.15rem 0.5rem 0.25rem; }
 .prx-mw .prx-mw-sw-above { background: var(--prx-post); }
 .prx-mw .prx-mw-sw-below { background: var(--prx-plot-grid); }
 .prx-mw .prx-mw-rule { display: inline-block; flex: none; width: 1.1rem; height: 0; border-top: 1.5px dashed var(--prx-plot-fg); }
 .prx-mw .prx-mw-krw-table th:first-child { text-align: left; white-space: normal; }
-.prx-mw .prx-wr-table.prx-mw-orders td:last-child:not(:first-child), .prx-mw .prx-wr-table.prx-mw-krw-table td:last-child:not(:first-child) { text-align: right; }
+.prx-mw .prx-wr-table.prx-mw-orders td:last-child:not(:first-child),
+.prx-mw .prx-wr-table.prx-mw-krw-table td:last-child:not(:first-child),
+.prx-mw .prx-wr-table.prx-mw-league-table td:last-child:not(:first-child) { text-align: right; }
 .prx-mw .prx-mw-captions { margin: 0.3rem 0 0; font-size: 0.85em; color: var(--prx-fg-muted); }
 .prx-mw .prx-mw-grade1 { font-weight: 600; color: var(--prx-fg); }
+.prx-mw .prx-mw-method-section + .prx-mw-method-section { margin-top: 0.65rem; }
 .prx-mw .prx-mw-notice { margin: 0.5rem 0 0; font-size: 0.85em; color: var(--prx-fg-muted); overflow-wrap: anywhere; }
 .prx-mw .prx-mw-notice strong { font-weight: 600; color: var(--prx-fg); }
-.prx-mw[data-prx-data="krw"] .prx-mw-bump [data-prx-role="value"]:not([data-prx-on]) { display: none; }
-.prx-mw[data-prx-data="krw"] .prx-mw-bump [data-prx-role="value"][data-prx-on] { font-weight: 600; }
 `;
 
 // ---------------------------------------------------------------------------------------------- the app
@@ -439,6 +484,7 @@ const CSS = `${cssFor(CONFIG.className)}
 export function mountWidget(el, spec = {}) {
   return createWidget(el, spec, {
     name: CONFIG.name,
+    frame: "v2",
     label: CONFIG.label,
     className: CONFIG.className,
     css: CSS,
@@ -450,37 +496,69 @@ export function mountWidget(el, spec = {}) {
     },
     build(ctx) {
       const { h } = ctx;
-      const ro = (name, raw, display) => { const node = ctx.num(raw, display); if (name) node.setAttribute("data-prx-readout", name); return node; };
+      const writer = createReadout(ctx);
+      const ro = (name, raw, display) => {
+        const node = ctx.num(raw, display);
+        if (name) node.setAttribute("data-prx-readout", name);
+        return node;
+      };
       const nameNode = (text) => h("span", { "data-prx-name": text, text });
       const one = () => ctx.num(CONFIG.krw.cardLambda, formatCount(CONFIG.krw.cardLambda));
       const digitsOf = (d) => CONFIG.digits[d.geom];
       const fmtEr = (d, v) => formatDecimal(v, { digits: digitsOf(d).er });
-      const fmtMean = (d, v) => formatDecimal(v, { digits: digitsOf(d).mean });
+      // bare-zero guard for extreme prior SDs (e.g. priorSd = .02)
+      const fmtMean = (d, v) => (v !== 0 && Math.abs(v) < 5e-4 ? formatSci(v, { sig: 3 }) : formatDecimal(v, { digits: digitsOf(d).mean }));
       const fmtProb = (d, v) => formatProb(v, { digits: digitsOf(d).prob });
       const fmtSd = (v) => formatDecimal(v, { digits: CONFIG.digits.league.sd });
-      // a unit as text (its id, or a firm's name) and as a node; a firm's KRW id is a name, so its digits are not a number
       const unitText = (d, u) => d.names[u];
       const unitNode = (d, u) => nameNode(d.names[u]);
       const firmRef = (d, u) => fill(T.firmRef, { name: () => nameNode(d.names[u]), id: () => nameNode(d.ids[u]) });
-      // a slot that names a firm with its KRW id the first time it is filled and by its name after that
       const firstRef = (d, u) => {
         let used = false;
         return () => { const out = used ? unitNode(d, u) : firmRef(d, u); used = true; return out; };
       };
       const tid = (id) => (id.length > 1 ? id.replace(/^([A-Za-z]+)(\d+)$/, "\\mathrm{$1}$2") : id);
-      // a column's value as text (a card's grade is a count), its header and its words in titles
       const valueText = (d, key, v) => (key === "mean" ? fmtMean(d, v) : key === "wins" || key === "card" ? formatCount(v) : fmtEr(d, v));
       const header = (key) => ({ mean: T.colMean, wins: T.colWinsHead, card: T.colCardHead })[key] ?? T.colEr;
       const byWords = (key) => ({ mean: T.byMean, wins: T.byWins, card: T.byCard })[key] ?? T.byEr;
 
-      // --- controls: data set, KRW's criterion, the league's prior SD
-      const dataRadio = ctx.radioGroup({
-        legend: T.dataLegend, name: "data", className: "prx-mw-data",
-        options: [{ value: "orders", label: T.dataOrders }, { value: "league", label: T.dataLeague }, { value: "krw", label: T.dataKrw }],
+      // --- Primary control in ctx.controls; secondary controls in Settings disclosure
+      const dataSelect = ctx.select({
+        label: T.dataLegend, name: "data", className: "prx-mw-data-select",
+        options: [
+          { value: "orders", label: T.dataSelectOrders },
+          { value: "league", label: T.dataSelectLeague },
+          { value: "krw", label: T.dataSelectKrw },
+        ],
         value: ctx.state.data,
-        // a new data set starts from its default unit
         onChange: (v) => ctx.set({ data: v, unit: "" }),
       });
+      ctx.controls.append(ctx.primaryControl(dataSelect.root));
+
+      const settings = ctx.settingsBox(T.settingsTitle);
+      const unitSelectLabel = h("label", { text: T.unitLabel });
+      const unitSelectEl = h("select", {
+        onchange: () => ctx.set({ unit: unitSelectEl.value }),
+      });
+      unitSelectLabel.htmlFor = (unitSelectEl.id = `prx-mw-unit-${Math.random().toString(36).slice(2, 8)}`);
+      const unitControlRoot = h("div", { class: "prx-control prx-mw-unit-select" }, unitSelectLabel, unitSelectEl);
+      let unitOptionsKey = null;
+      const syncUnitSelect = (d, cc, selIdx) => {
+        if (unitOptionsKey !== d.key) {
+          unitOptionsKey = d.key;
+          unitSelectLabel.textContent = d.firm ? T.firmLabel : T.unitLabel;
+          unitSelectEl.replaceChildren(
+            ...cc.wins.order.map((u) => h("option", {
+              value: d.ids[u],
+              text: d.firm ? `${d.names[u]} (KRW ${d.ids[u]})` : d.names[u],
+            })),
+          );
+        }
+        if (selIdx !== null && selIdx !== undefined && d.ids[selIdx] !== undefined) {
+          unitSelectEl.value = d.ids[selIdx];
+        }
+      };
+
       const critRadio = ctx.radioGroup({
         legend: T.critLegend, name: "criterion", className: "prx-mw-crit",
         options: [{ value: "race", label: T.critRace }, { value: "gender", label: T.critGender }],
@@ -490,32 +568,37 @@ export function mountWidget(el, spec = {}) {
         label: T.priorLabel, ...ctx.key("priorSd"), hint: fill(T.priorHint, { app: () => appLink(ctx, T.shrinkageApp) }),
         onInput: (v) => ctx.set({ priorSd: v }),
       });
-      // the controls of one data set only are in the page; each comes back at its own anchor, so the controls that
-      // stay are never moved and keep keyboard focus
       const anchor = (name) => ctx.doc.createComment(name);
       const slots = [{ node: critRadio.root, at: anchor("criterion") }, { node: prior.root, at: anchor("prior-sd") }];
-      ctx.controls.append(dataRadio.root, ...slots.map((s) => s.at));
+      settings.body.append(unitControlRoot, ...slots.map((s) => s.at));
       const showControls = (shown) => slots.forEach((s, i) => {
         if (shown[i] && !s.node.isConnected) s.at.before(s.node);
         else if (!shown[i] && s.node.isConnected) s.node.remove();
       });
-      ctx.controls.after(ctx.readout.node);
 
-      // --- the data set's panel (law on orders, league, KRW's card), under the chart and the unit
-      const panel = h("section", { class: "prx-mw-panel", "data-prx-part": "notes" });
-
-      // --- slope chart (under its heading; the note and the how-to hint follow the chart)
+      // --- Stage: the same selection drives the order chart, pair probabilities, and first-place evidence.
       const bumpHeading = h("h4", { class: "prx-wr-heading" });
-      const bumpNote = h("p", { class: "prx-wr-note", "data-prx-part": "notes" });
-      const howTo = h("p", { class: "prx-hint prx-wr-howto", "data-prx-part": "notes", text: T.howTo });
-      const bumpSlot = h("div", { class: "prx-wr-bump-chart" });
-      const tieNote = h("p", { class: "prx-wr-note", "data-prx-part": "notes", text: T.tieNote, hidden: true });
-      const bumpBox = h("section", { class: "prx-mw-bump" }, bumpHeading, bumpSlot, tieNote, bumpNote, howTo);
+      const stageCue = h("span", { class: "prx-mw-cue", text: T.stageCue });
+      const stageHead = h("div", { class: "prx-mw-stage-head" }, bumpHeading, stageCue);
 
-      // --- the unit card: numbers, its pairs as bars, the two formulas
       const cardStatus = h("p", { class: "prx-wr-card-status" });
       const cardLine = h("p", { class: "prx-wr-card-line" });
       const cardExtra = h("p", { class: "prx-wr-card-extra" });
+      const firstLine = h("p", { class: "prx-mw-first", "data-prx-evidence": "first-place" });
+      const opponentLine = h("p", { class: "prx-mw-opponent", "data-prx-evidence": "opponent" });
+      const ordersPairsLine = h("p", { class: "prx-mw-orders-pairs", hidden: true });
+      const card = h("section", { class: "prx-wr-card prx-mw-inspect", "aria-label": T.cardSelected },
+        cardStatus, cardLine, firstLine, opponentLine, cardExtra, ordersPairsLine);
+
+      const bumpSlot = h("div", { class: "prx-wr-bump-chart" });
+      const tieNote = h("p", { class: "prx-wr-note", "data-prx-part": "notes", text: T.tieNote, hidden: true });
+      const comparison = h("div", { class: "prx-mw-comparison" }, h("div", {}, bumpSlot, tieNote));
+      const bumpBox = h("section", { class: "prx-mw-bump" }, stageHead, card, comparison);
+      ctx.stage.append(bumpBox);
+
+      // --- Data disclosure: complete law/ranking/unit tables. The linked pair chart stays on the stage.
+      const dataBox = ctx.dataBox(T.dataBoxTitle);
+      const panel = h("section", { class: "prx-mw-panel", "data-prx-part": "notes" });
       const pairsTitle = h("p", { class: "prx-mw-pairs-title", role: "heading", "aria-level": "4" });
       const pairsSlot = h("div", { class: "prx-mw-pairs-chart" });
       const keyAbove = h("span", {});
@@ -526,17 +609,26 @@ export function mountWidget(el, spec = {}) {
         h("span", { class: "prx-key" }, swatch("prx-mw-sw-below"), keyBelow),
         h("span", { class: "prx-key" }, h("span", { class: "prx-mw-rule", "aria-hidden": "true" }), T.keyHalf));
       const pairsNote = h("p", { class: "prx-wr-note", text: T.pairsNote });
-      const texBox = ctx.scrollRegion(h("div", { class: "prx-wr-tex", "data-prx-tex": "majority-wins" }), T.texWorked);
-      const formulaNote = h("p", { class: "prx-wr-note" });
-      const card = h("section", { class: "prx-wr-card prx-mw-unit", "data-prx-part": "readout", "aria-label": T.cardSelected },
-        cardStatus, cardLine, cardExtra, pairsTitle, pairsSlot, legend, pairsNote, texBox, formulaNote);
-      ctx.charts.classList.add("prx-wr-charts");
-      ctx.charts.append(h("div", { class: "prx-mw-grid" }, bumpBox, card), panel);
+      const pairsBox = h("div", { class: "prx-mw-pairs-box" }, pairsTitle, pairsSlot, legend, pairsNote);
+      comparison.append(pairsBox);
+      dataBox.body.append(panel);
 
-      // --- the source note after the caption; on a standalone page also KRW's notice (license, changes, conduct line;
-      // its citation carries DOIs and a year, so it sits outside the parts whose numbers the checks read)
+      // --- Method disclosure: worked formulas + E[R_i] = n - sum pi_{ij} identity + league/chart/source notes
+      const methodBox = ctx.methodBox(T.methodBoxTitle);
+      const texBox = ctx.scrollRegion(h("div", { class: "prx-wr-tex", "data-prx-tex": "majority-wins" }), T.texWorked);
+      const identityBox = ctx.scrollRegion(h("div", { class: "prx-wr-tex", "data-prx-tex": "rank-identity" }), T.texIdentity);
+      const formulaNote = h("p", { class: "prx-wr-note" });
+      const leagueMethodBox = h("div", { class: "prx-mw-method-section", "data-prx-part": "notes", hidden: true });
+      const bumpNote = h("p", { class: "prx-wr-note", "data-prx-part": "notes" });
+      const howTo = h("p", { class: "prx-hint prx-wr-howto", "data-prx-part": "notes", text: T.howTo });
       const sourceNote = ctx.part("notes", h("p", { class: "prx-wr-note prx-wr-source" }));
-      ctx.caption.after(sourceNote);
+      methodBox.body.append(
+        h("div", { class: "prx-mw-method-section" }, texBox, identityBox, formulaNote),
+        leagueMethodBox,
+        h("div", { class: "prx-mw-method-section" }, bumpNote, howTo, sourceNote),
+      );
+
+      // --- Caption and standalone KRW CC-BY-NC notice (outside numberScope so DOIs/years remain valid)
       const authoredCaption = ctx.info?.caption ?? "";
       const site = Boolean(ctx.doc.querySelector?.('meta[name="quarto:offset"]'));
       if (site) ctx.root.setAttribute("data-prx-mw-site", "");
@@ -549,11 +641,11 @@ export function mountWidget(el, spec = {}) {
       let bumpGeom = null;
       let pairsGeom = null;
       let selected = null;
-      let hovered = null;     // the unit under the pointer in the slope chart (the card follows it)
+      let hovered = null;     // the unit under the pointer in the slope chart (the strip follows it)
       let peer = null;        // the unit of the bar under the pointer (marked in the slope chart only)
       let rendering = false;
 
-      // ------------------------------------------------------------------------------------------- the panel
+      // ------------------------------------------------------------------------------------------- Data & Method panels
 
       function drawOrdersPanel(d) {
         const dg = CONFIG.digits.orders;
@@ -571,16 +663,42 @@ export function mountWidget(el, spec = {}) {
         panel.replaceChildren(h("h4", { class: "prx-wr-heading", text: T.lawHeading }), lead,
           ...captionedTable(ctx, table, T.lawTableCaption, T.lawTable),
           h("p", { class: "prx-wr-note", text: T.lawEnd }), h("p", { class: "prx-wr-note", text: T.lawNoMean }));
+        leagueMethodBox.hidden = true;
+        leagueMethodBox.replaceChildren();
       }
 
-      function drawLeaguePanel(d) {
+      function drawLeaguePanel(d, cc) {
+        const table = h("table", { class: "prx-wr-table prx-mw-league-table prx-sticky-first" },
+          h("thead", {}, h("tr", {},
+            h("th", { scope: "col", text: T.colUnit }),
+            h("th", { scope: "col", text: T.colGroup }),
+            h("th", { scope: "col", text: T.colSe }),
+            h("th", { scope: "col", text: T.colPostSd }),
+            h("th", { scope: "col", text: T.colMeanValue }),
+            h("th", { scope: "col", text: T.colWinsValue }),
+            h("th", { scope: "col", text: T.colExpected }),
+          )),
+          h("tbody", {}, ...cc.wins.order.map((u) => h("tr", {},
+            h("th", { scope: "row", text: d.ids[u] }),
+            h("td", { text: T.groupWords[LEAGUE.group[u]] }),
+            h("td", {}, ctx.num(LEAGUE.se[u], formatDecimal(LEAGUE.se[u], { digits: CONFIG.digits.league.se }))),
+            h("td", {}, ctx.num(d.sd[u], fmtSd(d.sd[u]))),
+            h("td", {}, ctx.num(d.mean[u], fmtMean(d, d.mean[u]))),
+            h("td", {}, ctx.num(d.mw.wins[u], formatCount(d.mw.wins[u]))),
+            h("td", {}, ctx.num(d.er[u], fmtEr(d, d.er[u]))),
+          ))));
+        panel.replaceChildren(...captionedTable(ctx, table, T.leagueTableCaption, T.leagueTable));
+
         const groupSd = (g) => () => {
           const i = LEAGUE.group.indexOf(g);
           return ro(`law-sd-${g}`, d.sd[i], fmtSd(d.sd[i]));
         };
-        panel.replaceChildren(h("h4", { class: "prx-wr-heading", text: T.leagueHeading }),
+        leagueMethodBox.hidden = false;
+        leagueMethodBox.replaceChildren(
+          h("h4", { class: "prx-wr-heading", text: T.leagueHeading }),
           h("p", { class: "prx-wr-note" }, ...fill(T.leagueLaw, { app: () => appLink(ctx, T.shrinkageApp) }),
-            ...fill(T.leagueWidths, { small: groupSd("small"), medium: groupSd("medium"), large: groupSd("large") })));
+            ...fill(T.leagueWidths, { small: groupSd("small"), medium: groupSd("medium"), large: groupSd("large") })),
+        );
       }
 
       function drawKrwPanel(d) {
@@ -615,12 +733,9 @@ export function mountWidget(el, spec = {}) {
             E: () => ro("krw-card-e", ev.card.E[0], fmtE(ev.card.E[0])),
           })));
         }
-        // the cycles of the majority relation (engine cycleTriples), the one cycle named when its three units share a box
-        // of equal win counts
         if (d.mw.cycles > 0) {
           const cyc = soleCycle(d);
           if (cyc) {
-            // the engine writes the cycle from its first unit in data order: a beats b, b beats c, c beats a
             const [a, b, c] = cyc;
             const pi = (i, j) => 1 - d.e[i][j];
             parts.push(h("p", { class: "prx-wr-note" }, ...fill(T.krwCycle, {
@@ -632,9 +747,6 @@ export function mountWidget(el, spec = {}) {
             parts.push(h("p", { class: "prx-wr-note" }, ...fill(T.krwCycles, { count: () => ro("cycles", d.mw.cycles, formatCount(d.mw.cycles)) })));
           }
         }
-        // the pair the card leaves in one grade, what it states against the majority, and why that shared grade is
-        // not part of an exact optimum when the pair is not an even split
-        // (two plain sentences in one paragraph)
         const ties = cardTies(d.card);
         if (ties.length === 1) {
           const [x, y] = ties[0];
@@ -657,23 +769,22 @@ export function mountWidget(el, spec = {}) {
           if (tie.length) parts.push(h("p", { class: "prx-wr-note prx-mw-tie" }, ...tie));
         }
         parts.push(h("p", { class: "prx-wr-note prx-mw-grade1", text: T.grade1[crit] }));
-        // the three rankings are evaluated as given; when they state different numbers of pairs, the table says so
         const differ = new Set([ev.mean.N, ev.er.N, ev.card.N]).size > 1;
         parts.push(h("p", { class: "prx-mw-captions" }, captionNode(ctx, "krw-card"), "; ", captionNode(ctx, "fixed-report"),
           ...(differ ? ["; ", captionNode(ctx, "different-disclosure"), T.differentGloss] : []), "."));
         panel.replaceChildren(...parts);
+        leagueMethodBox.hidden = true;
+        leagueMethodBox.replaceChildren();
       }
 
-      function drawPanel(d) {
+      function drawPanel(d, cc) {
         if (d.geom === "orders") drawOrdersPanel(d);
-        else if (d.geom === "league") drawLeaguePanel(d);
+        else if (d.geom === "league") drawLeaguePanel(d, cc);
         else drawKrwPanel(d);
       }
 
-      // ------------------------------------------------------------------------------------------- the slope chart
+      // ------------------------------------------------------------------------------------------- Stage slope chart
 
-      // a figure narrower than its slot keeps its drawn width (the svg would otherwise stretch to the slot's width and
-      // enlarge its text); the slot itself stays as wide as its column, so the next draw still measures the column
       function capWidth(slot, width) {
         const chart = slot.querySelector(".prx-chart");
         if (chart) chart.style.maxWidth = `${width}px`;
@@ -708,27 +819,71 @@ export function mountWidget(el, spec = {}) {
           table, keyboardLabel: T.bumpKeyboard,
           title: (x) => `${byWords(cols[x.c].key)}, ${placeText(cols[x.c], x.u)}: ${unitText(d, x.u)} (${valueText(d, cols[x.c].key, x.value)})`,
           onFocus: (u) => select(u),
-          width: bumpSlot.clientWidth || bumpBox.clientWidth,
+          width: bumpSlot.clientWidth || bumpBox.clientWidth || ctx.stage.clientWidth,
         });
+        // WA-01: deterministically clamp column-highlight <rect> within [4, bumpGeom.width - 4]
+        const r = bumpGeom.svg?.querySelector("rect");
+        if (r) {
+          const rx = Number(r.getAttribute("x"));
+          const rw = Number(r.getAttribute("width"));
+          if (Number.isFinite(rx) && Number.isFinite(rw)) {
+            const left = Math.max(4, rx);
+            const right = Math.min(bumpGeom.width - 4, rx + rw);
+            if (right > left) {
+              r.setAttribute("x", String(left));
+              r.setAttribute("width", String(right - left));
+            }
+          }
+        }
+        // WA-04: inset 2-column orders slope-line endpoints past interior value/id labels so no stubs cross A—● 1.98
+        if (d.geom === "orders" && bumpGeom.svg) {
+          const colSpan = Math.max(1, bumpGeom.width - G.marginLeft - G.marginRight);
+          const estPx = (s, fs, bold = false) =>
+            [...String(s)].reduce((acc, ch) => acc + fs * (ch === "." || ch === "," || ch === " " ? 0.32 : bold ? 0.72 : 0.62), 0);
+          const maxValW = Math.max(0, ...cols[0].value.map((v) => estPx(valueText(d, cols[0].key, v), G.valueFont, false)));
+          const maxIdW = Math.max(0, ...d.names.map((nm) => estPx(nm, G.font, true)));
+          const xStart = G.marginLeft + Math.min(Math.round(colSpan * 0.38), Math.round(G.labelGap + maxValW + 6));
+          const xEnd = bumpGeom.width - G.marginRight - Math.min(Math.round(colSpan * 0.38), Math.round(G.labelGap + maxIdW + 6));
+          if (xEnd > xStart) {
+            bumpGeom.svg.querySelectorAll('[data-prx-role="link"]').forEach((linkEl) => {
+              const m = /^M\s*([+-]?\d*\.?\d+)\s*,\s*([+-]?\d*\.?\d+)\s*L\s*([+-]?\d*\.?\d+)\s*,\s*([+-]?\d*\.?\d+)\s*$/i.exec(
+                linkEl.getAttribute("d") || "",
+              );
+              if (m) linkEl.setAttribute("d", `M${xStart},${m[2]}L${xEnd},${m[4]}`);
+            });
+          }
+        }
+        // Prevent top-row value callouts on dense KRW/league charts from touching column headers
+        if (d.geom !== "orders" && bumpGeom.svg) {
+          const valGroups = [...bumpGeom.svg.querySelectorAll("g")].filter((g) => g.querySelector('[data-prx-role="value"]'));
+          valGroups.forEach((g, ci) => {
+            const col = cols[ci];
+            if (!col) return;
+            g.querySelectorAll('[data-prx-role="value"]').forEach((t) => {
+              const u = Number(t.getAttribute("data-prx-unit"));
+              if (Number.isFinite(u) && col.slot[u] <= (d.geom === "krw" ? 2 : 0)) {
+                t.setAttribute("dy", String(G.labelGap + 5));
+              }
+            });
+          });
+        }
         capWidth(bumpSlot, bumpGeom.width);
         tieNote.hidden = !bumpGeom.blocks;
       }
 
-      // ------------------------------------------------------------------------------------------- the unit card
+      // ------------------------------------------------------------------------------------------- Selected unit & disclosures
 
       let pairsDrawn = null;
       function drawPairs(d, u) {
         const P = CONFIG.pairs;
         const G = P[d.geom];
-        const avail = Math.max(1, Math.round(pairsSlot.clientWidth || card.clientWidth || ctx.width()));
+        const avail = Math.max(1, Math.round(pairsSlot.clientWidth || ctx.stage.clientWidth || ctx.width()));
         const width = Math.min(avail, G.maxWidth);
-        // the same unit at the same width is not drawn again, so its bars keep their keyboard stop and focus
         const stamp = `${d.key}|${u}|${width}`;
         if (stamp === pairsDrawn) return;
         pairsDrawn = stamp;
         const others = [];
         for (let j = 0; j < d.n; j += 1) if (j !== u) others.push(j);
-        // surest win first: the smallest chance that stating u above j is wrong; equal chances in data order
         others.sort((a, b) => d.e[u][a] - d.e[u][b] || a - b);
         const rows = others.map((j, r) => ({ j, key: String(r), p: 1 - d.e[u][j], q: d.e[u][j], name: unitText(d, j) }));
         const me = unitText(d, u);
@@ -767,8 +922,8 @@ export function mountWidget(el, spec = {}) {
         pairsGeom = { svg: handle.svg, width, height: G.height, ml: G.marginLeft, mr: G.marginRight, rows };
       }
 
-      // the two counts worked; in an app narrower than WR.narrowPx each result gets a line of its own (CR-065), with the
-      // numbers in the same order
+      // Preserve exact mtext indices [1], [3], [6] inside [data-prx-tex="majority-wins"] for verification/readouts/majority-wins.json,
+      // and show E[R_i | Y] = n - sum_{j != i} pi_{ij} in the companion identityBox right below.
       function drawFormula(d, u) {
         const f = formulaNums();
         const half = () => f.num(HALF, formatFraction(1, 2));
@@ -778,7 +933,6 @@ export function mountWidget(el, spec = {}) {
           const me = d.ids[u];
           const others = d.ids.map((_, j) => j).filter((j) => j !== u);
           const wins = `H_{${me}} &= \\#\\{\\, j : \\Pr(\\theta_{${me}} > \\theta_j \\mid Y) > ${half()} \\,\\}${eq}${f.num(w, formatCount(w), "prx-post")}`;
-          // one probability per line, so that the formula fits a 375 px screen
           const pis = others.map((j) => `\\Pr(\\theta_{${d.ids[j]}} > \\theta_{${me}} \\mid Y)`).join(" \\\\ &\\quad + ");
           const oneA = f.num(1, formatCount(1));
           const lineA = `\\prerank{${me}} &= ${oneA} + ${pis}`;
@@ -787,14 +941,37 @@ export function mountWidget(el, spec = {}) {
           const result = f.num(d.er[u], fmtEr(d, d.er[u]), "prx-post");
           const tex = `\\begin{aligned}${wins} \\\\ ${lineA} \\\\ &= ${oneB} + ${vals} = \\;${result}\\end{aligned}`;
           renderTex(texBox, tex, { display: true, nums: f.raws });
-          return;
+        } else {
+          const me = d.firm ? "u" : tid(d.ids[u]);
+          const wins = `H_{${me}} &= \\#\\{\\, j : \\Pr(\\theta_{${me}} > \\theta_j \\mid Y) > ${half()} \\,\\}${eq}${f.num(w, formatCount(w), "prx-post")}`;
+          const oneA = f.num(1, formatCount(1));
+          const result = f.num(d.er[u], fmtEr(d, d.er[u]), "prx-post");
+          const er = `\\prerank{${me}} &= ${oneA} + \\sum_{j \\neq ${me}} \\Pr(\\theta_j > \\theta_{${me}} \\mid Y)${eq}${result}`;
+          renderTex(texBox, `\\begin{aligned}${wins} \\\\ ${er}\\end{aligned}`, { display: true, nums: f.raws });
         }
-        const me = d.firm ? "u" : tid(d.ids[u]);
-        const wins = `H_{${me}} &= \\#\\{\\, j : \\Pr(\\theta_{${me}} > \\theta_j \\mid Y) > ${half()} \\,\\}${eq}${f.num(w, formatCount(w), "prx-post")}`;
-        const oneA = f.num(1, formatCount(1));
-        const result = f.num(d.er[u], fmtEr(d, d.er[u]), "prx-post");
-        const er = `\\prerank{${me}} &= ${oneA} + \\sum_{j \\neq ${me}} \\Pr(\\theta_j > \\theta_{${me}} \\mid Y)${eq}${result}`;
-        renderTex(texBox, `\\begin{aligned}${wins} \\\\ ${er}\\end{aligned}`, { display: true, nums: f.raws });
+
+        const fi = formulaNums();
+        const meSym = d.geom === "orders" ? d.ids[u] : d.firm ? "u" : tid(d.ids[u]);
+        let sumPi = 0;
+        for (let j = 0; j < d.n; j += 1) if (j !== u) sumPi += 1 - d.e[u][j];
+        const oneI = fi.num(1, formatCount(1));
+        const oneP = fi.num(1, formatCount(1));
+        const nTok = fi.num(d.n, formatCount(d.n));
+        const sumTok = fi.num(sumPi, fmtEr(d, sumPi));
+        const erTok = fi.num(d.er[u], fmtEr(d, d.er[u]), "prx-post");
+        const idTex = `\\begin{aligned}\\prerank{${meSym}} &= ${oneI} + \\sum_{j \\neq ${meSym}} (${oneP} - \\pi_{${meSym} j}) = n - \\sum_{j \\neq ${meSym}} \\pi_{${meSym} j} \\\\ &= ${nTok} - ${sumTok} = \\;${erTok}\\end{aligned}`;
+        renderTex(identityBox, idTex, { display: true, nums: fi.raws });
+      }
+
+      function drawOpponent(d, u) {
+        const rows = pairsGeom.rows;
+        const row = rows.find((r) => r.j === peer)
+          ?? rows.reduce((closest, r) => Math.abs(r.p - HALF) < Math.abs(closest.p - HALF) ? r : closest);
+        const message = beats(d, u, row.j) ? T.opponentWin : beats(d, row.j, u) ? T.opponentLoss : T.opponentTie;
+        opponentLine.replaceChildren(...fill(message, {
+          u: () => unitNode(d, u), j: () => unitNode(d, row.j),
+          p: () => ro("opponent-probability", row.p, formatCycleProb(row.p, [HALF])),
+        }));
       }
 
       function drawCard() {
@@ -814,6 +991,19 @@ export function mountWidget(el, spec = {}) {
         };
         if (d.mean) Object.assign(slotsLine, { m: () => ro("card-mean", d.mean[u], fmtMean(d, d.mean[u])), pm: placeText(cc.mean, u) });
         cardLine.replaceChildren(...fill(d.mean ? T.cardLine : T.cardLineNoMean, slotsLine));
+        if (d.geom === "orders") {
+          firstLine.replaceChildren(...fill(T.firstExact, {
+            p: () => ro("chance-first", d.first[u], fmtProb(d, d.first[u])),
+          }));
+        } else if (d.geom === "league") {
+          const count = Math.round(d.first[u] * WR.mc.S);
+          firstLine.replaceChildren(...fill(T.firstDraws, {
+            count: () => ro("first-draw-count", count, formatCount(count)),
+            draws: () => ctx.num(WR.mc.S, formatCount(WR.mc.S)),
+          }));
+        } else {
+          firstLine.textContent = T.firstPairwise;
+        }
         const extra = [];
         if (d.geom === "league") {
           extra.push(...fill(T.cardLeague, {
@@ -827,11 +1017,20 @@ export function mountWidget(el, spec = {}) {
         }
         cardExtra.hidden = !extra.length;
         cardExtra.replaceChildren(...extra);
+        if (d.geom === "orders") {
+          ordersPairsLine.hidden = false;
+          const p = (v) => () => ctx.num(v, formatProb(v, { digits: CONFIG.digits.orders.prob }));
+          ordersPairsLine.replaceChildren(...fill(T.ordersPairs, { ab: p(d.pi[0][1]), ac: p(d.pi[0][2]), bc: p(d.pi[1][2]) }));
+        } else {
+          ordersPairsLine.hidden = true;
+          ordersPairsLine.replaceChildren();
+        }
         card.setAttribute("aria-label", status);
         pairsTitle.replaceChildren(...fill(T.pairsHeading, { id: () => unitNode(d, u) }));
         keyAbove.replaceChildren(...fill(T.keyAbove, { id: () => unitNode(d, u) }));
         keyBelow.replaceChildren(...fill(T.keyBelow, { id: () => unitNode(d, u) }));
         drawPairs(d, u);
+        drawOpponent(d, u);
         drawFormula(d, u);
         formulaNote.replaceChildren(...fill(T.formulaNote, { one: () => ctx.num(1, formatCount(1)) }), d.firm ? T.formulaNoteKrw : "");
       }
@@ -839,47 +1038,81 @@ export function mountWidget(el, spec = {}) {
       function highlight() {
         markUnits([bumpGeom?.svg], selected, hovered ?? peer);
         drawCard();
+        if (current) syncUnitSelect(current.d, current.cc, selected);
       }
 
-      // ------------------------------------------------------------------------------------------- read-out, notes
+      // ------------------------------------------------------------------------------------------- Readout & Notes
 
       function drawReadout(d) {
-        const M = () => ro("pairs", d.M, formatCount(d.M));
+        const M = () => writer.count(d.M, { hook: "pairs" });
         if (d.geom === "orders") {
           const wFirst = d.byWins.order[0];
           const eFirst = d.byEr.order[0];
-          ctx.readout.set([T.headOrders, ...fill(T.readOrders, {
-            wfirst: () => unitNode(d, wFirst), wcount: () => ro("first-wins", d.mw.wins[wFirst], formatCount(d.mw.wins[wFirst])),
-            efirst: () => unitNode(d, eFirst), er1: () => ro("first-er", d.er[eFirst], fmtEr(d, d.er[eFirst])),
-            wfirst2: () => unitNode(d, wFirst), er2: () => ro("wins-first-er", d.er[wFirst], fmtEr(d, d.er[wFirst])),
-          }), ...fill(T.readOrdersAgainst, { b: () => ro("against-er", d.against.er, formatCount(d.against.er)), M })]);
+          writer.set(fill(T.readOrders, {
+            wfirst: () => unitNode(d, wFirst),
+            wcount: () => writer.count(d.mw.wins[wFirst], { hook: "first-wins" }),
+            efirst: () => unitNode(d, eFirst),
+            er1: () => writer.num(d.er[eFirst], fmtEr(d, d.er[eFirst]), { hook: "first-er" }),
+            wfirst2: () => unitNode(d, wFirst),
+            er2: () => writer.num(d.er[wFirst], fmtEr(d, d.er[wFirst]), { hook: "wins-first-er" }),
+            b: () => writer.count(d.against.er, { hook: "against-er" }),
+            M,
+          }));
           return;
         }
         if (d.geom === "league") {
-          ctx.readout.set([...fill(T.headLeague, { prior: () => ro("prior-sd", d.priorSd, formatSetting(d.priorSd)) }),
-            ...fill(d.misMean === 0 ? T.readLeagueSame : T.readLeagueDiff, { mis: () => ro("mis-mean", d.misMean, formatCount(d.misMean)), M }),
-            ...fill(T.readLeagueAgainst, { b: () => ro("against-er", d.against.er, formatCount(d.against.er)),
-              pairs: d.against.er === 1 ? "pair" : "pairs" })]);
+          writer.set(fill(d.misMean === 0 ? T.readLeagueSame : T.readLeagueDiff, {
+            prior: () => writer.setting(d.priorSd, { hook: "prior-sd" }),
+            mis: () => writer.count(d.misMean, { hook: "mis-mean" }),
+            M,
+            b: () => writer.count(d.against.er, { hook: "against-er" }),
+            pairs: d.against.er === 1 ? "pair" : "pairs",
+          }));
           return;
         }
-        const relation = d.mw.strictOrder ? [T.readStrict]
-          : fill(d.mw.cycles === 1 ? T.readCycleOne : T.readCycleMany, { c: () => ro("cycles", d.mw.cycles, formatCount(d.mw.cycles)) });
-        const cycle = soleCycle(d);
-        const cycleLead = cycle ? (() => {
-          const [a, b, c] = cycle;
-          const pi = (i, j) => ctx.num(1 - d.e[i][j], fmtProb(d, 1 - d.e[i][j]));
-          return [" Cycle: ", unitNode(d, a), " → ", unitNode(d, b), " → ", unitNode(d, c),
-            " → ", unitNode(d, a), ". Direction probabilities: ", pi(a, b), ", ", pi(b, c), ", ", pi(c, a), "."];
-        })() : [];
-        const comparison = d.criterion === "race" && d.mw.strictOrder && d.against.card === 0 && d.cardMis === 0 && d.evals.card.N === d.M
-          ? [" Expected wrong directions: ", ctx.num(d.evals.card.E[0], formatDecimal(d.evals.card.E[0], { digits: 2 })),
-            " for KRW’s card, versus ", ctx.num(d.evals.mean.E[0], formatDecimal(d.evals.mean.E[0], { digits: 2 })), " in posterior-mean order."]
-          : [];
-        const c = d.against.card === 0 ? T.none : () => ro("against-card", d.against.card, formatCount(d.against.card));
-        ctx.readout.set([...fill(T.headKrw, { n: () => ro("units", d.n, formatCount(d.n)), gap: T.gapWords[d.criterion] }), ...relation,
-          ...fill(T.readKrwAgainst, {
-            a: () => ro("against-mean", d.against.mean, formatCount(d.against.mean)), M, b: () => ro("against-er", d.against.er, formatCount(d.against.er)), one, c,
-          }), ...cycleLead, ...comparison]);
+        const nNode = () => writer.count(d.n, { hook: "units" });
+        const aNode = () => writer.count(d.against.mean, { hook: "against-mean" });
+        const bNode = () => writer.count(d.against.er, { hook: "against-er" });
+        const cNode = d.against.card === 0 ? T.none : () => writer.count(d.against.card, { hook: "against-card" });
+        const gNode = () => writer.count(d.evals.card.G);
+        if (d.criterion === "race" && d.mw.strictOrder && d.against.card === 0 && d.cardMis === 0 && d.evals.card.N === d.M) {
+          const cardE = d.evals.card.E[0];
+          const meanE = d.evals.mean.E[0];
+          writer.set(fill(T.readKrwRace, {
+            n: nNode, gap: T.gapWords[d.criterion],
+            a: aNode, M,
+            em: () => writer.distinguishing(meanE, cardE, { minSig: 3 }),
+            b: bNode, one,
+            ec: () => writer.distinguishing(cardE, meanE, { minSig: 3 }),
+          }));
+          return;
+        }
+        if (d.mw.strictOrder) {
+          writer.set(fill(T.readKrwStrictOther, {
+            n: nNode, gap: T.gapWords[d.criterion], a: aNode, M, b: bNode, one, c: cNode, G: gNode,
+          }));
+          return;
+        }
+        const cyc = soleCycle(d);
+        if (cyc) {
+          const [x, y, z] = cyc;
+          const probs = [1 - d.e[x][y], 1 - d.e[y][z], 1 - d.e[z][x]];
+          writer.set(fill(T.readKrwSoleCycle, {
+            n: nNode, gap: T.gapWords[d.criterion],
+            cyc: () => writer.count(d.mw.cycles, { hook: "cycles" }),
+            w: () => writer.count(d.mw.wins[x]),
+            p1: () => writer.num(probs[0], formatCycleProb(probs[0], probs)),
+            p2: () => writer.num(probs[1], formatCycleProb(probs[1], probs)),
+            p3: () => writer.num(probs[2], formatCycleProb(probs[2], probs)),
+            a: aNode, M, b: bNode, one, c: cNode, G: gNode,
+          }));
+          return;
+        }
+        writer.set(fill(T.readKrwCycles, {
+          n: nNode, gap: T.gapWords[d.criterion],
+          cyc: () => writer.count(d.mw.cycles, { hook: "cycles" }),
+          a: aNode, M, b: bNode, one, c: cNode, G: gNode,
+        }));
       }
 
       function drawNotes(d) {
@@ -890,6 +1123,7 @@ export function mountWidget(el, spec = {}) {
           sourceNote.replaceChildren(...fill(T.noteLeague, {
             n: () => ctx.num(d.n, formatCount(d.n)), seed: () => ctx.num(LEAGUE_SEED, formatSetting(LEAGUE_SEED)),
             zero: () => ctx.num(CONFIG.priorMean, formatDecimal(CONFIG.priorMean, { digits: 0 })), prior: () => ctx.num(d.priorSd, formatSetting(d.priorSd)),
+            draws: () => ctx.num(WR.mc.S, formatCount(WR.mc.S)), drawSeed: () => ctx.num(WR.mc.seed, formatSetting(WR.mc.seed)),
           }));
           ctx.caption.replaceChildren(...(authoredCaption ? [authoredCaption, " "] : []), T.postLead, captionNode(ctx, "teaching-posterior"), ".");
         } else {
@@ -899,7 +1133,7 @@ export function mountWidget(el, spec = {}) {
         if (krwNotice) krwNotice.hidden = d.geom !== "krw";
       }
 
-      // ------------------------------------------------------------------------------------------- selection, pointer
+      // ------------------------------------------------------------------------------------------- Selection & pointer
 
       function select(u) {
         if (!current || u === null || u === undefined || u >= current.d.n) return;
@@ -926,9 +1160,9 @@ export function mountWidget(el, spec = {}) {
         const next = u ?? null;
         if (next === peer) return;
         peer = next;
+        if (current && pairsGeom) drawOpponent(current.d, hovered ?? selected);
         markUnits([bumpGeom?.svg], selected, hovered ?? peer);
       }
-      // the bar under a pointer event in the pairs chart (by geometry: one band per bar across the plot), or null
       function barAt(ev) {
         const g = pairsGeom;
         if (!g?.svg?.getBoundingClientRect) return null;
@@ -947,24 +1181,32 @@ export function mountWidget(el, spec = {}) {
       ctx.listen(pairsSlot, "click", (ev) => { const j = barAt(ev); if (j !== null) { peer = null; select(j); } });
       ctx.listen(pairsSlot, "focusout", () => setPeer(null));
 
+      mobileControls(ctx, { primary: [dataSelect.root], before: [[card, tieNote]] });
       return {
         render(state, info) {
+          // PR-06 / PR-09: toggling disclosures never re-renders stage or readout; resize width-dependent disclosure content only
+          if (info?.reason === "disclosure" && current) {
+            const u = hovered ?? selected;
+            if (info.disclosure === "method" && u !== null && u !== undefined) {
+              drawFormula(current.d, u);
+            }
+            return;
+          }
           rendering = true;
           ctx.root.setAttribute("aria-busy", "true");
           try {
             const changed = info?.changed ?? [];
-            // a new selection toggles attributes and redraws the card only
             const unitOnly = Boolean(current) && !info?.initial && info?.reason === "update"
               && changed.length === 1 && changed[0] === "unit" && current.state.data === state.data;
             const krw = state.data === "krw" && Boolean(KRW_CASE);
-            dataRadio.set(state.data);
+            dataSelect.set(state.data);
             critRadio.set(state.criterion);
             prior.set(state.priorSd);
             showControls([krw, state.data === "league"]);
             const d = dataset(state);
             ctx.root.setAttribute("data-prx-data", d.geom);
             const cc = current && unitOnly ? current.cc : columnsOf(d);
-            if (changed.includes("data") || changed.includes("criterion")) { hovered = null; peer = null; }
+            if (changed.some((key) => ["unit", "data", "criterion"].includes(key))) { hovered = null; peer = null; }
             if (hovered !== null && hovered >= d.n) hovered = null;
             if (peer !== null && peer >= d.n) peer = null;
             const ui = d.ids.indexOf(state.unit);
@@ -972,13 +1214,12 @@ export function mountWidget(el, spec = {}) {
             current = { state, d, cc };
             if (!unitOnly) {
               pairsDrawn = null;
-              drawPanel(d);
+              drawPanel(d, cc);
               drawBump(d, cc);
               drawReadout(d);
               drawNotes(d);
             }
             highlight();
-            // a unit of another data set names nothing here: the key goes back to the default unit
             if (state.unit !== "" && ui < 0) ctx.set({ unit: "" });
           } finally {
             ctx.root.removeAttribute("aria-busy");

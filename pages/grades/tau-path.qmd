@@ -1,10 +1,10 @@
 ---
 title: "Optimal reports along the withholding-cost path"
-subtitle: "2.5 · after the postrank theory book, ch. 11 and 16"
+subtitle: "2.5 · after the postrank theory book, ch. 10 and 22"
 description: "The lower envelope of affine report-risk functions and its change points."
 ---
 
-The risk of a fixed report changes linearly with the withholding cost. The slope is the share of pairs the report withholds. The lowest line at each τ gives the smallest risk in the selected family. Where the lowest line changes, the reports on either side of that point tie. A cap on the number of grades can remove some of these reports and change the path. The low-cost view shows the first transitions, including the range over which the best report withholds every pair.
+Each fixed report's posterior risk is a straight line in $\tau$ whose slope is the share of withheld pairs. The lower envelope traces the minimum-risk report across $\tau$, bending wherever the optimal report changes.
 
 ```{=html}
 <div id="app" class="prx-app column-page"></div>
@@ -16,24 +16,18 @@ The risk of a fixed report changes linearly with the withholding cost. The slope
 
 ## Numerical illustrations {#what-to-try}
 
-- **Overview.** The unrestricted best report states 14 pairs, with risk .0372. The capped comparison gives .0417.
-  Each faint line gives the risk of a fixed report. The heavy line traces the lowest risk, and the bands below show the costs over which each report attains it. Arrow keys identify the reports on the envelope. Complete path gives their exact intervals.
-- **Before the first bend.** The report states 0 of 15 pairs, and risk equals the withholding cost .0005. The
-  low-cost strip includes the all-withheld report that an overview starting farther right would miss. The
-  left boundary is a limit, since the cost is positive.
-- **Small cost, coherent report.** The best report states 12 of 15 pairs, including 2 directions whose error
-  exceeds the withholding cost. The list under Complete path gives the error probability for each newly stated direction. These choices are
-  made jointly, so the path cannot be read as a collection of isolated-pair thresholds.
-- **Exactly at a bend.** 2 reports share the smallest risk. Both neighboring segments include the
-  shared endpoint; the read-out shows the first report under the stated equal-risk tolerance. Moving just
-  beyond the bend changes which line is lowest.
-- **Three-grade cap.** At the larger cost the capped report still states 12 of 15 pairs, with risk .0817; the
-  unrestricted comparison gives .0480. Restricting the available grades changes the decision problem even
-  though the posterior and the price of withholding are the same.
+- **Overview.** The unrestricted optimum states 14 pairs (risk .0372), compared with .0417 under the three-grade cap. Open **Complete path** for exact intervals.
+- **Before the first bend.** The report states 0 of 15 pairs, with withholding cost .0005.
+- **Small cost, coherent report.** The optimum states 12 of 15 pairs, including 2 directions whose error exceeds $\tau$ because grades are chosen jointly.
+- **Exactly at a bend.** At $\tau \approx .144$, 2 reports share the smallest risk where neighboring segments meet.
+- **Three-grade cap.** At $\tau = .40$, the capped report states 12 of 15 pairs (risk .0817) while the unrestricted optimum reaches .0480.
 
-::: {.callout-note appearance="simple"}
-The site posteriors are normal and specified for this example. A separate panel shows targets with equal means. In that example, some reports minimize risk at a single cost. The path includes them even though they occupy no interval of positive length.
-:::
+<details>
+<summary>Model assumptions and endpoint notes</summary>
+
+The six fictional site posteriors are normal and specified for teaching. An independent three-unit equal-mean example illustrates reports that minimize risk only at a single endpoint $\tau = .50$ without occupying an interval of positive length.
+
+</details>
 
 ::: {.callout-tip collapse="true" title="In postrank"}
 ```r
@@ -48,3 +42,5 @@ Standalone: [the τ path](../../embed/tau-path.html), for example `?tau=.005&zoo
 
 Related applications: [Reporting risk and withholding cost](price-of-silence.qmd),
 [Grade reports as pairwise decisions](report-builder.qmd).
+
+Theory book · [Scalar normalization and withholding cost](https://joonho112.github.io/postrank-theory-book/chapters/10-krw-foundation.html#sec-scalar-reduction) · [Feasible frontier endpoints and cost paths](https://joonho112.github.io/postrank-theory-book/chapters/22-evaluation-frontiers.html#which-endpoints-and-paths-actually-exist).

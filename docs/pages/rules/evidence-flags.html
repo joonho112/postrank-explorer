@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -107,7 +107,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
   <script type="text/javascript">
 const typesetMath = (el) => {
@@ -140,6 +160,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="stylesheet" href="../../styles/temml.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/rules/evidence-flags.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Grades based on standardized evidence – postrank Explorer">
+<meta property="og:description" content="How estimates and standard errors determine evidence flags and the directions they imply.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/rules/evidence-flags.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/evidence-flags.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -606,7 +631,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Grades based on standardized evidence</h1>
-<p class="subtitle lead">3.3 · a constructed comparator after the postrank theory book, ch.&nbsp;2 and 17</p>
+<p class="subtitle lead">3.3 · a constructed comparator after the postrank theory book, ch.&nbsp;2 and 23</p>
 </div>
 
 <div>
@@ -628,7 +653,7 @@ window.Quarto = {
 </header>
 
 
-<p>An evidence flag depends on how far an estimate is from a reference in standard error units. Here the rule uses <span class="math inline"><math><mrow><msub><mi>z</mi><mi>i</mi></msub><mo>=</mo><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mover><mi>θ</mi><mo stretchy="false" class="wbk-acc" style="math-depth:0;">ˆ</mo></mover><mi>i</mi></msub><mo>−</mo><mi>r</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>/</mi><mi>S</mi><msub><mi>E</mi><mi>i</mi></msub></mrow></math></span> with the reference r set to zero. Values above the upper cutoff receive the highest flag, and values below the lower cutoff receive the lowest. The remaining values receive the middle flag. If the flags are treated as grades, a smaller but more precise estimate can rank above a larger one. The two normal posterior specifications give different assessments of the direction these flags report.</p>
+<p>Evidence flags group units by standardized distance <span class="math inline"><math><mrow><msub><mi>z</mi><mi>i</mi></msub><mo>=</mo><mrow><mo fence="true" form="prefix" stretchy="false">(</mo><msub><mover><mi>θ</mi><mo stretchy="false" class="wbk-acc" style="math-depth:0;">ˆ</mo></mover><mi>i</mi></msub><mo>−</mo><mi>r</mi><mo fence="true" form="postfix" stretchy="false">)</mo></mrow><mi>/</mi><mi>S</mi><msub><mi>E</mi><mi>i</mi></msub></mrow></math></span> from a reference <span class="math inline"><math><mrow><mi>r</mi><mo>=</mo><mn>0</mn></mrow></math></span>, so a smaller, more precise estimate can rank above a larger one.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -638,27 +663,20 @@ window.Quarto = {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Two units, flat prior.</strong> A has z = 4.00 and B has z = 1.50. The flags state A above B, although B’s estimate is larger. When each true value has a normal posterior centered on its estimate with SD equal to its SE, this direction has error probability .686 and risk .6862. The reversal comes from the difference in standard errors.</li>
-<li><strong>Same flags, teaching prior.</strong> The error falls to .288; the posterior means are .180 for A and .108 for B. The estimates and SEs still give the same flags. The new posterior assigns a lower probability to an error in their direction.</li>
-<li><strong>B’s SE .15.</strong> B reaches z = 2.00. Both units now receive the same flag, so the report states 0 pairs and has risk .2000. Because the flags match, this report leaves the pair unranked.</li>
-<li><strong>Cutoff 2.576.</strong> The stricter cutoff separates the flags again. The stated direction has error .736. The estimate and its SE determine the flag. The withholding cost τ enters when we evaluate the report.</li>
+<li><strong>Two units, flat prior.</strong> A has z = 4.00 and B has z = 1.50, ranking A above B despite B’s larger estimate; under the flat prior, error and risk are .686.</li>
+<li><strong>Same flags, teaching prior.</strong> Flags stay fixed, while teaching posterior means .180 for A and .108 for B lower the error and risk to .288.</li>
+<li><strong>B’s SE .15.</strong> B reaches z = 2.00 and shares A’s flag, so 0 pairs are stated with risk .200.</li>
+<li><strong>Cutoff 2.576.</strong> The stricter cutoff separates the flags again, with error .736.</li>
 </ul>
-<div class="callout callout-style-simple callout-note callout-titled" title="Reading the cutoff">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Reading the cutoff
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The cutoffs 1.645, 1.96 and 2.576 are the two-sided 10%, 5% and 1% normal critical values. A flag compares one unit with the reference. The probability that a stated direction between two units is right comes from the posterior.</p>
-<p>This constructed comparator follows the postrank theory book, ch.&nbsp;17 (the Tennessee procedure in ch.&nbsp;2 uses a related index with other cutoffs).</p>
-</div>
-</div>
+<details>
+<summary>
+Reading the cutoff and source notes
+</summary>
+<p>The cutoffs 1.645, 1.96 and 2.576 are the two-sided 10%, 5% and 1% normal critical values. A flag compares one unit with the reference, whereas the probability that a stated direction between two units is right comes from the posterior.</p>
+<p>This constructed comparator follows the postrank theory book, ch.&nbsp;23 (the Tennessee procedure in ch.&nbsp;2 uses a related index with other cutoffs).</p>
+</details>
 <div class="callout callout-style-default callout-tip callout-titled" title="In postrank">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -667,7 +685,7 @@ window.Quarto = {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">pnorm</span>((.<span class="dv">30</span><span class="fl">-.20</span>)<span class="sc">/</span><span class="fu">sqrt</span>(.<span class="dv">05</span><span class="sc">^</span><span class="dv">2</span><span class="fl">+.20</span><span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> postrank<span class="sc">::</span><span class="fu">postrank_probabilities</span>(<span class="fu">array</span>(<span class="fu">c</span>(<span class="cn">NA</span>,<span class="dv">1</span><span class="sc">-</span>p,p,<span class="cn">NA</span>),<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>),<span class="at">dimnames=</span><span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"A"</span>,<span class="st">"B"</span>),<span class="fu">c</span>(<span class="st">"A"</span>,<span class="st">"B"</span>),<span class="st">"score"</span>)), <span class="at">event=</span><span class="st">"directional_error"</span>, <span class="at">zero_ties=</span><span class="cn">TRUE</span>, <span class="at">margin=</span><span class="dv">0</span>, <span class="at">source=</span><span class="fu">list</span>(<span class="at">kind=</span><span class="st">"analytic_reference"</span>,<span class="at">description=</span><span class="st">"Two-unit example"</span>,<span class="at">conditioning=</span><span class="st">"Independent flat-prior normals"</span>), <span class="at">targets=</span><span class="fu">c</span>(<span class="at">score=</span><span class="st">"True value; larger is higher priority"</span>))</span>
@@ -677,6 +695,7 @@ window.Quarto = {
 </div>
 <p>Standalone: <a href="../../embed/evidence-flags.html">evidence-flags</a>, for example <code>?seB=.15&amp;crit=2.576</code>.</p>
 <p>Related applications: <a href="../../pages/rules/flags-in-the-league.html">Standardized-evidence flags in a league</a>, <a href="../../pages/grades/one-pair.html">The decision for an isolated pair</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/02-education-access.html#sec-educational-performance">Teacher growth categories: evidence, precision, and the choice of assessment</a> · <a href="https://joonho112.github.io/postrank-theory-book/chapters/23-rules-objectives.html#sec-selection-benchmarks">Benchmarks for selection, classification, and stability</a>.</p>
 
 
 </section>
@@ -1149,7 +1168,7 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;

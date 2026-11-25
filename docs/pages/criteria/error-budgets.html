@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c809ab3df770d3dc973f19d54a9b3a3b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8bc23efb800a99d9b4c65035640fa194.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,12 +72,37 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>document.documentElement.setAttribute("data-theme", "light");</script>
+<script>
+(() => {
+  // Full Quarto site pages are light-only so prose, tables, callouts, and cards remain legible regardless of OS dark mode.
+  document.documentElement.setAttribute('data-theme', 'light');
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retain the short page description above the app. On phones put the longer
+    // interpretation beside the worked examples after it, preserving every link.
+    const app = document.querySelector('main > #app');
+    const lead = app?.previousElementSibling;
+    if (lead?.matches('p') && document.querySelector('#title-block-header .description') && !lead.querySelector('nav')) {
+      const marker = document.createComment('app introduction');
+      lead.before(marker);
+      const narrow = matchMedia('(max-width: 600px)');
+      const place = () => { if (narrow.matches) app.after(lead); else marker.after(lead); };
+      place();
+      narrow.addEventListener('change', place);
+    }
+  }, {once: true});
+})();
+</script>
 
 
 <link rel="stylesheet" href="../../styles/tokens.css">
 <link rel="stylesheet" href="../../styles/app.css">
 <link rel="canonical" href="https://joonho112.github.io/postrank-explorer/pages/criteria/error-budgets.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Criterion-specific expected-error budgets – postrank Explorer">
+<meta property="og:description" content="Feasible report families under bounds on criterion-specific expected error shares.">
+<meta property="og:url" content="https://joonho112.github.io/postrank-explorer/pages/criteria/error-budgets.html">
+<meta property="og:image" content="https://joonho112.github.io/postrank-explorer/media/thumbs/error-budgets.png">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -566,7 +591,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>An error budget caps the expected share of wrong stated directions on a criterion. A report can carry little weighted risk and still exceed that cap. The plot shows each report with positive disclosure at its two criterion error shares. We use the same weights and withholding cost to compare the best report that passes the budgets with the best report overall. For a report that withholds every pair, we test the expected wrong count against the budget times the stated count.</p>
+<p>An error budget caps the expected wrong share among stated directions on each criterion. At fixed weights and withholding cost, compare the best feasible report against the unconstrained optimum.</p>
 <div id="app" class="prx-app column-page"></div>
 <script src="../../js/vendor/d3.min.js"></script>
 <script src="../../js/vendor/plot.min.js"></script>
@@ -575,25 +600,22 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-to-try" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-try">Numerical illustrations</h2>
 <ul>
-<li><strong>Loose budget.</strong> With equal weights and score B’s budget at .03, only 3 reports qualify. The original optimum is one of the three. It states 9 of 15 pairs and has risk .0933.</li>
-<li><strong>Tight budget.</strong> At .02, 2 reports qualify. The best states 8 of 15 pairs and has risk .0939; the other report withholds every comparison. The ring marks the optimum in the reduced family.</li>
-<li><strong>Exactly three.</strong> Keeping the .02 budget while requiring exactly three grades leaves 0 reports feasible. Allowing fewer grades makes it possible to withhold every comparison again.</li>
-<li><strong>Both budgets.</strong> Requiring an expected wrong share at most .02 on each score also leaves 2 reports. Both count-form checks and their slacks are reported; a report must pass both rows.</li>
-<li><strong>Zero weight.</strong> Score B has zero error weight but still has its .10 budget. The best feasible report has risk .0906. Its largest single score-B error is .240, for E above F, while its average is .0267. A budget on an average allows some individual errors above it.</li>
-<li><strong>No budget.</strong> The score-A-only best has risk .0417 and expected wrong share .237 on score B. The cross marks this unconstrained best; the older <strong>At most .15</strong>, <strong>At most .10</strong> and <strong>At most .05</strong> presets retain the same score-A-only comparison.</li>
+<li><strong>Loose budget.</strong> Capping score B at .03 leaves 3 reports; the unconstrained best passes at risk .0933.</li>
+<li><strong>Tight budget.</strong> At .02, 2 reports qualify; the best states 8 of 15 pairs at risk .0939.</li>
+<li><strong>Exactly three.</strong> Requiring three grades at .02 leaves 0 reports feasible because full withholding is excluded.</li>
+<li><strong>Both budgets.</strong> Capping each score at .02 leaves 2 reports passing both count-form checks.</li>
+<li><strong>Zero weight.</strong> Score B has zero loss weight yet keeps its .10 cap: risk .0906, average share .0267, largest error .240 (in Data).</li>
+<li><strong>No budget.</strong> Optimizing score A alone lowers risk to .0417 while raising score B’s wrong share to .237.</li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The example uses independent normal posteriors for six fictional sites. The budget limits an expected share under those posteriors. A report that withholds every direction has an expected wrong count and stated count of zero, so it satisfies the count inequality when the grade cap allows it. Its error share is undefined. The app checks the budgets by enumerating the six-site reports. The package’s typed-coefficient interface does not accept these budget settings.</p>
-</div>
-</div>
-</div>
+<details>
+<summary>
+Model notes
+</summary>
+<p>The example uses independent normal posteriors for six fictional sites. Each budget limits the posterior expected share over stated directions rather than individual pair probabilities. A report that withholds every pair has expected wrong count and stated count equal to zero, so it satisfies homogeneous count-form budgets whenever the grade cap permits it, while its error share is undefined (<code>NA: no disclosure</code>).</p>
+</details>
 <p>Standalone: <a href="../../embed/error-budgets.html">Criterion-specific expected-error budgets</a>, for example <code>?preset=both&amp;theme=dark</code>.</p>
 <p>Related applications: <a href="../../pages/criteria/two-scores.html">A common grade report for two scores</a> · <a href="../../pages/criteria/common-grade-cost.html">Criterion-specific excess risk of a common report</a>.</p>
+<p>Theory book · <a href="https://joonho112.github.io/postrank-theory-book/chapters/13-protections-preferences.html#sec-criterion-protections">Criterion-specific expected-error protections</a>.</p>
 
 
 </section>
@@ -1066,7 +1088,7 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>postrank Explorer v3.5 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
+<p>postrank Explorer v3.6 · code MIT · text and figures CC BY 4.0 · data per file (notes/data-rights.md)</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
